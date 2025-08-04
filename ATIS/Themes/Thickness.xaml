@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Thickness Top / Bottom / Left / Right  -->
+    <Thickness x:Key="SmallMargin">10,10,10,10</Thickness>
+    <Thickness x:Key="MediumMargin">0,24,0,24</Thickness>
+    <Thickness x:Key="LargeMargin">30,30,30,30</Thickness>
+
+    <!--  Large size margins  -->
+    <Thickness x:Key="LargeTopMargin">0,36,0,0</Thickness>
+    <Thickness x:Key="LargeTopBottomMargin">0,36,0,36</Thickness>
+    <Thickness x:Key="LargeLeftRightMargin">30,0,30,0</Thickness>
+
+    <!--  Medium size margins  -->
+    <Thickness x:Key="MediumLeftMargin">24,0,0,0</Thickness>
+    <Thickness x:Key="MediumTopMargin">0,24,0,0</Thickness>
+    <Thickness x:Key="MediumTopBottomMargin">0,24,0,24</Thickness>
+    <Thickness x:Key="MediumLeftRightMargin">24,0,24,0</Thickness>
+    <Thickness x:Key="MediumBottomMargin">0,0,0,24</Thickness>
+
+    <!--  Small size margins  -->
+    <Thickness x:Key="SmallLeftMargin">12,0,0,0</Thickness>
+    <Thickness x:Key="SmallLeftRightMargin">12,0,12,0</Thickness>
+    <Thickness x:Key="SmallLeftTopMargin">12,12,0,0</Thickness>
+    <Thickness x:Key="SmallTopMargin">0,12,0,0</Thickness>
+    <Thickness x:Key="SmallRightMargin">0,0,12,0</Thickness>
+    <Thickness x:Key="SmallTopBottomMargin">0,12,0,12</Thickness>
+    <Thickness x:Key="SmallLeftTopRightBottomMargin">12, 12, 12, 12</Thickness>
+
+
+    <Thickness x:Key="SmallLeftRightCommandBarMargin">12, 0, 12, 0</Thickness>
+    <Thickness x:Key="SmallRightCheckBoxMargin">0,27,-50,0</Thickness>
+    <Thickness x:Key="SmallTopRightCheckBoxMargin">0,35,-50,0</Thickness>
+
+    <!--  Extra Small size margins  -->
+    <Thickness x:Key="XSmallLeftMargin">8, 0, 0, 0</Thickness>
+    <Thickness x:Key="XSmallLeftTopMargin">8, 8, 0, 0</Thickness>
+    <Thickness x:Key="XSmallLeftBottomMargin">8, 0, 0, 8</Thickness>
+    <Thickness x:Key="XSmallLeftTopRightMargin">8, 8, 8, 0</Thickness>
+    <Thickness x:Key="XSmallLeftTopRightBottomMargin">8, 8, 8, 8</Thickness>
+    <Thickness x:Key="XSmallTopMargin">0, 8, 0, 0</Thickness>
+    <Thickness x:Key="XSmallTopBottomMargin">0, 8, 0, 8</Thickness>
+    <Thickness x:Key="XSmallTopRightMargin">0, 8, 8, 0</Thickness>
+    <Thickness x:Key="XSmallRightMargin">0, 0, 8, 0</Thickness>
+    <Thickness x:Key="XSmallRightBottomMargin">0, 0, 8, 8</Thickness>
+    <Thickness x:Key="XSmallBottomMargin">0, 0, 0, 8</Thickness>
+
+    <!--  Extra Extra Small size margins  -->
+    <Thickness x:Key="XxSmallLeftTopMargin">4, 4, 0, 0</Thickness>
+    <Thickness x:Key="XxSmallTopMargin">0, 4, 0, 0</Thickness>
+    <Thickness x:Key="XxSmallTopRightMargin">0, 4, 4, 0</Thickness>
+    <Thickness x:Key="XxSmallLeftTopRightBottomMargin">4, 4, 4, 4</Thickness>
+
+    <Thickness x:Key="NavigationViewContentGridBorderThickness">1,1,0,0</Thickness>
+    <CornerRadius x:Key="NavigationViewContentGridCornerRadius">8,0,0,0</CornerRadius>
+    <Thickness x:Key="NavigationViewContentMargin">0,6,0,0</Thickness>
+    <Thickness x:Key="NavigationViewHeaderMargin">24,16,0,0</Thickness>
+    <Thickness x:Key="NavigationViewPageContentMargin">24,16,24,0</Thickness>
+
+    <Thickness x:Key="MenuBarContentMargin">36,24,36,0</Thickness>
+
+    <Thickness x:Key="SettingsPageHyperlinkButtonMargin">-12,4,0,0</Thickness>
+
+    <!--  ComboBox Extra Small size margins  -->
+    <Thickness x:Key="XSmallTopRightComboBoxMargin">0, 7, 8, 0</Thickness>
+    <Thickness x:Key="XSmallRightComboBoxMargin">0, 0, 8, 0</Thickness>
+
+    <!--  ListDetails size margins  -->
+    <Thickness x:Key="PageTitleMargin">12,4,0,0</Thickness>
+    <Thickness x:Key="SmallDetailPageMargin">16,8,8,8</Thickness>
+    <Thickness x:Key="DetailPageMargin">52,40,52,0</Thickness>
+    <Thickness x:Key="HyperlinkButtonNegativeMargin">-12,0,0,0</Thickness>
+    <Thickness x:Key="SettingsCardMargin">0,0,0,4</Thickness>
+    <Thickness x:Key="ContentPageMargin">40,0,40,0</Thickness>
+
+    <TransitionCollection x:Key="SettingsCardsAnimations">
+        <EntranceThemeTransition FromVerticalOffset="50" />
+        <!--  Animates cards when loaded  -->
+        <RepositionThemeTransition IsStaggeringEnabled="False" />
+        <!--  Smoothly animates individual cards upon whenever Expanders are expanded/collapsed  -->
+    </TransitionCollection>
+
+</ResourceDictionary>

@@ -1,0 +1,263 @@
+﻿using System.Configuration;
+using System.Diagnostics;
+using ATIS.Helpers;
+using ATIS.Services;
+using ATIS.Strings;
+using Microsoft.UI;
+using QuestPDF.Fluent;
+using WinUIEx;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace ATIS.Views.Report.Pdf.Tbl33Ordos;
+/// <summary>
+/// An empty window that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class ReportOrdosWindow : WindowEx
+{
+    #region [Private Data Members]
+
+    private readonly AtisDbContext _context = new();
+    public ReportViewModel ViewModel { get; set; }
+
+    #endregion [Private Data Members]  
+
+    #region [Constructor]
+
+    public ReportOrdosWindow(int id)
+    {
+        ViewModel = App.GetService<ReportViewModel>();
+        InitializeComponent();
+        ViewModel.ReportSearchAll(id, "Tbl33Ordos");
+
+        Title = StringsRes.Ordo;
+        Width = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportWidth"));
+        Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportHeight"));
+        this.CenterOnScreen();
+
+        if (ViewModel.SubordoItems.Count == 0)
+        {
+            TbDirectChildren.Visibility = Visibility.Collapsed;
+        }
+    }
+    #endregion [Constructor]                 
+
+    #region [Command]
+
+    private void PdfOrdoCommand(object sender, RoutedEventArgs e)
+    {
+        GeneratePdfOrdo(ViewModel.OrdoSelected.OrdoId);
+    }
+
+    #endregion [Command]             
+
+    #region [Methods]
+
+    public void GeneratePdfOrdo(int id)
+    {
+        var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
+        var single = _context.Tbl33Ordos.SingleOrDefault(a => a.OrdoId == id);
+        if (single != null)
+        {
+            var name = single.OrdoName;
+            var countid = single.CountId;
+            const string space = "_";
+            filePath = $"{filePath}{name}{space}{countid}{space}Report.pdf";
+
+            //var filePath = "D:\\Temp\\Animalia b11_57883426_Report.pdf";
+
+            var model = Tbl33OrdosDocumentDataSource.GetOrdoDetails(id);
+            var document = new Tbl33OrdosDocument(model);
+            document.GeneratePdf(filePath);
+            PrintPdfMethod(filePath);
+        }
+    }
+
+    private static async void PrintPdfMethod(string filePath)
+    {
+        // Process.Start("explorer.exe", filePath);
+
+        {
+            try
+            {
+                await File.ReadAllTextAsync(filePath!);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                AllDialogs.NoFileFoundInfoWarnDialogAsync();
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                AllDialogs.NoFileFoundInfoWarnDialogAsync();
+                return;
+            }
+
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(filePath!)
+                {
+                    UseShellExecute = true
+                }
+            };
+            process.Start();
+        }
+    }
+
+    private void OnCloseClick(object sender, RoutedEventArgs e)
+    {
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+        var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+        if (appWindow != null)
+        {
+            App.WindowsCounter -= 1;  //counter 1 window back
+            appWindow.Hide();
+        }
+    }
+
+    ////Tbl03Regnums  -->
+    //public void Regnum_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.RegnumSelected.RegnumId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.RegnumSelected.RegnumId, "Tbl03Regnums");
+    //    var window = new Tbl03Regnums.ReportRegnumsWindow(ViewModel.RegnumSelected.RegnumId);
+    //    window.Activate();
+    //}
+
+    ////Tbl06Phylums  -->
+    //public void Phylum_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.PhylumSelected.PhylumId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.PhylumSelected.PhylumId, "Tbl06Phylums");
+    //    var window = new Tbl06Phylums.ReportPhylumsWindow(ViewModel.PhylumSelected.PhylumId);
+    //    window.Activate();
+    //}
+
+    //// Tbl09Divisions  -->
+    //public void Division_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.DivisionSelected.DivisionId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.DivisionSelected.DivisionId, "Tbl09Divisions");
+    //    var window = new Tbl09Divisions.ReportDivisionsWindow(ViewModel.DivisionSelected.DivisionId);
+    //    window.Activate();
+    //}
+
+    ////Tbl12Subphylums  -->
+    //private void Subphylum_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.SubphylumSelected.SubphylumId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.SubphylumSelected.SubphylumId, "Tbl12Subphylums");
+    //    var window = new Tbl12Subphylums.ReportSubphylumsWindow(ViewModel.SubphylumSelected.SubphylumId);
+    //    window.Activate();
+    //}
+
+    //// Tbl15Subdivisions  -->
+    //private void Subdivision_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.SubdivisionSelected.SubdivisionId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.SubdivisionSelected.SubdivisionId, "Tbl15Subdivisions");
+    //    var window = new Tbl15Subdivisions.ReportSubdivisionsWindow(ViewModel.SubdivisionSelected.SubdivisionId);
+    //    window.Activate();
+    //}
+
+    //// Tbl18Superclasses  -->
+    //private void Superclass_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.SuperclassSelected.SuperclassId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.SuperclassSelected.SuperclassId, "Tbl18Superclasses");
+    //    var window = new Tbl18Superclasses.ReportSuperclassesWindow(ViewModel.SuperclassSelected.SuperclassId);
+    //    window.Activate();
+    //}
+
+    //// Tbl21Classes  -->
+    //private void Class_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.ClassSelected.ClassId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.ClassSelected.ClassId, "Tb21Classes");
+    //    var window = new Tbl21Classes.ReportClassesWindow(ViewModel.ClassSelected.ClassId);
+    //    window.Activate();
+    //}
+
+    //// Tbl24Subclasses  -->
+    //private void Subclass_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.SubclassSelected.SubclassId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.SubclassSelected.SubclassId, "Tbl24Subclasses");
+    //    var window = new Tbl24Subclasses.ReportSubclassesWindow(ViewModel.SubclassSelected.SubclassId);
+    //    window.Activate();
+    //}
+
+    //// Tbl27Infraclasses  -->
+    //private void Infraclass_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.InfraclassSelected.InfraclassId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.InfraclassSelected.InfraclassId, "Tbl27Infraclasses");
+    //    var window = new Tbl27Infraclasses.ReportInfraclassesWindow(ViewModel.InfraclassSelected.InfraclassId);
+    //    window.Activate();
+    //}
+    //// Tbl30Legios  -->
+    //private void Legio_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.LegioSelected.LegioId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.LegioSelected.LegioId, "Tbl30Legios");
+    //    var window = new Tbl30Legios.ReportLegiosWindow(ViewModel.LegioSelected.LegioId);
+    //    window.Activate();
+    //}
+    //// Tbl36Subordos  -->
+    //private void Subordo_OnTapped(object sender, TappedRoutedEventArgs e)
+    //{
+    //    if (ViewModel.SubordoSelected.SubordoId == 0)
+    //    {
+    //        return;
+    //    }
+
+    //    ViewModel.ReportSearchAll(ViewModel.SubordoSelected.SubordoId, "Tbl36Subordos");
+    //    var window = new Tbl36Subordos.ReportSubordosWindow(ViewModel.SubordoSelected.SubordoId);
+    //    window.Activate();
+    //}
+
+
+    #endregion [Method PDF]    
+}

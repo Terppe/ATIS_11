@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<winUiEx:WindowEx x:Class="ATIS.Views.Report.Pdf.Tbl15Subdivisions.ReportSubdivisionsWindow"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
+                  xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
+                  xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
+                  xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
+                  xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:models="using:ATIS.Models"
+                  xmlns:winUiEx="using:WinUIEx"
+                  mc:Ignorable="d">
+
+    <!--  ReportSubdivisionsWindow.xaml  Skriptdatum:  15.06.2024  12:32  -->
+
+    <Grid>
+        <Grid.Resources>
+            <DataTemplate x:Key="SearchItemTemplateTbl03Regnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplatesSearch:SearchItemTemplateTbl03RegnumControl />
+            </DataTemplate>
+
+            <DataTemplate x:Key="SearchItemTemplateTbl09Division"
+                          x:DataType="models:Tbl09Division">
+                <dataTemplatesSearch:SearchItemTemplateTbl09DivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
+                          x:DataType="models:Tbl15Subdivision">
+                <dataTemplatesSearch:SearchItemTemplateTbl15SubdivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplatesSearch:SearchItemTemplateTbl18SuperclassControl />
+            </DataTemplate>
+
+
+            <Style x:Key="NoSpacesListViewItemStyle"
+                   TargetType="ListViewItem">
+                <Setter Property="MinHeight" Value="24" />
+            </Style>
+
+            <!--  Report.Listviews  -->
+            <!--  Header  -->
+            <DataTemplate x:Key="ReportItemTemplateHeaderRegnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHeader:ReportItemTemplateHeaderRegnumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderDivision"
+                          x:DataType="models:Tbl09Division">
+                <dataTemplateHeader:ReportItemTemplateHeaderDivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderSubdivision"
+                          x:DataType="models:Tbl15Subdivision">
+                <dataTemplateHeader:ReportItemTemplateHeaderSubdivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderSuperclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplateHeader:ReportItemTemplateHeaderSuperclassControl />
+            </DataTemplate>
+
+            <!--  Taxonomy-Header  -->
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderControl />
+            </DataTemplate>
+
+            <!--  Taxonomy-Header-Body  -->
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
+                          x:DataType="models:Tbl09Division">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision"
+                          x:DataType="models:Tbl15Subdivision">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl />
+            </DataTemplate>
+
+            <!--  Hyperlink-ListViews  -->
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
+                          x:DataType="models:Tbl09Division">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkDivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
+                          x:DataType="models:Tbl15Subdivision">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubdivisionControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
+            </DataTemplate>
+
+            <!--  Rest-ListViews  -->
+
+            <DataTemplate x:Key="ReportItemTemplateTbl90RefExpert"
+                          x:DataType="models:Tbl90Reference">
+                <dataTemplatesReport:ReportItemTemplateTbl90RefExpertControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateTbl90RefSource"
+                          x:DataType="models:Tbl90Reference">
+                <dataTemplatesReport:ReportItemTemplateTbl90RefSourceControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateTbl90RefAuthor"
+                          x:DataType="models:Tbl90Reference">
+                <dataTemplatesReport:ReportItemTemplateTbl90RefAuthorControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateTbl93Comment"
+                          x:DataType="models:Tbl93Comment">
+                <dataTemplatesReport:ReportItemTemplateTbl93CommentControl />
+            </DataTemplate>
+
+        </Grid.Resources>
+
+        <!--  Part 1  -->
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Uid="Button_PrintPdf"
+                        Margin="50,5,10,5"
+                        Click="PdfSubdivisionCommand"
+                        Style="{StaticResource CrudButtonStyle}" />
+                <Button x:Uid="Button_Close_Window"
+                        Margin="50,5,10,5"
+                        HorizontalAlignment="Right"
+                        Click="OnCloseClick"
+                        Style="{StaticResource CrudButtonStyle}" />
+            </StackPanel>
+            <ScrollViewer Grid.Row="1"
+                          Padding="{StaticResource SmallDetailPageMargin}"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                          IsTabStop="True"
+                          VerticalScrollMode="Enabled">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="260" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ListView Grid.Row="0"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderSubdivision}"
+                              ItemsSource="{x:Bind ViewModel.SubdivisionItems}" />
+                    <ListView Grid.Row="1"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeader}"
+                              ItemsSource="{x:Bind ViewModel.RegnumItems}" />
+                    <ListView Grid.Row="2"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision}"
+                              ItemsSource="{x:Bind ViewModel.SubdivisionItems}" />
+                    <TextBlock x:Uid="TextBlock_TaxonomicHierarchy"
+                               Grid.Row="3"
+                               Grid.Column="0"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="4"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+                              ItemsSource="{x:Bind ViewModel.RegnumItems}"
+                              SelectedValuePath="RegnumId" />
+                    <ListView Grid.Row="5"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHyperlinkDivision}"
+                              ItemsSource="{x:Bind ViewModel.DivisionItems}"
+                              SelectedValuePath="DivisionId" />
+                    <TextBlock x:Uid="TextBlock_Subdivision1"
+                               Grid.Row="6"
+                               Grid.Column="0"
+                               Width="Auto"
+                               Margin="24,0,0,0" />
+                    <StackPanel Grid.Row="6"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                        <TextBlock Width="Auto"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.SubdivisionName, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.Author, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.AuthorYear, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.EngName, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.GerName, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.FraName, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.SubdivisionSelected.PorName, Mode=OneWay}" />
+                    </StackPanel>
+
+                    <!--  Part 2  -->
+
+                    <TextBlock x:Name="TbDirectChildren"
+                               x:Uid="TextBlock_DirectChildren"
+                               Grid.Row="7"
+                               Grid.Column="1"
+                               Width="Auto"
+                               Margin="0,5,0,10"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="8"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemsSource="{x:Bind ViewModel.SuperclassItems}"
+                              SelectedItem="{x:Bind ViewModel.SuperclassSelected, Mode=TwoWay}"
+                              SelectedValuePath="SuperclassId">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="260" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock x:Uid="TextBlock_Superclass"
+                                                   Width="Auto"
+                                                   Margin="32,0,0,0" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal">
+                                        <TextBlock Text="{Binding SuperclassId}"
+                                                   Visibility="Collapsed" />
+                                        <TextBlock Text="{Binding SuperclassName}" />
+                                        <TextBlock Margin="2,0,0,0"
+                                                   Text="{Binding EngName}" />
+                                        <TextBlock Margin="2,0,0,0"
+                                                   Text="{Binding GerName}" />
+                                        <TextBlock Margin="2,0,0,0"
+                                                   Text="{Binding FraName}" />
+                                        <TextBlock Margin="2,0,0,0"
+                                                   Text="{Binding PorName}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <!--  Part 3  -->
+
+                    <TextBlock x:Uid="TextBlock_References"
+                               Grid.Row="9"
+                               Grid.Column="0"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                    <TextBlock x:Uid="TextBlock_Experts"
+                               Grid.Row="10"
+                               Grid.Column="0"
+                               Width="Auto"
+                               Margin="8,0,0,10"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="11"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,-12,10,10"
+                              ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
+                              ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
+                    <TextBlock x:Uid="TextBlock_Sources"
+                               Grid.Row="12"
+                               Grid.Column="0"
+                               Width="Auto"
+                               Margin="8,0,0,10"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="13"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,-12,10,10"
+                              ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
+                              ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
+                    <TextBlock x:Uid="TextBlock_Publications"
+                               Grid.Row="14"
+                               Grid.Column="0"
+                               Width="Auto"
+                               Margin="8,0,0,10"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="15"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,-12,10,10"
+                              ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
+                              ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
+                    <TextBlock x:Uid="TextBlock_Comments"
+                               Grid.Row="16"
+                               Grid.Column="0"
+                               Margin="0,0,0,10"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="17"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,-12,10,10"
+                              ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
+                              ItemsSource="{x:Bind ViewModel.CommentItems}" />
+                </Grid>
+            </ScrollViewer>
+
+        </Grid>
+    </Grid>
+</winUiEx:WindowEx>

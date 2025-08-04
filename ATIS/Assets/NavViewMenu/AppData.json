@@ -1,0 +1,586 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/WinUICommunity/WinUICommunity/refs/heads/main/AppData.Schema.json",
+  "Groups": [
+    {
+      "UniqueId": "ATIS",
+      "Title": "ATIS",
+      "ImagePath": "ms-appx:///Assets/icon.png",
+      "ImageIconPath": "ms-appx:///Assets/icon.png",
+      "IsSpecialSection": false,
+      "ShowItemsWithoutGroup": true,
+      "IsExpanded": false,
+      "Items": [
+        {
+          "UniqueId": "ATIS.Views.Main.HomeLandingPage",
+          "Title": "Dashboard",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/dashboard.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/dashboard.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        },
+        {
+          "UniqueId": "ATIS.Views.Search.SearchQuickPage",
+          "SectionId": "ATIS.Views.Search.SearchQuickPage",
+          "Title": "Suchen",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/search.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/search.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        },
+        {
+          "UniqueId": "Datenbank",
+          "Title": "Datenbank",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsExpanded": false,
+          "Items": [
+            {
+              "UniqueId": "ATIS.Views.Database.Tbl75SpeciesListPage",
+              "SectionId": "ATIS.Views.Database.Tbl75SpeciesListPage",
+              "Title": "Arten",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsUpdated": true
+            },
+            {
+              "UniqueId": "ATIS.Views.Database.Tbl66GenusListPage",
+              "SectionId": "ATIS.Views.Database.Tbl66GenusListPage",
+              "Title": "Gattungen",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsUpdated": true
+            },
+            {
+              "UniqueId": "ATIS.Views.Database.Tbl68SpeciesgroupListPage",
+              "SectionId": "ATIS.Views.Database.Tbl68SpeciesgroupListPage",
+              "Title": "Artengruppen",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsUpdated": true
+            },
+            {
+              "UniqueId": "Tribusse",
+              "Title": "Tribusse",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl63InfratribusListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl63InfratribusListPage",
+                  "Title": "Infratribusse",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl60SubtribusListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl60SubtribusListPage",
+                  "Title": "Untertribusse",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl57TribusListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl57TribusListPage",
+                  "Title": "Tribusse",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl54SupertribusListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl54SupertribusListPage",
+                  "Title": "Übertribusse",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+              ]
+            },
+            {
+              "UniqueId": "Familien",
+              "Title": "Familien",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl51InfrafamilyListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl51InfrafamilyListPage",
+                  "Title": "Infrafamilien",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl48SubfamilyListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl48SubfamilyListPage",
+                  "Title": "Unterfamilien",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl45FamilyListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl45FamilyListPage",
+                  "Title": "Familien",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl42SuperfamilyListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl42SuperfamilyListPage",
+                  "Title": "Überfamilien",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+              ]
+            },
+            {
+              "UniqueId": "Ordnungen",
+              "Title": "Ordnungen",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl39InfraordoListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl39InfraordoListPage",
+                  "Title": "Infraordnungen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl36SubordoListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl36SubordoListPage",
+                  "Title": "Unterordnungen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl33OrdoListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl33OrdoListPage",
+                  "Title": "Ordnungen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl30LegioListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl30LegioListPage",
+                  "Title": "Überordnungen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+              ]
+            },
+            {
+              "UniqueId": "Klassen",
+              "Title": "Klassen",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl27InfraclassListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl27InfraclassListPage",
+                  "Title": "Infraklassen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl24SubclassListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl24SubclassListPage",
+                  "Title": "Unterklassen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl21ClassListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl21ClassListPage",
+                  "Title": "Klassen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl18SuperclassListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl18SuperclassListPage",
+                  "Title": "Überklassen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+              ]
+            },
+            {
+              "UniqueId": "Abteilungen",
+              "Title": "Abteilungen",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl15SubdivisionListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl15SubdivisionListPage",
+                  "Title": "Unterabteilungen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl09DivisionListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl09DivisionListPage",
+                  "Title": "Abteilungen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+              ]
+            },
+            {
+              "UniqueId": "Stämme",
+              "Title": "Stämme",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl12SubphylumListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl12SubphylumListPage",
+                  "Title": "Unterstämme",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl06PhylumListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl06PhylumListPage",
+                  "Title": "Stämme",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+              ]
+            },
+            {
+              "UniqueId": "ATIS.Views.Database.Tbl03RegnumListPage",
+              "SectionId": "ATIS.Views.Database.Tbl03RegnumListPage",
+              "Title": "Reiche",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsUpdated": true
+            },
+            {
+              "UniqueId": "Sonstiges",
+              "Title": "Sonstiges",
+              "Subtitle": "ATIS",
+              "ImagePath": "ms-appx:///Assets/Fluent/addons.png",
+              "ImageIconPath": "ms-appx:///Assets/Fluent/addons.png",
+              "HideItem": true,
+              "IncludedInBuild": true,
+              "IsExpanded": false,
+              "Items": [
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl78NameListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl78NameListPage",
+                  "Title": "Namen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl81ImageListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl81ImageListPage",
+                  "Title": "Bilder/Videos",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl84SynonymListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl84SynonymListPage",
+                  "Title": "Synonyme",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl87GeographicListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl87GeographicListPage",
+                  "Title": "Vorkommen",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl90ReferenceListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl90ReferenceListPage",
+                  "Title": "Bezüge",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "Bezug-Details",
+                  "Title": "Bezug-Details",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/collection.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/collection.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsExpanded": false,
+                  "Items": [
+                    {
+                      "UniqueId": "ATIS.Views.Database.Tbl90RefExpertListPage",
+                      "SectionId": "ATIS.Views.Database.Tbl90RefExpertListPage",
+                      "Title": "Experten",
+                      "Subtitle": "ATIS",
+                      "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                      "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                      "HideItem": true,
+                      "IncludedInBuild": true,
+                      "IsUpdated": true
+                    },
+                    {
+                      "UniqueId": "ATIS.Views.Database.Tbl90RefSourceListPage",
+                      "SectionId": "ATIS.Views.Database.Tbl90RefSourceListPage",
+                      "Title": "Quellen",
+                      "Subtitle": "ATIS",
+                      "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                      "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                      "HideItem": true,
+                      "IncludedInBuild": true,
+                      "IsUpdated": true
+                    },
+                    {
+                      "UniqueId": "ATIS.Views.Database.Tbl90RefAuthorListPage",
+                      "SectionId": "ATIS.Views.Database.Tbl90RefAuthorListPage",
+                      "Title": "Autoren",
+                      "Subtitle": "ATIS",
+                      "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                      "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                      "HideItem": true,
+                      "IncludedInBuild": true,
+                      "IsUpdated": true
+                    }
+                  ]
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.Tbl93CommentListPage",
+                  "SectionId": "ATIS.Views.Database.Tbl93CommentListPage",
+                  "Title": "Kommentare",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.TblCountryListPage",
+                  "SectionId": "ATIS.Views.Database.TblCountryListPage",
+                  "Title": "Länder",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                },
+                {
+                  "UniqueId": "ATIS.Views.Database.TblUserProfileListPage",
+                  "SectionId": "ATIS.Views.Database.TblUserProfileListPage",
+                  "Title": "Nutzerprofile",
+                  "Subtitle": "ATIS",
+                  "ImagePath": "ms-appx:///Assets/Fluent/database.png",
+                  "ImageIconPath": "ms-appx:///Assets/Fluent/database.png",
+                  "HideItem": true,
+                  "IncludedInBuild": true,
+                  "IsUpdated": true
+                }
+
+              ]
+            }
+          ]
+        },
+        {
+          "UniqueId": "ATIS.Views.Main.DiseasePage",
+          "SectionId": "ATIS.Views.Main.DiseasePage",
+          "Title": "Krankheiten",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/disease.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/disease.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        },
+        {
+          "UniqueId": "ATIS.Views.Main.FoodPage",
+          "SectionId": "ATIS.Views.Main.FoodPage",
+          "Title": "Nahrung",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/food.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/food.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        },
+        {
+          "UniqueId": "ATIS.Views.Main.MiscellaneousPage",
+          "SectionId": "ATIS.Views.Main.MiscellaneousPage",
+          "Title": "Verschiedenes",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/miscellaneous.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/miscellaneous.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        },
+        {
+          "UniqueId": "ATIS.Views.Admin.AdminAreaPage",
+          "SectionId": "ATIS.Views.Admin.AdminAreaPage",
+          "Title": "Administrator_Bereich",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/adminarea.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/adminarea.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        },
+        {
+          "UniqueId": "ATIS.Views.User.UserAreaPage",
+          "SectionId": "ATIS.Views.User.UserAreaPage",
+          "Title": "Nutzer_Bereich",
+          "Subtitle": "ATIS",
+          "ImagePath": "ms-appx:///Assets/Fluent/userarea.png",
+          "ImageIconPath": "ms-appx:///Assets/Fluent/userarea.png",
+          "HideItem": true,
+          "IncludedInBuild": true,
+          "IsUpdated": true
+        }
+      ]
+    }
+  ]
+}

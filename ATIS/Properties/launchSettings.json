@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ATIS (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ATIS (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

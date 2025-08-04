@@ -1,0 +1,1263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppClose" xml:space="preserve">
+    <value>Anwendung schliessen ?</value>
+  </data>
+  <data name="AppClosed" xml:space="preserve">
+    <value>Anwendung geschlossen</value>
+  </data>
+  <data name="AppCloseQuestion" xml:space="preserve">
+    <value>Wollen Sie wirklich diese Anwendung schliessen ? </value>
+  </data>
+  <data name="AppCloseQuestion1" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="AreaAuthMessage" xml:space="preserve">
+    <value>Anfrage für  generelle Erlaubnis ist fehl geschlagen </value>
+  </data>
+  <data name="AreaAuthNo" xml:space="preserve">
+    <value>Sie haben keine Berechtigung für diesen Bereich</value>
+  </data>
+  <data name="Atis" xml:space="preserve">
+    <value>ATIS</value>
+  </data>
+  <data name="AtisHeader" xml:space="preserve">
+    <value>Aquaristik Taxonomie Informationssystem - Bericht</value>
+  </data>
+  <data name="AuthAccessNot" xml:space="preserve">
+    <value>Zugang verweigert. Bitte gültige Daten eingeben.</value>
+  </data>
+  <data name="AuthCustom" xml:space="preserve">
+    <value>Kunden Authentifizierung</value>
+  </data>
+  <data name="AuthNot" xml:space="preserve">
+    <value>Sie sind nicht berechtigt!</value>
+  </data>
+  <data name="AuthUserNot" xml:space="preserve">
+    <value>Nicht authentifiziert !</value>
+  </data>
+  <data name="AuthUserQuestion" xml:space="preserve">
+    <value>Angemeldet als {0}. {1}</value>
+  </data>
+  <data name="AuthUserQuestion1" xml:space="preserve">
+    <value>Sie sind Administrator!</value>
+  </data>
+  <data name="AuthUserQuestion2" xml:space="preserve">
+    <value>Sie sind KEIN Mitglied der Administratoren-Gruppe</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="CheckOption" xml:space="preserve">
+    <value>Option muss überprüft werden</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Kommentar</value>
+  </data>
+  <data name="ConnectedDataset" xml:space="preserve">
+    <value>enthält verbundene Datensätze, hier nicht zu löschen !</value>
+  </data>
+  <data name="ConnectedTable" xml:space="preserve">
+    <value>Verbundene Tabellen</value>
+  </data>
+  <data name="ConvertBackNo" xml:space="preserve">
+    <value>Zurück Konvertieren nicht möglich.</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="DatabaseNotFound" xml:space="preserve">
+    <value>Datenbank nicht gefunden</value>
+  </data>
+  <data name="DatasetExist" xml:space="preserve">
+    <value>Datensatz existiert bereits !</value>
+  </data>
+  <data name="DatasetNew" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="DatasetNot" xml:space="preserve">
+    <value>Kein Datensatz gefunden</value>
+  </data>
+  <data name="DatasetNotExist" xml:space="preserve">
+    <value>Datensatz existiert nicht !</value>
+  </data>
+  <data name="DatasetSelect" xml:space="preserve">
+    <value>Bitte Datensatz auswählen !</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="DeleteCan" xml:space="preserve">
+    <value>Nur</value>
+  </data>
+  <data name="DeleteCan1" xml:space="preserve">
+    <value>kann gelöscht werden ! </value>
+  </data>
+  <data name="DeleteNot" xml:space="preserve">
+    <value>Datensatz ist nicht zu löschen !</value>
+  </data>
+  <data name="DeleteQuestion" xml:space="preserve">
+    <value>Wollen Sie wirklich diesen Datensatz löschen ? </value>
+  </data>
+  <data name="DeleteQuestion1" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="DeleteSuccess" xml:space="preserve">
+    <value>wurde erfolgreich gelöscht</value>
+  </data>
+  <data name="Division" xml:space="preserve">
+    <value>Abteilung</value>
+  </data>
+  <data name="EMailNotExist" xml:space="preserve">
+    <value>User mit dieser eMail Adresse existiert nicht</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ErrorDeleting" xml:space="preserve">
+    <value>Fehler beim Löschen</value>
+  </data>
+  <data name="ErrorDeletingClass" xml:space="preserve">
+    <value>Error beim Löschen von Class.</value>
+  </data>
+  <data name="ErrorDeletingComment" xml:space="preserve">
+    <value>Error beim Löschen von Comment.</value>
+  </data>
+  <data name="ErrorDeletingDivision" xml:space="preserve">
+    <value>Error beim Löschen von Division.</value>
+  </data>
+  <data name="ErrorDeletingInfraclass" xml:space="preserve">
+    <value>Error beim Löschen von Infraclass.</value>
+  </data>
+  <data name="ErrorDeletingPhylum" xml:space="preserve">
+    <value>Error beim Löschen von Phylum.</value>
+  </data>
+  <data name="ErrorDeletingReference" xml:space="preserve">
+    <value>Error beim Löschen von Reference.</value>
+  </data>
+  <data name="ErrorDeletingRegnum" xml:space="preserve">
+    <value>Error beim Löschen von Regnum.</value>
+  </data>
+  <data name="ErrorDeletingSubclass" xml:space="preserve">
+    <value>Error beim Löschen von Subclass.</value>
+  </data>
+  <data name="ErrorDeletingSubdivision" xml:space="preserve">
+    <value>Error beim Löschen von Subdivision.</value>
+  </data>
+  <data name="ErrorDeletingSubphylum" xml:space="preserve">
+    <value>Error beim Löschen von Subphylum.</value>
+  </data>
+  <data name="ErrorDeletingSuperclass" xml:space="preserve">
+    <value>Error beim Löschen von Superclass.</value>
+  </data>
+  <data name="ErrorSaving" xml:space="preserve">
+    <value>Fehler beim Speichern</value>
+  </data>
+  <data name="ErrorSavingClass" xml:space="preserve">
+    <value>Error beim Sichern von Class.</value>
+  </data>
+  <data name="ErrorSavingComment" xml:space="preserve">
+    <value>Error beim Sichern von Comment.</value>
+  </data>
+  <data name="ErrorSavingDivision" xml:space="preserve">
+    <value>Error beim Sichern von Division.</value>
+  </data>
+  <data name="ErrorSavingInfraclass" xml:space="preserve">
+    <value>Error beim Sichern von Infraclass.</value>
+  </data>
+  <data name="ErrorSavingPhylum" xml:space="preserve">
+    <value>Error beim Sichern von Phylum.</value>
+  </data>
+  <data name="ErrorSavingReference" xml:space="preserve">
+    <value>Error beim Sichern von Reference.</value>
+  </data>
+  <data name="ErrorSavingRegnum" xml:space="preserve">
+    <value>Error beim Sichern von Regnum.</value>
+  </data>
+  <data name="ErrorSavingSubclass" xml:space="preserve">
+    <value>Error beim Sichern von Subclass.</value>
+  </data>
+  <data name="ErrorSavingSubdivision" xml:space="preserve">
+    <value>Error beim Sichern von Subdivision.</value>
+  </data>
+  <data name="ErrorSavingSubphylum" xml:space="preserve">
+    <value>Error beim Sichern von Subphylum.</value>
+  </data>
+  <data name="ErrorSavingSuperclass" xml:space="preserve">
+    <value>Error beim Sichern von Superclass.</value>
+  </data>
+  <data name="FailedToSave" xml:space="preserve">
+    <value>Speichern fehlgeschlagen</value>
+  </data>
+  <data name="Family" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="FirstNameCannotBeEmpty" xml:space="preserve">
+    <value>Name darf nicht leer sein</value>
+  </data>
+  <data name="FirstNameCannotBeInitials" xml:space="preserve">
+    <value>You entered "{0}" for the First Name which seems to be initials. Please enter the full name.</value>
+  </data>
+  <data name="FiSpecies" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Passwort vergessen</value>
+  </data>
+  <data name="Genus" xml:space="preserve">
+    <value>Gattung</value>
+  </data>
+  <data name="Geographic" xml:space="preserve">
+    <value>Verbreitung</value>
+  </data>
+  <data name="GetNewNumber" xml:space="preserve">
+    <value>Neue ID wird vergeben</value>
+  </data>
+  <data name="IllegalCharacters" xml:space="preserve">
+    <value>Falsche Buchstaben oder </value>
+  </data>
+  <data name="Image" xml:space="preserve">
+    <value>Bild</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Infraclass" xml:space="preserve">
+    <value>Infraklasse</value>
+  </data>
+  <data name="Infrafamily" xml:space="preserve">
+    <value>Infrafamilie</value>
+  </data>
+  <data name="Infraordo" xml:space="preserve">
+    <value>Infraordnung</value>
+  </data>
+  <data name="Infratribus" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="InputRequested" xml:space="preserve">
+    <value>Eingabe erforderlich</value>
+  </data>
+  <data name="InvalidDate" xml:space="preserve">
+    <value>Falsches Datum</value>
+  </data>
+  <data name="Legio" xml:space="preserve">
+    <value>Überordnung</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="LoggedIn" xml:space="preserve">
+    <value>eingeloggt</value>
+  </data>
+  <data name="LoginAdministrator" xml:space="preserve">
+    <value>ist ein Administrator</value>
+  </data>
+  <data name="LoginAs" xml:space="preserve">
+    <value>ist angemeldet als </value>
+  </data>
+  <data name="LoginBiologist" xml:space="preserve">
+    <value>ist ein Biologe</value>
+  </data>
+  <data name="LoginCustomPrincipal" xml:space="preserve">
+    <value>Der standard Masterthread der Applikation muss auf Kundenthread  zum starten gesetzt werden.</value>
+  </data>
+  <data name="LoginDeveloper" xml:space="preserve">
+    <value>ist ein Entwickler</value>
+  </data>
+  <data name="LoginEmail" xml:space="preserve">
+    <value>Bitte E-Mail eingeben.</value>
+  </data>
+  <data name="LoginError" xml:space="preserve">
+    <value>FEHLER: {0}</value>
+  </data>
+  <data name="LoginFail" xml:space="preserve">
+    <value>Anmelden fehlgeschlagen! Bitte gültige Daten eingeben.</value>
+  </data>
+  <data name="LoginFailEx" xml:space="preserve">
+    <value>Fehler beim Öffnen mit diesem Anbieter</value>
+  </data>
+  <data name="LoginSuccsessful" xml:space="preserve">
+    <value>Login erfolgreich</value>
+  </data>
+  <data name="LoginUser" xml:space="preserve">
+    <value>ist ein Anwender</value>
+  </data>
+  <data name="LoginValidEmail" xml:space="preserve">
+    <value>Bitte gültige E-Mail eingeben.</value>
+  </data>
+  <data name="LoginValidEmailPassword" xml:space="preserve">
+    <value>Bedaure ! Bitte gültige E-Mail/Passwort eingeben.</value>
+  </data>
+  <data name="LoginValidPassword" xml:space="preserve">
+    <value>Bitte gültiges Passwort eingeben.</value>
+  </data>
+  <data name="LoginZoologist" xml:space="preserve">
+    <value>ist ein Zoologe</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>niemand angemeldet </value>
+  </data>
+  <data name="MainWindowAbout" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="MainWindowAdjustment" xml:space="preserve">
+    <value>Einstellung</value>
+  </data>
+  <data name="MainWindowAdminArea" xml:space="preserve">
+    <value>Admin Bereich</value>
+  </data>
+  <data name="MainWindowAppearence" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="MainWindowDatabase" xml:space="preserve">
+    <value>Datenbank</value>
+  </data>
+  <data name="MainWindowDownsize" xml:space="preserve">
+    <value>Verkleinern</value>
+  </data>
+  <data name="MainWindowFeedback" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="MainWindowHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="MainWindowInfoArea" xml:space="preserve">
+    <value>Info Bereich</value>
+  </data>
+  <data name="MainWindowLanguage" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="MainWindowMaximize" xml:space="preserve">
+    <value>Maximieren</value>
+  </data>
+  <data name="MainWindowUserArea" xml:space="preserve">
+    <value>Anwender Bereich</value>
+  </data>
+  <data name="MaxLength_100" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 100 Zeichen sein</value>
+  </data>
+  <data name="MinLength_1" xml:space="preserve">
+    <value>Eingabe sollte länger als 1 Zeichen sein</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NewGeneratedPassord" xml:space="preserve">
+    <value>Ihr neu generiertes Passwort ist</value>
+  </data>
+  <data name="NobodyLoggedIn" xml:space="preserve">
+    <value>Niemand eingeloggt</value>
+  </data>
+  <data name="NoConnectServer" xml:space="preserve">
+    <value>Verbindung kann nicht hergestellt werden zum Sql Server service von</value>
+  </data>
+  <data name="Ordo" xml:space="preserve">
+    <value>Ordnung</value>
+  </data>
+  <data name="Phylum" xml:space="preserve">
+    <value>Stamm</value>
+  </data>
+  <data name="PlSpecies" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="Quit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="RefAuthor" xml:space="preserve">
+    <value>Quelle Autor</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="ReferenceAuthor" xml:space="preserve">
+    <value>Literaturhinweis Autor</value>
+  </data>
+  <data name="ReferenceExpert" xml:space="preserve">
+    <value>Literaturhinweis Experte</value>
+  </data>
+  <data name="ReferenceSource" xml:space="preserve">
+    <value>Literaturhinweis Quelle</value>
+  </data>
+  <data name="RefExpert" xml:space="preserve">
+    <value>Quelle Experte</value>
+  </data>
+  <data name="RefSource" xml:space="preserve">
+    <value>Quelle Daten</value>
+  </data>
+  <data name="Regnum" xml:space="preserve">
+    <value>Reich</value>
+  </data>
+  <data name="Report" xml:space="preserve">
+    <value>Bericht</value>
+  </data>
+  <data name="ReportAcquired" xml:space="preserve">
+    <value>Erfasst</value>
+  </data>
+  <data name="ReportAddress" xml:space="preserve">
+    <value>Addresse</value>
+  </data>
+  <data name="ReportArticleTitle" xml:space="preserve">
+    <value>Artikel/Kapitel Titel</value>
+  </data>
+  <data name="ReportAuthor" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="ReportAuthorsEditors" xml:space="preserve">
+    <value>Autor(en)/Redakteur(e)</value>
+  </data>
+  <data name="ReportBasinHeight" xml:space="preserve">
+    <value>Beckenhöhe (cm) </value>
+  </data>
+  <data name="ReportBasinLength" xml:space="preserve">
+    <value>Beckenlänge (cm) </value>
+  </data>
+  <data name="ReportBookName" xml:space="preserve">
+    <value>Journal/Buchame</value>
+  </data>
+  <data name="ReportCarboHardness12" xml:space="preserve">
+    <value>Karbonathärte (°KH)</value>
+  </data>
+  <data name="ReportComments" xml:space="preserve">
+    <value>Kommentar(e)</value>
+  </data>
+  <data name="ReportCommonNames" xml:space="preserve">
+    <value>Gebräuchliche Name(en)</value>
+  </data>
+  <data name="ReportContinent" xml:space="preserve">
+    <value>Erdteil</value>
+  </data>
+  <data name="ReportCountry" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="ReportCulture" xml:space="preserve">
+    <value>Pflege</value>
+  </data>
+  <data name="ReportCurrentStand" xml:space="preserve">
+    <value>Gültig</value>
+  </data>
+  <data name="ReportDataQualiIndicator" xml:space="preserve">
+    <value>Daten Qualität Indikatoren</value>
+  </data>
+  <data name="ReportDifficult1" xml:space="preserve">
+    <value>Art für Anfänger</value>
+  </data>
+  <data name="ReportDifficult2" xml:space="preserve">
+    <value>Art für Anfänger mit Erfahrung</value>
+  </data>
+  <data name="ReportDifficult3" xml:space="preserve">
+    <value>Art für fortgeschritt. Anfänger</value>
+  </data>
+  <data name="ReportDifficult4" xml:space="preserve">
+    <value>Art für Könner und Experten</value>
+  </data>
+  <data name="ReportDirectChild" xml:space="preserve">
+    <value>Direkte Kinder</value>
+  </data>
+  <data name="ReportEnglish" xml:space="preserve">
+    <value>[Englisch]</value>
+  </data>
+  <data name="ReportExpert" xml:space="preserve">
+    <value>Experte</value>
+  </data>
+  <data name="ReportExperts" xml:space="preserve">
+    <value>Experte(n)</value>
+  </data>
+  <data name="ReportFishLength" xml:space="preserve">
+    <value>Fischlänge (cm) </value>
+  </data>
+  <data name="ReportFood" xml:space="preserve">
+    <value>Futter</value>
+  </data>
+  <data name="ReportFrench" xml:space="preserve">
+    <value>[Französisch]</value>
+  </data>
+  <data name="ReportGenerated" xml:space="preserve">
+    <value>erzeugt am </value>
+  </data>
+  <data name="ReportGeographics" xml:space="preserve">
+    <value>Geographik</value>
+  </data>
+  <data name="ReportGerman" xml:space="preserve">
+    <value>[Deutsch]</value>
+  </data>
+  <data name="ReportGlobal" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="ReportGlobalSpecComp" xml:space="preserve">
+    <value>Globale Arten Vollständigkeit</value>
+  </data>
+  <data name="ReportGu" xml:space="preserve">
+    <value>Geschlechtsunterschiede</value>
+  </data>
+  <data name="ReportHardness12" xml:space="preserve">
+    <value>Härte (°dGH)</value>
+  </data>
+  <data name="ReportHerbivore" xml:space="preserve">
+    <value>Pflanzenfresser</value>
+  </data>
+  <data name="ReportHttp" xml:space="preserve">
+    <value>Http</value>
+  </data>
+  <data name="ReportHusbandry" xml:space="preserve">
+    <value>Haltung</value>
+  </data>
+  <data name="ReportImageMimeType" xml:space="preserve">
+    <value>Bild Mime Type</value>
+  </data>
+  <data name="ReportImages" xml:space="preserve">
+    <value>Bilder</value>
+  </data>
+  <data name="ReportImageShot" xml:space="preserve">
+    <value>Aufnahmedatum</value>
+  </data>
+  <data name="ReportImporterWithYear" xml:space="preserve">
+    <value>Importeur/Jahr</value>
+  </data>
+  <data name="ReportInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="ReportIsbn" xml:space="preserve">
+    <value>ISBN/ISSN</value>
+  </data>
+  <data name="ReportKarnivore" xml:space="preserve">
+    <value>Fleischfresser</value>
+  </data>
+  <data name="ReportLatitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="ReportLatitudeLongitude" xml:space="preserve">
+    <value>Latitude - Longitude</value>
+  </data>
+  <data name="ReportLdaNumberLdaOrigin" xml:space="preserve">
+    <value>LDA-Nummer/LDA-Original</value>
+  </data>
+  <data name="ReportLdaNumberLdaOrigin1" xml:space="preserve">
+    <value>L-Nummer/L-Original</value>
+  </data>
+  <data name="ReportLimnivore" xml:space="preserve">
+    <value>Aufwuchsfresser</value>
+  </data>
+  <data name="ReportLNumberLOrigin" xml:space="preserve">
+    <value>L-Nummer/L-Original</value>
+  </data>
+  <data name="ReportLongitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="ReportMemo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="ReportMemoCulture" xml:space="preserve">
+    <value>Bericht Pflege</value>
+  </data>
+  <data name="ReportMemoDimorphism" xml:space="preserve">
+    <value>Bericht Geschlechtsunterschied</value>
+  </data>
+  <data name="ReportMemoFood" xml:space="preserve">
+    <value>Bericht Futter</value>
+  </data>
+  <data name="ReportMemoGlobal" xml:space="preserve">
+    <value>Bericht Allgemein</value>
+  </data>
+  <data name="ReportMemoReproduction" xml:space="preserve">
+    <value>Bericht Nachzucht</value>
+  </data>
+  <data name="ReportMemoSpecial" xml:space="preserve">
+    <value>Bericht Besonderes</value>
+  </data>
+  <data name="ReportMemoSpecies" xml:space="preserve">
+    <value>Bericht Art</value>
+  </data>
+  <data name="ReportMemoTechnic" xml:space="preserve">
+    <value>Bericht Technik</value>
+  </data>
+  <data name="ReportNames" xml:space="preserve">
+    <value>Üblicher Name(n)</value>
+  </data>
+  <data name="ReportNotes" xml:space="preserve">
+    <value>Berichte</value>
+  </data>
+  <data name="ReportOmnivore" xml:space="preserve">
+    <value>Allesfresser</value>
+  </data>
+  <data name="ReportOtherSources" xml:space="preserve">
+    <value>Andere Quelle(n)</value>
+  </data>
+  <data name="ReportPages" xml:space="preserve">
+    <value>Seite(n)</value>
+  </data>
+  <data name="ReportPh12" xml:space="preserve">
+    <value>Ph Werte</value>
+  </data>
+  <data name="ReportPlantLength" xml:space="preserve">
+    <value>Pflanzenlänge (cm) </value>
+  </data>
+  <data name="ReportPortuguese" xml:space="preserve">
+    <value>[Portuguesisch]</value>
+  </data>
+  <data name="ReportPublicationDate" xml:space="preserve">
+    <value>Veröffentlichungsdatum</value>
+  </data>
+  <data name="ReportPublicationPlace" xml:space="preserve">
+    <value>Verlags Ort</value>
+  </data>
+  <data name="ReportPublications" xml:space="preserve">
+    <value>Veröffentlichung(en)</value>
+  </data>
+  <data name="ReportPublisher" xml:space="preserve">
+    <value>Verleger</value>
+  </data>
+  <data name="ReportRecordCrediRate" xml:space="preserve">
+    <value>Datensatz Glaubhaftigkeit</value>
+  </data>
+  <data name="ReportRecordUpdate" xml:space="preserve">
+    <value>Letzter Datensatz Abgleich</value>
+  </data>
+  <data name="ReportReferences" xml:space="preserve">
+    <value>Quellen</value>
+  </data>
+  <data name="ReportRefFor" xml:space="preserve">
+    <value>Bezug auf</value>
+  </data>
+  <data name="ReportRegionBottom" xml:space="preserve">
+    <value>Unten</value>
+  </data>
+  <data name="ReportRegionMiddle" xml:space="preserve">
+    <value>Mitte</value>
+  </data>
+  <data name="ReportRegionTop" xml:space="preserve">
+    <value>Oben</value>
+  </data>
+  <data name="ReportReproduction" xml:space="preserve">
+    <value>Nachzucht</value>
+  </data>
+  <data name="ReportSource" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="ReportSozial" xml:space="preserve">
+    <value>Soziales Verhalten</value>
+  </data>
+  <data name="ReportSpanish" xml:space="preserve">
+    <value>[Spanisch]</value>
+  </data>
+  <data name="ReportSpecial" xml:space="preserve">
+    <value>Besonderes</value>
+  </data>
+  <data name="ReportSynonyms" xml:space="preserve">
+    <value>Synonym(e)</value>
+  </data>
+  <data name="ReportTaxoHiera" xml:space="preserve">
+    <value>Taxonomie Hierarchie</value>
+  </data>
+  <data name="ReportTaxoNomen" xml:space="preserve">
+    <value>Taxonomie und Nomenklatura</value>
+  </data>
+  <data name="ReportTaxonomicId" xml:space="preserve">
+    <value>Taxonomie Serien Nr.</value>
+  </data>
+  <data name="ReportTaxoRank" xml:space="preserve">
+    <value>Taxonomie Rang</value>
+  </data>
+  <data name="ReportTaxoStatus" xml:space="preserve">
+    <value>Taxonomie Status</value>
+  </data>
+  <data name="ReportTechnic" xml:space="preserve">
+    <value>Technik</value>
+  </data>
+  <data name="ReportTemp12" xml:space="preserve">
+    <value>Temperatur (°C)</value>
+  </data>
+  <data name="ReportTitle" xml:space="preserve">
+    <value>Aquaristik Taxonomie Informations System</value>
+  </data>
+  <data name="ReportTradeName" xml:space="preserve">
+    <value>Handelsname</value>
+  </data>
+  <data name="ReportUseful" xml:space="preserve">
+    <value>Wissenswertes</value>
+  </data>
+  <data name="ReportValid" xml:space="preserve">
+    <value>Gültig</value>
+  </data>
+  <data name="ReportValidYear" xml:space="preserve">
+    <value>Jahr</value>
+  </data>
+  <data name="ReportZoomLevel" xml:space="preserve">
+    <value>Zoomfaktor</value>
+  </data>
+  <data name="RequiredApplicationName" xml:space="preserve">
+    <value>Applicationname ist erforderlich</value>
+  </data>
+  <data name="RequiredClassName" xml:space="preserve">
+    <value>Klassenname ist erforderlich</value>
+  </data>
+  <data name="RequiredComboSelect" xml:space="preserve">
+    <value>Bitte in ComboBox auswählen</value>
+  </data>
+  <data name="RequiredCounterName" xml:space="preserve">
+    <value>Zähler ist erforderlich</value>
+  </data>
+  <data name="RequiredCountID" xml:space="preserve">
+    <value>Zähler-ID ist erforderlich</value>
+  </data>
+  <data name="RequiredDivisionName" xml:space="preserve">
+    <value>Abteilungname ist erforderlich</value>
+  </data>
+  <data name="RequiredEMail" xml:space="preserve">
+    <value>Email ist einPflichtfeld.</value>
+  </data>
+  <data name="RequiredEMail1" xml:space="preserve">
+    <value>Email muss ein Format wie xxx@xxx.xxx und darf nicht mehr als 50 Zeichen haben.</value>
+  </data>
+  <data name="RequiredEMail2" xml:space="preserve">
+    <value>Email Format so wie xxx@xxx.xxx</value>
+  </data>
+  <data name="RequiredFamilyName" xml:space="preserve">
+    <value>Familienname ist erforderlich </value>
+  </data>
+  <data name="RequiredFiSpeciesName" xml:space="preserve">
+    <value>Fisch-Art Name ist erforderlich </value>
+  </data>
+  <data name="RequiredFutureDate" xml:space="preserve">
+    <value>Datum in der Zukunft erforderlich</value>
+  </data>
+  <data name="RequiredGenealogyConnect" xml:space="preserve">
+    <value>Stammbaum-Verbund bitte auswählen</value>
+  </data>
+  <data name="RequiredGenusName" xml:space="preserve">
+    <value>Gattungname ist erforderlich</value>
+  </data>
+  <data name="RequiredInfraclassName" xml:space="preserve">
+    <value>Infraklassename ist erforderlich</value>
+  </data>
+  <data name="RequiredInfrafamilyName" xml:space="preserve">
+    <value>Infrafamilienname ist erforderlich</value>
+  </data>
+  <data name="RequiredInfraordoName" xml:space="preserve">
+    <value>Infraordnungname ist erforderlich </value>
+  </data>
+  <data name="RequiredInfratribusName" xml:space="preserve">
+    <value>Infratribusname ist erforderlich </value>
+  </data>
+  <data name="RequiredInput" xml:space="preserve">
+    <value>Eingabe erforderlich !</value>
+  </data>
+  <data name="RequiredLegioName" xml:space="preserve">
+    <value>Überornungname ist erforderlich</value>
+  </data>
+  <data name="RequiredNameName" xml:space="preserve">
+    <value>Name ist erforderlich</value>
+  </data>
+  <data name="RequiredOrdoName" xml:space="preserve">
+    <value>Ordnungname ist erforderlich </value>
+  </data>
+  <data name="RequiredPassword" xml:space="preserve">
+    <value>Passwort ist einPflichtfeld. Darf nur Zahlen und Buchstaben enthalten und mindestens 5 Zeichen.</value>
+  </data>
+  <data name="RequiredPassword1" xml:space="preserve">
+    <value>Passwort darf nicht mehr als 20 Buchstaben oder Zahlen enthalten. Aber mindestens 5 Zeichen.</value>
+  </data>
+  <data name="RequiredPassword2" xml:space="preserve">
+    <value>Passwort eingeben</value>
+  </data>
+  <data name="RequiredPassword3" xml:space="preserve">
+    <value>Bestätigungs-Passwort eingeben</value>
+  </data>
+  <data name="RequiredPassword4" xml:space="preserve">
+    <value>Bestätigungs-Passwort muss wie das Passwort sein</value>
+  </data>
+  <data name="RequiredPhylumName" xml:space="preserve">
+    <value>Stammname ist erforderlich</value>
+  </data>
+  <data name="RequiredPlSpeciesName" xml:space="preserve">
+    <value>Pflanzen-Artname ist erforderlich </value>
+  </data>
+  <data name="RequiredRefAuthorName" xml:space="preserve">
+    <value>Referenz Autor ist erforderlich</value>
+  </data>
+  <data name="RequiredRefExpertName" xml:space="preserve">
+    <value>Referenz Experte ist erforderlich</value>
+  </data>
+  <data name="RequiredRefSourceName" xml:space="preserve">
+    <value>Referenz Quelle ist erforderlich</value>
+  </data>
+  <data name="RequiredRegnumName" xml:space="preserve">
+    <value>Reichname ist erforderlich</value>
+  </data>
+  <data name="RequiredRole" xml:space="preserve">
+    <value>Rolle ist einPflichtfeld.</value>
+  </data>
+  <data name="RequiredSpeciesgroupName" xml:space="preserve">
+    <value>Artengruppename ist erforderlich</value>
+  </data>
+  <data name="RequiredSubclassName" xml:space="preserve">
+    <value>Unterklassename ist erforderlich</value>
+  </data>
+  <data name="RequiredSubdivisionName" xml:space="preserve">
+    <value>Unterabteilungname ist erforderlich</value>
+  </data>
+  <data name="RequiredSubfamilyName" xml:space="preserve">
+    <value>Unterfamiliename ist erforderlich</value>
+  </data>
+  <data name="RequiredSubordoName" xml:space="preserve">
+    <value>Unterordungname ist erforderlich</value>
+  </data>
+  <data name="RequiredSubphylumName" xml:space="preserve">
+    <value>Unterphylumname ist erforderlich</value>
+  </data>
+  <data name="RequiredSubtribusName" xml:space="preserve">
+    <value>Untertribusname ist erforderlich</value>
+  </data>
+  <data name="RequiredSuperclassName" xml:space="preserve">
+    <value>Überklassename ist erforderlich </value>
+  </data>
+  <data name="RequiredSuperfamilyName" xml:space="preserve">
+    <value>Überfamiliename ist erforderlich</value>
+  </data>
+  <data name="RequiredSupertribusName" xml:space="preserve">
+    <value>Übertribusname ist erforderlich</value>
+  </data>
+  <data name="RequiredSynonymName" xml:space="preserve">
+    <value>Synonym ist erforderlich</value>
+  </data>
+  <data name="RequiredTribusName" xml:space="preserve">
+    <value>Tribusname ist erforderlich</value>
+  </data>
+  <data name="RequiredUserName" xml:space="preserve">
+    <value>Benutzername ist erforderlich</value>
+  </data>
+  <data name="RequiredValueRange" xml:space="preserve">
+    <value>Bitte Wert in den Bereich eingeben: </value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Änderungen speichern ?</value>
+  </data>
+  <data name="SaveQuestion" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="SaveQuestion2" xml:space="preserve">
+    <value>Wollen Sie diesen Datensatz sichern ?</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>wurde erfolgreich gesichert !</value>
+  </data>
+  <data name="SearchBeClosed" xml:space="preserve">
+    <value>Suche wird beendet</value>
+  </data>
+  <data name="SearchGenusnameOrSpeciesId" xml:space="preserve">
+    <value>Suche Gattungname oder Art ID</value>
+  </data>
+  <data name="SearchInfoOrId" xml:space="preserve">
+    <value>Suche Info oder ID</value>
+  </data>
+  <data name="SearchName" xml:space="preserve">
+    <value>Suche Name...</value>
+  </data>
+  <data name="SearchNameOrId" xml:space="preserve">
+    <value>Suche Name oder ID</value>
+  </data>
+  <data name="SearchRegnum" xml:space="preserve">
+    <value>Suche Regnum ...</value>
+  </data>
+  <data name="Special" xml:space="preserve">
+    <value>Besonderes</value>
+  </data>
+  <data name="Speciesgroup" xml:space="preserve">
+    <value>Artengruppe</value>
+  </data>
+  <data name="SqlServerNotRunning" xml:space="preserve">
+    <value>SQL-Server läuft nicht</value>
+  </data>
+  <data name="StringLengthYear_4" xml:space="preserve">
+    <value>Das Jahr muss 4 Zahlen haben</value>
+  </data>
+  <data name="StringLength_10" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 10 Zeichen sein</value>
+  </data>
+  <data name="StringLength_100" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 100 Zeichen sein</value>
+  </data>
+  <data name="StringLength_200" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 200 Zeichen sein</value>
+  </data>
+  <data name="StringLength_250" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 250 Zeichen sein</value>
+  </data>
+  <data name="StringLength_3" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 3 Zeichen sein</value>
+  </data>
+  <data name="StringLength_300" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 300 Zeichen sein</value>
+  </data>
+  <data name="StringLength_400" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 400 Zeichen sein</value>
+  </data>
+  <data name="StringLength_50" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 50 Zeichen sein</value>
+  </data>
+  <data name="StringLength_60" xml:space="preserve">
+    <value>Eingabe darf nicht länger als 60 Zeichen sein</value>
+  </data>
+  <data name="StringLength_Max" xml:space="preserve">
+    <value>Eingabe in unbegrenzter Länge</value>
+  </data>
+  <data name="Subclass" xml:space="preserve">
+    <value>Unterklasse</value>
+  </data>
+  <data name="Subdivision" xml:space="preserve">
+    <value>Unterabteilung</value>
+  </data>
+  <data name="Subfamily" xml:space="preserve">
+    <value>Unterfamilie</value>
+  </data>
+  <data name="Subordo" xml:space="preserve">
+    <value>Unterordnung</value>
+  </data>
+  <data name="Subphylum" xml:space="preserve">
+    <value>Unterstamm</value>
+  </data>
+  <data name="Subspecies" xml:space="preserve">
+    <value>Unterart</value>
+  </data>
+  <data name="Subtribus" xml:space="preserve">
+    <value>Untertribus</value>
+  </data>
+  <data name="Superclass" xml:space="preserve">
+    <value>Überklasse</value>
+  </data>
+  <data name="Superfamily" xml:space="preserve">
+    <value>Überfamilie</value>
+  </data>
+  <data name="Supertribus" xml:space="preserve">
+    <value>Übertribus</value>
+  </data>
+  <data name="Synonym" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="Tables" xml:space="preserve">
+    <value>Tabellen</value>
+  </data>
+  <data name="Tribus" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="TryAgain" xml:space="preserve">
+    <value>noch einmal versuchen !</value>
+  </data>
+  <data name="UnableToDelete1" xml:space="preserve">
+    <value>Löschen nicht möglich. Es liegt vermutlich ein Problem vor.</value>
+  </data>
+  <data name="UnableToDelete2" xml:space="preserve">
+    <value>Verbindung zur Datenbank. Bitte noch einmal versuchen.</value>
+  </data>
+  <data name="UnableToSave1" xml:space="preserve">
+    <value>Unable to save. There might have been a problem</value>
+  </data>
+  <data name="UnableToSave2" xml:space="preserve">
+    <value>connecting to the database. Please try again.</value>
+  </data>
+  <data name="UserProfile" xml:space="preserve">
+    <value>Benutzerprofil</value>
+  </data>
+  <data name="UserProfileExist" xml:space="preserve">
+    <value>Anwender Profil existiert bereits !</value>
+  </data>
+  <data name="UserProfileNotExist" xml:space="preserve">
+    <value>Anwender Profil existiert nicht ! </value>
+  </data>
+  <data name="Valid" xml:space="preserve">
+    <value>Gültig</value>
+  </data>
+  <data name="ValidationErrors" xml:space="preserve">
+    <value>Die Fehler der Gültigkeitsprüfung sind: </value>
+  </data>
+  <data name="ValidNot" xml:space="preserve">
+    <value>Ungültig</value>
+  </data>
+  <data name="ValueNotZero" xml:space="preserve">
+    <value>Wert darf nicht 0 sein</value>
+  </data>
+  <data name="ValueNumeric" xml:space="preserve">
+    <value>Wert muss numerisch sein</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warnung</value>
+  </data>
+  <data name="SearchBeClosed1" xml:space="preserve">
+    <value>Suche wird beendet</value>
+  </data>
+  <data name="MainLandingsPageHeaderSubtitleText" xml:space="preserve">
+    <value>Basis ist  WinAppSDK 1.7</value>
+  </data>
+  <data name="DocCenterTitle" xml:space="preserve">
+    <value>Dokumentencenter</value>
+  </data>
+  <data name="HeaderTileDocCenterTitle" xml:space="preserve">
+    <value>Dokumenten-Centrum</value>
+  </data>
+  <data name="HeaderTileContextMenuExtTitle" xml:space="preserve">
+    <value>Menüerweiterung</value>
+  </data>
+  <data name="HeaderTileDocumentsTitle" xml:space="preserve">
+    <value>Dokumente</value>
+  </data>
+  <data name="HeaderTileItisUsaTitle" xml:space="preserve">
+    <value>ITIS in USA</value>
+  </data>
+  <data name="HeaderTileItisCanadaTitle" xml:space="preserve">
+    <value>ITIS in Canada</value>
+  </data>
+  <data name="HeaderTileCatalogOfLifeTitle" xml:space="preserve">
+    <value>Katalog des Lebens</value>
+  </data>
+  <data name="HeaderTileMexicoTitle" xml:space="preserve">
+    <value>Mexiko</value>
+  </data>
+  <data name="HeaderTileGlobalBioTitle" xml:space="preserve">
+    <value>Global Bio</value>
+  </data>
+  <data name="HeaderTileEolTitle" xml:space="preserve">
+    <value>EOL</value>
+  </data>
+  <data name="ReportMemoBuilt" xml:space="preserve">
+    <value>Bericht Körperbau</value>
+  </data>
+  <data name="ReportMemoColor" xml:space="preserve">
+    <value>Bericht Farbe</value>
+  </data>
+  <data name="ReportMemoBreeding" xml:space="preserve">
+    <value>Bericht Zucht</value>
+  </data>
+  <data name="ReportMemoHusbandry" xml:space="preserve">
+    <value>Bericht Haltung</value>
+  </data>
+  <data name="ReportMemoSozial" xml:space="preserve">
+    <value>Bericht Soziales Verhalten</value>
+  </data>
+  <data name="ReportMemoRegion" xml:space="preserve">
+    <value>Bericht Region</value>
+  </data>
+  <data name="ReportTypeSpecies" xml:space="preserve">
+    <value>Typart</value>
+  </data>
+  <data name="NoCreatureSelected" xml:space="preserve">
+    <value>Kein Lebewesen ausgewählt</value>
+  </data>
+  <data name="SpeciesgroupNotClear" xml:space="preserve">
+    <value>Artengruppe unklar</value>
+  </data>
+  <data name="NoPermissionForArea" xml:space="preserve">
+    <value>Sie haben keine Berechtigung für diesen Bereich</value>
+  </data>
+  <data name="NoDatasetFound" xml:space="preserve">
+    <value>Kein datensatz gefunden !</value>
+  </data>
+  <data name="ApplicationAlreadyRunning" xml:space="preserve">
+    <value>Anwendung läuft bereits !</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Sicherung erfolgreich !</value>
+  </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>Name erforderlich !</value>
+  </data>
+  <data name="ReverencesDecisionNotCorrect" xml:space="preserve">
+    <value>Experte, Quelle oder Autor nicht korrekt ausgewählt</value>
+  </data>
+  <data name="SelectOneId" xml:space="preserve">
+    <value>Nur eine ID auswählen !</value>
+  </data>
+  <data name="NoDatasetSelected" xml:space="preserve">
+    <value>Kein Datensatz ausgewählt !</value>
+  </data>
+  <data name="NoComboboxItemSelected" xml:space="preserve">
+    <value>Kein Comboboxitem ausgewählt !</value>
+  </data>
+  <data name="NoServerSelected" xml:space="preserve">
+    <value>Kein Server ausgewählt !</value>
+  </data>
+  <data name="NoPermission" xml:space="preserve">
+    <value>Keine Berechtigung !</value>
+  </data>
+  <data name="NoFileFound" xml:space="preserve">
+    <value>Keine Datei gefunden !</value>
+  </data>
+  <data name="NoImagePathSelected" xml:space="preserve">
+    <value>kein Pfad für Bild/Video ausgewählt !</value>
+  </data>
+  <data name="DatabaseNotExistSQLServerExist" xml:space="preserve">
+    <value>Datenbank existiert nicht, SQL-Server ok</value>
+  </data>
+  <data name="DoNotDeleteDataset" xml:space="preserve">
+    <value>Datensatz nicht löschen</value>
+  </data>
+  <data name="Dataset" xml:space="preserve">
+    <value>Datensatz</value>
+  </data>
+  <data name="DeleteSuccessful" xml:space="preserve">
+    <value>Löschen erfolgreich !</value>
+  </data>
+  <data name="WantToSaveDataset" xml:space="preserve">
+    <value>Möchten Sie den Datensatz sichern ?</value>
+  </data>
+  <data name="WantToSave" xml:space="preserve">
+    <value>Möchten Sie sichern ?</value>
+  </data>
+  <data name="WantToCloseApp" xml:space="preserve">
+    <value>Möchten Sie die Anwendung wirklich schliessen ?</value>
+  </data>
+  <data name="Species" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="WelcomeToAtis" xml:space="preserve">
+    <value>Willkommen bei ATIS</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="SqlServerNotConnected" xml:space="preserve">
+    <value>Nicht mit SQL-Server verbunden</value>
+  </data>
+  <data name="SelectPlease" xml:space="preserve">
+    <value>Bitte auswählen</value>
+  </data>
+  <data name="DoNotSave" xml:space="preserve">
+    <value>Nicht speichern</value>
+  </data>
+  <data name="DoNotDelete" xml:space="preserve">
+    <value>Nicht löschen</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="NoColumnSelected" xml:space="preserve">
+    <value>Bitte die Spalte markieren</value>
+  </data>
+  <data name="EnterText" xml:space="preserve">
+    <value>Text eingeben hier</value>
+  </data>
+</root>

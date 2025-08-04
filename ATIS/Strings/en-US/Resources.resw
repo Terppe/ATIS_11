@@ -1,0 +1,3732 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>ATIS</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>ATIS</value>
+  </data>
+  <data name="Shell_Main.Content" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="Shell_Blank.Content" xml:space="preserve">
+    <value>Blank</value>
+  </data>
+  <data name="ListDetails_NoSelection.Text" xml:space="preserve">
+    <value>Select an item from the list.</value>
+  </data>
+  <data name="Shell_ListDetails.Content" xml:space="preserve">
+    <value>ListDetails</value>
+  </data>
+  <data name="Shell_DataGrid.Content" xml:space="preserve">
+    <value>DataGrid</value>
+  </data>
+  <data name="Settings_Personalization.Text" xml:space="preserve">
+    <value>Personalization</value>
+  </data>
+  <data name="Settings_Theme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="Settings_Theme_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Settings_Theme_Default.Content" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>About this application</value>
+  </data>
+  <data name="Settings_AboutDescription.Text" xml:space="preserve">
+    <value>TODO: Replace with your app description.</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
+    <value>Privacy Statement</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://YourPrivacyUrlGoesHere/</value>
+  </data>
+  <data name="AppBarButtonAdd.Label" xml:space="preserve">
+    <value>+</value>
+  </data>
+  <data name="AppBarButtonCancel.Label" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AppBarButtonChange.Label" xml:space="preserve">
+    <value>Change Image</value>
+  </data>
+  <data name="AppBarButtonCopy.Label" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="AppBarButtonDelete.Label" xml:space="preserve">
+    <value> - </value>
+  </data>
+  <data name="AppBarButtonEdit.Label" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="AppBarButtonSave.Label" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="AppBarButtonSync.Label" xml:space="preserve">
+    <value>Sync</value>
+  </data>
+  <data name="AutoSuggestBox_Search.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="CheckBox_Difficult1.Content" xml:space="preserve">
+    <value>Species for beginners</value>
+  </data>
+  <data name="CheckBox_Difficult2.Content" xml:space="preserve">
+    <value>Species for advanced beginners</value>
+  </data>
+  <data name="CheckBox_Difficult3.Content" xml:space="preserve">
+    <value>Species for beginners with experience</value>
+  </data>
+  <data name="CheckBox_Difficult4.Content" xml:space="preserve">
+    <value>Species for experts</value>
+  </data>
+  <data name="CheckBox_Flag.Content" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="CheckBox_Herbivore.Content" xml:space="preserve">
+    <value>Herbivore</value>
+  </data>
+  <data name="CheckBox_Karnivore.Content" xml:space="preserve">
+    <value>Karnivore</value>
+  </data>
+  <data name="CheckBox_Limnivore.Content" xml:space="preserve">
+    <value>Limnivore</value>
+  </data>
+  <data name="CheckBox_MailNewsletter.Content" xml:space="preserve">
+    <value>Mail Newsletter</value>
+  </data>
+  <data name="CheckBox_MaulHtml.Content" xml:space="preserve">
+    <value>MaulHtml</value>
+  </data>
+  <data name="CheckBox_Omnivore.Content" xml:space="preserve">
+    <value>Omnivore</value>
+  </data>
+  <data name="CheckBox_Valid.Content" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="ComboBox_ClassName.Header" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="ComboBox_Continent.Header" xml:space="preserve">
+    <value>Continent</value>
+  </data>
+  <data name="ComboBox_Country.Header" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="ComboBox_DivisionName.Header" xml:space="preserve">
+    <value>Division Name</value>
+  </data>
+  <data name="ComboBox_FamilyName.Header" xml:space="preserve">
+    <value>Family Name</value>
+  </data>
+  <data name="ComboBox_FiSpeciesName.Header" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="ComboBox_Gender.Header" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="ComboBox_GenusName.Header" xml:space="preserve">
+    <value>Genus Name</value>
+  </data>
+  <data name="ComboBox_ImageMimeType.Header" xml:space="preserve">
+    <value>Mime Type</value>
+  </data>
+  <data name="ComboBox_InfraclassName.Header" xml:space="preserve">
+    <value>Infraclass Name</value>
+  </data>
+  <data name="ComboBox_InfrafamilyName.Header" xml:space="preserve">
+    <value>Infrafamily Name</value>
+  </data>
+  <data name="ComboBox_InfraordoName.Header" xml:space="preserve">
+    <value>Infraordo Name</value>
+  </data>
+  <data name="ComboBox_InfratribusName.Header" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="ComboBox_Language.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ComboBox_LegioName.Header" xml:space="preserve">
+    <value>Legio Name</value>
+  </data>
+  <data name="ComboBox_OrdoName.Header" xml:space="preserve">
+    <value>Ordo Name</value>
+  </data>
+  <data name="ComboBox_PhylumName.Header" xml:space="preserve">
+    <value>Phylum Name</value>
+  </data>
+  <data name="ComboBox_PlSpeciesName.Header" xml:space="preserve">
+    <value>Plant Species Name</value>
+  </data>
+  <data name="ComboBox_RefAuthorName.Header" xml:space="preserve">
+    <value>Puplication Name</value>
+  </data>
+  <data name="ComboBox_RefExpertName.Header" xml:space="preserve">
+    <value>Expert Name</value>
+  </data>
+  <data name="ComboBox_RefSourceName.Header" xml:space="preserve">
+    <value>Source Name</value>
+  </data>
+  <data name="ComboBox_RegnumName.Header" xml:space="preserve">
+    <value>Regnum Name</value>
+  </data>
+  <data name="ComboBox_Role.Header" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="ComboBox_Select.PlaceholderText" xml:space="preserve">
+    <value>Please Select</value>
+  </data>
+  <data name="ComboBox_SpeciesgroupFullName.Header" xml:space="preserve">
+    <value>Speciesgroup Name</value>
+  </data>
+  <data name="ComboBox_SubclassName.Header" xml:space="preserve">
+    <value>Subclass Name</value>
+  </data>
+  <data name="ComboBox_SubdivisionName.Header" xml:space="preserve">
+    <value>Subdivision Name</value>
+  </data>
+  <data name="ComboBox_SubfamilyName.Header" xml:space="preserve">
+    <value>Subfamily Name</value>
+  </data>
+  <data name="ComboBox_SubordoName.Header" xml:space="preserve">
+    <value>Subordo Name</value>
+  </data>
+  <data name="ComboBox_SubphylumName.Header" xml:space="preserve">
+    <value>Subphylum Name</value>
+  </data>
+  <data name="ComboBox_SubtribusName.Header" xml:space="preserve">
+    <value>Subtribus Name</value>
+  </data>
+  <data name="ComboBox_SuperclassName.Header" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="ComboBox_SuperfamilyName.Header" xml:space="preserve">
+    <value>Superfamily Name</value>
+  </data>
+  <data name="ComboBox_SupertribusName.Header" xml:space="preserve">
+    <value>Supertribus Name</value>
+  </data>
+  <data name="ComboBox_Title.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="ComboBox_TribusName.Header" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="DataGridCheckBoxColumn_Flag.Header" xml:space="preserve">
+    <value>Flag</value>
+  </data>
+  <data name="DataGridCheckBoxColumn_Valid.Header" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="DataGridComboBoxColumn_ClassName.Header" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_Country.Header" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="DataGridComboBoxColumn_DivisionName.Header" xml:space="preserve">
+    <value>Division Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_FamilyName.Header" xml:space="preserve">
+    <value>Family Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_FiSpeciesName.Header" xml:space="preserve">
+    <value>Fish Species Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_GenusName.Header" xml:space="preserve">
+    <value>Genus Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_ImageMimeType.Header" xml:space="preserve">
+    <value>Mime Type</value>
+  </data>
+  <data name="DataGridComboBoxColumn_InfraclassName.Header" xml:space="preserve">
+    <value>Infraclass Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_InfrafamilyName.Header" xml:space="preserve">
+    <value>Infrafamily Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_InfraordoName.Header" xml:space="preserve">
+    <value>Infraordo Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_InfratribusName.Header" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_LanguagesName.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="DataGridComboBoxColumn_LegioName.Header" xml:space="preserve">
+    <value>Legio Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_OrdoName.Header" xml:space="preserve">
+    <value>Ordo Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_PhylumName.Header" xml:space="preserve">
+    <value>Phylum Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_PlSpeciesName.Header" xml:space="preserve">
+    <value>Plant Species Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_RefAuthorName.Header" xml:space="preserve">
+    <value>Reference Puplication Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_RefExpertName.Header" xml:space="preserve">
+    <value>Reference Expert Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_RefSourceName.Header" xml:space="preserve">
+    <value>Reference Source Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_RegnumName.Header" xml:space="preserve">
+    <value>Regnum Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SpeciesgroupName.Header" xml:space="preserve">
+    <value>Speciesgroup Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SubclassName.Header" xml:space="preserve">
+    <value>Subclass Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SubdivisionName.Header" xml:space="preserve">
+    <value>Subdivision Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SubfamilyName.Header" xml:space="preserve">
+    <value>Subfamily Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SubordoName.Header" xml:space="preserve">
+    <value>Subordo Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SubphylumName.Header" xml:space="preserve">
+    <value>Subphylum Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SubtribusName.Header" xml:space="preserve">
+    <value>Subtribus Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SuperclassName.Header" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SuperfamilyName.Header" xml:space="preserve">
+    <value>Superfamily Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_SupertribusName.Header" xml:space="preserve">
+    <value>Supertribus Name</value>
+  </data>
+  <data name="DataGridComboBoxColumn_TribusName.Header" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="DataGridTemplateColumn_Image.Header" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="DataGridTextColumn_Author.Header" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="DataGridTextColumn_AuthorYear.Header" xml:space="preserve">
+    <value>Author Year</value>
+  </data>
+  <data name="DataGridTextColumn_ClassId.Header" xml:space="preserve">
+    <value>Class ID</value>
+  </data>
+  <data name="DataGridTextColumn_ClassName.Header" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="DataGridTextColumn_CommentId.Header" xml:space="preserve">
+    <value>Comment ID</value>
+  </data>
+  <data name="DataGridTextColumn_Continent.Header" xml:space="preserve">
+    <value>Continent</value>
+  </data>
+  <data name="DataGridTextColumn_Country.Header" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="DataGridTextColumn_CountryName.Header" xml:space="preserve">
+    <value>Country Name</value>
+  </data>
+  <data name="DataGridTextColumn_Divers.Header" xml:space="preserve">
+    <value>Divers</value>
+  </data>
+  <data name="DataGridTextColumn_DivisionId.Header" xml:space="preserve">
+    <value>Division ID</value>
+  </data>
+  <data name="DataGridTextColumn_DivisionName.Header" xml:space="preserve">
+    <value>Division Name</value>
+  </data>
+  <data name="DataGridTextColumn_FamilyId.Header" xml:space="preserve">
+    <value>Family ID</value>
+  </data>
+  <data name="DataGridTextColumn_FamilyName.Header" xml:space="preserve">
+    <value>Family Name</value>
+  </data>
+  <data name="DataGridTextColumn_FirstName.Header" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="DataGridTextColumn_FiSpeciesId.Header" xml:space="preserve">
+    <value>Species ID</value>
+  </data>
+  <data name="DataGridTextColumn_FiSpeciesName.Header" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="DataGridTextColumn_GenusId.Header" xml:space="preserve">
+    <value>Genus ID</value>
+  </data>
+  <data name="DataGridTextColumn_GenusName.Header" xml:space="preserve">
+    <value>Genus Name</value>
+  </data>
+  <data name="DataGridTextColumn_GeographicId.Header" xml:space="preserve">
+    <value>Geographic ID</value>
+  </data>
+  <data name="DataGridTextColumn_ImageId.Header" xml:space="preserve">
+    <value>Image ID</value>
+  </data>
+  <data name="DataGridTextColumn_ImageMimeType.Header" xml:space="preserve">
+    <value>Mime Type</value>
+  </data>
+  <data name="DataGridTextColumn_Importer.Header" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="DataGridTextColumn_ImportingYear.Header" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="DataGridTextColumn_Info.Header" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="DataGridTextColumn_InfraclassId.Header" xml:space="preserve">
+    <value>Infraclass ID</value>
+  </data>
+  <data name="DataGridTextColumn_InfraclassName.Header" xml:space="preserve">
+    <value>Infraclass Name</value>
+  </data>
+  <data name="DataGridTextColumn_InfrafamilyId.Header" xml:space="preserve">
+    <value>Infrafamily ID</value>
+  </data>
+  <data name="DataGridTextColumn_InfrafamilyName.Header" xml:space="preserve">
+    <value>Infrafamily Name</value>
+  </data>
+  <data name="DataGridTextColumn_InfraordoId.Header" xml:space="preserve">
+    <value>Infraordo ID</value>
+  </data>
+  <data name="DataGridTextColumn_InfraordoName.Header" xml:space="preserve">
+    <value>Infraordo Name</value>
+  </data>
+  <data name="DataGridTextColumn_InfratribusId.Header" xml:space="preserve">
+    <value>Infratribus ID</value>
+  </data>
+  <data name="DataGridTextColumn_InfratribusName.Header" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="DataGridTextColumn_Language.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="DataGridTextColumn_LastName.Header" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="DataGridTextColumn_LegioId.Header" xml:space="preserve">
+    <value>Legio ID</value>
+  </data>
+  <data name="DataGridTextColumn_LegioName.Header" xml:space="preserve">
+    <value>Legio Name</value>
+  </data>
+  <data name="DataGridTextColumn_NameId.Header" xml:space="preserve">
+    <value>Name ID</value>
+  </data>
+  <data name="DataGridTextColumn_NameName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DataGridTextColumn_Notes.Header" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="DataGridTextColumn_OrdoId.Header" xml:space="preserve">
+    <value>Ordo ID</value>
+  </data>
+  <data name="DataGridTextColumn_OrdoName.Header" xml:space="preserve">
+    <value>Ordo Name</value>
+  </data>
+  <data name="DataGridTextColumn_PhylumId.Header" xml:space="preserve">
+    <value>Phylum ID</value>
+  </data>
+  <data name="DataGridTextColumn_PhylumName.Header" xml:space="preserve">
+    <value>Phylum Name</value>
+  </data>
+  <data name="DataGridTextColumn_PlSpeciesId.Header" xml:space="preserve">
+    <value>Plant Species ID</value>
+  </data>
+  <data name="DataGridTextColumn_PlSpeciesName.Header" xml:space="preserve">
+    <value>Plant Species Name</value>
+  </data>
+  <data name="DataGridTextColumn_RefAuthorId.Header" xml:space="preserve">
+    <value>Ref Author ID</value>
+  </data>
+  <data name="DataGridTextColumn_RefAuthorName.Header" xml:space="preserve">
+    <value>Ref Author Name</value>
+  </data>
+  <data name="DataGridTextColumn_ReferenceExpertId.Header" xml:space="preserve">
+    <value>Reference Expert ID</value>
+  </data>
+  <data name="DataGridTextColumn_ReferenceId.Header" xml:space="preserve">
+    <value>Reference ID</value>
+  </data>
+  <data name="DataGridTextColumn_RefExpertId.Header" xml:space="preserve">
+    <value>Ref Expert ID</value>
+  </data>
+  <data name="DataGridTextColumn_RefExpertName.Header" xml:space="preserve">
+    <value>Ref Expert Name</value>
+  </data>
+  <data name="DataGridTextColumn_RefSourceId.Header" xml:space="preserve">
+    <value>Ref Source ID</value>
+  </data>
+  <data name="DataGridTextColumn_RefSourceName.Header" xml:space="preserve">
+    <value>Ref Source Name</value>
+  </data>
+  <data name="DataGridTextColumn_Regex.Header" xml:space="preserve">
+    <value>Regex</value>
+  </data>
+  <data name="DataGridTextColumn_RegnumId.Header" xml:space="preserve">
+    <value>Regnum ID</value>
+  </data>
+  <data name="DataGridTextColumn_RegnumName.Header" xml:space="preserve">
+    <value>Regnum Name</value>
+  </data>
+  <data name="DataGridTextColumn_Role.Header" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="DataGridTextColumn_SpeciesgroupId.Header" xml:space="preserve">
+    <value>Speciesgroup ID</value>
+  </data>
+  <data name="DataGridTextColumn_SpeciesgroupName.Header" xml:space="preserve">
+    <value>Speciesgroup Name</value>
+  </data>
+  <data name="DataGridTextColumn_SubclassId.Header" xml:space="preserve">
+    <value>Subclass ID</value>
+  </data>
+  <data name="DataGridTextColumn_SubclassName.Header" xml:space="preserve">
+    <value>Subclass Name</value>
+  </data>
+  <data name="DataGridTextColumn_SubdivisionId.Header" xml:space="preserve">
+    <value>Subdivision ID</value>
+  </data>
+  <data name="DataGridTextColumn_SubdivisionName.Header" xml:space="preserve">
+    <value>Subdivision Name</value>
+  </data>
+  <data name="DataGridTextColumn_Subegnum.Header" xml:space="preserve">
+    <value>Subegnum</value>
+  </data>
+  <data name="DataGridTextColumn_SubfamilyId.Header" xml:space="preserve">
+    <value>Subfamily ID</value>
+  </data>
+  <data name="DataGridTextColumn_SubfamilyName.Header" xml:space="preserve">
+    <value>Subfamily Name</value>
+  </data>
+  <data name="DataGridTextColumn_SubordoId.Header" xml:space="preserve">
+    <value>Subordo ID</value>
+  </data>
+  <data name="DataGridTextColumn_SubphylumId.Header" xml:space="preserve">
+    <value>Subphylum ID</value>
+  </data>
+  <data name="DataGridTextColumn_SubphylumName.Header" xml:space="preserve">
+    <value>Subphylum Name</value>
+  </data>
+  <data name="DataGridTextColumn_Subspecies.Header" xml:space="preserve">
+    <value>Subspecies</value>
+  </data>
+  <data name="DataGridTextColumn_Subspeciesgroup.Header" xml:space="preserve">
+    <value>Subspeciesgroup</value>
+  </data>
+  <data name="DataGridTextColumn_SubtribusId.Header" xml:space="preserve">
+    <value>Subtribus ID</value>
+  </data>
+  <data name="DataGridTextColumn_SubtribusName.Header" xml:space="preserve">
+    <value>Subtribus Name</value>
+  </data>
+  <data name="DataGridTextColumn_SuperclassId.Header" xml:space="preserve">
+    <value>Superclass ID</value>
+  </data>
+  <data name="DataGridTextColumn_SuperclassName.Header" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="DataGridTextColumn_SuperfamilyId.Header" xml:space="preserve">
+    <value>Superfamily ID</value>
+  </data>
+  <data name="DataGridTextColumn_SuperfamilyName.Header" xml:space="preserve">
+    <value>Superfamily Name</value>
+  </data>
+  <data name="DataGridTextColumn_SupertribusId.Header" xml:space="preserve">
+    <value>Supertribus ID</value>
+  </data>
+  <data name="DataGridTextColumn_SupertribusName.Header" xml:space="preserve">
+    <value>Supertribus Name</value>
+  </data>
+  <data name="DataGridTextColumn_SynonymId.Header" xml:space="preserve">
+    <value>Synonym ID</value>
+  </data>
+  <data name="DataGridTextColumn_SynonymName.Header" xml:space="preserve">
+    <value>Synonym Name</value>
+  </data>
+  <data name="DataGridTextColumn_TribusId.Header" xml:space="preserve">
+    <value>Tribus ID</value>
+  </data>
+  <data name="DataGridTextColumn_TribusName.Header" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="DataGridTextColumn_UserProfileEmail.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="DataGridTextColumn_ValidYear.Header" xml:space="preserve">
+    <value>Valid Year</value>
+  </data>
+  <data name="MenuFlyout_Add_Class.Text" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="MenuFlyout_Add_Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="MenuFlyout_Add_Family.Text" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="MenuFlyout_Add_FiSpecies.Text" xml:space="preserve">
+    <value>FiSpecies</value>
+  </data>
+  <data name="MenuFlyout_Add_Genus.Text" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="MenuFlyout_Add_Infraclass.Text" xml:space="preserve">
+    <value>Infraclass</value>
+  </data>
+  <data name="MenuFlyout_Add_Infrafamily.Text" xml:space="preserve">
+    <value>Infrafamily</value>
+  </data>
+  <data name="MenuFlyout_Add_Infraordo.Text" xml:space="preserve">
+    <value>Infraordo</value>
+  </data>
+  <data name="MenuFlyout_Add_Infratribus.Text" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="MenuFlyout_Add_Legio.Text" xml:space="preserve">
+    <value>Legio</value>
+  </data>
+  <data name="MenuFlyout_Add_Ordo.Text" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
+  <data name="MenuFlyout_Add_Reference_Author.Text" xml:space="preserve">
+    <value>Reference Puplication</value>
+  </data>
+  <data name="MenuFlyout_Add_Reference_Expert.Text" xml:space="preserve">
+    <value>Reference Expert</value>
+  </data>
+  <data name="MenuFlyout_Add_Reference_Source.Text" xml:space="preserve">
+    <value>Reference Source</value>
+  </data>
+  <data name="MenuFlyout_Add_Subclass.Text" xml:space="preserve">
+    <value>Subclass</value>
+  </data>
+  <data name="MenuFlyout_Add_Subfamily.Text" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="MenuFlyout_Add_Subordo.Text" xml:space="preserve">
+    <value>Subordo</value>
+  </data>
+  <data name="MenuFlyout_Add_Subtribus.Text" xml:space="preserve">
+    <value>Subtribus</value>
+  </data>
+  <data name="MenuFlyout_Add_Superfamily.Text" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="MenuFlyout_Add_Supertribus.Text" xml:space="preserve">
+    <value>Supertribus</value>
+  </data>
+  <data name="MenuFlyout_Add_Tribus.Text" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="MenuFlyout_Copy_Class.Text" xml:space="preserve">
+    <value>Copy Class</value>
+  </data>
+  <data name="MenuFlyout_Copy_Comment.Text" xml:space="preserve">
+    <value>Copy Comment</value>
+  </data>
+  <data name="MenuFlyout_Copy_Family.Text" xml:space="preserve">
+    <value>Copy Family</value>
+  </data>
+  <data name="MenuFlyout_Copy_FiSpecies.Text" xml:space="preserve">
+    <value>Copy FiSpecies</value>
+  </data>
+  <data name="MenuFlyout_Copy_Genus.Text" xml:space="preserve">
+    <value>Copy Genus</value>
+  </data>
+  <data name="MenuFlyout_Copy_Infraclass.Text" xml:space="preserve">
+    <value>Copy Infraclass</value>
+  </data>
+  <data name="MenuFlyout_Copy_Infrafamily.Text" xml:space="preserve">
+    <value>Copy Infrafamily</value>
+  </data>
+  <data name="MenuFlyout_Copy_Infraordo.Text" xml:space="preserve">
+    <value>Copy Infraordo</value>
+  </data>
+  <data name="MenuFlyout_Copy_Infratribus.Text" xml:space="preserve">
+    <value>Copy Infratribus</value>
+  </data>
+  <data name="MenuFlyout_Copy_Legio.Text" xml:space="preserve">
+    <value>Copy Legio</value>
+  </data>
+  <data name="MenuFlyout_Copy_Ordo.Text" xml:space="preserve">
+    <value>Copy Ordo</value>
+  </data>
+  <data name="MenuFlyout_Copy_Reference_Author.Text" xml:space="preserve">
+    <value>Copy Reference Puplication</value>
+  </data>
+  <data name="MenuFlyout_Copy_Reference_Expert.Text" xml:space="preserve">
+    <value>Copy Reference Expert</value>
+  </data>
+  <data name="MenuFlyout_Copy_Reference_Source.Text" xml:space="preserve">
+    <value>Copy Reference Source</value>
+  </data>
+  <data name="MenuFlyout_Copy_Subclass.Text" xml:space="preserve">
+    <value>Copy Subclass</value>
+  </data>
+  <data name="MenuFlyout_Copy_Subfamily.Text" xml:space="preserve">
+    <value>Copy Subfamily</value>
+  </data>
+  <data name="MenuFlyout_Copy_Subordo.Text" xml:space="preserve">
+    <value>Copy Subordo</value>
+  </data>
+  <data name="MenuFlyout_Copy_Subtribus.Text" xml:space="preserve">
+    <value>Copy Subtribus</value>
+  </data>
+  <data name="MenuFlyout_Copy_Superfamily.Text" xml:space="preserve">
+    <value>Copy Superfamily</value>
+  </data>
+  <data name="MenuFlyout_Copy_Supertribus.Text" xml:space="preserve">
+    <value>Copy Supertribus</value>
+  </data>
+  <data name="MenuFlyout_Copy_Tribus.Text" xml:space="preserve">
+    <value>Copy Tribus</value>
+  </data>
+  <data name="MenuFlyout_Delete_Class.Text" xml:space="preserve">
+    <value>Delete Class</value>
+  </data>
+  <data name="MenuFlyout_Delete_Comment.Text" xml:space="preserve">
+    <value> - Comment</value>
+  </data>
+  <data name="MenuFlyout_Delete_Family.Text" xml:space="preserve">
+    <value>Delete Family</value>
+  </data>
+  <data name="MenuFlyout_Delete_FiSpecies.Text" xml:space="preserve">
+    <value>Delete FiSpecies</value>
+  </data>
+  <data name="MenuFlyout_Delete_Genus.Text" xml:space="preserve">
+    <value> - Genus</value>
+  </data>
+  <data name="MenuFlyout_Delete_Infraclass.Text" xml:space="preserve">
+    <value>Delete Infraclass</value>
+  </data>
+  <data name="MenuFlyout_Delete_Infrafamily.Text" xml:space="preserve">
+    <value>Delete Infrafamily</value>
+  </data>
+  <data name="MenuFlyout_Delete_Infraordo.Text" xml:space="preserve">
+    <value>Delete Infraordo</value>
+  </data>
+  <data name="MenuFlyout_Delete_Infratribus.Text" xml:space="preserve">
+    <value>Delete Infratribus</value>
+  </data>
+  <data name="MenuFlyout_Delete_Legio.Text" xml:space="preserve">
+    <value>Delete Legio</value>
+  </data>
+  <data name="MenuFlyout_Delete_Ordo.Text" xml:space="preserve">
+    <value>Delete Ordo</value>
+  </data>
+  <data name="MenuFlyout_Delete_Reference_Author.Text" xml:space="preserve">
+    <value> Reference Puplication</value>
+  </data>
+  <data name="MenuFlyout_Delete_Reference_Expert.Text" xml:space="preserve">
+    <value> Reference Expert</value>
+  </data>
+  <data name="MenuFlyout_Delete_Reference_Source.Text" xml:space="preserve">
+    <value> Reference Source</value>
+  </data>
+  <data name="MenuFlyout_Delete_Subclass.Text" xml:space="preserve">
+    <value>Delete Subclass</value>
+  </data>
+  <data name="MenuFlyout_Delete_Subfamily.Text" xml:space="preserve">
+    <value>Delete Subfamily</value>
+  </data>
+  <data name="MenuFlyout_Delete_Subordo.Text" xml:space="preserve">
+    <value>Delete Subordo</value>
+  </data>
+  <data name="MenuFlyout_Delete_Subtribus.Text" xml:space="preserve">
+    <value>Delete Subtribus</value>
+  </data>
+  <data name="MenuFlyout_Delete_Superfamily.Text" xml:space="preserve">
+    <value>Delete Superfamily</value>
+  </data>
+  <data name="MenuFlyout_Delete_Supertribus.Text" xml:space="preserve">
+    <value>Delete Supertribus</value>
+  </data>
+  <data name="MenuFlyout_Delete_Tribus.Text" xml:space="preserve">
+    <value>Delete Tribus</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Class.Text" xml:space="preserve">
+    <value>Refresh Class</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Comment.Text" xml:space="preserve">
+    <value>Refresh Comment</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Family.Text" xml:space="preserve">
+    <value>Refresh Family</value>
+  </data>
+  <data name="MenuFlyout_Refresh_FiSpecies.Text" xml:space="preserve">
+    <value>Refresh FiSpecies</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Infraclass.Text" xml:space="preserve">
+    <value>Refresh Infraclass</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Infrafamily.Text" xml:space="preserve">
+    <value>Refresh Infrafamily</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Infraordo.Text" xml:space="preserve">
+    <value>Refresh Infraordo</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Infratribus.Text" xml:space="preserve">
+    <value>Refresh Infratribus</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Legio.Text" xml:space="preserve">
+    <value>Refresh Legio</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Ordo.Text" xml:space="preserve">
+    <value>Refresh Ordo</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Reference_Author.Text" xml:space="preserve">
+    <value>Refresh Reference Puplication</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Reference_Expert.Text" xml:space="preserve">
+    <value>Refresh Reference Expert</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Reference_Source.Text" xml:space="preserve">
+    <value>Refresh Reference Source</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Subclass.Text" xml:space="preserve">
+    <value>Refresh Subclass</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Subfamily.Text" xml:space="preserve">
+    <value>Refresh Subfamily</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Subordo.Text" xml:space="preserve">
+    <value>Refresh Subordo</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Subtribus.Text" xml:space="preserve">
+    <value>Refresh_Subtribus</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Superclass.Text" xml:space="preserve">
+    <value>Refresh Superclass</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Superfamily.Text" xml:space="preserve">
+    <value>Refresh Superfamily</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Supertribus.Text" xml:space="preserve">
+    <value>Refresh Supertribus</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Tribus.Text" xml:space="preserve">
+    <value>Refresh Tribus</value>
+  </data>
+  <data name="MenuFlyout_Save_Class.Text" xml:space="preserve">
+    <value>Save Class</value>
+  </data>
+  <data name="MenuFlyout_Save_Comment.Text" xml:space="preserve">
+    <value>Save Comment</value>
+  </data>
+  <data name="MenuFlyout_Save_Family.Text" xml:space="preserve">
+    <value>Save Family</value>
+  </data>
+  <data name="MenuFlyout_Save_FiSpecies.Text" xml:space="preserve">
+    <value>Save FiSpecies</value>
+  </data>
+  <data name="MenuFlyout_Save_Genus.Text" xml:space="preserve">
+    <value>Save Genus</value>
+  </data>
+  <data name="MenuFlyout_Save_Infraclass.Text" xml:space="preserve">
+    <value>Save Infraclass</value>
+  </data>
+  <data name="MenuFlyout_Save_Infrafamily.Text" xml:space="preserve">
+    <value>Save Infrafamily</value>
+  </data>
+  <data name="MenuFlyout_Save_Infraordo.Text" xml:space="preserve">
+    <value>Save Infraordo</value>
+  </data>
+  <data name="MenuFlyout_Save_Infratribus.Text" xml:space="preserve">
+    <value>Save Infratribus</value>
+  </data>
+  <data name="MenuFlyout_Save_Legio.Text" xml:space="preserve">
+    <value>Save Legio</value>
+  </data>
+  <data name="MenuFlyout_Save_Ordo.Text" xml:space="preserve">
+    <value>Save Ordo</value>
+  </data>
+  <data name="MenuFlyout_Save_Reference_Author.Text" xml:space="preserve">
+    <value>Save Reference Puplication</value>
+  </data>
+  <data name="MenuFlyout_Save_Reference_Expert.Text" xml:space="preserve">
+    <value>Save Reference Expert</value>
+  </data>
+  <data name="MenuFlyout_Save_Reference_Source.Text" xml:space="preserve">
+    <value>Save Reference Source</value>
+  </data>
+  <data name="MenuFlyout_Save_Subclass.Text" xml:space="preserve">
+    <value>Save Subclass</value>
+  </data>
+  <data name="MenuFlyout_Save_Subfamily.Text" xml:space="preserve">
+    <value>Save Subfamily</value>
+  </data>
+  <data name="MenuFlyout_Save_Subordo.Text" xml:space="preserve">
+    <value>Save Ordo</value>
+  </data>
+  <data name="MenuFlyout_Save_Subtribus.Text" xml:space="preserve">
+    <value>Save Subtribus</value>
+  </data>
+  <data name="MenuFlyout_Save_Superclass.Text" xml:space="preserve">
+    <value>Save Superclass</value>
+  </data>
+  <data name="MenuFlyout_Save_Superfamily.Text" xml:space="preserve">
+    <value>Save Superfamily</value>
+  </data>
+  <data name="MenuFlyout_Save_Supertribus.Text" xml:space="preserve">
+    <value>Save Supertribus</value>
+  </data>
+  <data name="MenuFlyout_Save_Tribus.Text" xml:space="preserve">
+    <value>Save Tribus</value>
+  </data>
+  <data name="Nav_About.Content" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="Nav_Admin_Area.Content" xml:space="preserve">
+    <value>Admin_Area</value>
+  </data>
+  <data name="Nav_Authentication.Content" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="Nav_Authors.Content" xml:space="preserve">
+    <value>Authors</value>
+  </data>
+  <data name="Nav_Awake.Content" xml:space="preserve">
+    <value>Awake</value>
+  </data>
+  <data name="Nav_CheckUpdate.Content" xml:space="preserve">
+    <value>Check Update</value>
+  </data>
+  <data name="Nav_Class.Content" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="Nav_Classes.Content" xml:space="preserve">
+    <value>Classes</value>
+  </data>
+  <data name="Nav_Collections.Content" xml:space="preserve">
+    <value>Collections</value>
+  </data>
+  <data name="Nav_ColorPicker.Content" xml:space="preserve">
+    <value>Color Picker</value>
+  </data>
+  <data name="Nav_Comments.Content" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="Nav_Countries.Content" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+  <data name="Nav_Database.Content" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="Nav_Division.Content" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="Nav_Divisions.Content" xml:space="preserve">
+    <value>Divisions</value>
+  </data>
+  <data name="Nav_Experts.Content" xml:space="preserve">
+    <value>Experts</value>
+  </data>
+  <data name="Nav_Families.Content" xml:space="preserve">
+    <value>Families</value>
+  </data>
+  <data name="Nav_Family.Content" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="Nav_FancyZones.Content" xml:space="preserve">
+    <value>Fancy Zones</value>
+  </data>
+  <data name="Nav_Features.Content" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="Nav_FileExplorerAddOns.Content" xml:space="preserve">
+    <value>File Explorer Add-Ons</value>
+  </data>
+  <data name="Nav_FileExplorerPreview.Content" xml:space="preserve">
+    <value>FileExplorer Preview</value>
+  </data>
+  <data name="Nav_FiSpecies.Content" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="Nav_General.Content" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="Nav_Genus.Content" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="Nav_Geographics.Content" xml:space="preserve">
+    <value>Geographics</value>
+  </data>
+  <data name="Nav_Home.Content" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Nav_ImageResizer.Content" xml:space="preserve">
+    <value>Image Resizer</value>
+  </data>
+  <data name="Nav_Images.Content" xml:space="preserve">
+    <value>Images/Videos</value>
+  </data>
+  <data name="Nav_Infraclass.Content" xml:space="preserve">
+    <value>Infraclass</value>
+  </data>
+  <data name="Nav_Infrafamily.Content" xml:space="preserve">
+    <value>Infrafamily</value>
+  </data>
+  <data name="Nav_Infraordo.Content" xml:space="preserve">
+    <value>Infraordo</value>
+  </data>
+  <data name="Nav_Infratribus.Content" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="Nav_KeyboardManager.Content" xml:space="preserve">
+    <value>Keyboard Manager</value>
+  </data>
+  <data name="Nav_Legio.Content" xml:space="preserve">
+    <value>Legio</value>
+  </data>
+  <data name="Nav_LogIn.Content" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="Nav_Names.Content" xml:space="preserve">
+    <value>Names</value>
+  </data>
+  <data name="Nav_Ordo.Content" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
+  <data name="Nav_Ordos.Content" xml:space="preserve">
+    <value>Ordos</value>
+  </data>
+  <data name="Nav_PasswordChange.Content" xml:space="preserve">
+    <value>Password Change</value>
+  </data>
+  <data name="Nav_PasswordForgot.Content" xml:space="preserve">
+    <value>Password Forgot</value>
+  </data>
+  <data name="Nav_Phylum.Content" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="Nav_Phylums.Content" xml:space="preserve">
+    <value>Phylums</value>
+  </data>
+  <data name="Nav_PlSpecies.Content" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="Nav_PowerRename.Content" xml:space="preserve">
+    <value>Power Rename</value>
+  </data>
+  <data name="Nav_PowerToysRun.Content" xml:space="preserve">
+    <value>PowerToys Run</value>
+  </data>
+  <data name="Nav_RefAuthors.Content" xml:space="preserve">
+    <value>Ref Puplications</value>
+  </data>
+  <data name="Nav_RefDetails.Content" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Nav_References.Content" xml:space="preserve">
+    <value>References</value>
+  </data>
+  <data name="Nav_RefExperts.Content" xml:space="preserve">
+    <value>Ref Experts</value>
+  </data>
+  <data name="Nav_RefSources.Content" xml:space="preserve">
+    <value>Ref Sources</value>
+  </data>
+  <data name="Nav_Register.Content" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Nav_Regnum.Content" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="Nav_Search.Content" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Nav_Setting.Content" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+  <data name="Nav_ShortcutGuide.Content" xml:space="preserve">
+    <value>Shortcut Guide</value>
+  </data>
+  <data name="Nav_Sources.Content" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="Nav_Speciesgroup.Content" xml:space="preserve">
+    <value>Speciesgroup</value>
+  </data>
+  <data name="Nav_Subclass.Content" xml:space="preserve">
+    <value>Subclass</value>
+  </data>
+  <data name="Nav_Subdivision.Content" xml:space="preserve">
+    <value>Subdivision</value>
+  </data>
+  <data name="Nav_Subfamily.Content" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="Nav_Subordo.Content" xml:space="preserve">
+    <value>Subordo</value>
+  </data>
+  <data name="Nav_Subphylum.Content" xml:space="preserve">
+    <value>Subphylum</value>
+  </data>
+  <data name="Nav_Subtribus.Content" xml:space="preserve">
+    <value>Subtribus</value>
+  </data>
+  <data name="Nav_Superclass.Content" xml:space="preserve">
+    <value>Superclass</value>
+  </data>
+  <data name="Nav_Superfamily.Content" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="Nav_Supertribus.Content" xml:space="preserve">
+    <value>Supertribus</value>
+  </data>
+  <data name="Nav_Synonyms.Content" xml:space="preserve">
+    <value>Synonyms</value>
+  </data>
+  <data name="Nav_Tribus.Content" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="Nav_Tribusses.Content" xml:space="preserve">
+    <value>Tribusses</value>
+  </data>
+  <data name="Nav_UserProfiles.Content" xml:space="preserve">
+    <value>UserProfiles</value>
+  </data>
+  <data name="Nav_User_Area.Content" xml:space="preserve">
+    <value>User_Area</value>
+  </data>
+  <data name="TabViewItem_Author.Header" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="TabViewItem_Authors.Header" xml:space="preserve">
+    <value>Authors</value>
+  </data>
+  <data name="TabViewItem_Class.Header" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="TabViewItem_Classes.Header" xml:space="preserve">
+    <value>Classes</value>
+  </data>
+  <data name="TabViewItem_Comment.Header" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="TabViewItem_Comments.Header" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="TabViewItem_Countries.Header" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+  <data name="TabViewItem_Country.Header" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="TabViewItem_Division.Header" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="TabViewItem_Divisions.Header" xml:space="preserve">
+    <value>Divisions</value>
+  </data>
+  <data name="TabViewItem_Expert.Header" xml:space="preserve">
+    <value>Expert</value>
+  </data>
+  <data name="TabViewItem_Experts.Header" xml:space="preserve">
+    <value>Experts</value>
+  </data>
+  <data name="TabViewItem_Families.Header" xml:space="preserve">
+    <value>Families</value>
+  </data>
+  <data name="TabViewItem_Family.Header" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="TabViewItem_FiBreeding.Header" xml:space="preserve">
+    <value>Breeding</value>
+  </data>
+  <data name="TabViewItem_FiBuilt.Header" xml:space="preserve">
+    <value>Built</value>
+  </data>
+  <data name="TabViewItem_FiFood.Header" xml:space="preserve">
+    <value>Food</value>
+  </data>
+  <data name="TabViewItem_FiHusbandry.Header" xml:space="preserve">
+    <value>Husbandry</value>
+  </data>
+  <data name="TabViewItem_FiSpecial.Header" xml:space="preserve">
+    <value>Special</value>
+  </data>
+  <data name="TabViewItem_FiSpecies.Header" xml:space="preserve">
+    <value>FiSpecies</value>
+  </data>
+  <data name="TabViewItem_FiSpeciesses.Header" xml:space="preserve">
+    <value>FiSpeciesses</value>
+  </data>
+  <data name="TabViewItem_FiSpecification.Header" xml:space="preserve">
+    <value>Specification</value>
+  </data>
+  <data name="TabViewItem_FiTechnic.Header" xml:space="preserve">
+    <value>Technic</value>
+  </data>
+  <data name="TabViewItem_Genus.Header" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="TabViewItem_Genusses.Header" xml:space="preserve">
+    <value>Genusses</value>
+  </data>
+  <data name="TabViewItem_Geographic.Header" xml:space="preserve">
+    <value>Geographic</value>
+  </data>
+  <data name="TabViewItem_Image.Header" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="TabViewItem_Images.Header" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="TabViewItem_Infraclass.Header" xml:space="preserve">
+    <value>Infraclass</value>
+  </data>
+  <data name="TabViewItem_Infraclasses.Header" xml:space="preserve">
+    <value>Infraclasses</value>
+  </data>
+  <data name="TabViewItem_Infrafamilies.Header" xml:space="preserve">
+    <value>Infrafamilies</value>
+  </data>
+  <data name="TabViewItem_Infrafamily.Header" xml:space="preserve">
+    <value>Infrafamily</value>
+  </data>
+  <data name="TabViewItem_Infraordo.Header" xml:space="preserve">
+    <value>Infraordo                </value>
+  </data>
+  <data name="TabViewItem_Infraordos.Header" xml:space="preserve">
+    <value>Infraordos                </value>
+  </data>
+  <data name="TabViewItem_Infratribus.Header" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="TabViewItem_Infratribusses.Header" xml:space="preserve">
+    <value>Infratribusses</value>
+  </data>
+  <data name="TabViewItem_Legio.Header" xml:space="preserve">
+    <value>Legio</value>
+  </data>
+  <data name="TabViewItem_Legios.Header" xml:space="preserve">
+    <value>Legios</value>
+  </data>
+  <data name="TabViewItem_Name.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TabViewItem_Names.Header" xml:space="preserve">
+    <value>Names</value>
+  </data>
+  <data name="TabViewItem_Ordo.Header" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
+  <data name="TabViewItem_Ordos.Header" xml:space="preserve">
+    <value>Ordos</value>
+  </data>
+  <data name="TabViewItem_Phylum.Header" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="TabViewItem_Phylums.Header" xml:space="preserve">
+    <value>Phylums</value>
+  </data>
+  <data name="TabViewItem_PlBuilt.Header" xml:space="preserve">
+    <value>Built</value>
+  </data>
+  <data name="TabViewItem_PlCulture.Header" xml:space="preserve">
+    <value>Culture</value>
+  </data>
+  <data name="TabViewItem_PlGlobal.Header" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="TabViewItem_PlReproduction.Header" xml:space="preserve">
+    <value>Reproduction</value>
+  </data>
+  <data name="TabViewItem_PlSpecies.Header" xml:space="preserve">
+    <value>PlSpecies</value>
+  </data>
+  <data name="TabViewItem_PlSpeciesses.Header" xml:space="preserve">
+    <value>PlSpeciesses</value>
+  </data>
+  <data name="TabViewItem_PlSpecification.Header" xml:space="preserve">
+    <value>Specification</value>
+  </data>
+  <data name="TabViewItem_PlTechnic.Header" xml:space="preserve">
+    <value>Technic</value>
+  </data>
+  <data name="TabViewItem_RefAuthor.Header" xml:space="preserve">
+    <value>Reference Puplication</value>
+  </data>
+  <data name="TabViewItem_RefAuthors.Header" xml:space="preserve">
+    <value>Reference Puplications</value>
+  </data>
+  <data name="TabViewItem_Reference.Header" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="TabViewItem_References.Header" xml:space="preserve">
+    <value>References</value>
+  </data>
+  <data name="TabViewItem_RefExpert.Header" xml:space="preserve">
+    <value>Reference Expert</value>
+  </data>
+  <data name="TabViewItem_RefExperts.Header" xml:space="preserve">
+    <value>Reference Experts</value>
+  </data>
+  <data name="TabViewItem_RefSource.Header" xml:space="preserve">
+    <value>Reference Source</value>
+  </data>
+  <data name="TabViewItem_RefSources.Header" xml:space="preserve">
+    <value>Reference Sources</value>
+  </data>
+  <data name="TabViewItem_Ref_Author.Header" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="TabViewItem_Ref_Authors.Header" xml:space="preserve">
+    <value>Authors</value>
+  </data>
+  <data name="TabViewItem_Ref_Expert.Header" xml:space="preserve">
+    <value>Expert</value>
+  </data>
+  <data name="TabViewItem_Ref_Experts.Header" xml:space="preserve">
+    <value>Experts</value>
+  </data>
+  <data name="TabViewItem_Ref_Source.Header" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="TabViewItem_Ref_Sources.Header" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="TabViewItem_Regnum.Header" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="TabViewItem_Regnums.Header" xml:space="preserve">
+    <value>Regnums</value>
+  </data>
+  <data name="TabViewItem_Source.Header" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="TabViewItem_Sources.Header" xml:space="preserve">
+    <value>Sources</value>
+  </data>
+  <data name="TabViewItem_Speciesgroup.Header" xml:space="preserve">
+    <value>Speciesgroup</value>
+  </data>
+  <data name="TabViewItem_Speciesgroups.Header" xml:space="preserve">
+    <value>Speciesgroups</value>
+  </data>
+  <data name="TabViewItem_Subclass.Header" xml:space="preserve">
+    <value>Subclass</value>
+  </data>
+  <data name="TabViewItem_Subclasses.Header" xml:space="preserve">
+    <value>Subclasses</value>
+  </data>
+  <data name="TabViewItem_Subdivision.Header" xml:space="preserve">
+    <value>Subdivision</value>
+  </data>
+  <data name="TabViewItem_Subdivisions.Header" xml:space="preserve">
+    <value>Subdivisions</value>
+  </data>
+  <data name="TabViewItem_Subfamilies.Header" xml:space="preserve">
+    <value>Subfamilies</value>
+  </data>
+  <data name="TabViewItem_Subfamily.Header" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="TabViewItem_Subordo.Header" xml:space="preserve">
+    <value>Subordo</value>
+  </data>
+  <data name="TabViewItem_Subordos.Header" xml:space="preserve">
+    <value>Subordos</value>
+  </data>
+  <data name="TabViewItem_Subphylum.Header" xml:space="preserve">
+    <value>Subphylum</value>
+  </data>
+  <data name="TabViewItem_Subphylums.Header" xml:space="preserve">
+    <value>Subphylums</value>
+  </data>
+  <data name="TabViewItem_Subtribus.Header" xml:space="preserve">
+    <value>Subtribus</value>
+  </data>
+  <data name="TabViewItem_Subtribusses.Header" xml:space="preserve">
+    <value>Subtribusses</value>
+  </data>
+  <data name="TabViewItem_Superclass.Header" xml:space="preserve">
+    <value>Superclass</value>
+  </data>
+  <data name="TabViewItem_Superclasses.Header" xml:space="preserve">
+    <value>Superclasses</value>
+  </data>
+  <data name="TabViewItem_Superfamilies.Header" xml:space="preserve">
+    <value>Superfamilies</value>
+  </data>
+  <data name="TabViewItem_Superfamily.Header" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="TabViewItem_Supertribus.Header" xml:space="preserve">
+    <value>Supertribus</value>
+  </data>
+  <data name="TabViewItem_Supertribusses.Header" xml:space="preserve">
+    <value>Supertribusses</value>
+  </data>
+  <data name="TabViewItem_Synonym.Header" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="TabViewItem_Synonyms.Header" xml:space="preserve">
+    <value>Synonyms</value>
+  </data>
+  <data name="TabViewItem_Tribus.Header" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="TabViewItem_Tribusses.Header" xml:space="preserve">
+    <value>Tribusses</value>
+  </data>
+  <data name="TabViewItem_UserProfile.Header" xml:space="preserve">
+    <value>UserProfile</value>
+  </data>
+  <data name="TabViewItem_UserProfiles.Header" xml:space="preserve">
+    <value>UserProfiles</value>
+  </data>
+  <data name="TextBlock_Address.Text" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="TextBlock_ArticelTitle.Text" xml:space="preserve">
+    <value>Articel/Chapter Title</value>
+  </data>
+  <data name="TextBlock_Author.Text" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="TextBlock_Author_Year.Text" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="TextBlock_BookName.Text" xml:space="preserve">
+    <value>Journal/Book Name</value>
+  </data>
+  <data name="TextBlock_BookName_Page.Text" xml:space="preserve">
+    <value>BookName/Page</value>
+  </data>
+  <data name="TextBlock_Breeding.Text" xml:space="preserve">
+    <value>Breeding</value>
+  </data>
+  <data name="TextBlock_Built.Text" xml:space="preserve">
+    <value>Built</value>
+  </data>
+  <data name="TextBlock_CarboHardness.Text" xml:space="preserve">
+    <value>Carbonat Hardness</value>
+  </data>
+  <data name="TextBlock_Class.Text" xml:space="preserve">
+    <value>Infraclass Subclass Class Superclass</value>
+  </data>
+  <data name="TextBlock_Classes.Text" xml:space="preserve">
+    <value>Classes</value>
+  </data>
+  <data name="TextBlock_ClassId.Text" xml:space="preserve">
+    <value>Class ID</value>
+  </data>
+  <data name="TextBlock_ClassName.Text" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="TextBlock_ClassName_Superclasses.Text" xml:space="preserve">
+    <value>Class/Superclasses</value>
+  </data>
+  <data name="TextBlock_Colour.Text" xml:space="preserve">
+    <value>Colour</value>
+  </data>
+  <data name="TextBlock_Combo.Text" xml:space="preserve">
+    <value>Comboboxen</value>
+  </data>
+  <data name="TextBlock_Comboboxes.Text" xml:space="preserve">
+    <value>Comboboxes</value>
+  </data>
+  <data name="TextBlock_CommentId.Text" xml:space="preserve">
+    <value>Comment ID</value>
+  </data>
+  <data name="TextBlock_Comments.Text" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="TextBlock_Company.Text" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="TextBlock_Continent.Text" xml:space="preserve">
+    <value>Continent</value>
+  </data>
+  <data name="TextBlock_Country.Text" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="TextBlock_CountryId.Text" xml:space="preserve">
+    <value>Country ID</value>
+  </data>
+  <data name="TextBlock_CountryName.Text" xml:space="preserve">
+    <value>Country Name</value>
+  </data>
+  <data name="TextBlock_Culture.Text" xml:space="preserve">
+    <value>Culture</value>
+  </data>
+  <data name="TextBlock_Data.Text" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="TextBlock_DataSetCount.Text" xml:space="preserve">
+    <value>DataSets</value>
+  </data>
+  <data name="TextBlock_DbExist_SQLActiv.Text" xml:space="preserve">
+    <value>Database exist, SQL-Server activ!</value>
+  </data>
+  <data name="TextBlock_Details.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="TextBlock_Division.Text" xml:space="preserve">
+    <value>Subdivision Division Regnum</value>
+  </data>
+  <data name="TextBlock_DivisionId.Text" xml:space="preserve">
+    <value>Division ID</value>
+  </data>
+  <data name="TextBlock_DivisionName.Text" xml:space="preserve">
+    <value>Division Name</value>
+  </data>
+  <data name="TextBlock_DivisionName_Regnums.Text" xml:space="preserve">
+    <value>Division/Regnums</value>
+  </data>
+  <data name="TextBlock_EnglishName.Text" xml:space="preserve">
+    <value>English Name</value>
+  </data>
+  <data name="TextBlock_Families.Text" xml:space="preserve">
+    <value>Families</value>
+  </data>
+  <data name="TextBlock_Family.Text" xml:space="preserve">
+    <value>Infrafamily Subfamily Family Superfamily</value>
+  </data>
+  <data name="TextBlock_FamilyId.Text" xml:space="preserve">
+    <value>Family ID</value>
+  </data>
+  <data name="TextBlock_FamilyName.Text" xml:space="preserve">
+    <value>Family Name</value>
+  </data>
+  <data name="TextBlock_FamilyName_Superfamilies.Text" xml:space="preserve">
+    <value>Family/Superfamilies</value>
+  </data>
+  <data name="TextBlock_FilestreamId.Text" xml:space="preserve">
+    <value>Filestream ID</value>
+  </data>
+  <data name="TextBlock_FiSpecies.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="TextBlock_FiSpeciesId.Text" xml:space="preserve">
+    <value>Species ID</value>
+  </data>
+  <data name="TextBlock_FiSpeciesName.Text" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="TextBlock_FiSpeciesses.Text" xml:space="preserve">
+    <value>Speciesses</value>
+  </data>
+  <data name="TextBlock_FiSpeciesses_PlSpeciesses.Text" xml:space="preserve">
+    <value>Speciesses</value>
+  </data>
+  <data name="TextBlock_FiSpecies_PlSpecies.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="TextBlock_Fon.Text" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="TextBlock_Food.Text" xml:space="preserve">
+    <value>Food</value>
+  </data>
+  <data name="TextBlock_FrenchName.Text" xml:space="preserve">
+    <value>French Name</value>
+  </data>
+  <data name="TextBlock_Gender.Text" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="TextBlock_Gender_BirthDate.Text" xml:space="preserve">
+    <value>Gender/BirthDate</value>
+  </data>
+  <data name="TextBlock_General.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="TextBlock_Genus.Text" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="TextBlock_GenusId.Text" xml:space="preserve">
+    <value>Genus ID</value>
+  </data>
+  <data name="TextBlock_GenusName.Text" xml:space="preserve">
+    <value>Genus Name</value>
+  </data>
+  <data name="TextBlock_GenusName_Infratribus.Text" xml:space="preserve">
+    <value>Genus/Infratribus</value>
+  </data>
+  <data name="TextBlock_GenusName_Infratribusses.Text" xml:space="preserve">
+    <value>Genus/Infratribusses</value>
+  </data>
+  <data name="TextBlock_Genusses.Text" xml:space="preserve">
+    <value>Genusses</value>
+  </data>
+  <data name="TextBlock_Genusses_Speciesgroups.Text" xml:space="preserve">
+    <value>Genusses/Sp-Groups</value>
+  </data>
+  <data name="TextBlock_GeographicId.Text" xml:space="preserve">
+    <value>Geographic ID</value>
+  </data>
+  <data name="TextBlock_Geographics.Text" xml:space="preserve">
+    <value>Geographics</value>
+  </data>
+  <data name="TextBlock_GermanName.Text" xml:space="preserve">
+    <value>German Name</value>
+  </data>
+  <data name="TextBlock_Hardness.Text" xml:space="preserve">
+    <value>Hardness</value>
+  </data>
+  <data name="TextBlock_HomePageUrl.Text" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="TextBlock_Http.Text" xml:space="preserve">
+    <value>Http</value>
+  </data>
+  <data name="TextBlock_Husbandry.Text" xml:space="preserve">
+    <value>Husbandry</value>
+  </data>
+  <data name="TextBlock_Image.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="TextBlock_ImageId.Text" xml:space="preserve">
+    <value>Image ID</value>
+  </data>
+  <data name="TextBlock_ImageMimeType.Text" xml:space="preserve">
+    <value>Image Mime Type</value>
+  </data>
+  <data name="TextBlock_Images.Text" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="TextBlock_Importer.Text" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="TextBlock_ImportingYear.Text" xml:space="preserve">
+    <value>ImportingYear</value>
+  </data>
+  <data name="TextBlock_Info.Text" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="TextBlock_Infraclass.Text" xml:space="preserve">
+    <value>Infraclass</value>
+  </data>
+  <data name="TextBlock_Infraclasses.Text" xml:space="preserve">
+    <value>Infraclasses</value>
+  </data>
+  <data name="TextBlock_InfraclassId.Text" xml:space="preserve">
+    <value>Infraclass ID</value>
+  </data>
+  <data name="TextBlock_InfraclassName.Text" xml:space="preserve">
+    <value>Infraclass Name</value>
+  </data>
+  <data name="TextBlock_InfraclassName_Subclasses.Text" xml:space="preserve">
+    <value>Infraclass/Subclasses</value>
+  </data>
+  <data name="TextBlock_Infrafamilies.Text" xml:space="preserve">
+    <value>Infrafamilies</value>
+  </data>
+  <data name="TextBlock_Infrafamily.Text" xml:space="preserve">
+    <value>Infrafamily</value>
+  </data>
+  <data name="TextBlock_InfrafamilyId.Text" xml:space="preserve">
+    <value>Infrafamily ID</value>
+  </data>
+  <data name="TextBlock_InfrafamilyName.Text" xml:space="preserve">
+    <value>Infrafamily Name</value>
+  </data>
+  <data name="TextBlock_InfrafamilyName_Subfamilies.Text" xml:space="preserve">
+    <value>Infrafamily/Subfamilies</value>
+  </data>
+  <data name="TextBlock_InfraordoId.Text" xml:space="preserve">
+    <value>Infraordo ID                </value>
+  </data>
+  <data name="TextBlock_InfraordoName.Text" xml:space="preserve">
+    <value>Infraordo Name                </value>
+  </data>
+  <data name="TextBlock_InfraordoName_Subordos.Text" xml:space="preserve">
+    <value>Infraordo/Subordos</value>
+  </data>
+  <data name="TextBlock_Infraordos.Text" xml:space="preserve">
+    <value>Infraordos</value>
+  </data>
+  <data name="TextBlock_Infratribus.Text" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="TextBlock_InfratribusId.Text" xml:space="preserve">
+    <value>Infratribus ID</value>
+  </data>
+  <data name="TextBlock_InfratribusName.Text" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="TextBlock_InfratribusName_Subtribusses.Text" xml:space="preserve">
+    <value>Infratribus/Subtribusses</value>
+  </data>
+  <data name="TextBlock_Infratribusses.Text" xml:space="preserve">
+    <value>Infratribusses</value>
+  </data>
+  <data name="TextBlock_Isbn.Text" xml:space="preserve">
+    <value>ISBN/ISSN</value>
+  </data>
+  <data name="TextBlock_Language.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="TextBlock_Languages.Text" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="TextBlock_Latitude.Text" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="TextBlock_Latitude_Longitude.Text" xml:space="preserve">
+    <value>Latitude/Longitude</value>
+  </data>
+  <data name="TextBlock_LegioId.Text" xml:space="preserve">
+    <value>Legio ID</value>
+  </data>
+  <data name="TextBlock_LegioName.Text" xml:space="preserve">
+    <value>Legio Name</value>
+  </data>
+  <data name="TextBlock_LegioName_Infraclasses.Text" xml:space="preserve">
+    <value>Legio/Infraclasses</value>
+  </data>
+  <data name="TextBlock_Legios.Text" xml:space="preserve">
+    <value>Legios</value>
+  </data>
+  <data name="TextBlock_Length.Text" xml:space="preserve">
+    <value>Fish/Basin Length</value>
+  </data>
+  <data name="TextBlock_Longitude.Text" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="TextBlock_Map.Text" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="TextBlock_Memo.Text" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="TextBlock_MemoBreeding.Text" xml:space="preserve">
+    <value>Memo Breeding</value>
+  </data>
+  <data name="TextBlock_MemoBuilt.Text" xml:space="preserve">
+    <value>Memo Built</value>
+  </data>
+  <data name="TextBlock_MemoColor.Text" xml:space="preserve">
+    <value>Memo Color</value>
+  </data>
+  <data name="TextBlock_MemoCulture.Text" xml:space="preserve">
+    <value>Memo Culture</value>
+  </data>
+  <data name="TextBlock_MemoDomorphism.Text" xml:space="preserve">
+    <value>Memo Domorphism</value>
+  </data>
+  <data name="TextBlock_MemoFoods.Text" xml:space="preserve">
+    <value>Memo Foods</value>
+  </data>
+  <data name="TextBlock_MemoGlobal.Text" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="TextBlock_MemoHusbandry.Text" xml:space="preserve">
+    <value>Memo Husbandry</value>
+  </data>
+  <data name="TextBlock_MemoReproduction.Text" xml:space="preserve">
+    <value>Memo Reproduction</value>
+  </data>
+  <data name="TextBlock_MemoSozial.Text" xml:space="preserve">
+    <value>Memo Sozial</value>
+  </data>
+  <data name="TextBlock_MemoSpecial.Text" xml:space="preserve">
+    <value>Memo Special</value>
+  </data>
+  <data name="TextBlock_MemoSpecies.Text" xml:space="preserve">
+    <value>Memo Species</value>
+  </data>
+  <data name="TextBlock_MemoTech.Text" xml:space="preserve">
+    <value>Memo Technic</value>
+  </data>
+  <data name="TextBlock_MimeType.Text" xml:space="preserve">
+    <value>MimeType</value>
+  </data>
+  <data name="TextBlock_Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TextBlock_NameId.Text" xml:space="preserve">
+    <value>Name ID</value>
+  </data>
+  <data name="TextBlock_NameName.Text" xml:space="preserve">
+    <value>Name </value>
+  </data>
+  <data name="TextBlock_Names.Text" xml:space="preserve">
+    <value>Names</value>
+  </data>
+  <data name="TextBlock_Newsletter.Text" xml:space="preserve">
+    <value>Newsletter</value>
+  </data>
+  <data name="TextBlock_NoLogin.Text" xml:space="preserve">
+    <value>nobody logged!</value>
+  </data>
+  <data name="TextBlock_Notes.Text" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="TextBlock_Ordo.Text" xml:space="preserve">
+    <value>Infraordo Subordo Ordo Legio</value>
+  </data>
+  <data name="TextBlock_OrdoId.Text" xml:space="preserve">
+    <value>Ordo ID</value>
+  </data>
+  <data name="TextBlock_OrdoName.Text" xml:space="preserve">
+    <value>Ordo Name</value>
+  </data>
+  <data name="TextBlock_OrdoName_Legios.Text" xml:space="preserve">
+    <value>Ordo/Legios</value>
+  </data>
+  <data name="TextBlock_Ordos.Text" xml:space="preserve">
+    <value>Ordos</value>
+  </data>
+  <data name="TextBlock_Page.Text" xml:space="preserve">
+    <value>Page(s)</value>
+  </data>
+  <data name="TextBlock_Password.Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="TextBlock_Path.Text" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="TextBlock_Ph.Text" xml:space="preserve">
+    <value>Ph</value>
+  </data>
+  <data name="TextBlock_Phylum.Text" xml:space="preserve">
+    <value>Subphylum Phylum Regnum</value>
+  </data>
+  <data name="TextBlock_PhylumId.Text" xml:space="preserve">
+    <value>Phylum ID</value>
+  </data>
+  <data name="TextBlock_PhylumName.Text" xml:space="preserve">
+    <value>Phylum Name</value>
+  </data>
+  <data name="TextBlock_PhylumName_Regnums.Text" xml:space="preserve">
+    <value>Phylum / Regnums</value>
+  </data>
+  <data name="TextBlock_Phylums.Text" xml:space="preserve">
+    <value>Phylums</value>
+  </data>
+  <data name="TextBlock_PlSpeciesId.Text" xml:space="preserve">
+    <value>PlSpecies ID</value>
+  </data>
+  <data name="TextBlock_PlSpeciesName.Text" xml:space="preserve">
+    <value>PlSpecies Name</value>
+  </data>
+  <data name="TextBlock_PlSpeciesses.Text" xml:space="preserve">
+    <value>PlSpeciesses</value>
+  </data>
+  <data name="TextBlock_PublicationPlace.Text" xml:space="preserve">
+    <value>Publication Place</value>
+  </data>
+  <data name="TextBlock_Publisher.Text" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="TextBlock_Publisherplace.Text" xml:space="preserve">
+    <value>Publisher Place</value>
+  </data>
+  <data name="TextBlock_Publisher_Place.Text" xml:space="preserve">
+    <value>Publisher/Place</value>
+  </data>
+  <data name="TextBlock_Publisher_Year.Text" xml:space="preserve">
+    <value>Publisher/Year</value>
+  </data>
+  <data name="TextBlock_RefAuthorId.Text" xml:space="preserve">
+    <value>Ref Author ID</value>
+  </data>
+  <data name="TextBlock_RefAuthorName.Text" xml:space="preserve">
+    <value>Author(s)/Editor(s)</value>
+  </data>
+  <data name="TextBlock_ReferenceAuthors.Text" xml:space="preserve">
+    <value>Reference Authors</value>
+  </data>
+  <data name="TextBlock_ReferenceExperts.Text" xml:space="preserve">
+    <value>Reference Experts</value>
+  </data>
+  <data name="TextBlock_ReferenceId.Text" xml:space="preserve">
+    <value>Reference ID</value>
+  </data>
+  <data name="TextBlock_ReferenceSources.Text" xml:space="preserve">
+    <value>Reference Sources</value>
+  </data>
+  <data name="TextBlock_RefExpertId.Text" xml:space="preserve">
+    <value>Ref Expert ID</value>
+  </data>
+  <data name="TextBlock_RefExpertName.Text" xml:space="preserve">
+    <value>Expert</value>
+  </data>
+  <data name="TextBlock_RefExperts.Text" xml:space="preserve">
+    <value>Reference Experts</value>
+  </data>
+  <data name="TextBlock_RefSourceId.Text" xml:space="preserve">
+    <value>Ref Source ID</value>
+  </data>
+  <data name="TextBlock_RefSourceName.Text" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="TextBlock_Ref_Author.Text" xml:space="preserve">
+    <value>Ref Author</value>
+  </data>
+  <data name="TextBlock_Ref_Expert.Text" xml:space="preserve">
+    <value>Ref Expert</value>
+  </data>
+  <data name="TextBlock_Ref_Source.Text" xml:space="preserve">
+    <value>Ref Source</value>
+  </data>
+  <data name="TextBlock_Regex.Text" xml:space="preserve">
+    <value>Regex</value>
+  </data>
+  <data name="TextBlock_RegnumId.Text" xml:space="preserve">
+    <value>Regnum ID</value>
+  </data>
+  <data name="TextBlock_RegnumName.Text" xml:space="preserve">
+    <value>Regnum Name</value>
+  </data>
+  <data name="TextBlock_Regnums.Text" xml:space="preserve">
+    <value>Regnums</value>
+  </data>
+  <data name="TextBlock_Reproduction.Text" xml:space="preserve">
+    <value>Reproduction</value>
+  </data>
+  <data name="TextBlock_Role_Flag.Text" xml:space="preserve">
+    <value>Role/Flag</value>
+  </data>
+  <data name="TextBlock_Source_Year.Text" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="TextBlock_SpanishName.Text" xml:space="preserve">
+    <value>Spanish Name</value>
+  </data>
+  <data name="TextBlock_Special.Text" xml:space="preserve">
+    <value>Special</value>
+  </data>
+  <data name="TextBlock_SpeciesgroupId.Text" xml:space="preserve">
+    <value>Speciesgroup ID</value>
+  </data>
+  <data name="TextBlock_SpeciesgroupName.Text" xml:space="preserve">
+    <value>Speciesgroup Name</value>
+  </data>
+  <data name="TextBlock_Speciesgroups.Text" xml:space="preserve">
+    <value>Speciesgroups</value>
+  </data>
+  <data name="TextBlock_SpeciesName_Subspecies_Divers.Text" xml:space="preserve">
+    <value>Species/Sub/Divers</value>
+  </data>
+  <data name="TextBlock_Specification.Text" xml:space="preserve">
+    <value>Specification</value>
+  </data>
+  <data name="TextBlock_Street.Text" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="TextBlock_Subclasses.Text" xml:space="preserve">
+    <value>Subclasses</value>
+  </data>
+  <data name="TextBlock_SubclassId.Text" xml:space="preserve">
+    <value>Subclass ID</value>
+  </data>
+  <data name="TextBlock_SubclassName.Text" xml:space="preserve">
+    <value>Subclass Name</value>
+  </data>
+  <data name="TextBlock_SubclassName_Classes.Text" xml:space="preserve">
+    <value>Subclass/Classes</value>
+  </data>
+  <data name="TextBlock_SubdivisionId.Text" xml:space="preserve">
+    <value>Subdivision ID</value>
+  </data>
+  <data name="TextBlock_SubdivisionName.Text" xml:space="preserve">
+    <value>Subdivision Name</value>
+  </data>
+  <data name="TextBlock_SubdivisionName_Divisions.Text" xml:space="preserve">
+    <value>Subdivision/Divisions</value>
+  </data>
+  <data name="TextBlock_Subfamilies.Text" xml:space="preserve">
+    <value>Subfamilies</value>
+  </data>
+  <data name="TextBlock_Subfamily.Text" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="TextBlock_SubfamilyId.Text" xml:space="preserve">
+    <value>Subfamily ID</value>
+  </data>
+  <data name="TextBlock_SubfamilyName.Text" xml:space="preserve">
+    <value>Subfamily Name</value>
+  </data>
+  <data name="TextBlock_SubfamilyName_Families.Text" xml:space="preserve">
+    <value>Subfamily/Families</value>
+  </data>
+  <data name="TextBlock_Subordo.Text" xml:space="preserve">
+    <value>Subordo</value>
+  </data>
+  <data name="TextBlock_SubordoId.Text" xml:space="preserve">
+    <value>Subordo ID</value>
+  </data>
+  <data name="TextBlock_SubordoName.Text" xml:space="preserve">
+    <value>Subordo Name</value>
+  </data>
+  <data name="TextBlock_SubordoName_Ordos.Text" xml:space="preserve">
+    <value>Subordo/Ordos</value>
+  </data>
+  <data name="TextBlock_Subordos.Text" xml:space="preserve">
+    <value>Subordos</value>
+  </data>
+  <data name="TextBlock_SubphylumId.Text" xml:space="preserve">
+    <value>Subphylum ID</value>
+  </data>
+  <data name="TextBlock_SubphylumName.Text" xml:space="preserve">
+    <value>Subphylum Name</value>
+  </data>
+  <data name="TextBlock_SubphylumName_Phylums.Text" xml:space="preserve">
+    <value>Subphylum/Phylums</value>
+  </data>
+  <data name="TextBlock_Subphylums_Subdivisions.Text" xml:space="preserve">
+    <value>Subphylums/divisions</value>
+  </data>
+  <data name="TextBlock_Subregnum.Text" xml:space="preserve">
+    <value>Subregnum</value>
+  </data>
+  <data name="TextBlock_Subspeciesgroup.Text" xml:space="preserve">
+    <value>Subspeciesgroup</value>
+  </data>
+  <data name="TextBlock_Subtribus.Text" xml:space="preserve">
+    <value>Subtribus</value>
+  </data>
+  <data name="TextBlock_SubtribusId.Text" xml:space="preserve">
+    <value>Subtribus ID</value>
+  </data>
+  <data name="TextBlock_SubtribusName.Text" xml:space="preserve">
+    <value>Subtribus Name</value>
+  </data>
+  <data name="TextBlock_SubtribusName_Tribusses.Text" xml:space="preserve">
+    <value>Subtribus/Tribusses</value>
+  </data>
+  <data name="TextBlock_Subtribusses.Text" xml:space="preserve">
+    <value>Subtribusses</value>
+  </data>
+  <data name="TextBlock_Superclasses.Text" xml:space="preserve">
+    <value>Superclasses</value>
+  </data>
+  <data name="TextBlock_SuperclassId.Text" xml:space="preserve">
+    <value>Superclass ID</value>
+  </data>
+  <data name="TextBlock_SuperclassName.Text" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="TextBlock_Superfamilies.Text" xml:space="preserve">
+    <value>Superfamilies</value>
+  </data>
+  <data name="TextBlock_Superfamily.Text" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="TextBlock_SuperfamilyId.Text" xml:space="preserve">
+    <value>Superfamily ID</value>
+  </data>
+  <data name="TextBlock_SuperfamilyName.Text" xml:space="preserve">
+    <value>Superfamily Name</value>
+  </data>
+  <data name="TextBlock_SuperfamilyName_Infraordos.Text" xml:space="preserve">
+    <value>Superfamily/Infraordos</value>
+  </data>
+  <data name="TextBlock_Supertribus.Text" xml:space="preserve">
+    <value>Supertribus</value>
+  </data>
+  <data name="TextBlock_SupertribusId.Text" xml:space="preserve">
+    <value>Supertribus ID</value>
+  </data>
+  <data name="TextBlock_SupertribusName.Text" xml:space="preserve">
+    <value>Supertribus Name</value>
+  </data>
+  <data name="TextBlock_SupertribusName_Infrafamilies.Text" xml:space="preserve">
+    <value>Supertribus/Infrafamilies</value>
+  </data>
+  <data name="TextBlock_Supertribusses.Text" xml:space="preserve">
+    <value>Supertribusses</value>
+  </data>
+  <data name="TextBlock_Synonym.Text" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="TextBlock_SynonymId.Text" xml:space="preserve">
+    <value>Synonym ID</value>
+  </data>
+  <data name="TextBlock_SynonymName.Text" xml:space="preserve">
+    <value>Synonym Name</value>
+  </data>
+  <data name="TextBlock_Synonyms.Text" xml:space="preserve">
+    <value>Synonyms</value>
+  </data>
+  <data name="TextBlock_Technik.Text" xml:space="preserve">
+    <value>Technik</value>
+  </data>
+  <data name="TextBlock_Temp.Text" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="TextBlock_TradeName.Text" xml:space="preserve">
+    <value>TradeName</value>
+  </data>
+  <data name="TextBlock_Tribus.Text" xml:space="preserve">
+    <value>Infratribus Subtribus Tribus Supertribus</value>
+  </data>
+  <data name="TextBlock_TribusId.Text" xml:space="preserve">
+    <value>Tribus ID</value>
+  </data>
+  <data name="TextBlock_TribusName.Text" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="TextBlock_TribusName_Supertribusses.Text" xml:space="preserve">
+    <value>Tribus/Supertribusses</value>
+  </data>
+  <data name="TextBlock_Tribusses.Text" xml:space="preserve">
+    <value>Tribusses</value>
+  </data>
+  <data name="TextBlock_UserProfileEmail.Text" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="TextBlock_UserProfileId.Text" xml:space="preserve">
+    <value>Userprofile ID</value>
+  </data>
+  <data name="TextBlock_UserProfileName.Text" xml:space="preserve">
+    <value>Userprofile Name</value>
+  </data>
+  <data name="TextBlock_Valid_Year.Text" xml:space="preserve">
+    <value>Valid/Year</value>
+  </data>
+  <data name="TextBlock_Valid_Year_Isbn.Text" xml:space="preserve">
+    <value>Valid/Year/ISBN</value>
+  </data>
+  <data name="TextBlock_Valid_Year_Shot.Text" xml:space="preserve">
+    <value>Valid/Year/Shot</value>
+  </data>
+  <data name="TextBlock_Video.Text" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="TextBlock_ZoomLevel.Text" xml:space="preserve">
+    <value>ZoomLevel</value>
+  </data>
+  <data name="TextBox_Address.Header" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="TextBox_ArticelTitle.Header" xml:space="preserve">
+    <value>Article Title</value>
+  </data>
+  <data name="TextBox_Author.Header" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="TextBox_AuthorYear.Header" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="TextBox_BasinHeight.Header" xml:space="preserve">
+    <value>Basin Height</value>
+  </data>
+  <data name="TextBox_BasinLength.Header" xml:space="preserve">
+    <value>Basin Length</value>
+  </data>
+  <data name="TextBox_BirthDate.Header" xml:space="preserve">
+    <value>Birth Date</value>
+  </data>
+  <data name="TextBox_BookName.Header" xml:space="preserve">
+    <value>Book Name</value>
+  </data>
+  <data name="TextBox_Business.Header" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="TextBox_CarboHardness1.Header" xml:space="preserve">
+    <value>CarboHardness1</value>
+  </data>
+  <data name="TextBox_CarboHardness2.Header" xml:space="preserve">
+    <value>CarboHardness2</value>
+  </data>
+  <data name="TextBox_City.Header" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="TextBox_ClassName.Header" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="TextBox_Colour.Header" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="TextBox_Company.Header" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="TextBox_Divers.Header" xml:space="preserve">
+    <value>Divers</value>
+  </data>
+  <data name="TextBox_DivisionName.Header" xml:space="preserve">
+    <value>Division Name</value>
+  </data>
+  <data name="TextBox_EngName.Header" xml:space="preserve">
+    <value>English Name</value>
+  </data>
+  <data name="TextBox_FamilyName.Header" xml:space="preserve">
+    <value>Family Name</value>
+  </data>
+  <data name="TextBox_Fax.Header" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="TextBox_FilestreamId.Header" xml:space="preserve">
+    <value>Filestream ID</value>
+  </data>
+  <data name="TextBox_FirstName.Header" xml:space="preserve">
+    <value>FirstName</value>
+  </data>
+  <data name="TextBox_FishLength.Header" xml:space="preserve">
+    <value>Fish Length</value>
+  </data>
+  <data name="TextBox_FiSpeciesName.Header" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="TextBox_FraName.Header" xml:space="preserve">
+    <value>French Name</value>
+  </data>
+  <data name="TextBox_GenusName.Header" xml:space="preserve">
+    <value>Genus Name</value>
+  </data>
+  <data name="TextBox_GerName.Header" xml:space="preserve">
+    <value>German Name</value>
+  </data>
+  <data name="TextBox_Hardness1.Header" xml:space="preserve">
+    <value>Hardness1</value>
+  </data>
+  <data name="TextBox_Hardness2.Header" xml:space="preserve">
+    <value>Hardness2</value>
+  </data>
+  <data name="TextBox_HomePageUrl.Header" xml:space="preserve">
+    <value>HomePageUrl</value>
+  </data>
+  <data name="TextBox_Http.Header" xml:space="preserve">
+    <value>Http</value>
+  </data>
+  <data name="TextBox_ImagePath.Header" xml:space="preserve">
+    <value>Image Path</value>
+  </data>
+  <data name="TextBox_Importer.Header" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="TextBox_ImportingYear.Header" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="TextBox_Info.Header" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="TextBox_InfraclassName.Header" xml:space="preserve">
+    <value>Infraclass Name</value>
+  </data>
+  <data name="TextBox_InfrafamilyName.Header" xml:space="preserve">
+    <value>Infrafamily Name</value>
+  </data>
+  <data name="TextBox_InfraordoName.Header" xml:space="preserve">
+    <value>Infraordo Name</value>
+  </data>
+  <data name="TextBox_InfratribusName.Header" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="TextBox_ISBN.Header" xml:space="preserve">
+    <value>ISBN</value>
+  </data>
+  <data name="TextBox_LastName.Header" xml:space="preserve">
+    <value>LastName</value>
+  </data>
+  <data name="TextBox_Latitude1.Header" xml:space="preserve">
+    <value>Latitude 1</value>
+  </data>
+  <data name="TextBox_Latitude2.Header" xml:space="preserve">
+    <value>Latitude 2</value>
+  </data>
+  <data name="TextBox_Latitude3.Header" xml:space="preserve">
+    <value>Latitude 3</value>
+  </data>
+  <data name="TextBox_Latitude4.Header" xml:space="preserve">
+    <value>Latitude 4</value>
+  </data>
+  <data name="TextBox_LegioName.Header" xml:space="preserve">
+    <value>Legio Name</value>
+  </data>
+  <data name="TextBox_Longitude1.Header" xml:space="preserve">
+    <value>Longitude 1</value>
+  </data>
+  <data name="TextBox_Longitude2.Header" xml:space="preserve">
+    <value>Longitude 2</value>
+  </data>
+  <data name="TextBox_Longitude3.Header" xml:space="preserve">
+    <value>Longitude 3</value>
+  </data>
+  <data name="TextBox_Longitude4.Header" xml:space="preserve">
+    <value>Longitude 4</value>
+  </data>
+  <data name="TextBox_Memo.Header" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="TextBox_MemoBreeding.Header" xml:space="preserve">
+    <value>Memo Breeding</value>
+  </data>
+  <data name="TextBox_MemoBuilt.Header" xml:space="preserve">
+    <value>Memo Built</value>
+  </data>
+  <data name="TextBox_MemoColor.Header" xml:space="preserve">
+    <value>Memo Color</value>
+  </data>
+  <data name="TextBox_MemoCulture.Header" xml:space="preserve">
+    <value>Memo Culture</value>
+  </data>
+  <data name="TextBox_MemoDomorphism.Header" xml:space="preserve">
+    <value>Memo Domorphism</value>
+  </data>
+  <data name="TextBox_MemoFoods.Header" xml:space="preserve">
+    <value>Memo Foods</value>
+  </data>
+  <data name="TextBox_MemoGlobal.Header" xml:space="preserve">
+    <value>Memo Global</value>
+  </data>
+  <data name="TextBox_MemoHusbandry.Header" xml:space="preserve">
+    <value>Memo Husbandry</value>
+  </data>
+  <data name="TextBox_MemoReproduction.Header" xml:space="preserve">
+    <value>Memo Reproduction</value>
+  </data>
+  <data name="TextBox_MemoSozial.Header" xml:space="preserve">
+    <value>Memo Sozial</value>
+  </data>
+  <data name="TextBox_MemoSpecial.Header" xml:space="preserve">
+    <value>Memo Special</value>
+  </data>
+  <data name="TextBox_MemoSpecies.Header" xml:space="preserve">
+    <value>Memo Species</value>
+  </data>
+  <data name="TextBox_MemoTech.Header" xml:space="preserve">
+    <value>Memo Technics</value>
+  </data>
+  <data name="TextBox_Mobil.Header" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="TextBox_NameName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TextBox_Notes.Header" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="TextBox_OrdoName.Header" xml:space="preserve">
+    <value>Ordo Name</value>
+  </data>
+  <data name="TextBox_Page.Header" xml:space="preserve">
+    <value>Page</value>
+  </data>
+  <data name="TextBox_Password.Header" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="TextBox_Ph1.Header" xml:space="preserve">
+    <value>Ph1</value>
+  </data>
+  <data name="TextBox_Ph2.Header" xml:space="preserve">
+    <value>Ph2</value>
+  </data>
+  <data name="TextBox_PhylumName.Header" xml:space="preserve">
+    <value>Phylum Name</value>
+  </data>
+  <data name="TextBox_PlantLength.Header" xml:space="preserve">
+    <value>Plant Length</value>
+  </data>
+  <data name="TextBox_PlSpeciesName.Header" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="TextBox_Postcode.Header" xml:space="preserve">
+    <value>Postcode</value>
+  </data>
+  <data name="TextBox_PublicationPlace.Header" xml:space="preserve">
+    <value>Publication Place</value>
+  </data>
+  <data name="TextBox_Publisher.Header" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="TextBox_RefAuthorName.Header" xml:space="preserve">
+    <value>Author Name</value>
+  </data>
+  <data name="TextBox_RefExpertName.Header" xml:space="preserve">
+    <value>Expert Name</value>
+  </data>
+  <data name="TextBox_RefSourceName.Header" xml:space="preserve">
+    <value>Source Name</value>
+  </data>
+  <data name="TextBox_RegnumName.Header" xml:space="preserve">
+    <value>Regnum Name</value>
+  </data>
+  <data name="TextBox_ShotDate.Header" xml:space="preserve">
+    <value>Shot Date</value>
+  </data>
+  <data name="TextBox_Signature.Header" xml:space="preserve">
+    <value>Signature</value>
+  </data>
+  <data name="TextBox_SpaName.Header" xml:space="preserve">
+    <value>Spanish Name</value>
+  </data>
+  <data name="TextBox_SpeciesgroupName.Header" xml:space="preserve">
+    <value>Speciesgroup Name</value>
+  </data>
+  <data name="TextBox_Street.Header" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="TextBox_SubclassName.Header" xml:space="preserve">
+    <value>Subclass Name</value>
+  </data>
+  <data name="TextBox_SubdivisionName.Header" xml:space="preserve">
+    <value>Subdivision Name</value>
+  </data>
+  <data name="TextBox_SubfamilyName.Header" xml:space="preserve">
+    <value>Subfamily Name</value>
+  </data>
+  <data name="TextBox_SubordoName.Header" xml:space="preserve">
+    <value>Subordo Name</value>
+  </data>
+  <data name="TextBox_SubphylumName.Header" xml:space="preserve">
+    <value>Subphylum Name</value>
+  </data>
+  <data name="TextBox_Subregnum.Header" xml:space="preserve">
+    <value>Subregnum</value>
+  </data>
+  <data name="TextBox_Subspecies.Header" xml:space="preserve">
+    <value>Subspecies</value>
+  </data>
+  <data name="TextBox_Subspeciesgroup.Header" xml:space="preserve">
+    <value>Subspeciesgroup</value>
+  </data>
+  <data name="TextBox_SubtribusName.Header" xml:space="preserve">
+    <value>Subtribus Name</value>
+  </data>
+  <data name="TextBox_SuperclassName.Header" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="TextBox_SuperclassName.Text" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="TextBox_SuperfamilyName.Header" xml:space="preserve">
+    <value>Superfamily Name</value>
+  </data>
+  <data name="TextBox_SupertribusName.Header" xml:space="preserve">
+    <value>Supertribus Name</value>
+  </data>
+  <data name="TextBox_Synonym.Header" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="TextBox_SynonymName.Header" xml:space="preserve">
+    <value>Synonym Name</value>
+  </data>
+  <data name="TextBox_Tel.Header" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="TextBox_Temp1.Header" xml:space="preserve">
+    <value>Temp1</value>
+  </data>
+  <data name="TextBox_Temp2.Header" xml:space="preserve">
+    <value>Temp2</value>
+  </data>
+  <data name="TextBox_TradeName.Header" xml:space="preserve">
+    <value>Tradename</value>
+  </data>
+  <data name="TextBox_TribusName.Header" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="TextBox_UserProfileEmail.Header" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="TextBox_ValidYear.Header" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="TextBox_ZoomLevel.Header" xml:space="preserve">
+    <value>ZoomLevel</value>
+  </data>
+  <data name="MenuFlyout_Add_Regnum.Text" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="MenuFlyout_Copy_Regnum.Text" xml:space="preserve">
+    <value>Copy Regnum</value>
+  </data>
+  <data name="MenuFlyout_Delete_Regnum.Text" xml:space="preserve">
+    <value> Regnum</value>
+  </data>
+  <data name="MenuFlyout_Refresh_Regnum.Text" xml:space="preserve">
+    <value>Refresh Regnum</value>
+  </data>
+  <data name="MenuFlyout_Save_Regnum.Text" xml:space="preserve">
+    <value>Save Regnum</value>
+  </data>
+  <data name="StandardUICommand_DeleteCommand.Description" xml:space="preserve">
+    <value>Remove this</value>
+  </data>
+  <data name="XamlUICommand_CopyCommand.Description" xml:space="preserve">
+    <value>Create a copy</value>
+  </data>
+  <data name="XamlUICommand_DeleteCommand.Description" xml:space="preserve">
+    <value>Remove dataset</value>
+  </data>
+  <data name="MenuFlyout_Edit_Regnum.Text" xml:space="preserve">
+    <value>Edit Regnum</value>
+  </data>
+  <data name="TextBox_RegnumId.Header" xml:space="preserve">
+    <value>Regnum ID</value>
+  </data>
+  <data name="TextBox_DivisionId.Header" xml:space="preserve">
+    <value>Division ID</value>
+  </data>
+  <data name="TextBox_PhylumId.Header" xml:space="preserve">
+    <value>Phylum ID</value>
+  </data>
+  <data name="TextBox_CommentId.Header" xml:space="preserve">
+    <value>Comment ID</value>
+  </data>
+  <data name="TextBox_ReferenceAuthorId.Header" xml:space="preserve">
+    <value>Author ID</value>
+  </data>
+  <data name="TextBox_ReferenceExpertId.Header" xml:space="preserve">
+    <value>Expert ID</value>
+  </data>
+  <data name="TextBox_ReferenceId.Header" xml:space="preserve">
+    <value>Reference ID</value>
+  </data>
+  <data name="TextBox_ReferenceSourceId.Header" xml:space="preserve">
+    <value>Source ID</value>
+  </data>
+  <data name="TextBox_SubphylumId.Header" xml:space="preserve">
+    <value>Subphylum ID</value>
+  </data>
+  <data name="TextBox_SuperclassId.Header" xml:space="preserve">
+    <value>Superclass ID</value>
+  </data>
+  <data name="TextBox_SubdivisionId.Header" xml:space="preserve">
+    <value>Subdivision ID</value>
+  </data>
+  <data name="TextBox_ClassId.Header" xml:space="preserve">
+    <value>Class ID</value>
+  </data>
+  <data name="TextBox_InfraclassId.Header" xml:space="preserve">
+    <value>Infraclass ID</value>
+  </data>
+  <data name="TextBox_LegioId.Header" xml:space="preserve">
+    <value>Legio ID</value>
+  </data>
+  <data name="TextBox_SubclassId.Header" xml:space="preserve">
+    <value>Subclass ID</value>
+  </data>
+  <data name="TextBox_FamilyId.Header" xml:space="preserve">
+    <value>Family ID</value>
+  </data>
+  <data name="TextBox_InfrafamilyId.Header" xml:space="preserve">
+    <value>Infrafamily ID</value>
+  </data>
+  <data name="TextBox_InfraordoId.Header" xml:space="preserve">
+    <value>Infraordo ID</value>
+  </data>
+  <data name="TextBox_OrdoId.Header" xml:space="preserve">
+    <value>Ordo ID</value>
+  </data>
+  <data name="TextBox_SubfamilyId.Header" xml:space="preserve">
+    <value>Subfamily ID</value>
+  </data>
+  <data name="TextBox_SubordoId.Header" xml:space="preserve">
+    <value>Subordo ID</value>
+  </data>
+  <data name="TextBox_SuperfamilyId.Header" xml:space="preserve">
+    <value>Superfamily ID</value>
+  </data>
+  <data name="TextBox_GenusId.Header" xml:space="preserve">
+    <value>Genus ID</value>
+  </data>
+  <data name="TextBox_InfratribusId.Header" xml:space="preserve">
+    <value>Infratribus ID</value>
+  </data>
+  <data name="TextBox_SubtribusId.Header" xml:space="preserve">
+    <value>Subtribus ID</value>
+  </data>
+  <data name="TextBox_SupertribusId.Header" xml:space="preserve">
+    <value>Supertribus ID</value>
+  </data>
+  <data name="TextBox_TribusId.Header" xml:space="preserve">
+    <value>Tribus ID</value>
+  </data>
+  <data name="TextBox_FiSpeciesId.Header" xml:space="preserve">
+    <value>Species ID</value>
+  </data>
+  <data name="TextBox_PlSpeciesId.Header" xml:space="preserve">
+    <value>Species ID</value>
+  </data>
+  <data name="TextBox_SpeciesgroupId.Header" xml:space="preserve">
+    <value>Speciesgroup ID</value>
+  </data>
+  <data name="TextBox_NameId.Header" xml:space="preserve">
+    <value>Name ID</value>
+  </data>
+  <data name="TextBox_SelectedPath.Header" xml:space="preserve">
+    <value>Selected Path</value>
+  </data>
+  <data name="TextBox_ImageId.Header" xml:space="preserve">
+    <value>Image ID</value>
+  </data>
+  <data name="TextBox_GeographicId.Header" xml:space="preserve">
+    <value>Geographic ID</value>
+  </data>
+  <data name="TextBox_SynonymId.Header" xml:space="preserve">
+    <value>Synonym ID</value>
+  </data>
+  <data name="TextBox_RefAuthorId.Header" xml:space="preserve">
+    <value>Author ID</value>
+  </data>
+  <data name="TextBox_RefExpertId.Header" xml:space="preserve">
+    <value>Expert ID</value>
+  </data>
+  <data name="TextBox_RefSourceId.Header" xml:space="preserve">
+    <value>Source ID</value>
+  </data>
+  <data name="Nav_Disease.Content" xml:space="preserve">
+    <value>Disease</value>
+  </data>
+  <data name="Nav_Fish.Content" xml:space="preserve">
+    <value>Fish</value>
+  </data>
+  <data name="Nav_Food.Content" xml:space="preserve">
+    <value>Food</value>
+  </data>
+  <data name="Nav_Miscellaenies.Content" xml:space="preserve">
+    <value>Miscellaneousses</value>
+  </data>
+  <data name="Nav_Plant.Content" xml:space="preserve">
+    <value>Plant</value>
+  </data>
+  <data name="TabViewItem_Geographics.Header" xml:space="preserve">
+    <value>Geographics</value>
+  </data>
+  <data name="AppBarButtonPDF.Label" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="TextBlock_DirectChildren.Text" xml:space="preserve">
+    <value>Direct Children:</value>
+  </data>
+  <data name="TextBlock_Experts.Text" xml:space="preserve">
+    <value>Expert(s):</value>
+  </data>
+  <data name="TextBlock_NamesReport.Text" xml:space="preserve">
+    <value>Name(s):</value>
+  </data>
+  <data name="TextBlock_Publications.Text" xml:space="preserve">
+    <value>Publication(s):</value>
+  </data>
+  <data name="TextBlock_References.Text" xml:space="preserve">
+    <value>References</value>
+  </data>
+  <data name="TextBlock_Sources.Text" xml:space="preserve">
+    <value>Other Source(s):</value>
+  </data>
+  <data name="TextBlock_Species.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">
+    <value>Synonym(s):</value>
+  </data>
+  <data name="TextBlock_TaxonomicHierarchy.Text" xml:space="preserve">
+    <value>Taxonomic Hierarchy</value>
+  </data>
+  <data name="TextBlock_TaxonomicId.Text" xml:space="preserve">
+    <value>Taxonomic ID: </value>
+  </data>
+  <data name="TextBlock_TaxonomicRank.Text" xml:space="preserve">
+    <value>Taxonomic Rank:</value>
+  </data>
+  <data name="AppBarButtonPdf.Content" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="TabViewItem_Search.Header" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TextBlock_GeographicsInformation.Text" xml:space="preserve">
+    <value>Geographics Information</value>
+  </data>
+  <data name="TextBlock_ImagesInformation.Text" xml:space="preserve">
+    <value>Images Information</value>
+  </data>
+  <data name="TextBlock_Subspecies.Text" xml:space="preserve">
+    <value>Subspecies</value>
+  </data>
+  <data name="TextBlock_WorthKnowing.Text" xml:space="preserve">
+    <value>Worth Knowing</value>
+  </data>
+  <data name="TextBlock_Regnum.Text" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="TextBlock_Subclass.Text" xml:space="preserve">
+    <value>Subclass</value>
+  </data>
+  <data name="TextBlock_Subdivision.Text" xml:space="preserve">
+    <value>Subdivision</value>
+  </data>
+  <data name="TextBlock_Subphylum.Text" xml:space="preserve">
+    <value>Subphylum</value>
+  </data>
+  <data name="TextBlock_Superclass.Text" xml:space="preserve">
+    <value>Superclass</value>
+  </data>
+  <data name="TextBlock_Legio.Text" xml:space="preserve">
+    <value>Legio</value>
+  </data>
+  <data name="TextBlock_Ordo1.Text" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
+  <data name="TextBlock_Infraordo.Text" xml:space="preserve">
+    <value>Infraordo</value>
+  </data>
+  <data name="TextBlock_Family1.Text" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="TextBlock_Tribus1.Text" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="MenuFlyoutItemAbout.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="MenuFlyoutItemChangePw.Text" xml:space="preserve">
+    <value>Change Pw</value>
+  </data>
+  <data name="MenuFlyoutItemClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="MenuFlyoutItemForgotPw.Text" xml:space="preserve">
+    <value>Forgot Pw</value>
+  </data>
+  <data name="MenuFlyoutItemLogin.Text" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="MenuFlyoutItemLogout.Text" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="MenuFlyoutItemRegister.Text" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="AppBarButtonEmail.Label" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="AppBarButtonEol.Label" xml:space="preserve">
+    <value>EOL</value>
+  </data>
+  <data name="AppBarButtonGithub.Label" xml:space="preserve">
+    <value>Github</value>
+  </data>
+  <data name="AppBarButtonGlobalBio.Label" xml:space="preserve">
+    <value>Global Bio</value>
+  </data>
+  <data name="AppBarButtonItisCanada.Label" xml:space="preserve">
+    <value>Itis Canada</value>
+  </data>
+  <data name="AppBarButtonItisUsa.Label" xml:space="preserve">
+    <value>Itis USA</value>
+  </data>
+  <data name="AppBarButtonLife.Label" xml:space="preserve">
+    <value>Life</value>
+  </data>
+  <data name="AppBarButtonMexico.Label" xml:space="preserve">
+    <value>Mexico</value>
+  </data>
+  <data name="TextBlock_Class1.Text" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="TextBlock_Division1.Text" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="TextBlock_Phylum1.Text" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="Nav_AddOn.Content" xml:space="preserve">
+    <value>Add On</value>
+  </data>
+  <data name="en-US.Text" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="sp-SP.Text" xml:space="preserve">
+    <value>Español</value>
+  </data>
+  <data name="ja" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="MainPage_Title.Text" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="ProgressPage_Title.Text" xml:space="preserve">
+    <value>under progress</value>
+  </data>
+  <data name="NameLonger1Character" xml:space="preserve">
+    <value>Name should be longer than one character</value>
+  </data>
+  <data name="NameNotLonger100Characters" xml:space="preserve">
+    <value>Name should not be longer than 100 characters</value>
+  </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>Name is Required</value>
+  </data>
+  <data name="Nav_AddOns.Content" xml:space="preserve">
+    <value>Add Ons</value>
+  </data>
+  <data name="Shell_Home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Shell_Phylum.Content" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="Shell_Regnum.Content" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="Shell_Search.Content" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="MenuFlyout_Add_Reference.Text" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="MenuFlyout_Delete_Reference.Text" xml:space="preserve">
+    <value> Reference</value>
+  </data>
+  <data name="MenuFlyout_Save_Reference.Text" xml:space="preserve">
+    <value>Save Reference</value>
+  </data>
+  <data name="AppBarButtonBack.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="TextBlock_Subphylums.Text" xml:space="preserve">
+    <value>Subphylums</value>
+  </data>
+  <data name="TextBlock_Search.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="MenuFlyout_Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="AppBarButtonAddComment.Label" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="AppBarButtonAddPhylum.Label" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="AppBarButtonAddReference.Label" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="AppBarButtonAddRegnum.Label" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="AppBarButtonDeletePhylum.Label" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="AppBarButtonDeleteRegnum.Label" xml:space="preserve">
+    <value>Regnum</value>
+  </data>
+  <data name="TextBlock_NewPhylum.Text" xml:space="preserve">
+    <value>New Phylum</value>
+  </data>
+  <data name="TextBlock_NewRegnum.Text" xml:space="preserve">
+    <value>New Regnum</value>
+  </data>
+  <data name="TextBox_General.Header" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="TextBox_Languages.Header" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="AppBarButtonAddSubphylum.Label" xml:space="preserve">
+    <value>Subphylum</value>
+  </data>
+  <data name="AppBarButtonDeleteSubphylum.Label" xml:space="preserve">
+    <value>Subphylum</value>
+  </data>
+  <data name="AppBarButtonAddSuperclass.Label" xml:space="preserve">
+    <value>Superclass</value>
+  </data>
+  <data name="MenuFlyout_Add_Superclass.Text" xml:space="preserve">
+    <value>Superclass</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Class.Text" xml:space="preserve">
+    <value>View Details Class</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Division.Text" xml:space="preserve">
+    <value>View Details Division</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Phylum.Text" xml:space="preserve">
+    <value>View Details Phylum</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Regnum.Text" xml:space="preserve">
+    <value>View Details Regnum</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Subdivision.Text" xml:space="preserve">
+    <value>View Details Subdivision</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Subphylum.Text" xml:space="preserve">
+    <value>View Details Subphylum</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Superclass.Text" xml:space="preserve">
+    <value>View Details Superclass</value>
+  </data>
+  <data name="AppBarButtonAddDivision.Label" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="TextBlock_Divisions.Text" xml:space="preserve">
+    <value>Divisions</value>
+  </data>
+  <data name="TextBlock_Subdivisions.Text" xml:space="preserve">
+    <value>Subdivisions</value>
+  </data>
+  <data name="AppBarButtonAddClass.Label" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="AppBarButtonAddInfraclass.Label" xml:space="preserve">
+    <value>Infraclass</value>
+  </data>
+  <data name="AppBarButtonAddSubclass.Label" xml:space="preserve">
+    <value>Subclass</value>
+  </data>
+  <data name="AppBarButtonAddSubdivision.Label" xml:space="preserve">
+    <value>Subdivision</value>
+  </data>
+  <data name="AppBarButtonDeleteClass.Label" xml:space="preserve">
+    <value> Class</value>
+  </data>
+  <data name="AppBarButtonDeleteDivision.Label" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="AppBarButtonDeleteInfraclass.Label" xml:space="preserve">
+    <value>Infraclass</value>
+  </data>
+  <data name="AppBarButtonDeleteSubdivision.Label" xml:space="preserve">
+    <value>Subdivision</value>
+  </data>
+  <data name="AppBarButtonDeleteSuperclass.Label" xml:space="preserve">
+    <value>Superclass</value>
+  </data>
+  <data name="MenuFlyout_Add_Division.Text" xml:space="preserve">
+    <value>Division</value>
+  </data>
+  <data name="MenuFlyout_Add_Subdivision.Text" xml:space="preserve">
+    <value>Subdivision</value>
+  </data>
+  <data name="MenuFlyout_Delete_Division.Text" xml:space="preserve">
+    <value>Delete Division</value>
+  </data>
+  <data name="MenuFlyout_Delete_Subdivision.Text" xml:space="preserve">
+    <value>Delete Subdivision</value>
+  </data>
+  <data name="MenuFlyout_Delete_Superclass.Text" xml:space="preserve">
+    <value>Delete Superclass</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Infraclass.Text" xml:space="preserve">
+    <value>View Details Infraclass</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Reference.Text" xml:space="preserve">
+    <value>View Details Reference</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Subclass.Text" xml:space="preserve">
+    <value>View Details Subclass</value>
+  </data>
+  <data name="AppBarButtonAddInfraordo.Label" xml:space="preserve">
+    <value>Infraordo</value>
+  </data>
+  <data name="AppBarButtonAddLegio.Label" xml:space="preserve">
+    <value>Legio</value>
+  </data>
+  <data name="AppBarButtonAddOrdo.Label" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
+  <data name="AppBarButtonAddSubordo.Label" xml:space="preserve">
+    <value>Subordo</value>
+  </data>
+  <data name="AppBarButtonDeleteSubclass.Label" xml:space="preserve">
+    <value>Subclass</value>
+  </data>
+  <data name="MenuFlyout_Add_Subphylum.Text" xml:space="preserve">
+    <value>Subphylum</value>
+  </data>
+  <data name="MenuFlyout_Delete_Subphylum.Text" xml:space="preserve">
+    <value>Delete Subphylum</value>
+  </data>
+  <data name="MenuFlyout_Add_Phylum.Text" xml:space="preserve">
+    <value>Phylum</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Comment.Text" xml:space="preserve">
+    <value>View Details Comment</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Infraordo.Text" xml:space="preserve">
+    <value>View Details Infraordo</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Legio.Text" xml:space="preserve">
+    <value>View Details Legio</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Ordo.Text" xml:space="preserve">
+    <value>View Details Ordo</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Subordo.Text" xml:space="preserve">
+    <value>View Details Subordo</value>
+  </data>
+  <data name="AppBarButtonAddFiSpecies.Label" xml:space="preserve">
+    <value>Fish Species</value>
+  </data>
+  <data name="AppBarButtonAddGeographic.Label" xml:space="preserve">
+    <value>Geographic</value>
+  </data>
+  <data name="AppBarButtonAddImage.Label" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="AppBarButtonAddName.Label" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AppBarButtonAddPlSpecies.Label" xml:space="preserve">
+    <value>Plant Species</value>
+  </data>
+  <data name="AppBarButtonAddSynonym.Label" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="AppBarButtonDeleteFiSpecies.Label" xml:space="preserve">
+    <value>Delete Species</value>
+  </data>
+  <data name="AppBarButtonDeletePlSpecies.Label" xml:space="preserve">
+    <value>Delete Plant Species</value>
+  </data>
+  <data name="MenuFlyout_Add_Geographic.Text" xml:space="preserve">
+    <value>Geographic</value>
+  </data>
+  <data name="MenuFlyout_Add_Image.Text" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="MenuFlyout_Add_Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="MenuFlyout_Add_PlSpecies.Text" xml:space="preserve">
+    <value>Add Plant Species</value>
+  </data>
+  <data name="MenuFlyout_Add_Synonym.Text" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="MenuFlyout_Delete_PlSpecies.Text" xml:space="preserve">
+    <value>Delete Plant Species</value>
+  </data>
+  <data name="MenuFlyout_View_Details_FiSpecies.Text" xml:space="preserve">
+    <value>View Details Fish Species</value>
+  </data>
+  <data name="MenuFlyout_View_Details_PlSpecies.Text" xml:space="preserve">
+    <value>View Details Plant Species</value>
+  </data>
+  <data name="AppBarButtonAddGenus.Label" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="AppBarButtonDeleteGenus.Label" xml:space="preserve">
+    <value>Genus</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Family.Text" xml:space="preserve">
+    <value>View Details Family</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Genus.Text" xml:space="preserve">
+    <value>View Details Genus</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Infrafamily.Text" xml:space="preserve">
+    <value>View Details Infrafamily</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Infratribus.Text" xml:space="preserve">
+    <value>View Details Infratribus</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Subfamily.Text" xml:space="preserve">
+    <value>View Details Subfamily</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Subtribus.Text" xml:space="preserve">
+    <value>View Details Subtribus</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Superfamily.Text" xml:space="preserve">
+    <value>View Details Superfamily</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Supertribus.Text" xml:space="preserve">
+    <value>View Details Supertribus</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Tribus.Text" xml:space="preserve">
+    <value>View Details Tribus</value>
+  </data>
+  <data name="TextBlock_Global.Text" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="AppBarButtonAddSpeciesgroup.Label" xml:space="preserve">
+    <value>Speciesgroup</value>
+  </data>
+  <data name="AppBarButtonDeleteSpeciesgroup.Label" xml:space="preserve">
+    <value>Speciesgroup</value>
+  </data>
+  <data name="MenuFlyout_Add_Speciesgroup.Text" xml:space="preserve">
+    <value>Speciesgroup</value>
+  </data>
+  <data name="MenuFlyout_Delete_Name.Text" xml:space="preserve">
+    <value> - Name</value>
+  </data>
+  <data name="MenuFlyout_Delete_Speciesgroup.Text" xml:space="preserve">
+    <value> Speciesgroup</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Name.Text" xml:space="preserve">
+    <value>View Details Name</value>
+  </data>
+  <data name="MenuFlyout_View_Details_Speciesgroup.Text" xml:space="preserve">
+    <value>View Details Speciesgroup</value>
+  </data>
+  <data name="AppBarButtonDeleteGeographic.Label" xml:space="preserve">
+    <value>Geographic</value>
+  </data>
+  <data name="AppBarButtonDeleteImage.Label" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="AppBarButtonDeleteName.Label" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AppBarButtonDeleteSynonym.Label" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
+  <data name="MenuFlyout_Delete_Geographic.Text" xml:space="preserve">
+    <value> - Geographic</value>
+  </data>
+  <data name="MenuFlyout_Delete_Image.Text" xml:space="preserve">
+    <value> - Image</value>
+  </data>
+  <data name="MenuFlyout_Delete_Synonym.Text" xml:space="preserve">
+    <value> - Synonym</value>
+  </data>
+  <data name="AppBarButtonAddInfratribus.Label" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="AppBarButtonAddSubtribus.Label" xml:space="preserve">
+    <value>Subtribus</value>
+  </data>
+  <data name="AppBarButtonAddSupertribus.Label" xml:space="preserve">
+    <value>Supertribus</value>
+  </data>
+  <data name="AppBarButtonAddTribus.Label" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="AppBarButtonDeleteInfratribus.Label" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
+  <data name="AppBarButtonDeleteSubtribus.Label" xml:space="preserve">
+    <value>Subtribus</value>
+  </data>
+  <data name="AppBarButtonDeleteSupertribus.Label" xml:space="preserve">
+    <value>Supertribus</value>
+  </data>
+  <data name="AppBarButtonDeleteTribus.Label" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="AppBarButtonAddFamily.Label" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="AppBarButtonAddInfrafamily.Label" xml:space="preserve">
+    <value>Infrafamily</value>
+  </data>
+  <data name="AppBarButtonAddInfraSubfamily.Label" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="AppBarButtonAddInfraSuperfamily.Label" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="AppBarButtonDeleteFamily.Label" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="AppBarButtonDeleteInfrafamily.Label" xml:space="preserve">
+    <value>Infrafamily</value>
+  </data>
+  <data name="AppBarButtonDeleteInfraordo.Label" xml:space="preserve">
+    <value>Infraordo</value>
+  </data>
+  <data name="AppBarButtonDeleteLegio.Label" xml:space="preserve">
+    <value>Legio</value>
+  </data>
+  <data name="AppBarButtonDeleteOrdo.Label" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
+  <data name="AppBarButtonDeleteSubfamily.Label" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="AppBarButtonDeleteSubordo.Label" xml:space="preserve">
+    <value>Subordo</value>
+  </data>
+  <data name="AppBarButtonDeleteSuperfamily.Label" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="AppBarButtonSaveSuperfamily.Label" xml:space="preserve">
+    <value>Save Superfamily</value>
+  </data>
+  <data name="TextBlock_Speciesgroup.Text" xml:space="preserve">
+    <value>Speciesgroup</value>
+  </data>
+  <data name="DataGridTemplateColumn_FiSpeciesId.Header" xml:space="preserve">
+    <value>FiSpecies ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_GenusId.Header" xml:space="preserve">
+    <value>Genus ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_GeographicId.Header" xml:space="preserve">
+    <value>Geographic ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_ImageId.Header" xml:space="preserve">
+    <value>Image ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_NameId.Header" xml:space="preserve">
+    <value>Name ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_PlSpeciesId.Header" xml:space="preserve">
+    <value>PlSpecies ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_SpeciesgroupId.Header" xml:space="preserve">
+    <value>Speciesgroup ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_SynonymId.Header" xml:space="preserve">
+    <value>Synonym ID</value>
+  </data>
+  <data name="TextBlock_Comment.Text" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="TextBlock_Reference.Text" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="DataGridTemplateColumn_RefAuthorId.Header" xml:space="preserve">
+    <value>Ref Author ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_RefExpertId.Header" xml:space="preserve">
+    <value>Ref Expert ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_RefSourceId.Header" xml:space="preserve">
+    <value>Ref Source ID</value>
+  </data>
+  <data name="AppBarButtonAddRefAuthor.Label" xml:space="preserve">
+    <value>Ref Puplication</value>
+  </data>
+  <data name="AppBarButtonAddRefExpert.Label" xml:space="preserve">
+    <value>Ref Expert</value>
+  </data>
+  <data name="AppBarButtonAddRefSource.Label" xml:space="preserve">
+    <value>Ref Source</value>
+  </data>
+  <data name="AppBarButtonDeleteComment.Label" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="AppBarButtonDeleteRefAuthor.Label" xml:space="preserve">
+    <value>Ref Puplication</value>
+  </data>
+  <data name="AppBarButtonDeleteRefExpert.Label" xml:space="preserve">
+    <value>Ref Expert</value>
+  </data>
+  <data name="AppBarButtonDeleteRefSource.Label" xml:space="preserve">
+    <value>Ref Source</value>
+  </data>
+  <data name="DataGridTemplateColumn_CountryId.Header" xml:space="preserve">
+    <value>Country ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_UserProfileId.Header" xml:space="preserve">
+    <value>UserProfile ID</value>
+  </data>
+  <data name="TextBlock_RefAuthor.Text" xml:space="preserve">
+    <value>Reference Author</value>
+  </data>
+  <data name="TextBlock_RefExpert.Text" xml:space="preserve">
+    <value>Reference Expert</value>
+  </data>
+  <data name="TextBlock_RefSource.Text" xml:space="preserve">
+    <value>Reference Source</value>
+  </data>
+  <data name="AppBarButtonAddCountry.Label" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="AppBarButtonAddUserProfile.Label" xml:space="preserve">
+    <value>Userprofile</value>
+  </data>
+  <data name="AppBarButtonDeleteCountry.Label" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="AppBarButtonDeleteUserProfile.Label" xml:space="preserve">
+    <value>Userprofile</value>
+  </data>
+  <data name="TextBox_CountryId.Header" xml:space="preserve">
+    <value>Country ID</value>
+  </data>
+  <data name="TextBox_CountryName.Header" xml:space="preserve">
+    <value>Country Name</value>
+  </data>
+  <data name="TextBox_Regex.Header" xml:space="preserve">
+    <value>Regex</value>
+  </data>
+  <data name="TextBox_UserProfileId.Header" xml:space="preserve">
+    <value>User Profile ID</value>
+  </data>
+  <data name="AppBarButtonDeleteReference.Label" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="TextBlock_Countries.Text" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+  <data name="AutoSuggestBox_Search_Species.PlaceholderText" xml:space="preserve">
+    <value>Search Genusname or SpeciesID</value>
+  </data>
+  <data name="MenuFlyout_Select.Text" xml:space="preserve">
+    <value>Select Dataset</value>
+  </data>
+  <data name="Button_PrintPdf.Content" xml:space="preserve">
+    <value>Print Pdf</value>
+  </data>
+  <data name="MenuFlyout_Print.Text" xml:space="preserve">
+    <value>Print Dataset</value>
+  </data>
+  <data name="Button_Close_Window.Content" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="AppBarButtonAddSubfamily.Label" xml:space="preserve">
+    <value>Subfamily</value>
+  </data>
+  <data name="AppBarButtonAddSuperfamily.Label" xml:space="preserve">
+    <value>Superfamily</value>
+  </data>
+  <data name="MenuFlyout_Delete_Phylum.Text" xml:space="preserve">
+    <value>Delete Phylum</value>
+  </data>
+  <data name="MenuFlyout_Save_Division.Text" xml:space="preserve">
+    <value>Save Division</value>
+  </data>
+  <data name="MenuFlyout_Save_Phylum.Text" xml:space="preserve">
+    <value>Save Phylum</value>
+  </data>
+  <data name="Button_Close.Content" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="SearchBox_Search.PlaceholderText" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="HeaderTile_Components.Description" xml:space="preserve">
+    <value>Experience WinUI 3 quickly and easily with the help of Components, Everything you need to develop an application is gathered in one place.</value>
+  </data>
+  <data name="HeaderTile_DocCenter.Description" xml:space="preserve">
+    <value>Learn how to work with controls and styles.</value>
+  </data>
+  <data name="MainLanding_Header.HeaderText" xml:space="preserve">
+    <value>Aquaristic Taxonomic Information System</value>
+  </data>
+  <data name="MainLandingsPageHeaderSubtitleText" xml:space="preserve">
+    <value>Based On WinAppSDK 1.7</value>
+  </data>
+  <data name="HeaderTile_ContextMenuExt.Description" xml:space="preserve">
+    <value>add a new ContextMenu for Windows 11/10.</value>
+  </data>
+  <data name="HeaderTile_ItisCanada.Description" xml:space="preserve">
+    <value>Basic Web-Site for Taxonomic</value>
+  </data>
+  <data name="HeaderTile_ItisUsa.Description" xml:space="preserve">
+    <value>Basic Web-Site for Taxonomic</value>
+  </data>
+  <data name="HyperlinkButton_AppCodeSamples.Content" xml:space="preserve">
+    <value>App Code Samples</value>
+  </data>
+  <data name="HyperlinkButton_CatalogOfLife.Content" xml:space="preserve">
+    <value>Catalog of Life</value>
+  </data>
+  <data name="HyperlinkButton_DeveloperCenter.Content" xml:space="preserve">
+    <value>Developer Center</value>
+  </data>
+  <data name="HyperlinkButton_Eol.Content" xml:space="preserve">
+    <value>EOL</value>
+  </data>
+  <data name="HyperlinkButton_GlobalBio.Content" xml:space="preserve">
+    <value>Global Bio</value>
+  </data>
+  <data name="HyperlinkButton_Hotline.Content" xml:space="preserve">
+    <value>Hotline</value>
+  </data>
+  <data name="HyperlinkButton_ItisCanada.Content" xml:space="preserve">
+    <value>ITIS CANADA</value>
+  </data>
+  <data name="HyperlinkButton_ItisUsa.Content" xml:space="preserve">
+    <value>ITIS USA</value>
+  </data>
+  <data name="HyperlinkButton_Mexico.Content" xml:space="preserve">
+    <value>Mexico</value>
+  </data>
+  <data name="HyperlinkButton_WindowsTemplateStudio.Content" xml:space="preserve">
+    <value>Windows Template Studio</value>
+  </data>
+  <data name="TextBlock_Important.Text" xml:space="preserve">
+    <value>Important</value>
+  </data>
+  <data name="TextBlock_Taxonomy.Text" xml:space="preserve">
+    <value>Taxonomy</value>
+  </data>
+  <data name="HeaderTile_CatalogOfLife.Description" xml:space="preserve">
+    <value>Web-Site for Taxonomic</value>
+  </data>
+  <data name="HeaderTile_Eol.Description" xml:space="preserve">
+    <value>Web-Site for Taxonomic</value>
+  </data>
+  <data name="HeaderTile_GlobalBio.Description" xml:space="preserve">
+    <value>Web-Site for Taxonomic</value>
+  </data>
+  <data name="HeaderTile_Mexico.Description" xml:space="preserve">
+    <value>Web-Site for Taxonomic</value>
+  </data>
+  <data name="MenuFlyout_Add_Species.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="MenuFlyout_Delete_Species.Text" xml:space="preserve">
+    <value> Species</value>
+  </data>
+  <data name="AppBarButtonDeleteSpecies.Label" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="TextBlock_Speciesses.Text" xml:space="preserve">
+    <value>Speciesses</value>
+  </data>
+  <data name="AppBarButtonAddSpecies.Label" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="DataGridTemplateColumn_SpeciesId.Header" xml:space="preserve">
+    <value>Species ID</value>
+  </data>
+  <data name="DataGridTextColumn_SpeciesName.Header" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="TextBox_SpeciesName.Header" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="TextBox_SpeciesId.Header" xml:space="preserve">
+    <value>Species ID</value>
+  </data>
+  <data name="TextBlock_FishLength.Text" xml:space="preserve">
+    <value>Fish Length (cm)</value>
+  </data>
+  <data name="TextBlock_PlantLength.Text" xml:space="preserve">
+    <value>Plantlength (cm)</value>
+  </data>
+  <data name="TextBlock_BasinLength.Text" xml:space="preserve">
+    <value>Basinlength (cm)</value>
+  </data>
+  <data name="TextBlock_BasinHeight.Text" xml:space="preserve">
+    <value>Basinheight (cm)</value>
+  </data>
+  <data name="TabViewItem_Creatures.Header" xml:space="preserve">
+    <value>Creatures</value>
+  </data>
+  <data name="TabViewItem_Speciesses.Header" xml:space="preserve">
+    <value>Speciesses</value>
+  </data>
+  <data name="TabViewItem_Species.Header" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="MenuBarItemFile.Title" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MenuBarItemAuth.Title" xml:space="preserve">
+    <value>Auth0</value>
+  </data>
+  <data name="MenuBarItemHelp.Title" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="MenuFlyoutItemNew.Text" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="MenuFlyoutItemOpen.Text" xml:space="preserve">
+    <value>Open ...</value>
+  </data>
+  <data name="MenuFlyoutItemSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="TextBlock_TaxonomicStatus.Text" xml:space="preserve">
+    <value>Taxonomic Status: </value>
+  </data>
+  <data name="TextBlock_CurrentStanding.Text" xml:space="preserve">
+    <value>Current Standing:</value>
+  </data>
+  <data name="TextBlock_DataQualityIndicator.Text" xml:space="preserve">
+    <value>Data Quality Indicator</value>
+  </data>
+  <data name="TextBlock_RecordCredibilityRating.Text" xml:space="preserve">
+    <value>Record Credibility Rating</value>
+  </data>
+  <data name="TextBlock_RecordUpdate.Text" xml:space="preserve">
+    <value>Record Update</value>
+  </data>
+  <data name="TextBlock_TaxonomyAndNomenclatura.Text" xml:space="preserve">
+    <value>Taxonomy and Nomenclatura</value>
+  </data>
+  <data name="TextBlock_Kingdom.Text" xml:space="preserve">
+    <value>Kingdom</value>
+  </data>
+  <data name="TextBlock_MemoRegion.Text" xml:space="preserve">
+    <value>Memo Region</value>
+  </data>
+  <data name="TextBlock_LNummer.Text" xml:space="preserve">
+    <value>L-Nummer/Original</value>
+  </data>
+  <data name="TextBlock_LDANummer.Text" xml:space="preserve">
+    <value>LDA-Nummer/Original</value>
+  </data>
+  <data name="TextBlock_PlSpecies.Text" xml:space="preserve">
+    <value>Plant Species</value>
+  </data>
+  <data name="TextBlock_Domorphism.Text" xml:space="preserve">
+    <value>Domorphisms</value>
+  </data>
+  <data name="TextBlock_Sozial.Text" xml:space="preserve">
+    <value>Sozial</value>
+  </data>
+  <data name="TextBlock_Foods.Text" xml:space="preserve">
+    <value>Foods</value>
+  </data>
+  <data name="TextBlock_ShotDate.Text" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="TextBlock_AuthorEditor.Text" xml:space="preserve">
+    <value>Author(s)/Editor(s):</value>
+  </data>
+  <data name="TextBlock_PublicationDate.Text" xml:space="preserve">
+    <value>Publication Date:</value>
+  </data>
+  <data name="TextBlock_BookName_Journal.Text" xml:space="preserve">
+    <value>Journal/Book Name, Vol. No.:</value>
+  </data>
+  <data name="TextBlock_Pages.Text" xml:space="preserve">
+    <value>Page(s):</value>
+  </data>
+  <data name="TextBlock_Publisher1.Text" xml:space="preserve">
+    <value>Publisher:</value>
+  </data>
+  <data name="TextBlock_PublisherPlace1.Text" xml:space="preserve">
+    <value>Publisher Place:</value>
+  </data>
+  <data name="TextBlock_Isbn1.Text" xml:space="preserve">
+    <value>ISBN/ISSN:</value>
+  </data>
+  <data name="TextBlock_Notes1.Text" xml:space="preserve">
+    <value>Notes:</value>
+  </data>
+  <data name="TextBlock_Referencefor.Text" xml:space="preserve">
+    <value>Reference for:</value>
+  </data>
+  <data name="TextBlock_Expert.Text" xml:space="preserve">
+    <value>Expert:</value>
+  </data>
+  <data name="TextBlock_Source.Text" xml:space="preserve">
+    <value>Source:</value>
+  </data>
+  <data name="TextBlock_Acquired.Text" xml:space="preserve">
+    <value>Acquired:</value>
+  </data>
+  <data name="TextBlock_RefAuthors.Text" xml:space="preserve">
+    <value>Reference Authors</value>
+  </data>
+  <data name="TextBlock_RefSources.Text" xml:space="preserve">
+    <value>Reference Sources</value>
+  </data>
+  <data name="TextBlock_Comment1.Text" xml:space="preserve">
+    <value>Comment:</value>
+  </data>
+  <data name="DataGridTemplateColumn_FamilyId.Header" xml:space="preserve">
+    <value>Family ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_ReferenceId.Header" xml:space="preserve">
+    <value>Reference ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_CommentId.Header" xml:space="preserve">
+    <value>Comment ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_SubfamilyId.Header" xml:space="preserve">
+    <value>Subfamily ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_InfrafamilyId.Header" xml:space="preserve">
+    <value>Infrafamily ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_SuperfamilyId.Header" xml:space="preserve">
+    <value>Superfamily ID</value>
+  </data>
+  <data name="DataGridTextColumn_BookName.Header" xml:space="preserve">
+    <value>Bookname</value>
+  </data>
+  <data name="MenuFlyoutItemLog.Text" xml:space="preserve">
+    <value>Show Log File</value>
+  </data>
+  <data name="de-DE.Text" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="fr-FR.Text" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="MenuBarItemLanguage.Title" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Nav_Diseases.Content" xml:space="preserve">
+    <value>Diseases</value>
+  </data>
+  <data name="Nav_Miscellaneousses.Content" xml:space="preserve">
+    <value>Miscellaneousses</value>
+  </data>
+  <data name="Nav_Foods.Content" xml:space="preserve">
+    <value>Foods</value>
+  </data>
+  <data name="ComboBox_Creature.Header" xml:space="preserve">
+    <value>Creature</value>
+  </data>
+  <data name="ContentDialog_Delete.Content" xml:space="preserve">
+    <value>Would you like to delete your dataset?</value>
+  </data>
+  <data name="ContentDialog_Save.Content" xml:space="preserve">
+    <value>You have unsaved changes that will be lost. Would you like to save your changes?</value>
+  </data>
+  <data name="TextBlock_Language_English.Text" xml:space="preserve">
+    <value>Englisch</value>
+  </data>
+  <data name="TextBlock_Language_German.Text" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="TextBlock_Language_French.Text" xml:space="preserve">
+    <value>Französisch</value>
+  </data>
+  <data name="TextBlock_Language_Spanish.Text" xml:space="preserve">
+    <value>Spanisch</value>
+  </data>
+  <data name="TabViewItem_EngName.Header" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="TabViewItem_GerName.Header" xml:space="preserve">
+    <value>German</value>
+  </data>
+  <data name="TabViewItem_SpaName.Header" xml:space="preserve">
+    <value>Spanish</value>
+  </data>
+  <data name="TabViewItem_FraName.Header" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="TextBlock_DeveleoperName.Text" xml:space="preserve">
+    <value>Rudolf Terppé 2000 - 2025</value>
+  </data>
+  <data name="TextBlock_Status.Text" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="DataGridComboBoxColumn_Creative.Header" xml:space="preserve">
+    <value>Creature</value>
+  </data>
+  <data name="MenuFlyout_Save_Species.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="DataGridTextColumn_Creature.Header" xml:space="preserve">
+    <value>Creature</value>
+  </data>
+</root>

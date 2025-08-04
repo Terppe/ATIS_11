@@ -1,0 +1,1319 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ATIS.Views.Search.SearchQuickPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:dataTemplateHeader1="using:ATIS.Views.Report.DataTemplateHeader"
+      xmlns:dataTemplateHeaderTaxoNomen1="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
+      xmlns:dataTemplateHyperlink1="using:ATIS.Views.Report.DataTemplateHyperlink"
+      xmlns:dataTemplates="using:ATIS.Views.Search.DataTemplates"
+      xmlns:dataTemplates1="using:ATIS.Views.Report.DataTemplates"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:models="using:ATIS.Models"
+      NavigationCacheMode="Required"
+      mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--  DataContextMenu  -->
+        <MenuFlyout x:Key="RegnumDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="RegnumSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfRegnumCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="PhylumDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="PhylumSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfPhylumCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="DivisionDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="DivisionSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfDivisionCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SubphylumDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SubphylumSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSubphylumCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SubdivisionDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SubdivisionSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSubdivisionCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SuperclassDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SuperclassSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSuperclassCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="ClassDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="ClassSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfClassCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SubclassDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SubclassSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSubclassCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="InfraclassDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="InfraclassSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfInfraclassCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="LegioDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="LegioSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfLegioCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="OrdoDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="OrdoSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfOrdoCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SubordoDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SubordoSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSubordoCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="InfraordoDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="InfraordoSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfInfraordoCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SuperfamilyDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SuperfamilySelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSuperfamilyCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="FamilyDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="FamilySelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfFamilyCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SubfamilyDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SubfamilySelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSubfamilyCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="InfrafamilyDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="InfrafamilySelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfInfrafamilyCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SupertribusDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SupertribusSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSupertribusCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="TribusDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="TribusSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfTribusCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SubtribusDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SubtribusSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSubtribusCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="InfratribusDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="InfratribusSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfInfratribusCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="GenusDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="GenusSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfGenusCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="SpeciesDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="SpeciesSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfSpeciesCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <!--<MenuFlyout x:Key="PlSpeciesDataContextMenu">
+        <MenuFlyoutItem x:Uid="MenuFlyout_Select" Click="PlSpeciesSelect_Click">
+        <MenuFlyoutItem.Icon>
+        <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/select.png" />
+        </MenuFlyoutItem.Icon>
+        </MenuFlyoutItem>
+        <MenuFlyoutItem x:Uid="MenuFlyout_Print" Command="{x:Bind PdfPlSpeciesCommand}">
+        <MenuFlyoutItem.Icon>
+        <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/pdf.png" />
+        </MenuFlyoutItem.Icon>
+        </MenuFlyoutItem>
+        </MenuFlyout>-->
+
+        <!--  Templates  -->
+
+        <DataTemplate x:Key="SearchItemTemplateTbl03Regnum"
+                      x:DataType="models:Tbl03Regnum">
+            <dataTemplates:SearchItemTemplateTbl03RegnumControl />
+        </DataTemplate>
+
+        <DataTemplate x:Key="SearchItemTemplateTbl06Phylum"
+                      x:DataType="models:Tbl06Phylum">
+            <dataTemplates:SearchItemTemplateTbl06PhylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl09Division"
+                      x:DataType="models:Tbl09Division">
+            <dataTemplates:SearchItemTemplateTbl09DivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
+                      x:DataType="models:Tbl12Subphylum">
+            <dataTemplates:SearchItemTemplateTbl12SubphylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
+                      x:DataType="models:Tbl15Subdivision">
+            <dataTemplates:SearchItemTemplateTbl15SubdivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
+                      x:DataType="models:Tbl18Superclass">
+            <dataTemplates:SearchItemTemplateTbl18SuperclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl21Class"
+                      x:DataType="models:Tbl21Class">
+            <dataTemplates:SearchItemTemplateTbl21ClassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl24Subclass"
+                      x:DataType="models:Tbl24Subclass">
+            <dataTemplates:SearchItemTemplateTbl24SubclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl27Infraclass"
+                      x:DataType="models:Tbl27Infraclass">
+            <dataTemplates:SearchItemTemplateTbl27InfraclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl30Legio"
+                      x:DataType="models:Tbl30Legio">
+            <dataTemplates:SearchItemTemplateTbl30LegioControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl33Ordo"
+                      x:DataType="models:Tbl33Ordo">
+            <dataTemplates:SearchItemTemplateTbl33OrdoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl36Subordo"
+                      x:DataType="models:Tbl36Subordo">
+            <dataTemplates:SearchItemTemplateTbl36SubordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl39Infraordo"
+                      x:DataType="models:Tbl39Infraordo">
+            <dataTemplates:SearchItemTemplateTbl39InfraordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl42Superfamily"
+                      x:DataType="models:Tbl42Superfamily">
+            <dataTemplates:SearchItemTemplateTbl42SuperfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl45Family"
+                      x:DataType="models:Tbl45Family">
+            <dataTemplates:SearchItemTemplateTbl45FamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl48Subfamily"
+                      x:DataType="models:Tbl48Subfamily">
+            <dataTemplates:SearchItemTemplateTbl48SubfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl51Infrafamily"
+                      x:DataType="models:Tbl51Infrafamily">
+            <dataTemplates:SearchItemTemplateTbl51InfrafamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl54Supertribus"
+                      x:DataType="models:Tbl54Supertribus">
+            <dataTemplates:SearchItemTemplateTbl54SupertribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl57Tribus"
+                      x:DataType="models:Tbl57Tribus">
+            <dataTemplates:SearchItemTemplateTbl57TribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl60Subtribus"
+                      x:DataType="models:Tbl60Subtribus">
+            <dataTemplates:SearchItemTemplateTbl60SubtribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl63Infratribus"
+                      x:DataType="models:Tbl63Infratribus">
+            <dataTemplates:SearchItemTemplateTbl63InfratribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl66Genus"
+                      x:DataType="models:Tbl66Genus">
+            <dataTemplates:SearchItemTemplateTbl66GenusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl69FiSpecies"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplates:SearchItemTemplateTbl69FiSpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl75Species"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplates:SearchItemTemplateTbl75SpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
+                      x:DataType="models:Tbl72PlSpecies">
+            <dataTemplates:SearchItemTemplateTbl72PlSpeciesControl />
+        </DataTemplate>
+
+
+        <Style x:Key="NoSpacesListViewItemStyle"
+               TargetType="ListViewItem">
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+
+        <!--  Report.Listviews  -->
+        <!--  Header  -->
+        <DataTemplate x:Key="ReportItemTemplateHeaderRegnum"
+                      x:DataType="models:Tbl03Regnum">
+            <dataTemplateHeader1:ReportItemTemplateHeaderRegnumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderPhylum"
+                      x:DataType="models:Tbl06Phylum">
+            <dataTemplateHeader1:ReportItemTemplateHeaderPhylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderDivision"
+                      x:DataType="models:Tbl09Division">
+            <dataTemplateHeader1:ReportItemTemplateHeaderDivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSubphylum"
+                      x:DataType="models:Tbl12Subphylum">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSubphylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSubdivision"
+                      x:DataType="models:Tbl15Subdivision">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSubdivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSuperclass"
+                      x:DataType="models:Tbl18Superclass">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSuperclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderClass"
+                      x:DataType="models:Tbl21Class">
+            <dataTemplateHeader1:ReportItemTemplateHeaderClassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSubclass"
+                      x:DataType="models:Tbl24Subclass">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSubclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderInfraclass"
+                      x:DataType="models:Tbl27Infraclass">
+            <dataTemplateHeader1:ReportItemTemplateHeaderInfraclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderLegio"
+                      x:DataType="models:Tbl30Legio">
+            <dataTemplateHeader1:ReportItemTemplateHeaderLegioControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderOrdo"
+                      x:DataType="models:Tbl33Ordo">
+            <dataTemplateHeader1:ReportItemTemplateHeaderOrdoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSubordo"
+                      x:DataType="models:Tbl36Subordo">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSubordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderInfraordo"
+                      x:DataType="models:Tbl39Infraordo">
+            <dataTemplateHeader1:ReportItemTemplateHeaderInfraordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSuperfamily"
+                      x:DataType="models:Tbl42Superfamily">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSuperfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderFamily"
+                      x:DataType="models:Tbl45Family">
+            <dataTemplateHeader1:ReportItemTemplateHeaderFamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSubfamily"
+                      x:DataType="models:Tbl48Subfamily">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSubfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderInfrafamily"
+                      x:DataType="models:Tbl51Infrafamily">
+            <dataTemplateHeader1:ReportItemTemplateHeaderInfrafamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSupertribus"
+                      x:DataType="models:Tbl54Supertribus">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSupertribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTribus"
+                      x:DataType="models:Tbl57Tribus">
+            <dataTemplateHeader1:ReportItemTemplateHeaderTribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderSubtribus"
+                      x:DataType="models:Tbl60Subtribus">
+            <dataTemplateHeader1:ReportItemTemplateHeaderSubtribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderInfratribus"
+                      x:DataType="models:Tbl63Infratribus">
+            <dataTemplateHeader1:ReportItemTemplateHeaderInfratribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderGenus"
+                      x:DataType="models:Tbl66Genus">
+            <dataTemplateHeader1:ReportItemTemplateHeaderGenusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderFiSpecies"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHeader1:ReportItemTemplateHeaderFiSpeciesControl />
+        </DataTemplate>
+        <!--<DataTemplate x:Key="ReportItemTemplateHeaderFiSpeciesSub" x:DataType="models:Tbl69FiSpecies">
+        <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesSubsControl />
+        </DataTemplate>-->
+        <DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
+                      x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHeader1:ReportItemTemplateHeaderPlSpeciesControl />
+        </DataTemplate>
+        <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpeciesSub" x:DataType="models:Tbl72PlSpecies">
+        <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesSubsControl />
+        </DataTemplate>-->
+
+        <!--  Taxonomy-Header  -->
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
+                      x:DataType="models:Tbl03Regnum">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderControl />
+        </DataTemplate>
+
+        <!--  Taxonomy-Header-Body  -->
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnum"
+                      x:DataType="models:Tbl03Regnum">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylum"
+                      x:DataType="models:Tbl06Phylum">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
+                      x:DataType="models:Tbl09Division">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylum"
+                      x:DataType="models:Tbl12Subphylum">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision"
+                      x:DataType="models:Tbl15Subdivision">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclass"
+                      x:DataType="models:Tbl18Superclass">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyClass"
+                      x:DataType="models:Tbl21Class">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubclass"
+                      x:DataType="models:Tbl24Subclass">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraclass"
+                      x:DataType="models:Tbl27Infraclass">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyLegio"
+                      x:DataType="models:Tbl30Legio">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyLegioControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyOrdo"
+                      x:DataType="models:Tbl33Ordo">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyOrdoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubordo"
+                      x:DataType="models:Tbl36Subordo">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraordo"
+                      x:DataType="models:Tbl39Infraordo">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperfamily"
+                      x:DataType="models:Tbl42Superfamily">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySuperfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFamily"
+                      x:DataType="models:Tbl45Family">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubfamily"
+                      x:DataType="models:Tbl48Subfamily">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyInfrafamily"
+                      x:DataType="models:Tbl51Infrafamily">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyInfrafamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySupertribus"
+                      x:DataType="models:Tbl54Supertribus">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySupertribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyTribus"
+                      x:DataType="models:Tbl57Tribus">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyTribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubtribus"
+                      x:DataType="models:Tbl60Subtribus">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubtribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyInfratribus"
+                      x:DataType="models:Tbl63Infratribus">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyInfratribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyGenus"
+                      x:DataType="models:Tbl66Genus">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpecies"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
+                      x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl />
+        </DataTemplate>
+
+        <!--  Hyperlink-ListViews  -->
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
+                      x:DataType="models:Tbl03Regnum">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkRegnumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum"
+                      x:DataType="models:Tbl06Phylum">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkPhylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
+                      x:DataType="models:Tbl09Division">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkDivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
+                      x:DataType="models:Tbl12Subphylum">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubphylumControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
+                      x:DataType="models:Tbl15Subdivision">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubdivisionControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
+                      x:DataType="models:Tbl18Superclass">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSuperclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkClass"
+                      x:DataType="models:Tbl21Class">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkClassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSubclass"
+                      x:DataType="models:Tbl24Subclass">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraclass"
+                      x:DataType="models:Tbl27Infraclass">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkInfraclassControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkLegio"
+                      x:DataType="models:Tbl30Legio">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkLegioControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkOrdo"
+                      x:DataType="models:Tbl33Ordo">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkOrdoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSubordo"
+                      x:DataType="models:Tbl36Subordo">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo"
+                      x:DataType="models:Tbl39Infraordo">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkInfraordoControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperfamily"
+                      x:DataType="models:Tbl42Superfamily">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSuperfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkFamily"
+                      x:DataType="models:Tbl45Family">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkFamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSubfamily"
+                      x:DataType="models:Tbl48Subfamily">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubfamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkInfrafamily"
+                      x:DataType="models:Tbl51Infrafamily">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkInfrafamilyControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSupertribus"
+                      x:DataType="models:Tbl54Supertribus">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSupertribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkTribus"
+                      x:DataType="models:Tbl57Tribus">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkTribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkSubtribus"
+                      x:DataType="models:Tbl60Subtribus">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubtribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkInfratribus"
+                      x:DataType="models:Tbl63Infratribus">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkInfratribusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkGenus"
+                      x:DataType="models:Tbl66Genus">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkGenusControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpecies"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkFiSpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpeciesSub"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkFiSpeciesSubControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
+                      x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkPlSpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpeciesSub"
+                      x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkPlSpeciesSubControl />
+        </DataTemplate>
+
+        <!--  Rest-ListViews  -->
+        <DataTemplate x:Key="ReportItemTemplateFiSpecies"
+                      x:DataType="models:Tbl69FiSpecies">
+            <dataTemplates1:ReportItemTemplateFiSpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplatePlSpecies"
+                      x:DataType="models:Tbl72PlSpecies">
+            <dataTemplates1:ReportItemTemplatePlSpeciesControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateName"
+                      x:DataType="models:Tbl78Name">
+            <dataTemplates1:ReportItemTemplateNameControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateImage"
+                      x:DataType="models:Tbl81Image">
+            <dataTemplates1:ReportItemTemplateImageControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateSynonym"
+                      x:DataType="models:Tbl84Synonym">
+            <dataTemplates1:ReportItemTemplateSynonymControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateGeographic"
+                      x:DataType="models:Tbl87Geographic">
+            <dataTemplates1:ReportItemTemplateGeographicControl />
+        </DataTemplate>
+
+        <DataTemplate x:Key="ReportItemTemplateTbl90RefExpert"
+                      x:DataType="models:Tbl90Reference">
+            <dataTemplates1:ReportItemTemplateTbl90RefExpertControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateTbl90RefSource"
+                      x:DataType="models:Tbl90Reference">
+            <dataTemplates1:ReportItemTemplateTbl90RefSourceControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateTbl90RefAuthor"
+                      x:DataType="models:Tbl90Reference">
+            <dataTemplates1:ReportItemTemplateTbl90RefAuthorControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateTbl87Geographic"
+                      x:DataType="models:Tbl87Geographic">
+            <dataTemplates1:ReportItemTemplateTbl87GeographicControl />
+        </DataTemplate>
+        <DataTemplate x:Key="ReportItemTemplateTbl93Comment"
+                      x:DataType="models:Tbl93Comment">
+            <dataTemplates1:ReportItemTemplateTbl93CommentControl />
+        </DataTemplate>
+
+    </Page.Resources>
+
+    <RelativePanel x:Name="SearchRoot"
+                   Margin="0,-10,0,0">
+        <!--<ProgressRing IsActive="True" />-->
+        <TabView IsAddTabButtonVisible="False"
+                 SelectedIndex="{x:Bind ViewModel.SelectedReportTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TabView.TabItems>
+                <TabViewItem x:Uid="TabViewItem_Search"
+                             IsClosable="False"
+                             Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                            <TextBlock x:Uid="TextBlock_DataSetCount"
+                                       Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Style="{ThemeResource DetailSubTitleStyle}" />
+                            <TextBlock Width="50"
+                                       Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Style="{StaticResource BodyTextStyle}"
+                                       Text="{x:Bind ViewModel.DataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <AutoSuggestBox Name="SearchAutoSuggestBox"
+                                            Width="200"
+                                            Margin="4,8,4,0"
+                                            Loaded="SearchAutoSuggestBox_OnLoaded"
+                                            QuerySubmitted="GetNameByName">
+                                <AutoSuggestBox.QueryIcon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/search.png" />
+                                </AutoSuggestBox.QueryIcon>
+                            </AutoSuggestBox>
+
+                            <AppBarButton x:Uid="AppBarButtonPdf"
+                                          Click="PdfPrintListAll"
+                                          ToolTipService.ToolTip="PDF">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/pdf.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <CheckBox Width="80"
+                                      Margin="{StaticResource SmallLeftMargin}"
+                                      Content="Auswahl 1"
+                                      IsChecked="True" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" />
+                        <StackPanel Grid.Row="1">
+
+                            <!--  SelectedIndex="{x:Bind ViewModel.SelectedMainTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  -->
+                            <TabView x:Name="TabViewSearch"
+                                     Margin="5,5,5,5"
+                                     IsAddTabButtonVisible="False"
+                                     SelectedIndex="{x:Bind ViewModel.SelectedMainTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <TabView.TabItems>
+                                    <TabViewItem x:Uid="TabViewItem_Genusses"
+                                                 IsClosable="False">
+                                        <StackPanel>
+                                            <ListView MaxHeight="650"
+                                                      ContextFlyout="{StaticResource GenusDataContextMenu}"
+                                                      ItemTemplate="{StaticResource SearchItemTemplateTbl66Genus}"
+                                                      ItemsSource="{x:Bind ViewModel.GenusItems, Mode=OneWay}"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                      ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                      SelectedItem="{x:Bind ViewModel.GenusSelected, Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Speciesses"
+                                                 IsClosable="False">
+                                        <StackPanel>
+                                            <ListView MaxHeight="650"
+                                                      ContextFlyout="{StaticResource SpeciesDataContextMenu}"
+                                                      ItemTemplate="{StaticResource SearchItemTemplateTbl75Species}"
+                                                      ItemsSource="{x:Bind ViewModel.FiSpeciesItems, Mode=OneWay}"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                      ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                      SelectedItem="{x:Bind ViewModel.FiSpeciesSelected, Mode=TwoWay}" />
+                                        </StackPanel>
+                                    </TabViewItem>
+                                    <!--<TabViewItem x:Uid="TabViewItem_Speciesses" IsClosable="False">
+                                    <StackPanel>
+                                    <ListView
+                                    MaxHeight="650"
+                                    ContextFlyout="{StaticResource FiSpeciesDataContextMenu}"
+                                    ItemTemplate="{StaticResource SearchItemTemplateTbl69FiSpecies}"
+                                    ItemsSource="{x:Bind ViewModel.FiSpeciesItems, Mode=OneWay}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    ScrollViewer.IsDeferredScrollingEnabled="True"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    SelectedItem="{x:Bind ViewModel.FiSpeciesSelected, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    </TabViewItem>-->
+                                    <!--<TabViewItem Header="PlSpecies" IsClosable="False">
+                                    <StackPanel>
+                                    <ListView
+                                    MaxHeight="650"
+                                    ContextFlyout="{StaticResource PlSpeciesDataContextMenu}"
+                                    ItemTemplate="{StaticResource SearchItemTemplateTbl72PlSpecies}"
+                                    ItemsSource="{x:Bind ViewModel.PlSpeciesItems, Mode=OneWay}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    ScrollViewer.IsDeferredScrollingEnabled="True"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    SelectedItem="{x:Bind ViewModel.PlSpeciesSelected, Mode=TwoWay}" />
+                                    </StackPanel>
+                                    </TabViewItem>-->
+                                    <TabViewItem x:Uid="TabViewItem_Tribusses"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedTribusTabIndex, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Infratribusses"
+                                                             IsClosable="False">
+                                                    <ListView MaxHeight="600"
+                                                              ContextFlyout="{StaticResource InfratribusDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl63Infratribus}"
+                                                              ItemsSource="{x:Bind ViewModel.InfratribusItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.InfratribusSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Subtribusses"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SubtribusDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl60Subtribus}"
+                                                              ItemsSource="{x:Bind ViewModel.SubtribusItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SubtribusSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Tribusses"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource TribusDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl57Tribus}"
+                                                              ItemsSource="{x:Bind ViewModel.TribusItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.TribusSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Supertribusses"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SupertribusDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl54Supertribus}"
+                                                              ItemsSource="{x:Bind ViewModel.SupertribusItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SupertribusSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Families"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedFamilyTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Infrafamilies"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource InfrafamilyDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl51Infrafamily}"
+                                                              ItemsSource="{x:Bind ViewModel.InfrafamilyItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.InfrafamilySelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Subfamilies"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SubfamilyDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl48Subfamily}"
+                                                              ItemsSource="{x:Bind ViewModel.SubfamilyItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SubfamilySelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Families"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource FamilyDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl45Family}"
+                                                              ItemsSource="{x:Bind ViewModel.FamilyItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.FamilySelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Superfamilies"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SuperfamilyDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl42Superfamily}"
+                                                              ItemsSource="{x:Bind ViewModel.SuperfamilyItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SuperfamilySelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Ordos"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedOrdoTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Infraordos"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource InfraordoDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl39Infraordo}"
+                                                              ItemsSource="{x:Bind ViewModel.InfraordoItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.InfraordoSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Subordos"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SubordoDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl36Subordo}"
+                                                              ItemsSource="{x:Bind ViewModel.SubordoItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SubordoSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Ordos"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource OrdoDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl33Ordo}"
+                                                              ItemsSource="{x:Bind ViewModel.OrdoItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.OrdoSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_legios"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource LegioDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl30Legio}"
+                                                              ItemsSource="{x:Bind ViewModel.LegioItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.LegioSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Classes"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedClassTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Infraclasses"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource InfraclassDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl27Infraclass}"
+                                                              ItemsSource="{x:Bind ViewModel.InfraclassItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.InfraclassSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Subclasses"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SubclassDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl24Subclass}"
+                                                              ItemsSource="{x:Bind ViewModel.SubclassItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SubclassSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Classes"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource ClassDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl21Class}"
+                                                              ItemsSource="{x:Bind ViewModel.ClassItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.ClassSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Superclasses"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SuperclassDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl18Superclass}"
+                                                              ItemsSource="{x:Bind ViewModel.SuperclassItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SuperclassSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Divisions"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedDivisionTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Subdivisions"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource SubdivisionDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl15Subdivision}"
+                                                              ItemsSource="{x:Bind ViewModel.SubdivisionItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.SubdivisionSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Divisions"
+                                                             IsClosable="False">
+                                                    <ListView Height="600"
+                                                              ContextFlyout="{StaticResource DivisionDataContextMenu}"
+                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl09Division}"
+                                                              ItemsSource="{x:Bind ViewModel.DivisionItems, Mode=OneWay}"
+                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                              SelectedItem="{x:Bind ViewModel.DivisionSelected, Mode=TwoWay}" />
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Phylums"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedPhylumTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Subphylums"
+                                                             IsClosable="False">
+                                                    <StackPanel>
+                                                        <ListView Height="600"
+                                                                  ContextFlyout="{StaticResource SubphylumDataContextMenu}"
+                                                                  ItemTemplate="{StaticResource SearchItemTemplateTbl12Subphylum}"
+                                                                  ItemsSource="{x:Bind ViewModel.SubphylumItems, Mode=OneWay}"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  SelectedItem="{x:Bind ViewModel.SubphylumSelected, Mode=TwoWay}" />
+                                                    </StackPanel>
+                                                </TabViewItem>
+                                                <TabViewItem x:Uid="TabViewItem_Phylums"
+                                                             IsClosable="False">
+                                                    <StackPanel>
+                                                        <ListView Height="600"
+                                                                  ContextFlyout="{StaticResource PhylumDataContextMenu}"
+                                                                  ItemTemplate="{StaticResource SearchItemTemplateTbl06Phylum}"
+                                                                  ItemsSource="{x:Bind ViewModel.PhylumItems, Mode=OneWay}"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  SelectedItem="{x:Bind ViewModel.PhylumSelected, Mode=TwoWay}" />
+                                                    </StackPanel>
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                    <TabViewItem x:Uid="TabViewItem_Regnums"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedRegnumTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem x:Uid="TabViewItem_Regnums"
+                                                             IsClosable="False">
+                                                    <StackPanel>
+                                                        <ListView Height="600"
+                                                                  ContextFlyout="{StaticResource RegnumDataContextMenu}"
+                                                                  ItemTemplate="{StaticResource SearchItemTemplateTbl03Regnum}"
+                                                                  ItemsSource="{x:Bind ViewModel.RegnumItems, Mode=OneWay}"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  SelectedItem="{x:Bind ViewModel.RegnumSelected, Mode=TwoWay}" />
+                                                    </StackPanel>
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+                                </TabView.TabItems>
+                            </TabView>
+                        </StackPanel>
+                    </Grid>
+                </TabViewItem>
+            </TabView.TabItems>
+        </TabView>
+        <ProgressRing x:Name="LoadingProgressRing"
+                      Width="40"
+                      VerticalAlignment="Center"
+                      IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                      RelativePanel.AlignHorizontalCenterWithPanel="True"
+                      RelativePanel.AlignVerticalCenterWithPanel="True"
+                      Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+    </RelativePanel>
+</Page>

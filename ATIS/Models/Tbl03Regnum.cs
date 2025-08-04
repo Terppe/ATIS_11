@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
+
+namespace ATIS.Models;
+
+public class Tbl03Regnum 
+{
+    [Key]
+    public int RegnumId { get; set; }
+    //[Required(ErrorMessageResourceName = "RequiredRegnumName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    //[StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    //[MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    //[MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+
+    [Required(ErrorMessageResourceName = "RequiredRegnumName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+ //   [RegularExpression("^[a-zA-Z0-9_]*$", ErrorMessageResourceName = "ValidationErrorInvalidUserName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    [StringLength(100, MinimumLength = 2, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string RegnumName { get; set; }
+    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Subregnum { get; set; }
+    public string RegnumFullName => $"{RegnumName} {Subregnum}";
+    [Required]
+    public int CountId { get; set; }
+    public bool Valid { get; set; }
+    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string ValidYear { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Synonym { get; set; }
+    //  [StringLength(60, ErrorMessageResourceName = "StringLength_60", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    [StringLength(60, MinimumLength = 2, ErrorMessageResourceName = "StringLength_60", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Author { get; set; }
+    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string AuthorYear { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Info { get; set; }
+    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string EngName { get; set; }
+    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string GerName { get; set; }
+    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string FraName { get; set; }
+    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string PorName { get; set; }
+    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Writer { get; set; }
+    public DateTime WriterDate { get; set; }
+    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Updater { get; set; }
+    public DateTime UpdaterDate { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Memo { get; set; }
+
+    //   public byte[] RowVersion { get; set; }
+
+    //      public  EntityState EntityState { get; set; }
+
+}
