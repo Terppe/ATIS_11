@@ -75,15 +75,11 @@ public partial class Tbl30LegioViewModel : ObservableObject
             Tbl27InfraclassesAllList ??= [];
             Tbl27InfraclassesAllList = [.. _dataService.GetInfraclassAsync()];
 
-            var infraclassId = 0;
-            var select = Context.Tbl27Infraclasses.FirstOrDefault(x => x.InfraclassName == "Please select");
-            if (select != null)
-            {
-                infraclassId = select.InfraclassId;
-            }
+            var infraclassId = Tbl27InfraclassesAllList.First().InfraclassId;
 
             Tbl30LegiosList ??= [];
-            Tbl30LegiosList.Insert(index: 0, item: new Tbl30Legio { InfraclassId = infraclassId });
+            Tbl30LegiosList.Insert(index: 0,
+                item: new Tbl30Legio { InfraclassId = infraclassId });
         });
     }
 

@@ -75,15 +75,11 @@ public partial class Tbl36SubordoViewModel : ObservableObject
             Tbl33OrdosAllList ??= [];
             Tbl33OrdosAllList = [.. _dataService.GetOrdoAsync()];
 
-            var ordoId = 0;
-            var select = Context.Tbl33Ordos.FirstOrDefault(x => x.OrdoName == "Please select");
-            if (select != null)
-            {
-                ordoId = select.OrdoId;
-            }
+            var ordoId = Tbl33OrdosAllList.First().OrdoId;
 
             Tbl36SubordosList ??= [];
-            Tbl36SubordosList.Insert(index: 0, item: new Tbl36Subordo { OrdoId = ordoId });
+            Tbl36SubordosList.Insert(index: 0,
+                item: new Tbl36Subordo { OrdoId = ordoId });
         });
     }
 

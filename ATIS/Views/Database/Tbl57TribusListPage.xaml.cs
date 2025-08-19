@@ -345,6 +345,16 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("TribusDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditTribus = false;
+            ViewModel.IsNewTribus = false;
+            TribusDetailExpander.IsExpanded = false;
+            TribusDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.TribusSelected = ViewModel.Tbl57TribussesList[iNdx];
 
         SingleTribus = App.SingleTribus(ViewModel.TribusSelected.TribusId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentTribus(ViewModel.CommentSelected.CommentId, ViewModel.TribusSelected.TribusId);
@@ -1506,6 +1556,16 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("SubtribusDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSubtribus = false;
+            ViewModel.IsNewSubtribus = false;
+            SubtribusDetailExpander.IsExpanded = false;
+            SubtribusDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SubtribusSelected = ViewModel.Tbl60SubtribussesList[iNdx];
 
         SingleSubtribus = App.SingleSubtribusTribus(ViewModel.SubtribusSelected.SubtribusId, ViewModel.TribusSelected.TribusId);

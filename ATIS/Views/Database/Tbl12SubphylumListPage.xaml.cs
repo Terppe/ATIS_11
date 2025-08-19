@@ -345,6 +345,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         var x = (DataGrid)FindName("SubphylumDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSubphylum = false;
+            ViewModel.IsNewSubphylum = false;
+            SubphylumDetailExpander.IsExpanded = false;
+            SubphylumDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SubphylumSelected = ViewModel.Tbl12SubphylumsList[iNdx];
 
         SingleSubphylum = App.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubphylumSelected.SubphylumId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubphylumSelected.SubphylumId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubphylumSelected.SubphylumId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         var x = (DataGrid)FindName("SuperclassDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSuperclass = false;
+            ViewModel.IsNewSuperclass = false;
+            SuperclassDetailExpander.IsExpanded = false;
+            SuperclassDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.SuperclassSelected = ViewModel.Tbl18SuperclassesList[iNdx];
 
         SingleSuperclass = App.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId, ViewModel.SubphylumSelected.SubphylumId);

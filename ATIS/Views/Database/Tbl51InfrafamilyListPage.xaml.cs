@@ -345,6 +345,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         var x = (DataGrid)FindName("InfrafamilyDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditInfrafamily = false;
+            ViewModel.IsNewInfrafamily = false;
+            InfrafamilyDetailExpander.IsExpanded = false;
+            InfrafamilyDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.InfrafamilySelected = ViewModel.Tbl51InfrafamiliesList[iNdx];
 
         SingleInfrafamily = App.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfrafamilySelected.InfrafamilyId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfrafamilySelected.InfrafamilyId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfrafamilySelected.InfrafamilyId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
@@ -1506,6 +1556,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         var x = (DataGrid)FindName("SupertribusDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSupertribus = false;
+            ViewModel.IsNewSupertribus = false;
+            SupertribusDetailExpander.IsExpanded = false;
+            SupertribusDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SupertribusSelected = ViewModel.Tbl54SupertribussesList[iNdx];
 
         SingleSupertribus = App.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId, ViewModel.InfrafamilySelected.InfrafamilyId);

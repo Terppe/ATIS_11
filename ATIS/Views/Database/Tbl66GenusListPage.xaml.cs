@@ -223,7 +223,7 @@ public sealed partial class Tbl66GenusListPage : Page
                     .AsNoTracking()
                     .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
         });
-        ViewModel.FiSpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
 
         ViewModel.RefreshSpeciesItems();
 
@@ -359,6 +359,16 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("GenusDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditGenus = false;
+            ViewModel.IsNewGenus = false;
+            GenusDetailExpander.IsExpanded = false;
+            GenusDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
 
         SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
@@ -901,6 +911,16 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
@@ -1014,6 +1034,16 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
@@ -1127,6 +1157,16 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
@@ -1272,6 +1312,16 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
@@ -1568,6 +1618,16 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSpecies = false;
+            ViewModel.IsNewSpecies = false;
+            SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
         SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.GenusSelected.GenusId);

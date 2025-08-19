@@ -75,15 +75,11 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
             Tbl39InfraordosAllList ??= [];
             Tbl39InfraordosAllList = [.. _dataService.GetInfraordoAsync()];
 
-            var infraordoId = 0;
-            var select = Context.Tbl39Infraordos.FirstOrDefault(x => x.InfraordoName == "Please select");
-            if (select != null)
-            {
-                infraordoId = select.InfraordoId;
-            }
+            var infraordoId = Tbl39InfraordosAllList.First().InfraordoId;
 
             Tbl42SuperfamiliesList ??= [];
-            Tbl42SuperfamiliesList.Insert(index: 0, item: new Tbl42Superfamily { InfraordoId = infraordoId });
+            Tbl42SuperfamiliesList.Insert(index: 0,
+                item: new Tbl42Superfamily { InfraordoId = infraordoId });
         });
     }
 

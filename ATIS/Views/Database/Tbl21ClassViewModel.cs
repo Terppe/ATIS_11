@@ -75,15 +75,11 @@ public partial class Tbl21ClassViewModel : ObservableObject
             Tbl18SuperclassesAllList ??= [];
             Tbl18SuperclassesAllList = [.. _dataService.GetSuperclassAsync()];
 
-            var superclassId = 0;
-            var select = Context.Tbl18Superclasses.FirstOrDefault(x => x.SuperclassName == "Please select");
-            if (select != null)
-            {
-                superclassId = select.SuperclassId;
-            }
+            var superclassId = Tbl18SuperclassesAllList.First().SuperclassId;
 
             Tbl21ClassesList ??= [];
-            Tbl21ClassesList.Insert(index: 0, item: new Tbl21Class { SuperclassId = superclassId });
+            Tbl21ClassesList.Insert(index: 0,
+                item: new Tbl21Class { SuperclassId = superclassId });
         });
     }
 

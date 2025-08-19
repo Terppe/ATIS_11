@@ -4,12 +4,14 @@ using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Authentication;
+using Mapsui;
 using Microsoft.EntityFrameworkCore;
-using Windows.System;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
-using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.System;
 
 //    Tbl87GeographicViewModel Skriptdatum:  08.07.2025  10:32    
 
@@ -480,7 +482,7 @@ public partial class Tbl87GeographicViewModel : ObservableObject
             _tbl75SpeciesList = value; OnPropertyChanged();
         }
     }
-    
+
     private ObservableCollection<TblCountry> _tblCountriesAllList;
 
     public ObservableCollection<TblCountry> TblCountriesAllList
@@ -489,6 +491,16 @@ public partial class Tbl87GeographicViewModel : ObservableObject
         set
         {
             _tblCountriesAllList = value; OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<TblCountry> _tblCountriesList;
+
+    public ObservableCollection<TblCountry> TblCountriesList
+    {
+        get => _tblCountriesList;
+        set
+        {
+            _tblCountriesList = value; OnPropertyChanged();
         }
     }
 

@@ -345,6 +345,16 @@ public sealed partial class Tbl60SubtribusListPage : Page
     {
         var x = (DataGrid)FindName("SubtribusDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSubtribus = false;
+            ViewModel.IsNewSubtribus = false;
+            SubtribusDetailExpander.IsExpanded = false;
+            SubtribusDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SubtribusSelected = ViewModel.Tbl60SubtribussesList[iNdx];
 
         SingleSubtribus = App.SingleSubtribus(ViewModel.SubtribusSelected.SubtribusId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl60SubtribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubtribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubtribusSelected.SubtribusId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl60SubtribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubtribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubtribusSelected.SubtribusId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl60SubtribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubtribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubtribusSelected.SubtribusId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl60SubtribusListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentSubtribus(ViewModel.CommentSelected.CommentId, ViewModel.SubtribusSelected.SubtribusId);
@@ -1506,6 +1556,16 @@ public sealed partial class Tbl60SubtribusListPage : Page
     {
         var x = (DataGrid)FindName("InfratribusDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditInfratribus = false;
+            ViewModel.IsNewInfratribus = false;
+            InfratribusDetailExpander.IsExpanded = false;
+            InfratribusDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.InfratribusSelected = ViewModel.Tbl63InfratribussesList[iNdx];
 
         SingleInfratribus = App.SingleInfratribusSubtribus(ViewModel.InfratribusSelected.InfratribusId, ViewModel.SubtribusSelected.SubtribusId);

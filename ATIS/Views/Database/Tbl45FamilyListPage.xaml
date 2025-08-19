@@ -17,7 +17,6 @@
     <!--  FamilyListPage.xaml  Skriptdatum: 03.12.2024  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="FamilyDataContextMenu">
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Family"
                             Click="SaveFamily_Click">

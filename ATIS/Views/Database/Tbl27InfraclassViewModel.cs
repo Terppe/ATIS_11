@@ -75,15 +75,11 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
             Tbl24SubclassesAllList ??= [];
             Tbl24SubclassesAllList = [.. _dataService.GetSubclassAsync()];
 
-            var subclassId = 0;
-            var select = Context.Tbl24Subclasses.FirstOrDefault(x => x.SubclassName == "Please select");
-            if (select != null)
-            {
-                subclassId = select.SubclassId;
-            }
+            var subclassId = Tbl24SubclassesAllList.First().SubclassId;
 
             Tbl27InfraclassesList ??= [];
-            Tbl27InfraclassesList.Insert(index: 0, item: new Tbl27Infraclass { SubclassId = subclassId });
+            Tbl27InfraclassesList.Insert(index: 0,
+                item: new Tbl27Infraclass { SubclassId = subclassId });
         });
     }
 

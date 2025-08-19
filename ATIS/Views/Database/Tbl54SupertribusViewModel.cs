@@ -76,15 +76,11 @@ public partial class Tbl54SupertribusViewModel : ObservableObject
             Tbl51InfrafamiliesAllList ??= [];
             Tbl51InfrafamiliesAllList = [.. _dataService.GetInfrafamilyAsync()];
 
-            var infrafamilyId = 0;
-            var select = Context.Tbl51Infrafamilies.FirstOrDefault(x => x.InfrafamilyName == "Please select");
-            if (select != null)
-            {
-                infrafamilyId = select.InfrafamilyId;
-            }
+            var infrafamilyId = Tbl51InfrafamiliesAllList.First().InfrafamilyId;
 
             Tbl54SupertribussesList ??= [];
-            Tbl54SupertribussesList.Insert(index: 0, item: new Tbl54Supertribus { InfrafamilyId = infrafamilyId });
+            Tbl54SupertribussesList.Insert(index: 0,
+                item: new Tbl54Supertribus { InfrafamilyId = infrafamilyId });
         });
     }
 

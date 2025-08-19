@@ -75,15 +75,11 @@ public partial class Tbl24SubclassViewModel : ObservableObject
             Tbl21ClassesAllList ??= [];
             Tbl21ClassesAllList = [.. _dataService.GetClassAsync()];
 
-            var classeId = 0;
-            var select = Context.Tbl21Classes.FirstOrDefault(x => x.ClassName == "Please select");
-            if (select != null)
-            {
-                classeId = select.ClassId;
-            }
+            var classeId = Tbl21ClassesAllList.First().ClassId;
 
             Tbl24SubclassesList ??= [];
-            Tbl24SubclassesList.Insert(index: 0, item: new Tbl24Subclass { ClassId = classeId });
+            Tbl24SubclassesList.Insert(index: 0,
+                item: new Tbl24Subclass { ClassId = classeId });
         });
     }
 

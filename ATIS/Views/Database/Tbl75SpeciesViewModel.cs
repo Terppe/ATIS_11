@@ -6,7 +6,6 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using Mapsui;
-using Mapsui.Tiling;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -71,10 +70,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         _dataService = dataService;
         GetAllCollections();
-
-        //Map = new Map();
-        //Map.Layers.Add(OpenStreetMap.CreateTileLayer());
-
     }
 
     private void GetAllCollections()
@@ -118,12 +113,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             Tbl66GenussesAllList ??= [];
             Tbl66GenussesAllList = [.. _dataService.GetGenusAsync()];
 
-            var genusId = 0;
-            var select = Context.Tbl66Genusses.FirstOrDefault(x => x.GenusName == "Please select");
-            if (select != null)
-            {
-                genusId = select.GenusId;
-            }
+            var genusId = Tbl66GenussesAllList.First().GenusId;
 
             Tbl68SpeciesgroupsAllList ??= [];
             Tbl68SpeciesgroupsAllList = [.. Context.Tbl68Speciesgroups
@@ -132,8 +122,8 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             var speciesgroupId = Tbl68SpeciesgroupsAllList.First().SpeciesgroupId;
 
             Tbl75SpeciessesList ??= [];
-            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl69FiSpecies
-                { GenusId = genusId, SpeciesgroupId = speciesgroupId, Creature = "" });
+            Tbl75SpeciessesList.Insert(index: 0,
+                item: new Tbl69FiSpecies { GenusId = genusId, SpeciesgroupId = speciesgroupId, Creature = "" });
         });
     }
 

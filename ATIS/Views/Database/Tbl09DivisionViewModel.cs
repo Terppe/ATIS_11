@@ -75,15 +75,11 @@ public partial class Tbl09DivisionViewModel : ObservableObject
             Tbl03RegnumsAllList ??= [];
             Tbl03RegnumsAllList = [.. _dataService.GetRegnumAsync()];
 
-            var regnumId = 0;
-            var select = Context.Tbl03Regnums.FirstOrDefault(x => x.RegnumName == "Please select");
-            if (select != null)
-            {
-                regnumId = select.RegnumId;
-            }
+            var regnumId = Tbl03RegnumsAllList.First().RegnumId;
 
             Tbl09DivisionsList ??= [];
-            Tbl09DivisionsList.Insert(index: 0, item: new Tbl09Division { RegnumId = regnumId });
+            Tbl09DivisionsList.Insert(index: 0,
+                item: new Tbl09Division { RegnumId = regnumId });
         });
     }
 

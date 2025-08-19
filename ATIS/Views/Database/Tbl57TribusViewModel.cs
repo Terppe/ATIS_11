@@ -76,15 +76,11 @@ public partial class Tbl57TribusViewModel : ObservableObject
             Tbl54SupertribussesAllList ??= [];
             Tbl54SupertribussesAllList = [.. _dataService.GetSupertribusAsync()];
 
-            var supertribusId = 0;
-            var select = Context.Tbl54Supertribusses.FirstOrDefault(x => x.SupertribusName == "Please select");
-            if (select != null)
-            {
-                supertribusId = select.SupertribusId;
-            }
+            var supertribusId = Tbl54SupertribussesAllList.First().SupertribusId;
 
             Tbl57TribussesList ??= [];
-            Tbl57TribussesList.Insert(index: 0, item: new Tbl57Tribus { SupertribusId = supertribusId });
+            Tbl57TribussesList.Insert(index: 0,
+                item: new Tbl57Tribus { SupertribusId = supertribusId });
         });
     }
 

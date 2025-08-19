@@ -75,15 +75,11 @@ public partial class Tbl33OrdoViewModel : ObservableObject
             Tbl30LegiosAllList ??= [];
             Tbl30LegiosAllList = [.. _dataService.GetLegioAsync()];
 
-            var legioId = 0;
-            var select = Context.Tbl30Legios.FirstOrDefault(x => x.LegioName == "Please select");
-            if (select != null)
-            {
-                legioId = select.LegioId;
-            }
+            var legioId = Tbl30LegiosAllList.First().LegioId;
 
             Tbl33OrdosList ??= [];
-            Tbl33OrdosList.Insert(index: 0, item: new Tbl33Ordo { LegioId = legioId });
+            Tbl33OrdosList.Insert(index: 0,
+                item: new Tbl33Ordo { LegioId = legioId });
         });
     }
 

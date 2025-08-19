@@ -345,6 +345,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         var x = (DataGrid)FindName("SuperclassDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSuperclass = false;
+            ViewModel.IsNewSuperclass = false;
+            SuperclassDetailExpander.IsExpanded = false;
+            SuperclassDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SuperclassSelected = ViewModel.Tbl18SuperclassesList[iNdx];
 
         SingleSuperclass = App.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperclassSelected.SuperclassId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperclassSelected.SuperclassId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperclassSelected.SuperclassId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         var x = (DataGrid)FindName("ClassDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditClass = false;
+            ViewModel.IsNewClass = false;
+            ClassDetailExpander.IsExpanded = false;
+            ClassDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.ClassSelected = ViewModel.Tbl21ClassesList[iNdx];
 
         SingleClass = App.SingleClassSuperclass(ViewModel.ClassSelected.ClassId, ViewModel.SuperclassSelected.SuperclassId);

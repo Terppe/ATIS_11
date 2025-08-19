@@ -84,10 +84,7 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
 
             Tbl18SuperclassesList ??= [];
             Tbl18SuperclassesList.Insert(index: 0,
-                item: new Tbl18Superclass
-                {
-                    SubphylumId = subphylumId, SubdivisionId = subdivisionId
-                });
+                item: new Tbl18Superclass { SubphylumId = subphylumId, SubdivisionId = subdivisionId });
         });
     }
 
@@ -912,13 +909,13 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
             _commentDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _classeDataSetCount;
+    private int _classDataSetCount;
     public int ClassDataSetCount
     {
-        get => _classeDataSetCount;
+        get => _classDataSetCount;
         set
         {
-            _classeDataSetCount = value; OnPropertyChanged();
+            _classDataSetCount = value; OnPropertyChanged();
         }
     }
     //---------------------------------------------------

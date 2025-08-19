@@ -76,15 +76,11 @@ public partial class Tbl06PhylumViewModel : ObservableObject
             Tbl03RegnumsAllList ??= [];
             Tbl03RegnumsAllList = [.. _dataService.GetRegnumAsync()];
 
-            var regnumId = 0;
-            var select = Context.Tbl03Regnums.FirstOrDefault(x => x.RegnumName == "Please select");
-            if (select != null)
-            {
-                regnumId = select.RegnumId;
-            }
+            var regnumId = Tbl03RegnumsAllList.First().RegnumId;
 
             Tbl06PhylumsList ??= [];
-            Tbl06PhylumsList.Insert(index: 0, item: new Tbl06Phylum { RegnumId = regnumId });
+            Tbl06PhylumsList.Insert(index: 0,
+                item: new Tbl06Phylum { RegnumId = regnumId });
         });
     }
 

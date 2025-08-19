@@ -345,6 +345,16 @@ public sealed partial class Tbl39InfraordoListPage : Page
     {
         var x = (DataGrid)FindName("InfraordoDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditInfraordo = false;
+            ViewModel.IsNewInfraordo = false;
+            InfraordoDetailExpander.IsExpanded = false;
+            InfraordoDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.InfraordoSelected = ViewModel.Tbl39InfraordosList[iNdx];
 
         SingleInfraordo = App.SingleInfraordo(ViewModel.InfraordoSelected.InfraordoId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl39InfraordoListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfraordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraordoSelected.InfraordoId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl39InfraordoListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfraordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraordoSelected.InfraordoId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl39InfraordoListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfraordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraordoSelected.InfraordoId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl39InfraordoListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentInfraordo(ViewModel.CommentSelected.CommentId, ViewModel.InfraordoSelected.InfraordoId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl39InfraordoListPage : Page
     {
         var x = (DataGrid)FindName("SuperfamilyDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSuperfamily = false;
+            ViewModel.IsNewSuperfamily = false;
+            SuperfamilyDetailExpander.IsExpanded = false;
+            SuperfamilyDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.SuperfamilySelected = ViewModel.Tbl42SuperfamiliesList[iNdx];
 
         SingleSuperfamily = App.SingleSuperfamilyInfraordo(ViewModel.SuperfamilySelected.SuperfamilyId, ViewModel.InfraordoSelected.InfraordoId);

@@ -345,6 +345,16 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("SubclassDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSubclass = false;
+            ViewModel.IsNewSubclass = false;
+            SubclassDetailExpander.IsExpanded = false;
+            SubclassDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SubclassSelected = ViewModel.Tbl24SubclassesList[iNdx];
 
         SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("InfraclassDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditInfraclass = false;
+            ViewModel.IsNewInfraclass = false;
+            InfraclassDetailExpander.IsExpanded = false;
+            InfraclassDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.InfraclassSelected = ViewModel.Tbl27InfraclassesList[iNdx];
 
         SingleInfraclass = App.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);

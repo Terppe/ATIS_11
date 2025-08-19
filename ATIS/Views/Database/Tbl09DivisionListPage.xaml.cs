@@ -345,6 +345,16 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("DivisionDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditDivision = false;
+            ViewModel.IsNewDivision = false;
+            DivisionDetailExpander.IsExpanded = false;
+            DivisionDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[iNdx];
 
         SingleDivision = App.SingleDivision(ViewModel.DivisionSelected.DivisionId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentDivision(ViewModel.CommentSelected.CommentId, ViewModel.DivisionSelected.DivisionId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("SubdivisionDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSubdivision = false;
+            ViewModel.IsNewSubdivision = false;
+            SubdivisionDetailExpander.IsExpanded = false;
+            SubdivisionDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.SubdivisionSelected = ViewModel.Tbl15SubdivisionsList[iNdx];
 
         SingleSubdivision = App.SingleSubdivisionDivision(ViewModel.SubdivisionSelected.SubdivisionId, ViewModel.DivisionSelected.DivisionId);

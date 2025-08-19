@@ -75,15 +75,11 @@ public partial class Tbl45FamilyViewModel : ObservableObject
             Tbl42SuperfamiliesAllList ??= [];
             Tbl42SuperfamiliesAllList = [.. _dataService.GetSuperfamilyAsync()];
 
-            var superfamilyId = 0;
-            var select = Context.Tbl42Superfamilies.FirstOrDefault(x => x.SuperfamilyName == "Please select");
-            if (select != null)
-            {
-                superfamilyId = select.SuperfamilyId;
-            }
+            var superfamilyId = Tbl42SuperfamiliesAllList.First().SuperfamilyId;
 
             Tbl45FamiliesList ??= [];
-            Tbl45FamiliesList.Insert(index: 0, item: new Tbl45Family { SuperfamilyId = superfamilyId });
+            Tbl45FamiliesList.Insert(index: 0,
+                item: new Tbl45Family { SuperfamilyId = superfamilyId });
         });
     }
     public async Task SaveFamilyAsync(Tbl45Family viewModelFamilySelected)

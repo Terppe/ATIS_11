@@ -9,8 +9,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:ATIS.Models"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-      xmlns:winUiCommunity="using:WinUICommunity"
       xmlns:winUi="using:Mapsui.UI.WinUI"
+      xmlns:winUiCommunity="using:WinUICommunity"
       NavigationCacheMode="Disabled"
       mc:Ignorable="d">
 
@@ -2903,14 +2903,10 @@
                                     <RelativePanel>
                                         <Border Width="1100"
                                                 Height="400">
-                                            <!--<Image x:Name="ImageGeographic"
-                                            Source="ms-appx:///Assets/icon.png"
-                                            Stretch="Uniform" />-->
                                             <Grid>
-                                                <winUi:MapControl
-                                                    x:Name="MyMap"
-                                                    VerticalAlignment="Stretch"
-                                                    HorizontalAlignment="Stretch" />
+                                                <winUi:MapControl x:Name="MyMap"
+                                                                  HorizontalAlignment="Stretch"
+                                                                  VerticalAlignment="Stretch" />
                                             </Grid>
                                         </Border>
                                     </RelativePanel>

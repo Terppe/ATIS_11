@@ -345,6 +345,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         var x = (DataGrid)FindName("InfraclassDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditInfraclass = false;
+            ViewModel.IsNewInfraclass = false;
+            InfraclassDetailExpander.IsExpanded = false;
+            InfraclassDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.InfraclassSelected = ViewModel.Tbl27InfraclassesList[iNdx];
 
         SingleInfraclass = App.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraclassSelected.InfraclassId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraclassSelected.InfraclassId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraclassSelected.InfraclassId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         var x = (DataGrid)FindName("LegioDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditLegio = false;
+            ViewModel.IsNewLegio = false;
+            LegioDetailExpander.IsExpanded = false;
+            LegioDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.LegioSelected = ViewModel.Tbl30LegiosList[iNdx];
 
         SingleLegio = App.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId, ViewModel.InfraclassSelected.InfraclassId);

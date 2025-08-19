@@ -1467,6 +1467,7 @@
                                          Background="SlateGray"
                                          Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditPhylum), Mode=OneWay}"
+                                         LostFocus="PhylumName_OnLostFocus"
                                          MaxLength="100"
                                          RelativePanel.RightOf="PhylumId"
                                          Text="{x:Bind ViewModel.PhylumSelected.PhylumName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -1717,6 +1718,7 @@
                                          Background="SlateGray"
                                          Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDivision), Mode=OneWay}"
+                                         LostFocus="DivisionName_OnLostFocus"
                                          MaxLength="100"
                                          RelativePanel.RightOf="DivisionId"
                                          Text="{x:Bind ViewModel.DivisionSelected.DivisionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

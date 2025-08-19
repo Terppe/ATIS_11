@@ -76,15 +76,11 @@ public partial class Tbl66GenusViewModel : ObservableObject
             Tbl63InfratribussesAllList ??= [];
             Tbl63InfratribussesAllList = [.. _dataService.GetInfratribusAsync()];
 
-            var infratribusId = 0;
-            var select = Context.Tbl63Infratribusses.FirstOrDefault(x => x.InfratribusName == "Please select");
-            if (select != null)
-            {
-                infratribusId = select.InfratribusId;
-            }
+            var infratribusId = Tbl63InfratribussesAllList.First().InfratribusId;
 
             Tbl66GenussesList ??= [];
-            Tbl66GenussesList.Insert(index: 0, item: new Tbl66Genus { InfratribusId = infratribusId });
+            Tbl66GenussesList.Insert(index: 0,
+                item: new Tbl66Genus { InfratribusId = infratribusId });
         });
     }
 
@@ -883,13 +879,13 @@ public partial class Tbl66GenusViewModel : ObservableObject
             _commentDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _fiSpeciesDataSetCount;
-    public int FiSpeciesDataSetCount
+    private int _speciesDataSetCount;
+    public int SpeciesDataSetCount
     {
-        get => _fiSpeciesDataSetCount;
+        get => _speciesDataSetCount;
         set
         {
-            _fiSpeciesDataSetCount = value; OnPropertyChanged();
+            _speciesDataSetCount = value; OnPropertyChanged();
         }
     }
 

@@ -75,15 +75,11 @@ public partial class Tbl12SubphylumViewModel : ObservableObject
             Tbl06PhylumsAllList ??= [];
             Tbl06PhylumsAllList = [.. _dataService.GetPhylumAsync()];
 
-            var phylumId = 0;
-            var select = Context.Tbl06Phylums.FirstOrDefault(x => x.PhylumName == "Please select");
-            if (select != null)
-            {
-                phylumId = select.PhylumId;
-            }
+            var phylumId = Tbl06PhylumsAllList.First().PhylumId;
 
             Tbl12SubphylumsList ??= [];
-            Tbl12SubphylumsList.Insert(index: 0, item: new Tbl12Subphylum { PhylumId = phylumId });
+            Tbl12SubphylumsList.Insert(index: 0,
+                item: new Tbl12Subphylum { PhylumId = phylumId });
         });
     }
 

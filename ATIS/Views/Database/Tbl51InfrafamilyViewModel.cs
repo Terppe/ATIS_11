@@ -76,15 +76,11 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
             Tbl48SubfamiliesAllList ??= [];
             Tbl48SubfamiliesAllList = [.. _dataService.GetSubfamilyAsync()];
 
-            var subfamilyId = 0;
-            var select = Context.Tbl48Subfamilies.FirstOrDefault(x => x.SubfamilyName == "Please select");
-            if (select != null)
-            {
-                subfamilyId = select.SubfamilyId;
-            }
+            var subfamilyId = Tbl48SubfamiliesAllList.First().SubfamilyId;
 
             Tbl51InfrafamiliesList ??= [];
-            Tbl51InfrafamiliesList.Insert(index: 0, item: new Tbl51Infrafamily { SubfamilyId = subfamilyId });
+            Tbl51InfrafamiliesList.Insert(index: 0,
+                item: new Tbl51Infrafamily { SubfamilyId = subfamilyId });
         });
     }
 

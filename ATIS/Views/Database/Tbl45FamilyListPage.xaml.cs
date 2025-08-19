@@ -130,7 +130,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 Frame.Navigate(typeof(Tbl45FamilyListPage));
-
             }
             else
             {
@@ -346,11 +345,19 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         var x = (DataGrid)FindName("FamilyDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.FamilySelected = ViewModel.Tbl45FamiliesList[iNdx];
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditFamily = false;
+            ViewModel.IsNewFamily = false;
+            FamilyDetailExpander.IsExpanded = false;
+            FamilyDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
 
+        ViewModel.FamilySelected = ViewModel.Tbl45FamiliesList[iNdx];
         SingleFamily = App.SingleFamily(ViewModel.FamilySelected.FamilyId);
         FamilySingles();
-
         ViewModel.IsInEditFamily = false;
         ViewModel.IsNewFamily = false;
         FamilyDetailExpander.IsExpanded = true;
@@ -880,6 +887,16 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.FamilySelected.FamilyId);
@@ -981,6 +998,16 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.FamilySelected.FamilyId);
@@ -1083,6 +1110,16 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.FamilySelected.FamilyId);
@@ -1217,6 +1254,16 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
@@ -1507,6 +1554,16 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         var x = (DataGrid)FindName("SubfamilyDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSubfamily = false;
+            ViewModel.IsNewSubfamily = false;
+            SubfamilyDetailExpander.IsExpanded = false;
+            SubfamilyDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SubfamilySelected = ViewModel.Tbl48SubfamiliesList[iNdx];
 
         SingleSubfamily = App.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId, ViewModel.FamilySelected.FamilyId);

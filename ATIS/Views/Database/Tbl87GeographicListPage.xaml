@@ -8,6 +8,7 @@
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:ATIS.Models"
+      xmlns:system="using:System"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:winUi="using:Mapsui.UI.WinUI"
       xmlns:winUiCommunity="using:WinUICommunity"
@@ -19,6 +20,10 @@
     <Page.Resources>
 
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
+        <conv:StringFormatConverter x:Key="StringFormatConverter" />
+        <conv:DoubleToDecimalConverter x:Key="DoubleToDecimalConverter" />
+        <conv:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter" />
+
         <MenuFlyout x:Key="GeographicDataContextMenu">
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Geographic"
                             Click="SaveGeographic_Click">
@@ -170,6 +175,10 @@
                                   SelectedItem="{x:Bind ViewModel.GeographicSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   SelectionMode="Single"
                                   Sorting="GeographicDataGrid_Sorting">
+                    <toolkit:DataGrid.Resources>
+                        <system:String x:Key="Format">{0:N}</system:String>
+                        <conv:StringFormatConverter x:Key="StringFormatConverter" />
+                    </toolkit:DataGrid.Resources>
                     <toolkit:DataGrid.Columns>
                         <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_GeographicId"
                                                         Tag="GeographicId">
@@ -194,6 +203,31 @@
                         <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Info"
                                                     Binding="{Binding Info}"
                                                     Tag="Info" />
+                        <!--<toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ZoomLevel"
+                                                    Binding="{Binding ZoomLevel, Converter={StaticResource ResourceKey=DoubleToDecimalConverter}}"
+                                                    Tag="ZoomLevel" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Latitude"
+                                                    Binding="{Binding Latitude, Converter={StaticResource ResourceKey=StringFormatConverter}}"
+                                                    Tag="Latitude" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Longitude"
+                                                    Binding="{Binding Longitude, Converter={StaticResource ResourceKey=StringFormatConverter}}"
+                                                    Tag="Longitude" />
+                        <toolkit:DataGridTextColumn Binding="{Binding Latitude, Converter={StaticResource ResourceKey=DoubleToDecimalConverter}}"
+                                                    Header="Double Value" />
+                        <toolkit:DataGridTextColumn Binding="{Binding Latitude, UpdateSourceTrigger=LostFocus, Converter={StaticResource ResourceKey=DoubleToDecimalConverter}}"
+                                                    Header="DoubleToDecimal" />
+                        <toolkit:DataGridTemplateColumn loca:Uids.Uid="Latitude1Geographic"
+                                                        Tag="Latitude">
+                            <toolkit:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate x:DataType="models:Tbl87Geographic">
+                                    <TextBox x:Name="Latitude1Geographic"
+                                             loca:Uids.Uid="TextBox_Latitude1"
+                                             Text="{Binding Latitude, Converter={StaticResource ResourceKey=StringFormatConverter}}" />
+                                    
+                                </DataTemplate>
+                            </toolkit:DataGridTemplateColumn.CellTemplate>
+                        </toolkit:DataGridTemplateColumn>-->
+
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
 
@@ -366,19 +400,10 @@
                                     <RelativePanel>
                                         <Border Width="1100"
                                                 Height="400">
-                                            <!--<Image x:Name="ImageGeographic"
-                                            Source="ms-appx:///Assets/icon.png"
-                                            Stretch="Uniform" />-->
                                             <Grid>
-                                                <winUi:MapControl
-                                                    x:Name="MyMap"
-                                                    VerticalAlignment="Stretch"
-                                                    HorizontalAlignment="Stretch"
-                                                    Margin="0 0 0 60" />
-                                                <!--<winUi:MapControl
-                                                    x:Name="MyMap"
-                                                    VerticalAlignment="Stretch"
-                                                    HorizontalAlignment="Stretch" />-->
+                                                <winUi:MapControl x:Name="MyMap"
+                                                                  HorizontalAlignment="Stretch"
+                                                                  VerticalAlignment="Stretch" />
                                                 <!--<MapControl x:Name="mapControl"
                                                             Width="800"
                                                             Height="600"

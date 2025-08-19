@@ -345,6 +345,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         var x = (DataGrid)FindName("SuperfamilyDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSuperfamily = false;
+            ViewModel.IsNewSuperfamily = false;
+            SuperfamilyDetailExpander.IsExpanded = false;
+            SuperfamilyDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SuperfamilySelected = ViewModel.Tbl42SuperfamiliesList[iNdx];
 
         SingleSuperfamily = App.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
@@ -879,6 +889,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceExpert = false;
+            ViewModel.IsNewReferenceExpert = false;
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperfamilySelected.SuperfamilyId);
@@ -980,6 +1000,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceSource = false;
+            ViewModel.IsNewReferenceSource = false;
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperfamilySelected.SuperfamilyId);
@@ -1082,6 +1112,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReferenceAuthor = false;
+            ViewModel.IsNewReferenceAuthor = false;
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperfamilySelected.SuperfamilyId);
@@ -1216,6 +1256,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditComment = false;
+            ViewModel.IsNewComment = false;
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
         SingleComment = App.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
@@ -1506,6 +1556,15 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         var x = (DataGrid)FindName("FamilyDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditFamily = false;
+            ViewModel.IsNewFamily = false;
+            FamilyDetailExpander.IsExpanded = false;
+            FamilyDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
         ViewModel.FamilySelected = ViewModel.Tbl45FamiliesList[iNdx];
 
         SingleFamily = App.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId, ViewModel.SuperfamilySelected.SuperfamilyId);

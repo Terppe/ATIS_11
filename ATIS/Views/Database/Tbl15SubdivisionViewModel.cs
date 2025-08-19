@@ -75,15 +75,11 @@ public partial class Tbl15SubdivisionViewModel : ObservableObject
             Tbl09DivisionsAllList ??= [];
             Tbl09DivisionsAllList = [.. _dataService.GetDivisionAsync()];
 
-            var divisionId = 0;
-            var select = Context.Tbl09Divisions.FirstOrDefault(x => x.DivisionName == "Please select");
-            if (select != null)
-            {
-                divisionId = select.DivisionId;
-            }
+            var divisionId = Tbl09DivisionsAllList.First().DivisionId;
 
             Tbl15SubdivisionsList ??= [];
-            Tbl15SubdivisionsList.Insert(index: 0, item: new Tbl15Subdivision { DivisionId = divisionId });
+            Tbl15SubdivisionsList.Insert(index: 0,
+                item: new Tbl15Subdivision { DivisionId = divisionId });
         });
     }
 

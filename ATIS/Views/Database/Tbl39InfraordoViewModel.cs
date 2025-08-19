@@ -75,15 +75,11 @@ public partial class Tbl39InfraordoViewModel : ObservableObject
             Tbl36SubordosAllList ??= [];
             Tbl36SubordosAllList = [.. _dataService.GetSubordoAsync()];
 
-            var subordoId = 0;
-            var select = Context.Tbl36Subordos.FirstOrDefault(x => x.SubordoName == "Please select");
-            if (select != null)
-            {
-                subordoId = select.SubordoId;
-            }
+            var subordoId = Tbl36SubordosAllList.First().SubordoId;
 
             Tbl39InfraordosList ??= [];
-            Tbl39InfraordosList.Insert(index: 0, item: new Tbl39Infraordo { SubordoId = subordoId });
+            Tbl39InfraordosList.Insert(index: 0,
+                item: new Tbl39Infraordo { SubordoId = subordoId });
         });
     }
 

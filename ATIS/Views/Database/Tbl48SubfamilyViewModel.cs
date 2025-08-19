@@ -75,15 +75,11 @@ public partial class Tbl48SubfamilyViewModel : ObservableObject
             Tbl45FamiliesAllList ??= [];
             Tbl45FamiliesAllList = [.. _dataService.GetFamilyAsync()];
 
-            var familyId = 0;
-            var select = Context.Tbl45Families.FirstOrDefault(x => x.FamilyName == "Please select");
-            if (select != null)
-            {
-                familyId = select.FamilyId;
-            }
+            var familyId = Tbl45FamiliesAllList.First().FamilyId;
 
             Tbl48SubfamiliesList ??= [];
-            Tbl48SubfamiliesList.Insert(index: 0, item: new Tbl48Subfamily { FamilyId = familyId });
+            Tbl48SubfamiliesList.Insert(index: 0,
+                item: new Tbl48Subfamily { FamilyId = familyId });
         });
     }
 

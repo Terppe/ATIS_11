@@ -3729,4 +3729,13 @@
   <data name="DataGridTextColumn_Creature.Header" xml:space="preserve">
     <value>Creature</value>
   </data>
+  <data name="DataGridTextColumn_ZoomLevel.Header" xml:space="preserve">
+    <value>Zoom</value>
+  </data>
+  <data name="DataGridTextColumn_Latitude.header" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="DataGridTextColumn_Longitude.Header" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
 </root>

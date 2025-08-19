@@ -14,5 +14,8 @@ public class TblCountry
     public string Name { get; set; }
     [StringLength(250, ErrorMessageResourceName = "StringLength_250", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string Regex { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public int ZoomLevel { get; set; }
 
 }

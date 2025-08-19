@@ -76,15 +76,11 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             Tbl57TribussesAllList ??= [];
             Tbl57TribussesAllList = [.. _dataService.GetTribusAsync()];
 
-            var tribusId = 0;
-            var select = Context.Tbl57Tribusses.FirstOrDefault(x => x.TribusName == "Please select");
-            if (select != null)
-            {
-                tribusId = select.TribusId;
-            }
+            var tribusId = Tbl57TribussesAllList.First().TribusId;
 
             Tbl60SubtribussesList ??= [];
-            Tbl60SubtribussesList.Insert(index: 0, item: new Tbl60Subtribus { TribusId = tribusId });
+            Tbl60SubtribussesList.Insert(index: 0,
+                item: new Tbl60Subtribus { TribusId = tribusId });
         });
     }
 
