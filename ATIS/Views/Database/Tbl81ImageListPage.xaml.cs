@@ -4,12 +4,13 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
+using ATIS.Views.Main;
+using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
-using CommunityToolkit.WinUI;
-using Microsoft.UI.Dispatching;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -90,19 +91,19 @@ public sealed partial class Tbl81ImageListPage : Page
 
             await _dispatcherQueue.EnqueueAsync(() =>
             {
-                ViewModel.Tbl81ImagesList ??= [];
-                ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl81Images
-                        .Where(e => e.ImageId == id)]
-                    : [null];
-
                 //ViewModel.Tbl81ImagesList ??= [];
-                //ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-                //? [.. Context.Tbl81Images
-                //.Where(e => e.ImageId == id)]
-                //: [.. Context.Tbl81Images
-                //.Where(e => e.Info.StartsWith(_search))
-                //.OrderBy(a => a.Info)];
+                //ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)        //only Id
+                //    ? [.. Context.Tbl81Images
+                //        .Where(e => e.ImageId == id)]
+                //    : [null];
+
+                ViewModel.Tbl81ImagesList ??= [];
+                ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)         //Info and Id
+                ? [.. Context.Tbl81Images
+                .Where(e => e.ImageId == id)]
+                : [.. Context.Tbl81Images
+                .Where(e => e.Info.StartsWith(_search))
+                .OrderBy(a => a.Info)];
             });
 
             ImageDetailExpander.Visibility = Visibility.Collapsed;
@@ -175,9 +176,10 @@ public sealed partial class Tbl81ImageListPage : Page
             .AsNoTracking()
             .Where(com => com.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         });
-        ViewModel.FiSpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
 
         ViewModel.RefreshSpeciesItems();
+        ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
@@ -289,6 +291,16 @@ public sealed partial class Tbl81ImageListPage : Page
     {
         var x = (DataGrid)FindName("ImageDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditImage = false;
+            ViewModel.IsNewImage = false;
+            ImageDetailExpander.IsExpanded = false;
+            ImageDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
 
         SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
@@ -626,6 +638,16 @@ public sealed partial class Tbl81ImageListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSpecies = false;
+            ViewModel.IsNewSpecies = false;
+            SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
         SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);

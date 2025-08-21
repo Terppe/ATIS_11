@@ -247,6 +247,16 @@ public sealed partial class TblCountryListPage : Page
     {
         var x = (DataGrid)FindName("CountryDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditCountry = false;
+            ViewModel.IsNewCountry = false;
+            CountryDetailExpander.IsExpanded = false;
+            CountryDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.CountrySelected = ViewModel.TblCountriesList[iNdx];
 
         SingleCountry = App.SingleCountry(ViewModel.CountrySelected.CountryId);
@@ -429,6 +439,11 @@ public sealed partial class TblCountryListPage : Page
         }
     }
 
+    private void CountryName_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        ChangeChar.UpperCaseFirstChar(sender);
+    }
+
     private void BackCountry_Click(object sender, RoutedEventArgs e)
     {
         CountryDetailExpander.IsExpanded = false;
@@ -522,7 +537,7 @@ public sealed partial class TblCountryListPage : Page
         ViewModel.IsDeletingCountry = false;
     }
 
-    #endregion [Refresh Methods] 
+    #endregion [Refresh Methods]
 
 
 }

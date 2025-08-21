@@ -247,6 +247,16 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     {
         var x = (DataGrid)FindName("RefAuthorDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditRefAuthor = false;
+            ViewModel.IsNewRefAuthor = false;
+            RefAuthorDetailExpander.IsExpanded = false;
+            RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.RefAuthorSelected = ViewModel.Tbl90RefAuthorsList[iNdx];
 
         SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);

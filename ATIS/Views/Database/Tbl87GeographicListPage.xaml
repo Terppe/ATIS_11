@@ -20,10 +20,6 @@
     <Page.Resources>
 
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
-        <conv:StringFormatConverter x:Key="StringFormatConverter" />
-        <conv:DoubleToDecimalConverter x:Key="DoubleToDecimalConverter" />
-        <conv:DecimalToDoubleConverter x:Key="DecimalToDoubleConverter" />
-
         <MenuFlyout x:Key="GeographicDataContextMenu">
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Geographic"
                             Click="SaveGeographic_Click">
@@ -134,7 +130,7 @@
         <AutoSuggestBox Name="GeographicSearchBox"
                         Width="200"
                         Margin="4,8,4,0"
-                        loca:Uids.Uid="AutoSuggestBox_Search"
+                        loca:Uids.Uid="AutoSuggestBox_Search_info_Id"
                         Loaded="GeographicSearchBox_OnLoaded"
                         QuerySubmitted="GetGeographicsByInfoOrId"
                         RelativePanel.AlignRightWithPanel="True">
@@ -175,10 +171,6 @@
                                   SelectedItem="{x:Bind ViewModel.GeographicSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   SelectionMode="Single"
                                   Sorting="GeographicDataGrid_Sorting">
-                    <toolkit:DataGrid.Resources>
-                        <system:String x:Key="Format">{0:N}</system:String>
-                        <conv:StringFormatConverter x:Key="StringFormatConverter" />
-                    </toolkit:DataGrid.Resources>
                     <toolkit:DataGrid.Columns>
                         <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_GeographicId"
                                                         Tag="GeographicId">
@@ -223,7 +215,7 @@
                                     <TextBox x:Name="Latitude1Geographic"
                                              loca:Uids.Uid="TextBox_Latitude1"
                                              Text="{Binding Latitude, Converter={StaticResource ResourceKey=StringFormatConverter}}" />
-                                    
+
                                 </DataTemplate>
                             </toolkit:DataGridTemplateColumn.CellTemplate>
                         </toolkit:DataGridTemplateColumn>-->
@@ -404,10 +396,6 @@
                                                 <winUi:MapControl x:Name="MyMap"
                                                                   HorizontalAlignment="Stretch"
                                                                   VerticalAlignment="Stretch" />
-                                                <!--<MapControl x:Name="mapControl"
-                                                            Width="800"
-                                                            Height="600"
-                                                            InteractiveControlsVisible="True" />-->
                                             </Grid>
                                         </Border>
                                     </RelativePanel>
@@ -1235,7 +1223,7 @@
                             <TextBlock x:Name="FiSpeciessesDatasetCountText"
                                        Margin="5,0,0,2"
                                        Style="{StaticResource DatasetTitleStyle}"
-                                       Text="{x:Bind ViewModel.FiSpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                       Text="{x:Bind ViewModel.SpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </Expander.Header>
                     <Grid Margin="0,4,0,0">

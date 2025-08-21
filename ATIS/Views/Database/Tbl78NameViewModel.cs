@@ -69,12 +69,7 @@ public partial class Tbl78NameViewModel : ObservableObject
                 plSpeciesId = plantaeRegnum.PlSpeciesId;
             }
 
-            var speciesId = 0;
-            var select = Context.Tbl69FiSpeciesses.FirstOrDefault(x => x.FiSpeciesName == "Please select");
-            if (select != null)
-            {
-                speciesId = select.FiSpeciesId;
-            }
+            var speciesId = Tbl75SpeciessesAllList.First().FiSpeciesId;
 
             Tbl78NamesList ??= [];
             Tbl78NamesList.Insert(index: 0, item: new Tbl78Name() { FiSpeciesId = speciesId, PlSpeciesId = plSpeciesId });
@@ -381,26 +376,16 @@ public partial class Tbl78NameViewModel : ObservableObject
             _nameDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _fiSpeciesDataSetCount;
-    public int FiSpeciesDataSetCount
+    private int _speciesDataSetCount;
+    public int SpeciesDataSetCount
     {
-        get => _fiSpeciesDataSetCount;
+        get => _speciesDataSetCount;
         set
         {
-            _fiSpeciesDataSetCount = value; OnPropertyChanged();
+            _speciesDataSetCount = value; OnPropertyChanged();
         }
     }
     //---------------------------------------------------------------
-    private ObservableCollection<Tbl78Name> _tbl78NamesList;
-    public ObservableCollection<Tbl78Name> Tbl78NamesList
-    {
-        get => _tbl78NamesList;
-        set
-        {
-            _tbl78NamesList = value; OnPropertyChanged();
-        }
-    }
-
     private ObservableCollection<Tbl78Name> _tbl78NamesAllList;
     public ObservableCollection<Tbl78Name> Tbl78NamesAllList
     {
@@ -421,6 +406,15 @@ public partial class Tbl78NameViewModel : ObservableObject
         }
     }
 
+    private ObservableCollection<Tbl78Name> _tbl78NamesList;
+    public ObservableCollection<Tbl78Name> Tbl78NamesList
+    {
+        get => _tbl78NamesList;
+        set
+        {
+            _tbl78NamesList = value; OnPropertyChanged();
+        }
+    }
 
     private ObservableCollection<Tbl66Genus> _tbl66GenussesList;
     public ObservableCollection<Tbl66Genus> Tbl66GenussesList
@@ -452,6 +446,15 @@ public partial class Tbl78NameViewModel : ObservableObject
         }
     }
 
+    private ObservableCollection<Tbl63Infratribus> _tbl63InfratribussesAllList;
+    public ObservableCollection<Tbl63Infratribus> Tbl63InfratribussesAllList
+    {
+        get => _tbl63InfratribussesAllList;
+        set
+        {
+            _tbl63InfratribussesAllList = value; OnPropertyChanged();
+        }
+    }
 
     private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciesList;
 

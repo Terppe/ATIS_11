@@ -3738,4 +3738,7 @@
   <data name="DataGridTextColumn_Longitude.Header" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="AutoSuggestBox_Search_info_Id.PlaceholderText" xml:space="preserve">
+    <value>Search Info or ID</value>
+  </data>
 </root>

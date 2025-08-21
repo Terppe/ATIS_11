@@ -97,6 +97,8 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             SpeciessesExpander.Visibility = Visibility.Collapsed;
             SpeciesDetailExpander.Visibility = Visibility.Collapsed;
 
+            ViewModel.SpeciesgroupDataSetCount = ViewModel.Tbl68SpeciesgroupsList.Count;
+
             if (ViewModel.Tbl68SpeciesgroupsList is { Count: 0 })
             {
                 ViewModel.Tbl68SpeciesgroupsList?.Clear();
@@ -159,6 +161,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             .AsNoTracking()
             .Where(com => com.SpeciesgroupId == ViewModel.SpeciesgroupSelected.SpeciesgroupId)];
         });
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
@@ -209,6 +212,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         SpeciesgroupDetailExpander.Visibility = Visibility.Visible;
 
         ViewModel.IsNewSpeciesgroup = false;
+        SpeciesgroupName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void SpeciesgroupSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -271,6 +275,16 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesgroupDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSpeciesgroup = false;
+            ViewModel.IsNewSpeciesgroup = false;
+            SpeciesgroupDetailExpander.IsExpanded = false;
+            SpeciesgroupDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SpeciesgroupSelected = ViewModel.Tbl68SpeciesgroupsList[iNdx];
 
         SingleSpeciesgroup = App.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
@@ -578,6 +592,16 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSpecies = false;
+            ViewModel.IsNewSpecies = false;
+            SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
         SingleSpecies = App.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);

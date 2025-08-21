@@ -46,17 +46,15 @@ public sealed partial class Tbl87GeographicListPage : Page
 
     public Tbl87GeographicListPage()
     {
-      //  if (Permission.RolePermission())
+        if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl87GeographicViewModel>();
             InitializeComponent();
-            // Optional: Customize the map settings
-            //  mapControl.MapServiceToken = "Ai4CQexF-DWddfmN5GMnm8RD19EW_5adcMQAu9Rdzw5LiMxAQ-DeLBKVEG9AcLMg"; // Replace with your token
         }
-        //else
-        //{
-        //    AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
-        //}
+        else
+        {
+            AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
+        }
 
         //string command = "/C notepad.exe";
         //Process.Start("cmd.exe", command);
@@ -200,6 +198,8 @@ public sealed partial class Tbl87GeographicListPage : Page
             SpeciessesExpander.Visibility = Visibility.Collapsed;
             SpeciesDetailExpander.Visibility = Visibility.Collapsed;
 
+            ViewModel.GeographicDataSetCount = ViewModel.Tbl87GeographicsList.Count;
+
             if (ViewModel.Tbl87GeographicsList is { Count: 0 })
             {
                 ViewModel.Tbl87GeographicsList?.Clear();
@@ -219,8 +219,6 @@ public sealed partial class Tbl87GeographicListPage : Page
             {
                 GeographicDataGrid.ItemsSource = ViewModel.Tbl87GeographicsList;
                 ViewModel.GeographicSelected = ViewModel.Tbl87GeographicsList[0];
-
-                ViewModel.GeographicDataSetCount = ViewModel.Tbl87GeographicsList.Count;
             }
             ViewModel.IsLoading = false;
         }
@@ -265,7 +263,7 @@ public sealed partial class Tbl87GeographicListPage : Page
             .AsNoTracking()
             .Where(com => com.FiSpeciesId == ViewModel.GeographicSelected.FiSpeciesId)];
         });
-        ViewModel.FiSpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
@@ -375,6 +373,16 @@ public sealed partial class Tbl87GeographicListPage : Page
     {
         var x = (DataGrid)FindName("GeographicDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditGeographic = false;
+            ViewModel.IsNewGeographic = false;
+            GeographicDetailExpander.IsExpanded = false;
+            GeographicDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.GeographicSelected = ViewModel.Tbl87GeographicsList[iNdx];
 
         SingleGeographic = App.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
@@ -640,6 +648,16 @@ public sealed partial class Tbl87GeographicListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSpecies = false;
+            ViewModel.IsNewSpecies = false;
+            SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
         SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);

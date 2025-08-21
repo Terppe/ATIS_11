@@ -281,7 +281,7 @@ public partial class Tbl90RefSourceViewModel(IDataService _dataService) : Observ
 
             if (RefSourceSelected == null && Tbl90RefSourcesList.Count != 0)
             {
-                RefSourceSelected = RefSourceItems.FirstOrDefault();
+                RefSourceSelected = RefSourceItems.FirstOrDefault()!;
             }
         }
     }

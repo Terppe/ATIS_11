@@ -247,6 +247,16 @@ public sealed partial class Tbl90RefSourceListPage : Page
     {
         var x = (DataGrid)FindName("RefSourceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditRefSource = false;
+            ViewModel.IsNewRefSource = false;
+            RefSourceDetailExpander.IsExpanded = false;
+            RefSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.RefSourceSelected = ViewModel.Tbl90RefSourcesList[iNdx];
 
         SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);

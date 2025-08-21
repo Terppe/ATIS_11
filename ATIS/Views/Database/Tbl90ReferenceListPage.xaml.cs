@@ -5,6 +5,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.Animations.Expressions;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 
@@ -241,6 +242,16 @@ public sealed partial class Tbl90ReferenceListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditReference = false;
+            ViewModel.IsNewReference = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
         SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
@@ -474,6 +485,10 @@ public sealed partial class Tbl90ReferenceListPage : Page
             ReferenceDetailExpander.IsExpanded = false;
             ReferenceDetailExpander.Visibility = Visibility.Collapsed;
         }
+    }
+    private void ReferenceName_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        ChangeChar.UpperCaseFirstChar(sender);
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)

@@ -317,7 +317,7 @@ public partial class TblUserProfileViewModel : ObservableObject
 
             if (UserProfileSelected == null && TblUserProfilesList.Count != 0)
             {
-                UserProfileSelected = UserProfileItems.FirstOrDefault();
+                UserProfileSelected = UserProfileItems.FirstOrDefault()!;
             }
         }
     }

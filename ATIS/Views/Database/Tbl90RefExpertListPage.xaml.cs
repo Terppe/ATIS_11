@@ -247,6 +247,16 @@ public sealed partial class Tbl90RefExpertListPage : Page
     {
         var x = (DataGrid)FindName("RefExpertDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditRefExpert = false;
+            ViewModel.IsNewRefExpert = false;
+            RefExpertDetailExpander.IsExpanded = false;
+            RefExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.RefExpertSelected = ViewModel.Tbl90RefExpertsList[iNdx];
 
         SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);

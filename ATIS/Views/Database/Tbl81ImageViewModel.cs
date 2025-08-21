@@ -84,21 +84,11 @@ public partial class Tbl81ImageViewModel : ObservableObject
                 plSpeciesId = plantaeRegnum.PlSpeciesId;
             }
 
-            var speciesId = 0;
-            var select = Context.Tbl69FiSpeciesses.FirstOrDefault(x => x.FiSpeciesName == "Please select");
-            if (select != null)
-            {
-                speciesId = select.FiSpeciesId;
-            }
+            var speciesId = Tbl75SpeciessesAllList.First().FiSpeciesId;
 
             Tbl81ImagesList ??= [];
             Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image() { FiSpeciesId = speciesId, PlSpeciesId = plSpeciesId });
         });
-
-
-        //New Image search
-        _ = OpenFileDialog();
-        RefreshImageItems();
     }
 
     public async Task SaveImageAsync(Tbl81Image viewModelImageSelected, string selectedPath)
@@ -453,13 +443,13 @@ public partial class Tbl81ImageViewModel : ObservableObject
             _imageDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _fiSpeciesDataSetCount;
-    public int FiSpeciesDataSetCount
+    private int _speciesDataSetCount;
+    public int SpeciesDataSetCount
     {
-        get => _fiSpeciesDataSetCount;
+        get => _speciesDataSetCount;
         set
         {
-            _fiSpeciesDataSetCount = value; OnPropertyChanged();
+            _speciesDataSetCount = value; OnPropertyChanged();
         }
     }
     //---------------------------------------
@@ -483,7 +473,16 @@ public partial class Tbl81ImageViewModel : ObservableObject
             _selectedPath = value; OnPropertyChanged();
         }
     }
-    //----------------------------------------
+    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciessesAllList;
+    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesAllList
+    {
+        get => _tbl75SpeciessesAllList;
+        set
+        {
+            _tbl75SpeciessesAllList = value; OnPropertyChanged();
+        }
+    }
+
     private ObservableCollection<Tbl81Image> _tbl81ImagesList;
     public ObservableCollection<Tbl81Image> Tbl81ImagesList
     {
@@ -503,17 +502,6 @@ public partial class Tbl81ImageViewModel : ObservableObject
         set
         {
             _tbl81ImagesAllList = value; OnPropertyChanged();
-        }
-    }
-
-
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciessesAllList;
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesAllList
-    {
-        get => _tbl75SpeciessesAllList;
-        set
-        {
-            _tbl75SpeciessesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -559,7 +547,6 @@ public partial class Tbl81ImageViewModel : ObservableObject
     }
 
     #endregion Public Properties    
-
 
     #region Refresh Methods
 

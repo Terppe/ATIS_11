@@ -294,6 +294,7 @@
                                          Background="SlateGray"
                                          Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditCountry), Mode=OneWay}"
+                                         LostFocus="CountryName_OnLostFocus"
                                          MaxLength="100"
                                          RelativePanel.RightOf="CountryId"
                                          Text="{x:Bind ViewModel.CountrySelected.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

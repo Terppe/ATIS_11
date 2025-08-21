@@ -247,6 +247,16 @@ public sealed partial class TblUserProfileListPage : Page
     {
         var x = (DataGrid)FindName("UserProfileDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditUserProfile = false;
+            ViewModel.IsNewUserProfile = false;
+            UserProfileDetailExpander.IsExpanded = false;
+            UserProfileDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
 
         SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);

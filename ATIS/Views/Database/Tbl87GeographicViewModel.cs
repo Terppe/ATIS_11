@@ -4,13 +4,8 @@ using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Authentication;
-using Mapsui;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
 using Windows.System;
 
 //    Tbl87GeographicViewModel Skriptdatum:  08.07.2025  10:32    
@@ -83,12 +78,7 @@ public partial class Tbl87GeographicViewModel : ObservableObject
                 plSpeciesId = plantaeRegnum.PlSpeciesId;
             }
 
-            var speciesId = 0;
-            var select = Context.Tbl69FiSpeciesses.FirstOrDefault(x => x.FiSpeciesName == "Please select");
-            if (select != null)
-            {
-                speciesId = select.FiSpeciesId;
-            }
+            var speciesId = Tbl75SpeciessesAllList.First().FiSpeciesId;
 
             Tbl87GeographicsList ??= [];
             Tbl87GeographicsList.Insert(index: 0,
@@ -402,13 +392,13 @@ public partial class Tbl87GeographicViewModel : ObservableObject
             _geographicDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _fiSpeciesDataSetCount;
-    public int FiSpeciesDataSetCount
+    private int _speciesDataSetCount;
+    public int SpeciesDataSetCount
     {
-        get => _fiSpeciesDataSetCount;
+        get => _speciesDataSetCount;
         set
         {
-            _fiSpeciesDataSetCount = value; OnPropertyChanged();
+            _speciesDataSetCount = value; OnPropertyChanged();
         }
     }
     //---------------------------------------------------------------
@@ -461,6 +451,15 @@ public partial class Tbl87GeographicViewModel : ObservableObject
             _tbl66GenussesAllList = value; OnPropertyChanged();
         }
     }
+    private ObservableCollection<TblCountry> _tblCountriesAllList;
+    public ObservableCollection<TblCountry> TblCountriesAllList
+    {
+        get => _tblCountriesAllList;
+        set
+        {
+            _tblCountriesAllList = value; OnPropertyChanged();
+        }
+    }
 
     private ObservableCollection<Tbl68Speciesgroup> _tbl68SpeciesgroupsAllList;
     public ObservableCollection<Tbl68Speciesgroup> Tbl68SpeciesgroupsAllList
@@ -483,16 +482,6 @@ public partial class Tbl87GeographicViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<TblCountry> _tblCountriesAllList;
-
-    public ObservableCollection<TblCountry> TblCountriesAllList
-    {
-        get => _tblCountriesAllList;
-        set
-        {
-            _tblCountriesAllList = value; OnPropertyChanged();
-        }
-    }
     private ObservableCollection<TblCountry> _tblCountriesList;
 
     public ObservableCollection<TblCountry> TblCountriesList

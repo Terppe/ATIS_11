@@ -280,7 +280,7 @@ public partial class Tbl90RefExpertViewModel(IDataService _dataService) : Observ
 
             if (RefExpertSelected == null && Tbl90RefExpertsList.Count != 0)
             {
-                RefExpertSelected = RefExpertItems.FirstOrDefault();
+                RefExpertSelected = RefExpertItems.FirstOrDefault()!;
             }
         }
     }

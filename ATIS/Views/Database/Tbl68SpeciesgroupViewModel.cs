@@ -379,6 +379,17 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
         }
     }
 
+    private int _speciesDataSetCount;
+
+    public int SpeciesDataSetCount
+    {
+        get => _speciesDataSetCount;
+        set
+        {
+            _speciesDataSetCount = value; OnPropertyChanged();
+        }
+    }
+
     //---------------------------------------------------
     private ObservableCollection<Tbl68Speciesgroup> _tbl68SpeciesgroupsList;
     public ObservableCollection<Tbl68Speciesgroup> Tbl68SpeciesgroupsList

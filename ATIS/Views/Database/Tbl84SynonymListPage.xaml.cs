@@ -162,7 +162,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             .AsNoTracking()
             .Where(com => com.FiSpeciesId == ViewModel.SynonymSelected.FiSpeciesId)];
         });
-        ViewModel.FiSpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
@@ -278,6 +278,16 @@ public sealed partial class Tbl84SynonymListPage : Page
     {
         var x = (DataGrid)FindName("SynonymDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSynonym = false;
+            ViewModel.IsNewSynonym = false;
+            SynonymDetailExpander.IsExpanded = false;
+            SynonymDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SynonymSelected = ViewModel.Tbl84SynonymsList[iNdx];
 
         SingleSynonym = App.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
@@ -525,6 +535,16 @@ public sealed partial class Tbl84SynonymListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
+        if (iNdx is -1 or 0)
+        {
+            ViewModel.IsInEditSpecies = false;
+            ViewModel.IsNewSpecies = false;
+            SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+            return;
+        }
+
         ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
         SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);

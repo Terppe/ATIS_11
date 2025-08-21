@@ -131,7 +131,7 @@
         <AutoSuggestBox Name="ImageSearchBox"
                         Width="200"
                         Margin="4,8,4,0"
-                        loca:Uids.Uid="AutoSuggestBox_Search"
+                        loca:Uids.Uid="AutoSuggestBox_Search_info_Id"
                         Loaded="ImageSearchBox_OnLoaded"
                         QuerySubmitted="GetImagesByInfoOrId"
                         RelativePanel.AlignRightWithPanel="True">
@@ -1106,7 +1106,7 @@
                             <TextBlock x:Name="FiSpeciessesDatasetCountText"
                                        Margin="5,0,0,2"
                                        Style="{StaticResource DatasetTitleStyle}"
-                                       Text="{x:Bind ViewModel.FiSpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                       Text="{x:Bind ViewModel.SpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </Expander.Header>
                     <Grid Margin="0,4,0,0">

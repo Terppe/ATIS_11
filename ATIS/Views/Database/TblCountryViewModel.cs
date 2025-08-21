@@ -280,7 +280,7 @@ public partial class TblCountryViewModel(IDataService _dataService) : Observable
 
             if (CountrySelected == null && TblCountriesList.Count != 0)
             {
-                CountrySelected = CountryItems.FirstOrDefault();
+                CountrySelected = CountryItems.FirstOrDefault()!;
             }
         }
     }

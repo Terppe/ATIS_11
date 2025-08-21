@@ -283,7 +283,7 @@ public partial class Tbl90RefAuthorViewModel(IDataService _dataService) : Observ
 
             if (RefAuthorSelected == null && Tbl90RefAuthorsList.Count != 0)
             {
-                RefAuthorSelected = RefAuthorItems.FirstOrDefault();
+                RefAuthorSelected = RefAuthorItems.FirstOrDefault()!;
             }
         }
     }

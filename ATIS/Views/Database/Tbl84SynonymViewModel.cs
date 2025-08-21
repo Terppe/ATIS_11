@@ -70,12 +70,7 @@ public partial class Tbl84SynonymViewModel : ObservableObject
                 plSpeciesId = plantaeRegnum.PlSpeciesId;
             }
 
-            var speciesId = 0;
-            var select = Context.Tbl69FiSpeciesses.FirstOrDefault(x => x.FiSpeciesName == "Please select");
-            if (select != null)
-            {
-                speciesId = select.FiSpeciesId;
-            }
+            var speciesId = Tbl75SpeciessesAllList.First().FiSpeciesId;
 
             Tbl84SynonymsList ??= [];
             Tbl84SynonymsList.Insert(index: 0,
@@ -391,13 +386,13 @@ public partial class Tbl84SynonymViewModel : ObservableObject
             _synonymDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _fiSpeciesDataSetCount;
-    public int FiSpeciesDataSetCount
+    private int _speciesDataSetCount;
+    public int SpeciesDataSetCount
     {
-        get => _fiSpeciesDataSetCount;
+        get => _speciesDataSetCount;
         set
         {
-            _fiSpeciesDataSetCount = value; OnPropertyChanged();
+            _speciesDataSetCount = value; OnPropertyChanged();
         }
     }
     //---------------------------------------------------------------

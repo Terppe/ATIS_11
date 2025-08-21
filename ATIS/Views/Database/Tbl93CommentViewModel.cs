@@ -602,7 +602,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
             if (CommentSelected == null && Tbl93CommentsList.Count != 0)
             {
-                CommentSelected = CommentItems.FirstOrDefault();
+                CommentSelected = CommentItems.FirstOrDefault()!;
             }
         }
     }

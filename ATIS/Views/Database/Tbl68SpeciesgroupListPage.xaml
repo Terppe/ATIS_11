@@ -89,13 +89,24 @@
         </VisualStateManager.VisualStateGroups>
         <TextBlock x:Name="PageTitle"
                    loca:Uids.Uid="TextBlock_Speciesgroups"
+                   RelativePanel.AlignLeftWithPanel="True"
                    Style="{StaticResource PageTitleTextBlockStyle}" />
+        <TextBlock x:Name="SpeciesgroupDatasetText"
+                   Margin="5,17,0,0"
+                   loca:Uids.Uid="TextBlock_DataSetCount"
+                   RelativePanel.RightOf="PageTitle"
+                   Style="{StaticResource DatasetTitleStyle}" />
+        <TextBlock x:Name="SpeciesgroupDatasetCountText"
+                   Margin="5,17,0,0"
+                   RelativePanel.RightOf="SpeciesgroupDatasetText"
+                   Style="{StaticResource DatasetTitleStyle}"
+                   Text="{x:Bind ViewModel.SpeciesgroupDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <CommandBar x:Name="SpeciesgroupCommandBar"
                     HorizontalAlignment="Stretch"
                     Background="Transparent"
                     DefaultLabelPosition="Right"
                     RelativePanel.LeftOf="SpeciesgroupSearchBox"
-                    RelativePanel.RightOf="PageTitle">
+                    RelativePanel.RightOf="SpeciesgroupDatasetCountText">
             <AppBarButton x:Name="AppBarButtonDeleteSpeciesgroup"
                           loca:Uids.Uid="AppBarButtonDeleteSpeciesgroup"
                           Click="DeleteSpeciesgroup_Click"
@@ -168,6 +179,7 @@
                                   Margin="0,0,20,0"
                                   VerticalAlignment="Top"
                                   x:FieldModifier="public"
+                                  AlternatingRowBackground="LightGray"
                                   AutoGenerateColumns="False"
                                   Background="Transparent"
                                   BorderThickness="0"
@@ -181,7 +193,7 @@
                                   SelectionMode="Single"
                                   Sorting="SpeciesgroupDataGrid_Sorting">
                     <toolkit:DataGrid.Columns>
-                        <toolkit:DataGridTemplateColumn x:Uid="DataGridTemplateColumn_SpeciesgroupId"
+                        <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_SpeciesgroupId"
                                                         Tag="SpeciesgroupId">
                             <toolkit:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="models:Tbl68Speciesgroup">
@@ -192,27 +204,27 @@
                                 </DataTemplate>
                             </toolkit:DataGridTemplateColumn.CellTemplate>
                         </toolkit:DataGridTemplateColumn>
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_SpeciesgroupName"
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_SpeciesgroupName"
                                                     Binding="{Binding SpeciesgroupName}"
                                                     CanUserSort="True"
                                                     Tag="SpeciesgroupName" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Subspeciesgroup"
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Subspeciesgroup"
                                                     Binding="{Binding Subspeciesgroup}"
                                                     CanUserSort="True"
                                                     Tag="Subspeciesgroup" />
-                        <toolkit:DataGridCheckBoxColumn x:Uid="DataGridCheckBoxColumn_Valid"
+                        <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                         Binding="{Binding Valid}"
                                                         Tag="Valid" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_ValidYear"
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ValidYear"
                                                     Binding="{Binding ValidYear}"
                                                     Tag="ValidYear" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Author"
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Author"
                                                     Binding="{Binding Author}"
                                                     Tag="Author" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_AuthorYear"
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_AuthorYear"
                                                     Binding="{Binding AuthorYear}"
                                                     Tag="AuthorYear" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Info"
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Info"
                                                     Binding="{Binding Info}"
                                                     Tag="Info" />
                     </toolkit:DataGrid.Columns>
@@ -1141,16 +1153,28 @@
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           IsExpanded="True"
                           Visibility="Collapsed">
-
                     <Expander.Header>
-                        <TextBlock loca:Uids.Uid="TextBlock_FiSpeciesses"
-                                   Style="{ThemeResource SubtitleTextBlockStyle}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="FiSpeciessesTitle"
+                                       loca:Uids.Uid="TextBlock_FiSpeciesses"
+                                       Style="{ThemeResource PageTitleTextBlockStyle}" />
+                            <TextBlock x:Name="FiSpeciessesDatasetText"
+                                       Margin="5,0,0,2"
+                                       loca:Uids.Uid="TextBlock_DataSetCount"
+                                       Style="{StaticResource DatasetTitleStyle}" />
+                            <TextBlock x:Name="FiSpeciessesDatasetCountText"
+                                       Margin="5,0,0,2"
+                                       Style="{StaticResource DatasetTitleStyle}"
+                                       Text="{x:Bind ViewModel.SpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
                     </Expander.Header>
                     <Grid Margin="0,4,0,0">
                         <toolkit:DataGrid x:Name="SpeciesDataGrid"
                                           MaxHeight="230"
                                           Margin="0,0,20,0"
                                           VerticalAlignment="Top"
+                                          x:FieldModifier="public"
+                                          AlternatingRowBackground="LightGray"
                                           AutoGenerateColumns="False"
                                           Background="Transparent"
                                           BorderThickness="0"
@@ -1163,7 +1187,7 @@
                                           SelectionMode="Single"
                                           Sorting="DataGrid_Species_Sorting">
                             <toolkit:DataGrid.Columns>
-                                <toolkit:DataGridTemplateColumn x:Uid="DataGridTemplateColumn_FiSpeciesId"
+                                <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_FiSpeciesId"
                                                                 Tag="FiSpeciesId">
                                     <toolkit:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate x:DataType="models:Tbl69FiSpecies">
@@ -1174,43 +1198,42 @@
                                         </DataTemplate>
                                     </toolkit:DataGridTemplateColumn.CellTemplate>
                                 </toolkit:DataGridTemplateColumn>
-                                <toolkit:DataGridComboBoxColumn x:Uid="DataGridComboBoxColumn_GenusName"
+                                <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_GenusName"
                                                                 Binding="{Binding GenusId}"
                                                                 DisplayMemberPath="GenusName"
                                                                 ItemsSource="{x:Bind ViewModel.Tbl66GenussesAllList, Mode=OneWay}" />
-                                <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_FiSpeciesName"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_FiSpeciesName"
                                                             Binding="{Binding FiSpeciesName}"
                                                             CanUserSort="True"
                                                             Tag="FiSpeciesName" />
-                                <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Subspecies"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Subspecies"
                                                             Binding="{Binding Subspecies}"
                                                             CanUserSort="True"
                                                             Tag="Subspecies" />
-                                <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Divers"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Divers"
                                                             Binding="{Binding Divers}"
                                                             CanUserSort="True"
                                                             Tag="Divers" />
-                                <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Creature"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Creature"
                                                             Binding="{Binding Creature}"
                                                             Tag="Creature" />
-                                <toolkit:DataGridComboBoxColumn x:Uid="DataGridComboBoxColumn_SpeciesgroupName"
+                                <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_SpeciesgroupName"
                                                                 Binding="{Binding SpeciesgroupId}"
                                                                 DisplayMemberPath="SpeciesgroupFullName"
                                                                 ItemsSource="{x:Bind ViewModel.Tbl68SpeciesgroupsAllList, Mode=OneWay}" />
-                                <toolkit:DataGridCheckBoxColumn x:Uid="DataGridCheckBoxColumn_Valid"
+                                <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                                 Binding="{Binding Valid}"
                                                                 Tag="Valid" />
-                                <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Author"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Author"
                                                             Binding="{Binding Author}"
                                                             Tag="Author" />
-                                <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_AuthorYear"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_AuthorYear"
                                                             Binding="{Binding AuthorYear}"
                                                             Tag="AuthorYear" />
                             </toolkit:DataGrid.Columns>
                         </toolkit:DataGrid>
                     </Grid>
                 </Expander>
-
             </StackPanel>
         </ScrollViewer>
 
