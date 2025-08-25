@@ -853,7 +853,7 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-		<PackageReference Include="log4net" Version="3.1.0" />
+		<PackageReference Include="log4net" Version="3.2.0" />
 		<PackageReference Include="MailKit" Version="4.13.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="4.1.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />

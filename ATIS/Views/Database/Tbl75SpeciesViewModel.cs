@@ -50,18 +50,18 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         public byte[] ImageFileStream;
     };
 
-    public new event PropertyChangedEventHandler PropertyChanged;
+   // public new event PropertyChangedEventHandler PropertyChanged;
 
-    private Map _map;
-    public Map Map
-    {
-        get => _map;
-        set
-        {
-            _map = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Map)));
-        }
-    }
+    //private Mapsui.Map _map;
+    //public Mapsui.Map Map
+    //{
+    //    get => _map;
+    //    set
+    //    {
+    //        _map = value;
+    //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Map)));
+    //    }
+    //}
 
     #endregion [Private Data Members]      
 
@@ -916,7 +916,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-
             var fiSpeciesId = 0;
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
 
@@ -938,7 +937,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             fiSpeciesId = SpeciesSelected.FiSpeciesId;
 
             Tbl87GeographicsList ??= [];
-            Tbl87GeographicsList.Insert(index: 0, item: new Tbl87Geographic() { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
+            Tbl87GeographicsList.Insert(index: 0, item: new Tbl87Geographic { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
         });
     }
     public async Task SaveGeographicAsync(Tbl87Geographic viewModelGeographicSelected)

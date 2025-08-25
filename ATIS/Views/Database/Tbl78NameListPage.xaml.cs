@@ -457,7 +457,8 @@ public sealed partial class Tbl78NameListPage : Page
                     .Where(a => a.NameId == id)]
                 : [.. Context.Tbl78Names
                     .Where(a => _search != null && a.NameName.StartsWith(_search))
-                    .OrderBy(a => a.NameName)];
+                    .OrderBy(a => a.NameName)
+                    .ThenBy(a => a.Language)];
         });
 
         ViewModel.RefreshNameItems();

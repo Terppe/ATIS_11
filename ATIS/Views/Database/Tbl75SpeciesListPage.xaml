@@ -18,7 +18,7 @@
     <!--  SpeciesListPage.xaml  Skriptdatum: 03.07.2025  10:32  -->
 
     <Page.Resources>
-        <conv:DoubleToStringConverter x:Key="DoubleConverter" />
+        <conv:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         <conv:ImageSourceConverter x:Key="ImageSourceConverter" />
         <conv:DateConverter x:Key="DateConverter" />
         <MenuFlyout x:Key="SpeciesDataContextMenu">
@@ -724,14 +724,14 @@
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                                  RelativePanel.AlignLeftWithPanel="True"
                                                  Style="{StaticResource BodyTextBoxStyle}"
-                                                 Text="{x:Bind ViewModel.SpeciesSelected.FishLength, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                 Text="{x:Bind ViewModel.SpeciesSelected.FishLength, Converter={StaticResource ResourceKey=DoubleToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBox x:Name="PlantLengthTextSpecies"
                                                  Margin="{StaticResource XSmallRightMargin}"
                                                  loca:Uids.Uid="TextBox_PlantLength"
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                                  RelativePanel.RightOf="FishLengthTextSpecies"
                                                  Style="{StaticResource BodyTextBoxStyle}"
-                                                 Text="{x:Bind ViewModel.SpeciesSelected.PlantLength, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                 Text="{x:Bind ViewModel.SpeciesSelected.PlantLength, Converter={StaticResource ResourceKey=DoubleToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBox x:Name="BasinLengthTextSpecies"
                                                  Margin="{StaticResource XSmallRightMargin}"
                                                  loca:Uids.Uid="TextBox_BasinLength"
@@ -891,14 +891,14 @@
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                                  RelativePanel.AlignLeftWithPanel="True"
                                                  RelativePanel.Below="Difficult1CheckFiSpecies"
-                                                 Text="{x:Bind ViewModel.SpeciesSelected.Ph1, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                 Text="{x:Bind ViewModel.SpeciesSelected.Ph1, Converter={StaticResource ResourceKey=DoubleToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBox x:Name="Ph2TextFiSpecies"
                                                  Margin="{StaticResource XSmallRightMargin}"
                                                  loca:Uids.Uid="TextBox_Ph2"
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                                  RelativePanel.Below="Difficult1CheckFiSpecies"
                                                  RelativePanel.RightOf="Ph1TextFiSpecies"
-                                                 Text="{x:Bind ViewModel.SpeciesSelected.Ph2, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                 Text="{x:Bind ViewModel.SpeciesSelected.Ph2, Converter={StaticResource ResourceKey=DoubleToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBox x:Name="Temp1TextFiSpecies"
                                                  Margin="{StaticResource XSmallRightMargin}"
                                                  loca:Uids.Uid="TextBox_Temp1"

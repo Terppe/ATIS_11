@@ -467,19 +467,19 @@ public sealed partial class Tbl81ImageListPage : Page
 
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl81Images
-                    .Where(e => e.ImageId == id)]
-                : [null];
-
             //ViewModel.Tbl81ImagesList ??= [];
             //ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-            //? [.. Context.Tbl81Images
-            //.Where(e => e.ImageId == id)]
-            //: [.. Context.Tbl81Images
-            //.Where(e => e.Info.StartsWith(_search))
-            //.OrderBy(a => a.Info)];
+            //    ? [.. Context.Tbl81Images
+            //        .Where(e => e.ImageId == id)]
+            //    : [null];
+
+            ViewModel.Tbl81ImagesList ??= [];
+            ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
+            ? [.. Context.Tbl81Images
+            .Where(e => e.ImageId == id)]
+            : [.. Context.Tbl81Images
+            .Where(e => e.Info.StartsWith(_search))
+            .OrderBy(a => a.Info)];
         });
 
         ViewModel.RefreshImageItems();

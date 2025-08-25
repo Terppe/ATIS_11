@@ -272,6 +272,9 @@ public sealed partial class TblCountryListPage : Page
     {
         ViewModel.CountrySelected.Name = SingleCountry.Name;
         ViewModel.CountrySelected.Regex = SingleCountry.Regex;
+        ViewModel.CountrySelected.ZoomLevel = SingleCountry.ZoomLevel;
+        ViewModel.CountrySelected.Latitude = SingleCountry.Latitude;
+        ViewModel.CountrySelected.Longitude = SingleCountry.Longitude;
     }
     private async Task RevertChangesCountryAsync()
     {

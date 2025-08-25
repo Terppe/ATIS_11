@@ -15,7 +15,7 @@
     <!--  CountryListPage.xaml  Skriptdatum:  06.01.2025 12:32  -->
 
     <Page.Resources>
-
+        <conv:DoubleToStringConverter x:Key="DoubleConverter" />
         <MenuFlyout x:Key="CountryDataContextMenu">
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Country"
                             Click="SaveCountry_Click">
@@ -150,7 +150,7 @@
                     </Style>
                 </StackPanel.Resources>
                 <toolkit:DataGrid x:Name="CountryDataGrid"
-                                  MaxHeight="530"
+                                  MaxHeight="430"
                                   Margin="0,0,20,0"
                                   VerticalAlignment="Top"
                                   x:FieldModifier="public"
@@ -309,6 +309,30 @@
                                          RelativePanel.AlignLeftWithPanel="True"
                                          RelativePanel.Below="CountryId"
                                          Text="{x:Bind ViewModel.CountrySelected.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox x:Name="ZoomLevelGeographic"
+                                         MinWidth="250"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         loca:Uids.Uid="TextBox_ZoomLevel"
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditCountry), Mode=OneWay}"
+                                         RelativePanel.AlignLeftWithPanel="True"
+                                         RelativePanel.Below="AuthorTextRegex"
+                                         Text="{x:Bind ViewModel.CountrySelected.ZoomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox x:Name="Latitude1Geographic"
+                                         MinWidth="200"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         loca:Uids.Uid="TextBox_Latitude1"
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditCountry), Mode=OneWay}"
+                                         RelativePanel.Below="AuthorTextRegex"
+                                         RelativePanel.RightOf="ZoomLevelGeographic"
+                                         Text="{x:Bind ViewModel.CountrySelected.Latitude, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox x:Name="Longitude1Geographic"
+                                         MinWidth="200"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         loca:Uids.Uid="TextBox_Longitude1"
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditCountry), Mode=OneWay}"
+                                         RelativePanel.Below="AuthorTextRegex"
+                                         RelativePanel.RightOf="Latitude1Geographic"
+                                         Text="{x:Bind ViewModel.CountrySelected.Longitude, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </RelativePanel>
                         </ScrollViewer>
                     </RelativePanel>

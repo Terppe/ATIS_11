@@ -9,23 +9,6 @@ using Microsoft.UI.Xaml.Data;
 namespace ATIS.Helpers.Converters;
 public class DoubleToDecimalConverter : IValueConverter
 {
-    //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    //{
-    //    if (value is double doubleValue)
-    //    {
-    //        return (decimal)doubleValue;
-    //    }
-    //    return value;
-    //}
-
-    //public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    //{
-    //    if (value is decimal decimalValue)
-    //    {
-    //        return (double)decimalValue;
-    //    }
-    //    return value;
-    //}
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {

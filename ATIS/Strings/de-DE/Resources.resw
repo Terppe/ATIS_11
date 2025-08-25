@@ -3364,7 +3364,7 @@
     <value>Land ID</value>
   </data>
   <data name="TextBox_CountryName.Header" xml:space="preserve">
-    <value>land Name</value>
+    <value>Land</value>
   </data>
   <data name="TextBox_Regex.Header" xml:space="preserve">
     <value>Regex</value>

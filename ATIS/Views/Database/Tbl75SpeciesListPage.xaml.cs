@@ -2,14 +2,10 @@
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Authentication;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Mapsui;
-using Mapsui.Extensions;
-using Mapsui.Layers;
-using Mapsui.Projections;
-using Mapsui.Tiling;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -19,7 +15,7 @@ using WinRT.Interop;
 //  Tbl75SpeciesListPage.xaml.cs Skriptdatum:  03.07.2025  10:32     
 
 namespace ATIS.Views.Database;
-public sealed partial class Tbl75SpeciesListPage : Page
+public sealed partial class Tbl75SpeciesListPage : Page, Maps
 {
     #region [Private Data Members]
 
@@ -32,10 +28,12 @@ public sealed partial class Tbl75SpeciesListPage : Page
     private Tbl81Image SingleImage { get; set; }
     private Tbl84Synonym SingleSynonym { get; set; }
     private Tbl87Geographic SingleGeographic { get; set; }
-    private TblCountry SingleCountry { get; set; }
+    public TblCountry SingleCountry { get; set; }
+
     private static readonly AtisDbContext Context = new();
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
+
 
     private double centerOf1LongX = 0;
     private double centerOf1LatiY = 0;
@@ -51,8 +49,6 @@ public sealed partial class Tbl75SpeciesListPage : Page
         {
             ViewModel = App.GetService<Tbl75SpeciesViewModel>();
             InitializeComponent();
-
-            MyMap.Map.Layers.Add(OpenStreetMap.CreateTileLayer());
         }
         else
         {
@@ -1722,8 +1718,6 @@ public sealed partial class Tbl75SpeciesListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        ViewModel.IsNewName = false;
     }
 
     private void DataGrid_Name_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2002,6 +1996,11 @@ public sealed partial class Tbl75SpeciesListPage : Page
 
     private async Task AddImage()
     {
+        InfoName.Loaded += (s, e) =>
+        {
+            InfoName.Focus(FocusState.Programmatic);
+        };
+
         ViewModel.IsInEditImage = true;
         ViewModel.IsNewImage = true;
 
@@ -2029,7 +2028,6 @@ public sealed partial class Tbl75SpeciesListPage : Page
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
-
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2416,8 +2414,6 @@ public sealed partial class Tbl75SpeciesListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        ViewModel.IsInEditSynonym = false;
     }
 
     private void DataGrid_Synonym_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2680,84 +2676,6 @@ public sealed partial class Tbl75SpeciesListPage : Page
 
     #region [Geographic Methods]
 
-    public Task<Map> CreateMapAsync()
-    {
-        var map = new Map();
-        map.Layers.Add(OpenStreetMap.CreateTileLayer());
-
-        if (ViewModel.GeographicSelected.Latitude1 != 0)
-        {
-            // aus Tbl87GeographicsList Daten
-            //  _ = AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            // 4 Line-Punkte vorhanden, noch nicht implementiert Von Tbl87GeographicsList
-            centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
-            centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
-            zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
-
-            //    //var long1 = Convert.ToDouble(Longitude1Geographic.Text);
-            //    //var lat1 = Convert.ToDouble(Latitude1Geographic.Text);
-            //    //var long2 = Convert.ToDouble(Longitude2Geographic.Text);
-            //    //var lat2 = Convert.ToDouble(Latitude2Geographic.Text);
-
-            //    //var long3 = Convert.ToDouble(Longitude3Geographic.Text);
-            //    //var lat3 = Convert.ToDouble(Latitude3Geographic.Text);
-            //    //var long4 = Convert.ToDouble(Longitude4Geographic.Text);
-            //    //var lat4 = Convert.ToDouble(Latitude4Geographic.Text);
-
-            //    //var res = Convert.ToDouble(ZoomLevelGeographic.Text);
-            //    //var lineStringLayer = CreateLineStringLayer(long1, lat1,  long2,  lat2, CreateLineStringStyle());
-            //    //map.Layers.Add(lineStringLayer);
-            //    //var lineStringLayer1 = CreateLineStringLayer(long3, lat3, long4, lat4, CreateLineStringStyle());
-            //    //map.Layers.Add(lineStringLayer1);
-
-            var centerOf2 = new MPoint(centerOf1LongX, centerOf1LatiY);
-            var sphericalMercatorCoordinate2 = SphericalMercator.FromLonLat(centerOf2.X, centerOf2.Y).ToMPoint();
-            map.Layers.Add(CreatePointLayer());
-            map.Home = n => n.CenterOnAndZoomTo(sphericalMercatorCoordinate2, n.Resolutions[(int)zoom]);
-
-            return Task.FromResult(map);
-        }
-        {
-            //aus TblCountriesList Daten
-            SingleCountry = Context.TblCountries.FirstOrDefault(x => x.Name == ViewModel.GeographicSelected.Country);
-
-            if (SingleCountry == null)
-            {
-                SingleCountry = Context.TblCountries.FirstOrDefault(x => x.Name == ViewModel.GeographicSelected.Continent);
-                if (SingleCountry != null)
-                {
-                    centerOf1LongX = SingleCountry.Longitude;
-                    centerOf1LatiY = SingleCountry.Latitude;
-                    zoom = (int)SingleCountry.ZoomLevel;
-                }
-            }
-            else
-            {
-                centerOf1LongX = SingleCountry.Longitude;
-                centerOf1LatiY = SingleCountry.Latitude;
-                zoom = (int)SingleCountry.ZoomLevel;
-            }
-        }
-
-        var centerOf = new MPoint(centerOf1LongX, centerOf1LatiY);
-        var sphericalMercatorCoordinate1 = SphericalMercator.FromLonLat(centerOf.X, centerOf.Y).ToMPoint();
-        map.Layers.Add(CreatePointLayer());
-        map.Home = n => n.CenterOnAndZoomTo(sphericalMercatorCoordinate1, n.Resolutions[(int)zoom]);
-
-        return Task.FromResult(map);
-    }
-    //----------------------------------------
-    private MemoryLayer CreatePointLayer()
-    {
-        return new MemoryLayer
-        {
-            Name = "Points",
-            IsMapInfoLayer = true,
-            Features = [new PointFeature(SphericalMercator.FromLonLat(centerOf1LongX, centerOf1LatiY).ToMPoint())]
-            // Style = SymbolStyles.CreatePinStyle(symbolScale: 0.7)
-        };
-    }
-
     private async void AddGeographic_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -2774,6 +2692,11 @@ public sealed partial class Tbl75SpeciesListPage : Page
 
     private async Task AddGeographic()
     {
+        InfoName.Loaded += (s, e) =>
+        {
+            InfoName.Focus(FocusState.Programmatic);
+        };
+
         ViewModel.IsInEditGeographic = true;
         ViewModel.IsNewGeographic = true;
 
@@ -2787,6 +2710,16 @@ public sealed partial class Tbl75SpeciesListPage : Page
         GeographicDetailExpander.IsExpanded = true;
         GeographicDetailExpander.Visibility = Visibility.Visible;
 
+        //Map
+        //wenn Adress leer in Countrylist suchen
+        centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
+        centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
+        zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
+
+        var graphSelect = ViewModel.GeographicSelected;
+        MyMap.Map = await ((Maps)this).CreateMapAsync(centerOf1LongX, centerOf1LatiY, zoom, graphSelect);
+
+
         SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
@@ -2797,9 +2730,6 @@ public sealed partial class Tbl75SpeciesListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        ViewModel.IsInEditGeographic = false;
-
     }
 
     private void DataGrid_Geographic_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2821,12 +2751,13 @@ public sealed partial class Tbl75SpeciesListPage : Page
             SimpleLog.Log(xe);
         }
     }
-    private Task ViewGeographicHyperlink()
+    private async Task ViewGeographicHyperlink()
     {
         ViewModel.IsInEditGeographic = false;
         ViewModel.IsNewGeographic = false;
         GeographicDetailExpander.IsExpanded = true;
         GeographicDetailExpander.Visibility = Visibility.Visible;
+
         if (GeographicDataGrid.SelectedIndex == -1)
         {
             _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
@@ -2834,9 +2765,15 @@ public sealed partial class Tbl75SpeciesListPage : Page
         else
         {
             SingleGeographic = App.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId, ViewModel.SpeciesSelected.FiSpeciesId);
-        }
 
-        return Task.CompletedTask;
+            centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
+            centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
+            zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
+
+            var graphSelect = ViewModel.GeographicSelected;
+
+            MyMap.Map = await ((Maps)this).CreateMapAsync(centerOf1LongX, centerOf1LatiY, zoom, graphSelect);
+        }
     }
     private void CancelEditsGeographicAsync(object sender, RoutedEventArgs e)
     {
@@ -3027,6 +2964,28 @@ public sealed partial class Tbl75SpeciesListPage : Page
                         a.PlSpeciesId == ViewModel.GeographicSelected.PlSpeciesId &&
                         a.FiSpeciesId == ViewModel.GeographicSelected.FiSpeciesId)];
 
+        //Aus Countrylist Latitude und Longitude und ZoomLevel füllen
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            if (ViewModel.GeographicSelected.Country == null)
+            {
+                ViewModel.TblCountriesList ??= [];
+                ViewModel.TblCountriesList = [.. Context.TblCountries
+                    .Where(e => e.Name == ViewModel.GeographicSelected.Continent)];
+            }
+            else
+            {
+                ViewModel.TblCountriesList ??= [];
+                ViewModel.TblCountriesList = [.. Context.TblCountries
+                    .Where(e => e.Name == ViewModel.GeographicSelected.Country)];
+            }
+        });
+        var selected = ViewModel.TblCountriesList[0];
+
+        ViewModel.GeographicSelected.ZoomLevel = selected.ZoomLevel;
+        ViewModel.GeographicSelected.Latitude = selected.Latitude;
+        ViewModel.GeographicSelected.Longitude = selected.Longitude;
+
         if (ViewModel.IsNewGeographic)
         {
             if (ViewModel.Tbl87GeographicsList.Count != 0)
@@ -3064,7 +3023,10 @@ public sealed partial class Tbl75SpeciesListPage : Page
         }
         GeographicDataGrid.SelectedIndex = iNdx;
 
-        BackDetailExpanders();
+        MapExpanderGeographic.IsExpanded = true;
+
+
+        // BackDetailExpanders();
     }
 
     private void BackGeographic_Click(object sender, RoutedEventArgs e)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Data;
 
 namespace ATIS.Helpers.Converters;
-public class DecimalToDoubleConverter : IValueConverter
+public class DecimalToStringConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
