@@ -5,8 +5,8 @@ using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.Animations.Expressions;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -177,7 +177,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
         ReferenceDetailExpander.IsExpanded = true;
         ReferenceDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewReference = false;
+        InfoReference.PlaceholderText = StringsRes.EnterText;
     }
 
     private void ReferenceSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -230,6 +230,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
         if (ViewModel.IsNewReference)
         {
             ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -242,25 +243,20 @@ public sealed partial class Tbl90ReferenceListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReference = false;
-            ViewModel.IsNewReference = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+            SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+            ReferenceSingles();
+        }
+        else
+        {
             ReferenceDetailExpander.IsExpanded = false;
             ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
-        ReferenceSingles();
-
         ViewModel.IsInEditReference = false;
         ViewModel.IsNewReference = false;
-        ReferenceDetailExpander.IsExpanded = true;
-        ReferenceDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceSingles()
@@ -349,6 +345,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -394,7 +391,8 @@ public sealed partial class Tbl90ReferenceListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -455,37 +453,42 @@ public sealed partial class Tbl90ReferenceListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        if (string.IsNullOrEmpty(ReferenceSearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("ReferenceDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.Tbl90ReferencesList ??= [];
+            if (ReferenceSearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                    .Where(a => a.ReferenceId == ViewModel.ReferenceSelected.ReferenceId)];
-            });
-            ViewModel.RefreshReferenceItems();
-
-            if (ViewModel.Tbl90ReferencesList.Count == 0)
-            {
-                ReferenceDetailExpander.Visibility = Visibility.Collapsed;
-                ReferenceDataGrid.ItemsSource = null;
+                ViewModel.Tbl90ReferencesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl90References
+                    .Where(a => a.ReferenceId == id)]
+                    : [.. Context.Tbl90References
+                    .Where(a => _search != null && a.Info.StartsWith(_search))
+                    .OrderBy(a => a.Info)];
             }
-            else
-            {
-                ReferenceDetailExpander.Visibility = Visibility.Visible;
-                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-            }
+        });
 
-            ReferenceDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshReferenceItems();
 
-            ReferenceDetailExpander.IsExpanded = false;
-            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.Tbl90ReferencesList.Count == 0)
+        {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(a => a.ReferenceId == viewModelReferenceSelected.ReferenceId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
+            ReferenceDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            var index = ViewModel.ReferenceItems.ToList().FindIndex(item => item.ReferenceId == viewModelReferenceSelected.ReferenceId);
+            ReferenceDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
+
     private void ReferenceName_OnLostFocus(object sender, RoutedEventArgs e)
     {
         ChangeChar.UpperCaseFirstChar(sender);
@@ -498,6 +501,12 @@ public sealed partial class Tbl90ReferenceListPage : Page
     }
 
     #endregion [Reference Methods]        
+
+    private void BackDetailExpanders()
+    {
+        ReferenceDetailExpander.IsExpanded = false;
+        ReferenceDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -523,8 +532,8 @@ public sealed partial class Tbl90ReferenceListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            // DetailPanelReference.Visibility = Visibility.Visible;
-            //  ReferenceDetailExpander.Visibility = Visibility.Visible;
+            DetailPanelReference.Visibility = Visibility.Visible;
+            ReferenceDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

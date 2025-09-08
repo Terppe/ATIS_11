@@ -1,4 +1,5 @@
-﻿using ATIS.Helpers;
+﻿
+using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -11,13 +12,13 @@ using Microsoft.UI.Dispatching;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-
-//  Tbl66GenusListPage.xaml.cs Skriptdatum:  13.06.2024  10:32     
+//  Tbl66GenusListPage.xaml.cs Skriptdatum:  13.06.2024  10:32         
 
 namespace ATIS.Views.Database;
 
 public sealed partial class Tbl66GenusListPage : Page
 {
+
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -38,7 +39,6 @@ public sealed partial class Tbl66GenusListPage : Page
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl66GenusViewModel>();
-
             InitializeComponent();
         }
         else
@@ -127,6 +127,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 ReferencesExpander.Visibility = Visibility.Collapsed;
                 CommentsExpander.Visibility = Visibility.Collapsed;
                 SpeciessesExpander.Visibility = Visibility.Collapsed;
+
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 Frame.Navigate(typeof(Tbl66GenusListPage));
             }
@@ -171,74 +172,73 @@ public sealed partial class Tbl66GenusListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.GenusSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                    .Where(refe => refe.GenusId == ViewModel.GenusSelected.GenusId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            //----------------------------------Reference--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            .Where(refe => refe.GenusId == ViewModel.GenusSelected.GenusId)];
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        ViewModel.RefreshReferenceItems();
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            .AsNoTracking()
+            .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                    .AsNoTracking()
-                    .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Species-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl75SpeciessesList ??= [];
+                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
+            .AsNoTracking()
+            .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
+            });
+            ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+            ViewModel.RefreshSpeciesItems();
 
-        ViewModel.RefreshCommentItems();
-
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Species-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                    .AsNoTracking()
-                    .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
-        });
-        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
-
-        ViewModel.RefreshSpeciesItems();
-
-        if (ViewModel.Tbl75SpeciessesList.Count == 0)
-        {
-            SpeciessesExpander.Visibility = Visibility.Collapsed;
-            SpeciesDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            SpeciessesExpander.Visibility = Visibility.Visible;
-            SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            if (ViewModel.Tbl75SpeciessesList.Count == 0)
+            {
+                SpeciessesExpander.Visibility = Visibility.Collapsed;
+                SpeciesDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                SpeciessesExpander.Visibility = Visibility.Visible;
+                SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            }
         }
         ViewModel.IsLoading = false;
-
     }
 
     private async void AddGenus_Click(object sender, RoutedEventArgs e)
@@ -261,7 +261,6 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             GenusName.Focus(FocusState.Programmatic);
         };
-
 
         ViewModel.IsInEditGenus = true;
         ViewModel.IsNewGenus = true;
@@ -294,7 +293,6 @@ public sealed partial class Tbl66GenusListPage : Page
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
 
-        ViewModel.IsNewGenus = false;
         GenusName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -324,6 +322,7 @@ public sealed partial class Tbl66GenusListPage : Page
             SimpleLog.Log(xe);
         }
     }
+
     private Task ViewGenusHyperlink()
     {
         ViewModel.IsInEditGenus = false;
@@ -342,12 +341,12 @@ public sealed partial class Tbl66GenusListPage : Page
 
         return Task.CompletedTask;
     }
-
     private void CancelEditsGenusAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewGenus)
         {
             GenusDetailExpander.IsExpanded = false;
+            GenusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -355,30 +354,27 @@ public sealed partial class Tbl66GenusListPage : Page
             CancelGenusEdits();
         }
     }
+
     private void CancelGenusEdits()
     {
         var x = (DataGrid)FindName("GenusDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditGenus = false;
-            ViewModel.IsNewGenus = false;
+            ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
+            SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
+            GenusSingles();
+        }
+        else
+        {
             GenusDetailExpander.IsExpanded = false;
             GenusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
-
-        SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
-        GenusSingles();
-
         ViewModel.IsInEditGenus = false;
         ViewModel.IsNewGenus = false;
-        GenusDetailExpander.IsExpanded = true;
-        GenusDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void GenusSingles()
     {
         ViewModel.GenusSelected.GenusName = SingleGenus.GenusName;
@@ -450,6 +446,7 @@ public sealed partial class Tbl66GenusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteGenusAsync(ViewModel.GenusSelected);
                 await Refresh();
+                GenusDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesGenusAsync();
@@ -495,7 +492,8 @@ public sealed partial class Tbl66GenusListPage : Page
                     return;
                 }
                 await ViewModel.SaveGenusAsync(ViewModel.GenusSelected);
-                await BehindSaveGenus();
+                await BehindSaveGenus(ViewModel.GenusSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedGenus = true;
@@ -530,36 +528,42 @@ public sealed partial class Tbl66GenusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveGenus()
+    private async Task BehindSaveGenus(Tbl66Genus viewModelGenusSelected)
     {
-        var x = (DataGrid)FindName("GenusDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl66GenussesList ??= [];
-            ViewModel.Tbl66GenussesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl66Genusses
+            if (GenusSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl66GenussesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl66Genusses
                     .Where(a => a.GenusId == id)]
-                : [.. Context.Tbl66Genusses
+                    : [.. Context.Tbl66Genusses
                     .Where(a => _search != null && a.GenusName.StartsWith(_search))
                     .OrderBy(a => a.GenusName)];
+            }
         });
 
         ViewModel.RefreshGenusItems();
 
         if (ViewModel.Tbl66GenussesList.Count == 0)
         {
-            GenusDataGrid.ItemsSource = null;
+            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+                .Where(a => a.GenusId == viewModelGenusSelected.GenusId)];
+            GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
+            await Refresh();
+            GenusDataGrid.SelectedIndex = 0;
         }
         else
         {
             GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
+            var index = ViewModel.GenusItems.ToList().FindIndex(item => item.GenusId == viewModelGenusSelected.GenusId);
+            GenusDataGrid.SelectedIndex = index;
         }
-        GenusDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.GenusDataSetCount = ViewModel.Tbl66GenussesList.Count;
     }
+
     private void GenusName_OnLostFocus(object sender, RoutedEventArgs e)
     {
         ChangeChar.UpperCaseFirstChar(sender);
@@ -655,6 +659,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
+
         return Task.CompletedTask;
     }
 
@@ -689,7 +694,6 @@ public sealed partial class Tbl66GenusListPage : Page
             SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
             ReferenceSingles();
         }
-
         return Task.CompletedTask;
     }
 
@@ -724,6 +728,7 @@ public sealed partial class Tbl66GenusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -769,7 +774,8 @@ public sealed partial class Tbl66GenusListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -805,21 +811,23 @@ public sealed partial class Tbl66GenusListPage : Page
         ViewModel.IsModifiedReference = true;
         return false;
     }
-    private async Task BehindSaveReference()
-    {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
 
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
+    {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.GenusSelected.GenusId)];
+                .Where(refe => refe.GenusId == viewModelReferenceSelected.GenusId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.GenusId == viewModelReferenceSelected.GenusId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -827,10 +835,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -892,13 +900,16 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -911,26 +922,22 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.GenusSelected.GenusId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -941,9 +948,8 @@ public sealed partial class Tbl66GenusListPage : Page
         ViewModel.ReferenceSelected.Memo = SingleReference.Memo;
         ViewModel.ReferenceSelected.RefExpertId = SingleReference.RefExpertId;
         //ViewModel.ReferenceSelected.RefSourceId = SingleReference.RefSourceId;
-        //ViewModel.ReferenceSelected.RefAuthorId = SingleReference.RefAuthorId;
+        //ViewModel.ReferenceSelected.RefAuthorId = SingleReference.RefAuthorId;          
     }
-
     public async Task RevertChangesReferenceExpertAsync()
     {
         ViewModel.IsInEditReferenceExpert = false;
@@ -953,7 +959,6 @@ public sealed partial class Tbl66GenusListPage : Page
             ViewModel.IsModifiedReferenceExpert = false;
         }
     }
-
     private async Task RefreshReferenceExpertAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -963,7 +968,6 @@ public sealed partial class Tbl66GenusListPage : Page
             ReferenceExpertSingles();
         });
     }
-
     #endregion [Reference Expert Methods]
 
     #region [Reference Source Methods]
@@ -981,6 +985,7 @@ public sealed partial class Tbl66GenusListPage : Page
             SimpleLog.Log(xe);
         }
     }
+
     private async Task AddReferenceSource()
     {
         InfoReferenceSource.Loaded += (s, e) =>
@@ -1017,12 +1022,16 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
+
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1034,26 +1043,22 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.GenusSelected.GenusId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceSourceSingles()
@@ -1102,13 +1107,13 @@ public sealed partial class Tbl66GenusListPage : Page
             SimpleLog.Log(xe);
         }
     }
+
     private async Task AddReferenceAuthor()
     {
         InfoReferenceAuthor.Loaded += (s, e) =>
         {
             InfoReferenceAuthor.Focus(FocusState.Programmatic);
         };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1138,13 +1143,16 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1157,27 +1165,24 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.GenusSelected.GenusId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1256,6 +1261,8 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
+
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1300,6 +1307,7 @@ public sealed partial class Tbl66GenusListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1312,25 +1320,21 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1399,6 +1403,7 @@ public sealed partial class Tbl66GenusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1445,7 +1450,8 @@ public sealed partial class Tbl66GenusListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1480,22 +1486,22 @@ public sealed partial class Tbl66GenusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
+                .Where(com => com.GenusId == viewModelCommentSelected.GenusId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.GenusId == viewModelCommentSelected.GenusId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1503,10 +1509,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1514,7 +1520,7 @@ public sealed partial class Tbl66GenusListPage : Page
         BackDetailExpanders();
     }
 
-    #endregion [Comment Methods]
+    #endregion [Comment Methods]  
 
     #region [Species Methods]
 
@@ -1561,6 +1567,8 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
+
+        FiSpeciesName.PlaceholderText = StringsRes.EnterText;
     }
     private void DataGrid_Species_Sorting(object sender, DataGridColumnEventArgs e)
     {
@@ -1606,6 +1614,7 @@ public sealed partial class Tbl66GenusListPage : Page
         if (ViewModel.IsNewSpecies)
         {
             SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1618,25 +1627,21 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSpecies = false;
-            ViewModel.IsNewSpecies = false;
+            ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
+
+            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.GenusSelected.GenusId);
+            SpeciesSingles();
+        }
+        else
+        {
             SpeciesDetailExpander.IsExpanded = false;
             SpeciesDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
-
-        SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.GenusSelected.GenusId);
-        SpeciesSingles();
-
         ViewModel.IsInEditSpecies = false;
         ViewModel.IsNewSpecies = false;
-        SpeciesDetailExpander.IsExpanded = true;
-        SpeciesDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SpeciesSingles()
@@ -1717,6 +1722,7 @@ public sealed partial class Tbl66GenusListPage : Page
             }
         });
     }
+
     private async void SaveSpecies_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -1751,7 +1757,8 @@ public sealed partial class Tbl66GenusListPage : Page
                     return;
                 }
                 await ViewModel.SaveSpeciesAsync(ViewModel.SpeciesSelected);
-                await BehindSaveSpecies();
+                await BehindSaveSpecies(ViewModel.SpeciesSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpecies = true;
@@ -1763,7 +1770,6 @@ public sealed partial class Tbl66GenusListPage : Page
                 throw new ArgumentOutOfRangeException();
         }
     }
-
 
     private async Task<bool> BeforeSaveSpecies()
     {
@@ -1789,22 +1795,23 @@ public sealed partial class Tbl66GenusListPage : Page
         ViewModel.IsModifiedSpecies = true;
         return false;
     }
-    private async Task BehindSaveSpecies()
-    {
-        var x = (DataGrid)FindName("SpeciesDataGrid");
-        var iNdx = x.SelectedIndex;
 
+    private async Task BehindSaveSpecies(Tbl69FiSpecies viewModelSpeciesSelected)
+    {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
             ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .AsNoTracking()
-                .Where(com => com.FiSpeciesId == ViewModel.SpeciesSelected.FiSpeciesId)];
+                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
+                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            await Refresh();
             SpeciessesExpander.Visibility = Visibility.Collapsed;
             SpeciesDataGrid.ItemsSource = null;
         }
@@ -1812,12 +1819,12 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             SpeciessesExpander.Visibility = Visibility.Visible;
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            SpeciesDataGrid.SelectedIndex = 0;
         }
-        SpeciesDataGrid.SelectedIndex = iNdx;
 
         BackDetailExpanders();
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
     }
-
     private void BackSpecies_Click(object sender, RoutedEventArgs e)
     {
         BackDetailExpanders();
@@ -1907,8 +1914,8 @@ public sealed partial class Tbl66GenusListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelGenus.Visibility = Visibility.Visible;
-            //GenusDetailExpander.Visibility = Visibility.Visible;
+            //   DetailPanelGenus.Visibility = Visibility.Visible;
+            //   GenusDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -1970,7 +1977,6 @@ public sealed partial class Tbl66GenusListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingGenus = false;
-
     }
     private void BackDetailExpanders()
     {
@@ -1986,8 +1992,8 @@ public sealed partial class Tbl66GenusListPage : Page
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
     }
+    #endregion [Refresh Methods] 
 
-    #endregion [Refresh Methods]
 
 }
 

@@ -16,14 +16,12 @@ using WinRT.Interop;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-
-//  Tbl81ImageListPage.xaml.cs Skriptdatum:  25.11.2024  10:32     
+//  Tbl81ImageListPage.xaml.cs Skriptdatum:  25.11.2024  10:32         
 
 namespace ATIS.Views.Database;
 
 public sealed partial class Tbl81ImageListPage : Page
 {
-
 
     #region [Private Data Members]
 
@@ -112,7 +110,6 @@ public sealed partial class Tbl81ImageListPage : Page
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
 
-
             if (ViewModel.Tbl81ImagesList is { Count: 0 })
             {
                 ViewModel.Tbl81ImagesList?.Clear();
@@ -168,28 +165,31 @@ public sealed partial class Tbl81ImageListPage : Page
         //delay loading
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
-        //--------------------------Species-----------------------------          
-        await _dispatcherQueue.EnqueueAsync(() =>
+
+        if (ViewModel.ImageSelected != null)
         {
-            ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-            .AsNoTracking()
+            //--------------------------Species-----------------------------          
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl75SpeciessesList ??= [];
+                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
             .Where(com => com.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
-        });
-        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+            });
+            ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
 
-        ViewModel.RefreshSpeciesItems();
-        ViewModel.RefreshImageItems();
+            ViewModel.RefreshSpeciesItems();
+            ViewModel.RefreshImageItems();
 
-        if (ViewModel.Tbl75SpeciessesList.Count == 0)
-        {
-            SpeciessesExpander.Visibility = Visibility.Collapsed;
-            SpeciesDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            SpeciessesExpander.Visibility = Visibility.Visible;
-            SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            if (ViewModel.Tbl75SpeciessesList.Count == 0)
+            {
+                SpeciessesExpander.Visibility = Visibility.Collapsed;
+                SpeciesDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                SpeciessesExpander.Visibility = Visibility.Visible;
+                SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -223,11 +223,12 @@ public sealed partial class Tbl81ImageListPage : Page
         ImageDetailExpander.IsExpanded = true;
         ImageDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewImage = false;
 
         //New Image search
         OpenFileDialog(null);
         ViewModel.RefreshImageItems();
+
+        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void ImageSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -256,6 +257,7 @@ public sealed partial class Tbl81ImageListPage : Page
             SimpleLog.Log(xe);
         }
     }
+
     private Task ViewImageHyperlink()
     {
         ViewModel.IsInEditImage = false;
@@ -279,6 +281,7 @@ public sealed partial class Tbl81ImageListPage : Page
         if (ViewModel.IsNewImage)
         {
             ImageDetailExpander.IsExpanded = false;
+            ImageDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -291,25 +294,20 @@ public sealed partial class Tbl81ImageListPage : Page
     {
         var x = (DataGrid)FindName("ImageDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditImage = false;
-            ViewModel.IsNewImage = false;
+            ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
+            SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
+            ImageSingles();
+        }
+        else
+        {
             ImageDetailExpander.IsExpanded = false;
             ImageDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
-
-        SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
-        ImageSingles();
-
         ViewModel.IsInEditImage = false;
         ViewModel.IsNewImage = false;
-        ImageDetailExpander.IsExpanded = true;
-        ImageDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ImageSingles()
@@ -380,6 +378,7 @@ public sealed partial class Tbl81ImageListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteImageAsync(ViewModel.ImageSelected);
                 await Refresh();
+                ImageDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesImageAsync();
@@ -425,7 +424,8 @@ public sealed partial class Tbl81ImageListPage : Page
                     return;
                 }
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
-                await BehindSaveImage();
+                await BehindSaveImage(ViewModel.ImageSelected, ViewModel.SelectedPath);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedImage = true;
@@ -460,42 +460,40 @@ public sealed partial class Tbl81ImageListPage : Page
         return false;
     }
 
-    private async Task BehindSaveImage()
+    private async Task BehindSaveImage(Tbl81Image viewModelImageSelected, string viewModelSelectedPath)
     {
-        var x = (DataGrid)FindName("ImageDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            //ViewModel.Tbl81ImagesList ??= [];
-            //ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-            //    ? [.. Context.Tbl81Images
-            //        .Where(e => e.ImageId == id)]
-            //    : [null];
-
             ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-            ? [.. Context.Tbl81Images
-            .Where(e => e.ImageId == id)]
-            : [.. Context.Tbl81Images
-            .Where(e => e.Info.StartsWith(_search))
-            .OrderBy(a => a.Info)];
+            if (ImageSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl81Images
+                    .Where(a => a.ImageId == id)]
+                    : [.. Context.Tbl81Images
+                    .Where(a => _search != null && a.Info.StartsWith(_search))
+                    .OrderBy(a => a.Info)];
+            }
         });
 
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
-            ImageDataGrid.ItemsSource = null;
+            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+                .Where(a => a.ImageId == viewModelImageSelected.ImageId)];
+            ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
+            await Refresh();
+            ImageDataGrid.SelectedIndex = 0;
         }
         else
         {
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
+            var index = ViewModel.ImageItems.ToList().FindIndex(item => item.ImageId == viewModelImageSelected.ImageId);
+            ImageDataGrid.SelectedIndex = index;
         }
-
-        ImageDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
     }
 
 
@@ -626,6 +624,7 @@ public sealed partial class Tbl81ImageListPage : Page
         if (ViewModel.IsNewSpecies)
         {
             SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -638,25 +637,21 @@ public sealed partial class Tbl81ImageListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSpecies = false;
-            ViewModel.IsNewSpecies = false;
+            ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
+
+            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+            SpeciesSingles();
+        }
+        else
+        {
             SpeciesDetailExpander.IsExpanded = false;
             SpeciesDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
-
-        SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
-        SpeciesSingles();
-
         ViewModel.IsInEditSpecies = false;
         ViewModel.IsNewSpecies = false;
-        SpeciesDetailExpander.IsExpanded = true;
-        SpeciesDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SpeciesSingles()
@@ -737,7 +732,6 @@ public sealed partial class Tbl81ImageListPage : Page
             }
         });
     }
-
     private async void SaveSpecies_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -772,7 +766,8 @@ public sealed partial class Tbl81ImageListPage : Page
                     return;
                 }
                 await ViewModel.SaveSpeciesAsync(ViewModel.SpeciesSelected);
-                await BehindSaveSpecies();
+                await BehindSaveSpecies(ViewModel.SpeciesSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpecies = true;
@@ -809,22 +804,23 @@ public sealed partial class Tbl81ImageListPage : Page
         ViewModel.IsModifiedSpecies = true;
         return false;
     }
-    private async Task BehindSaveSpecies()
-    {
-        var x = (DataGrid)FindName("SpeciesDataGrid");
-        var iNdx = x.SelectedIndex;
 
+    private async Task BehindSaveSpecies(Tbl69FiSpecies viewModelSpeciesSelected)
+    {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
             ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .AsNoTracking()
-                .Where(com => com.FiSpeciesId == ViewModel.SpeciesSelected.FiSpeciesId)];
+                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
+                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            await Refresh();
             SpeciessesExpander.Visibility = Visibility.Collapsed;
             SpeciesDataGrid.ItemsSource = null;
         }
@@ -832,15 +828,17 @@ public sealed partial class Tbl81ImageListPage : Page
         {
             SpeciessesExpander.Visibility = Visibility.Visible;
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            SpeciesDataGrid.SelectedIndex = 0;
         }
-        SpeciesDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
     }
+
     private void BackSpecies_Click(object sender, RoutedEventArgs e)
     {
         BackDetailExpanders();
     }
+
     private void ComboCreature_OnSelectionChangedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var cmb = sender as ComboBox;
@@ -860,7 +858,6 @@ public sealed partial class Tbl81ImageListPage : Page
                 ReproductionExpanderPlSpecies.Visibility = Visibility.Visible;
                 CultureExpanderPlSpecies.Visibility = Visibility.Visible;
                 GlobalExpanderPlSpecies.Visibility = Visibility.Visible;
-
                 break;
             case "Animalia":
                 FoodExpanderFiSpecies.Visibility = Visibility.Visible;
@@ -870,7 +867,6 @@ public sealed partial class Tbl81ImageListPage : Page
                 ReproductionExpanderPlSpecies.Visibility = Visibility.Collapsed;
                 CultureExpanderPlSpecies.Visibility = Visibility.Collapsed;
                 GlobalExpanderPlSpecies.Visibility = Visibility.Collapsed;
-
                 break;
             case "Plantae":
                 ReproductionExpanderPlSpecies.Visibility = Visibility.Visible;
@@ -901,8 +897,7 @@ public sealed partial class Tbl81ImageListPage : Page
 
         //Handle();
     }
-
-    #endregion [Species Methods]     
+    #endregion [Species Methods]  
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -1000,7 +995,7 @@ public sealed partial class Tbl81ImageListPage : Page
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [Refresh Methods]
+    #endregion [Refresh Methods] 
 
 
 }

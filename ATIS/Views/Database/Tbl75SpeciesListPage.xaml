@@ -1264,7 +1264,7 @@
                                                               Background="{ThemeResource SystemBaseLowColor}"
                                                               Click="SaveReference_Click"
                                                               Foreground="White"
-                                                              Visibility="{x:Bind ViewModel.IsInEditReference, Mode=OneWay}">
+                                                              Visibility="{x:Bind ViewModel.IsInEditReferenceExpert, Mode=OneWay}">
                                                     <AppBarButton.Icon>
                                                         <BitmapIcon ShowAsMonochrome="False"
                                                                     UriSource="/Assets/Fluent/save.png" />

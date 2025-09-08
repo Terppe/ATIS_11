@@ -14,7 +14,6 @@ using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
-using Windows.Storage;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Documents;
 using WinUI3Localizer;

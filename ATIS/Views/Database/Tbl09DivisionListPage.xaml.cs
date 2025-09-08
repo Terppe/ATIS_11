@@ -172,68 +172,69 @@ public sealed partial class Tbl09DivisionListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.DivisionSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.DivisionId == ViewModel.DivisionSelected.DivisionId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.DivisionId == ViewModel.DivisionSelected.DivisionId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Subdivision-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl15SubdivisionsList ??= [];
-            ViewModel.Tbl15SubdivisionsList = [.. Context.Tbl15Subdivisions
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Subdivision-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl15SubdivisionsList ??= [];
+                ViewModel.Tbl15SubdivisionsList = [.. Context.Tbl15Subdivisions
             .Where(com => com.DivisionId == ViewModel.DivisionSelected.DivisionId)];
-        });
-        ViewModel.SubdivisionDataSetCount = ViewModel.Tbl15SubdivisionsList.Count;
-        ViewModel.RefreshSubdivisionItems();
+            });
+            ViewModel.SubdivisionDataSetCount = ViewModel.Tbl15SubdivisionsList.Count;
+            ViewModel.RefreshSubdivisionItems();
 
-        if (ViewModel.Tbl15SubdivisionsList.Count == 0)
-        {
-            SubdivisionsExpander.Visibility = Visibility.Collapsed;
-            SubdivisionDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            SubdivisionsExpander.Visibility = Visibility.Visible;
-            SubdivisionDataGrid.ItemsSource = ViewModel.Tbl15SubdivisionsList;
+            if (ViewModel.Tbl15SubdivisionsList.Count == 0)
+            {
+                SubdivisionsExpander.Visibility = Visibility.Collapsed;
+                SubdivisionDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                SubdivisionsExpander.Visibility = Visibility.Visible;
+                SubdivisionDataGrid.ItemsSource = ViewModel.Tbl15SubdivisionsList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl09DivisionListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewDivision = false;
         DivisionName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl09DivisionListPage : Page
         if (ViewModel.IsNewDivision)
         {
             DivisionDetailExpander.IsExpanded = false;
+            DivisionDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("DivisionDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditDivision = false;
-            ViewModel.IsNewDivision = false;
+            ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[iNdx];
+            SingleDivision = App.SingleDivision(ViewModel.DivisionSelected.DivisionId);
+            DivisionSingles();
+        }
+        else
+        {
             DivisionDetailExpander.IsExpanded = false;
             DivisionDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[iNdx];
-
-        SingleDivision = App.SingleDivision(ViewModel.DivisionSelected.DivisionId);
-        DivisionSingles();
-
         ViewModel.IsInEditDivision = false;
         ViewModel.IsNewDivision = false;
-        DivisionDetailExpander.IsExpanded = true;
-        DivisionDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void DivisionSingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl09DivisionListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteDivisionAsync(ViewModel.DivisionSelected);
                 await Refresh();
+                DivisionDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesDivisionAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl09DivisionListPage : Page
                     return;
                 }
                 await ViewModel.SaveDivisionAsync(ViewModel.DivisionSelected);
-                await BehindSaveDivision();
+                await BehindSaveDivision(ViewModel.DivisionSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedDivision = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl09DivisionListPage : Page
         return false;
     }
 
-    private async Task BehindSaveDivision()
+    private async Task BehindSaveDivision(Tbl09Division viewModelDivisionSelected)
     {
-        var x = (DataGrid)FindName("DivisionDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl09DivisionsList ??= [];
-            ViewModel.Tbl09DivisionsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl09Divisions
+            if (DivisionSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl09DivisionsList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl09Divisions
                     .Where(a => a.DivisionId == id)]
-                : [.. Context.Tbl09Divisions
+                    : [.. Context.Tbl09Divisions
                     .Where(a => _search != null && a.DivisionName.StartsWith(_search))
                     .OrderBy(a => a.DivisionName)];
+            }
         });
 
         ViewModel.RefreshDivisionItems();
 
         if (ViewModel.Tbl09DivisionsList.Count == 0)
         {
-            DivisionDataGrid.ItemsSource = null;
+            ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
+                .Where(a => a.DivisionId == viewModelDivisionSelected.DivisionId)];
+            DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
+            await Refresh();
+            DivisionDataGrid.SelectedIndex = 0;
         }
         else
         {
             DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
+            var index = ViewModel.DivisionItems.ToList().FindIndex(item => item.DivisionId == viewModelDivisionSelected.DivisionId);
+            DivisionDataGrid.SelectedIndex = index;
         }
-        DivisionDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.DivisionDataSetCount = ViewModel.Tbl09DivisionsList.Count;
     }
 
     private void DivisionName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl09DivisionListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl09DivisionListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl09DivisionListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.DivisionSelected.DivisionId)];
+                .Where(refe => refe.DivisionId == viewModelReferenceSelected.DivisionId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.DivisionId == viewModelReferenceSelected.DivisionId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl09DivisionListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.DivisionSelected.DivisionId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
+            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.DivisionSelected.DivisionId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl09DivisionListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.DivisionSelected.DivisionId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
+            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.DivisionSelected.DivisionId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl09DivisionListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.DivisionSelected.DivisionId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId, ViewModel.DivisionSelected.DivisionId);
+            SingleReference = App.SingleReferenceDivision(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.DivisionSelected.DivisionId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl09DivisionListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl09DivisionListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentDivision(ViewModel.CommentSelected.CommentId, ViewModel.DivisionSelected.DivisionId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentDivision(ViewModel.CommentSelected.CommentId, ViewModel.DivisionSelected.DivisionId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl09DivisionListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl09DivisionListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl09DivisionListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.DivisionId == ViewModel.DivisionSelected.DivisionId)];
+                .Where(com => com.DivisionId == viewModelCommentSelected.DivisionId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.DivisionId == viewModelCommentSelected.DivisionId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl09DivisionListPage : Page
         SubdivisionDetailExpander.IsExpanded = true;
         SubdivisionDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewSubdivision = false;
+        SubdivisionName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Subdivision_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl09DivisionListPage : Page
         if (ViewModel.IsNewSubdivision)
         {
             SubdivisionDetailExpander.IsExpanded = false;
+            SubdivisionDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,24 +1561,21 @@ public sealed partial class Tbl09DivisionListPage : Page
     {
         var x = (DataGrid)FindName("SubdivisionDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSubdivision = false;
-            ViewModel.IsNewSubdivision = false;
+            ViewModel.SubdivisionSelected = ViewModel.Tbl15SubdivisionsList[iNdx];
+
+            SingleSubdivision = App.SingleSubdivisionDivision(ViewModel.SubdivisionSelected.SubdivisionId, ViewModel.DivisionSelected.DivisionId);
+            SubdivisionSingles();
+        }
+        else
+        {
             SubdivisionDetailExpander.IsExpanded = false;
             SubdivisionDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-        ViewModel.SubdivisionSelected = ViewModel.Tbl15SubdivisionsList[iNdx];
-
-        SingleSubdivision = App.SingleSubdivisionDivision(ViewModel.SubdivisionSelected.SubdivisionId, ViewModel.DivisionSelected.DivisionId);
-        SubdivisionSingles();
-
         ViewModel.IsInEditSubdivision = false;
         ViewModel.IsNewSubdivision = false;
-        SubdivisionDetailExpander.IsExpanded = true;
-        SubdivisionDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SubdivisionSingles()
@@ -1652,7 +1654,8 @@ public sealed partial class Tbl09DivisionListPage : Page
                     return;
                 }
                 await ViewModel.SaveSubdivisionAsync(ViewModel.SubdivisionSelected);
-                await BehindSaveSubdivision();
+                await BehindSaveSubdivision(ViewModel.SubdivisionSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubdivision = true;
@@ -1686,22 +1689,22 @@ public sealed partial class Tbl09DivisionListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSubdivision()
+    private async Task BehindSaveSubdivision(Tbl15Subdivision viewModelSubdivisionSelected)
     {
-        var x = (DataGrid)FindName("SubdivisionDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl15SubdivisionsList ??= [];
             ViewModel.Tbl15SubdivisionsList = [.. Context.Tbl15Subdivisions
-                .AsNoTracking()
-                .Where(com => com.DivisionId == ViewModel.DivisionSelected.DivisionId)];
+                .Where(com => com.DivisionId == viewModelSubdivisionSelected.DivisionId)];
         });
         ViewModel.RefreshSubdivisionItems();
 
         if (ViewModel.Tbl15SubdivisionsList.Count == 0)
         {
+            ViewModel.Tbl15SubdivisionsList = [.. Context.Tbl15Subdivisions
+                .Where(com => com.DivisionId == viewModelSubdivisionSelected.DivisionId)];
+            SubdivisionDataGrid.ItemsSource = ViewModel.Tbl15SubdivisionsList;
+            await Refresh();
             SubdivisionsExpander.Visibility = Visibility.Collapsed;
             SubdivisionDataGrid.ItemsSource = null;
         }
@@ -1709,10 +1712,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             SubdivisionsExpander.Visibility = Visibility.Visible;
             SubdivisionDataGrid.ItemsSource = ViewModel.Tbl15SubdivisionsList;
+            SubdivisionDataGrid.SelectedIndex = 0;
         }
-        SubdivisionDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SubdivisionDataSetCount = ViewModel.Tbl15SubdivisionsList.Count;
     }
 
     private void SubdivisionName_OnLostFocus(object sender, RoutedEventArgs e)

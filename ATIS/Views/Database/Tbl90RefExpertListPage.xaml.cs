@@ -6,6 +6,7 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -181,7 +182,6 @@ public sealed partial class Tbl90RefExpertListPage : Page
         RefExpertDetailExpander.IsExpanded = true;
         RefExpertDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewRefExpert = false;
         RefExpertName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -235,6 +235,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
         if (ViewModel.IsNewRefExpert)
         {
             RefExpertDetailExpander.IsExpanded = false;
+            RefExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -247,25 +248,20 @@ public sealed partial class Tbl90RefExpertListPage : Page
     {
         var x = (DataGrid)FindName("RefExpertDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditRefExpert = false;
-            ViewModel.IsNewRefExpert = false;
+            ViewModel.RefExpertSelected = ViewModel.Tbl90RefExpertsList[iNdx];
+            SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
+            RefExpertSingles();
+        }
+        else
+        {
             RefExpertDetailExpander.IsExpanded = false;
             RefExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.RefExpertSelected = ViewModel.Tbl90RefExpertsList[iNdx];
-
-        SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
-        RefExpertSingles();
-
         ViewModel.IsInEditRefExpert = false;
         ViewModel.IsNewRefExpert = false;
-        RefExpertDetailExpander.IsExpanded = true;
-        RefExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void RefExpertSingles()
@@ -332,6 +328,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteRefExpertAsync(ViewModel.RefExpertSelected);
                 await Refresh();
+                RefExpertDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesRefExpertAsync();
@@ -377,7 +374,8 @@ public sealed partial class Tbl90RefExpertListPage : Page
                     return;
                 }
                 await ViewModel.SaveRefExpertAsync(ViewModel.RefExpertSelected);
-                await BehindSaveRefExpert();
+                await BehindSaveRefExpert(ViewModel.RefExpertSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRefExpert = true;
@@ -413,36 +411,40 @@ public sealed partial class Tbl90RefExpertListPage : Page
         return false;
     }
 
-    private async Task BehindSaveRefExpert()
+    private async Task BehindSaveRefExpert(Tbl90RefExpert viewModelRefExpertSelected)
     {
-        if (string.IsNullOrEmpty(RefExpertSearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("RefExpertDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.Tbl90RefExpertsList ??= [];
+            if (RefExpertSearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.Tbl90RefExpertsList ??= [];
-                ViewModel.Tbl90RefExpertsList = [.. Context.Tbl90RefExperts
-                    .Where(a => a.RefExpertId == ViewModel.RefExpertSelected.RefExpertId)];
-            });
-            ViewModel.RefreshRefExpertItems();
-
-            if (ViewModel.Tbl90RefExpertsList.Count == 0)
-            {
-                RefExpertDetailExpander.Visibility = Visibility.Collapsed;
-                RefExpertDataGrid.ItemsSource = null;
+                ViewModel.Tbl90RefExpertsList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl90RefExperts
+                    .Where(a => a.RefExpertId == id)]
+                    : [.. Context.Tbl90RefExperts
+                    .Where(a => _search != null && a.RefExpertName.StartsWith(_search))
+                    .OrderBy(a => a.RefExpertName)];
             }
-            else
-            {
-                RefExpertDetailExpander.Visibility = Visibility.Visible;
-                RefExpertDataGrid.ItemsSource = ViewModel.Tbl90RefExpertsList;
-            }
+        });
 
-            RefExpertDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshRefExpertItems();
 
-            RefExpertDetailExpander.IsExpanded = false;
-            RefExpertDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.Tbl90RefExpertsList.Count == 0)
+        {
+            ViewModel.Tbl90RefExpertsList = [.. Context.Tbl90RefExperts
+                .Where(a => a.RefExpertId == viewModelRefExpertSelected.RefExpertId)];
+            RefExpertDataGrid.ItemsSource = ViewModel.Tbl90RefExpertsList;
+            await Refresh();
+            RefExpertDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            RefExpertDataGrid.ItemsSource = ViewModel.Tbl90RefExpertsList;
+            var index = ViewModel.RefExpertItems.ToList().FindIndex(item => item.RefExpertId == viewModelRefExpertSelected.RefExpertId);
+            RefExpertDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.RefExpertDataSetCount = ViewModel.Tbl90RefExpertsList.Count;
     }
 
     private void BackRefExpert_Click(object sender, RoutedEventArgs e)
@@ -452,6 +454,12 @@ public sealed partial class Tbl90RefExpertListPage : Page
     }
 
     #endregion [RefExpert Methods]        
+
+    private void BackDetailExpanders()
+    {
+        RefExpertDetailExpander.IsExpanded = false;
+        RefExpertDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -477,8 +485,8 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            // DetailPanelRefExpert.Visibility = Visibility.Visible;
-            // RefExpertDetailExpander.Visibility = Visibility.Visible;
+            //DetailPanelRefExpert.Visibility = Visibility.Visible;
+            //RefExpertDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

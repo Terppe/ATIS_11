@@ -6,6 +6,7 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -181,7 +182,6 @@ public sealed partial class TblUserProfileListPage : Page
         UserProfileDetailExpander.IsExpanded = true;
         UserProfileDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewUserProfile = false;
         UserProfileEmail.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -235,6 +235,7 @@ public sealed partial class TblUserProfileListPage : Page
         if (ViewModel.IsNewUserProfile)
         {
             UserProfileDetailExpander.IsExpanded = false;
+            UserProfileDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -247,25 +248,20 @@ public sealed partial class TblUserProfileListPage : Page
     {
         var x = (DataGrid)FindName("UserProfileDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditUserProfile = false;
-            ViewModel.IsNewUserProfile = false;
+            ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
+            SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
+            UserProfileSingles();
+        }
+        else
+        {
             UserProfileDetailExpander.IsExpanded = false;
             UserProfileDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
-
-        SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
-        UserProfileSingles();
-
         ViewModel.IsInEditUserProfile = false;
         ViewModel.IsNewUserProfile = false;
-        UserProfileDetailExpander.IsExpanded = true;
-        UserProfileDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void UserProfileSingles()
@@ -355,6 +351,7 @@ public sealed partial class TblUserProfileListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteUserProfileAsync(ViewModel.UserProfileSelected);
                 await Refresh();
+                UserProfileDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesUserProfileAsync();
@@ -400,7 +397,8 @@ public sealed partial class TblUserProfileListPage : Page
                     return;
                 }
                 await ViewModel.SaveUserProfileAsync(ViewModel.UserProfileSelected);
-                await BehindSaveUserProfile();
+                await BehindSaveUserProfile(ViewModel.UserProfileSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedUserProfile = true;
@@ -437,36 +435,40 @@ public sealed partial class TblUserProfileListPage : Page
         return false;
     }
 
-    private async Task BehindSaveUserProfile()
+    private async Task BehindSaveUserProfile(TblUserProfile viewModelUserProfileSelected)
     {
-        if (string.IsNullOrEmpty(UserProfileSearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("UserProfileDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.TblUserProfilesList ??= [];
+            if (UserProfileSearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.TblUserProfilesList ??= [];
-                ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
-                    .Where(a => a.UserProfileId == ViewModel.UserProfileSelected.UserProfileId)];
-            });
-            ViewModel.RefreshUserProfileItems();
-
-            if (ViewModel.TblUserProfilesList.Count == 0)
-            {
-                UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-                UserProfileDataGrid.ItemsSource = null;
+                ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
+                    ? [.. Context.TblUserProfiles
+                    .Where(a => a.UserProfileId == id)]
+                    : [.. Context.TblUserProfiles
+                    .Where(a => _search != null && a.Email.StartsWith(_search))
+                    .OrderBy(a => a.Email)];
             }
-            else
-            {
-                UserProfileDetailExpander.Visibility = Visibility.Visible;
-                UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-            }
+        });
 
-            UserProfileDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshUserProfileItems();
 
-            UserProfileDetailExpander.IsExpanded = false;
-            UserProfileDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.TblUserProfilesList.Count == 0)
+        {
+            ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
+                .Where(a => a.UserProfileId == viewModelUserProfileSelected.UserProfileId)];
+            UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
+            await Refresh();
+            UserProfileDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
+            var index = ViewModel.UserProfileItems.ToList().FindIndex(item => item.UserProfileId == viewModelUserProfileSelected.UserProfileId);
+            UserProfileDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.UserProfileDataSetCount = ViewModel.TblUserProfilesList.Count;
     }
 
     private void BackUserProfile_Click(object sender, RoutedEventArgs e)
@@ -476,6 +478,12 @@ public sealed partial class TblUserProfileListPage : Page
     }
 
     #endregion [UserProfile Methods]                    
+
+    private void BackDetailExpanders()
+    {
+        UserProfileDetailExpander.IsExpanded = false;
+        UserProfileDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -501,8 +509,8 @@ public sealed partial class TblUserProfileListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            // DetailPanelUserProfile.Visibility = Visibility.Visible;
-            //  UserProfileDetailExpander.Visibility = Visibility.Visible;
+            //DetailPanelUserProfile.Visibility = Visibility.Visible;
+            //UserProfileDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

@@ -6,6 +6,7 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -181,7 +182,6 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         RefAuthorDetailExpander.IsExpanded = true;
         RefAuthorDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewRefAuthor = false;
         RefAuthorName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -235,6 +235,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         if (ViewModel.IsNewRefAuthor)
         {
             RefAuthorDetailExpander.IsExpanded = false;
+            RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -247,25 +248,20 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     {
         var x = (DataGrid)FindName("RefAuthorDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditRefAuthor = false;
-            ViewModel.IsNewRefAuthor = false;
+            ViewModel.RefAuthorSelected = ViewModel.Tbl90RefAuthorsList[iNdx];
+            SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
+            RefAuthorSingles();
+        }
+        else
+        {
             RefAuthorDetailExpander.IsExpanded = false;
             RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.RefAuthorSelected = ViewModel.Tbl90RefAuthorsList[iNdx];
-
-        SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
-        RefAuthorSingles();
-
         ViewModel.IsInEditRefAuthor = false;
         ViewModel.IsNewRefAuthor = false;
-        RefAuthorDetailExpander.IsExpanded = true;
-        RefAuthorDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void RefAuthorSingles()
@@ -339,6 +335,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteRefAuthorAsync(ViewModel.RefAuthorSelected);
                 await Refresh();
+                RefAuthorDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesRefAuthorAsync();
@@ -384,7 +381,8 @@ public sealed partial class Tbl90RefAuthorListPage : Page
                     return;
                 }
                 await ViewModel.SaveRefAuthorAsync(ViewModel.RefAuthorSelected);
-                await BehindSaveRefAuthor();
+                await BehindSaveRefAuthor(ViewModel.RefAuthorSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRefAuthor = true;
@@ -425,37 +423,42 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         return false;
     }
 
-    private async Task BehindSaveRefAuthor()
+    private async Task BehindSaveRefAuthor(Tbl90RefAuthor viewModelRefAuthorSelected)
     {
-        if (string.IsNullOrEmpty(RefAuthorSearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("RefAuthorDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.Tbl90RefAuthorsList ??= [];
+            if (RefAuthorSearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.Tbl90RefAuthorsList ??= [];
-                ViewModel.Tbl90RefAuthorsList = [.. Context.Tbl90RefAuthors
-                    .Where(a => a.RefAuthorId == ViewModel.RefAuthorSelected.RefAuthorId)];
-            });
-            ViewModel.RefreshRefAuthorItems();
-
-            if (ViewModel.Tbl90RefAuthorsList.Count == 0)
-            {
-                RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
-                RefAuthorDataGrid.ItemsSource = null;
+                ViewModel.Tbl90RefAuthorsList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl90RefAuthors
+                    .Where(a => a.RefAuthorId == id)]
+                    : [.. Context.Tbl90RefAuthors
+                    .Where(a => _search != null && a.RefAuthorName.StartsWith(_search))
+                    .OrderBy(a => a.RefAuthorName)];
             }
-            else
-            {
-                RefAuthorDetailExpander.Visibility = Visibility.Visible;
-                RefAuthorDataGrid.ItemsSource = ViewModel.Tbl90RefAuthorsList;
-            }
+        });
 
-            RefAuthorDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshRefAuthorItems();
 
-            RefAuthorDetailExpander.IsExpanded = false;
-            RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.Tbl90RefAuthorsList.Count == 0)
+        {
+            ViewModel.Tbl90RefAuthorsList = [.. Context.Tbl90RefAuthors
+                .Where(a => a.RefAuthorId == viewModelRefAuthorSelected.RefAuthorId)];
+            RefAuthorDataGrid.ItemsSource = ViewModel.Tbl90RefAuthorsList;
+            await Refresh();
+            RefAuthorDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            RefAuthorDataGrid.ItemsSource = ViewModel.Tbl90RefAuthorsList;
+            var index = ViewModel.RefAuthorItems.ToList().FindIndex(item => item.RefAuthorId == viewModelRefAuthorSelected.RefAuthorId);
+            RefAuthorDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.RefAuthorDataSetCount = ViewModel.Tbl90RefAuthorsList.Count;
     }
+
 
     private void BackRefAuthor_Click(object sender, RoutedEventArgs e)
     {
@@ -464,6 +467,11 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     }
 
     #endregion [RefAuthor Methods]        
+    private void BackDetailExpanders()
+    {
+        RefAuthorDetailExpander.IsExpanded = false;
+        RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

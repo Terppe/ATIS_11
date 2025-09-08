@@ -172,68 +172,69 @@ public sealed partial class Tbl24SubclassListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.SubclassSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.SubclassId == ViewModel.SubclassSelected.SubclassId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.SubclassId == ViewModel.SubclassSelected.SubclassId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Infraclass-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl27InfraclassesList ??= [];
-            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Infraclass-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl27InfraclassesList ??= [];
+                ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
             .Where(com => com.SubclassId == ViewModel.SubclassSelected.SubclassId)];
-        });
-        ViewModel.InfraclassDataSetCount = ViewModel.Tbl27InfraclassesList.Count;
-        ViewModel.RefreshInfraclassItems();
+            });
+            ViewModel.InfraclassDataSetCount = ViewModel.Tbl27InfraclassesList.Count;
+            ViewModel.RefreshInfraclassItems();
 
-        if (ViewModel.Tbl27InfraclassesList.Count == 0)
-        {
-            InfraclassesExpander.Visibility = Visibility.Collapsed;
-            InfraclassDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            InfraclassesExpander.Visibility = Visibility.Visible;
-            InfraclassDataGrid.ItemsSource = ViewModel.Tbl27InfraclassesList;
+            if (ViewModel.Tbl27InfraclassesList.Count == 0)
+            {
+                InfraclassesExpander.Visibility = Visibility.Collapsed;
+                InfraclassDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                InfraclassesExpander.Visibility = Visibility.Visible;
+                InfraclassDataGrid.ItemsSource = ViewModel.Tbl27InfraclassesList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl24SubclassListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewSubclass = false;
         SubclassName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         if (ViewModel.IsNewSubclass)
         {
             SubclassDetailExpander.IsExpanded = false;
+            SubclassDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("SubclassDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSubclass = false;
-            ViewModel.IsNewSubclass = false;
+            ViewModel.SubclassSelected = ViewModel.Tbl24SubclassesList[iNdx];
+            SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
+            SubclassSingles();
+        }
+        else
+        {
             SubclassDetailExpander.IsExpanded = false;
             SubclassDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SubclassSelected = ViewModel.Tbl24SubclassesList[iNdx];
-
-        SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
-        SubclassSingles();
-
         ViewModel.IsInEditSubclass = false;
         ViewModel.IsNewSubclass = false;
-        SubclassDetailExpander.IsExpanded = true;
-        SubclassDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SubclassSingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteSubclassAsync(ViewModel.SubclassSelected);
                 await Refresh();
+                SubclassDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesSubclassAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl24SubclassListPage : Page
                     return;
                 }
                 await ViewModel.SaveSubclassAsync(ViewModel.SubclassSelected);
-                await BehindSaveSubclass();
+                await BehindSaveSubclass(ViewModel.SubclassSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubclass = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl24SubclassListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSubclass()
+    private async Task BehindSaveSubclass(Tbl24Subclass viewModelSubclassSelected)
     {
-        var x = (DataGrid)FindName("SubclassDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl24SubclassesList ??= [];
-            ViewModel.Tbl24SubclassesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl24Subclasses
+            if (SubclassSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl24SubclassesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl24Subclasses
                     .Where(a => a.SubclassId == id)]
-                : [.. Context.Tbl24Subclasses
+                    : [.. Context.Tbl24Subclasses
                     .Where(a => _search != null && a.SubclassName.StartsWith(_search))
                     .OrderBy(a => a.SubclassName)];
+            }
         });
 
         ViewModel.RefreshSubclassItems();
 
         if (ViewModel.Tbl24SubclassesList.Count == 0)
         {
-            SubclassDataGrid.ItemsSource = null;
+            ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+                .Where(a => a.SubclassId == viewModelSubclassSelected.SubclassId)];
+            SubclassDataGrid.ItemsSource = ViewModel.Tbl24SubclassesList;
+            await Refresh();
+            SubclassDataGrid.SelectedIndex = 0;
         }
         else
         {
             SubclassDataGrid.ItemsSource = ViewModel.Tbl24SubclassesList;
+            var index = ViewModel.SubclassItems.ToList().FindIndex(item => item.SubclassId == viewModelSubclassSelected.SubclassId);
+            SubclassDataGrid.SelectedIndex = index;
         }
-        SubclassDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SubclassDataSetCount = ViewModel.Tbl24SubclassesList.Count;
     }
 
     private void SubclassName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl24SubclassListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl24SubclassListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.SubclassSelected.SubclassId)];
+                .Where(refe => refe.SubclassId == viewModelReferenceSelected.SubclassId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.SubclassId == viewModelReferenceSelected.SubclassId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl24SubclassListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.SubclassSelected.SubclassId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
+            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.SubclassSelected.SubclassId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl24SubclassListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.SubclassSelected.SubclassId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
+            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.SubclassSelected.SubclassId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl24SubclassListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.SubclassSelected.SubclassId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
+            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.SubclassSelected.SubclassId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl24SubclassListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl24SubclassListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.SubclassId == ViewModel.SubclassSelected.SubclassId)];
+                .Where(com => com.SubclassId == viewModelCommentSelected.SubclassId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.SubclassId == viewModelCommentSelected.SubclassId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         InfraclassDetailExpander.IsExpanded = true;
         InfraclassDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewInfraclass = false;
+        InfraclassName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Infraclass_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         if (ViewModel.IsNewInfraclass)
         {
             InfraclassDetailExpander.IsExpanded = false;
+            InfraclassDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,24 +1561,21 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         var x = (DataGrid)FindName("InfraclassDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditInfraclass = false;
-            ViewModel.IsNewInfraclass = false;
+            ViewModel.InfraclassSelected = ViewModel.Tbl27InfraclassesList[iNdx];
+
+            SingleInfraclass = App.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);
+            InfraclassSingles();
+        }
+        else
+        {
             InfraclassDetailExpander.IsExpanded = false;
             InfraclassDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-        ViewModel.InfraclassSelected = ViewModel.Tbl27InfraclassesList[iNdx];
-
-        SingleInfraclass = App.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);
-        InfraclassSingles();
-
         ViewModel.IsInEditInfraclass = false;
         ViewModel.IsNewInfraclass = false;
-        InfraclassDetailExpander.IsExpanded = true;
-        InfraclassDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void InfraclassSingles()
@@ -1652,7 +1654,8 @@ public sealed partial class Tbl24SubclassListPage : Page
                     return;
                 }
                 await ViewModel.SaveInfraclassAsync(ViewModel.InfraclassSelected);
-                await BehindSaveInfraclass();
+                await BehindSaveInfraclass(ViewModel.InfraclassSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedInfraclass = true;
@@ -1686,22 +1689,22 @@ public sealed partial class Tbl24SubclassListPage : Page
         return false;
     }
 
-    private async Task BehindSaveInfraclass()
+    private async Task BehindSaveInfraclass(Tbl27Infraclass viewModelInfraclassSelected)
     {
-        var x = (DataGrid)FindName("InfraclassDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl27InfraclassesList ??= [];
             ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
-                .AsNoTracking()
-                .Where(com => com.SubclassId == ViewModel.SubclassSelected.SubclassId)];
+                .Where(com => com.SubclassId == viewModelInfraclassSelected.SubclassId)];
         });
         ViewModel.RefreshInfraclassItems();
 
         if (ViewModel.Tbl27InfraclassesList.Count == 0)
         {
+            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+                .Where(com => com.SubclassId == viewModelInfraclassSelected.SubclassId)];
+            InfraclassDataGrid.ItemsSource = ViewModel.Tbl27InfraclassesList;
+            await Refresh();
             InfraclassesExpander.Visibility = Visibility.Collapsed;
             InfraclassDataGrid.ItemsSource = null;
         }
@@ -1709,10 +1712,10 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             InfraclassesExpander.Visibility = Visibility.Visible;
             InfraclassDataGrid.ItemsSource = ViewModel.Tbl27InfraclassesList;
+            InfraclassDataGrid.SelectedIndex = 0;
         }
-        InfraclassDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.InfraclassDataSetCount = ViewModel.Tbl27InfraclassesList.Count;
     }
 
     private void InfraclassName_OnLostFocus(object sender, RoutedEventArgs e)

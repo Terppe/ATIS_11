@@ -1,11 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using Mapsui;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -19,7 +17,6 @@ namespace ATIS.Views.Database;
 
 public partial class Tbl75SpeciesViewModel : ObservableObject
 {
-
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     public IJsonNavigationViewService JsonNavigationViewService;
@@ -49,19 +46,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         public int ImageCountId;
         public byte[] ImageFileStream;
     };
-
-   // public new event PropertyChangedEventHandler PropertyChanged;
-
-    //private Mapsui.Map _map;
-    //public Mapsui.Map Map
-    //{
-    //    get => _map;
-    //    set
-    //    {
-    //        _map = value;
-    //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Map)));
-    //    }
-    //}
 
     #endregion [Private Data Members]      
 

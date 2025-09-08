@@ -6,6 +6,7 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -181,7 +182,6 @@ public sealed partial class Tbl90RefSourceListPage : Page
         RefSourceDetailExpander.IsExpanded = true;
         RefSourceDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewRefSource = false;
         RefSourceName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -235,6 +235,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
         if (ViewModel.IsNewRefSource)
         {
             RefSourceDetailExpander.IsExpanded = false;
+            RefSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -247,25 +248,20 @@ public sealed partial class Tbl90RefSourceListPage : Page
     {
         var x = (DataGrid)FindName("RefSourceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditRefSource = false;
-            ViewModel.IsNewRefSource = false;
+            ViewModel.RefSourceSelected = ViewModel.Tbl90RefSourcesList[iNdx];
+            SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
+            RefSourceSingles();
+        }
+        else
+        {
             RefSourceDetailExpander.IsExpanded = false;
             RefSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.RefSourceSelected = ViewModel.Tbl90RefSourcesList[iNdx];
-
-        SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
-        RefSourceSingles();
-
         ViewModel.IsInEditRefSource = false;
         ViewModel.IsNewRefSource = false;
-        RefSourceDetailExpander.IsExpanded = true;
-        RefSourceDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void RefSourceSingles()
@@ -334,6 +330,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteRefSourceAsync(ViewModel.RefSourceSelected);
                 await Refresh();
+                RefSourceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesRefSourceAsync();
@@ -379,7 +376,8 @@ public sealed partial class Tbl90RefSourceListPage : Page
                     return;
                 }
                 await ViewModel.SaveRefSourceAsync(ViewModel.RefSourceSelected);
-                await BehindSaveRefSource();
+                await BehindSaveRefSource(ViewModel.RefSourceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRefSource = true;
@@ -416,36 +414,40 @@ public sealed partial class Tbl90RefSourceListPage : Page
         return false;
     }
 
-    private async Task BehindSaveRefSource()
+    private async Task BehindSaveRefSource(Tbl90RefSource viewModelRefSourceSelected)
     {
-        if (string.IsNullOrEmpty(RefSourceSearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("RefSourceDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.Tbl90RefSourcesList ??= [];
+            if (RefSourceSearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.Tbl90RefSourcesList ??= [];
-                ViewModel.Tbl90RefSourcesList = [.. Context.Tbl90RefSources
-                    .Where(a => a.RefSourceId == ViewModel.RefSourceSelected.RefSourceId)];
-            });
-            ViewModel.RefreshRefSourceItems();
-
-            if (ViewModel.Tbl90RefSourcesList.Count == 0)
-            {
-                RefSourceDetailExpander.Visibility = Visibility.Collapsed;
-                RefSourceDataGrid.ItemsSource = null;
+                ViewModel.Tbl90RefSourcesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl90RefSources
+                    .Where(a => a.RefSourceId == id)]
+                    : [.. Context.Tbl90RefSources
+                    .Where(a => _search != null && a.RefSourceName.StartsWith(_search))
+                    .OrderBy(a => a.RefSourceName)];
             }
-            else
-            {
-                RefSourceDetailExpander.Visibility = Visibility.Visible;
-                RefSourceDataGrid.ItemsSource = ViewModel.Tbl90RefSourcesList;
-            }
+        });
 
-            RefSourceDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshRefSourceItems();
 
-            RefSourceDetailExpander.IsExpanded = false;
-            RefSourceDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.Tbl90RefSourcesList.Count == 0)
+        {
+            ViewModel.Tbl90RefSourcesList = [.. Context.Tbl90RefSources
+                .Where(a => a.RefSourceId == viewModelRefSourceSelected.RefSourceId)];
+            RefSourceDataGrid.ItemsSource = ViewModel.Tbl90RefSourcesList;
+            await Refresh();
+            RefSourceDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            RefSourceDataGrid.ItemsSource = ViewModel.Tbl90RefSourcesList;
+            var index = ViewModel.RefSourceItems.ToList().FindIndex(item => item.RefSourceId == viewModelRefSourceSelected.RefSourceId);
+            RefSourceDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.RefSourceDataSetCount = ViewModel.Tbl90RefSourcesList.Count;
     }
 
     private void BackRefSource_Click(object sender, RoutedEventArgs e)
@@ -455,6 +457,12 @@ public sealed partial class Tbl90RefSourceListPage : Page
     }
 
     #endregion [RefSource Methods]        
+
+    private void BackDetailExpanders()
+    {
+        RefSourceDetailExpander.IsExpanded = false;
+        RefSourceDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -480,8 +488,8 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //  DetailPanelRefSource.Visibility = Visibility.Visible;
-            //  RefSourceDetailExpander.Visibility = Visibility.Visible;
+            //DetailPanelRefSource.Visibility = Visibility.Visible;
+            //RefSourceDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

@@ -18,8 +18,6 @@
 
     <Page.Resources>
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
-
-
         <MenuFlyout x:Key="GenusDataContextMenu">
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Genus"
                             Click="SaveGenus_Click">

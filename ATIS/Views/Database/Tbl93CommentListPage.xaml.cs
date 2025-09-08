@@ -6,6 +6,7 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -176,7 +177,7 @@ public sealed partial class Tbl93CommentListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CommentSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -229,6 +230,7 @@ public sealed partial class Tbl93CommentListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -241,25 +243,20 @@ public sealed partial class Tbl93CommentListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+            SingleComment = App.SingleComment(ViewModel.CommentSelected.CommentId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleComment(ViewModel.CommentSelected.CommentId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -348,6 +345,7 @@ public sealed partial class Tbl93CommentListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -393,7 +391,8 @@ public sealed partial class Tbl93CommentListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -451,36 +450,40 @@ public sealed partial class Tbl93CommentListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        if (string.IsNullOrEmpty(CommentSearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("CommentDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.Tbl93CommentsList ??= [];
+            if (CommentSearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                    .Where(a => a.CommentId == ViewModel.CommentSelected.CommentId)];
-            });
-            ViewModel.RefreshCommentItems();
-
-            if (ViewModel.Tbl93CommentsList.Count == 0)
-            {
-                CommentDetailExpander.Visibility = Visibility.Collapsed;
-                CommentDataGrid.ItemsSource = null;
+                ViewModel.Tbl93CommentsList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl93Comments
+                    .Where(a => a.CommentId == id)]
+                    : [.. Context.Tbl93Comments
+                    .Where(a => _search != null && a.Info.StartsWith(_search))
+                    .OrderBy(a => a.Info)];
             }
-            else
-            {
-                CommentDetailExpander.Visibility = Visibility.Visible;
-                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-            }
+        });
 
-            CommentDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshCommentItems();
 
-            CommentDetailExpander.IsExpanded = false;
-            CommentDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.Tbl93CommentsList.Count == 0)
+        {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(a => a.CommentId == viewModelCommentSelected.CommentId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
+            CommentDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            var index = ViewModel.CommentItems.ToList().FindIndex(item => item.CommentId == viewModelCommentSelected.CommentId);
+            CommentDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -490,6 +493,12 @@ public sealed partial class Tbl93CommentListPage : Page
     }
 
     #endregion [Comment Methods]        
+
+    private void BackDetailExpanders()
+    {
+        CommentDetailExpander.IsExpanded = false;
+        CommentDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -515,8 +524,8 @@ public sealed partial class Tbl93CommentListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            // DetailPanelComment.Visibility = Visibility.Visible;
-            //  CommentDetailExpander.Visibility = Visibility.Visible;
+            //DetailPanelComment.Visibility = Visibility.Visible;
+            //CommentDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

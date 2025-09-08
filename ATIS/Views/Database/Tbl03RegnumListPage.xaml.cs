@@ -181,92 +181,93 @@ public sealed partial class Tbl03RegnumListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.RegnumSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------      
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.RegnumId == ViewModel.RegnumSelected.RegnumId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .AsNoTracking()
             .Where(com => com.RegnumId == ViewModel.RegnumSelected.RegnumId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Phylum-----------------------------   
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl06PhylumsList ??= [];
-            ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Phylum-----------------------------   
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl06PhylumsList ??= [];
+                ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
             .AsNoTracking()
             .Where(x => x.RegnumId == ViewModel.RegnumSelected.RegnumId)];
-        });
-        ViewModel.PhylumDataSetCount = ViewModel.Tbl06PhylumsList.Count;
-        ViewModel.RefreshPhylumItems();
+            });
+            ViewModel.PhylumDataSetCount = ViewModel.Tbl06PhylumsList.Count;
+            ViewModel.RefreshPhylumItems();
 
-        if (ViewModel.Tbl06PhylumsList.Count == 0)
-        {
-            PhylumsExpander.Visibility = Visibility.Collapsed;
-            PhylumDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            PhylumsExpander.Visibility = Visibility.Visible;
-            PhylumDataGrid.ItemsSource = ViewModel.Tbl06PhylumsList;
-        }
-        //--------------------------Division-----------------------------  
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl09DivisionsList ??= [];
-            ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
+            if (ViewModel.Tbl06PhylumsList.Count == 0)
+            {
+                PhylumsExpander.Visibility = Visibility.Collapsed;
+                PhylumDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                PhylumsExpander.Visibility = Visibility.Visible;
+                PhylumDataGrid.ItemsSource = ViewModel.Tbl06PhylumsList;
+            }
+            //--------------------------Division-----------------------------  
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl09DivisionsList ??= [];
+                ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
             .AsNoTracking()
             .Where(c => c.RegnumId == ViewModel.RegnumSelected.RegnumId)];
-        });
-        ViewModel.DivisionDataSetCount = ViewModel.Tbl09DivisionsList.Count;
+            });
+            ViewModel.DivisionDataSetCount = ViewModel.Tbl09DivisionsList.Count;
+            ViewModel.RefreshDivisionItems();
 
-        ViewModel.RefreshDivisionItems();
-
-        if (ViewModel.Tbl09DivisionsList.Count == 0)
-        {
-            DivisionsExpander.Visibility = Visibility.Collapsed;
-            DivisionDataGrid.ItemsSource = null;
+            if (ViewModel.Tbl09DivisionsList.Count == 0)
+            {
+                DivisionsExpander.Visibility = Visibility.Collapsed;
+                DivisionDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                DivisionsExpander.Visibility = Visibility.Visible;
+                DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
+            }
         }
-        else
-        {
-            DivisionsExpander.Visibility = Visibility.Visible;
-            DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
-        }
-
         ViewModel.IsLoading = false;
     }
 
@@ -290,6 +291,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             RegnumName.Focus(FocusState.Programmatic);
         };
+
         ViewModel.IsInEditRegnum = true;
         ViewModel.IsNewRegnum = true;
 
@@ -310,7 +312,6 @@ public sealed partial class Tbl03RegnumListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewRegnum = false;
         RegnumName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -369,6 +370,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         else
         {
             CancelRegnumEdits();
+            RegnumDetailExpander.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -376,15 +378,20 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("RegnumDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.RegnumSelected = ViewModel.Tbl03RegnumsList[iNdx];
-
-        SingleRegnum = App.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
-        RegnumSingles();
-
+        if (iNdx is not -1)
+        {
+            ViewModel.RegnumSelected = ViewModel.Tbl03RegnumsList[iNdx];
+            SingleRegnum = App.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
+            RegnumSingles();
+        }
+        else
+        {
+            RegnumDetailExpander.IsExpanded = false;
+            RegnumDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditRegnum = false;
         ViewModel.IsNewRegnum = false;
-        RegnumDetailExpander.IsExpanded = true;
-        RegnumDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void RegnumSingles()
@@ -458,6 +465,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteRegnumAsync(ViewModel.RegnumSelected);
                 await Refresh();
+                RegnumDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesRegnumAsync();
@@ -503,7 +511,8 @@ public sealed partial class Tbl03RegnumListPage : Page
                     return;
                 }
                 await ViewModel.SaveRegnumAsync(ViewModel.RegnumSelected);
-                await BehindSaveRegnum();
+                await BehindSaveRegnum(ViewModel.RegnumSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRegnum = true;
@@ -538,35 +547,40 @@ public sealed partial class Tbl03RegnumListPage : Page
         return false;
     }
 
-    private async Task BehindSaveRegnum()
+    private async Task BehindSaveRegnum(Tbl03Regnum viewModelRegnumSelected)
     {
-        var x = (DataGrid)FindName("RegnumDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl03RegnumsList ??= [];
-            ViewModel.Tbl03RegnumsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl03Regnums
+            if (RegnumSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl03RegnumsList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl03Regnums
                     .Where(a => a.RegnumId == id)]
-                : [.. Context.Tbl03Regnums
+                    : [.. Context.Tbl03Regnums
                     .Where(a => _search != null && a.RegnumName.StartsWith(_search))
                     .OrderBy(a => a.RegnumName)];
+            }
         });
 
         ViewModel.RefreshRegnumItems();
 
         if (ViewModel.Tbl03RegnumsList.Count == 0)
         {
-            RegnumDataGrid.ItemsSource = null;
+            ViewModel.Tbl03RegnumsList = [.. Context.Tbl03Regnums
+                .Where(a => a.RegnumId == viewModelRegnumSelected.RegnumId)];
+            RegnumDataGrid.ItemsSource = ViewModel.Tbl03RegnumsList;
+            await Refresh();
+            RegnumDataGrid.SelectedIndex = 0;
         }
         else
         {
             RegnumDataGrid.ItemsSource = ViewModel.Tbl03RegnumsList;
+            var index = ViewModel.RegnumItems.ToList().FindIndex(item => item.RegnumId == viewModelRegnumSelected.RegnumId);
+            RegnumDataGrid.SelectedIndex = index;
         }
-        RegnumDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.RegnumDataSetCount = ViewModel.Tbl03RegnumsList.Count;
     }
 
     private void RegnumName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -733,6 +747,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -778,7 +793,8 @@ public sealed partial class Tbl03RegnumListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -815,21 +831,22 @@ public sealed partial class Tbl03RegnumListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.RegnumSelected.RegnumId)];
+                .Where(refe => refe.RegnumId == viewModelReferenceSelected.RegnumId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.RegnumId == viewModelReferenceSelected.RegnumId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -837,10 +854,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -890,14 +907,16 @@ public sealed partial class Tbl03RegnumListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -910,16 +929,22 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+        if (iNdx is not -1)
+        {
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-        SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
-
-        ReferenceExpertSingles();
-
+            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.RegnumSelected.RegnumId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
+            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -945,7 +970,8 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
+            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.RegnumSelected.RegnumId);
 
             ReferenceExpertSingles();
         });
@@ -992,14 +1018,16 @@ public sealed partial class Tbl03RegnumListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1011,17 +1039,24 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+        if (iNdx is not -1)
+        {
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-        SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
-
-        ReferenceSourceSingles();
-
+            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.RegnumSelected.RegnumId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
+            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1045,7 +1080,8 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
+            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.RegnumSelected.RegnumId);
 
             ReferenceSourceSingles();
         });
@@ -1093,14 +1129,16 @@ public sealed partial class Tbl03RegnumListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1113,17 +1151,24 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+        if (iNdx is not -1)
+        {
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-        SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
-
-        ReferenceAuthorSingles();
-
+            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.RegnumSelected.RegnumId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
+            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1147,7 +1192,8 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
+            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.RegnumSelected.RegnumId);
 
             ReferenceAuthorSingles();
         });
@@ -1190,7 +1236,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1235,6 +1281,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1247,15 +1294,21 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+        if (iNdx is not -1)
+        {
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-        SingleComment = App.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
-        CommentSingles();
-
+            SingleComment = App.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
+            CommentSingles();
+        }
+        else
+        {
+            CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1324,6 +1377,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1370,7 +1424,8 @@ public sealed partial class Tbl03RegnumListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1405,22 +1460,22 @@ public sealed partial class Tbl03RegnumListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.RegnumId == ViewModel.RegnumSelected.RegnumId)];
+                .Where(com => com.RegnumId == viewModelCommentSelected.RegnumId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.RegnumId == viewModelCommentSelected.RegnumId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1428,10 +1483,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1477,7 +1532,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         PhylumDetailExpander.IsExpanded = true;
         PhylumDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewPhylum = false;
+        PhylumName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Phylum_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1525,6 +1580,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         if (ViewModel.IsNewPhylum)
         {
             PhylumDetailExpander.IsExpanded = false;
+            PhylumDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1537,15 +1593,21 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("PhylumDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.PhylumSelected = ViewModel.Tbl06PhylumsList[iNdx];
+        if (iNdx is not -1)
+        {
+            ViewModel.PhylumSelected = ViewModel.Tbl06PhylumsList[iNdx];
 
-        SinglePhylum = App.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId, ViewModel.RegnumSelected.RegnumId);
-        PhylumSingles();
-
+            SinglePhylum = App.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId, ViewModel.RegnumSelected.RegnumId);
+            PhylumSingles();
+        }
+        else
+        {
+            PhylumDetailExpander.IsExpanded = false;
+            PhylumDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditPhylum = false;
         ViewModel.IsNewPhylum = false;
-        PhylumDetailExpander.IsExpanded = true;
-        PhylumDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void PhylumSingles()
@@ -1624,7 +1686,8 @@ public sealed partial class Tbl03RegnumListPage : Page
                     return;
                 }
                 await ViewModel.SavePhylumAsync(ViewModel.PhylumSelected);
-                await BehindSavePhylum();
+                await BehindSavePhylum(ViewModel.PhylumSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedPhylum = true;
@@ -1658,17 +1721,13 @@ public sealed partial class Tbl03RegnumListPage : Page
         return false;
     }
 
-    private async Task BehindSavePhylum()
+    private async Task BehindSavePhylum(Tbl06Phylum viewModelPhylumSelected)
     {
-        var x = (DataGrid)FindName("PhylumDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl06PhylumsList ??= [];
             ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
-                .AsNoTracking()
-                .Where(com => com.RegnumId == ViewModel.RegnumSelected.RegnumId)];
+                .Where(com => com.RegnumId == viewModelPhylumSelected.RegnumId)];
         });
         ViewModel.RefreshPhylumItems();
 
@@ -1681,10 +1740,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             PhylumsExpander.Visibility = Visibility.Visible;
             PhylumDataGrid.ItemsSource = ViewModel.Tbl06PhylumsList;
+            PhylumDataGrid.SelectedIndex = 0;
         }
-        PhylumDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.PhylumDataSetCount = ViewModel.Tbl06PhylumsList.Count;
     }
 
     private void PhylumName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -1735,7 +1794,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         DivisionDetailExpander.IsExpanded = true;
         DivisionDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewDivision = false;
+        DivisionName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Division_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1783,6 +1842,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         if (ViewModel.IsNewDivision)
         {
             DivisionDetailExpander.IsExpanded = false;
+            DivisionDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1795,15 +1855,21 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         var x = (DataGrid)FindName("DivisionDataGrid");
         var iNdx = x.SelectedIndex;
-        ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[iNdx];
+        if (iNdx is not -1)
+        {
+            ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[iNdx];
 
-        SingleDivision = App.SingleDivisionRegnum(ViewModel.DivisionSelected.DivisionId, ViewModel.RegnumSelected.RegnumId);
-        DivisionSingles();
-
+            SingleDivision = App.SingleDivisionRegnum(ViewModel.DivisionSelected.DivisionId, ViewModel.RegnumSelected.RegnumId);
+            DivisionSingles();
+        }
+        else
+        {
+            DivisionDetailExpander.IsExpanded = false;
+            DivisionDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
         ViewModel.IsInEditDivision = false;
         ViewModel.IsNewDivision = false;
-        DivisionDetailExpander.IsExpanded = true;
-        DivisionDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void DivisionSingles()
@@ -1882,7 +1948,8 @@ public sealed partial class Tbl03RegnumListPage : Page
                     return;
                 }
                 await ViewModel.SaveDivisionAsync(ViewModel.DivisionSelected);
-                await BehindSaveDivision();
+                await BehindSaveDivision(ViewModel.DivisionSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedDivision = true;
@@ -1916,17 +1983,14 @@ public sealed partial class Tbl03RegnumListPage : Page
         return false;
     }
 
-    private async Task BehindSaveDivision()
+    private async Task BehindSaveDivision(Tbl09Division viewModelDivisionSelected)
     {
-        var x = (DataGrid)FindName("DivisionDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl09DivisionsList ??= [];
             ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
                 .AsNoTracking()
-                .Where(com => com.RegnumId == ViewModel.RegnumSelected.RegnumId)];
+                .Where(com => com.RegnumId == viewModelDivisionSelected.RegnumId)];
         });
         ViewModel.RefreshDivisionItems();
 
@@ -1939,10 +2003,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             DivisionsExpander.Visibility = Visibility.Visible;
             DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
+            DivisionDataGrid.SelectedIndex = 0;
         }
-        DivisionDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.DivisionDataSetCount = ViewModel.Tbl09DivisionsList.Count;
     }
 
     private void DivisionName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -1981,8 +2045,8 @@ public sealed partial class Tbl03RegnumListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //  DetailPanelRegnum.Visibility = Visibility.Visible;
-            // RegnumDetailExpander.Visibility = Visibility.Visible;
+            DetailPanelRegnum.Visibility = Visibility.Visible;
+            RegnumDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

@@ -6,6 +6,7 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -181,7 +182,6 @@ public sealed partial class TblCountryListPage : Page
         CountryDetailExpander.IsExpanded = true;
         CountryDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewCountry = false;
         CountryName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -235,6 +235,7 @@ public sealed partial class TblCountryListPage : Page
         if (ViewModel.IsNewCountry)
         {
             CountryDetailExpander.IsExpanded = false;
+            CountryDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -247,34 +248,26 @@ public sealed partial class TblCountryListPage : Page
     {
         var x = (DataGrid)FindName("CountryDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditCountry = false;
-            ViewModel.IsNewCountry = false;
+            ViewModel.CountrySelected = ViewModel.TblCountriesList[iNdx];
+            SingleCountry = App.SingleCountry(ViewModel.CountrySelected.CountryId);
+            CountrySingles();
+        }
+        else
+        {
             CountryDetailExpander.IsExpanded = false;
             CountryDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CountrySelected = ViewModel.TblCountriesList[iNdx];
-
-        SingleCountry = App.SingleCountry(ViewModel.CountrySelected.CountryId);
-        CountrySingles();
-
         ViewModel.IsInEditCountry = false;
         ViewModel.IsNewCountry = false;
-        CountryDetailExpander.IsExpanded = true;
-        CountryDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CountrySingles()
     {
         ViewModel.CountrySelected.Name = SingleCountry.Name;
         ViewModel.CountrySelected.Regex = SingleCountry.Regex;
-        ViewModel.CountrySelected.ZoomLevel = SingleCountry.ZoomLevel;
-        ViewModel.CountrySelected.Latitude = SingleCountry.Latitude;
-        ViewModel.CountrySelected.Longitude = SingleCountry.Longitude;
     }
     private async Task RevertChangesCountryAsync()
     {
@@ -331,6 +324,7 @@ public sealed partial class TblCountryListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCountryAsync(ViewModel.CountrySelected);
                 await Refresh();
+                CountryDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCountryAsync();
@@ -376,7 +370,8 @@ public sealed partial class TblCountryListPage : Page
                     return;
                 }
                 await ViewModel.SaveCountryAsync(ViewModel.CountrySelected);
-                await BehindSaveCountry();
+                await BehindSaveCountry(ViewModel.CountrySelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedCountry = true;
@@ -410,36 +405,40 @@ public sealed partial class TblCountryListPage : Page
         return false;
     }
 
-    private async Task BehindSaveCountry()
+    private async Task BehindSaveCountry(TblCountry viewModelCountrySelected)
     {
-        if (string.IsNullOrEmpty(CountrySearchBox.Text))
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            var x = (DataGrid)FindName("CountryDataGrid");
-            var iNdx = x.SelectedIndex;
-            await _dispatcherQueue.EnqueueAsync(() =>
+            ViewModel.TblCountriesList ??= [];
+            if (CountrySearchBox.Text != "") //not empty searchbox id or name
             {
-                ViewModel.TblCountriesList ??= [];
-                ViewModel.TblCountriesList = [.. Context.TblCountries
-                    .Where(a => a.CountryId == ViewModel.CountrySelected.CountryId)];
-            });
-            ViewModel.RefreshCountryItems();
-
-            if (ViewModel.TblCountriesList.Count == 0)
-            {
-                CountryDetailExpander.Visibility = Visibility.Collapsed;
-                CountryDataGrid.ItemsSource = null;
+                ViewModel.TblCountriesList = int.TryParse(_search, out var id)
+                    ? [.. Context.TblCountries
+                    .Where(a => a.CountryId == id)]
+                    : [.. Context.TblCountries
+                    .Where(a => _search != null && a.Name.StartsWith(_search))
+                    .OrderBy(a => a.Name)];
             }
-            else
-            {
-                CountryDetailExpander.Visibility = Visibility.Visible;
-                CountryDataGrid.ItemsSource = ViewModel.TblCountriesList;
-            }
+        });
 
-            CountryDataGrid.SelectedIndex = iNdx;
+        ViewModel.RefreshCountryItems();
 
-            CountryDetailExpander.IsExpanded = false;
-            CountryDetailExpander.Visibility = Visibility.Collapsed;
+        if (ViewModel.TblCountriesList.Count == 0)
+        {
+            ViewModel.TblCountriesList = [.. Context.TblCountries
+                .Where(a => a.CountryId == viewModelCountrySelected.CountryId)];
+            CountryDataGrid.ItemsSource = ViewModel.TblCountriesList;
+            await Refresh();
+            CountryDataGrid.SelectedIndex = 0;
         }
+        else
+        {
+            CountryDataGrid.ItemsSource = ViewModel.TblCountriesList;
+            var index = ViewModel.CountryItems.ToList().FindIndex(item => item.CountryId == viewModelCountrySelected.CountryId);
+            CountryDataGrid.SelectedIndex = index;
+        }
+        BackDetailExpanders();
+        ViewModel.CountryDataSetCount = ViewModel.TblCountriesList.Count;
     }
 
     private void CountryName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -454,6 +453,12 @@ public sealed partial class TblCountryListPage : Page
     }
 
     #endregion [Country Methods]                    
+
+    private void BackDetailExpanders()
+    {
+        CountryDetailExpander.IsExpanded = false;
+        CountryDetailExpander.Visibility = Visibility.Collapsed;
+    }
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -479,8 +484,8 @@ public sealed partial class TblCountryListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //  DetailPanelCountry.Visibility = Visibility.Visible;
-            // CountryDetailExpander.Visibility = Visibility.Visible;
+            //DetailPanelCountry.Visibility = Visibility.Visible;
+            //CountryDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -540,7 +545,7 @@ public sealed partial class TblCountryListPage : Page
         ViewModel.IsDeletingCountry = false;
     }
 
-    #endregion [Refresh Methods]
+    #endregion [Refresh Methods] 
 
 
 }

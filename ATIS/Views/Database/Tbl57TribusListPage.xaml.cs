@@ -172,68 +172,69 @@ public sealed partial class Tbl57TribusListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.TribusSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.TribusId == ViewModel.TribusSelected.TribusId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.TribusId == ViewModel.TribusSelected.TribusId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Subtribus-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl60SubtribussesList ??= [];
-            ViewModel.Tbl60SubtribussesList = [.. Context.Tbl60Subtribusses
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Subtribus-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl60SubtribussesList ??= [];
+                ViewModel.Tbl60SubtribussesList = [.. Context.Tbl60Subtribusses
             .Where(com => com.TribusId == ViewModel.TribusSelected.TribusId)];
-        });
-        ViewModel.SubtribusDataSetCount = ViewModel.Tbl60SubtribussesList.Count;
-        ViewModel.RefreshSubtribusItems();
+            });
+            ViewModel.SubtribusDataSetCount = ViewModel.Tbl60SubtribussesList.Count;
+            ViewModel.RefreshSubtribusItems();
 
-        if (ViewModel.Tbl60SubtribussesList.Count == 0)
-        {
-            SubtribussesExpander.Visibility = Visibility.Collapsed;
-            SubtribusDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            SubtribussesExpander.Visibility = Visibility.Visible;
-            SubtribusDataGrid.ItemsSource = ViewModel.Tbl60SubtribussesList;
+            if (ViewModel.Tbl60SubtribussesList.Count == 0)
+            {
+                SubtribussesExpander.Visibility = Visibility.Collapsed;
+                SubtribusDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                SubtribussesExpander.Visibility = Visibility.Visible;
+                SubtribusDataGrid.ItemsSource = ViewModel.Tbl60SubtribussesList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl57TribusListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewTribus = false;
         TribusName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl57TribusListPage : Page
         if (ViewModel.IsNewTribus)
         {
             TribusDetailExpander.IsExpanded = false;
+            TribusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("TribusDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditTribus = false;
-            ViewModel.IsNewTribus = false;
+            ViewModel.TribusSelected = ViewModel.Tbl57TribussesList[iNdx];
+            SingleTribus = App.SingleTribus(ViewModel.TribusSelected.TribusId);
+            TribusSingles();
+        }
+        else
+        {
             TribusDetailExpander.IsExpanded = false;
             TribusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.TribusSelected = ViewModel.Tbl57TribussesList[iNdx];
-
-        SingleTribus = App.SingleTribus(ViewModel.TribusSelected.TribusId);
-        TribusSingles();
-
         ViewModel.IsInEditTribus = false;
         ViewModel.IsNewTribus = false;
-        TribusDetailExpander.IsExpanded = true;
-        TribusDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void TribusSingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl57TribusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteTribusAsync(ViewModel.TribusSelected);
                 await Refresh();
+                TribusDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesTribusAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl57TribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveTribusAsync(ViewModel.TribusSelected);
-                await BehindSaveTribus();
+                await BehindSaveTribus(ViewModel.TribusSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedTribus = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl57TribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveTribus()
+    private async Task BehindSaveTribus(Tbl57Tribus viewModelTribusSelected)
     {
-        var x = (DataGrid)FindName("TribusDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl57TribussesList ??= [];
-            ViewModel.Tbl57TribussesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl57Tribusses
+            if (TribusSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl57TribussesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl57Tribusses
                     .Where(a => a.TribusId == id)]
-                : [.. Context.Tbl57Tribusses
+                    : [.. Context.Tbl57Tribusses
                     .Where(a => _search != null && a.TribusName.StartsWith(_search))
                     .OrderBy(a => a.TribusName)];
+            }
         });
 
         ViewModel.RefreshTribusItems();
 
         if (ViewModel.Tbl57TribussesList.Count == 0)
         {
-            TribusDataGrid.ItemsSource = null;
+            ViewModel.Tbl57TribussesList = [.. Context.Tbl57Tribusses
+                .Where(a => a.TribusId == viewModelTribusSelected.TribusId)];
+            TribusDataGrid.ItemsSource = ViewModel.Tbl57TribussesList;
+            await Refresh();
+            TribusDataGrid.SelectedIndex = 0;
         }
         else
         {
             TribusDataGrid.ItemsSource = ViewModel.Tbl57TribussesList;
+            var index = ViewModel.TribusItems.ToList().FindIndex(item => item.TribusId == viewModelTribusSelected.TribusId);
+            TribusDataGrid.SelectedIndex = index;
         }
-        TribusDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.TribusDataSetCount = ViewModel.Tbl57TribussesList.Count;
     }
 
     private void TribusName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl57TribusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl57TribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl57TribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.TribusSelected.TribusId)];
+                .Where(refe => refe.TribusId == viewModelReferenceSelected.TribusId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.TribusId == viewModelReferenceSelected.TribusId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl57TribusListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl57TribusListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.TribusSelected.TribusId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
+            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.TribusSelected.TribusId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl57TribusListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.TribusSelected.TribusId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
+            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.TribusSelected.TribusId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl57TribusListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.TribusSelected.TribusId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.TribusSelected.TribusId);
+            SingleReference = App.SingleReferenceTribus(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.TribusSelected.TribusId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl57TribusListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl57TribusListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentTribus(ViewModel.CommentSelected.CommentId, ViewModel.TribusSelected.TribusId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentTribus(ViewModel.CommentSelected.CommentId, ViewModel.TribusSelected.TribusId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl57TribusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl57TribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl57TribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.TribusId == ViewModel.TribusSelected.TribusId)];
+                .Where(com => com.TribusId == viewModelCommentSelected.TribusId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.TribusId == viewModelCommentSelected.TribusId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl57TribusListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl57TribusListPage : Page
         SubtribusDetailExpander.IsExpanded = true;
         SubtribusDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewSubtribus = false;
+        SubtribusName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Subtribus_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl57TribusListPage : Page
         if (ViewModel.IsNewSubtribus)
         {
             SubtribusDetailExpander.IsExpanded = false;
+            SubtribusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,25 +1561,21 @@ public sealed partial class Tbl57TribusListPage : Page
     {
         var x = (DataGrid)FindName("SubtribusDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSubtribus = false;
-            ViewModel.IsNewSubtribus = false;
+            ViewModel.SubtribusSelected = ViewModel.Tbl60SubtribussesList[iNdx];
+
+            SingleSubtribus = App.SingleSubtribusTribus(ViewModel.SubtribusSelected.SubtribusId, ViewModel.TribusSelected.TribusId);
+            SubtribusSingles();
+        }
+        else
+        {
             SubtribusDetailExpander.IsExpanded = false;
             SubtribusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SubtribusSelected = ViewModel.Tbl60SubtribussesList[iNdx];
-
-        SingleSubtribus = App.SingleSubtribusTribus(ViewModel.SubtribusSelected.SubtribusId, ViewModel.TribusSelected.TribusId);
-        SubtribusSingles();
-
         ViewModel.IsInEditSubtribus = false;
         ViewModel.IsNewSubtribus = false;
-        SubtribusDetailExpander.IsExpanded = true;
-        SubtribusDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SubtribusSingles()
@@ -1653,7 +1654,8 @@ public sealed partial class Tbl57TribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveSubtribusAsync(ViewModel.SubtribusSelected);
-                await BehindSaveSubtribus();
+                await BehindSaveSubtribus(ViewModel.SubtribusSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubtribus = true;
@@ -1687,22 +1689,22 @@ public sealed partial class Tbl57TribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSubtribus()
+    private async Task BehindSaveSubtribus(Tbl60Subtribus viewModelSubtribusSelected)
     {
-        var x = (DataGrid)FindName("SubtribusDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl60SubtribussesList ??= [];
             ViewModel.Tbl60SubtribussesList = [.. Context.Tbl60Subtribusses
-                .AsNoTracking()
-                .Where(com => com.TribusId == ViewModel.TribusSelected.TribusId)];
+                .Where(com => com.TribusId == viewModelSubtribusSelected.TribusId)];
         });
         ViewModel.RefreshSubtribusItems();
 
         if (ViewModel.Tbl60SubtribussesList.Count == 0)
         {
+            ViewModel.Tbl60SubtribussesList = [.. Context.Tbl60Subtribusses
+                .Where(com => com.TribusId == viewModelSubtribusSelected.TribusId)];
+            SubtribusDataGrid.ItemsSource = ViewModel.Tbl60SubtribussesList;
+            await Refresh();
             SubtribussesExpander.Visibility = Visibility.Collapsed;
             SubtribusDataGrid.ItemsSource = null;
         }
@@ -1710,10 +1712,10 @@ public sealed partial class Tbl57TribusListPage : Page
         {
             SubtribussesExpander.Visibility = Visibility.Visible;
             SubtribusDataGrid.ItemsSource = ViewModel.Tbl60SubtribussesList;
+            SubtribusDataGrid.SelectedIndex = 0;
         }
-        SubtribusDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SubtribusDataSetCount = ViewModel.Tbl60SubtribussesList.Count;
     }
 
     private void SubtribusName_OnLostFocus(object sender, RoutedEventArgs e)

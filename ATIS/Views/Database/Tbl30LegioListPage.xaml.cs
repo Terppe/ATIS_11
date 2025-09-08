@@ -172,68 +172,69 @@ public sealed partial class Tbl30LegioListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.LegioSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.LegioId == ViewModel.LegioSelected.LegioId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.LegioId == ViewModel.LegioSelected.LegioId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Ordo-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl33OrdosList ??= [];
-            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Ordo-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl33OrdosList ??= [];
+                ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
             .Where(com => com.LegioId == ViewModel.LegioSelected.LegioId)];
-        });
-        ViewModel.OrdoDataSetCount = ViewModel.Tbl33OrdosList.Count;
-        ViewModel.RefreshOrdoItems();
+            });
+            ViewModel.OrdoDataSetCount = ViewModel.Tbl33OrdosList.Count;
+            ViewModel.RefreshOrdoItems();
 
-        if (ViewModel.Tbl33OrdosList.Count == 0)
-        {
-            OrdosExpander.Visibility = Visibility.Collapsed;
-            OrdoDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            OrdosExpander.Visibility = Visibility.Visible;
-            OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
+            if (ViewModel.Tbl33OrdosList.Count == 0)
+            {
+                OrdosExpander.Visibility = Visibility.Collapsed;
+                OrdoDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                OrdosExpander.Visibility = Visibility.Visible;
+                OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl30LegioListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewLegio = false;
         LegioName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl30LegioListPage : Page
         if (ViewModel.IsNewLegio)
         {
             LegioDetailExpander.IsExpanded = false;
+            LegioDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         var x = (DataGrid)FindName("LegioDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditLegio = false;
-            ViewModel.IsNewLegio = false;
+            ViewModel.LegioSelected = ViewModel.Tbl30LegiosList[iNdx];
+            SingleLegio = App.SingleLegio(ViewModel.LegioSelected.LegioId);
+            LegioSingles();
+        }
+        else
+        {
             LegioDetailExpander.IsExpanded = false;
             LegioDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.LegioSelected = ViewModel.Tbl30LegiosList[iNdx];
-
-        SingleLegio = App.SingleLegio(ViewModel.LegioSelected.LegioId);
-        LegioSingles();
-
         ViewModel.IsInEditLegio = false;
         ViewModel.IsNewLegio = false;
-        LegioDetailExpander.IsExpanded = true;
-        LegioDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void LegioSingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl30LegioListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteLegioAsync(ViewModel.LegioSelected);
                 await Refresh();
+                LegioDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesLegioAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl30LegioListPage : Page
                     return;
                 }
                 await ViewModel.SaveLegioAsync(ViewModel.LegioSelected);
-                await BehindSaveLegio();
+                await BehindSaveLegio(ViewModel.LegioSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedLegio = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl30LegioListPage : Page
         return false;
     }
 
-    private async Task BehindSaveLegio()
+    private async Task BehindSaveLegio(Tbl30Legio viewModelLegioSelected)
     {
-        var x = (DataGrid)FindName("LegioDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl30LegiosList ??= [];
-            ViewModel.Tbl30LegiosList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl30Legios
+            if (LegioSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl30LegiosList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl30Legios
                     .Where(a => a.LegioId == id)]
-                : [.. Context.Tbl30Legios
+                    : [.. Context.Tbl30Legios
                     .Where(a => _search != null && a.LegioName.StartsWith(_search))
                     .OrderBy(a => a.LegioName)];
+            }
         });
 
         ViewModel.RefreshLegioItems();
 
         if (ViewModel.Tbl30LegiosList.Count == 0)
         {
-            LegioDataGrid.ItemsSource = null;
+            ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+                .Where(a => a.LegioId == viewModelLegioSelected.LegioId)];
+            LegioDataGrid.ItemsSource = ViewModel.Tbl30LegiosList;
+            await Refresh();
+            LegioDataGrid.SelectedIndex = 0;
         }
         else
         {
             LegioDataGrid.ItemsSource = ViewModel.Tbl30LegiosList;
+            var index = ViewModel.LegioItems.ToList().FindIndex(item => item.LegioId == viewModelLegioSelected.LegioId);
+            LegioDataGrid.SelectedIndex = index;
         }
-        LegioDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.LegioDataSetCount = ViewModel.Tbl30LegiosList.Count;
     }
 
     private void LegioName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl30LegioListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl30LegioListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl30LegioListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.LegioSelected.LegioId)];
+                .Where(refe => refe.LegioId == viewModelReferenceSelected.LegioId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.LegioId == viewModelReferenceSelected.LegioId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl30LegioListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.LegioSelected.LegioId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
+            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.LegioSelected.LegioId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl30LegioListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.LegioSelected.LegioId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
+            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.LegioSelected.LegioId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl30LegioListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.LegioSelected.LegioId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
+            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.LegioSelected.LegioId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl30LegioListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl30LegioListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl30LegioListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl30LegioListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl30LegioListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.LegioId == ViewModel.LegioSelected.LegioId)];
+                .Where(com => com.LegioId == viewModelCommentSelected.LegioId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.LegioId == viewModelCommentSelected.LegioId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl30LegioListPage : Page
         OrdoDetailExpander.IsExpanded = true;
         OrdoDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewOrdo = false;
+        OrdoName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Ordo_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl30LegioListPage : Page
         if (ViewModel.IsNewOrdo)
         {
             OrdoDetailExpander.IsExpanded = false;
+            OrdoDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,24 +1561,21 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         var x = (DataGrid)FindName("OrdoDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditOrdo = false;
-            ViewModel.IsNewOrdo = false;
+            ViewModel.OrdoSelected = ViewModel.Tbl33OrdosList[iNdx];
+
+            SingleOrdo = App.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId, ViewModel.LegioSelected.LegioId);
+            OrdoSingles();
+        }
+        else
+        {
             OrdoDetailExpander.IsExpanded = false;
             OrdoDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-        ViewModel.OrdoSelected = ViewModel.Tbl33OrdosList[iNdx];
-
-        SingleOrdo = App.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId, ViewModel.LegioSelected.LegioId);
-        OrdoSingles();
-
         ViewModel.IsInEditOrdo = false;
         ViewModel.IsNewOrdo = false;
-        OrdoDetailExpander.IsExpanded = true;
-        OrdoDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void OrdoSingles()
@@ -1652,7 +1654,8 @@ public sealed partial class Tbl30LegioListPage : Page
                     return;
                 }
                 await ViewModel.SaveOrdoAsync(ViewModel.OrdoSelected);
-                await BehindSaveOrdo();
+                await BehindSaveOrdo(ViewModel.OrdoSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedOrdo = true;
@@ -1686,22 +1689,22 @@ public sealed partial class Tbl30LegioListPage : Page
         return false;
     }
 
-    private async Task BehindSaveOrdo()
+    private async Task BehindSaveOrdo(Tbl33Ordo viewModelOrdoSelected)
     {
-        var x = (DataGrid)FindName("OrdoDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl33OrdosList ??= [];
             ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
-                .AsNoTracking()
-                .Where(com => com.LegioId == ViewModel.LegioSelected.LegioId)];
+                .Where(com => com.LegioId == viewModelOrdoSelected.LegioId)];
         });
         ViewModel.RefreshOrdoItems();
 
         if (ViewModel.Tbl33OrdosList.Count == 0)
         {
+            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+                .Where(com => com.LegioId == viewModelOrdoSelected.LegioId)];
+            OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
+            await Refresh();
             OrdosExpander.Visibility = Visibility.Collapsed;
             OrdoDataGrid.ItemsSource = null;
         }
@@ -1709,10 +1712,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             OrdosExpander.Visibility = Visibility.Visible;
             OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
+            OrdoDataGrid.SelectedIndex = 0;
         }
-        OrdoDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.OrdoDataSetCount = ViewModel.Tbl33OrdosList.Count;
     }
 
     private void OrdoName_OnLostFocus(object sender, RoutedEventArgs e)

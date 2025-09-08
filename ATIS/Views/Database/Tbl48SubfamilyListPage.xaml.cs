@@ -172,68 +172,69 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.SubfamilySelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.SubfamilyId == ViewModel.SubfamilySelected.SubfamilyId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.SubfamilyId == ViewModel.SubfamilySelected.SubfamilyId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Infrafamily-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl51InfrafamiliesList ??= [];
-            ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Infrafamily-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl51InfrafamiliesList ??= [];
+                ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
             .Where(com => com.SubfamilyId == ViewModel.SubfamilySelected.SubfamilyId)];
-        });
-        ViewModel.InfrafamilyDataSetCount = ViewModel.Tbl51InfrafamiliesList.Count;
-        ViewModel.RefreshInfrafamilyItems();
+            });
+            ViewModel.InfrafamilyDataSetCount = ViewModel.Tbl51InfrafamiliesList.Count;
+            ViewModel.RefreshInfrafamilyItems();
 
-        if (ViewModel.Tbl51InfrafamiliesList.Count == 0)
-        {
-            InfrafamiliesExpander.Visibility = Visibility.Collapsed;
-            InfrafamilyDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            InfrafamiliesExpander.Visibility = Visibility.Visible;
-            InfrafamilyDataGrid.ItemsSource = ViewModel.Tbl51InfrafamiliesList;
+            if (ViewModel.Tbl51InfrafamiliesList.Count == 0)
+            {
+                InfrafamiliesExpander.Visibility = Visibility.Collapsed;
+                InfrafamilyDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                InfrafamiliesExpander.Visibility = Visibility.Visible;
+                InfrafamilyDataGrid.ItemsSource = ViewModel.Tbl51InfrafamiliesList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewSubfamily = false;
         SubfamilyName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         if (ViewModel.IsNewSubfamily)
         {
             SubfamilyDetailExpander.IsExpanded = false;
+            SubfamilyDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         var x = (DataGrid)FindName("SubfamilyDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSubfamily = false;
-            ViewModel.IsNewSubfamily = false;
+            ViewModel.SubfamilySelected = ViewModel.Tbl48SubfamiliesList[iNdx];
+            SingleSubfamily = App.SingleSubfamily(ViewModel.SubfamilySelected.SubfamilyId);
+            SubfamilySingles();
+        }
+        else
+        {
             SubfamilyDetailExpander.IsExpanded = false;
             SubfamilyDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SubfamilySelected = ViewModel.Tbl48SubfamiliesList[iNdx];
-
-        SingleSubfamily = App.SingleSubfamily(ViewModel.SubfamilySelected.SubfamilyId);
-        SubfamilySingles();
-
         ViewModel.IsInEditSubfamily = false;
         ViewModel.IsNewSubfamily = false;
-        SubfamilyDetailExpander.IsExpanded = true;
-        SubfamilyDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SubfamilySingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteSubfamilyAsync(ViewModel.SubfamilySelected);
                 await Refresh();
+                SubfamilyDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesSubfamilyAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
                     return;
                 }
                 await ViewModel.SaveSubfamilyAsync(ViewModel.SubfamilySelected);
-                await BehindSaveSubfamily();
+                await BehindSaveSubfamily(ViewModel.SubfamilySelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubfamily = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSubfamily()
+    private async Task BehindSaveSubfamily(Tbl48Subfamily viewModelSubfamilySelected)
     {
-        var x = (DataGrid)FindName("SubfamilyDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl48SubfamiliesList ??= [];
-            ViewModel.Tbl48SubfamiliesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl48Subfamilies
+            if (SubfamilySearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl48SubfamiliesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl48Subfamilies
                     .Where(a => a.SubfamilyId == id)]
-                : [.. Context.Tbl48Subfamilies
+                    : [.. Context.Tbl48Subfamilies
                     .Where(a => _search != null && a.SubfamilyName.StartsWith(_search))
                     .OrderBy(a => a.SubfamilyName)];
+            }
         });
 
         ViewModel.RefreshSubfamilyItems();
 
         if (ViewModel.Tbl48SubfamiliesList.Count == 0)
         {
-            SubfamilyDataGrid.ItemsSource = null;
+            ViewModel.Tbl48SubfamiliesList = [.. Context.Tbl48Subfamilies
+                .Where(a => a.SubfamilyId == viewModelSubfamilySelected.SubfamilyId)];
+            SubfamilyDataGrid.ItemsSource = ViewModel.Tbl48SubfamiliesList;
+            await Refresh();
+            SubfamilyDataGrid.SelectedIndex = 0;
         }
         else
         {
             SubfamilyDataGrid.ItemsSource = ViewModel.Tbl48SubfamiliesList;
+            var index = ViewModel.SubfamilyItems.ToList().FindIndex(item => item.SubfamilyId == viewModelSubfamilySelected.SubfamilyId);
+            SubfamilyDataGrid.SelectedIndex = index;
         }
-        SubfamilyDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SubfamilyDataSetCount = ViewModel.Tbl48SubfamiliesList.Count;
     }
 
     private void SubfamilyName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.SubfamilySelected.SubfamilyId)];
+                .Where(refe => refe.SubfamilyId == viewModelReferenceSelected.SubfamilyId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.SubfamilyId == viewModelReferenceSelected.SubfamilyId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.SubfamilySelected.SubfamilyId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubfamilySelected.SubfamilyId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubfamilySelected.SubfamilyId);
+            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.SubfamilySelected.SubfamilyId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.SubfamilySelected.SubfamilyId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubfamilySelected.SubfamilyId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubfamilySelected.SubfamilyId);
+            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.SubfamilySelected.SubfamilyId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.SubfamilySelected.SubfamilyId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubfamilySelected.SubfamilyId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubfamilySelected.SubfamilyId);
+            SingleReference = App.SingleReferenceSubfamily(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.SubfamilySelected.SubfamilyId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentSubfamily(ViewModel.CommentSelected.CommentId, ViewModel.SubfamilySelected.SubfamilyId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentSubfamily(ViewModel.CommentSelected.CommentId, ViewModel.SubfamilySelected.SubfamilyId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.SubfamilyId == ViewModel.SubfamilySelected.SubfamilyId)];
+                .Where(com => com.SubfamilyId == viewModelCommentSelected.SubfamilyId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.SubfamilyId == viewModelCommentSelected.SubfamilyId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         InfrafamilyDetailExpander.IsExpanded = true;
         InfrafamilyDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewInfrafamily = false;
+        InfrafamilyName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Infrafamily_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         if (ViewModel.IsNewInfrafamily)
         {
             InfrafamilyDetailExpander.IsExpanded = false;
+            InfrafamilyDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,25 +1561,21 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         var x = (DataGrid)FindName("InfrafamilyDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditInfrafamily = false;
-            ViewModel.IsNewInfrafamily = false;
+            ViewModel.InfrafamilySelected = ViewModel.Tbl51InfrafamiliesList[iNdx];
+
+            SingleInfrafamily = App.SingleInfrafamilySubfamily(ViewModel.InfrafamilySelected.InfrafamilyId, ViewModel.SubfamilySelected.SubfamilyId);
+            InfrafamilySingles();
+        }
+        else
+        {
             InfrafamilyDetailExpander.IsExpanded = false;
             InfrafamilyDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.InfrafamilySelected = ViewModel.Tbl51InfrafamiliesList[iNdx];
-
-        SingleInfrafamily = App.SingleInfrafamilySubfamily(ViewModel.InfrafamilySelected.InfrafamilyId, ViewModel.SubfamilySelected.SubfamilyId);
-        InfrafamilySingles();
-
         ViewModel.IsInEditInfrafamily = false;
         ViewModel.IsNewInfrafamily = false;
-        InfrafamilyDetailExpander.IsExpanded = true;
-        InfrafamilyDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void InfrafamilySingles()
@@ -1653,7 +1654,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
                     return;
                 }
                 await ViewModel.SaveInfrafamilyAsync(ViewModel.InfrafamilySelected);
-                await BehindSaveInfrafamily();
+                await BehindSaveInfrafamily(ViewModel.InfrafamilySelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedInfrafamily = true;
@@ -1687,22 +1689,22 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         return false;
     }
 
-    private async Task BehindSaveInfrafamily()
+    private async Task BehindSaveInfrafamily(Tbl51Infrafamily viewModelInfrafamilySelected)
     {
-        var x = (DataGrid)FindName("InfrafamilyDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl51InfrafamiliesList ??= [];
             ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
-                .AsNoTracking()
-                .Where(com => com.SubfamilyId == ViewModel.SubfamilySelected.SubfamilyId)];
+                .Where(com => com.SubfamilyId == viewModelInfrafamilySelected.SubfamilyId)];
         });
         ViewModel.RefreshInfrafamilyItems();
 
         if (ViewModel.Tbl51InfrafamiliesList.Count == 0)
         {
+            ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
+                .Where(com => com.SubfamilyId == viewModelInfrafamilySelected.SubfamilyId)];
+            InfrafamilyDataGrid.ItemsSource = ViewModel.Tbl51InfrafamiliesList;
+            await Refresh();
             InfrafamiliesExpander.Visibility = Visibility.Collapsed;
             InfrafamilyDataGrid.ItemsSource = null;
         }
@@ -1710,10 +1712,10 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         {
             InfrafamiliesExpander.Visibility = Visibility.Visible;
             InfrafamilyDataGrid.ItemsSource = ViewModel.Tbl51InfrafamiliesList;
+            InfrafamilyDataGrid.SelectedIndex = 0;
         }
-        InfrafamilyDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.InfrafamilyDataSetCount = ViewModel.Tbl51InfrafamiliesList.Count;
     }
 
     private void InfrafamilyName_OnLostFocus(object sender, RoutedEventArgs e)

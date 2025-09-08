@@ -3,6 +3,7 @@ using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Authentication;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
@@ -153,26 +154,29 @@ public sealed partial class Tbl78NameListPage : Page
         //delay loading
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
-        //--------------------------Species-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-            .AsNoTracking()
-            .Where(com => com.FiSpeciesId == ViewModel.NameSelected.FiSpeciesId)];
-        });
-        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
-        ViewModel.RefreshSpeciesItems();
 
-        if (ViewModel.Tbl75SpeciessesList.Count == 0)
+        if (ViewModel.NameSelected != null)
         {
-            SpeciessesExpander.Visibility = Visibility.Collapsed;
-            SpeciesDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            SpeciessesExpander.Visibility = Visibility.Visible;
-            SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            //--------------------------Species-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl75SpeciessesList ??= [];
+                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
+            .Where(com => com.FiSpeciesId == ViewModel.NameSelected.FiSpeciesId)];
+            });
+            ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
+            ViewModel.RefreshSpeciesItems();
+
+            if (ViewModel.Tbl75SpeciessesList.Count == 0)
+            {
+                SpeciessesExpander.Visibility = Visibility.Collapsed;
+                SpeciesDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                SpeciessesExpander.Visibility = Visibility.Visible;
+                SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -211,7 +215,6 @@ public sealed partial class Tbl78NameListPage : Page
         NameDetailExpander.IsExpanded = true;
         NameDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewName = false;
         NameName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -265,6 +268,7 @@ public sealed partial class Tbl78NameListPage : Page
         if (ViewModel.IsNewName)
         {
             NameDetailExpander.IsExpanded = false;
+            NameDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -277,25 +281,20 @@ public sealed partial class Tbl78NameListPage : Page
     {
         var x = (DataGrid)FindName("NameDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditName = false;
-            ViewModel.IsNewName = false;
+            ViewModel.NameSelected = ViewModel.Tbl78NamesList[iNdx];
+            SingleName = App.SingleName(ViewModel.NameSelected.NameId);
+            NameSingles();
+        }
+        else
+        {
             NameDetailExpander.IsExpanded = false;
             NameDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.NameSelected = ViewModel.Tbl78NamesList[iNdx];
-
-        SingleName = App.SingleName(ViewModel.NameSelected.NameId);
-        NameSingles();
-
         ViewModel.IsInEditName = false;
         ViewModel.IsNewName = false;
-        NameDetailExpander.IsExpanded = true;
-        NameDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void NameSingles()
@@ -363,6 +362,7 @@ public sealed partial class Tbl78NameListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteNameAsync(ViewModel.NameSelected);
                 await Refresh();
+                NameDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesNameAsync();
@@ -408,7 +408,8 @@ public sealed partial class Tbl78NameListPage : Page
                     return;
                 }
                 await ViewModel.SaveNameAsync(ViewModel.NameSelected);
-                await BehindSaveName();
+                await BehindSaveName(ViewModel.NameSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedName = true;
@@ -444,36 +445,41 @@ public sealed partial class Tbl78NameListPage : Page
         return false;
     }
 
-    private async Task BehindSaveName()
+    private async Task BehindSaveName(Tbl78Name viewModelNameSelected)
     {
-        var x = (DataGrid)FindName("NameDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl78NamesList ??= [];
-            ViewModel.Tbl78NamesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl78Names
+            if (NameSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl78NamesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl78Names
                     .Where(a => a.NameId == id)]
-                : [.. Context.Tbl78Names
+                    : [.. Context.Tbl78Names
                     .Where(a => _search != null && a.NameName.StartsWith(_search))
                     .OrderBy(a => a.NameName)
                     .ThenBy(a => a.Language)];
+            }
         });
 
         ViewModel.RefreshNameItems();
 
         if (ViewModel.Tbl78NamesList.Count == 0)
         {
-            NameDataGrid.ItemsSource = null;
+            ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+                .Where(a => a.NameId == viewModelNameSelected.NameId)];
+            NameDataGrid.ItemsSource = ViewModel.Tbl78NamesList;
+            await Refresh();
+            NameDataGrid.SelectedIndex = 0;
         }
         else
         {
             NameDataGrid.ItemsSource = ViewModel.Tbl78NamesList;
+            var index = ViewModel.NameItems.ToList().FindIndex(item => item.NameId == viewModelNameSelected.NameId);
+            NameDataGrid.SelectedIndex = index;
         }
-        NameDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.NameDataSetCount = ViewModel.Tbl78NamesList.Count;
     }
 
     private void BackName_Click(object sender, RoutedEventArgs e)
@@ -522,6 +528,7 @@ public sealed partial class Tbl78NameListPage : Page
         if (ViewModel.IsNewSpecies)
         {
             SpeciesDetailExpander.IsExpanded = false;
+            SpeciesDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -534,25 +541,21 @@ public sealed partial class Tbl78NameListPage : Page
     {
         var x = (DataGrid)FindName("SpeciesDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSpecies = false;
-            ViewModel.IsNewSpecies = false;
+            ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
+
+            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+            SpeciesSingles();
+        }
+        else
+        {
             SpeciesDetailExpander.IsExpanded = false;
             SpeciesDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
-
-        SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
-        SpeciesSingles();
-
         ViewModel.IsInEditSpecies = false;
         ViewModel.IsNewSpecies = false;
-        SpeciesDetailExpander.IsExpanded = true;
-        SpeciesDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SpeciesSingles()
@@ -668,7 +671,8 @@ public sealed partial class Tbl78NameListPage : Page
                     return;
                 }
                 await ViewModel.SaveSpeciesAsync(ViewModel.SpeciesSelected);
-                await BehindSaveSpecies();
+                await BehindSaveSpecies(ViewModel.SpeciesSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpecies = true;
@@ -706,22 +710,22 @@ public sealed partial class Tbl78NameListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSpecies()
+    private async Task BehindSaveSpecies(Tbl69FiSpecies viewModelSpeciesSelected)
     {
-        var x = (DataGrid)FindName("SpeciesDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
             ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .AsNoTracking()
-                .Where(com => com.FiSpeciesId == ViewModel.SpeciesSelected.FiSpeciesId)];
+                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
+                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            await Refresh();
             SpeciessesExpander.Visibility = Visibility.Collapsed;
             SpeciesDataGrid.ItemsSource = null;
         }
@@ -729,10 +733,10 @@ public sealed partial class Tbl78NameListPage : Page
         {
             SpeciessesExpander.Visibility = Visibility.Visible;
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
+            SpeciesDataGrid.SelectedIndex = 0;
         }
-        SpeciesDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
     }
 
     private void BackSpecies_Click(object sender, RoutedEventArgs e)

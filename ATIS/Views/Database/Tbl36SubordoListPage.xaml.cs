@@ -172,68 +172,69 @@ public sealed partial class Tbl36SubordoListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.SubordoSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.SubordoId == ViewModel.SubordoSelected.SubordoId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.SubordoId == ViewModel.SubordoSelected.SubordoId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Infraordo-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl39InfraordosList ??= [];
-            ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Infraordo-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl39InfraordosList ??= [];
+                ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
             .Where(com => com.SubordoId == ViewModel.SubordoSelected.SubordoId)];
-        });
-        ViewModel.InfraordoDataSetCount = ViewModel.Tbl39InfraordosList.Count;
-        ViewModel.RefreshInfraordoItems();
+            });
+            ViewModel.InfraordoDataSetCount = ViewModel.Tbl39InfraordosList.Count;
+            ViewModel.RefreshInfraordoItems();
 
-        if (ViewModel.Tbl39InfraordosList.Count == 0)
-        {
-            InfraordosExpander.Visibility = Visibility.Collapsed;
-            InfraordoDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            InfraordosExpander.Visibility = Visibility.Visible;
-            InfraordoDataGrid.ItemsSource = ViewModel.Tbl39InfraordosList;
+            if (ViewModel.Tbl39InfraordosList.Count == 0)
+            {
+                InfraordosExpander.Visibility = Visibility.Collapsed;
+                InfraordoDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                InfraordosExpander.Visibility = Visibility.Visible;
+                InfraordoDataGrid.ItemsSource = ViewModel.Tbl39InfraordosList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl36SubordoListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewSubordo = false;
         SubordoName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         if (ViewModel.IsNewSubordo)
         {
             SubordoDetailExpander.IsExpanded = false;
+            SubordoDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         var x = (DataGrid)FindName("SubordoDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditSubordo = false;
-            ViewModel.IsNewSubordo = false;
+            ViewModel.SubordoSelected = ViewModel.Tbl36SubordosList[iNdx];
+            SingleSubordo = App.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
+            SubordoSingles();
+        }
+        else
+        {
             SubordoDetailExpander.IsExpanded = false;
             SubordoDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.SubordoSelected = ViewModel.Tbl36SubordosList[iNdx];
-
-        SingleSubordo = App.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
-        SubordoSingles();
-
         ViewModel.IsInEditSubordo = false;
         ViewModel.IsNewSubordo = false;
-        SubordoDetailExpander.IsExpanded = true;
-        SubordoDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void SubordoSingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteSubordoAsync(ViewModel.SubordoSelected);
                 await Refresh();
+                SubordoDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesSubordoAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl36SubordoListPage : Page
                     return;
                 }
                 await ViewModel.SaveSubordoAsync(ViewModel.SubordoSelected);
-                await BehindSaveSubordo();
+                await BehindSaveSubordo(ViewModel.SubordoSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubordo = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl36SubordoListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSubordo()
+    private async Task BehindSaveSubordo(Tbl36Subordo viewModelSubordoSelected)
     {
-        var x = (DataGrid)FindName("SubordoDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl36SubordosList ??= [];
-            ViewModel.Tbl36SubordosList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl36Subordos
+            if (SubordoSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl36SubordosList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl36Subordos
                     .Where(a => a.SubordoId == id)]
-                : [.. Context.Tbl36Subordos
+                    : [.. Context.Tbl36Subordos
                     .Where(a => _search != null && a.SubordoName.StartsWith(_search))
                     .OrderBy(a => a.SubordoName)];
+            }
         });
 
         ViewModel.RefreshSubordoItems();
 
         if (ViewModel.Tbl36SubordosList.Count == 0)
         {
-            SubordoDataGrid.ItemsSource = null;
+            ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+                .Where(a => a.SubordoId == viewModelSubordoSelected.SubordoId)];
+            SubordoDataGrid.ItemsSource = ViewModel.Tbl36SubordosList;
+            await Refresh();
+            SubordoDataGrid.SelectedIndex = 0;
         }
         else
         {
             SubordoDataGrid.ItemsSource = ViewModel.Tbl36SubordosList;
+            var index = ViewModel.SubordoItems.ToList().FindIndex(item => item.SubordoId == viewModelSubordoSelected.SubordoId);
+            SubordoDataGrid.SelectedIndex = index;
         }
-        SubordoDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.SubordoDataSetCount = ViewModel.Tbl36SubordosList.Count;
     }
 
     private void SubordoName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl36SubordoListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl36SubordoListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.SubordoSelected.SubordoId)];
+                .Where(refe => refe.SubordoId == viewModelReferenceSelected.SubordoId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.SubordoId == viewModelReferenceSelected.SubordoId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl36SubordoListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.SubordoSelected.SubordoId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
+            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.SubordoSelected.SubordoId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl36SubordoListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.SubordoSelected.SubordoId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
+            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.SubordoSelected.SubordoId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl36SubordoListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.SubordoSelected.SubordoId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
+            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.SubordoSelected.SubordoId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl36SubordoListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl36SubordoListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.SubordoId == ViewModel.SubordoSelected.SubordoId)];
+                .Where(com => com.SubordoId == viewModelCommentSelected.SubordoId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.SubordoId == viewModelCommentSelected.SubordoId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         InfraordoDetailExpander.IsExpanded = true;
         InfraordoDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewInfraordo = false;
+        InfraordoName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Infraordo_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         if (ViewModel.IsNewInfraordo)
         {
             InfraordoDetailExpander.IsExpanded = false;
+            InfraordoDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,24 +1561,21 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         var x = (DataGrid)FindName("InfraordoDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditInfraordo = false;
-            ViewModel.IsNewInfraordo = false;
+            ViewModel.InfraordoSelected = ViewModel.Tbl39InfraordosList[iNdx];
+
+            SingleInfraordo = App.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId, ViewModel.SubordoSelected.SubordoId);
+            InfraordoSingles();
+        }
+        else
+        {
             InfraordoDetailExpander.IsExpanded = false;
             InfraordoDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-        ViewModel.InfraordoSelected = ViewModel.Tbl39InfraordosList[iNdx];
-
-        SingleInfraordo = App.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId, ViewModel.SubordoSelected.SubordoId);
-        InfraordoSingles();
-
         ViewModel.IsInEditInfraordo = false;
         ViewModel.IsNewInfraordo = false;
-        InfraordoDetailExpander.IsExpanded = true;
-        InfraordoDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void InfraordoSingles()
@@ -1652,7 +1654,8 @@ public sealed partial class Tbl36SubordoListPage : Page
                     return;
                 }
                 await ViewModel.SaveInfraordoAsync(ViewModel.InfraordoSelected);
-                await BehindSaveInfraordo();
+                await BehindSaveInfraordo(ViewModel.InfraordoSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedInfraordo = true;
@@ -1686,22 +1689,22 @@ public sealed partial class Tbl36SubordoListPage : Page
         return false;
     }
 
-    private async Task BehindSaveInfraordo()
+    private async Task BehindSaveInfraordo(Tbl39Infraordo viewModelInfraordoSelected)
     {
-        var x = (DataGrid)FindName("InfraordoDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl39InfraordosList ??= [];
             ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
-                .AsNoTracking()
-                .Where(com => com.SubordoId == ViewModel.SubordoSelected.SubordoId)];
+                .Where(com => com.SubordoId == viewModelInfraordoSelected.SubordoId)];
         });
         ViewModel.RefreshInfraordoItems();
 
         if (ViewModel.Tbl39InfraordosList.Count == 0)
         {
+            ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
+                .Where(com => com.SubordoId == viewModelInfraordoSelected.SubordoId)];
+            InfraordoDataGrid.ItemsSource = ViewModel.Tbl39InfraordosList;
+            await Refresh();
             InfraordosExpander.Visibility = Visibility.Collapsed;
             InfraordoDataGrid.ItemsSource = null;
         }
@@ -1709,10 +1712,10 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             InfraordosExpander.Visibility = Visibility.Visible;
             InfraordoDataGrid.ItemsSource = ViewModel.Tbl39InfraordosList;
+            InfraordoDataGrid.SelectedIndex = 0;
         }
-        InfraordoDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.InfraordoDataSetCount = ViewModel.Tbl39InfraordosList.Count;
     }
 
     private void InfraordoName_OnLostFocus(object sender, RoutedEventArgs e)

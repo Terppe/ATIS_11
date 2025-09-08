@@ -172,68 +172,69 @@ public sealed partial class Tbl63InfratribusListPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
-        //----------------------------------Reference--------------------------------       
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (ViewModel.InfratribusSelected != null)
         {
-            ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            //----------------------------------Reference--------------------------------       
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl90ReferencesList ??= [];
+                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
             .Where(refe => refe.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
-        });
-        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
-        ViewModel.RefreshReferenceItems();
+            });
+            ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
+            ViewModel.RefreshReferenceItems();
 
-        if (ViewModel.Tbl90ReferencesList.Count == 0)
-        {
-            ReferencesExpander.Visibility = Visibility.Collapsed;
-            ReferenceDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            ReferencesExpander.Visibility = Visibility.Visible;
-            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
-        }
+            if (ViewModel.Tbl90ReferencesList.Count == 0)
+            {
+                ReferencesExpander.Visibility = Visibility.Collapsed;
+                ReferenceDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            }
 
-        //----------------------------------Comment--------------------------------
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-            .AsNoTracking()
+            //----------------------------------Comment--------------------------------
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl93CommentsList ??= [];
+                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
             .Where(com => com.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
-        });
-        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
-        ViewModel.RefreshCommentItems();
+            });
+            ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
+            ViewModel.RefreshCommentItems();
 
-        if (ViewModel.Tbl93CommentsList.Count == 0)
-        {
-            CommentsExpander.Visibility = Visibility.Collapsed;
-            CommentDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            CommentsExpander.Visibility = Visibility.Visible;
-            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
-        }
-        //--------------------------Genus-----------------------------    
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.Tbl66GenussesList ??= [];
-            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
-            .AsNoTracking()
+            if (ViewModel.Tbl93CommentsList.Count == 0)
+            {
+                CommentsExpander.Visibility = Visibility.Collapsed;
+                CommentDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            }
+            //--------------------------Genus-----------------------------    
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl66GenussesList ??= [];
+                ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
             .Where(com => com.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
-        });
-        ViewModel.GenusDataSetCount = ViewModel.Tbl66GenussesList.Count;
-        ViewModel.RefreshGenusItems();
+            });
+            ViewModel.GenusDataSetCount = ViewModel.Tbl66GenussesList.Count;
+            ViewModel.RefreshGenusItems();
 
-        if (ViewModel.Tbl66GenussesList.Count == 0)
-        {
-            GenussesExpander.Visibility = Visibility.Collapsed;
-            GenusDataGrid.ItemsSource = null;
-        }
-        else
-        {
-            GenussesExpander.Visibility = Visibility.Visible;
-            GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
+            if (ViewModel.Tbl66GenussesList.Count == 0)
+            {
+                GenussesExpander.Visibility = Visibility.Collapsed;
+                GenusDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                GenussesExpander.Visibility = Visibility.Visible;
+                GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
+            }
         }
         ViewModel.IsLoading = false;
     }
@@ -279,7 +280,6 @@ public sealed partial class Tbl63InfratribusListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewInfratribus = false;
         InfratribusName.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -333,6 +333,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         if (ViewModel.IsNewInfratribus)
         {
             InfratribusDetailExpander.IsExpanded = false;
+            InfratribusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -345,25 +346,20 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         var x = (DataGrid)FindName("InfratribusDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditInfratribus = false;
-            ViewModel.IsNewInfratribus = false;
+            ViewModel.InfratribusSelected = ViewModel.Tbl63InfratribussesList[iNdx];
+            SingleInfratribus = App.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
+            InfratribusSingles();
+        }
+        else
+        {
             InfratribusDetailExpander.IsExpanded = false;
             InfratribusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.InfratribusSelected = ViewModel.Tbl63InfratribussesList[iNdx];
-
-        SingleInfratribus = App.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
-        InfratribusSingles();
-
         ViewModel.IsInEditInfratribus = false;
         ViewModel.IsNewInfratribus = false;
-        InfratribusDetailExpander.IsExpanded = true;
-        InfratribusDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void InfratribusSingles()
@@ -437,6 +433,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteInfratribusAsync(ViewModel.InfratribusSelected);
                 await Refresh();
+                InfratribusDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesInfratribusAsync();
@@ -482,7 +479,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveInfratribusAsync(ViewModel.InfratribusSelected);
-                await BehindSaveInfratribus();
+                await BehindSaveInfratribus(ViewModel.InfratribusSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedInfratribus = true;
@@ -517,35 +515,40 @@ public sealed partial class Tbl63InfratribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveInfratribus()
+    private async Task BehindSaveInfratribus(Tbl63Infratribus viewModelInfratribusSelected)
     {
-        var x = (DataGrid)FindName("InfratribusDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl63InfratribussesList ??= [];
-            ViewModel.Tbl63InfratribussesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl63Infratribusses
+            if (InfratribusSearchBox.Text != "") //not empty searchbox id or name
+            {
+                ViewModel.Tbl63InfratribussesList = int.TryParse(_search, out var id)
+                    ? [.. Context.Tbl63Infratribusses
                     .Where(a => a.InfratribusId == id)]
-                : [.. Context.Tbl63Infratribusses
+                    : [.. Context.Tbl63Infratribusses
                     .Where(a => _search != null && a.InfratribusName.StartsWith(_search))
                     .OrderBy(a => a.InfratribusName)];
+            }
         });
 
         ViewModel.RefreshInfratribusItems();
 
         if (ViewModel.Tbl63InfratribussesList.Count == 0)
         {
-            InfratribusDataGrid.ItemsSource = null;
+            ViewModel.Tbl63InfratribussesList = [.. Context.Tbl63Infratribusses
+                .Where(a => a.InfratribusId == viewModelInfratribusSelected.InfratribusId)];
+            InfratribusDataGrid.ItemsSource = ViewModel.Tbl63InfratribussesList;
+            await Refresh();
+            InfratribusDataGrid.SelectedIndex = 0;
         }
         else
         {
             InfratribusDataGrid.ItemsSource = ViewModel.Tbl63InfratribussesList;
+            var index = ViewModel.InfratribusItems.ToList().FindIndex(item => item.InfratribusId == viewModelInfratribusSelected.InfratribusId);
+            InfratribusDataGrid.SelectedIndex = index;
         }
-        InfratribusDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.InfratribusDataSetCount = ViewModel.Tbl63InfratribussesList.Count;
     }
 
     private void InfratribusName_OnLostFocus(object sender, RoutedEventArgs e)
@@ -712,6 +715,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteReferenceAsync(ViewModel.ReferenceSelected);
                 await Refresh();
+                ReferenceDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesReferenceAsync();
@@ -757,7 +761,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
-                await BehindSaveReference();
+                await BehindSaveReference(ViewModel.ReferenceSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -794,21 +799,22 @@ public sealed partial class Tbl63InfratribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveReference()
+    private async Task BehindSaveReference(Tbl90Reference viewModelReferenceSelected)
     {
-        var x = (DataGrid)FindName("ReferenceDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
             ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
-                .Where(refe => refe.FamilyId == ViewModel.InfratribusSelected.InfratribusId)];
+                .Where(refe => refe.InfratribusId == viewModelReferenceSelected.InfratribusId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
+            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                .Where(com => com.InfratribusId == viewModelReferenceSelected.InfratribusId)];
+            ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            await Refresh();
             ReferencesExpander.Visibility = Visibility.Collapsed;
             ReferenceDataGrid.ItemsSource = null;
         }
@@ -816,10 +822,10 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ReferencesExpander.Visibility = Visibility.Visible;
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
+            ReferenceDataGrid.SelectedIndex = 0;
         }
-        ReferenceDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
@@ -869,14 +875,16 @@ public sealed partial class Tbl63InfratribusListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceExpert)
         {
-            ReferenceExpertDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -889,26 +897,22 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceExpert = false;
-            ViewModel.IsNewReferenceExpert = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.InfratribusSelected.InfratribusId);
+            ReferenceExpertSingles();
+        }
+        else
+        {
             ReferenceExpertDetailExpander.IsExpanded = false;
             ReferenceExpertDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
-
-        ReferenceExpertSingles();
-
         ViewModel.IsInEditReferenceExpert = false;
         ViewModel.IsNewReferenceExpert = false;
-        ReferenceExpertDetailExpander.IsExpanded = true;
-        ReferenceExpertDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void ReferenceExpertSingles()
@@ -934,7 +938,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+                                  ViewModel.InfratribusSelected.InfratribusId);
 
             ReferenceExpertSingles();
         });
@@ -981,14 +986,16 @@ public sealed partial class Tbl63InfratribusListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceSource)
         {
-            ReferenceSourceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1000,27 +1007,24 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceSource = false;
-            ViewModel.IsNewReferenceSource = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+                                   ViewModel.InfratribusSelected.InfratribusId);
+            ReferenceSourceSingles();
+        }
+        else
+        {
             ReferenceSourceDetailExpander.IsExpanded = false;
             ReferenceSourceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
-
-        ReferenceSourceSingles();
-
         ViewModel.IsInEditReferenceSource = false;
         ViewModel.IsNewReferenceSource = false;
-        ReferenceSourceDetailExpander.IsExpanded = true;
-        ReferenceSourceDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceSourceSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1044,7 +1048,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+                           ViewModel.InfratribusSelected.InfratribusId);
 
             ReferenceSourceSingles();
         });
@@ -1092,14 +1097,16 @@ public sealed partial class Tbl63InfratribusListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
+
+        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReferenceAuthor)
         {
-            ReferenceAuthorDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.IsExpanded = false;
+            ReferenceDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1112,27 +1119,24 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditReferenceAuthor = false;
-            ViewModel.IsNewReferenceAuthor = false;
+            ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
+
+            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+                            ViewModel.InfratribusSelected.InfratribusId);
+            ReferenceAuthorSingles();
+        }
+        else
+        {
             ReferenceAuthorDetailExpander.IsExpanded = false;
             ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-
-        SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
-
-        ReferenceAuthorSingles();
-
         ViewModel.IsInEditReferenceAuthor = false;
         ViewModel.IsNewReferenceAuthor = false;
-        ReferenceAuthorDetailExpander.IsExpanded = true;
-        ReferenceAuthorDetailExpander.Visibility = Visibility.Visible;
     }
+
     private void ReferenceAuthorSingles()
     {
         ViewModel.ReferenceSelected.Valid = SingleReference.Valid;
@@ -1156,7 +1160,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+                    ViewModel.InfratribusSelected.InfratribusId);
 
             ReferenceAuthorSingles();
         });
@@ -1199,7 +1204,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewComment = false;
+        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1244,6 +1249,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         if (ViewModel.IsNewComment)
         {
             CommentDetailExpander.IsExpanded = false;
+            CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1256,25 +1262,21 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         var x = (DataGrid)FindName("CommentDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditComment = false;
-            ViewModel.IsNewComment = false;
+            ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
+
+            SingleComment = App.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
+            CommentSingles();
+        }
+        else
+        {
             CommentDetailExpander.IsExpanded = false;
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-
-        SingleComment = App.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
-        CommentSingles();
-
         ViewModel.IsInEditComment = false;
         ViewModel.IsNewComment = false;
-        CommentDetailExpander.IsExpanded = true;
-        CommentDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void CommentSingles()
@@ -1343,6 +1345,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             case DeleteDialogResult.Delete:
                 await ViewModel.DeleteCommentAsync(ViewModel.CommentSelected);
                 await Refresh();
+                CommentDataGrid.SelectedIndex = 0;
                 break;
             case DeleteDialogResult.DontDelete:
                 await RevertChangesCommentAsync();
@@ -1389,7 +1392,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
-                await BehindSaveComment();
+                await BehindSaveComment(ViewModel.CommentSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1424,22 +1428,22 @@ public sealed partial class Tbl63InfratribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveComment()
+    private async Task BehindSaveComment(Tbl93Comment viewModelCommentSelected)
     {
-        var x = (DataGrid)FindName("CommentDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
             ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
-                .AsNoTracking()
-                .Where(com => com.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
+                .Where(com => com.InfratribusId == viewModelCommentSelected.InfratribusId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
+            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                .Where(com => com.InfratribusId == viewModelCommentSelected.InfratribusId)];
+            CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            await Refresh();
             CommentsExpander.Visibility = Visibility.Collapsed;
             CommentDataGrid.ItemsSource = null;
         }
@@ -1447,10 +1451,10 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             CommentsExpander.Visibility = Visibility.Visible;
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
+            CommentDataGrid.SelectedIndex = 0;
         }
-        CommentDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
     }
 
     private void BackComment_Click(object sender, RoutedEventArgs e)
@@ -1496,7 +1500,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         GenusDetailExpander.IsExpanded = true;
         GenusDetailExpander.Visibility = Visibility.Visible;
 
-        ViewModel.IsNewGenus = false;
+        GenusName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Genus_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1544,6 +1548,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         if (ViewModel.IsNewGenus)
         {
             GenusDetailExpander.IsExpanded = false;
+            GenusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
         }
         else
@@ -1556,25 +1561,21 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         var x = (DataGrid)FindName("GenusDataGrid");
         var iNdx = x.SelectedIndex;
-        if (iNdx is -1 or 0)
+        if (iNdx is not -1)
         {
-            ViewModel.IsInEditGenus = false;
-            ViewModel.IsNewGenus = false;
+            ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
+
+            SingleGenus = App.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId, ViewModel.InfratribusSelected.InfratribusId);
+            GenusSingles();
+        }
+        else
+        {
             GenusDetailExpander.IsExpanded = false;
             GenusDetailExpander.Visibility = Visibility.Collapsed;
             _ = Refresh();
-            return;
         }
-
-        ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
-
-        SingleGenus = App.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId, ViewModel.InfratribusSelected.InfratribusId);
-        GenusSingles();
-
         ViewModel.IsInEditGenus = false;
         ViewModel.IsNewGenus = false;
-        GenusDetailExpander.IsExpanded = true;
-        GenusDetailExpander.Visibility = Visibility.Visible;
     }
 
     private void GenusSingles()
@@ -1653,7 +1654,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
                     return;
                 }
                 await ViewModel.SaveGenusAsync(ViewModel.GenusSelected);
-                await BehindSaveGenus();
+                await BehindSaveGenus(ViewModel.GenusSelected);
+                await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedGenus = true;
@@ -1687,22 +1689,22 @@ public sealed partial class Tbl63InfratribusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveGenus()
+    private async Task BehindSaveGenus(Tbl66Genus viewModelGenusSelected)
     {
-        var x = (DataGrid)FindName("GenusDataGrid");
-        var iNdx = x.SelectedIndex;
-
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl66GenussesList ??= [];
             ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
-                .AsNoTracking()
-                .Where(com => com.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
+                .Where(com => com.InfratribusId == viewModelGenusSelected.InfratribusId)];
         });
         ViewModel.RefreshGenusItems();
 
         if (ViewModel.Tbl66GenussesList.Count == 0)
         {
+            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+                .Where(com => com.InfratribusId == viewModelGenusSelected.InfratribusId)];
+            GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
+            await Refresh();
             GenussesExpander.Visibility = Visibility.Collapsed;
             GenusDataGrid.ItemsSource = null;
         }
@@ -1710,10 +1712,10 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             GenussesExpander.Visibility = Visibility.Visible;
             GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
+            GenusDataGrid.SelectedIndex = 0;
         }
-        GenusDataGrid.SelectedIndex = iNdx;
-
         BackDetailExpanders();
+        ViewModel.GenusDataSetCount = ViewModel.Tbl66GenussesList.Count;
     }
 
     private void GenusName_OnLostFocus(object sender, RoutedEventArgs e)
