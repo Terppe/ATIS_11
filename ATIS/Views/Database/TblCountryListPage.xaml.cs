@@ -37,6 +37,7 @@ public sealed partial class TblCountryListPage : Page
         {
             ViewModel = App.GetService<TblCountryViewModel>();
             InitializeComponent();
+            SimpleLog.Info(" TblCountryListPage opended ");
         }
         else
         {

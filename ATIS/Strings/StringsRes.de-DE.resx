@@ -1260,4 +1260,16 @@
   <data name="EnterText" xml:space="preserve">
     <value>Text eingeben hier</value>
   </data>
+  <data name="RequiredSpeciesName" xml:space="preserve">
+    <value>Artname ist erforderlich</value>
+  </data>
+  <data name="RequiredFoodName" xml:space="preserve">
+    <value>Nahrungname ist erforderlich</value>
+  </data>
+  <data name="RequiredDiseaseName" xml:space="preserve">
+    <value>Krankheitsname ist erforderlich</value>
+  </data>
+  <data name="RequiredMiscellaneousName" xml:space="preserve">
+    <value>Verschiedenes Name ist erforderlich </value>
+  </data>
 </root>

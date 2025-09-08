@@ -2410,16 +2410,51 @@ namespace ATIS.Strings {
                 return ResourceManager.GetString("RequiredFiSpeciesName", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die FoodName required ähnelt.
+        /// </summary>
+        internal static string RequiredFoodName
+        {
+            get
+            {
+                return ResourceManager.GetString("RequiredFoodName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die FoodName required ähnelt.
+        /// </summary>
+        internal static string RequiredDiseaseName
+        {
+            get
+            {
+                return ResourceManager.GetString("RequiredDiseaseName", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die MiscellaneousName required ähnelt.
+        /// </summary>
+        internal static string RequiredMiscellaneousName
+        {
+            get
+            {
+                return ResourceManager.GetString("RequiredMiscellaneousName", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Future date required ähnelt.
         /// </summary>
-        internal static string RequiredFutureDate {
-            get {
+        internal static string RequiredFutureDate
+        {
+            get
+            {
                 return ResourceManager.GetString("RequiredFutureDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Please select Genealogy Connect ähnelt.
         /// </summary>
@@ -2587,16 +2622,29 @@ namespace ATIS.Strings {
                 return ResourceManager.GetString("RequiredPhylumName", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Species Name is required  ähnelt.
+        /// </summary>
+        internal static string RequiredSpeciesName
+        {
+            get
+            {
+                return ResourceManager.GetString("RequiredSpeciesName", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Plant Species Name is required  ähnelt.
         /// </summary>
-        internal static string RequiredPlSpeciesName {
-            get {
+        internal static string RequiredPlSpeciesName
+        {
+            get
+            {
                 return ResourceManager.GetString("RequiredPlSpeciesName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Reference Author is required  ähnelt.
         /// </summary>

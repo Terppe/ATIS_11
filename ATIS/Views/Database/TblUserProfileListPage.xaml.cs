@@ -37,6 +37,7 @@ public sealed partial class TblUserProfileListPage : Page
         {
             ViewModel = App.GetService<TblUserProfileViewModel>();
             InitializeComponent();
+            SimpleLog.Info(" TblUserProfileListPage opended ");
         }
         else
         {

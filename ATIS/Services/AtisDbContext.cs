@@ -151,10 +151,10 @@ public partial class AtisDbContext : DbContext
     {
         get; set;
     }
-    //public DbSet<Tbl75Species> Tbl75Speciesses
-    //{
-    //    get; set;
-    //}
+    public DbSet<Tbl75Species> Tbl75Speciesses
+    {
+        get; set;
+    }
     public DbSet<Tbl78Name> Tbl78Names
     {
         get; set;
@@ -189,6 +189,18 @@ public partial class AtisDbContext : DbContext
         get; set;
     }
     public DbSet<Tbl93Comment> Tbl93Comments
+    {
+        get; set;
+    }
+    public DbSet<Tbl95Food> Tbl95Foods
+    {
+        get; set;
+    }
+    public DbSet<Tbl96Disease> Tbl96Diseases
+    {
+        get; set;
+    }
+    public DbSet<Tbl98Miscellaneous> Tbl98Miscellaneousses
     {
         get; set;
     }

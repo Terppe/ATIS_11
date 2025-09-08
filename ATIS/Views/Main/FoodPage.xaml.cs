@@ -1,6 +1,12 @@
 ﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
+using ATIS.Strings;
+using ATIS.Views.ContentDialogs;
+using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -13,11 +19,11 @@ public sealed partial class FoodPage : Page
 {
     #region [Private Data Members]
 
+    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     public FoodViewModel ViewModel { get; }
     private static readonly AtisDbContext Context = new();
-    private string _search;
 
-    #endregion [Private Data Members]
+    #endregion [Private Data Members]   
 
     #region [Constructor]
 
@@ -27,7 +33,7 @@ public sealed partial class FoodPage : Page
         {
             ViewModel = App.GetService<FoodViewModel>();
             InitializeComponent();
-            SimpleLog.Info(" FoodPage aufgerufen ");
+            SimpleLog.Info(" FoodPage opended ");
         }
         else
         {
