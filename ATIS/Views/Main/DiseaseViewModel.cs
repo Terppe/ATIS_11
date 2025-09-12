@@ -15,7 +15,7 @@ public partial class DiseaseViewModel : ObservableObject
     public IJsonNavigationViewService JsonNavigationViewService;
     private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
-    public ObservableCollection<Tbl96Disease> DiseaseItems { get; } = [];
+    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
     public string Search;
 
     #endregion [Private Data Members]      

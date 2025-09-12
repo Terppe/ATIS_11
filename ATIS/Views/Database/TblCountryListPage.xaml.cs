@@ -154,6 +154,7 @@ public sealed partial class TblCountryListPage : Page
     {
         try
         {
+            BackDetailExpanders();
             await AddCountry();
         }
         catch (Exception xe)

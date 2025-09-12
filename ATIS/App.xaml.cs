@@ -18,6 +18,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Documents;
 using WinUI3Localizer;
 using WinUIEx;
+using FoodPage = ATIS.Views.Main.FoodPage;
 
 namespace ATIS;
 
@@ -156,7 +157,6 @@ public partial class App : Application
         {
             var json = new JsonNavigationViewService();
             
-   //         json.ConfigDefaultPage(typeof(Tbl03RegnumWindow));
             json.ConfigDefaultPage(typeof(HomeLandingPage));
             json.ConfigSectionPage(typeof(SearchQuickPage));
             json.ConfigSectionPage(typeof(DatabasePage));
@@ -212,7 +212,6 @@ public partial class App : Application
         });
 
         services.AddTransient<MainViewModel>();
-        //       services.AddSingleton<ContextMenuService>();
         services.AddTransient<AuthenticationViewModel>();
         services.AddTransient<HomeLandingViewModel>();
         services.AddTransient<SearchViewModel>();
@@ -391,6 +390,12 @@ public partial class App : Application
             SimpleLog.Log(xe);
         }
     }
+    //-----------------------------------------------------
+    public static TblFood SingleFood(int id)
+    {
+        return Context.TblFoods.SingleOrDefault(a => a.FoodId == id);
+    }
+
 
     //-----------------------------------------------------
     public static Tbl78Name SingleName(int id)

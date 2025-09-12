@@ -4,25 +4,41 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ATIS.Models;
 
-public class Tbl98Miscellaneous
+public class TblFood
 {
     [Key]
 
-    public int MiscellaneousId { get; set; }
-    [Required(ErrorMessageResourceName = "RequiredMiscellaneousName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public int FoodId { get; set; }
+    [Required(ErrorMessageResourceName = "RequiredFoodName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     //  [MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     // [MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string MiscellaneousName { get; set; }
+    public string FoodName { get; set; }
     [Required]
     public int CountId { get; set; }
     public bool? Valid { get; set; }
     [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string ValidYear { get; set; }
     [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Thema1 { get; set; }
+    public string FoodVolume { get; set; }
     [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Thema2 { get; set; }
+    public string Karnivore { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Herbivore { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Limnivore { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Omnivore { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string RegionTop { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string RegionMiddle { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string RegionBottom { get; set; }
+    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Kind { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Help { get; set; }
     [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string Info { get; set; }
     [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
@@ -39,6 +55,7 @@ public class Tbl98Miscellaneous
     public byte[] Filestream { get; set; }
     public Guid FilestreamId { get; set; }
     //     public byte[] RowVersion { get; set; }
+
 
 
 }

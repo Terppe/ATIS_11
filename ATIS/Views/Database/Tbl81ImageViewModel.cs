@@ -382,7 +382,6 @@ public partial class Tbl81ImageViewModel : ObservableObject
     }
     //---------------EndEdit------------------------------------
     public async void EndEditImage() => await SaveImageAsync(ImageSelected, SelectedPath);
-    public async void EndEditSpecies() => await SaveSpeciesAsync(SpeciesSelected);
     //-------------CanRefresh--------------------------------------
     public bool CanRefreshImage => !IsModifiedImage && IsExistingImage;
     public bool CanRefreshSpecies => !IsModifiedSpecies && IsExistingSpecies;

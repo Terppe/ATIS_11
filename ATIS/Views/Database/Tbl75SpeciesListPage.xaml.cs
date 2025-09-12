@@ -34,9 +34,9 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     private readonly FileOpenPicker _filePicker = new();
 
 
-    private double centerOf1LongX = 0;
-    private double centerOf1LatiY = 0;
-    private int zoom = 0;
+    private double centerOf1LongX;
+    private double centerOf1LatiY;
+    private int zoom;
 
     #endregion [Private Data Members]
 

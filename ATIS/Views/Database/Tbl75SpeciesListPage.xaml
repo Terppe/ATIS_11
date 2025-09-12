@@ -472,6 +472,7 @@
 
                 <!--  SpeciesDetailExpander  -->
                 <Expander x:Name="SpeciesDetailExpander"
+                          MinWidth="1200"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           Visibility="Collapsed">
                     <Expander.Header>
@@ -710,7 +711,9 @@
                                              RelativePanel.RightOf="AuthorTextSpecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.AuthorYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </RelativePanel>
-                                <Expander x:Name="SpecificationExpanderFiSpecies">
+                                <Expander x:Name="SpecificationExpanderFiSpecies"
+                                          MinWidth="1200"
+                                          Margin="0,10,0,0">
                                     <Expander.Header>
                                         <Grid>
                                             <TextBlock loca:Uids.Uid="TextBlock_Specification"

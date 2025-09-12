@@ -477,6 +477,9 @@
   <data name="DataGridTextColumn_FamilyName.Header" xml:space="preserve">
     <value>Familie Name</value>
   </data>
+  <data name="DataGridTextColumn_FoodName.Header" xml:space="preserve">
+    <value>Nahrung Name</value>
+  </data>
   <data name="DataGridTextColumn_FirstName.Header" xml:space="preserve">
     <value>Vorname</value>
   </data>
@@ -536,6 +539,9 @@
   </data>
   <data name="DataGridTextColumn_Language.Header" xml:space="preserve">
     <value>Sprache</value>
+  </data>
+  <data name="DataGridTextColumn_Kind.Header" xml:space="preserve">
+    <value>Art</value>
   </data>
   <data name="DataGridTextColumn_LastName.Header" xml:space="preserve">
     <value>Nachname</value>
@@ -1657,7 +1663,7 @@
     <value>Telefon</value>
   </data>
   <data name="TextBlock_Food.Text" xml:space="preserve">
-    <value>Futter</value>
+    <value>Nahrung</value>
   </data>
   <data name="TextBlock_FrenchName.Text" xml:space="preserve">
     <value>Franz. Name</value>
@@ -2289,6 +2295,15 @@
   <data name="TextBox_Fax.Header" xml:space="preserve">
     <value>Fax</value>
   </data>
+  <data name="TextBox_Food.Header" xml:space="preserve">
+    <value>Nahrung</value>
+  </data>
+  <data name="TextBox_FoodId.Header" xml:space="preserve">
+    <value> Nahrung ID</value>
+  </data>
+  <data name="TextBox_FoodName.Header" xml:space="preserve">
+    <value>Nahrung Name</value>
+  </data>
   <data name="TextBox_FilestreamId.Header" xml:space="preserve">
     <value>Filestream ID</value>
   </data>
@@ -2312,6 +2327,9 @@
   </data>
   <data name="TextBox_Hardness1.Header" xml:space="preserve">
     <value>Härte 1</value>
+  </data>
+  <data name="TextBox_MemoHelpFood.Header" xml:space="preserve">
+    <value>Hilfe</value>
   </data>
   <data name="TextBox_Hardness2.Header" xml:space="preserve">
     <value>Härte 2</value>
@@ -2348,6 +2366,9 @@
   </data>
   <data name="TextBox_ISBN.Header" xml:space="preserve">
     <value>ISBN</value>
+  </data>
+  <data name="TextBox_Kind.Header" xml:space="preserve">
+    <value>Art</value>
   </data>
   <data name="TextBox_LastName.Header" xml:space="preserve">
     <value>Nachname</value>
@@ -2398,10 +2419,37 @@
     <value>Memo GU</value>
   </data>
   <data name="TextBox_MemoFoods.Header" xml:space="preserve">
-    <value>Memo Futter</value>
+    <value>Memo Nahrung</value>
+  </data>
+  <data name="TextBox_MemoInfoFood.Header" xml:space="preserve">
+    <value>Memo Info</value>
+  </data>
+  <data name="TextBox_MemoHerbivore.Header" xml:space="preserve">
+    <value>Pflanzenfresser</value>
+  </data>
+  <data name="TextBox_MemoOmnivore.Header" xml:space="preserve">
+    <value>Allesfresser</value>
+  </data>
+  <data name="TextBox_MemoLimnivore.Header" xml:space="preserve">
+    <value>Aufwuchsfresser</value>
+  </data>
+  <data name="TextBox_MemoKarnivore.Header" xml:space="preserve">
+    <value>Fleischfresser</value>
   </data>
   <data name="TextBox_MemoGlobal.Header" xml:space="preserve">
     <value>Memo Global</value>
+  </data>
+  <data name="TextBox_MemoFoodVolume.Header" xml:space="preserve">
+    <value>Menge</value>
+  </data>
+  <data name="TextBox_MemoRegionMiddle.Header" xml:space="preserve">
+    <value>Region Mitte</value>
+  </data>
+  <data name="TextBox_MemoRegionTop.Header" xml:space="preserve">
+    <value>Region Oben</value>
+  </data>
+  <data name="TextBox_MemoRegionBottom.Header" xml:space="preserve">
+    <value>Region Unten</value>
   </data>
   <data name="TextBox_MemoHusbandry.Header" xml:space="preserve">
     <value>Memo Pflege</value>
@@ -2410,6 +2458,9 @@
     <value>Memo Reproduction</value>
   </data>
   <data name="TextBox_MemoSozial.Header" xml:space="preserve">
+    <value>Memo Sozial</value>
+  </data>
+  <data name="MemoFoodRegionMiddle.Header" xml:space="preserve">
     <value>Memo Sozial</value>
   </data>
   <data name="TextBox_MemoSpecial.Header" xml:space="preserve">
@@ -3195,6 +3246,9 @@
   <data name="AppBarButtonDeleteName.Label" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="AppBarButtonDeleteFood.Label" xml:space="preserve">
+    <value>Nahrung</value>
+  </data>
   <data name="AppBarButtonDeleteSynonym.Label" xml:space="preserve">
     <value>Synonym</value>
   </data>
@@ -3233,6 +3287,9 @@
   </data>
   <data name="AppBarButtonAddFamily.Label" xml:space="preserve">
     <value>Familie</value>
+  </data>
+  <data name="AppBarButtonAddFood.Label" xml:space="preserve">
+    <value>Nahrung</value>
   </data>
   <data name="AppBarButtonAddInfrafamily.Label" xml:space="preserve">
     <value>Infrafamilie</value>
@@ -3589,7 +3646,7 @@
     <value>Soziales Verhalten</value>
   </data>
   <data name="TextBlock_Foods.Text" xml:space="preserve">
-    <value>Futter</value>
+    <value>Nahrung</value>
   </data>
   <data name="TextBlock_ShotDate.Text" xml:space="preserve">
     <value>Shot Date</value>
@@ -3641,6 +3698,9 @@
   </data>
   <data name="DataGridTemplateColumn_FamilyId.Header" xml:space="preserve">
     <value>Familie ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_FoodId.Header" xml:space="preserve">
+    <value>Nahrung ID</value>
   </data>
   <data name="DataGridTemplateColumn_ReferenceId.Header" xml:space="preserve">
     <value>Bezug ID</value>

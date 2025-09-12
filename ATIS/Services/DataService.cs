@@ -3631,6 +3631,100 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion UserProfile
 
+
+    #region Food
+    public ObservableCollection<TblFood> GetFoodAsync()
+    {
+        var collection = new ObservableCollection<TblFood>(Context.TblFoods
+            .AsNoTracking()
+            .OrderBy(a => a.FoodName));
+        return collection;
+    }
+
+    public ObservableCollection<TblFood> GetFoodAsync(int foodid)
+    {
+        var collection = new ObservableCollection<TblFood>(Context.TblFoods
+        .AsNoTracking()
+            .Where(e => e.FoodId == foodid)
+            .OrderBy(k => k.FoodName)
+        );
+
+        return collection;
+    }
+
+    public async Task<ObservableCollection<TblFood>> GetFoodAsync(string search)
+    {
+        var collection = int.TryParse(search, out var id)
+            ? new ObservableCollection<TblFood>(Context.TblFoods
+                .Where(e => e.FoodId == id))
+            : new ObservableCollection<TblFood>(Context.TblFoods
+                .Where(e => e.FoodName.StartsWith(search))
+                .OrderBy(a => a.FoodName));
+
+        await Task.CompletedTask;
+        return collection;
+    }
+
+    public async Task<TblFood> UpsertFoodAsync(TblFood food, string selectedpath)
+    {
+        var current = await Context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == food.FoodId);
+        if (null == current)
+        {
+            food.CountId = RandomHelper.Randomnumber();
+            food.Writer = Environment.UserName;
+            food.WriterDate = DateTime.Now;
+            food.Updater = Environment.UserName;
+            food.UpdaterDate = DateTime.Now;
+            food.FilestreamId = Guid.NewGuid();
+            food.Filestream = LoadImageData(selectedpath);
+
+            Context.TblFoods.Add(food);
+        }
+        else
+        {
+            food.Updater = Environment.UserName;
+            food.UpdaterDate = DateTime.Now;
+            food.Filestream = LoadImageData(selectedpath);
+            Context.Entry(current).CurrentValues.SetValues(food);
+        }
+        await Context.SaveChangesAsync();
+        return food;
+    }
+
+   // public async Task<TblFood> UpsertFoodAsync(TblFood food)
+   // {
+    //    var current = await Context.TblFoods.FirstOrDefaultAsync(b => b.FoodId == food.FoodId);
+    //    if (null == current)
+    //    {
+    //        //country.CountId = RandomHelper.Randomnumber();
+    //        //country.Writer = Environment.UserName;
+    //        //country.WriterDate = DateTime.Now;
+    //        //country.Updater = Environment.UserName;
+    //        //country.UpdaterDate = DateTime.Now;
+    //        Context.TblFoods.Add(food);
+    //    }
+    //    else
+    //    {
+    //        //country.Updater = Environment.UserName;
+    //        //country.UpdaterDate = DateTime.Now;
+    //        Context.Entry(current).CurrentValues.SetValues(food);
+    //    }
+    //    await Context.SaveChangesAsync();
+    //    return food;
+    //}
+
+    public async Task DeleteFoodAsync(int foodid)
+    {
+        var food = await Context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == foodid);
+        if (null != food)
+        {
+            Context.TblFoods.Remove(food);
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    #endregion Food
+
     #endregion CRUD
 
     #region Search_Gets

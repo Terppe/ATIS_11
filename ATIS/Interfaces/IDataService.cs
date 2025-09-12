@@ -407,6 +407,15 @@ public interface IDataService
 
     #endregion UserProfile
 
+    #region Food
+
+    ObservableCollection<TblFood> GetFoodAsync();
+    ObservableCollection<TblFood> GetFoodAsync(int foodid);
+    Task<ObservableCollection<TblFood>> GetFoodAsync(string search);
+    Task<TblFood> UpsertFoodAsync(TblFood food, string viewModelSelectedPath);
+    Task DeleteFoodAsync(int foodid);
+
+    #endregion Food
 
     #endregion CRUD
 

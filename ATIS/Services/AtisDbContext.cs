@@ -192,15 +192,15 @@ public partial class AtisDbContext : DbContext
     {
         get; set;
     }
-    public DbSet<Tbl95Food> Tbl95Foods
+    public DbSet<TblFood> TblFoods
     {
         get; set;
     }
-    public DbSet<Tbl96Disease> Tbl96Diseases
+    public DbSet<TblDisease> TblDiseases
     {
         get; set;
     }
-    public DbSet<Tbl98Miscellaneous> Tbl98Miscellaneousses
+    public DbSet<TblMiscellaneous> TblMiscellaneousses
     {
         get; set;
     }
