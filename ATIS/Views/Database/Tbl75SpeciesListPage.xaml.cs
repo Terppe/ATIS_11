@@ -330,7 +330,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
 
         ViewModel.IsLoading = false;
-
     }
 
     private async void AddSpecies_Click(object sender, RoutedEventArgs e)
@@ -375,7 +374,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
         ViewModel.IsNewSpecies = false;
-        SpeciesName.PlaceholderText = StringsRes.EnterText;
 
         SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;

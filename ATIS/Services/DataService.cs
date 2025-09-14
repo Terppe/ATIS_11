@@ -3665,7 +3665,7 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<TblFood> UpsertFoodAsync(TblFood food, string selectedpath)
+    public async Task<TblFood> UpsertFoodAsync(TblFood food)
     {
         var current = await Context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == food.FoodId);
         if (null == current)
@@ -3675,8 +3675,6 @@ public partial class DataService : ObservableObject, IDataService
             food.WriterDate = DateTime.Now;
             food.Updater = Environment.UserName;
             food.UpdaterDate = DateTime.Now;
-            food.FilestreamId = Guid.NewGuid();
-            food.Filestream = LoadImageData(selectedpath);
 
             Context.TblFoods.Add(food);
         }
@@ -3684,7 +3682,6 @@ public partial class DataService : ObservableObject, IDataService
         {
             food.Updater = Environment.UserName;
             food.UpdaterDate = DateTime.Now;
-            food.Filestream = LoadImageData(selectedpath);
             Context.Entry(current).CurrentValues.SetValues(food);
         }
         await Context.SaveChangesAsync();

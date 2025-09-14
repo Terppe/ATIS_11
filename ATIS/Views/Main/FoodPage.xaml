@@ -5,7 +5,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:conv="using:ATIS.Helpers.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:helpers="using:ATIS.Helpers"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:ATIS.Models"
@@ -48,6 +47,22 @@
                 <MenuFlyoutItem.Icon>
                     <BitmapIcon ShowAsMonochrome="False"
                                 UriSource="/Assets/Fluent/refresh.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+        <MenuFlyout x:Key="ImageDataContextMenu">
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Image"
+                            Click="DeleteImage_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/delete.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Image"
+                            Click="AddImage_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/add.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
@@ -117,6 +132,16 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </AppBarButton.Icon>
             </AppBarButton>
+            <AppBarButton x:Name="AppBarButtonAddImage"
+                          loca:Uids.Uid="AppBarButtonAddImage"
+                          Click="AddImage_Click"
+                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FoodSelected), Mode=OneWay}">
+                <AppBarButton.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/add.png" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+
             <AppBarButton x:Name="AppBarButtonSync"
                           loca:Uids.Uid="AppBarButtonSync"
                           Click="Refresh_Click"
@@ -188,23 +213,6 @@
                                                     Binding="{Binding FoodName}"
                                                     CanUserSort="True"
                                                     Tag="FoodName" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ImageMimeType"
-                                                    Binding="{Binding ImageMimeType}"
-                                                    Tag="ImageMimeType" />
-                        <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_Image">
-                            <toolkit:DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel HorizontalAlignment="Center"
-                                                VerticalAlignment="Center">
-                                        <Image x:Name="Image2"
-                                               Width="22"
-                                               Height="22"
-                                               Margin="{StaticResource SmallLeftMargin}"
-                                               Source="{Binding Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </toolkit:DataGridTemplateColumn.CellTemplate>
-                        </toolkit:DataGridTemplateColumn>
                         <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                         Binding="{Binding Valid}"
                                                         Tag="Valid" />
@@ -270,14 +278,6 @@
                                 <AppBarButton.Icon>
                                     <BitmapIcon ShowAsMonochrome="False"
                                                 UriSource="/Assets/Fluent/save.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddImage"
-                                          Click="AddImage_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FoodSelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
                             <AppBarButton loca:Uids.Uid="AppBarButtonChange"
@@ -528,129 +528,292 @@
                                                  TextWrapping="Wrap" />
                                     </RelativePanel>
                                 </Expander>
-                                <Expander x:Name="ImageDetailExpander"
-                                          Margin="{StaticResource XSmallTopBottomMargin}"
-                                          IsExpanded="False"
-                                          Visibility="Visible">
-                                    <Expander.Header>
-                                        <Grid>
-                                            <TextBlock loca:Uids.Uid="TextBlock_ImageId"
-                                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                                            <TextBlock HorizontalAlignment="Right"
-                                                       VerticalAlignment="Center"
-                                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                                       Text="{x:Bind ViewModel.FoodSelected.FoodName, Mode=OneWay}" />
-                                        </Grid>
-                                    </Expander.Header>
-                                    <RelativePanel x:Name="ImageDetailRoot"
-                                                   Margin="{StaticResource SmallLeftRightMargin}">
-                                        <ScrollViewer x:Name="DetailPanelImage"
-                                                      Margin="0,36,0,0"
-                                                      RelativePanel.AlignLeftWithPanel="True"
-                                                      RelativePanel.AlignRightWithPanel="True"
-                                                      VerticalScrollBarVisibility="Auto"
-                                                      VerticalScrollMode="Auto">
-                                            <RelativePanel Margin="4,0,0,0">
-                                                <ComboBox x:Name="ImageMimeTypeCombo"
-                                                          Width="150"
-                                                          Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                                          loca:Uids.Uid="ComboBox_ImageMimeType"
-                                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                          PlaceholderText="Pick a mime type"
-                                                          RelativePanel.AlignLeftWithPanel="True"
-                                                          SelectedValue="{x:Bind ViewModel.FoodSelected.ImageMimeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                                    <x:String>jpg</x:String>
-                                                    <x:String>png</x:String>
-                                                    <x:String>bmp</x:String>
-                                                    <x:String>tif</x:String>
-                                                    <x:String>tiff</x:String>
-                                                    <x:String>gif</x:String>
-                                                    <x:String>ico</x:String>
-                                                    <x:String>jpeg</x:String>
-                                                    <x:String>webp</x:String>
-                                                    <x:String>wmf</x:String>
-                                                    <x:String>wmv</x:String>
-                                                    <x:String>mpg</x:String>
-                                                    <x:String>mp4</x:String>
-                                                    <x:String>avi</x:String>
-                                                    <x:String>mov</x:String>
-                                                    <x:String>swf</x:String>
-                                                    <x:String>flv</x:String>
-                                                </ComboBox>
-                                                <CheckBox x:Name="ValidCheckImage"
-                                                          Width="80"
-                                                          Margin="{StaticResource SmallRightCheckBoxMargin}"
-                                                          VerticalAlignment="Bottom"
-                                                          loca:Uids.Uid="CheckBox_Valid"
-                                                          IsChecked="{x:Bind ViewModel.FoodSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                          RelativePanel.RightOf="ImageMimeTypeCombo" />
-                                                <TextBox x:Name="InfoImage"
-                                                         MinWidth="1120"
-                                                         Margin="{StaticResource XSmallRightMargin}"
-                                                         HorizontalAlignment="Stretch"
-                                                         loca:Uids.Uid="TextBox_Info"
-                                                         Background="SlateGray"
-                                                         Foreground="White"
-                                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                         MaxLength="100"
-                                                         RelativePanel.AlignLeftWithPanel="True"
-                                                         RelativePanel.Below="ImageMimeTypeCombo"
-                                                         Text="{x:Bind ViewModel.FoodSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                <TextBox x:Name="SelectedPathImage"
-                                                         MinWidth="1120"
-                                                         Margin="{StaticResource XSmallRightMargin}"
-                                                         HorizontalAlignment="Stretch"
-                                                         loca:Uids.Uid="TextBox_SelectedPath"
-                                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                         RelativePanel.AlignLeftWithPanel="True"
-                                                         RelativePanel.Below="InfoImage"
-                                                         Text="{x:Bind ViewModel.SelectedPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                <TabView x:Name="TabViewImage"
-                                                         MinHeight="475"
-                                                         Margin="{StaticResource XSmallRightMargin}"
-                                                         Background="LightBlue"
-                                                         IsAddTabButtonVisible="False"
-                                                         RelativePanel.AlignLeftWithPanel="True"
-                                                         RelativePanel.Below="SelectedPathImage">
-                                                    <TabView.TabItems>
-                                                        <TabViewItem Header="Image"
-                                                                     IsClosable="False">
-                                                            <Image Name="Image"
-                                                                   Margin="5"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Top"
-                                                                   Opacity="1"
-                                                                   RelativePanel.AlignLeftWithPanel="True"
-                                                                   RelativePanel.Below="SelectedPathImage"
-                                                                   RenderTransformOrigin="0.5,0.5"
-                                                                   Source="{x:Bind ViewModel.FoodSelected.Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                   Stretch="Uniform" />
-                                                        </TabViewItem>
-                                                    </TabView.TabItems>
-                                                </TabView>
-                                                <TextBox x:Name="MemoFood"
-                                                         MinWidth="1120"
-                                                         MinHeight="75"
-                                                         MaxWidth="1300"
-                                                         MaxHeight="150"
-                                                         Margin="{StaticResource XSmallRightMargin}"
-                                                         loca:Uids.Uid="TextBox_Memo"
-                                                         AcceptsReturn="True"
-                                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                         RelativePanel.AlignLeftWithPanel="True"
-                                                         RelativePanel.Below="TabViewImage"
-                                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                         Text="{x:Bind ViewModel.FoodSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                         TextWrapping="Wrap" />
-                                            </RelativePanel>
-                                        </ScrollViewer>
-                                    </RelativePanel>
-                                </Expander>
                             </StackPanel>
                         </ScrollViewer>
                     </RelativePanel>
                 </Expander>
+
+                <!--  ImageDetailExpander  -->
+                <Expander x:Name="ImageDetailExpander"
+                          Margin="{StaticResource XSmallTopBottomMargin}"
+                          Visibility="Collapsed">
+                    <Expander.Header>
+                        <Grid>
+                            <TextBlock loca:Uids.Uid="TextBlock_ImageId"
+                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
+                            <TextBlock HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=OneWay}" />
+                        </Grid>
+                    </Expander.Header>
+                    <RelativePanel x:Name="ImageDetailRoot"
+                                   Margin="{StaticResource SmallLeftRightMargin}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState>
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                                    </VisualState.StateTriggers>
+                                </VisualState>
+                                <VisualState>
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                                    </VisualState.StateTriggers>
+                                </VisualState>
+                                <VisualState>
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="ImageCommandBar.DefaultLabelPosition" Value="Bottom" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <CommandBar x:Name="ImageDetailCommandBar"
+                                    Margin="{StaticResource SmallLeftRightCommandBarMargin}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Top"
+                                    Background="Transparent"
+                                    DefaultLabelPosition="Right"
+                                    RelativePanel.AlignRightWithPanel="True">
+                            <AppBarButton loca:Uids.Uid="AppBarButtonSave"
+                                          Background="{ThemeResource SystemBaseLowColor}"
+                                          Click="SaveImage_Click"
+                                          Foreground="White"
+                                          Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/save.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton loca:Uids.Uid="AppBarButtonAddImage"
+                                          Click="AddImage_Click"
+                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FoodSelected), Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/add.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton loca:Uids.Uid="AppBarButtonChange"
+                                          Click="ChangeImage_Click"
+                                          Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/imageresizer.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
+                                          Click="CancelEditsImageAsync"
+                                          Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/cancel.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarSeparator Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}" />
+                            <AppBarButton loca:Uids.Uid="AppBarButtonBack"
+                                          Background="{ThemeResource SystemAccentColor}"
+                                          Click="BackImage_Click"
+                                          Foreground="White">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/arrowleft.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton loca:Uids.Uid="AppBarButtonEdit"
+                                          Click="{x:Bind ViewModel.StartEditImage}"
+                                          IsEnabled="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                          Visibility="{x:Bind conv:NotConverter.CollapsedIf(ViewModel.IsNewImage), Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False"
+                                                UriSource="/Assets/Fluent/edit.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBar>
+                        <ScrollViewer x:Name="DetailPanelImage"
+                                      Margin="0,36,0,0"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.AlignRightWithPanel="True"
+                                      VerticalScrollBarVisibility="Auto"
+                                      VerticalScrollMode="Auto">
+                            <RelativePanel Margin="4,0,0,0">
+                                <TextBox x:Name="ImageId"
+                                         MinWidth="110"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         loca:Uids.Uid="TextBox_ImageId"
+                                         IsReadOnly="True"
+                                         RelativePanel.AlignLeftWithPanel="True"
+                                         Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <ComboBox x:Name="ImageMimeTypeCombo"
+                                          Width="150"
+                                          Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                          loca:Uids.Uid="ComboBox_ImageMimeType"
+                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
+                                          PlaceholderText="Pick a mime type"
+                                          RelativePanel.RightOf="ImageId"
+                                          SelectedValue="{x:Bind ViewModel.ImageSelected.ImageMimeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <x:String>jpg</x:String>
+                                    <x:String>png</x:String>
+                                    <x:String>bmp</x:String>
+                                    <x:String>tif</x:String>
+                                    <x:String>tiff</x:String>
+                                    <x:String>gif</x:String>
+                                    <x:String>ico</x:String>
+                                    <x:String>jpeg</x:String>
+                                    <x:String>webp</x:String>
+                                    <x:String>wmf</x:String>
+                                    <x:String>wmv</x:String>
+                                    <x:String>mpg</x:String>
+                                    <x:String>mp4</x:String>
+                                    <x:String>avi</x:String>
+                                    <x:String>mov</x:String>
+                                    <x:String>swf</x:String>
+                                    <x:String>flv</x:String>
+                                </ComboBox>
+                                <CheckBox x:Name="ValidCheckImage"
+                                          Width="80"
+                                          Margin="{StaticResource SmallRightCheckBoxMargin}"
+                                          VerticalAlignment="Bottom"
+                                          loca:Uids.Uid="CheckBox_Valid"
+                                          IsChecked="{x:Bind ViewModel.ImageSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
+                                          RelativePanel.RightOf="ImageMimeTypeCombo" />
+                                <TextBox x:Name="AuthorTextShotDate"
+                                         MinWidth="150"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         HorizontalAlignment="Stretch"
+                                         loca:Uids.Uid="TextBox_ShotDate"
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                         RelativePanel.RightOf="ValidCheckImage"
+                                         Text="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox x:Name="InfoImage"
+                                         MinWidth="1120"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         HorizontalAlignment="Stretch"
+                                         loca:Uids.Uid="TextBox_Info"
+                                         Background="SlateGray"
+                                         Foreground="White"
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                         MaxLength="100"
+                                         RelativePanel.AlignLeftWithPanel="True"
+                                         RelativePanel.Below="ImageId"
+                                         Text="{x:Bind ViewModel.ImageSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox x:Name="SelectedPathImage"
+                                         MinWidth="1120"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         HorizontalAlignment="Stretch"
+                                         loca:Uids.Uid="TextBox_SelectedPath"
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                         RelativePanel.AlignLeftWithPanel="True"
+                                         RelativePanel.Below="InfoImage"
+                                         Text="{x:Bind ViewModel.SelectedPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TabView x:Name="TabViewImage"
+                                         MinHeight="475"
+                                         Margin="{StaticResource XSmallRightMargin}"
+                                         Background="LightBlue"
+                                         IsAddTabButtonVisible="False"
+                                         RelativePanel.AlignLeftWithPanel="True"
+                                         RelativePanel.Below="SelectedPathImage">
+                                    <TabView.TabItems>
+                                        <TabViewItem Header="Image"
+                                                     IsClosable="False">
+                                            <Image Name="Image"
+                                                   Margin="5"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Top"
+                                                   Opacity="1"
+                                                   RelativePanel.AlignLeftWithPanel="True"
+                                                   RelativePanel.Below="SelectedPathImage"
+                                                   RenderTransformOrigin="0.5,0.5"
+                                                   Source="{x:Bind ViewModel.ImageSelected.Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   Stretch="Uniform" />
+                                        </TabViewItem>
+                                    </TabView.TabItems>
+                                </TabView>
+                            </RelativePanel>
+                        </ScrollViewer>
+                    </RelativePanel>
+                </Expander>
+
+                <!--  ImagesExpander  -->
+                <Expander x:Name="ImagesExpander"
+                          Margin="{StaticResource XSmallTopBottomMargin}"
+                          IsExpanded="True"
+                          Visibility="Collapsed">
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="ImagesTitle"
+                                       loca:Uids.Uid="TextBlock_Images"
+                                       Style="{ThemeResource PageTitleTextBlockStyle}" />
+                            <TextBlock x:Name="ImagesDatasetText"
+                                       Margin="5,0,0,2"
+                                       loca:Uids.Uid="TextBlock_DataSetCount"
+                                       Style="{StaticResource DatasetTitleStyle}" />
+                            <TextBlock x:Name="ImagesDatasetCountText"
+                                       Margin="5,0,0,2"
+                                       Style="{StaticResource DatasetTitleStyle}"
+                                       Text="{x:Bind ViewModel.ImageDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Expander.Header>
+                    <Grid Margin="0,4,0,0">
+                        <toolkit:DataGrid x:Name="ImageDataGrid"
+                                          MaxHeight="230"
+                                          Margin="0,0,20,0"
+                                          VerticalAlignment="Top"
+                                          x:FieldModifier="public"
+                                          AlternatingRowBackground="LightGray"
+                                          AutoGenerateColumns="False"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          CanUserReorderColumns="False"
+                                          CanUserResizeColumns="False"
+                                          ContextFlyout="{StaticResource ImageDataContextMenu}"
+                                          GridLinesVisibility="Horizontal"
+                                          ItemsSource="{x:Bind ViewModel.ImageItems, Mode=OneWay}"
+                                          SelectedItem="{x:Bind ViewModel.ImageSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          SelectionMode="Single"
+                                          Sorting="DataGrid_Image_Sorting">
+                            <toolkit:DataGrid.Columns>
+                                <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_ImageId"
+                                                                Tag="ImageId">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate x:DataType="models:Tbl81Image">
+                                            <HyperlinkButton Margin="12,0"
+                                                             BorderThickness="0"
+                                                             Click="ViewImageHyperlinkButton_Click"
+                                                             Content="{Binding ImageId}" />
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ImageMimeType"
+                                                            Binding="{Binding ImageMimeType}"
+                                                            Tag="ImageMimeType" />
+                                <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_Image">
+                                    <toolkit:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                <Image Width="22"
+                                                       Height="22"
+                                                       Margin="{StaticResource SmallLeftMargin}"
+                                                       Source="{Binding Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </toolkit:DataGridTemplateColumn.CellTemplate>
+                                </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
+                                                                Binding="{Binding Valid}"
+                                                                Tag="Valid" />
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Info"
+                                                            Binding="{Binding Info}"
+                                                            Tag="Info" />
+                            </toolkit:DataGrid.Columns>
+                        </toolkit:DataGrid>
+                    </Grid>
+                </Expander>
+
             </StackPanel>
         </ScrollViewer>
 

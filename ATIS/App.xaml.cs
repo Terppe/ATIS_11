@@ -449,6 +449,11 @@ public partial class App : Application
 
 
     //--------------------------------------------------------------------
+    public static Tbl81Image SingleImageFood(int imageId, int? foodId)
+    {
+        return Context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.FoodId == foodId);
+    }
+
     //------------------------------------------------------------------
     public static Tbl69FiSpecies SingleSpecies(int id)
     {

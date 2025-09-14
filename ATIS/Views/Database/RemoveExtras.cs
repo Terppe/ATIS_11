@@ -1,12 +1,24 @@
 ﻿using ATIS.Models;
 using ATIS.Services;
 using Microsoft.EntityFrameworkCore;
+using static ATIS.Views.Report.PdfModels;
 
 namespace ATIS.Views.Database;
 
 public static class RemoveExtras
 {
     private static readonly AtisDbContext Context = new();
+
+    //--------------Food----------------------
+    public static async Task RemoveImagesByFoodId(int foodid)
+    {
+        var images = await Context.Tbl81Images.Where(c => c.FoodId == foodid).ToListAsync();
+        if (images.Count != 0)
+        {
+            Context.Tbl81Images.RemoveRange(images);
+            await Context.SaveChangesAsync();
+        }
+    }
 
     //------------PlSpecies-------------------
     public static async Task RemoveReferencesByPlSpeciesId(int plspeciesid)

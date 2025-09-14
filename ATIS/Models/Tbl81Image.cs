@@ -13,6 +13,9 @@ public class Tbl81Image
     public int FiSpeciesId { get; set; }
     [Required]
     public int PlSpeciesId { get; set; }
+    public int FoodId { get; set; }
+    public int DiseaseId { get; set; }
+    public int MiscellaneousId { get; set; }
     [Required]
     public int CountId { get; set; }
     public bool? Valid { get; set; }

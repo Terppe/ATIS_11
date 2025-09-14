@@ -27,6 +27,7 @@ public sealed partial class FoodPage : Page
     public FoodViewModel ViewModel { get; }
     private TblFood SingleFood { get; set; }
     private static readonly AtisDbContext Context = new();
+    private Tbl81Image SingleImage { get; set; }
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
 
@@ -92,18 +93,23 @@ public sealed partial class FoodPage : Page
                 .OrderBy(a => a.FoodName)];
             });
             FoodDetailExpander.Visibility = Visibility.Collapsed;
+            ImagesExpander.Visibility = Visibility.Collapsed;
+            ImageDetailExpander.Visibility = Visibility.Collapsed;
 
             ViewModel.FoodDataSetCount = ViewModel.TblFoodsList.Count;
 
             if (ViewModel.TblFoodsList is { Count: 0 })
             {
                 ViewModel.TblFoodsList?.Clear();
+                ViewModel.Tbl81ImagesList?.Clear();
 
                 AppBarButtonDeleteFood.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
+                AppBarButtonAddImage.IsEnabled = false;
 
                 DetailPanelFood.Visibility = Visibility.Visible;
                 FoodDetailExpander.Visibility = Visibility.Collapsed;
+                ImagesExpander.Visibility = Visibility.Collapsed;
 
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 Frame.Navigate(typeof(FoodPage));
@@ -149,6 +155,35 @@ public sealed partial class FoodPage : Page
         const int milliseconds = 1500;
         await Task.Delay(milliseconds);
 
+        if (ViewModel.FoodSelected != null)
+        {
+
+            //--------------------------Image-----------------------------          
+            await _dispatcherQueue.EnqueueAsync(() =>
+            {
+                ViewModel.Tbl81ImagesList ??= [];
+                ViewModel.Tbl81ImagesList =
+                [
+                    .. Context.Tbl81Images
+                        .Where(com => com.FoodId == ViewModel.FoodSelected.FoodId)
+                ];
+            });
+
+            ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
+            ViewModel.RefreshImageItems();
+
+            if (ViewModel.Tbl81ImagesList.Count == 0)
+            {
+                ImagesExpander.Visibility = Visibility.Collapsed;
+                ImageDetailExpander.Visibility = Visibility.Collapsed;
+                ImageDataGrid.ItemsSource = null;
+            }
+            else
+            {
+                ImagesExpander.Visibility = Visibility.Visible;
+                ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
+            }
+        }
         ViewModel.IsLoading = false;
     }
 
@@ -185,6 +220,7 @@ public sealed partial class FoodPage : Page
 
         FoodDetailExpander.IsExpanded = true;
         FoodDetailExpander.Visibility = Visibility.Visible;
+        SpecificationExpander.IsExpanded = false;
 
         FoodName.PlaceholderText = StringsRes.EnterText;
     }
@@ -285,10 +321,6 @@ public sealed partial class FoodPage : Page
         ViewModel.FoodSelected.Help = SingleFood.Help;
         ViewModel.FoodSelected.Info = SingleFood.Info;
         ViewModel.FoodSelected.Memo = SingleFood.Memo;
-        ViewModel.FoodSelected.ImageMimeType = SingleFood.ImageMimeType;
-        ViewModel.FoodSelected.Filestream = SingleFood.Filestream;
-        ViewModel.FoodSelected.FilestreamId = SingleFood.FilestreamId;
-        ViewModel.FoodSelected.ImageData = SingleFood.ImageData;
     }
     private async Task RevertChangesFoodAsync()
     {
@@ -390,8 +422,8 @@ public sealed partial class FoodPage : Page
                 {
                     return;
                 }
-                await ViewModel.SaveFoodAsync(ViewModel.FoodSelected, ViewModel.SelectedPath);
-                await BehindSaveFood(ViewModel.FoodSelected, ViewModel.SelectedPath);
+                await ViewModel.SaveFoodAsync(ViewModel.FoodSelected);
+                await BehindSaveFood(ViewModel.FoodSelected);
                 await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
@@ -426,7 +458,7 @@ public sealed partial class FoodPage : Page
         return false;
     }
 
-    private async Task BehindSaveFood(TblFood viewModelFoodSelected, string viewModelSelectedPath)
+    private async Task BehindSaveFood(TblFood viewModelFoodSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -474,10 +506,396 @@ public sealed partial class FoodPage : Page
 
     #endregion [Food Methods]                    
 
+    #region [Image Methods]
+
+    private async void AddImage_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            BackDetailExpanders();
+            await AddImage();
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
+    }
+
+    private async Task AddImage()
+    {
+        InfoImage.Loaded += (s, e) =>
+        {
+            InfoImage.Focus(FocusState.Programmatic);
+        };
+
+        ViewModel.IsInEditImage = true;
+        ViewModel.IsNewImage = true;
+
+        await ViewModel.AddImageAsync();
+
+        if (ViewModel.Tbl81ImagesList != null)
+        {
+            ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[0];
+        }
+
+        ImageDetailExpander.IsExpanded = true;
+        ImageDetailExpander.Visibility = Visibility.Visible;
+
+        //FoodDetailExpander.IsExpanded = false;
+        //ImagesExpander.IsExpanded = false;
+
+        //New Image search
+        OpenFileDialog();
+        ViewModel.RefreshImageItems();
+        InfoImage.PlaceholderText = StringsRes.EnterText;
+    }
+
+    private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
+    {
+        (sender as DataGrid).Sort(e.Column, ViewModel.Tbl81ImagesList.Sort);
+    }
+
+    private void AddNewImageCanceled(object sender, EventArgs e) => ImagesExpander.IsExpanded = false;
+
+    private async void ViewImageHyperlinkButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await ViewImageHyperlink();
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
+    }
+    private Task ViewImageHyperlink()
+    {
+        ViewModel.IsInEditImage = false;
+        ViewModel.IsNewImage = false;
+        ImageDetailExpander.IsExpanded = true;
+        ImageDetailExpander.Visibility = Visibility.Visible;
+        if (ImageDataGrid.SelectedIndex == -1)
+        {
+            _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
+        }
+        else
+        {
+            //SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.FiSpeciesId);
+            SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private void CancelEditsImageAsync(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.IsNewImage)
+        {
+            ImageDetailExpander.IsExpanded = false;
+            ImageDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
+        else
+        {
+            CancelImageEdits();
+        }
+    }
+    private void CancelImageEdits()
+    {
+        var x = (DataGrid)FindName("ImageDataGrid");
+        var iNdx = x.SelectedIndex;
+        if (iNdx is not -1)
+        {
+            ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
+
+            //SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.FiSpeciesId);
+            SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+            ImageSingles();
+        }
+        else
+        {
+            ImageDetailExpander.IsExpanded = false;
+            ImageDetailExpander.Visibility = Visibility.Collapsed;
+            _ = Refresh();
+        }
+        ViewModel.IsInEditImage = false;
+        ViewModel.IsNewImage = false;
+    }
+    private void ImageSingles()
+    {
+        ViewModel.ImageSelected.FiSpeciesId = SingleImage.FiSpeciesId;
+        ViewModel.ImageSelected.Valid = SingleImage.Valid;
+        ViewModel.ImageSelected.ValidYear = SingleImage.ValidYear;
+        ViewModel.ImageSelected.Filestream = SingleImage.Filestream;
+        ViewModel.ImageSelected.FilestreamId = SingleImage.FilestreamId;
+        ViewModel.ImageSelected.ImageData = SingleImage.ImageData;
+        ViewModel.ImageSelected.ImageMimeType = SingleImage.ImageMimeType;
+        ViewModel.ImageSelected.Info = SingleImage.Info;
+        ViewModel.ImageSelected.Memo = SingleImage.Memo;
+        ViewModel.ImageSelected.ShotDate = SingleImage.ShotDate;
+    }
+    private async Task RevertChangesImageAsync()
+    {
+        ViewModel.IsInEditImage = false;
+        if (ViewModel.IsModifiedImage)
+        {
+            await RefreshImageAsync();
+            ViewModel.IsModifiedImage = false;
+        }
+    }
+    private async Task RefreshImageAsync()
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            if (ImageDataGrid.SelectedIndex == -1)
+            {
+                _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
+            }
+            else
+            {
+                //SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.FiSpeciesId);
+                SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+                ImageSingles();
+            }
+        });
+    }
+
+    private async void DeleteImage_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await DeleteImage();
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
+    }
+
+    private async Task DeleteImage()
+    {
+        var deleteDialog = new DeleteDialog
+        {
+            PrimaryButtonText = StringsRes.Delete,
+            SecondaryButtonText = StringsRes.DoNotDelete,
+            CloseButtonText = StringsRes.Cancel,
+            Title = StringsRes.Delete,
+            XamlRoot = Content.XamlRoot
+        };
+        await deleteDialog.ShowAsync();
+        var res = deleteDialog.Result;
+
+        switch (res)
+        {
+            case DeleteDialogResult.Delete:
+                await ViewModel.DeleteImageAsync(ViewModel.ImageSelected);
+                await Refresh();
+                break;
+            case DeleteDialogResult.DontDelete:
+                await RevertChangesImageAsync();
+                break;
+            case DeleteDialogResult.Cancel:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private async void SaveImage_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            await SaveImage();
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
+    }
+
+    private async Task SaveImage()
+    {
+        var saveDialog = new SaveChangesDialog
+        {
+            PrimaryButtonText = StringsRes.Save,
+            SecondaryButtonText = StringsRes.DoNotSave,
+            CloseButtonText = StringsRes.Cancel,
+            Title = StringsRes.Save,
+            XamlRoot = Content.XamlRoot
+        };
+        await saveDialog.ShowAsync();
+        var res = saveDialog.Result;
+
+        switch (res)
+        {
+            case SaveChangesDialogResult.Save:
+                if (await BeforeSaveImage())
+                {
+                    return;
+                }
+                await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
+                await BehindSaveImage(ViewModel.ImageSelected, ViewModel.SelectedPath);
+                await Refresh();
+                break;
+            case SaveChangesDialogResult.DontSave:
+                ViewModel.IsModifiedImage = true;
+                await RevertChangesImageAsync();
+                break;
+            case SaveChangesDialogResult.Cancel:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+    }
+
+    private async Task<bool> BeforeSaveImage()
+    {
+        ViewModel.Tbl81ImagesList ??= [];
+        ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            .Where(a => a.Info == ViewModel.ImageSelected.Info &&
+                        a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
+                        a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
+
+        if (ViewModel.IsNewImage)
+        {
+            if (ViewModel.Tbl81ImagesList.Count != 0)
+            {
+                await AllDialogs.DatasetExistInfoMessageDialogAsync();
+                return true;
+            }
+        }
+        ViewModel.IsModifiedImage = true;
+        return false;
+    }
+    private async Task BehindSaveImage(Tbl81Image viewModelImageSelected, string viewModelSelectedPath)
+    {
+        await _dispatcherQueue.EnqueueAsync(() =>
+        {
+            ViewModel.Tbl81ImagesList ??= [];
+            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+        });
+        ViewModel.RefreshImageItems();
+
+        if (ViewModel.Tbl81ImagesList.Count == 0)
+        {
+            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+            ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
+            await Refresh();
+            ImagesExpander.Visibility = Visibility.Collapsed;
+            ImageDataGrid.ItemsSource = null;
+        }
+        else
+        {
+            ImagesExpander.Visibility = Visibility.Visible;
+            ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
+            ImageDataGrid.SelectedIndex = 0;
+        }
+        BackDetailExpanders();
+        ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
+    }
+
+    private static byte[] LoadImageData(string filePath)
+    {
+        var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        var br = new BinaryReader(fs);
+        var imageBytes = br.ReadBytes((int)fs.Length);
+        br.Close();
+        fs.Close();
+        return imageBytes;
+    }
+
+    private void BackImage_Click(object sender, RoutedEventArgs e)
+    {
+        BackDetailExpanders();
+    }
+
+    private async void OpenFileDialog()
+    {
+        try
+        {
+            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+            InitializeWithWindow.Initialize(_filePicker, hwnd);
+            _filePicker.FileTypeFilter.Add("*");
+            _filePicker.ViewMode = PickerViewMode.Thumbnail;
+            //_filePicker.FileTypeFilter.Add("*");
+            _filePicker.FileTypeFilter.Add(".jpg");
+            _filePicker.FileTypeFilter.Add(".jpeg");
+            _filePicker.FileTypeFilter.Add(".png");
+            _filePicker.FileTypeFilter.Add(".gif");
+            _filePicker.FileTypeFilter.Add(".jpe");
+            _filePicker.FileTypeFilter.Add(".bmp");
+            _filePicker.FileTypeFilter.Add(".ico");
+            _filePicker.FileTypeFilter.Add(".tif");
+            _filePicker.FileTypeFilter.Add(".tiff");
+            _filePicker.FileTypeFilter.Add(".hpd");
+            _filePicker.FileTypeFilter.Add(".jxr");
+            _filePicker.FileTypeFilter.Add(".wdp");
+            _filePicker.FileTypeFilter.Add(".hpd");
+            var file = await _filePicker.PickSingleFileAsync();
+            if (file != null && file.Path != null)
+            {
+                SelectedPathImage.Text = file.Path;
+                Image.Source = new BitmapImage(new Uri(file.Path));
+            }
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
+    }
+
+    private async void ChangeImage_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+            InitializeWithWindow.Initialize(_filePicker, hwnd);
+            _filePicker.FileTypeFilter.Add("*");
+            _filePicker.ViewMode = PickerViewMode.Thumbnail;
+            //_filePicker.FileTypeFilter.Add("*");
+            _filePicker.FileTypeFilter.Add(".jpg");
+            _filePicker.FileTypeFilter.Add(".jpeg");
+            _filePicker.FileTypeFilter.Add(".png");
+            _filePicker.FileTypeFilter.Add(".gif");
+            _filePicker.FileTypeFilter.Add(".jpe");
+            _filePicker.FileTypeFilter.Add(".bmp");
+            _filePicker.FileTypeFilter.Add(".ico");
+            _filePicker.FileTypeFilter.Add(".tif");
+            _filePicker.FileTypeFilter.Add(".tiff");
+            _filePicker.FileTypeFilter.Add(".hpd");
+            _filePicker.FileTypeFilter.Add(".jxr");
+            _filePicker.FileTypeFilter.Add(".wdp");
+            _filePicker.FileTypeFilter.Add(".hpd");
+            var file = await _filePicker.PickSingleFileAsync();
+            if (file != null && file.Path != null)
+            {
+                SelectedPathImage.Text = file.Path;
+                Image.Source = new BitmapImage(new Uri(file.Path));
+            }
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
+    }
+
+    #endregion [Image Methods]
+
     private void BackDetailExpanders()
     {
         FoodDetailExpander.IsExpanded = false;
         FoodDetailExpander.Visibility = Visibility.Collapsed;
+        ImageDetailExpander.IsExpanded = false;
+        ImageDetailExpander.Visibility = Visibility.Collapsed;
     }
 
     #region [Refresh Methods]
@@ -575,105 +993,6 @@ public sealed partial class FoodPage : Page
         ViewModel.IsDeletingFood = false;
     }
 
-
-    private async void ChangeImage_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-            InitializeWithWindow.Initialize(_filePicker, hwnd);
-            _filePicker.FileTypeFilter.Add("*");
-            _filePicker.ViewMode = PickerViewMode.Thumbnail;
-            //_filePicker.FileTypeFilter.Add("*");
-            _filePicker.FileTypeFilter.Add(".jpg");
-            _filePicker.FileTypeFilter.Add(".jpeg");
-            _filePicker.FileTypeFilter.Add(".png");
-            _filePicker.FileTypeFilter.Add(".gif");
-            _filePicker.FileTypeFilter.Add(".jpe");
-            _filePicker.FileTypeFilter.Add(".bmp");
-            _filePicker.FileTypeFilter.Add(".ico");
-            _filePicker.FileTypeFilter.Add(".tif");
-            _filePicker.FileTypeFilter.Add(".tiff");
-            _filePicker.FileTypeFilter.Add(".hpd");
-            _filePicker.FileTypeFilter.Add(".jxr");
-            _filePicker.FileTypeFilter.Add(".wdp");
-            _filePicker.FileTypeFilter.Add(".hpd");
-            var file = await _filePicker.PickSingleFileAsync();
-            if (file != null && file.Path != null)
-            {
-                SelectedPathImage.Text = file.Path;
-                Image.Source = new BitmapImage(new Uri(file.Path));
-            }
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async void AddImage_Click(object sender, RoutedEventArgs e)
-    {
-        FoodName.Loaded += (s, e) =>
-        {
-            FoodName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditFood = true;
-        ViewModel.IsNewFood = true;
-
-        await ViewModel.AddFoodAsync();
-
-        if (ViewModel.TblFoodsList != null)
-        {
-            ViewModel.FoodSelected = ViewModel.TblFoodsList[0];
-        }
-
-        ImageDetailExpander.IsExpanded = true;
-        ImageDetailExpander.Visibility = Visibility.Visible;
-
-
-        //New Image search
-        OpenFileDialog();
-        ViewModel.RefreshFoodItems();
-        FoodName.PlaceholderText = StringsRes.EnterText;
-    }
-
-    private async void OpenFileDialog()
-    {
-        try
-        {
-            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-            InitializeWithWindow.Initialize(_filePicker, hwnd);
-            _filePicker.FileTypeFilter.Add("*");
-            _filePicker.ViewMode = PickerViewMode.Thumbnail;
-            //_filePicker.FileTypeFilter.Add("*");
-            _filePicker.FileTypeFilter.Add(".jpg");
-            _filePicker.FileTypeFilter.Add(".jpeg");
-            _filePicker.FileTypeFilter.Add(".png");
-            _filePicker.FileTypeFilter.Add(".gif");
-            _filePicker.FileTypeFilter.Add(".jpe");
-            _filePicker.FileTypeFilter.Add(".bmp");
-            _filePicker.FileTypeFilter.Add(".ico");
-            _filePicker.FileTypeFilter.Add(".tif");
-            _filePicker.FileTypeFilter.Add(".tiff");
-            _filePicker.FileTypeFilter.Add(".hpd");
-            _filePicker.FileTypeFilter.Add(".jxr");
-            _filePicker.FileTypeFilter.Add(".wdp");
-            _filePicker.FileTypeFilter.Add(".hpd");
-            var file = await _filePicker.PickSingleFileAsync();
-            if (file != null && file.Path != null)
-            {
-                SelectedPathImage.Text = file.Path;
-                Image.Source = new BitmapImage(new Uri(file.Path));
-            }
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
     #endregion [Refresh Methods]
 
 }

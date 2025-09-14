@@ -412,7 +412,7 @@ public interface IDataService
     ObservableCollection<TblFood> GetFoodAsync();
     ObservableCollection<TblFood> GetFoodAsync(int foodid);
     Task<ObservableCollection<TblFood>> GetFoodAsync(string search);
-    Task<TblFood> UpsertFoodAsync(TblFood food, string viewModelSelectedPath);
+    Task<TblFood> UpsertFoodAsync(TblFood food);
     Task DeleteFoodAsync(int foodid);
 
     #endregion Food

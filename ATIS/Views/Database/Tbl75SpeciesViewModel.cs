@@ -1398,7 +1398,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     public bool CanRevertReferenceAuthor => IsModifiedReferenceAuthor && IsExistingReference;
     public bool CanRevertComment => IsModifiedComment && IsExistingComment;
     public bool CanRevertName => IsModifiedName && IsExistingName;
-    public bool CanRevertImagee => IsModifiedImage && IsExistingImage;
+    public bool CanRevertImage => IsModifiedImage && IsExistingImage;
     public bool CanRevertSynonym => IsModifiedSynonym && IsExistingSynonym;
     public bool CanRevertGeographic => IsModifiedGeographic && IsExistingGeographic;
 
