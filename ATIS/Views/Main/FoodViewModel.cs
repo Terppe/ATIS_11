@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿
+using System.Collections.ObjectModel;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -38,8 +39,7 @@ public partial class FoodViewModel : ObservableObject
         public int ImageCountId;
         public byte[] ImageFileStream;
     };
-
-    #endregion [Private Data Members]      
+    #endregion [Private Data Members]              
 
     #region [Constructor]
     public FoodViewModel(IDataService dataService)
@@ -50,15 +50,15 @@ public partial class FoodViewModel : ObservableObject
 
     private void GetAllCollections()
     {
+        TblFoodsList ??= [];
+        TblFoodsList = [.. _dataService.GetFoodAsync()];
         TblFoodsAllList ??= [];
         TblFoodsAllList = [.. _dataService.GetFoodAsync()];
     }
     public FoodViewModel()
     {
-
     }
-
-    #endregion [Constructor]  
+    #endregion [Constructor]      
 
 
     //    Part 1    
@@ -171,16 +171,19 @@ public partial class FoodViewModel : ObservableObject
         }
     }
 
-    private static async Task DeleteFood(int foodid)
+    private async Task DeleteFood(int foodid)
     {
-        var food = await Context.TblFoods.FirstOrDefaultAsync(b => b.FoodId == foodid);
-        if (food != null)
+        await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            await RemoveExtras.RemoveImagesByFoodId(foodid);
+            var food = await Context.TblFoods.FirstOrDefaultAsync(b => b.FoodId == foodid);
+            if (food != null)
+            {
+                await RemoveExtras.RemoveImagesByFoodId(foodid);
 
-            Context.TblFoods.Remove(food);
-            await Context.SaveChangesAsync();
-        }
+                Context.TblFoods.Remove(food);
+                await Context.SaveChangesAsync();
+            }
+        });
     }
 
     #endregion [Methods Food ]  
@@ -220,7 +223,7 @@ public partial class FoodViewModel : ObservableObject
             IsInEditImage = true;
             IsNewImage = true;
 
-          var  foodId = FoodSelected.FoodId;
+            var foodId = FoodSelected.FoodId;
 
             Tbl81ImagesList ??= [];
             Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, FoodId = foodId });
@@ -331,10 +334,12 @@ public partial class FoodViewModel : ObservableObject
         return imageBytes;
     }
 
-    #endregion [Methods Image]
+    #endregion [Methods Image]   
+
 
 
     //    Part 2    
+
 
     #region Image
 
@@ -387,18 +392,18 @@ public partial class FoodViewModel : ObservableObject
         ImageSource = image;
     }
 
-    #endregion
-
+    #endregion 
     #region All Properties
 
     #region [Propertys]
 
-    //------------IsModified--------------------------------------                 
+    //------------IsModified--------------------------------------
     public bool IsModifiedFood { get; set; }
     public bool IsModifiedImage { get; set; }
     //------------Load--------------------------------------
     private bool IsLoaded => FoodItems != null;
     public bool IsNotLoaded => !IsLoaded;
+
     private bool _isLoading;
     public bool IsLoading
     {
@@ -418,7 +423,6 @@ public partial class FoodViewModel : ObservableObject
         get => _isDeletingImage;
         set => SetProperty(ref _isDeletingImage, value);
     }
-
     //------------IsNew---------------------------------------
     private bool _isNewFood;
     public bool IsNewFood
@@ -432,7 +436,6 @@ public partial class FoodViewModel : ObservableObject
         get => _isNewImage;
         set => SetProperty(ref _isNewImage, value);
     }
-
     //----------IsExisting-----------------------------------------
     private bool _isExistingFood;
     public bool IsExistingFood
@@ -447,7 +450,7 @@ public partial class FoodViewModel : ObservableObject
         set => SetProperty(ref _isExistingImage, value);
     }
 
-    //-----------IsInEdit----------------------------------------                      
+    //-----------IsInEdit----------------------------------------
     private bool _isInEditFood = false;
     public bool IsInEditFood
     {
@@ -460,7 +463,6 @@ public partial class FoodViewModel : ObservableObject
         get => _isInEditImage;
         set => SetProperty(ref _isInEditImage, value);
     }
-
     //----------StartEdit-----------------------------------------
     public void StartEditFood()
     {
@@ -472,13 +474,12 @@ public partial class FoodViewModel : ObservableObject
         IsInEditImage = true;
         IsModifiedImage = false;
     }
-
     //------------BeginEdit---------------------------------------
     public static void BeginEdit()
     {
         // Not used.
     }
-    //---------------EndEdit------------------------------------                                      
+    //---------------EndEdit------------------------------------
     public async void EndEditFood() => await SaveFoodAsync(FoodSelected);
     public async void EndEditImage() => await SaveImageAsync(ImageSelected, SelectedPath);
     //-------------CanRefresh--------------------------------------
@@ -488,7 +489,7 @@ public partial class FoodViewModel : ObservableObject
     public bool CanRevertFood => IsModifiedFood && IsExistingFood;
     public bool CanRevertImage => IsModifiedImage && IsExistingImage;
 
-    #endregion [Propertys]     
+    #endregion [Propertys]           
 
     #region Selected Properties
 
@@ -519,7 +520,6 @@ public partial class FoodViewModel : ObservableObject
             _selectedFilestream = _dataSet.ImageFileStream;
         }
     }
-
     #endregion Selected Properties    
 
     #region Public Properties
@@ -543,7 +543,6 @@ public partial class FoodViewModel : ObservableObject
             _imageDataSetCount = value; OnPropertyChanged();
         }
     }
-
     //---------------------------------------
     private Data _dataSet;
 
@@ -566,8 +565,6 @@ public partial class FoodViewModel : ObservableObject
         }
     }
 
-    //---------------------------------------------------
-
     private ObservableCollection<TblFood> _tblFoodsList;
     public ObservableCollection<TblFood> TblFoodsList
     {
@@ -587,6 +584,7 @@ public partial class FoodViewModel : ObservableObject
             _tblFoodsAllList = value; OnPropertyChanged();
         }
     }
+
     private ObservableCollection<Tbl81Image> _tbl81ImagesList;
 
     public ObservableCollection<Tbl81Image> Tbl81ImagesList
@@ -598,8 +596,7 @@ public partial class FoodViewModel : ObservableObject
         }
     }
 
-
-    #endregion Public Properties    
+    #endregion Public Properties         
 
     #region Refresh Methods
 
@@ -624,7 +621,6 @@ public partial class FoodViewModel : ObservableObject
             }
         }
     }
-
     public void RefreshImageItems()
     {
         ImageItems.Clear();
@@ -646,10 +642,9 @@ public partial class FoodViewModel : ObservableObject
             }
         }
     }
-
     #endregion Refresh Methods
 
-    #endregion All Properties 
+    #endregion All Properties     
 
 
 

@@ -3631,7 +3631,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion UserProfile
 
-
     #region Food
     public ObservableCollection<TblFood> GetFoodAsync()
     {
@@ -3688,28 +3687,6 @@ public partial class DataService : ObservableObject, IDataService
         return food;
     }
 
-   // public async Task<TblFood> UpsertFoodAsync(TblFood food)
-   // {
-    //    var current = await Context.TblFoods.FirstOrDefaultAsync(b => b.FoodId == food.FoodId);
-    //    if (null == current)
-    //    {
-    //        //country.CountId = RandomHelper.Randomnumber();
-    //        //country.Writer = Environment.UserName;
-    //        //country.WriterDate = DateTime.Now;
-    //        //country.Updater = Environment.UserName;
-    //        //country.UpdaterDate = DateTime.Now;
-    //        Context.TblFoods.Add(food);
-    //    }
-    //    else
-    //    {
-    //        //country.Updater = Environment.UserName;
-    //        //country.UpdaterDate = DateTime.Now;
-    //        Context.Entry(current).CurrentValues.SetValues(food);
-    //    }
-    //    await Context.SaveChangesAsync();
-    //    return food;
-    //}
-
     public async Task DeleteFoodAsync(int foodid)
     {
         var food = await Context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == foodid);
@@ -3721,6 +3698,142 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     #endregion Food
+
+    #region Disease
+    public ObservableCollection<TblDisease> GetDiseaseAsync()
+    {
+        var collection = new ObservableCollection<TblDisease>(Context.TblDiseases
+            .AsNoTracking()
+            .OrderBy(a => a.DiseaseName));
+        return collection;
+    }
+
+    public ObservableCollection<TblDisease> GetDiseaseAsync(int diseaseid)
+    {
+        var collection = new ObservableCollection<TblDisease>(Context.TblDiseases
+        .AsNoTracking()
+            .Where(e => e.DiseaseId == diseaseid)
+            .OrderBy(k => k.DiseaseName)
+        );
+
+        return collection;
+    }
+
+    public async Task<ObservableCollection<TblDisease>> GetDiseaseAsync(string search)
+    {
+        var collection = int.TryParse(search, out var id)
+            ? new ObservableCollection<TblDisease>(Context.TblDiseases
+                .Where(e => e.DiseaseId == id))
+            : new ObservableCollection<TblDisease>(Context.TblDiseases
+                .Where(e => e.DiseaseName.StartsWith(search))
+                .OrderBy(a => a.DiseaseName));
+
+        await Task.CompletedTask;
+        return collection;
+    }
+
+    public async Task<TblDisease> UpsertDiseaseAsync(TblDisease disease)
+    {
+        var current = await Context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == disease.DiseaseId);
+        if (null == current)
+        {
+            disease.CountId = RandomHelper.Randomnumber();
+            disease.Writer = Environment.UserName;
+            disease.WriterDate = DateTime.Now;
+            disease.Updater = Environment.UserName;
+            disease.UpdaterDate = DateTime.Now;
+
+            Context.TblDiseases.Add(disease);
+        }
+        else
+        {
+            disease.Updater = Environment.UserName;
+            disease.UpdaterDate = DateTime.Now;
+            Context.Entry(current).CurrentValues.SetValues(disease);
+        }
+        await Context.SaveChangesAsync();
+        return disease;
+    }
+
+    public async Task DeleteDiseaseAsync(int diseaseid)
+    {
+        var disease = await Context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == diseaseid);
+        if (null != disease)
+        {
+            Context.TblDiseases.Remove(disease);
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    #endregion Disease
+
+    #region Miscellaneous
+    public ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync()
+    {
+        var collection = new ObservableCollection<TblMiscellaneous>(Context.TblMiscellaneousses
+            .AsNoTracking()
+            .OrderBy(a => a.MiscellaneousName));
+        return collection;
+    }
+
+    public ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync(int miscellaneousid)
+    {
+        var collection = new ObservableCollection<TblMiscellaneous>(Context.TblMiscellaneousses
+        .AsNoTracking()
+            .Where(e => e.MiscellaneousId == miscellaneousid)
+            .OrderBy(k => k.MiscellaneousName)
+        );
+
+        return collection;
+    }
+
+    public async Task<ObservableCollection<TblMiscellaneous>> GetMiscellaneousAsync(string search)
+    {
+        var collection = int.TryParse(search, out var id)
+            ? new ObservableCollection<TblMiscellaneous>(Context.TblMiscellaneousses
+                .Where(e => e.MiscellaneousId == id))
+            : new ObservableCollection<TblMiscellaneous>(Context.TblMiscellaneousses
+                .Where(e => e.MiscellaneousName.StartsWith(search))
+                .OrderBy(a => a.MiscellaneousName));
+
+        await Task.CompletedTask;
+        return collection;
+    }
+
+    public async Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous)
+    {
+        var current = await Context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneous.MiscellaneousId);
+        if (null == current)
+        {
+            miscellaneous.CountId = RandomHelper.Randomnumber();
+            miscellaneous.Writer = Environment.UserName;
+            miscellaneous.WriterDate = DateTime.Now;
+            miscellaneous.Updater = Environment.UserName;
+            miscellaneous.UpdaterDate = DateTime.Now;
+
+            Context.TblMiscellaneousses.Add(miscellaneous);
+        }
+        else
+        {
+            miscellaneous.Updater = Environment.UserName;
+            miscellaneous.UpdaterDate = DateTime.Now;
+            Context.Entry(current).CurrentValues.SetValues(miscellaneous);
+        }
+        await Context.SaveChangesAsync();
+        return miscellaneous;
+    }
+
+    public async Task DeleteMiscellaneousAsync(int miscellaneousid)
+    {
+        var miscellaneous = await Context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneousid);
+        if (null != miscellaneous)
+        {
+            Context.TblMiscellaneousses.Remove(miscellaneous);
+            await Context.SaveChangesAsync();
+        }
+    }
+
+    #endregion Miscellaneous
 
     #endregion CRUD
 

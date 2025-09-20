@@ -395,6 +395,14 @@ public partial class App : Application
     {
         return Context.TblFoods.SingleOrDefault(a => a.FoodId == id);
     }
+    public static TblDisease SingleDisease(int id)
+    {
+        return Context.TblDiseases.SingleOrDefault(a => a.DiseaseId == id);
+    }
+    public static TblMiscellaneous SingleMiscellaneous(int id)
+    {
+        return Context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == id);
+    }
 
 
     //-----------------------------------------------------
@@ -452,6 +460,14 @@ public partial class App : Application
     public static Tbl81Image SingleImageFood(int imageId, int? foodId)
     {
         return Context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.FoodId == foodId);
+    }
+    public static Tbl81Image SingleImageDisease(int imageId, int? diseaseId)
+    {
+        return Context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.DiseaseId == diseaseId);
+    }
+    public static Tbl81Image SingleImageMiscellaneous(int imageId, int? miscellaneousId)
+    {
+        return Context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.MiscellaneousId == miscellaneousId);
     }
 
     //------------------------------------------------------------------

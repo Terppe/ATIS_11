@@ -19,6 +19,26 @@ public static class RemoveExtras
             await Context.SaveChangesAsync();
         }
     }
+    //--------------Disease----------------------
+    public static async Task RemoveImagesByDiseaseId(int diseaseid)
+    {
+        var images = await Context.Tbl81Images.Where(c => c.DiseaseId == diseaseid).ToListAsync();
+        if (images.Count != 0)
+        {
+            Context.Tbl81Images.RemoveRange(images);
+            await Context.SaveChangesAsync();
+        }
+    }
+    //--------------Miscellaneous----------------------
+    public static async Task RemoveImagesByMiscellaneousId(int miscellaneousid)
+    {
+        var images = await Context.Tbl81Images.Where(c => c.MiscellaneousId == miscellaneousid).ToListAsync();
+        if (images.Count != 0)
+        {
+            Context.Tbl81Images.RemoveRange(images);
+            await Context.SaveChangesAsync();
+        }
+    }
 
     //------------PlSpecies-------------------
     public static async Task RemoveReferencesByPlSpeciesId(int plspeciesid)

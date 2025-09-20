@@ -38,11 +38,6 @@ public class TblDisease
     public DateTime UpdaterDate { get; set; }
     [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string Memo { get; set; }
-    public byte[] ImageData { get; set; }
-    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string ImageMimeType { get; set; }
-    public byte[] Filestream { get; set; }
-    public Guid FilestreamId { get; set; }
     //     public byte[] RowVersion { get; set; }
 
 

@@ -15,6 +15,17 @@
 
     <!--  FoodPage.xaml  Skriptdatum: 09.09.2025  10:32  -->
 
+    <!--<Border
+        Margin="0"
+        BorderBrush="Blue"
+        BorderThickness="0.5"
+        CornerRadius="5">
+        <TextBlock
+            Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+            Style="{ThemeResource CaptionTextBlockStyle}"
+            Text="DiseasePage" />
+    </Border>-->
+
     <Page.Resources>
         <conv:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         <conv:ImageSourceConverter x:Key="ImageSourceConverter" />

@@ -69,6 +69,7 @@ public sealed partial class FoodPage : Page
             if (string.IsNullOrEmpty(_search))
             {
                 ViewModel.TblFoodsList?.Clear();
+                ViewModel.Tbl81ImagesList?.Clear();
 
                 FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
                 FoodDetailExpander.Visibility = Visibility.Collapsed;
@@ -582,7 +583,6 @@ public sealed partial class FoodPage : Page
         }
         else
         {
-            //SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.FiSpeciesId);
             SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
         }
 
@@ -610,7 +610,6 @@ public sealed partial class FoodPage : Page
         {
             ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
 
-            //SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.FiSpeciesId);
             SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
             ImageSingles();
         }
@@ -655,7 +654,6 @@ public sealed partial class FoodPage : Page
             }
             else
             {
-                //SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.FiSpeciesId);
                 SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
                 ImageSingles();
             }
@@ -738,7 +736,7 @@ public sealed partial class FoodPage : Page
                     return;
                 }
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
-                await BehindSaveImage(ViewModel.ImageSelected, ViewModel.SelectedPath);
+                await BehindSaveImage(ViewModel.ImageSelected);
                 await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
@@ -772,7 +770,7 @@ public sealed partial class FoodPage : Page
         ViewModel.IsModifiedImage = true;
         return false;
     }
-    private async Task BehindSaveImage(Tbl81Image viewModelImageSelected, string viewModelSelectedPath)
+    private async Task BehindSaveImage(Tbl81Image viewModelImageSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -890,6 +888,7 @@ public sealed partial class FoodPage : Page
 
     #endregion [Image Methods]
 
+    #region [Refresh Methods]
     private void BackDetailExpanders()
     {
         FoodDetailExpander.IsExpanded = false;
@@ -898,7 +897,6 @@ public sealed partial class FoodPage : Page
         ImageDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -941,7 +939,6 @@ public sealed partial class FoodPage : Page
 
                 ViewModel.FoodSelected = ViewModel.TblFoodsList[iNdx];
             }
-            FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
             FoodDataGrid.SelectedIndex = iNdx;
 
             await _dispatcherQueue.EnqueueAsync(() =>
@@ -963,14 +960,6 @@ public sealed partial class FoodPage : Page
                          .OrderBy(a => a.FoodName)];
                 }
             });
-
-            if (ViewModel.TblFoodsList is { Count: 0 })
-            {
-                ViewModel.TblFoodsList?.Clear();
-                ViewModel.IsLoading = false;
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
 
             FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
 

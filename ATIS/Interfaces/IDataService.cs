@@ -417,6 +417,26 @@ public interface IDataService
 
     #endregion Food
 
+    #region Disease
+
+    ObservableCollection<TblDisease> GetDiseaseAsync();
+    ObservableCollection<TblDisease> GetDiseaseAsync(int diseaseid);
+    Task<ObservableCollection<TblDisease>> GetDiseaseAsync(string search);
+    Task<TblDisease> UpsertDiseaseAsync(TblDisease disease);
+    Task DeleteDiseaseAsync(int diseaseid);
+
+    #endregion Disease
+
+    #region Disease
+
+    ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync();
+    ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync(int miscellaneousid);
+    Task<ObservableCollection<TblMiscellaneous>> GetMiscellaneousAsync(string search);
+    Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous);
+    Task DeleteMiscellaneousAsync(int miscellaneousid);
+
+    #endregion Disease
+
     #endregion CRUD
 
     #region Search_Gets
