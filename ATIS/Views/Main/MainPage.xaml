@@ -620,6 +620,30 @@
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
+                        <NavigationViewItem x:Name="NavDiseases1"
+                                            loca:Uids.Uid="Nav_Diseases"
+                                            Tag="ATIS.Views.Database.TblDiseaseListPage">
+                            <NavigationViewItem.Icon>
+                                <BitmapIcon ShowAsMonochrome="False"
+                                            UriSource="ms-appx:///Assets/Fluent/database.png" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Name="NavFoods1"
+                                            loca:Uids.Uid="Nav_Foods"
+                                            Tag="ATIS.Views.Database.TblFoodListPage">
+                            <NavigationViewItem.Icon>
+                                <BitmapIcon ShowAsMonochrome="False"
+                                            UriSource="ms-appx:///Assets/Fluent/database.png" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Name="NavMiscellaneousses1"
+                                            loca:Uids.Uid="Nav_Miscellaneousses"
+                                            Tag="ATIS.Views.Database.TblMiscellaneousListPage">
+                            <NavigationViewItem.Icon>
+                                <BitmapIcon ShowAsMonochrome="False"
+                                            UriSource="ms-appx:///Assets/Fluent/database.png" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
                         <NavigationViewItem x:Name="NavUserProfiles"
                                             loca:Uids.Uid="Nav_UserProfiles"
                                             Tag="ATIS.Views.Database.TblUserProfileListPage">

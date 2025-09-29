@@ -19,6 +19,7 @@ using Microsoft.UI.Xaml.Documents;
 using WinUI3Localizer;
 using WinUIEx;
 using FoodPage = ATIS.Views.Main.FoodPage;
+using TblFoodViewModel = ATIS.Views.Database.TblFoodViewModel;
 
 namespace ATIS;
 
@@ -201,8 +202,11 @@ public partial class App : Application
             json.ConfigSectionPage(typeof(Tbl93CommentListPage));
             json.ConfigSectionPage(typeof(TblCountryListPage));
             json.ConfigSectionPage(typeof(TblUserProfileListPage));
-            json.ConfigSectionPage(typeof(DiseasePage));
+            json.ConfigSectionPage(typeof(TblFoodListPage));
             json.ConfigSectionPage(typeof(FoodPage));
+            json.ConfigSectionPage(typeof(TblDiseaseListPage));
+            json.ConfigSectionPage(typeof(DiseasePage));
+            json.ConfigSectionPage(typeof(TblMiscellaneousListPage));
             json.ConfigSectionPage(typeof(MiscellaneousPage));
             json.ConfigSectionPage(typeof(UserAreaPage));
             json.ConfigSectionPage(typeof(AdminAreaPage));
@@ -265,8 +269,11 @@ public partial class App : Application
         services.AddTransient<Tbl93CommentViewModel>();
         services.AddTransient<TblCountryViewModel>();
         services.AddTransient<TblUserProfileViewModel>();
-        services.AddTransient<DiseaseViewModel>();
+        services.AddTransient<TblFoodViewModel>();
         services.AddTransient<FoodViewModel>();
+        services.AddTransient<TblDiseaseViewModel>();
+        services.AddTransient<DiseaseViewModel>();
+        services.AddTransient<TblMiscellaneousViewModel>();
         services.AddTransient<MiscellaneousViewModel>();
         services.AddTransient<UserAreaViewModel>();
         services.AddTransient<AdminAreaViewModel>();

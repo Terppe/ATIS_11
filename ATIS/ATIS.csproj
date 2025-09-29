@@ -77,6 +77,45 @@
 		<Generator>TextTemplatingFileGenerator</Generator>
 		<LastGenOutput>BreadcrumbPageMappings.cs</LastGenOutput>
 	</None>
+	<Page Update="Views\Main\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\FoodPdf\ReportFoodsWindow.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateHyperlinkDiseaseControl.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateHeaderDiseaseControl.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateDiseaseControl.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePdf\SearchItemTemplateTblDiseaseControl.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePdf\ReportDiseasesWindow.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\FoodPdf\SearchItemTemplateTblFoodControl.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="Views\Main\MiscellaneousPage.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\DiseasePage.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\FoodPage.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\Main\MiscellaneousPdf\SearchItemTemplateTblMiscellaneousControl.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
 	<Page Update="Views\Main\SplashWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -661,8 +700,16 @@
 		<None Remove="Views\Database\TblUserProfileListPage.xaml" />
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
+		<None Remove="Views\Main\DiseasePdf\ReportDiseasesWindow.xaml" />
+		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateDiseaseControl.xaml" />
+		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateHeaderDiseaseControl.xaml" />
+		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl.xaml" />
+		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateHyperlinkDiseaseControl.xaml" />
+		<None Remove="Views\Main\DiseasePdf\SearchItemTemplateTblDiseaseControl.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
+		<None Remove="Views\Main\FoodPdf\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Main\MiscellaneousPage.xaml" />
+		<None Remove="Views\Main\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml" />
 		<None Remove="Views\Main\SpeciesPage.xaml" />
 		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Main\UtilityPage.xaml" />
@@ -859,10 +906,10 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2025.7.1" />
+		<PackageReference Include="QuestPDF" Version="2025.7.2" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />

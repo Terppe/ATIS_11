@@ -675,6 +675,18 @@ public sealed partial class MainPage : Page
         {
             NavFrame.Navigate(typeof(TblUserProfileListPage));
         }
+        if ((string)args.ChosenSuggestion == (string)NavDiseases1.Content)
+        {
+            NavFrame.Navigate(typeof(TblDiseaseListPage));
+        }
+        if ((string)args.ChosenSuggestion == (string)NavFoods1.Content)
+        {
+            NavFrame.Navigate(typeof(TblFoodListPage));
+        }
+        if ((string)args.ChosenSuggestion == (string)NavMiscellaneousses1.Content)
+        {
+            NavFrame.Navigate(typeof(TblMiscellaneousListPage));
+        }
 
         //--------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavDiseases.Content)

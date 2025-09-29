@@ -14,6 +14,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     private readonly AtisDbContext _context = new();
     private static int _fishId;
     private static int _plantId;
+    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
 
     #endregion [Private Data Members]
 
@@ -3857,6 +3858,12 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         {
             _searchFiSpeciesName = value; OnPropertyChanged();
         }
+    }
+    private TblDisease _diseaseSelected = null!;
+    public TblDisease DiseaseSelected
+    {
+        get => _diseaseSelected;
+        set => SetProperty(ref _diseaseSelected, value);
     }
 
     private ObservableCollection<Tbl69FiSpecies> _tbl69FiSpeciessesList = null!;

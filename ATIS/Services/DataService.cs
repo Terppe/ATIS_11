@@ -3838,6 +3838,21 @@ public partial class DataService : ObservableObject, IDataService
     #endregion CRUD
 
     #region Search_Gets
+
+    public ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText)
+    {
+        if (Context.TblDiseases != null)
+        {
+            var collection = new ObservableCollection<TblDisease>(Context.TblDiseases
+                .Where(e => e.DiseaseName.StartsWith(filterText))
+                .OrderBy(e => e.DiseaseName)
+            );
+            return collection;
+
+        }
+        return null!;
+    }
+
     public ObservableCollection<Tbl03Regnum> GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(string filterText)
     {
         if (Context.Tbl03Regnums != null)

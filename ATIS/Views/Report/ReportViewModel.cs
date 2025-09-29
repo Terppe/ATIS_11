@@ -13,6 +13,8 @@ public class ReportViewModel : ObservableObject
 
     private readonly IDataService _dataService;
     private readonly AtisDbContext _context = new();
+    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
+    public ObservableCollection<TblFood> FoodItems { get; } = [];
     private static int _fishId;
     private static int _plantId;
 
@@ -3078,6 +3080,18 @@ public class ReportViewModel : ObservableObject
         get => _commentSelected;
         set => SetProperty(ref _commentSelected, value);
     }
+    private TblFood _foodSelected = null!;
+    public TblFood FoodSelected
+    {
+        get => _foodSelected;
+        set => SetProperty(ref _foodSelected, value);
+    }
+    private TblMiscellaneous _miscellaneousSelected = null!;
+    public TblMiscellaneous MiscellaneousSelected
+    {
+        get => _miscellaneousSelected;
+        set => SetProperty(ref _miscellaneousSelected, value);
+    }
 
     #endregion
 
@@ -3503,7 +3517,7 @@ public class ReportViewModel : ObservableObject
 
     #region Items
 
-    public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = new();
+    public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = new();
     public ObservableCollection<Tbl09Division> DivisionItems { get; } = new();
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = new();
@@ -3785,6 +3799,12 @@ public class ReportViewModel : ObservableObject
         {
             _searchFiSpeciesName = value; OnPropertyChanged();
         }
+    }
+    private TblDisease _diseaseSelected = null!;
+    public TblDisease DiseaseSelected
+    {
+        get => _diseaseSelected;
+        set => SetProperty(ref _diseaseSelected, value);
     }
 
     private ObservableCollection<Tbl69FiSpecies> _tbl69FiSpeciessesList = null!;

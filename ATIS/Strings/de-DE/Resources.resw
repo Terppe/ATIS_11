@@ -471,6 +471,12 @@
   <data name="DataGridTextColumn_DivisionName.Header" xml:space="preserve">
     <value>Abteilung Name</value>
   </data>
+  <data name="DataGridTextColumn_DiseaseName.Header" xml:space="preserve">
+    <value>Krankheit Name</value>
+  </data>
+  <data name="DataGridTextColumn_DiseaseId.Header" xml:space="preserve">
+    <value>Krankheit ID</value>
+  </data>
   <data name="DataGridTextColumn_FamilyId.Header" xml:space="preserve">
     <value>Familie ID</value>
   </data>
@@ -479,6 +485,15 @@
   </data>
   <data name="DataGridTextColumn_FoodName.Header" xml:space="preserve">
     <value>Nahrung Name</value>
+  </data>
+  <data name="DataGridTextColumn_FoodId.Header" xml:space="preserve">
+    <value>Nahrung ID</value>
+  </data>
+  <data name="DataGridTextColumn_MiscellaneousName.Header" xml:space="preserve">
+    <value> Verschiedenes Name</value>
+  </data>
+  <data name="DataGridTextColumn_MiscellaneousId.Header" xml:space="preserve">
+    <value> Verschiedenes ID</value>
   </data>
   <data name="DataGridTextColumn_FirstName.Header" xml:space="preserve">
     <value>Vorname</value>
@@ -582,6 +597,9 @@
   <data name="DataGridTextColumn_RefAuthorId.Header" xml:space="preserve">
     <value>Bezug Autor ID</value>
   </data>
+  <data name="DataGridTextColumn_Reason.Header" xml:space="preserve">
+    <value>Grund</value>
+  </data>
   <data name="DataGridTextColumn_RefAuthorName.Header" xml:space="preserve">
     <value>Bezug Autor Name</value>
   </data>
@@ -614,6 +632,9 @@
   </data>
   <data name="DataGridTextColumn_Role.Header" xml:space="preserve">
     <value>Rolle</value>
+  </data>
+  <data name="DataGridTextColumn_ShortInfo.Header" xml:space="preserve">
+    <value>Kurze Info</value>
   </data>
   <data name="DataGridTextColumn_SpeciesgroupId.Header" xml:space="preserve">
     <value>Artengruppe ID</value>
@@ -687,6 +708,9 @@
   <data name="DataGridTextColumn_SynonymName.Header" xml:space="preserve">
     <value>Synonym Name</value>
   </data>
+  <data name="DataGridTextColumn_Symptom.Header" xml:space="preserve">
+    <value>Symptom</value>
+  </data>
   <data name="DataGridTextColumn_TribusId.Header" xml:space="preserve">
     <value>Tribus ID</value>
   </data>
@@ -700,67 +724,73 @@
     <value>Jahr</value>
   </data>
   <data name="MenuFlyout_Add_Class.Text" xml:space="preserve">
-    <value>Klasse</value>
+    <value>Hinzufügen Klasse</value>
   </data>
   <data name="MenuFlyout_Add_Comment.Text" xml:space="preserve">
-    <value>Kommentar</value>
+    <value>Hinzufügen Kommentar</value>
   </data>
   <data name="MenuFlyout_Add_Family.Text" xml:space="preserve">
-    <value> Familie</value>
+    <value>Hinzufügen Familie</value>
   </data>
   <data name="MenuFlyout_Add_FiSpecies.Text" xml:space="preserve">
-    <value>FiSpecies</value>
+    <value>Hinzufügen Fischart</value>
+  </data>
+  <data name="MenuFlyout_Add_Food.Text" xml:space="preserve">
+    <value>Hinzufügen Nahrung</value>
   </data>
   <data name="MenuFlyout_Add_Genus.Text" xml:space="preserve">
-    <value>Gattung</value>
+    <value>Hinzufügen Gattung</value>
+  </data>
+  <data name="MenuFlyout_Add_Miscellaneous.Text" xml:space="preserve">
+    <value>Hinzufügen Verschiedenes</value>
   </data>
   <data name="MenuFlyout_Add_Infraclass.Text" xml:space="preserve">
-    <value>Infraklasse</value>
+    <value>Hinzufügen Infraklasse</value>
   </data>
   <data name="MenuFlyout_Add_Infrafamily.Text" xml:space="preserve">
-    <value>Infrafamilie</value>
+    <value>Hinzufügen Infrafamilie</value>
   </data>
   <data name="MenuFlyout_Add_Infraordo.Text" xml:space="preserve">
-    <value>Infraordnung</value>
+    <value>Hinzufügen Infraordnung</value>
   </data>
   <data name="MenuFlyout_Add_Infratribus.Text" xml:space="preserve">
-    <value>Infratribus</value>
+    <value>Hinzufügen Infratribus</value>
   </data>
   <data name="MenuFlyout_Add_Legio.Text" xml:space="preserve">
-    <value>Überordnung</value>
+    <value>Hinzufügen Überordnung</value>
   </data>
   <data name="MenuFlyout_Add_Ordo.Text" xml:space="preserve">
-    <value>Ordnung</value>
+    <value>Hinzufügen Ordnung</value>
   </data>
   <data name="MenuFlyout_Add_Reference_Author.Text" xml:space="preserve">
-    <value>Bezug Puplikation</value>
+    <value>Hinzufügen Bezug Puplikation</value>
   </data>
   <data name="MenuFlyout_Add_Reference_Expert.Text" xml:space="preserve">
-    <value>Bezug Experte</value>
+    <value>Hinzufügen Bezug Experte</value>
   </data>
   <data name="MenuFlyout_Add_Reference_Source.Text" xml:space="preserve">
-    <value>Bezug Quelle</value>
+    <value>Hinzufügen Bezug Quelle</value>
   </data>
   <data name="MenuFlyout_Add_Subclass.Text" xml:space="preserve">
-    <value>Unterklasse</value>
+    <value>Hinzufügen Unterklasse</value>
   </data>
   <data name="MenuFlyout_Add_Subfamily.Text" xml:space="preserve">
-    <value>Unterfamilie</value>
+    <value>Hinzufügen Unterfamilie</value>
   </data>
   <data name="MenuFlyout_Add_Subordo.Text" xml:space="preserve">
-    <value>Unterordnung</value>
+    <value>Hinzufügen Unterordnung</value>
   </data>
   <data name="MenuFlyout_Add_Subtribus.Text" xml:space="preserve">
-    <value>Untertribus</value>
+    <value>Hinzufügen Untertribus</value>
   </data>
   <data name="MenuFlyout_Add_Superfamily.Text" xml:space="preserve">
-    <value>Überfamilie</value>
+    <value>Hinzufügen Überfamilie</value>
   </data>
   <data name="MenuFlyout_Add_Supertribus.Text" xml:space="preserve">
-    <value>Übertribus</value>
+    <value>Hinzufügen Übertribus</value>
   </data>
   <data name="MenuFlyout_Add_Tribus.Text" xml:space="preserve">
-    <value>Tribus</value>
+    <value>Hinzufügen Tribus</value>
   </data>
   <data name="MenuFlyout_Copy_Class.Text" xml:space="preserve">
     <value>Copy Class</value>
@@ -826,67 +856,73 @@
     <value>Copy Tribus</value>
   </data>
   <data name="MenuFlyout_Delete_Class.Text" xml:space="preserve">
-    <value>Klasse</value>
+    <value>Löschen Klasse</value>
   </data>
   <data name="MenuFlyout_Delete_Comment.Text" xml:space="preserve">
-    <value>Kommentar</value>
+    <value>Löschen Kommentar</value>
   </data>
   <data name="MenuFlyout_Delete_Family.Text" xml:space="preserve">
-    <value>Familie</value>
+    <value>Löschen Familie</value>
   </data>
   <data name="MenuFlyout_Delete_FiSpecies.Text" xml:space="preserve">
-    <value>Delete FiSpecies</value>
+    <value>Löschen Fischart</value>
+  </data>
+  <data name="MenuFlyout_Delete_Food.Text" xml:space="preserve">
+    <value>Löschen Nahrung</value>
   </data>
   <data name="MenuFlyout_Delete_Genus.Text" xml:space="preserve">
-    <value>Gattung</value>
+    <value>Löschen Gattung</value>
   </data>
   <data name="MenuFlyout_Delete_Infraclass.Text" xml:space="preserve">
-    <value>Infraklasse</value>
+    <value>Löschen Infraklasse</value>
   </data>
   <data name="MenuFlyout_Delete_Infrafamily.Text" xml:space="preserve">
-    <value>Infrafamilie</value>
+    <value>Löschen Infrafamilie</value>
   </data>
   <data name="MenuFlyout_Delete_Infraordo.Text" xml:space="preserve">
-    <value>Infraordnung</value>
+    <value>Löschen Infraordnung</value>
   </data>
   <data name="MenuFlyout_Delete_Infratribus.Text" xml:space="preserve">
-    <value>Infratribus</value>
+    <value>Löschen Infratribus</value>
   </data>
   <data name="MenuFlyout_Delete_Legio.Text" xml:space="preserve">
-    <value>Überordnung</value>
+    <value>Löschen Überordnung</value>
+  </data>
+  <data name="MenuFlyout_Delete_Miscellaneous.Text" xml:space="preserve">
+    <value>Löschen Verschiedenes</value>
   </data>
   <data name="MenuFlyout_Delete_Ordo.Text" xml:space="preserve">
-    <value>Ordnung</value>
+    <value>Löschen Ordnung</value>
   </data>
   <data name="MenuFlyout_Delete_Reference_Author.Text" xml:space="preserve">
-    <value>Bezug Puplikation</value>
+    <value>Löschen Bezug Puplikation</value>
   </data>
   <data name="MenuFlyout_Delete_Reference_Expert.Text" xml:space="preserve">
-    <value>Bezug Experte</value>
+    <value>Löschen Bezug Experte</value>
   </data>
   <data name="MenuFlyout_Delete_Reference_Source.Text" xml:space="preserve">
-    <value>Bezug Quelle</value>
+    <value>Löschen Bezug Quelle</value>
   </data>
   <data name="MenuFlyout_Delete_Subclass.Text" xml:space="preserve">
-    <value>Unterklasse</value>
+    <value>Löschen Unterklasse</value>
   </data>
   <data name="MenuFlyout_Delete_Subfamily.Text" xml:space="preserve">
-    <value>Unterfamilie</value>
+    <value>Löschen Unterfamilie</value>
   </data>
   <data name="MenuFlyout_Delete_Subordo.Text" xml:space="preserve">
-    <value>Unterordnung</value>
+    <value>Löschen Unterordnung</value>
   </data>
   <data name="MenuFlyout_Delete_Subtribus.Text" xml:space="preserve">
-    <value>Untertribus</value>
+    <value>Löschen Untertribus</value>
   </data>
   <data name="MenuFlyout_Delete_Superfamily.Text" xml:space="preserve">
-    <value>Überfamilie</value>
+    <value>Löschen Überfamilie</value>
   </data>
   <data name="MenuFlyout_Delete_Supertribus.Text" xml:space="preserve">
-    <value>Übertribus</value>
+    <value>Löschen Übertribus</value>
   </data>
   <data name="MenuFlyout_Delete_Tribus.Text" xml:space="preserve">
-    <value>Tribus</value>
+    <value>Löschen Tribus</value>
   </data>
   <data name="MenuFlyout_Refresh_Class.Text" xml:space="preserve">
     <value>Act. Klasse</value>
@@ -960,8 +996,11 @@
   <data name="MenuFlyout_Save_Family.Text" xml:space="preserve">
     <value>Sichern Familie</value>
   </data>
+  <data name="MenuFlyout_Save_Food.Text" xml:space="preserve">
+    <value>Sichern Nahrung</value>
+  </data>
   <data name="MenuFlyout_Save_FiSpecies.Text" xml:space="preserve">
-    <value>Save FiSpecies</value>
+    <value>Sichern Fischart</value>
   </data>
   <data name="MenuFlyout_Save_Genus.Text" xml:space="preserve">
     <value>Sichern Gattung</value>
@@ -983,6 +1022,9 @@
   </data>
   <data name="MenuFlyout_Save_Ordo.Text" xml:space="preserve">
     <value>Sichern Ordnung</value>
+  </data>
+  <data name="MenuFlyout_Save_Miscellaneous.Text" xml:space="preserve">
+    <value>Sichern Verschiedenes</value>
   </data>
   <data name="MenuFlyout_Save_Reference_Author.Text" xml:space="preserve">
     <value>Sichern Bezug Puplikation</value>
@@ -2286,6 +2328,12 @@
   <data name="TextBox_DivisionName.Header" xml:space="preserve">
     <value>Abteilung Name</value>
   </data>
+  <data name="TextBox_DiseaseName.Header" xml:space="preserve">
+    <value>Krankheit Name</value>
+  </data>
+  <data name="TextBox_DiseaseId.Header" xml:space="preserve">
+    <value>Krankheit ID</value>
+  </data>
   <data name="TextBox_EngName.Header" xml:space="preserve">
     <value>Englischer Name</value>
   </data>
@@ -2472,6 +2520,9 @@
   <data name="TextBox_MemoTech.Header" xml:space="preserve">
     <value>Memo Technik</value>
   </data>
+  <data name="TextBox_MemoTherapie.Header" xml:space="preserve">
+    <value>Memo Behandlung</value>
+  </data>
   <data name="TextBox_Mobil.Header" xml:space="preserve">
     <value>Mobil</value>
   </data>
@@ -2526,8 +2577,14 @@
   <data name="TextBox_RegnumName.Header" xml:space="preserve">
     <value>Reich Name</value>
   </data>
+  <data name="TextBox_Reason.Header" xml:space="preserve">
+    <value>Grund</value>
+  </data>
   <data name="TextBox_ShotDate.Header" xml:space="preserve">
     <value>Shot Datum</value>
+  </data>
+  <data name="TextBox_ShortInfo.Header" xml:space="preserve">
+    <value>Kurze Information</value>
   </data>
   <data name="TextBox_Signature.Header" xml:space="preserve">
     <value>Unterschrift</value>
@@ -2586,6 +2643,9 @@
   <data name="TextBox_SynonymName.Header" xml:space="preserve">
     <value>Synonym Name</value>
   </data>
+  <data name="TextBox_Symptom.Header" xml:space="preserve">
+    <value>Ursache</value>
+  </data>
   <data name="TextBox_Tel.Header" xml:space="preserve">
     <value>Telefon</value>
   </data>
@@ -2611,13 +2671,13 @@
     <value>ZoomLevel</value>
   </data>
   <data name="MenuFlyout_Add_Regnum.Text" xml:space="preserve">
-    <value>Reich</value>
+    <value>Hinzufügen Reich</value>
   </data>
   <data name="MenuFlyout_Copy_Regnum.Text" xml:space="preserve">
     <value>Copy Regnum</value>
   </data>
   <data name="MenuFlyout_Delete_Regnum.Text" xml:space="preserve">
-    <value>Reich</value>
+    <value>Löschen Reich</value>
   </data>
   <data name="MenuFlyout_Refresh_Regnum.Text" xml:space="preserve">
     <value>Act. Reich</value>
@@ -2774,6 +2834,9 @@
   </data>
   <data name="TextBlock_DirectChildren.Text" xml:space="preserve">
     <value>Direkte Nachkommen</value>
+  </data>
+  <data name="TextBlock_Diseases.Text" xml:space="preserve">
+    <value>Krankheiten</value>
   </data>
   <data name="TextBlock_Experts.Text" xml:space="preserve">
     <value>Experte(n):</value>
@@ -2950,10 +3013,10 @@
     <value>Suchen</value>
   </data>
   <data name="MenuFlyout_Add_Reference.Text" xml:space="preserve">
-    <value>Bezug</value>
+    <value>Hinzufügen Bezug</value>
   </data>
   <data name="MenuFlyout_Delete_Reference.Text" xml:space="preserve">
-    <value>Bezug</value>
+    <value>Löschen Bezug</value>
   </data>
   <data name="MenuFlyout_Save_Reference.Text" xml:space="preserve">
     <value>Sichern Bezug</value>
@@ -3010,7 +3073,7 @@
     <value>Überklasse</value>
   </data>
   <data name="MenuFlyout_Add_Superclass.Text" xml:space="preserve">
-    <value>Überklasse</value>
+    <value>Hinzufügen Überklasse</value>
   </data>
   <data name="MenuFlyout_View_Details_Class.Text" xml:space="preserve">
     <value>Detailansicht Klasse</value>
@@ -3036,6 +3099,9 @@
   <data name="AppBarButtonAddDivision.Label" xml:space="preserve">
     <value>Abteilung</value>
   </data>
+  <data name="AppBarButtonAddDisease.Label" xml:space="preserve">
+    <value>Krankheit</value>
+  </data>
   <data name="TextBlock_Divisions.Text" xml:space="preserve">
     <value>Abteilungen</value>
   </data>
@@ -3060,6 +3126,9 @@
   <data name="AppBarButtonDeleteDivision.Label" xml:space="preserve">
     <value>Abteilung</value>
   </data>
+  <data name="AppBarButtonDeleteDisease.Label" xml:space="preserve">
+    <value>Krankheit</value>
+  </data>
   <data name="AppBarButtonDeleteInfraclass.Label" xml:space="preserve">
     <value>Infraklasse</value>
   </data>
@@ -3070,19 +3139,25 @@
     <value>Überklasse</value>
   </data>
   <data name="MenuFlyout_Add_Division.Text" xml:space="preserve">
-    <value>Abteilung</value>
+    <value>Hinzufügen Abteilung</value>
+  </data>
+  <data name="MenuFlyout_Add_Disease.Text" xml:space="preserve">
+    <value>Hinzufügen Krankheit</value>
   </data>
   <data name="MenuFlyout_Add_Subdivision.Text" xml:space="preserve">
-    <value>Unterabteilung</value>
+    <value>Hinzufügen Unterabteilung</value>
   </data>
   <data name="MenuFlyout_Delete_Division.Text" xml:space="preserve">
-    <value>Abteilung</value>
+    <value>Löschen Abteilung</value>
+  </data>
+  <data name="MenuFlyout_Delete_Disease.Text" xml:space="preserve">
+    <value>Löschen Krankheit</value>
   </data>
   <data name="MenuFlyout_Delete_Subdivision.Text" xml:space="preserve">
-    <value>Unterabteilung</value>
+    <value>Löschen Unterabteilung</value>
   </data>
   <data name="MenuFlyout_Delete_Superclass.Text" xml:space="preserve">
-    <value>Überklasse</value>
+    <value>Löschen Überklasse</value>
   </data>
   <data name="MenuFlyout_View_Details_Infraclass.Text" xml:space="preserve">
     <value>Detailansicht Infraklasse</value>
@@ -3109,13 +3184,13 @@
     <value>Unterklasse</value>
   </data>
   <data name="MenuFlyout_Add_Subphylum.Text" xml:space="preserve">
-    <value>Unterstamm</value>
+    <value>Hinzufügen Unterstamm</value>
   </data>
   <data name="MenuFlyout_Delete_Subphylum.Text" xml:space="preserve">
-    <value>Unterstamm</value>
+    <value>Löschen Unterstamm</value>
   </data>
   <data name="MenuFlyout_Add_Phylum.Text" xml:space="preserve">
-    <value>Stamm</value>
+    <value>Hinzufügen Stamm</value>
   </data>
   <data name="MenuFlyout_View_Details_Comment.Text" xml:space="preserve">
     <value>Detailansicht Kommentar</value>
@@ -3144,6 +3219,9 @@
   <data name="AppBarButtonAddName.Label" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="AppBarButtonAddMiscellaneous.Label" xml:space="preserve">
+    <value>Verschiedenes</value>
+  </data>
   <data name="AppBarButtonAddPlSpecies.Label" xml:space="preserve">
     <value>Pflanzenart</value>
   </data>
@@ -3157,22 +3235,22 @@
     <value>Delete Plant Species</value>
   </data>
   <data name="MenuFlyout_Add_Geographic.Text" xml:space="preserve">
-    <value>Vorkommen</value>
+    <value>Hinzufügen Vorkommen</value>
   </data>
   <data name="MenuFlyout_Add_Image.Text" xml:space="preserve">
-    <value>Bild/Video</value>
+    <value>Hinzufügen Bild/Video</value>
   </data>
   <data name="MenuFlyout_Add_Name.Text" xml:space="preserve">
-    <value>Name</value>
+    <value>Hinzufügen Name</value>
   </data>
   <data name="MenuFlyout_Add_PlSpecies.Text" xml:space="preserve">
-    <value>Add Plant Species</value>
+    <value>Hinzufügen Pflanzenart</value>
   </data>
   <data name="MenuFlyout_Add_Synonym.Text" xml:space="preserve">
-    <value>Synonym</value>
+    <value>Hinzufügen Synonym</value>
   </data>
   <data name="MenuFlyout_Delete_PlSpecies.Text" xml:space="preserve">
-    <value>Delete Plant Species</value>
+    <value>Löschen Pflanzenart</value>
   </data>
   <data name="MenuFlyout_View_Details_FiSpecies.Text" xml:space="preserve">
     <value>View Details Fish Species</value>
@@ -3223,13 +3301,13 @@
     <value>Artengruppe</value>
   </data>
   <data name="MenuFlyout_Add_Speciesgroup.Text" xml:space="preserve">
-    <value>Artengruppe</value>
+    <value>Hinzufügen Artengruppe</value>
   </data>
   <data name="MenuFlyout_Delete_Name.Text" xml:space="preserve">
-    <value>Name</value>
+    <value>Löschen Name</value>
   </data>
   <data name="MenuFlyout_Delete_Speciesgroup.Text" xml:space="preserve">
-    <value>Artengruppe</value>
+    <value>Löschen Artengruppe</value>
   </data>
   <data name="MenuFlyout_View_Details_Name.Text" xml:space="preserve">
     <value>Detailansicht Name</value>
@@ -3249,17 +3327,20 @@
   <data name="AppBarButtonDeleteFood.Label" xml:space="preserve">
     <value>Nahrung</value>
   </data>
+  <data name="AppBarButtonDeleteMiscellaneous.Label" xml:space="preserve">
+    <value>Verschiedenes</value>
+  </data>
   <data name="AppBarButtonDeleteSynonym.Label" xml:space="preserve">
     <value>Synonym</value>
   </data>
   <data name="MenuFlyout_Delete_Geographic.Text" xml:space="preserve">
-    <value>Vorkommen</value>
+    <value>Löschen Vorkommen</value>
   </data>
   <data name="MenuFlyout_Delete_Image.Text" xml:space="preserve">
-    <value>Bild/Video</value>
+    <value>Löschen Bild/Video</value>
   </data>
   <data name="MenuFlyout_Delete_Synonym.Text" xml:space="preserve">
-    <value>Synonym</value>
+    <value>Löschen Synonym</value>
   </data>
   <data name="AppBarButtonAddInfratribus.Label" xml:space="preserve">
     <value>Infratribus</value>
@@ -3345,6 +3426,9 @@
   <data name="DataGridTemplateColumn_NameId.Header" xml:space="preserve">
     <value>Name ID</value>
   </data>
+  <data name="DataGridTemplateColumn_MiscellaneousId.Header" xml:space="preserve">
+    <value>Verschiedenes ID</value>
+  </data>
   <data name="DataGridTemplateColumn_PlSpeciesId.Header" xml:space="preserve">
     <value>Art ID</value>
   </data>
@@ -3392,6 +3476,9 @@
   </data>
   <data name="DataGridTemplateColumn_CountryId.Header" xml:space="preserve">
     <value>Land ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_DiseaseId.Header" xml:space="preserve">
+    <value>Krankheit ID</value>
   </data>
   <data name="DataGridTemplateColumn_UserProfileId.Header" xml:space="preserve">
     <value>Nutzerprofile ID</value>
@@ -3457,10 +3544,13 @@
     <value>Überfamilie</value>
   </data>
   <data name="MenuFlyout_Delete_Phylum.Text" xml:space="preserve">
-    <value>Stamm</value>
+    <value>Löschen Stamm</value>
   </data>
   <data name="MenuFlyout_Save_Division.Text" xml:space="preserve">
     <value>Sichern Abteilung</value>
+  </data>
+  <data name="MenuFlyout_Save_Disease.Text" xml:space="preserve">
+    <value>Sichern Krankheit</value>
   </data>
   <data name="MenuFlyout_Save_Phylum.Text" xml:space="preserve">
     <value>Sichern Stamm</value>
@@ -3541,10 +3631,10 @@
     <value>Web-Seite für Taxonomie</value>
   </data>
   <data name="MenuFlyout_Add_Species.Text" xml:space="preserve">
-    <value>Art</value>
+    <value>Hinzufügen Art</value>
   </data>
   <data name="MenuFlyout_Delete_Species.Text" xml:space="preserve">
-    <value>Art</value>
+    <value>Löschen Art</value>
   </data>
   <data name="AppBarButtonDeleteSpecies.Label" xml:space="preserve">
     <value>Art</value>
@@ -3784,7 +3874,7 @@
     <value>Lebewesen</value>
   </data>
   <data name="MenuFlyout_Save_Species.Text" xml:space="preserve">
-    <value>Art</value>
+    <value>Sichern Art</value>
   </data>
   <data name="DataGridTextColumn_Creature.Header" xml:space="preserve">
     <value>Lebewesen</value>
@@ -3800,5 +3890,8 @@
   </data>
   <data name="AutoSuggestBox_Search_info_Id.PlaceholderText" xml:space="preserve">
     <value>Suchen Info oder ID</value>
+  </data>
+  <data name="TextBlock_Miscellaneous.Text" xml:space="preserve">
+    <value>Verschiedenes</value>
   </data>
 </root>
