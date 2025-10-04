@@ -1,12 +1,12 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Views.Main.FoodPdf;
 using ATIS.Views.Report;
-using ATIS.Views.Report.Pdf.Tbl03Regnums;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
-namespace ATIS.Views.Main.FoodPdf;
+namespace ATIS.Views.Main.Food.FoodPdf;
 
 public class TblFoodsDocument : IDocument
 {

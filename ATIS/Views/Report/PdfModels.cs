@@ -1898,4 +1898,110 @@ public class PdfModels
 
     }
 
+    public class Disease
+    {
+        public string DiseaseName
+        {
+            get; set;
+        }
+        public bool Valid
+        {
+            get; set;
+        }
+        public string ValidYear
+        {
+            get; set;
+        }
+        public string ShortInfo
+        {
+            get; set;
+        }
+        public string Symptom
+        {
+            get; set;
+        }
+        public string Reason
+        {
+            get; set;
+        }
+        public string Therapie
+        {
+            get; set;
+        }
+        public string Info
+        {
+            get; set;
+        }
+        public string Memo
+        {
+            get; set;
+        }
+
+    }
+
+    public class Food
+    {
+        public string FoodName
+        {
+            get; set;
+        }
+        public string FoodVolume
+        {
+            get; set;
+        }
+        public string Karnivore
+        {
+            get; set;
+        }
+        public string Herbivore
+        {
+            get; set;
+        }
+        public string Limnivore
+        {
+            get; set;
+        }
+        public string Omnivore
+        {
+            get; set;
+        }
+        public string RegionTop
+        {
+            get; set;
+        }
+        public string RegionMiddle
+        {
+            get; set;
+        }
+        public string RegionBottom
+        {
+            get; set;
+        }
+        public bool Valid
+        {
+            get; set;
+        }
+        public string ValidYear
+        {
+            get; set;
+        }
+        public string Info
+        {
+            get; set;
+        }
+        public string Memo
+        {
+            get; set;
+        }
+        public string Kind
+        {
+            get; set;
+        }
+        public string Help
+        {
+            get; set;
+        }
+
+    }
+
 }

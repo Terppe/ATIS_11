@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,11 +16,11 @@ using Microsoft.UI.Xaml.Navigation;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace ATIS.Views.Main.DiseasePdf;
+namespace ATIS.Views.Main.Food.FoodPdf;
 
-public sealed partial class ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl : UserControl
+public sealed partial class ReportItemTemplateHeaderTaxoNomenHeaderBodyFoodControl : UserControl
 {
-    public ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl()
+    public ReportItemTemplateHeaderTaxoNomenHeaderBodyFoodControl()
     {
         InitializeComponent();
     }

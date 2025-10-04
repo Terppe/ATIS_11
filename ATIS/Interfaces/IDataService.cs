@@ -933,6 +933,27 @@ public interface IDataService
     ObservableCollection<Tbl87Geographic> CollGeographicsByPlSpeciesId(int id);
     #endregion PlSpecies
 
+    #region Disease
+
+    TblDisease GetDiseaseSingleByDiseaseId(int id);
+
+
+    #endregion Disease
+
+    #region Food
+
+    TblFood GetFoodSingleByFoodId(int id);
+
+
+    #endregion Food
+
+    #region Miscellaneou
+
+    TblMiscellaneous GetMiscellaneousSingleByMiscellaneousId(int id);
+
+
+    #endregion Miscellaneou
+
     #endregion Report_Gets
 
 }

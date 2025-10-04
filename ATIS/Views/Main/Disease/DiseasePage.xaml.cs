@@ -3,7 +3,7 @@ using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Main.DiseasePdf;
+using ATIS.Views.Main.Disease.DiseasePdf;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
@@ -11,7 +11,7 @@ using Microsoft.UI.Dispatching;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace ATIS.Views.Main;
+namespace ATIS.Views.Main.Disease;
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>

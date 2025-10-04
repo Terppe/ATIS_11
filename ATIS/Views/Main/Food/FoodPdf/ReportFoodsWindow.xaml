@@ -12,6 +12,7 @@
     xmlns:models="using:ATIS.Models"
     xmlns:winUiEx="using:WinUIEx"
     xmlns:foodPdf="using:ATIS.Views.Main.FoodPdf"
+    xmlns:foodPdf1="using:ATIS.Views.Main.Food.FoodPdf"
     mc:Ignorable="d">
 
     <!--  ReportFoodsWindow.xaml  Skriptdatum:  15.06.2024  12:32  -->
@@ -73,7 +74,7 @@
             <DataTemplate
                 x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFood"
                 x:DataType="models:TblFood">
-                <foodPdf:ReportItemTemplateHeaderTaxoNomenHeaderBodyFoodControl />
+                <foodPdf1:ReportItemTemplateHeaderTaxoNomenHeaderBodyFoodControl />
             </DataTemplate>
             <!--  Hyperlink-ListViews  -->
             <DataTemplate

@@ -11,6 +11,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using ATIS.Views.Main;
 using WinRT.Interop;
+using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
@@ -312,6 +313,7 @@ public sealed partial class TblDiseaseListPage : Page
         ViewModel.DiseaseSelected.ShortInfo = SingleDisease.ShortInfo;
         ViewModel.DiseaseSelected.Symptom = SingleDisease.Symptom;
         ViewModel.DiseaseSelected.Reason = SingleDisease.Reason;
+        ViewModel.DiseaseSelected.Curability = SingleDisease.Curability;
         ViewModel.DiseaseSelected.Therapie = SingleDisease.Therapie;
         ViewModel.DiseaseSelected.Info = SingleDisease.Info;
         ViewModel.DiseaseSelected.Memo = SingleDisease.Memo;

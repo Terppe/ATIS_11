@@ -691,7 +691,7 @@ public sealed partial class MainPage : Page
         //--------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavDiseases.Content)
         {
-            NavFrame.Navigate(typeof(DiseasePage));
+            NavFrame.Navigate(typeof(Disease.DiseasePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavFoods.Content)

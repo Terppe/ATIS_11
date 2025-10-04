@@ -7937,6 +7937,59 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion
 
+    #region Disease
+
+    public TblDisease GetDiseaseSingleByDiseaseId(int id)
+    {
+        if (Context.TblDiseases != null)
+        {
+            var single = Context.TblDiseases.SingleOrDefault(a => a.DiseaseId == id);
+            if (single != null)
+            {
+                return single;
+            }
+        }
+        return null!;
+    }
+
+    #endregion Disease
+
+    #region Food
+
+    public TblFood GetFoodSingleByFoodId(int id)
+    {
+        if (Context.TblFoods != null)
+        {
+            var single = Context.TblFoods.SingleOrDefault(a => a.FoodId == id);
+            if (single != null)
+            {
+                return single;
+            }
+        }
+        return null!;
+    }
+
+
+    #endregion Food
+
+    #region Miscellaneous
+
+    public TblMiscellaneous GetMiscellaneousSingleByMiscellaneousId(int id)
+    {
+        if (Context.TblMiscellaneousses != null)
+        {
+            var single = Context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == id);
+            if (single != null)
+            {
+                return single;
+            }
+        }
+        return null!;
+    }
+
+
+    #endregion Miscellaneous
+
     #endregion
 
     #region "Public ObservableCollections"

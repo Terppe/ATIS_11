@@ -9,6 +9,7 @@ using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
 using ATIS.Views.Main;
+using ATIS.Views.Main.Disease;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
@@ -16,10 +17,9 @@ using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Documents;
+using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
-using FoodPage = ATIS.Views.Main.FoodPage;
-using TblFoodViewModel = ATIS.Views.Database.TblFoodViewModel;
 
 namespace ATIS;
 
@@ -146,6 +146,7 @@ public partial class App : Application
     {
         Services = ConfigureServices();
         InitializeComponent();
+        QuestPDF.Settings.License = LicenseType.Community;
     }
     public XamlRoot XamlRoot { get; set; }
 

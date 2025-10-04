@@ -1,426 +1,294 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<winUiEx:WindowEx x:Class="ATIS.Views.Main.DiseasePdf.ReportDiseasesWindow"
+<winUiEx:WindowEx x:Class="ATIS.Views.Main.Disease.DiseasePdf.ReportDiseasesWindow"
                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:converters="using:ATIS.Helpers.Converters"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                  xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
-                  xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
-                  xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
-                  xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
-                  xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
+                  xmlns:loca="using:WinUI3Localizer"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:models="using:ATIS.Models"
                   xmlns:winUiEx="using:WinUIEx"
                   mc:Ignorable="d">
 
     <!--  ReportDiseasesWindow.xaml  Skriptdatum:  15.06.2024  12:32  -->
 
     <Grid>
-        <!--<Grid.Resources>
-            <DataTemplate
-                x:Key="SearchItemTemplateTbl03Regnum"
-                x:DataType="models:Tbl03Regnum">
-                <dataTemplatesSearch:SearchItemTemplateTbl03RegnumControl />
-            </DataTemplate>
-
-            <DataTemplate
-                x:Key="SearchItemTemplateTbl06Phylum"
-                x:DataType="models:Tbl06Phylum">
-                <dataTemplatesSearch:SearchItemTemplateTbl06PhylumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="SearchItemTemplateTbl09Division"
-                x:DataType="models:Tbl09Division">
-                <dataTemplatesSearch:SearchItemTemplateTbl09DivisionControl />
-            </DataTemplate>
-
-
-            <Style
-                x:Key="NoSpacesListViewItemStyle"
-                TargetType="ListViewItem">
-                <Setter
-                    Property="MinHeight"
-                    Value="24" />
-            </Style>
-
-            --><!--  Report.Listviews  -->
-            <!--  Header  --><!--
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderRegnum"
-                x:DataType="models:Tbl03Regnum">
-                <dataTemplateHeader:ReportItemTemplateHeaderRegnumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderPhylum"
-                x:DataType="models:Tbl06Phylum">
-                <dataTemplateHeader:ReportItemTemplateHeaderPhylumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderDivision"
-                x:DataType="models:Tbl09Division">
-                <dataTemplateHeader:ReportItemTemplateHeaderDivisionControl />
-            </DataTemplate>
-
-            --><!--  Taxonomy-Header  --><!--
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
-                x:DataType="models:Tbl03Regnum">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderControl />
-            </DataTemplate>
-
-            --><!--  Taxonomy-Header-Body  --><!--
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnum"
-                x:DataType="models:Tbl03Regnum">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylum"
-                x:DataType="models:Tbl06Phylum">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
-                x:DataType="models:Tbl09Division">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
-            </DataTemplate>
-            --><!--  Hyperlink-ListViews  --><!--
-            <DataTemplate
-                x:Key="ReportItemTemplateHyperlinkRegnum"
-                x:DataType="models:Tbl03Regnum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateHyperlinkPhylum"
-                x:DataType="models:Tbl06Phylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateHyperlinkDivision"
-                x:DataType="models:Tbl09Division">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkDivisionControl />
-            </DataTemplate>
-
-            --><!--  Rest-ListViews  --><!--
-
-            <DataTemplate
-                x:Key="ReportItemTemplateTbl90RefExpert"
-                x:DataType="models:Tbl90Reference">
-                <dataTemplatesReport:ReportItemTemplateTbl90RefExpertControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateTbl90RefSource"
-                x:DataType="models:Tbl90Reference">
-                <dataTemplatesReport:ReportItemTemplateTbl90RefSourceControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateTbl90RefAuthor"
-                x:DataType="models:Tbl90Reference">
-                <dataTemplatesReport:ReportItemTemplateTbl90RefAuthorControl />
-            </DataTemplate>
-            <DataTemplate
-                x:Key="ReportItemTemplateTbl93Comment"
-                x:DataType="models:Tbl93Comment">
-                <dataTemplatesReport:ReportItemTemplateTbl93CommentControl />
-            </DataTemplate>
-
-        </Grid.Resources>-->
+        <Grid.Resources>
+            <converters:ImageSourceConverter x:Key="ImageSourceConverter" />
+        </Grid.Resources>
 
         <!--  Part 1  -->
-
-        <!--<Grid>
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="40" />
-                <RowDefinition
-                    Height="*" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackPanel
-                Orientation="Horizontal">
-                <Button
-                    x:Uid="Button_PrintPdf"
-                    Margin="50,5,10,5"
-                    Click="PdfDiseaseCommand"
-                    Style="{StaticResource CrudButtonStyle}" />
-                <Button
-                    x:Uid="Button_Close_Window"
-                    Margin="50,5,10,5"
-                    HorizontalAlignment="Right"
-                    Click="OnCloseClick"
-                    Style="{StaticResource CrudButtonStyle}" />
+            <StackPanel Orientation="Horizontal">
+                <Button x:Uid="Button_PrintPdf"
+                        Margin="50,5,10,5"
+                        Click="PdfDiseaseCommand"
+                        Style="{StaticResource CrudButtonStyle}" />
+                <Button x:Uid="Button_Close_Window"
+                        Margin="50,5,10,5"
+                        HorizontalAlignment="Right"
+                        Click="OnCloseClick"
+                        Style="{StaticResource CrudButtonStyle}" />
             </StackPanel>
-            <ScrollViewer
-                Grid.Row="1"
-                Padding="{StaticResource SmallDetailPageMargin}"
-                HorizontalAlignment="Stretch"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                IsTabStop="True"
-                VerticalScrollMode="Enabled">
+            <ScrollViewer Grid.Row="1"
+                          Padding="{StaticResource SmallDetailPageMargin}"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                          IsTabStop="True"
+                          VerticalScrollMode="Enabled">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition
-                            Width="260" />
-                        <ColumnDefinition
-                            Width="*" />
+                        <!--<ColumnDefinition Width="260" />-->
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <ListView
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Margin="-12,0,0,0"
-                        ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                        ItemTemplate="{StaticResource ReportItemTemplateHeaderDisease}"
-                        ItemsSource="{x:Bind ViewModel.DiseaseItems}" />
-                    --><!--<ListView
-                    Grid.Row="1"
+                    <StackPanel Grid.Column="0">
+                        <TextBlock FontSize="18"
+                                   FontWeight="Bold"
+                                   Style="{StaticResource HeaderTextBlockStyle}"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.DiseaseName, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="0"
+                                Orientation="Horizontal">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_CountId" />
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.CountId, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="0"
+                                Orientation="Horizontal">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Valid" />
+                        <CheckBox Width="80"
+                                  Margin="{StaticResource SmallLeftMargin}"
+                                  Content="Valid"
+                                  IsChecked="{x:Bind ViewModel.DiseaseSelected.Valid, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_ValidYear" />
+                        <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                                   Style="{StaticResource ListSubTitleStyle}"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.ValidYear, Mode=OneWay}" />
+
+                    </StackPanel>
+                    <StackPanel Grid.Row="3"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_ShortInfo"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="4"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.ShortInfo, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="5"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Symptom"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="6"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.Symptom, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="7"
+                        Grid.Column="0">
+                        <TextBlock
+                            Width="Auto"
+                            loca:Uids.Uid="TextBlock_Reason"
+                            FontSize="18"
+                            FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="8"
+                        Grid.Column="0">
+                        <TextBlock
+                            Width="Auto"
+                            Margin="8,0,0,0"
+                            Text="{x:Bind ViewModel.DiseaseSelected.Reason, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="9"
+                        Grid.Column="0">
+                        <TextBlock
+                            Width="Auto"
+                            loca:Uids.Uid="TextBlock_Curability"
+                            FontSize="18"
+                            FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="10"
+                        Grid.Column="0">
+                        <TextBlock
+                            Width="Auto"
+                            Margin="8,0,0,0"
+                            Text="{x:Bind ViewModel.DiseaseSelected.Curability, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="11"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Therapie"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="12"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.Therapie, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="13"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Info"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="14"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.Info, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="15"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Memo"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="16"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.Memo, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <!--<StackPanel
+                    Grid.Row="15"
+                    Grid.Column="0">
+                    <TextBlock
+                    Width="Auto"
+                    loca:Uids.Uid="TextBlock_ImageId"
+                    FontSize="18"
+                    FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel
+                    Grid.Row="16"
+                    Grid.Column="0">
+                    <TextBlock
+                    Width="Auto"
+                    Margin="8,0,0,0"
+                    Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=OneWay}"
+                    TextWrapping="Wrap" />
+                    </StackPanel>
+                    <StackPanel
+                    Grid.Row="17"
+                    Grid.Column="1">
+                    <Border
+                    Name="Border1"
+                    Width="Auto">
+                    <Image
+                    Name="img"
+                    Width="300"
+                    Height="200"
+                    Source="{x:Bind ViewModel.ImageSelected.Filestream, Mode=OneWay, Converter={StaticResource ResourceKey=ImageSourceConverter}}"
+                    Stretch="Uniform" />
+                    </Border>
+                    </StackPanel>-->
+
+
+
+                    <!--<ListView
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="-12,0,0,0"
+                    ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                    ItemTemplate="{StaticResource ReportItemTemplateHeaderFood}"
+                    ItemsSource="{x:Bind ViewModel.FoodItems}" />-->
+                    <!--<ListView Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Margin="-12,0,0,0"
                     ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                     ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeader}"
-                    ItemsSource="{x:Bind ViewModel.RegnumItems}" />-->
-                    <!--<ListView
-                    Grid.Row="2"
+                    ItemsSource="{x:Bind ViewModel.FoodItems}" />-->
+                    <!--<ListView Grid.Row="2"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Margin="-12,0,0,0"
                     ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                    ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnum}"
-                    ItemsSource="{x:Bind ViewModel.RegnumItems}" />--><!--
-                    <TextBlock
-                        x:Uid="TextBlock_TaxonomicHierarchy"
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        FontSize="18"
-                        FontWeight="Bold" />
-                    <TextBlock
-                        x:Uid="TextBlock_Regnum"
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Width="Auto"
-                        Margin="8,0,0,0" />
-                    <StackPanel
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Width="Auto"
-                            Text="{x:Bind ViewModel.DiseaseSelected.DiseaseName, Mode=OneWay}" />
-                    </StackPanel>
+                    ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyFood}"
+                    ItemsSource="{x:Bind ViewModel.FoodItems}" />-->
 
-                    --><!--  Part 2  --><!--
-
-                    <TextBlock
-                        x:Name="TbDirectChildren"
-                        x:Uid="TextBlock_DirectChildren"
-                        Grid.Row="5"
-                        Grid.Column="1"
-                        Width="Auto"
-                        Margin="0,5,0,10"
-                        FontWeight="Bold" />
-                    --><!--<ListView
-                    Grid.Row="6"
+                    <!--<ListView Grid.Row="5"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Margin="-12,0,0,0"
                     ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                    ItemsSource="{x:Bind ViewModel.PhylumItems}"
-                    SelectedItem="{x:Bind ViewModel.PhylumSelected, Mode=TwoWay}"
-                    SelectedValuePath="PhylumId">
-                    <ListView.ItemTemplate>
-                    <DataTemplate>
-                    <Grid>
-                    <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                    Width="260" />
-                    <ColumnDefinition
-                    Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                    <TextBlock
-                    x:Uid="TextBlock_Phylum1"
-                    Width="Auto"
-                    Margin="16,0,0,0" />
-                    </StackPanel>
-                    <StackPanel
-                    Grid.Column="1"
-                    Orientation="Horizontal">
-                    <TextBlock
-                    Text="{Binding PhylumId}"
-                    Visibility="Collapsed" />
-                    <TextBlock
-                    Text="{Binding PhylumName}" />
+                    ItemTemplate="{StaticResource ReportItemTemplateHyperlinkFood}"
+                    ItemsSource="{x:Bind ViewModel.FoodItems}" />-->
 
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding EngName}" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding GerName}" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding FraName}" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding PorName}" />
-                    </StackPanel>
-                    </Grid>
-                    </DataTemplate>
-                    </ListView.ItemTemplate>
-                    </ListView>-->
-                    <!--<ListView
-                    Grid.Row="7"
+                    <!--  Part 2  -->
+
+                    <!--<TextBlock Grid.Row="15"
+                    Grid.Column="0"
+                    Margin="0,0,0,10"
+                    loca:Uids.Uid="TextBlock_ImagesInformation"
+                    FontSize="18"
+                    FontWeight="Bold" />
+                    <ListView Grid.Row="16"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Margin="-12,0,0,0"
                     ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                    ItemsSource="{x:Bind ViewModel.DivisionItems}"
-                    SelectedItem="{x:Bind ViewModel.DivisionSelected, Mode=TwoWay}"
-                    SelectedValuePath="DivisionId">
-                    <ListView.ItemTemplate>
-                    <DataTemplate>
-                    <Grid>
-                    <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                    Width="260" />
-                    <ColumnDefinition
-                    Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel>
-                    <TextBlock
-                    x:Uid="TextBlock_Division1"
-                    Width="Auto"
-                    Margin="16,0,0,0" />
-                    </StackPanel>
-                    <StackPanel
-                    Grid.Column="1"
-                    Orientation="Horizontal">
-                    <TextBlock
-                    Text="{Binding DivisionId}"
-                    Visibility="Collapsed" />
-                    <TextBlock
-                    Text="{Binding DivisionName}"
-                    TextDecorations="Underline" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding EngName}" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding GerName}" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding FraName}" />
-                    <TextBlock
-                    Margin="2,0,0,0"
-                    Text="{Binding PorName}" />
-                    </StackPanel>
-                    </Grid>
-                    </DataTemplate>
-                    </ListView.ItemTemplate>
-                    </ListView>-->
+                    ItemTemplate="{StaticResource ReportItemTemplateImage}"
+                    ItemsSource="{x:Bind ViewModel.ImageItems}" />-->
 
-                    <!--  Part 3  --><!--
+                    <!--  Part 3  -->
 
-                    <TextBlock
-                        x:Uid="TextBlock_References"
-                        Grid.Row="8"
-                        Grid.Column="0"
-                        FontSize="18"
-                        FontWeight="Bold" />
-                    <TextBlock
-                        x:Uid="TextBlock_Experts"
-                        Grid.Row="9"
-                        Grid.Column="0"
-                        Width="Auto"
-                        Margin="8,0,0,10"
-                        FontWeight="Bold" />
-                    --><!--<ListView
-                    Grid.Row="10"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="-12,-12,10,10"
-                    ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
-                    ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />--><!--
-                    <TextBlock
-                        x:Uid="TextBlock_Sources"
-                        Grid.Row="11"
-                        Grid.Column="0"
-                        Width="Auto"
-                        Margin="8,0,0,10"
-                        FontWeight="Bold" />
-                    --><!--<ListView
-                    Grid.Row="12"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="-12,-12,10,10"
-                    ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
-                    ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />--><!--
-                    <TextBlock
-                        x:Uid="TextBlock_Publications"
-                        Grid.Row="13"
-                        Grid.Column="0"
-                        Width="Auto"
-                        Margin="8,0,0,10"
-                        FontWeight="Bold" />
-                    --><!--<ListView
-                    Grid.Row="14"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="-12,-12,10,10"
-                    ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
-                    ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />--><!--
-                    <TextBlock
-                        x:Uid="TextBlock_Comments"
-                        Grid.Row="15"
-                        Grid.Column="0"
-                        Margin="0,0,0,10"
-                        FontSize="18"
-                        FontWeight="Bold" />
-                    --><!--<ListView
-                    Grid.Row="16"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="-12,-12,10,10"
-                    ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
-                    ItemsSource="{x:Bind ViewModel.CommentItems}" />--><!--
                 </Grid>
+
+
             </ScrollViewer>
-        </Grid>-->
+        </Grid>
     </Grid>
 </winUiEx:WindowEx>

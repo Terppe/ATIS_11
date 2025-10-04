@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Page x:Class="ATIS.Views.Main.DiseasePage"
+<Page x:Class="ATIS.Views.Main.Disease.DiseasePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:diseasePdf="using:ATIS.Views.Main.DiseasePdf"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:models="using:ATIS.Models"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
       NavigationCacheMode="Disabled"
       mc:Ignorable="d">
@@ -32,10 +30,10 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <DataTemplate x:Key="SearchItemTemplateTblDisease"
-                      x:DataType="models:TblDisease">
-            <diseasePdf:SearchItemTemplateTblDiseaseControl />
-        </DataTemplate>
+        <!--<DataTemplate x:Key="SearchItemTemplateTblDisease"
+        x:DataType="models:TblDisease">
+        <diseasePdf1:SearchItemTemplateTblDiseaseControl />
+        </DataTemplate>-->
 
     </Page.Resources>
 
@@ -128,15 +126,13 @@
                                   SelectionMode="Single"
                                   Sorting="DiseaseDataGrid_Sorting">
                     <toolkit:DataGrid.Columns>
-                        <toolkit:DataGridTextColumn
-                            loca:Uids.Uid="DataGridTextColumn_DiseaseId"
-                            Binding="{Binding DiseaseId}"
-                            Tag="DiseaseId" />
-                        <toolkit:DataGridTextColumn
-                            loca:Uids.Uid="DataGridTextColumn_DiseaseName"
-                            Binding="{Binding DiseaseName}"
-                            CanUserSort="True"
-                            Tag="DiseaseName" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_DiseaseId"
+                                                    Binding="{Binding DiseaseId}"
+                                                    Tag="DiseaseId" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_DiseaseName"
+                                                    Binding="{Binding DiseaseName}"
+                                                    CanUserSort="True"
+                                                    Tag="DiseaseName" />
                         <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ShortInfo"
                                                     Binding="{Binding ShortInfo}"
                                                     Tag="ShortInfo" />

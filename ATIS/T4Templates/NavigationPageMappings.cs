@@ -50,7 +50,6 @@ public partial class NavigationPageMappings
         {"ATIS.Views.Database.Tbl93CommentListPage", typeof(ATIS.Views.Database.Tbl93CommentListPage)},
         {"ATIS.Views.Database.TblCountryListPage", typeof(ATIS.Views.Database.TblCountryListPage)},
         {"ATIS.Views.Database.TblUserProfileListPage", typeof(ATIS.Views.Database.TblUserProfileListPage)},
-        {"ATIS.Views.Main.DiseasePage", typeof(ATIS.Views.Main.DiseasePage)},
         {"ATIS.Views.Main.FoodPage", typeof(ATIS.Views.Main.FoodPage)},
         {"ATIS.Views.Main.MiscellaneousPage", typeof(ATIS.Views.Main.MiscellaneousPage)},
         {"ATIS.Views.Admin.AdminAreaPage", typeof(ATIS.Views.Admin.AdminAreaPage)},

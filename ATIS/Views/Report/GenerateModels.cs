@@ -715,5 +715,49 @@ public abstract class GenrateModels
         }
     }
 
+    public class GenDiseases
+    {
+        public static PdfModels.Disease GenerateDiseases(TblDisease single)
+        {
+            if (single == null)
+            {
+                return null!;
+            }
+
+            return new PdfModels.Disease
+            {
+                DiseaseName = single.DiseaseName,
+                ShortInfo = single.ShortInfo,
+                Symptom = single.Symptom,
+                Reason = single.Reason,
+                Therapie = single.Therapie,
+                Valid = (bool)single.Valid,
+                ValidYear = single.ValidYear,
+                Info = single.Info,
+                Memo = single.Memo
+            };
+        }
+    }
+
+    public class GenFoods
+    {
+        public static PdfModels.Food GenerateFoods(TblFood single)
+        {
+            if (single == null)
+            {
+                return null!;
+            }
+
+            return new PdfModels.Food
+            {
+                FoodName = single.FoodName,
+                FoodVolume = single.FoodVolume,
+                Valid = (bool)single.Valid,
+                ValidYear = single.ValidYear,
+                Info = single.Info,
+                Memo = single.Memo
+            };
+        }
+    }
 
 }

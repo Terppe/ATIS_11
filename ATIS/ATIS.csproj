@@ -671,11 +671,6 @@
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
 		<None Remove="Views\Main\Disease\DiseasePdf\ReportDiseasesWindow.xaml" />
-		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateDiseaseControl.xaml" />
-		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateHeaderDiseaseControl.xaml" />
-		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl.xaml" />
-		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateHyperlinkDiseaseControl.xaml" />
-		<None Remove="Views\Main\Disease\DiseasePdf\SearchItemTemplateTblDiseaseControl.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
 		<None Remove="Views\Main\Food\FoodPdf\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Main\MiscellaneousPage.xaml" />

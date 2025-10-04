@@ -1608,6 +1608,9 @@
   <data name="TextBlock_Colour.Text" xml:space="preserve">
     <value>Colour</value>
   </data>
+  <data name="TextBlock_CountId.Text" xml:space="preserve">
+    <value>Count ID</value>
+  </data>
   <data name="TextBlock_Combo.Text" xml:space="preserve">
     <value>Comboboxen</value>
   </data>
@@ -1637,6 +1640,12 @@
   </data>
   <data name="TextBlock_Culture.Text" xml:space="preserve">
     <value>Culture</value>
+  </data>
+  <data name="TextBlock_Curability.Text" xml:space="preserve">
+    <value>Curability</value>
+  </data>
+  <data name="TextBlock_MemoCurability.Text" xml:space="preserve">
+    <value>Curability</value>
   </data>
   <data name="TextBlock_Data.Text" xml:space="preserve">
     <value>Data</value>
@@ -1890,6 +1899,9 @@
   <data name="TextBlock_MemoCulture.Text" xml:space="preserve">
     <value>Memo Culture</value>
   </data>
+  <data name="TextBox_MemoCurability.Header" xml:space="preserve">
+    <value>Memo Curability</value>
+  </data>
   <data name="TextBlock_MemoDomorphism.Text" xml:space="preserve">
     <value>Memo Domorphism</value>
   </data>
@@ -1900,6 +1912,9 @@
     <value>Global</value>
   </data>
   <data name="TextBlock_MemoHusbandry.Text" xml:space="preserve">
+    <value>Memo Husbandry</value>
+  </data>
+  <data name="TextBox_MemoInfo.Header" xml:space="preserve">
     <value>Memo Husbandry</value>
   </data>
   <data name="TextBlock_MemoReproduction.Text" xml:space="preserve">
@@ -1913,6 +1928,9 @@
   </data>
   <data name="TextBlock_MemoSpecies.Text" xml:space="preserve">
     <value>Memo Species</value>
+  </data>
+  <data name="TextBox_MemoSymptom.Header" xml:space="preserve">
+    <value>Memo Symptom</value>
   </data>
   <data name="TextBlock_MemoTech.Text" xml:space="preserve">
     <value>Memo Technic</value>
@@ -2051,6 +2069,9 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
+  </data>
+  <data name="TextBlock_Reason.Text" xml:space="preserve">
+    <value>Reason</value>
   </data>
   <data name="TextBlock_RegnumId.Text" xml:space="preserve">
     <value>Regnum ID</value>
@@ -2234,6 +2255,9 @@
   </data>
   <data name="TextBlock_Temp.Text" xml:space="preserve">
     <value>Temperature</value>
+  </data>
+  <data name="TextBlock_Therapie.Text" xml:space="preserve">
+    <value>Therapy</value>
   </data>
   <data name="TextBlock_TradeName.Text" xml:space="preserve">
     <value>TradeName</value>
@@ -2584,7 +2608,7 @@
     <value>Shot Date</value>
   </data>
   <data name="TextBox_ShortInfo.Header" xml:space="preserve">
-    <value>Short Info</value>
+    <value>Short Symptom</value>
   </data>
   <data name="TextBox_Signature.Header" xml:space="preserve">
     <value>Signature</value>
@@ -2858,6 +2882,9 @@
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">
     <value>Synonym(s):</value>
+  </data>
+  <data name="TextBlock_Symptom.Text" xml:space="preserve">
+    <value>Symptom</value>
   </data>
   <data name="TextBlock_TaxonomicHierarchy.Text" xml:space="preserve">
     <value>Taxonomic Hierarchy</value>
@@ -3720,6 +3747,9 @@
   <data name="TextBlock_MemoRegion.Text" xml:space="preserve">
     <value>Memo Region</value>
   </data>
+  <data name="TextBox_MemoReason.Header" xml:space="preserve">
+    <value>Memo Symptom</value>
+  </data>
   <data name="TextBlock_LNummer.Text" xml:space="preserve">
     <value>L-Nummer/Original</value>
   </data>
@@ -3739,7 +3769,10 @@
     <value>Foods</value>
   </data>
   <data name="TextBlock_ShotDate.Text" xml:space="preserve">
-    <value>Datum</value>
+    <value>Shot Date</value>
+  </data>
+  <data name="TextBlock_ShortInfo.Text" xml:space="preserve">
+    <value>Short Symptom</value>
   </data>
   <data name="TextBlock_AuthorEditor.Text" xml:space="preserve">
     <value>Author(s)/Editor(s):</value>

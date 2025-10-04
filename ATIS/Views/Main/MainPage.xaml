@@ -656,7 +656,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavDiseases"
                                     loca:Uids.Uid="Nav_Diseases"
-                                    Tag="ATIS.Views.Main.DiseasePage">
+                    Tag="ATIS.Views.Main.Disease.DiseasePage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/disease.png" />
@@ -664,7 +664,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavFoods"
                                     loca:Uids.Uid="Nav_Foods"
-                                    Tag="ATIS.Views.Main.FoodPage">
+                                    Tag="ATIS.Views.Main.Food.FoodPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/food.png" />
@@ -672,7 +672,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavMiscellaneousses"
                                     loca:Uids.Uid="Nav_Miscellaneousses"
-                                    Tag="ATIS.Views.Main.MiscellaneousPage">
+                    Tag="ATIS.Views.Main.Miscellaneous.MiscellaneousPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/miscellaneous.png" />
