@@ -67,8 +67,8 @@ public sealed partial class ReportRegnumsWindow : WindowEx
 
             //var filePath = "D:\\Temp\\Animalia b11_57883426_Report.pdf";
 
-            var model = Tbl03RegnumsDocumentDataSource.GetRegnumDetails(id);
-            var document = new Tbl03RegnumsDocument(model);
+            var model = TblFoodsDocumentDataSource.GetRegnumDetails(id);
+            var document = new TblFoodsDocument(model);
             document.GeneratePdf(filePath);
             PrintPdfMethod(filePath);
         }

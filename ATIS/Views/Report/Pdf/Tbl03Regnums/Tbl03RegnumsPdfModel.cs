@@ -1,6 +1,6 @@
 ﻿namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
 
-public class Tbl03RegnumsPdfModel
+public class TblFoodsPdfModel
 {
     public int RegnumId
     {

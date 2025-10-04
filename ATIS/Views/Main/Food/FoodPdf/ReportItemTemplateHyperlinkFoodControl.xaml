@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<UserControl x:Class="ATIS.Views.Main.DiseasePdf.ReportItemTemplateHyperlinkDiseaseControl"
+<UserControl x:Class="ATIS.Views.Main.FoodPdf.ReportItemTemplateHyperlinkFoodControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="using:ATIS.Views.Main.DiseasePdf"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -19,21 +18,23 @@
         </StackPanel>
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal">
-            <TextBlock x:Name="TbClass"
+            <TextBlock x:Name="TbClass"  
                        Width="Auto"
                        Foreground="DarkBlue"
-                       Tag="{Binding ClassId}"
-                       Tapped="TextBlock_Tapped"
-                       Text="{Binding ClassName}"
+                       Tag="{Binding FoodId}"  
+                       Text="{Binding FoodName}"
                        TextDecorations="Underline" />
             <TextBlock Margin="2,0,0,0"
-                       Text="{Binding EngName}" />
+                Text="{Binding RegionMiddle}" />
             <TextBlock Margin="2,0,0,0"
-                       Text="{Binding GerName}" />
+                Text="{Binding RegionBottom}" />
             <TextBlock Margin="2,0,0,0"
-                       Text="{Binding FraName}" />
+                Text="{Binding Kind}" />
             <TextBlock Margin="2,0,0,0"
-                       Text="{Binding PorName}" />
+                Text="{Binding Help}" />
         </StackPanel>
     </Grid>
 </UserControl>
+
+
+<!--Tapped="TextBlock_Tapped"-->

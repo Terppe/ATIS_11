@@ -6,9 +6,9 @@ using QuestPDF.Infrastructure;
 
 namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
 
-public class Tbl03RegnumsDocument : IDocument
+public class TblFoodsDocument : IDocument
 {
-    private Tbl03RegnumsPdfModel Model { get; }
+    private TblFoodsPdfModel Model { get; }
 
     private static int _tabLeftRel;
     private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
@@ -19,7 +19,7 @@ public class Tbl03RegnumsDocument : IDocument
     private static readonly int TabRightRel8 = _tabRightRel - 8;
     private const int TextHight = 12;
 
-    public Tbl03RegnumsDocument(Tbl03RegnumsPdfModel model)
+    public TblFoodsDocument(TblFoodsPdfModel model)
     {
         Model = model;
     }
@@ -316,7 +316,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.PhylumsCollection.Count == 0 && Tbl03RegnumsDocumentDataSource.DivisionsCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.PhylumsCollection.Count == 0 && TblFoodsDocumentDataSource.DivisionsCollection.Count == 0)
         {
             return;
         }
@@ -325,7 +325,7 @@ public class Tbl03RegnumsDocument : IDocument
     }
     private void ComposeChildrenPhylumContent(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.PhylumsCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.PhylumsCollection.Count == 0)
         {
             return;
         }
@@ -339,7 +339,7 @@ public class Tbl03RegnumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl03RegnumsDocumentDataSource.PhylumsCollection)
+            foreach (var item in TblFoodsDocumentDataSource.PhylumsCollection)
             {
                 table.Cell().Text("");
                 table.Cell().Text(Strings.StringsRes.Phylum);
@@ -349,7 +349,7 @@ public class Tbl03RegnumsDocument : IDocument
     }
     private void ComposeChildrenDivisionContent(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.DivisionsCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.DivisionsCollection.Count == 0)
         {
             return;
         }
@@ -363,7 +363,7 @@ public class Tbl03RegnumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl03RegnumsDocumentDataSource.DivisionsCollection)
+            foreach (var item in TblFoodsDocumentDataSource.DivisionsCollection)
             {
                 table.Cell().Text("");
                 table.Cell().Text(Strings.StringsRes.Division);
@@ -385,7 +385,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeReferencesExperts(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.ExpertsCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.ExpertsCollection.Count == 0)
         {
             return;
         }
@@ -399,7 +399,7 @@ public class Tbl03RegnumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl03RegnumsDocumentDataSource.ExpertsCollection)
+            foreach (var item in TblFoodsDocumentDataSource.ExpertsCollection)
             {
                 for (var i = 0; i < 4; i++)
                 {
@@ -439,7 +439,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeReferencesOtherSources(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.SourcesCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.SourcesCollection.Count == 0)
         {
             return;
         }
@@ -453,7 +453,7 @@ public class Tbl03RegnumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl03RegnumsDocumentDataSource.SourcesCollection)
+            foreach (var item in TblFoodsDocumentDataSource.SourcesCollection)
             {
                 for (var i = 0; i < 5; i++)
                 {
@@ -499,7 +499,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeReferencesPublications(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.AuthorsCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.AuthorsCollection.Count == 0)
         {
             return;
         }
@@ -513,7 +513,7 @@ public class Tbl03RegnumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl03RegnumsDocumentDataSource.AuthorsCollection)
+            foreach (var item in TblFoodsDocumentDataSource.AuthorsCollection)
             {
                 for (var i = 0; i < 11; i++)
                 {
@@ -596,7 +596,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeComments(IContainer container)
     {
-        if (Tbl03RegnumsDocumentDataSource.CommentsCollection.Count == 0)
+        if (TblFoodsDocumentDataSource.CommentsCollection.Count == 0)
         {
             return;
         }
@@ -610,7 +610,7 @@ public class Tbl03RegnumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl03RegnumsDocumentDataSource.CommentsCollection)
+            foreach (var item in TblFoodsDocumentDataSource.CommentsCollection)
             {
                 for (var i = 0; i < 3; i++)
                 {

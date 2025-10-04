@@ -77,33 +77,6 @@
 		<Generator>TextTemplatingFileGenerator</Generator>
 		<LastGenOutput>BreadcrumbPageMappings.cs</LastGenOutput>
 	</None>
-	<Page Update="Views\Main\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\FoodPdf\ReportFoodsWindow.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateHyperlinkDiseaseControl.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateHeaderDiseaseControl.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DiseasePdf\ReportItemTemplateDiseaseControl.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DiseasePdf\SearchItemTemplateTblDiseaseControl.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DiseasePdf\ReportDiseasesWindow.xaml">
-	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\FoodPdf\SearchItemTemplateTblFoodControl.xaml">
-	  <SubType>Designer</SubType>
-	</Page>
 	<Page Update="Views\Main\MiscellaneousPage.xaml">
 	  <Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -112,9 +85,6 @@
 	</Page>
 	<Page Update="Views\Main\FoodPage.xaml">
 	  <Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\MiscellaneousPdf\SearchItemTemplateTblMiscellaneousControl.xaml">
-	  <SubType>Designer</SubType>
 	</Page>
 	<Page Update="Views\Main\SplashWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
@@ -700,16 +670,16 @@
 		<None Remove="Views\Database\TblUserProfileListPage.xaml" />
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
-		<None Remove="Views\Main\DiseasePdf\ReportDiseasesWindow.xaml" />
-		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateDiseaseControl.xaml" />
-		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateHeaderDiseaseControl.xaml" />
-		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl.xaml" />
-		<None Remove="Views\Main\DiseasePdf\ReportItemTemplateHyperlinkDiseaseControl.xaml" />
-		<None Remove="Views\Main\DiseasePdf\SearchItemTemplateTblDiseaseControl.xaml" />
+		<None Remove="Views\Main\Disease\DiseasePdf\ReportDiseasesWindow.xaml" />
+		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateDiseaseControl.xaml" />
+		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateHeaderDiseaseControl.xaml" />
+		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateHeaderTaxoNomenHeaderBodyDiseaseControl.xaml" />
+		<None Remove="Views\Main\Disease\DiseasePdf\ReportItemTemplateHyperlinkDiseaseControl.xaml" />
+		<None Remove="Views\Main\Disease\DiseasePdf\SearchItemTemplateTblDiseaseControl.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
-		<None Remove="Views\Main\FoodPdf\ReportFoodsWindow.xaml" />
+		<None Remove="Views\Main\Food\FoodPdf\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Main\MiscellaneousPage.xaml" />
-		<None Remove="Views\Main\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml" />
+		<None Remove="Views\Main\Miscellaneous\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml" />
 		<None Remove="Views\Main\SpeciesPage.xaml" />
 		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Main\UtilityPage.xaml" />
@@ -898,7 +868,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="log4net" Version="3.2.0" />
-		<PackageReference Include="MailKit" Version="4.13.0" />
+		<PackageReference Include="MailKit" Version="4.14.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="4.1.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />

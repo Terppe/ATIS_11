@@ -7,12 +7,12 @@ public class Tbl03RegnumsListDocumentDataSource : ObservableObject
 {
     private static readonly Tbl03Regnum RegnumSingle = new();
 
-    public static Tbl03RegnumsPdfModel GetRegnumListDetails(ObservableCollection<Tbl03Regnum> regnumsCollection)
+    public static TblFoodsPdfModel GetRegnumListDetails(ObservableCollection<Tbl03Regnum> regnumsCollection)
     {
 
         RegnumsCollection = regnumsCollection;
 
-        return new Tbl03RegnumsPdfModel
+        return new TblFoodsPdfModel
         {
             RegnumName = RegnumSingle.RegnumName,
             Subregnum = RegnumSingle.Subregnum,

@@ -3,14 +3,14 @@ using ATIS.Models;
 using ATIS.Services;
 
 namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
-public class Tbl03RegnumsDocumentDataSource : ObservableObject
+public class TblFoodsDocumentDataSource : ObservableObject
 {
     #region [Private Data Members]
 
     private static Tbl03Regnum _regnumSingle = new();
     #endregion [Private Data Members]      
 
-    public static Tbl03RegnumsPdfModel GetRegnumDetails(int regnumId)
+    public static TblFoodsPdfModel GetRegnumDetails(int regnumId)
     {
         #region [Private Data Members]
 
@@ -34,7 +34,7 @@ public class Tbl03RegnumsDocumentDataSource : ObservableObject
         CommentsCollection = dataService.CollCommentsByRegnumId(regnumId);
 
  
-        return new Tbl03RegnumsPdfModel
+        return new TblFoodsPdfModel
         {
             RegnumName = _regnumSingle.RegnumName,
             Subregnum = _regnumSingle.Subregnum,
