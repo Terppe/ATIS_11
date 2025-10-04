@@ -2,6 +2,7 @@
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Report;
+using static ATIS.Views.Report.PdfModels;
 
 namespace ATIS.Views.Main.Disease.DiseasePdf;
 public abstract class TblDiseasesDocumentDataSource : ObservableObject
@@ -19,6 +20,8 @@ public abstract class TblDiseasesDocumentDataSource : ObservableObject
         var dataService = new DataService();
 
         #endregion [Private Data Members]
+
+        ImagesCollection = dataService.CollImagesByDiseaseId(diseaseId);
 
         ClearAllCollections();
 
@@ -59,6 +62,7 @@ public abstract class TblDiseasesDocumentDataSource : ObservableObject
     public static void ClearAllCollections()
     {
         _diseaseSingle = new TblDisease();
+        ImagesCollection?.Clear();
 
     }
 

@@ -936,7 +936,8 @@ public interface IDataService
     #region Disease
 
     TblDisease GetDiseaseSingleByDiseaseId(int id);
-
+    
+        ObservableCollection<Tbl81Image> CollImagesByDiseaseId(int id);
 
     #endregion Disease
 

@@ -11,6 +11,7 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:models="using:ATIS.Models"
                   xmlns:winUiEx="using:WinUIEx"
+                  xmlns:diseasePdf="using:ATIS.Views.Main.Disease.DiseasePdf"
                   mc:Ignorable="d">
 
     <!--  ReportSpeciessWindow.xaml  Skriptdatum:  16.06.2023  10:32  -->
@@ -475,7 +476,7 @@
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateImage"
                           x:DataType="models:Tbl81Image">
-                <dataTemplatesReport:ReportItemTemplateImageControl />
+                <diseasePdf:ReportItemTemplateImageControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateSynonym"
                           x:DataType="models:Tbl84Synonym">

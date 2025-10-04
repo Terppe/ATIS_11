@@ -7951,7 +7951,18 @@ public partial class DataService : ObservableObject, IDataService
         }
         return null!;
     }
+    public ObservableCollection<Tbl81Image> CollImagesByDiseaseId(int id)
+    {
+        if (Context.Tbl81Images != null)
+        {
+            var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
+                .Where(e => e.DiseaseId == id));
+            return collection;
+        }
+        return null!;
+    }
 
+    
     #endregion Disease
 
     #region Food

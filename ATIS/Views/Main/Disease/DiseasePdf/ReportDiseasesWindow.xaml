@@ -4,9 +4,12 @@
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                   xmlns:converters="using:ATIS.Helpers.Converters"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:dataTemplates="using:ATIS.Views.Report.DataTemplates"
                   xmlns:loca="using:WinUI3Localizer"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:models="using:ATIS.Models"
                   xmlns:winUiEx="using:WinUIEx"
+                  xmlns:diseasePdf="using:ATIS.Views.Main.Disease.DiseasePdf"
                   mc:Ignorable="d">
 
     <!--  ReportDiseasesWindow.xaml  Skriptdatum:  15.06.2024  12:32  -->
@@ -14,6 +17,16 @@
     <Grid>
         <Grid.Resources>
             <converters:ImageSourceConverter x:Key="ImageSourceConverter" />
+
+            <Style x:Key="NoSpacesListViewItemStyle"
+                   TargetType="ListViewItem">
+                <Setter Property="MinHeight" Value="24" />
+            </Style>
+            <DataTemplate x:Key="ReportItemTemplateImage"
+                          x:DataType="models:Tbl81Image">
+                <diseasePdf:ReportItemTemplateImageControl />
+            </DataTemplate>
+
         </Grid.Resources>
 
         <!--  Part 1  -->
@@ -45,6 +58,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -122,41 +136,33 @@
                                    Text="{x:Bind ViewModel.DiseaseSelected.Symptom, Mode=OneWay}"
                                    TextWrapping="Wrap" />
                     </StackPanel>
-                    <StackPanel
-                        Grid.Row="7"
-                        Grid.Column="0">
-                        <TextBlock
-                            Width="Auto"
-                            loca:Uids.Uid="TextBlock_Reason"
-                            FontSize="18"
-                            FontWeight="Bold" />
+                    <StackPanel Grid.Row="7"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Reason"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
                     </StackPanel>
-                    <StackPanel
-                        Grid.Row="8"
-                        Grid.Column="0">
-                        <TextBlock
-                            Width="Auto"
-                            Margin="8,0,0,0"
-                            Text="{x:Bind ViewModel.DiseaseSelected.Reason, Mode=OneWay}"
-                            TextWrapping="Wrap" />
+                    <StackPanel Grid.Row="8"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.Reason, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
                     </StackPanel>
-                    <StackPanel
-                        Grid.Row="9"
-                        Grid.Column="0">
-                        <TextBlock
-                            Width="Auto"
-                            loca:Uids.Uid="TextBlock_Curability"
-                            FontSize="18"
-                            FontWeight="Bold" />
+                    <StackPanel Grid.Row="9"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Curability"
+                                   FontSize="18"
+                                   FontWeight="Bold" />
                     </StackPanel>
-                    <StackPanel
-                        Grid.Row="10"
-                        Grid.Column="0">
-                        <TextBlock
-                            Width="Auto"
-                            Margin="8,0,0,0"
-                            Text="{x:Bind ViewModel.DiseaseSelected.Curability, Mode=OneWay}"
-                            TextWrapping="Wrap" />
+                    <StackPanel Grid.Row="10"
+                                Grid.Column="0">
+                        <TextBlock Width="Auto"
+                                   Margin="8,0,0,0"
+                                   Text="{x:Bind ViewModel.DiseaseSelected.Curability, Mode=OneWay}"
+                                   TextWrapping="Wrap" />
                     </StackPanel>
                     <StackPanel Grid.Row="11"
                                 Grid.Column="0">
@@ -284,6 +290,18 @@
                     ItemsSource="{x:Bind ViewModel.ImageItems}" />-->
 
                     <!--  Part 3  -->
+                    <TextBlock x:Uid="TextBlock_ImagesInformation"
+                               Grid.Row="17"
+                               Grid.Column="0"
+                               Margin="0,0,0,10"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                    <ListView Grid.Row="18"
+                              Grid.Column="0"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateImage}"
+                              ItemsSource="{x:Bind ViewModel.ImageItems}" />
 
                 </Grid>
 

@@ -8,6 +8,6 @@ public sealed partial class ReportItemTemplateImageControl : UserControl
 {
     public ReportItemTemplateImageControl()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }
