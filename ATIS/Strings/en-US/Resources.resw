@@ -2544,11 +2544,23 @@
   <data name="TextBox_MemoTech.Header" xml:space="preserve">
     <value>Memo Technics</value>
   </data>
+  <data name="TextBox_Thema1.Header" xml:space="preserve">
+    <value>Thema 1</value>
+  </data>
+  <data name="TextBox_Thema2.Header" xml:space="preserve">
+    <value>Thema 2</value>
+  </data>
   <data name="TextBox_MemoTherapie.Header" xml:space="preserve">
     <value>Memo Therapie</value>
   </data>
   <data name="TextBox_Mobil.Header" xml:space="preserve">
     <value>Mobil</value>
+  </data>
+  <data name="TextBox_MiscellaneousId.Header" xml:space="preserve">
+    <value>Miscellaneous ID</value>
+  </data>
+  <data name="TextBox_MiscellaneousName.Header" xml:space="preserve">
+    <value>Miscellaneous Name</value>
   </data>
   <data name="TextBox_NameName.Header" xml:space="preserve">
     <value>Name</value>
@@ -2674,10 +2686,10 @@
     <value>Telefon</value>
   </data>
   <data name="TextBox_Temp1.Header" xml:space="preserve">
-    <value>Temp1</value>
+    <value>Temp 1</value>
   </data>
   <data name="TextBox_Temp2.Header" xml:space="preserve">
-    <value>Temp2</value>
+    <value>Temp 2</value>
   </data>
   <data name="TextBox_TradeName.Header" xml:space="preserve">
     <value>Tradename</value>
