@@ -122,15 +122,6 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
-        <MenuFlyout x:Key="SpeciesDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_FiSpecies"
-                            Click="AddSpecies_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>
     </Page.Resources>
 
     <RelativePanel x:Name="GenusRoot"
@@ -236,15 +227,6 @@
             <AppBarButton x:Name="AppBarButtonAddComment"
                           loca:Uids.Uid="AppBarButtonAddComment"
                           Click="AddComment_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.GenusSelected), Mode=OneWay}">
-                <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonAddSpecies"
-                          loca:Uids.Uid="AppBarButtonAddSpecies"
-                          Click="AddSpecies_Click"
                           IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.GenusSelected), Mode=OneWay}">
                 <AppBarButton.Icon>
                     <BitmapIcon ShowAsMonochrome="False"
@@ -446,8 +428,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_GenusName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditGenus), Mode=OneWay}"
                                          LostFocus="GenusName_OnLostFocus"
                                          MaxLength="100"
@@ -803,8 +783,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceExpert), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -999,8 +977,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceSource), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1176,8 +1152,6 @@
                                                              Margin="{StaticResource XSmallRightMargin}"
                                                              HorizontalAlignment="Stretch"
                                                              loca:Uids.Uid="TextBox_Info"
-                                                             Background="SlateGray"
-                                                             Foreground="White"
                                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceAuthor), Mode=OneWay}"
                                                              MaxLength="100"
                                                              RelativePanel.AlignLeftWithPanel="True"
@@ -1318,8 +1292,6 @@
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditComment), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1346,6 +1318,7 @@
 
                 <!--  SpeciesDetailExpander  -->
                 <Expander x:Name="SpeciesDetailExpander"
+                          MinWidth="1200"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           Visibility="Collapsed">
                     <Expander.Header>
@@ -1413,14 +1386,6 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddSpecies"
-                                          Click="AddSpecies_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.GenusSelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsSpeciesAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditSpecies, Mode=OneWay}">
@@ -1486,9 +1451,7 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_FiSpeciesName"
-                                             Background="SlateGray"
                                              CharacterCasing="Lower"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="GenusComboFiSpecies"
@@ -2189,7 +2152,6 @@
                                           BorderThickness="0"
                                           CanUserReorderColumns="False"
                                           CanUserResizeColumns="False"
-                                          ContextFlyout="{StaticResource SpeciesDataContextMenu}"
                                           GridLinesVisibility="Horizontal"
                                           ItemsSource="{x:Bind ViewModel.SpeciesItems, Mode=OneWay}"
                                           SelectedItem="{x:Bind ViewModel.SpeciesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

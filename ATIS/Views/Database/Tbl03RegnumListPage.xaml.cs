@@ -126,8 +126,6 @@ public sealed partial class Tbl03RegnumListPage : Page
                 AppBarButtonDeleteRegnum.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddPhylum.IsEnabled = false;
-                AppBarButtonAddDivision.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelRegnum.Visibility = Visibility.Visible;
@@ -277,6 +275,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             BackDetailExpanders();
             await AddRegnum();
+            RegnumName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(RegnumName);
+            };
         }
         catch (Exception xe)
         {
@@ -287,11 +289,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     private async Task AddRegnum()
     {
-        RegnumName.Loaded += (s, e) =>
-        {
-            RegnumName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditRegnum = true;
         ViewModel.IsNewRegnum = true;
 
@@ -513,6 +510,7 @@ public sealed partial class Tbl03RegnumListPage : Page
                 await ViewModel.SaveRegnumAsync(ViewModel.RegnumSelected);
                 await BehindSaveRegnum(ViewModel.RegnumSelected);
                 await Refresh();
+                ViewModel.IsNewRegnum = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRegnum = true;
@@ -795,6 +793,7 @@ public sealed partial class Tbl03RegnumListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -875,6 +874,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -885,11 +888,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -907,8 +905,6 @@ public sealed partial class Tbl03RegnumListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -986,6 +982,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -996,11 +996,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -1018,8 +1013,6 @@ public sealed partial class Tbl03RegnumListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1097,6 +1090,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1107,11 +1104,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1129,8 +1121,6 @@ public sealed partial class Tbl03RegnumListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1208,6 +1198,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1218,11 +1212,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1235,8 +1224,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1426,6 +1413,7 @@ public sealed partial class Tbl03RegnumListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1498,49 +1486,11 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     #region [Phylum Methods]
 
-    private async void AddPhylum_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddPhylum();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddPhylum()
-    {
-        PhylumName.Loaded += (s, e) =>
-        {
-            PhylumName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditPhylum = true;
-        ViewModel.IsNewPhylum = true;
-
-        await ViewModel.AddPhylumAsync();
-
-        if (ViewModel.Tbl06PhylumsList != null)
-        {
-            ViewModel.PhylumSelected = ViewModel.Tbl06PhylumsList[0];
-        }
-
-        PhylumDetailExpander.IsExpanded = true;
-        PhylumDetailExpander.Visibility = Visibility.Visible;
-
-        PhylumName.PlaceholderText = StringsRes.EnterText;
-    }
 
     private void DataGrid_Phylum_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl06PhylumsList.Sort);
     }
-
-    private void AddNewPhylumCanceled(object sender, EventArgs e) => PhylumsExpander.IsExpanded = false;
 
     private async void ViewPhylumHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1760,49 +1710,10 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     #region [Division Methods]
 
-    private async void AddDivision_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddDivision();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddDivision()
-    {
-        DivisionName.Loaded += (s, e) =>
-        {
-            DivisionName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditDivision = true;
-        ViewModel.IsNewDivision = true;
-
-        await ViewModel.AddDivisionAsync();
-
-        if (ViewModel.Tbl09DivisionsList != null)
-        {
-            ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[0];
-        }
-
-        DivisionDetailExpander.IsExpanded = true;
-        DivisionDetailExpander.Visibility = Visibility.Visible;
-
-        DivisionName.PlaceholderText = StringsRes.EnterText;
-    }
-
     private void DataGrid_Division_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl09DivisionsList.Sort);
     }
-
-    private void AddNewDivisionCanceled(object sender, EventArgs e) => DivisionsExpander.IsExpanded = false;
 
     private async void ViewDivisionHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {

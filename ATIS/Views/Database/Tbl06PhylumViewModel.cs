@@ -30,7 +30,6 @@ public partial class Tbl06PhylumViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
     #endregion [Private Data Members]      
 
     #region [Constructor]
@@ -79,8 +78,7 @@ public partial class Tbl06PhylumViewModel : ObservableObject
             var regnumId = Tbl03RegnumsAllList.First().RegnumId;
 
             Tbl06PhylumsList ??= [];
-            Tbl06PhylumsList.Insert(index: 0,
-                item: new Tbl06Phylum { RegnumId = regnumId });
+            Tbl06PhylumsList.Insert(index: 0, item: new Tbl06Phylum { RegnumId = regnumId });
         });
     }
 
@@ -267,6 +265,9 @@ public partial class Tbl06PhylumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -279,6 +280,9 @@ public partial class Tbl06PhylumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -290,6 +294,9 @@ public partial class Tbl06PhylumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -416,6 +423,9 @@ public partial class Tbl06PhylumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = PhylumSelected.PhylumId;
 
             Tbl93CommentsList ??= [];
@@ -535,20 +545,6 @@ public partial class Tbl06PhylumViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Subphylum]             
-
-    public async Task AddSubphylumAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl06PhylumsAllList ??= [];
-            Tbl06PhylumsAllList = [.. _dataService.GetPhylumAsync()];
-
-            var id = PhylumSelected.PhylumId;
-
-            Tbl12SubphylumsList ??= [];
-            Tbl12SubphylumsList.Insert(index: 0, item: new Tbl12Subphylum { PhylumId = id });
-        });
-    }
 
     public async Task SaveSubphylumAsync(Tbl12Subphylum viewModelSubphylumSelected)
     {
@@ -997,7 +993,7 @@ public partial class Tbl06PhylumViewModel : ObservableObject
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -1007,7 +1003,7 @@ public partial class Tbl06PhylumViewModel : ObservableObject
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -1017,7 +1013,7 @@ public partial class Tbl06PhylumViewModel : ObservableObject
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 

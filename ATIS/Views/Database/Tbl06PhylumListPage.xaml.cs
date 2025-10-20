@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -119,7 +118,6 @@ public sealed partial class Tbl06PhylumListPage : Page
                 AppBarButtonDeletePhylum.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddSubphylum.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelPhylum.Visibility = Visibility.Visible;
@@ -245,6 +243,10 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             BackDetailExpanders();
             await AddPhylum();
+            PhylumName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(PhylumName);
+            };
         }
         catch (Exception xe)
         {
@@ -255,11 +257,6 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     private async Task AddPhylum()
     {
-        PhylumName.Loaded += (s, e) =>
-        {
-            PhylumName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditPhylum = true;
         ViewModel.IsNewPhylum = true;
 
@@ -279,8 +276,6 @@ public sealed partial class Tbl06PhylumListPage : Page
         ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
-
-        PhylumName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void PhylumSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -481,6 +476,7 @@ public sealed partial class Tbl06PhylumListPage : Page
                 await ViewModel.SavePhylumAsync(ViewModel.PhylumSelected);
                 await BehindSavePhylum(ViewModel.PhylumSelected);
                 await Refresh();
+                ViewModel.IsNewPhylum = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedPhylum = true;
@@ -763,6 +759,7 @@ public sealed partial class Tbl06PhylumListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -843,6 +840,10 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -853,11 +854,6 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -875,8 +871,6 @@ public sealed partial class Tbl06PhylumListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -954,6 +948,10 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -964,11 +962,6 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -986,8 +979,6 @@ public sealed partial class Tbl06PhylumListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1065,6 +1056,10 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1075,11 +1070,6 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1097,8 +1087,6 @@ public sealed partial class Tbl06PhylumListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1176,6 +1164,10 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1186,11 +1178,6 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1203,8 +1190,6 @@ public sealed partial class Tbl06PhylumListPage : Page
 
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1394,6 +1379,7 @@ public sealed partial class Tbl06PhylumListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1466,49 +1452,10 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     #region [Subphylum Methods]
 
-    private async void AddSubphylum_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddSubphylum();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddSubphylum()
-    {
-        SubphylumName.Loaded += (s, e) =>
-        {
-            SubphylumName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditSubphylum = true;
-        ViewModel.IsNewSubphylum = true;
-
-        await ViewModel.AddSubphylumAsync();
-
-        if (ViewModel.Tbl12SubphylumsList != null)
-        {
-            ViewModel.SubphylumSelected = ViewModel.Tbl12SubphylumsList[0];
-        }
-
-        SubphylumDetailExpander.IsExpanded = true;
-        SubphylumDetailExpander.Visibility = Visibility.Visible;
-
-        SubphylumName.PlaceholderText = StringsRes.EnterText;
-    }
-
     private void DataGrid_Subphylum_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl12SubphylumsList.Sort);
     }
-
-    private void AddNewSubphylumCanceled(object sender, EventArgs e) => SubphylumsExpander.IsExpanded = false;
 
     private async void ViewSubphylumHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1656,6 +1603,7 @@ public sealed partial class Tbl06PhylumListPage : Page
                 await ViewModel.SaveSubphylumAsync(ViewModel.SubphylumSelected);
                 await BehindSaveSubphylum(ViewModel.SubphylumSelected);
                 await Refresh();
+                ViewModel.IsNewSubphylum = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubphylum = true;

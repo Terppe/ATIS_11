@@ -735,8 +735,10 @@ public sealed partial class SearchQuickPage : Page
             return;
         }
 
-        var window = new ReportSubphylumsWindow(ViewModel.SubphylumSelected.SubphylumId);
-        window.IsAlwaysOnTop = true;
+        var window = new ReportSubphylumsWindow(ViewModel.SubphylumSelected.SubphylumId)
+        {
+            IsAlwaysOnTop = true
+        };
         window.Activate();
     }
 

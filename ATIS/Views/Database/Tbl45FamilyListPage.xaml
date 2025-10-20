@@ -14,7 +14,7 @@
       NavigationCacheMode="Disabled"
       mc:Ignorable="d">
 
-    <!--  FamilyListPage.xaml  Skriptdatum: 03.12.2024  10:32  -->
+    <!--  FamilyListPage.xaml  Skriptdatum: 18.10.2025  10:32  -->
 
     <Page.Resources>
         <MenuFlyout x:Key="FamilyDataContextMenu">
@@ -115,15 +115,6 @@
             </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Comment"
                             Click="AddComment_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>
-        <MenuFlyout x:Key="SubfamilyDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Subfamily"
-                            Click="AddSubfamily_Click">
                 <MenuFlyoutItem.Icon>
                     <BitmapIcon ShowAsMonochrome="False"
                                 UriSource="/Assets/Fluent/add.png" />
@@ -235,15 +226,6 @@
             <AppBarButton x:Name="AppBarButtonAddComment"
                           loca:Uids.Uid="AppBarButtonAddComment"
                           Click="AddComment_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FamilySelected), Mode=OneWay}">
-                <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonAddSubfamily"
-                          loca:Uids.Uid="AppBarButtonAddSubfamily"
-                          Click="AddSubfamily_Click"
                           IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FamilySelected), Mode=OneWay}">
                 <AppBarButton.Icon>
                     <BitmapIcon ShowAsMonochrome="False"
@@ -445,8 +427,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_FamilyName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFamily), Mode=OneWay}"
                                          LostFocus="FamilyName_OnLostFocus"
                                          MaxLength="100"
@@ -802,8 +782,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceExpert), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -998,8 +976,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceSource), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1175,8 +1151,6 @@
                                                              Margin="{StaticResource XSmallRightMargin}"
                                                              HorizontalAlignment="Stretch"
                                                              loca:Uids.Uid="TextBox_Info"
-                                                             Background="SlateGray"
-                                                             Foreground="White"
                                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceAuthor), Mode=OneWay}"
                                                              MaxLength="100"
                                                              RelativePanel.AlignLeftWithPanel="True"
@@ -1317,8 +1291,6 @@
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditComment), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1398,14 +1370,6 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddSubfamily"
-                                          Click="AddSubfamily_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FamilySelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsSubfamilyAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditSubfamily, Mode=OneWay}">
@@ -1452,8 +1416,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SubfamilyName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSubfamily), Mode=OneWay}"
                                          LostFocus="SubfamilyName_OnLostFocus"
                                          MaxLength="100"
@@ -1762,7 +1724,6 @@
                                           BorderThickness="0"
                                           CanUserReorderColumns="False"
                                           CanUserResizeColumns="False"
-                                          ContextFlyout="{StaticResource SubfamilyDataContextMenu}"
                                           GridLinesVisibility="Horizontal"
                                           ItemsSource="{x:Bind ViewModel.SubfamilyItems, Mode=OneWay}"
                                           SelectedItem="{x:Bind ViewModel.SubfamilySelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

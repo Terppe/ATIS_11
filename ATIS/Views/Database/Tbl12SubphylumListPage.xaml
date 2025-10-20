@@ -122,15 +122,6 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
-        <MenuFlyout x:Key="SuperclassDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Superclass"
-                            Click="AddSuperclass_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>
     </Page.Resources>
 
     <RelativePanel x:Name="SubphylumRoot"
@@ -236,15 +227,6 @@
             <AppBarButton x:Name="AppBarButtonAddComment"
                           loca:Uids.Uid="AppBarButtonAddComment"
                           Click="AddComment_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SubphylumSelected), Mode=OneWay}">
-                <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonAddSuperclass"
-                          loca:Uids.Uid="AppBarButtonAddSuperclass"
-                          Click="AddSuperclass_Click"
                           IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SubphylumSelected), Mode=OneWay}">
                 <AppBarButton.Icon>
                     <BitmapIcon ShowAsMonochrome="False"
@@ -446,8 +428,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SubphylumName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSubphylum), Mode=OneWay}"
                                          LostFocus="SubphylumName_OnLostFocus"
                                          MaxLength="100"
@@ -803,8 +783,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceExpert), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -999,8 +977,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceSource), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1176,8 +1152,6 @@
                                                              Margin="{StaticResource XSmallRightMargin}"
                                                              HorizontalAlignment="Stretch"
                                                              loca:Uids.Uid="TextBox_Info"
-                                                             Background="SlateGray"
-                                                             Foreground="White"
                                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceAuthor), Mode=OneWay}"
                                                              MaxLength="100"
                                                              RelativePanel.AlignLeftWithPanel="True"
@@ -1318,8 +1292,6 @@
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditComment), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1399,14 +1371,6 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddSuperclass"
-                                          Click="AddSuperclass_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SubphylumSelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsSuperclassAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditSuperclass, Mode=OneWay}">
@@ -1453,8 +1417,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SuperclassName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSuperclass), Mode=OneWay}"
                                          LostFocus="SuperclassName_OnLostFocus"
                                          MaxLength="100"
@@ -1763,7 +1725,6 @@
                                           BorderThickness="0"
                                           CanUserReorderColumns="False"
                                           CanUserResizeColumns="False"
-                                          ContextFlyout="{StaticResource SuperclassDataContextMenu}"
                                           GridLinesVisibility="Horizontal"
                                           ItemsSource="{x:Bind ViewModel.SuperclassItems, Mode=OneWay}"
                                           SelectedItem="{x:Bind ViewModel.SuperclassSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

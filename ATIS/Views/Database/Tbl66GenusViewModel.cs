@@ -27,7 +27,6 @@ public partial class Tbl66GenusViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
 
     #endregion [Private Data Members]      
 
@@ -79,8 +78,7 @@ public partial class Tbl66GenusViewModel : ObservableObject
             var infratribusId = Tbl63InfratribussesAllList.First().InfratribusId;
 
             Tbl66GenussesList ??= [];
-            Tbl66GenussesList.Insert(index: 0,
-                item: new Tbl66Genus { InfratribusId = infratribusId });
+            Tbl66GenussesList.Insert(index: 0, item: new Tbl66Genus { InfratribusId = infratribusId });
         });
     }
 
@@ -219,6 +217,9 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -230,6 +231,9 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -241,6 +245,9 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -366,6 +373,9 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = GenusSelected.GenusId;
 
             Tbl93CommentsList ??= [];
@@ -485,35 +495,6 @@ public partial class Tbl66GenusViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Species]
-
-    public async Task AddSpeciesAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(async () =>
-        {
-            var speciesgroupId = 0;
-
-            //Id search for first Dataset of Tbl68SpeciesgroupsList
-            var collection1 = new ObservableCollection<Tbl68Speciesgroup>(Context.Tbl68Speciesgroups
-                .Where(a => a.SpeciesgroupName == "NotClear"));
-
-            if (collection1.Count == 0)
-            {
-                await AllDialogs.ErrorMessageDialogAsync(StringsRes.DatasetNotExist + " " + StringsRes.SpeciesgroupNotClear);
-            }
-            else
-            {
-                speciesgroupId = collection1.First().SpeciesgroupId;
-            }
-
-            Tbl66GenussesAllList ??= [];
-            Tbl66GenussesAllList = [.. _dataService.GetGenusAsync()];
-
-            var genusid = GenusSelected.GenusId;
-
-            Tbl75SpeciessesList ??= [];
-            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl69FiSpecies { GenusId = genusid, SpeciesgroupId = speciesgroupId });
-        });
-    }
 
     public async Task SaveSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
     {

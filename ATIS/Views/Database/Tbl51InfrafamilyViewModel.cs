@@ -79,8 +79,7 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
             var subfamilyId = Tbl48SubfamiliesAllList.First().SubfamilyId;
 
             Tbl51InfrafamiliesList ??= [];
-            Tbl51InfrafamiliesList.Insert(index: 0,
-                item: new Tbl51Infrafamily { SubfamilyId = subfamilyId });
+            Tbl51InfrafamiliesList.Insert(index: 0, item: new Tbl51Infrafamily { SubfamilyId = subfamilyId });
         });
     }
 
@@ -226,6 +225,9 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -238,6 +240,9 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -249,6 +254,9 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -375,6 +383,9 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = InfrafamilySelected.InfrafamilyId;
 
             Tbl93CommentsList ??= [];
@@ -494,20 +505,6 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Supertribus]             
-
-    public async Task AddSupertribusAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl51InfrafamiliesAllList ??= [];
-            Tbl51InfrafamiliesAllList = [.. _dataService.GetInfrafamilyAsync()];
-
-            var id = InfrafamilySelected.InfrafamilyId;
-
-            Tbl54SupertribussesList ??= [];
-            Tbl54SupertribussesList.Insert(index: 0, item: new Tbl54Supertribus { InfrafamilyId = id });
-        });
-    }
 
     public async Task SaveSupertribusAsync(Tbl54Supertribus viewModelSupertribusSelected)
     {
@@ -956,7 +953,7 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -966,7 +963,7 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -976,7 +973,7 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 

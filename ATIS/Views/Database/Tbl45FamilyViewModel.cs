@@ -7,7 +7,7 @@ using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
 
-//    Tbl45FamilyViewModel Skriptdatum:  03.12.2024  10:32    
+//    Tbl45FamilyViewModel Skriptdatum:  18.10.2025  10:32    
 
 namespace ATIS.Views.Database;
 
@@ -45,6 +45,7 @@ public partial class Tbl45FamilyViewModel : ObservableObject
         Tbl42SuperfamiliesAllList = [.. _dataService.GetSuperfamilyAsync()];
         Tbl45FamiliesAllList ??= [];
         Tbl45FamiliesAllList = [.. _dataService.GetFamilyAsync()];
+
         Tbl90ExpertsAllList ??= [];
         Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
         Tbl90SourcesAllList ??= [];
@@ -78,8 +79,7 @@ public partial class Tbl45FamilyViewModel : ObservableObject
             var superfamilyId = Tbl42SuperfamiliesAllList.First().SuperfamilyId;
 
             Tbl45FamiliesList ??= [];
-            Tbl45FamiliesList.Insert(index: 0,
-                item: new Tbl45Family { SuperfamilyId = superfamilyId });
+            Tbl45FamiliesList.Insert(index: 0, item: new Tbl45Family { SuperfamilyId = superfamilyId });
         });
     }
     public async Task SaveFamilyAsync(Tbl45Family viewModelFamilySelected)
@@ -228,6 +228,9 @@ public partial class Tbl45FamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -239,6 +242,9 @@ public partial class Tbl45FamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -250,6 +256,9 @@ public partial class Tbl45FamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -373,6 +382,9 @@ public partial class Tbl45FamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = FamilySelected.FamilyId;
 
             Tbl93CommentsList ??= [];
@@ -489,21 +501,7 @@ public partial class Tbl45FamilyViewModel : ObservableObject
 
     #endregion [Methods Comment] 
 
-    #region [Methods Subfamily]             
-
-    public async Task AddSubfamilyAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl45FamiliesAllList ??= [];
-            Tbl45FamiliesAllList = [.. _dataService.GetFamilyAsync()];
-
-            var id = FamilySelected.FamilyId;
-
-            Tbl48SubfamiliesList ??= [];
-            Tbl48SubfamiliesList.Insert(index: 0, item: new Tbl48Subfamily { FamilyId = id });
-        });
-    }
+    #region [Methods Subfamily]
     public async Task SaveSubfamilyAsync(Tbl48Subfamily viewModelSubfamilySelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -818,8 +816,8 @@ private Tbl90Reference _referenceSelected;
     {
          get => _subfamilySelected;
          set => SetProperty(ref _subfamilySelected, value);
-}
-private Tbl90Reference _referenceExpertSelected;
+    }
+    private Tbl90Reference _referenceExpertSelected;
     public Tbl90Reference ReferenceExpertSelected
     {
         get => _referenceExpertSelected;
@@ -957,7 +955,7 @@ private Tbl90Reference _referenceExpertSelected;
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -967,7 +965,7 @@ private Tbl90Reference _referenceExpertSelected;
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -977,7 +975,7 @@ private Tbl90Reference _referenceExpertSelected;
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 

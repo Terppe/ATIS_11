@@ -1897,8 +1897,6 @@
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditComment), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"

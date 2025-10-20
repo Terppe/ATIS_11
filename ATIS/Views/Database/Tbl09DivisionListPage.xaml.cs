@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -119,7 +118,6 @@ public sealed partial class Tbl09DivisionListPage : Page
                 AppBarButtonDeleteDivision.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddSubdivision.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelDivision.Visibility = Visibility.Visible;
@@ -245,6 +243,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             BackDetailExpanders();
             await AddDivision();
+            DivisionName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(DivisionName);
+            };
         }
         catch (Exception xe)
         {
@@ -255,11 +257,6 @@ public sealed partial class Tbl09DivisionListPage : Page
 
     private async Task AddDivision()
     {
-        DivisionName.Loaded += (s, e) =>
-        {
-            DivisionName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditDivision = true;
         ViewModel.IsNewDivision = true;
 
@@ -279,8 +276,6 @@ public sealed partial class Tbl09DivisionListPage : Page
         ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
-
-        DivisionName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DivisionSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -481,6 +476,7 @@ public sealed partial class Tbl09DivisionListPage : Page
                 await ViewModel.SaveDivisionAsync(ViewModel.DivisionSelected);
                 await BehindSaveDivision(ViewModel.DivisionSelected);
                 await Refresh();
+                ViewModel.IsNewDivision = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedDivision = true;
@@ -763,6 +759,7 @@ public sealed partial class Tbl09DivisionListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -843,6 +840,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -853,11 +854,6 @@ public sealed partial class Tbl09DivisionListPage : Page
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -875,8 +871,6 @@ public sealed partial class Tbl09DivisionListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -954,6 +948,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -964,11 +962,6 @@ public sealed partial class Tbl09DivisionListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -986,8 +979,6 @@ public sealed partial class Tbl09DivisionListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1065,6 +1056,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1075,11 +1070,6 @@ public sealed partial class Tbl09DivisionListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1097,8 +1087,6 @@ public sealed partial class Tbl09DivisionListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1176,6 +1164,10 @@ public sealed partial class Tbl09DivisionListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1186,11 +1178,6 @@ public sealed partial class Tbl09DivisionListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1203,8 +1190,6 @@ public sealed partial class Tbl09DivisionListPage : Page
 
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1394,6 +1379,7 @@ public sealed partial class Tbl09DivisionListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1466,49 +1452,10 @@ public sealed partial class Tbl09DivisionListPage : Page
 
     #region [Subdivision Methods]
 
-    private async void AddSubdivision_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddSubdivision();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddSubdivision()
-    {
-        SubdivisionName.Loaded += (s, e) =>
-        {
-            SubdivisionName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditSubdivision = true;
-        ViewModel.IsNewSubdivision = true;
-
-        await ViewModel.AddSubdivisionAsync();
-
-        if (ViewModel.Tbl15SubdivisionsList != null)
-        {
-            ViewModel.SubdivisionSelected = ViewModel.Tbl15SubdivisionsList[0];
-        }
-
-        SubdivisionDetailExpander.IsExpanded = true;
-        SubdivisionDetailExpander.Visibility = Visibility.Visible;
-
-        SubdivisionName.PlaceholderText = StringsRes.EnterText;
-    }
-
     private void DataGrid_Subdivision_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl15SubdivisionsList.Sort);
     }
-
-    private void AddNewSubdivisionCanceled(object sender, EventArgs e) => SubdivisionsExpander.IsExpanded = false;
 
     private async void ViewSubdivisionHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1656,6 +1603,7 @@ public sealed partial class Tbl09DivisionListPage : Page
                 await ViewModel.SaveSubdivisionAsync(ViewModel.SubdivisionSelected);
                 await BehindSaveSubdivision(ViewModel.SubdivisionSelected);
                 await Refresh();
+                ViewModel.IsNewSubdivision = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubdivision = true;

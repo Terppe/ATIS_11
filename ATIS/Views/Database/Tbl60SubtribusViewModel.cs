@@ -30,7 +30,6 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
     #endregion [Private Data Members]      
 
     #region [Constructor]
@@ -79,8 +78,7 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             var tribusId = Tbl57TribussesAllList.First().TribusId;
 
             Tbl60SubtribussesList ??= [];
-            Tbl60SubtribussesList.Insert(index: 0,
-                item: new Tbl60Subtribus { TribusId = tribusId });
+            Tbl60SubtribussesList.Insert(index: 0, item: new Tbl60Subtribus { TribusId = tribusId });
         });
     }
 
@@ -216,6 +214,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -228,6 +229,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -239,6 +243,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -365,6 +372,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = SubtribusSelected.SubtribusId;
 
             Tbl93CommentsList ??= [];
@@ -484,21 +494,6 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Infratribus]             
-
-    public async Task AddInfratribusAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl60SubtribussesAllList ??= [];
-            Tbl60SubtribussesAllList = [.. _dataService.GetSubtribusAsync()];
-
-            var id = SubtribusSelected.SubtribusId;
-
-            Tbl63InfratribussesList ??= [];
-            Tbl63InfratribussesList.Insert(index: 0, item: new Tbl63Infratribus { SubtribusId = id });
-        });
-    }
-
     public async Task SaveInfratribusAsync(Tbl63Infratribus viewModelInfratribusSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -946,7 +941,7 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -956,7 +951,7 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -966,7 +961,7 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 

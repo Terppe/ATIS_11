@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -119,7 +118,6 @@ public sealed partial class Tbl30LegioListPage : Page
                 AppBarButtonDeleteLegio.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddOrdo.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelLegio.Visibility = Visibility.Visible;
@@ -245,6 +243,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             BackDetailExpanders();
             await AddLegio();
+            LegioName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(LegioName);
+            };
         }
         catch (Exception xe)
         {
@@ -255,11 +257,6 @@ public sealed partial class Tbl30LegioListPage : Page
 
     private async Task AddLegio()
     {
-        LegioName.Loaded += (s, e) =>
-        {
-            LegioName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditLegio = true;
         ViewModel.IsNewLegio = true;
 
@@ -279,8 +276,6 @@ public sealed partial class Tbl30LegioListPage : Page
         ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
-
-        LegioName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void LegioSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -481,6 +476,7 @@ public sealed partial class Tbl30LegioListPage : Page
                 await ViewModel.SaveLegioAsync(ViewModel.LegioSelected);
                 await BehindSaveLegio(ViewModel.LegioSelected);
                 await Refresh();
+                ViewModel.IsNewLegio = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedLegio = true;
@@ -763,6 +759,7 @@ public sealed partial class Tbl30LegioListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -843,6 +840,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -853,11 +854,6 @@ public sealed partial class Tbl30LegioListPage : Page
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -875,8 +871,6 @@ public sealed partial class Tbl30LegioListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -954,6 +948,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -964,11 +962,6 @@ public sealed partial class Tbl30LegioListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -986,8 +979,6 @@ public sealed partial class Tbl30LegioListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1065,6 +1056,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1075,11 +1070,6 @@ public sealed partial class Tbl30LegioListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1097,8 +1087,6 @@ public sealed partial class Tbl30LegioListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1176,6 +1164,10 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1186,11 +1178,6 @@ public sealed partial class Tbl30LegioListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1203,8 +1190,6 @@ public sealed partial class Tbl30LegioListPage : Page
 
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1394,6 +1379,7 @@ public sealed partial class Tbl30LegioListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1466,49 +1452,10 @@ public sealed partial class Tbl30LegioListPage : Page
 
     #region [Ordo Methods]
 
-    private async void AddOrdo_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddOrdo();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddOrdo()
-    {
-        OrdoName.Loaded += (s, e) =>
-        {
-            OrdoName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditOrdo = true;
-        ViewModel.IsNewOrdo = true;
-
-        await ViewModel.AddOrdoAsync();
-
-        if (ViewModel.Tbl33OrdosList != null)
-        {
-            ViewModel.OrdoSelected = ViewModel.Tbl33OrdosList[0];
-        }
-
-        OrdoDetailExpander.IsExpanded = true;
-        OrdoDetailExpander.Visibility = Visibility.Visible;
-
-        OrdoName.PlaceholderText = StringsRes.EnterText;
-    }
-
     private void DataGrid_Ordo_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl33OrdosList.Sort);
     }
-
-    private void AddNewOrdoCanceled(object sender, EventArgs e) => OrdosExpander.IsExpanded = false;
 
     private async void ViewOrdoHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1656,6 +1603,7 @@ public sealed partial class Tbl30LegioListPage : Page
                 await ViewModel.SaveOrdoAsync(ViewModel.OrdoSelected);
                 await BehindSaveOrdo(ViewModel.OrdoSelected);
                 await Refresh();
+                ViewModel.IsNewOrdo = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedOrdo = true;

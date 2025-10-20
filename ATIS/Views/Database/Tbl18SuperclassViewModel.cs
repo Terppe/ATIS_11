@@ -30,7 +30,6 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
     #endregion [Private Data Members]      
 
     #region [Constructor]
@@ -83,8 +82,7 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
             var subdivisionId = Tbl15SubdivisionsAllList.First().SubdivisionId;
 
             Tbl18SuperclassesList ??= [];
-            Tbl18SuperclassesList.Insert(index: 0,
-                item: new Tbl18Superclass { SubphylumId = subphylumId, SubdivisionId = subdivisionId });
+            Tbl18SuperclassesList.Insert(index: 0, item: new Tbl18Superclass { SubphylumId = subphylumId, SubdivisionId = subdivisionId });
         });
     }
 
@@ -264,6 +262,9 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -276,6 +277,9 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -287,6 +291,9 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -413,6 +420,9 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = SuperclassSelected.SuperclassId;
 
             Tbl93CommentsList ??= [];
@@ -532,20 +542,6 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Class]             
-
-    public async Task AddClassAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl18SuperclassesAllList ??= [];
-            Tbl18SuperclassesAllList = [.. _dataService.GetSuperclassAsync()];
-
-            var id = SuperclassSelected.SuperclassId;
-
-            Tbl21ClassesList ??= [];
-            Tbl21ClassesList.Insert(index: 0, item: new Tbl21Class { SuperclassId = id });
-        });
-    }
 
     public async Task SaveClassAsync(Tbl21Class viewModelClassSelected)
     {

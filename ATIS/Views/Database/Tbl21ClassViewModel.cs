@@ -29,7 +29,6 @@ public partial class Tbl21ClassViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
     #endregion [Private Data Members]      
 
     #region [Constructor]
@@ -78,8 +77,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
             var superclassId = Tbl18SuperclassesAllList.First().SuperclassId;
 
             Tbl21ClassesList ??= [];
-            Tbl21ClassesList.Insert(index: 0,
-                item: new Tbl21Class { SuperclassId = superclassId });
+            Tbl21ClassesList.Insert(index: 0, item: new Tbl21Class { SuperclassId = superclassId });
         });
     }
 
@@ -256,6 +254,9 @@ public partial class Tbl21ClassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -268,6 +269,9 @@ public partial class Tbl21ClassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -279,6 +283,9 @@ public partial class Tbl21ClassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -405,6 +412,9 @@ public partial class Tbl21ClassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = ClassSelected.ClassId;
 
             Tbl93CommentsList ??= [];
@@ -524,20 +534,6 @@ public partial class Tbl21ClassViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Subclass]             
-
-    public async Task AddSubclassAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl21ClassesAllList ??= [];
-            Tbl21ClassesAllList = [.. _dataService.GetClassAsync()];
-
-            var id = ClassSelected.ClassId;
-
-            Tbl24SubclassesList ??= [];
-            Tbl24SubclassesList.Insert(index: 0, item: new Tbl24Subclass { ClassId = id });
-        });
-    }
 
     public async Task SaveSubclassAsync(Tbl24Subclass viewModelSubclassSelected)
     {
@@ -986,7 +982,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -996,7 +992,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -1006,7 +1002,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 

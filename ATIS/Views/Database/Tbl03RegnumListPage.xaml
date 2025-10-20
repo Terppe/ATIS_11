@@ -115,24 +115,6 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
-        <MenuFlyout x:Key="PhylumDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Phylum"
-                            Click="AddPhylum_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>
-        <MenuFlyout x:Key="DivisionDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Division"
-                            Click="AddDivision_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>
     </Page.Resources>
 
     <RelativePanel x:Name="RegnumRoot"
@@ -238,24 +220,6 @@
             <AppBarButton x:Name="AppBarButtonAddComment"
                           loca:Uids.Uid="AppBarButtonAddComment"
                           Click="AddComment_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.RegnumSelected), Mode=OneWay}">
-                <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonAddPhylum"
-                          loca:Uids.Uid="AppBarButtonAddPhylum"
-                          Click="AddPhylum_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.RegnumSelected), Mode=OneWay}">
-                <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonAddDivision"
-                          loca:Uids.Uid="AppBarButtonAddDivision"
-                          Click="AddDivision_Click"
                           IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.RegnumSelected), Mode=OneWay}">
                 <AppBarButton.Icon>
                     <BitmapIcon ShowAsMonochrome="False"
@@ -458,8 +422,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_RegnumName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRegnum), Mode=OneWay}"
                                          LostFocus="RegnumName_OnLostFocus"
                                          MaxLength="100"
@@ -814,8 +776,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceExpert), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1010,8 +970,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceSource), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1187,8 +1145,6 @@
                                                              Margin="{StaticResource XSmallRightMargin}"
                                                              HorizontalAlignment="Stretch"
                                                              loca:Uids.Uid="TextBox_Info"
-                                                             Background="SlateGray"
-                                                             Foreground="White"
                                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceAuthor), Mode=OneWay}"
                                                              MaxLength="100"
                                                              RelativePanel.AlignLeftWithPanel="True"
@@ -1329,8 +1285,6 @@
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditComment), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1410,14 +1364,6 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddPhylum"
-                                          Click="AddPhylum_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.RegnumSelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsPhylumAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditPhylum, Mode=OneWay}">
@@ -1464,8 +1410,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_PhylumName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditPhylum), Mode=OneWay}"
                                          LostFocus="PhylumName_OnLostFocus"
                                          MaxLength="100"
@@ -1661,14 +1605,6 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddPhylum"
-                                          Click="AddDivision_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.RegnumSelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsDivisionAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditDivision, Mode=OneWay}">
@@ -1715,8 +1651,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_DivisionName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDivision), Mode=OneWay}"
                                          LostFocus="DivisionName_OnLostFocus"
                                          MaxLength="100"
@@ -2026,7 +1960,6 @@
                                           BorderThickness="0"
                                           CanUserReorderColumns="False"
                                           CanUserResizeColumns="False"
-                                          ContextFlyout="{StaticResource PhylumDataContextMenu}"
                                           GridLinesVisibility="Horizontal"
                                           ItemsSource="{x:Bind ViewModel.PhylumItems, Mode=OneWay}"
                                           SelectedItem="{x:Bind ViewModel.PhylumSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -2103,7 +2036,6 @@
                                           BorderThickness="0"
                                           CanUserReorderColumns="False"
                                           CanUserResizeColumns="False"
-                                          ContextFlyout="{StaticResource DivisionDataContextMenu}"
                                           GridLinesVisibility="Horizontal"
                                           ItemsSource="{x:Bind ViewModel.DivisionItems, Mode=OneWay}"
                                           SelectedItem="{x:Bind ViewModel.DivisionSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

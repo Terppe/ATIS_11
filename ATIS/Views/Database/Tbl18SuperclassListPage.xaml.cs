@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -119,7 +118,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
                 AppBarButtonDeleteSuperclass.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddClass.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelSuperclass.Visibility = Visibility.Visible;
@@ -245,6 +243,10 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             BackDetailExpanders();
             await AddSuperclass();
+            SuperclassName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(SuperclassName);
+            };
         }
         catch (Exception xe)
         {
@@ -255,11 +257,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     private async Task AddSuperclass()
     {
-        SuperclassName.Loaded += (s, e) =>
-        {
-            SuperclassName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditSuperclass = true;
         ViewModel.IsNewSuperclass = true;
 
@@ -279,8 +276,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
         ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
-
-        SuperclassName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void SuperclassSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -481,6 +476,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
                 await ViewModel.SaveSuperclassAsync(ViewModel.SuperclassSelected);
                 await BehindSaveSuperclass(ViewModel.SuperclassSelected);
                 await Refresh();
+                ViewModel.IsNewSuperclass = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSuperclass = true;
@@ -763,6 +759,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -843,6 +840,10 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -853,11 +854,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -875,8 +871,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -954,6 +948,10 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -964,11 +962,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -986,8 +979,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1065,6 +1056,10 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1075,11 +1070,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1097,8 +1087,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1176,6 +1164,10 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1186,11 +1178,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1203,8 +1190,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1394,6 +1379,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1466,49 +1452,10 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     #region [Class Methods]
 
-    private async void AddClass_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddClass();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddClass()
-    {
-        ClassName.Loaded += (s, e) =>
-        {
-            ClassName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditClass = true;
-        ViewModel.IsNewClass = true;
-
-        await ViewModel.AddClassAsync();
-
-        if (ViewModel.Tbl21ClassesList != null)
-        {
-            ViewModel.ClassSelected = ViewModel.Tbl21ClassesList[0];
-        }
-
-        ClassDetailExpander.IsExpanded = true;
-        ClassDetailExpander.Visibility = Visibility.Visible;
-
-        ClassName.PlaceholderText = StringsRes.EnterText;
-    }
-
     private void DataGrid_Class_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl21ClassesList.Sort);
     }
-
-    private void AddNewClassCanceled(object sender, EventArgs e) => ClassesExpander.IsExpanded = false;
 
     private async void ViewClassHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1656,6 +1603,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
                 await ViewModel.SaveClassAsync(ViewModel.ClassSelected);
                 await BehindSaveClass(ViewModel.ClassSelected);
                 await Refresh();
+                ViewModel.IsNewClass = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedClass = true;

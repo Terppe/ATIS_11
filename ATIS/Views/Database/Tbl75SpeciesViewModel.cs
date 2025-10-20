@@ -235,18 +235,23 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, FiSpeciesId = SpeciesSelected.FiSpeciesId });
-
         });
     }
     public async Task AddReferenceSourceAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -258,6 +263,9 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -384,6 +392,9 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = SpeciesSelected.FiSpeciesId;
 
             Tbl93CommentsList ??= [];

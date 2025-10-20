@@ -619,6 +619,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveSpeciesAsync(ViewModel.SpeciesSelected);
                 await BehindSaveSpecies(ViewModel.SpeciesSelected);
                 await Refresh();
+                ViewModel.IsNewSpecies = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpecies = true;
@@ -966,6 +967,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -1079,6 +1081,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
 
+        InfoReferenceExpert.IsReadOnly = false;
         InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
@@ -1147,6 +1150,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             ReferenceExpertSingles();
         });
     }
+
     #endregion [Reference Expert Methods]
 
     #region [Reference Source Methods]
@@ -1606,6 +1610,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -2220,7 +2225,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                     return;
                 }
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
-                await BehindSaveImage(ViewModel.ImageSelected, ViewModel.SelectedPath);
+                await BehindSaveImage(ViewModel.ImageSelected);
                 await Refresh();
                 break;
             case SaveChangesDialogResult.DontSave:
@@ -2254,7 +2259,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsModifiedImage = true;
         return false;
     }
-    private async Task BehindSaveImage(Tbl81Image viewModelImageSelected, string viewModelSelectedPath)
+    private async Task BehindSaveImage(Tbl81Image viewModelImageSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {

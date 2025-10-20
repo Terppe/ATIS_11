@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -119,7 +118,6 @@ public sealed partial class Tbl66GenusListPage : Page
                 AppBarButtonDeleteGenus.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddSpecies.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelGenus.Visibility = Visibility.Visible;
@@ -247,6 +245,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             BackDetailExpanders();
             await AddGenus();
+            GenusName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(GenusName);
+            };
         }
         catch (Exception xe)
         {
@@ -257,11 +259,6 @@ public sealed partial class Tbl66GenusListPage : Page
 
     private async Task AddGenus()
     {
-        GenusName.Loaded += (s, e) =>
-        {
-            GenusName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditGenus = true;
         ViewModel.IsNewGenus = true;
 
@@ -292,8 +289,6 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        GenusName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void GenusSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -494,6 +489,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 await ViewModel.SaveGenusAsync(ViewModel.GenusSelected);
                 await BehindSaveGenus(ViewModel.GenusSelected);
                 await Refresh();
+                ViewModel.IsNewGenus = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedGenus = true;
@@ -776,6 +772,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -856,6 +853,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -863,14 +864,8 @@ public sealed partial class Tbl66GenusListPage : Page
             SimpleLog.Log(xe);
         }
     }
-
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -888,7 +883,6 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
 
         SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
@@ -900,8 +894,6 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -978,6 +970,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -988,11 +984,6 @@ public sealed partial class Tbl66GenusListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -1010,7 +1001,6 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-        ViewModel.IsNewReference = false;
 
         SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
@@ -1022,8 +1012,6 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1100,6 +1088,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1110,10 +1102,6 @@ public sealed partial class Tbl66GenusListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1131,7 +1119,6 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-        ViewModel.IsNewReference = false;
 
         SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
@@ -1143,8 +1130,6 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1221,6 +1206,10 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1231,11 +1220,6 @@ public sealed partial class Tbl66GenusListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1261,8 +1245,6 @@ public sealed partial class Tbl66GenusListPage : Page
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1452,6 +1434,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1524,58 +1507,10 @@ public sealed partial class Tbl66GenusListPage : Page
 
     #region [Species Methods]
 
-    private async void AddSpecies_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddSpecies();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddSpecies()
-    {
-        FiSpeciesName.Loaded += (s, e) =>
-        {
-            FiSpeciesName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditSpecies = true;
-        ViewModel.IsNewSpecies = true;
-
-        await ViewModel.AddSpeciesAsync();
-
-        if (ViewModel.Tbl75SpeciessesList != null)
-        {
-            ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[0];
-        }
-        SpeciesDetailExpander.IsExpanded = true;
-        SpeciesDetailExpander.Visibility = Visibility.Visible;
-
-        SpecificationExpanderFiSpecies.IsExpanded = false;
-        FoodExpanderFiSpecies.IsExpanded = false;
-        TechnikExpanderFiSpecies.IsExpanded = false;
-        HusbandryExpanderFiSpecies.IsExpanded = false;
-        BreedingExpanderFiSpecies.IsExpanded = false;
-        BuiltExpanderFiSpecies.IsExpanded = false;
-        SpecialExpanderFiSpecies.IsExpanded = false;
-        ReproductionExpanderPlSpecies.IsExpanded = false;
-        CultureExpanderPlSpecies.IsExpanded = false;
-        GlobalExpanderPlSpecies.IsExpanded = false;
-
-        FiSpeciesName.PlaceholderText = StringsRes.EnterText;
-    }
     private void DataGrid_Species_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl75SpeciessesList.Sort);
     }
-
-    private void AddNewSpeciesCanceled(object sender, EventArgs e) => SpeciessesExpander.IsExpanded = false;
 
     private async void ViewSpeciesHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1759,6 +1694,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 await ViewModel.SaveSpeciesAsync(ViewModel.SpeciesSelected);
                 await BehindSaveSpecies(ViewModel.SpeciesSelected);
                 await Refresh();
+                ViewModel.IsNewSpecies = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpecies = true;
@@ -1992,7 +1928,7 @@ public sealed partial class Tbl66GenusListPage : Page
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
     }
-    #endregion [Refresh Methods] 
+    #endregion [Refresh Methods]
 
 
 }

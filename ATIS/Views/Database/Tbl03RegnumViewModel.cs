@@ -29,7 +29,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
     #endregion [Private Data Members]      
 
     #region [Constructor]
@@ -268,6 +267,9 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -280,6 +282,9 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -291,6 +296,9 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -417,6 +425,9 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = RegnumSelected.RegnumId;
 
             Tbl93CommentsList ??= [];
@@ -537,20 +548,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
 
     #region [Methods Phylum]             
 
-    public async Task AddPhylumAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl03RegnumsAllList ??= [];
-            Tbl03RegnumsAllList = [.. _dataService.GetRegnumAsync()];
-
-            var id = RegnumSelected.RegnumId;
-
-            Tbl06PhylumsList ??= [];
-            Tbl06PhylumsList.Insert(index: 0, item: new Tbl06Phylum { RegnumId = id });
-        });
-    }
-
     public async Task SavePhylumAsync(Tbl06Phylum viewModelPhylumSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -606,20 +603,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     #endregion [Methods Phylum]   
 
     #region [Methods Division]             
-
-    public async Task AddDivisionAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl03RegnumsAllList ??= [];
-            Tbl03RegnumsAllList = [.. _dataService.GetRegnumAsync()];
-
-            var id = RegnumSelected.RegnumId;
-
-            Tbl09DivisionsList ??= [];
-            Tbl09DivisionsList.Insert(index: 0, item: new Tbl09Division() { RegnumId = id });
-        });
-    }
 
     public async Task SaveDivisionAsync(Tbl09Division viewModelDivisionSelected)
     {
@@ -940,7 +923,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
 
     #endregion [Propertys]     
 
-
     #region Selected Properties
 
     private Tbl03Regnum _regnumSelected;
@@ -1151,7 +1133,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -1161,7 +1143,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -1171,7 +1153,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 

@@ -1,18 +1,16 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-//  Tbl45FamilyListPage.xaml.cs Skriptdatum:  03.12.2024  10:32         
+//  Tbl45FamilyListPage.xaml.cs Skriptdatum:  18.10.2025  10:32         
 
 namespace ATIS.Views.Database;
 
@@ -119,7 +117,6 @@ public sealed partial class Tbl45FamilyListPage : Page
                 AppBarButtonDeleteFamily.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
                 AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonAddSubfamily.IsEnabled = false;
                 AppBarButtonSync.IsEnabled = false;
 
                 DetailPanelFamily.Visibility = Visibility.Visible;
@@ -245,6 +242,10 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             BackDetailExpanders();
             await AddFamily();
+            FamilyName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(FamilyName);
+            };
         }
         catch (Exception xe)
         {
@@ -255,11 +256,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     private async Task AddFamily()
     {
-        FamilyName.Loaded += (s, e) =>
-        {
-            FamilyName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditFamily = true;
         ViewModel.IsNewFamily = true;
 
@@ -279,8 +275,6 @@ public sealed partial class Tbl45FamilyListPage : Page
         ReferenceAuthorDetailExpander.Visibility = Visibility.Collapsed;
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
-
-        FamilyName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void FamilySearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -481,6 +475,7 @@ public sealed partial class Tbl45FamilyListPage : Page
                 await ViewModel.SaveFamilyAsync(ViewModel.FamilySelected);
                 await BehindSaveFamily(ViewModel.FamilySelected);
                 await Refresh();
+                ViewModel.IsNewFamily = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedFamily = true;
@@ -763,6 +758,7 @@ public sealed partial class Tbl45FamilyListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
@@ -843,6 +839,10 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -853,11 +853,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -875,8 +870,6 @@ public sealed partial class Tbl45FamilyListPage : Page
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -954,6 +947,10 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -964,11 +961,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -986,8 +978,6 @@ public sealed partial class Tbl45FamilyListPage : Page
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1065,6 +1055,10 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1075,11 +1069,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1097,8 +1086,6 @@ public sealed partial class Tbl45FamilyListPage : Page
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1176,6 +1163,10 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1186,11 +1177,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1203,8 +1189,6 @@ public sealed partial class Tbl45FamilyListPage : Page
 
         CommentDetailExpander.IsExpanded = true;
         CommentDetailExpander.Visibility = Visibility.Visible;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1394,6 +1378,7 @@ public sealed partial class Tbl45FamilyListPage : Page
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
                 await Refresh();
+                ViewModel.IsNewComment = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
@@ -1466,49 +1451,10 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     #region [Subfamily Methods]
 
-    private async void AddSubfamily_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddSubfamily();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task AddSubfamily()
-    {
-        SubfamilyName.Loaded += (s, e) =>
-        {
-            SubfamilyName.Focus(FocusState.Programmatic);
-        };
-
-        ViewModel.IsInEditSubfamily = true;
-        ViewModel.IsNewSubfamily = true;
-
-        await ViewModel.AddSubfamilyAsync();
-
-        if (ViewModel.Tbl48SubfamiliesList != null)
-        {
-            ViewModel.SubfamilySelected = ViewModel.Tbl48SubfamiliesList[0];
-        }
-
-        SubfamilyDetailExpander.IsExpanded = true;
-        SubfamilyDetailExpander.Visibility = Visibility.Visible;
-
-        SubfamilyName.PlaceholderText = StringsRes.EnterText;
-    }
-
     private void DataGrid_Subfamily_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl48SubfamiliesList.Sort);
     }
-
-    private void AddNewSubfamilyCanceled(object sender, EventArgs e) => SubfamiliesExpander.IsExpanded = false;
 
     private async void ViewSubfamilyHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1656,6 +1602,7 @@ public sealed partial class Tbl45FamilyListPage : Page
                 await ViewModel.SaveSubfamilyAsync(ViewModel.SubfamilySelected);
                 await BehindSaveSubfamily(ViewModel.SubfamilySelected);
                 await Refresh();
+                ViewModel.IsNewSubfamily = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubfamily = true;

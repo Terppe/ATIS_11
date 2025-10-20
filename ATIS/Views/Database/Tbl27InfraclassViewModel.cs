@@ -29,7 +29,6 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    public string Search;
     #endregion [Private Data Members]      
 
     #region [Constructor]
@@ -78,8 +77,7 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
             var subclassId = Tbl24SubclassesAllList.First().SubclassId;
 
             Tbl27InfraclassesList ??= [];
-            Tbl27InfraclassesList.Insert(index: 0,
-                item: new Tbl27Infraclass { SubclassId = subclassId });
+            Tbl27InfraclassesList.Insert(index: 0, item: new Tbl27Infraclass { SubclassId = subclassId });
         });
     }
 
@@ -250,6 +248,9 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90ExpertsAllList ??= [];
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
@@ -262,6 +263,9 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90SourcesAllList ??= [];
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
@@ -273,6 +277,9 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditReference = true;
+            IsNewReference = true;
+
             Tbl90AuthorsAllList ??= [];
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
@@ -399,6 +406,9 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
+            IsInEditComment = true;
+            IsNewComment = true;
+
             var id = InfraclassSelected.InfraclassId;
 
             Tbl93CommentsList ??= [];
@@ -518,20 +528,6 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     #endregion [Methods Comment] 
 
     #region [Methods Legio]             
-
-    public async Task AddLegioAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl27InfraclassesAllList ??= [];
-            Tbl27InfraclassesAllList = [.. _dataService.GetInfraclassAsync()];
-
-            var id = InfraclassSelected.InfraclassId;
-
-            Tbl30LegiosList ??= [];
-            Tbl30LegiosList.Insert(index: 0, item: new Tbl30Legio { InfraclassId = id });
-        });
-    }
 
     public async Task SaveLegioAsync(Tbl30Legio viewModelLegioSelected)
     {
@@ -980,7 +976,7 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
         get => _tbl90ReferenceAuthorsList;
         set
         {
-            _tbl90ReferenceAuthorsList = value; OnPropertyChanged(nameof(Tbl90ReferenceAuthorsList));
+            _tbl90ReferenceAuthorsList = value; OnPropertyChanged();
         }
     }
 
@@ -990,7 +986,7 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
         get => _tbl90ReferenceSourcesList;
         set
         {
-            _tbl90ReferenceSourcesList = value; OnPropertyChanged(nameof(Tbl90ReferenceSourcesList));
+            _tbl90ReferenceSourcesList = value; OnPropertyChanged();
         }
     }
 
@@ -1000,7 +996,7 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
         get => _tbl90ReferenceExpertsList;
         set
         {
-            _tbl90ReferenceExpertsList = value; OnPropertyChanged(nameof(Tbl90ReferenceExpertsList));
+            _tbl90ReferenceExpertsList = value; OnPropertyChanged();
         }
     }
 
