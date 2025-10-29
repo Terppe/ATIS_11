@@ -1,27 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <winUiEx:WindowEx x:Class="ATIS.Views.Main.FoodPdf.ReportFoodsWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
-    xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
-    xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
-    xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
-    xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:ATIS.Models"
-    xmlns:winUiEx="using:WinUIEx"
-    xmlns:foodPdf="using:ATIS.Views.Main.FoodPdf"
-    xmlns:foodPdf1="using:ATIS.Views.Main.Food.FoodPdf"
-    mc:Ignorable="d">
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
+                  xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
+                  xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
+                  xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
+                  xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
+                  xmlns:foodPdf="using:ATIS.Views.Main.FoodPdf"
+                  xmlns:foodPdf1="using:ATIS.Views.Main.Food.FoodPdf"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:models="using:ATIS.Models"
+                  xmlns:winUiEx="using:WinUIEx"
+                  mc:Ignorable="d">
 
     <!--  ReportFoodsWindow.xaml  Skriptdatum:  15.06.2024  12:32  -->
 
     <Grid>
         <Grid.Resources>
-            <DataTemplate
-                x:Key="SearchItemTemplateTblFood"
-                x:DataType="models:TblFood">
+            <DataTemplate x:Key="SearchItemTemplateTblFood"
+                          x:DataType="models:TblFood">
                 <foodPdf:SearchItemTemplateTblFoodControl />
             </DataTemplate>
 
@@ -37,19 +36,15 @@
             </DataTemplate>-->
 
 
-            <Style
-                x:Key="NoSpacesListViewItemStyle"
-                TargetType="ListViewItem">
-                <Setter
-                    Property="MinHeight"
-                    Value="24" />
+            <Style x:Key="NoSpacesListViewItemStyle"
+                   TargetType="ListViewItem">
+                <Setter Property="MinHeight" Value="24" />
             </Style>
 
             <!--  Report.Listviews  -->
             <!--  Header  -->
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderFood"
-                x:DataType="models:TblFood">
+            <DataTemplate x:Key="ReportItemTemplateHeaderFood"
+                          x:DataType="models:TblFood">
                 <foodPdf:ReportItemTemplateHeaderFoodControl />
             </DataTemplate>
             <!--<DataTemplate
@@ -64,22 +59,19 @@
             </DataTemplate>-->
 
             <!--  Taxonomy-Header  -->
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
-                x:DataType="models:Tbl03Regnum">
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
+                          x:DataType="models:Tbl03Regnum">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderControl />
             </DataTemplate>
 
             <!--  Taxonomy-Header-Body  -->
-            <DataTemplate
-                x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFood"
-                x:DataType="models:TblFood">
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFood"
+                          x:DataType="models:TblFood">
                 <foodPdf1:ReportItemTemplateHeaderTaxoNomenHeaderBodyFoodControl />
             </DataTemplate>
             <!--  Hyperlink-ListViews  -->
-            <DataTemplate
-                x:Key="ReportItemTemplateHyperlinkFood"
-                x:DataType="models:TblFood">
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkFood"
+                          x:DataType="models:TblFood">
                 <foodPdf:ReportItemTemplateHyperlinkFoodControl />
             </DataTemplate>
 
@@ -112,142 +104,98 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="40" />
-                <RowDefinition
-                    Height="*" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackPanel
-                Orientation="Horizontal">
-                <Button
-                    x:Uid="Button_PrintPdf"
-                    Margin="50,5,10,5"
-                    Click="PdfFoodCommand"
-                    Style="{StaticResource CrudButtonStyle}" />
-                <Button
-                    x:Uid="Button_Close_Window"
-                    Margin="50,5,10,5"
-                    HorizontalAlignment="Right"
-                    Click="OnCloseClick"
-                    Style="{StaticResource CrudButtonStyle}" />
+            <StackPanel Orientation="Horizontal">
+                <Button x:Uid="Button_PrintPdf"
+                        Margin="50,5,10,5"
+                        Click="PdfFoodCommand"
+                        Style="{StaticResource CrudButtonStyle}" />
+                <Button x:Uid="Button_Close_Window"
+                        Margin="50,5,10,5"
+                        HorizontalAlignment="Right"
+                        Click="OnCloseClick"
+                        Style="{StaticResource CrudButtonStyle}" />
             </StackPanel>
-            <ScrollViewer
-                Grid.Row="1"
-                Padding="{StaticResource SmallDetailPageMargin}"
-                HorizontalAlignment="Stretch"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                IsTabStop="True"
-                VerticalScrollMode="Enabled">
+            <ScrollViewer Grid.Row="1"
+                          Padding="{StaticResource SmallDetailPageMargin}"
+                          HorizontalAlignment="Stretch"
+                          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                          IsTabStop="True"
+                          VerticalScrollMode="Enabled">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition
-                            Width="260" />
-                        <ColumnDefinition
-                            Width="*" />
+                        <ColumnDefinition Width="260" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <ListView
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Margin="-12,0,0,0"
-                        ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                        ItemTemplate="{StaticResource ReportItemTemplateHeaderFood}"
-                        ItemsSource="{x:Bind ViewModel.FoodItems}" />
-                    <ListView
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Margin="-12,0,0,0"
-                        ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                        ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeader}"
-                        ItemsSource="{x:Bind ViewModel.FoodItems}" />
-                    <ListView
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Margin="-12,0,0,0"
-                        ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                        ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyFood}"
-                        ItemsSource="{x:Bind ViewModel.FoodItems}" />
-                    <TextBlock
-                        x:Uid="TextBlock_TaxonomicHierarchy"
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        FontSize="18"
-                        FontWeight="Bold" />
-                    <TextBlock
-                        x:Uid="TextBlock_Food"
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Width="Auto"
-                        Margin="8,0,0,0" />
-                    <StackPanel
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Orientation="Horizontal">
-                        <TextBlock
-                            Width="Auto"
-                            Text="{x:Bind ViewModel.FoodSelected.FoodName, Mode=OneWay}" />
-                        <TextBlock
-                            Width="Auto"
-                            Margin="2,0,0,0"
-                            Text="{x:Bind ViewModel.FoodSelected.FoodVolume, Mode=OneWay}" />
-                        <TextBlock
-                            Width="Auto"
-                            Margin="2,0,0,0"
-                            Text="{x:Bind ViewModel.FoodSelected.Karnivore, Mode=OneWay}" />
-                        <TextBlock
-                            Width="Auto"
-                            Margin="2,0,0,0"
-                            Text="{x:Bind ViewModel.FoodSelected.Herbivore, Mode=OneWay}" />
-                        <TextBlock
-                            Width="Auto"
-                            Margin="2,0,0,0"
-                            Text="{x:Bind ViewModel.FoodSelected.Limnivore, Mode=OneWay}" />
-                        <TextBlock
-                            Width="Auto"
-                            Margin="2,0,0,0"
-                            Text="{x:Bind ViewModel.FoodSelected.Omnivore, Mode=OneWay}" />
-                        <TextBlock
-                            Width="Auto"
-                            Margin="2,0,0,0"
-                            Text="{x:Bind ViewModel.FoodSelected.RegionTop, Mode=OneWay}" />
+                    <ListView Grid.Row="0"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderFood}"
+                              ItemsSource="{x:Bind ViewModel.FoodItems}" />
+                    <ListView Grid.Row="1"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeader}"
+                              ItemsSource="{x:Bind ViewModel.FoodItems}" />
+                    <ListView Grid.Row="2"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              Margin="-12,0,0,0"
+                              ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyFood}"
+                              ItemsSource="{x:Bind ViewModel.FoodItems}" />
+                    <TextBlock x:Uid="TextBlock_TaxonomicHierarchy"
+                               Grid.Row="3"
+                               Grid.Column="0"
+                               FontSize="18"
+                               FontWeight="Bold" />
+                    <TextBlock x:Uid="TextBlock_Food"
+                               Grid.Row="4"
+                               Grid.Column="0"
+                               Width="Auto"
+                               Margin="8,0,0,0" />
+                    <StackPanel Grid.Row="4"
+                                Grid.Column="1"
+                                Orientation="Horizontal">
+                        <TextBlock Width="Auto"
+                                   Text="{x:Bind ViewModel.FoodSelected.FoodName, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.FoodSelected.ShortInfo, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.FoodSelected.FoodVolume, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.FoodSelected.Info, Mode=OneWay}" />
+                        <TextBlock Width="Auto"
+                                   Margin="2,0,0,0"
+                                   Text="{x:Bind ViewModel.FoodSelected.Memo, Mode=OneWay}" />
                     </StackPanel>
 
                     <!--  Part 2  -->

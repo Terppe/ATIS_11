@@ -15,7 +15,7 @@
       mc:Ignorable="d">
 
 
-    <!--  SpeciesListPage.xaml  Skriptdatum: 03.07.2025  10:32  -->
+    <!--  SpeciesListPage.xaml  Skriptdatum: 20.10.2025  10:32  -->
 
     <Page.Resources>
         <conv:DoubleToStringConverter x:Key="DoubleToStringConverter" />
@@ -609,9 +609,7 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_SpeciesName"
-                                             Background="SlateGray"
                                              CharacterCasing="Lower"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="GenusComboSpecies"
@@ -634,22 +632,6 @@
                                              MaxLength="100"
                                              RelativePanel.RightOf="SpeciesSubspecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.Divers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <!--<ComboBox x:Name="ComboCreature"
-                                    Width="150"
-                                    Margin="{StaticResource XSmallTopRightComboBoxMargin}"
-                                    loca:Uids.Uid="ComboBox_Creature"
-                                    PlaceholderText="Select Creature"
-                                    RelativePanel.RightOf="SpeciesDivers"
-                                    SelectedValue="{x:Bind ViewModel.SpeciesSelected.Creature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectionChanged="ComboCreature_OnSelectionChangedComboBox_SelectionChanged">
-                                    <x:String>Animalia</x:String>
-                                    <x:String>Plantae</x:String>
-                                    <x:String>Fungi</x:String>
-                                    <x:String>Archaea</x:String>
-                                    <x:String>Bacteria</x:String>
-                                    <x:String>Chromista</x:String>
-                                    <x:String>Protozoa</x:String>
-                                    </ComboBox>-->
                                     <ComboBox x:Name="SpeciesgroupComboSpecies"
                                               MinWidth="200"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
@@ -1382,8 +1364,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceExpert), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1578,8 +1558,6 @@
                                                                          Margin="{StaticResource XSmallRightMargin}"
                                                                          HorizontalAlignment="Stretch"
                                                                          loca:Uids.Uid="TextBox_Info"
-                                                                         Background="SlateGray"
-                                                                         Foreground="White"
                                                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceSource), Mode=OneWay}"
                                                                          MaxLength="100"
                                                                          RelativePanel.AlignLeftWithPanel="True"
@@ -1755,8 +1733,6 @@
                                                              Margin="{StaticResource XSmallRightMargin}"
                                                              HorizontalAlignment="Stretch"
                                                              loca:Uids.Uid="TextBox_Info"
-                                                             Background="SlateGray"
-                                                             Foreground="White"
                                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditReferenceAuthor), Mode=OneWay}"
                                                              MaxLength="100"
                                                              RelativePanel.AlignLeftWithPanel="True"
@@ -2073,8 +2049,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_NameName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditName), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.RightOf="NameId"
@@ -2331,15 +2305,15 @@
                                           IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
                                           RelativePanel.RightOf="ImageMimeTypeCombo" />
                                 <!--<TextBox x:Name="ValidYearTextImage"
-                                x:Uid="TextBox_ValidYear"
-                                Width="70"
-                                Margin="{StaticResource XSmallTopRightMargin}"
-                                winUiCommunity:TextBoxExtensions.Mask="9999"
-                                winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
-                                IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
-                                RelativePanel.RightOf="ValidCheckImage"
-                                Style="{StaticResource BodyTextBoxStyle}"
-                                Text="{x:Bind ViewModel.ImageSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+                                         x:Uid="TextBox_ValidYear"
+                                         Width="70"
+                                         Margin="{StaticResource XSmallTopRightMargin}"
+                                         winUiCommunity:TextBoxExtensions.Mask="9999"
+                                         winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                         RelativePanel.RightOf="ValidCheckImage"
+                                         Style="{StaticResource BodyTextBoxStyle}"
+                                         Text="{x:Bind ViewModel.ImageSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="AuthorTextShotDate"
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
@@ -2353,60 +2327,15 @@
                                 Width="300"
                                 Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                 Date="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
-                                <ComboBox x:Name="GenusComboSpecies2"
-                                          MinWidth="200"
-                                          Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                          loca:Uids.Uid="ComboBox_GenusName"
-                                          DisplayMemberPath="GenusName"
-                                          IsDropDownOpen="False"
-                                          IsEditable="False"
-                                          IsEnabled="False"
-                                          ItemsSource="{x:Bind ViewModel.Tbl66GenussesAllList}"
-                                          RelativePanel.AlignLeftWithPanel="True"
-                                          RelativePanel.Below="ImageId"
-                                          SelectedValue="{x:Bind ViewModel.SpeciesSelected.GenusId, Mode=TwoWay}"
-                                          SelectedValuePath="GenusId" />
-                                <TextBox x:Name="SpeciesName2"
-                                         MinWidth="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_SpeciesName"
-                                         IsEnabled="False"
-                                         IsReadOnly="True"
-                                         MaxLength="100"
-                                         RelativePanel.Below="ImageId"
-                                         RelativePanel.RightOf="GenusComboSpecies2"
-                                         Text="{x:Bind ViewModel.SpeciesSelected.FiSpeciesName, Mode=TwoWay}" />
-                                <TextBox x:Name="SpeciesSubspecies2"
-                                         MinWidth="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_Subspecies"
-                                         IsEnabled="False"
-                                         IsReadOnly="True"
-                                         MaxLength="100"
-                                         RelativePanel.Below="ImageId"
-                                         RelativePanel.RightOf="SpeciesName2"
-                                         Text="{x:Bind ViewModel.SpeciesSelected.Subspecies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="SpeciesDivers2"
-                                         MinWidth="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_Divers"
-                                         IsEnabled="False"
-                                         IsReadOnly="True"
-                                         MaxLength="100"
-                                         RelativePanel.Below="ImageId"
-                                         RelativePanel.RightOf="SpeciesSubspecies2"
-                                         Text="{x:Bind ViewModel.SpeciesSelected.Divers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBox x:Name="InfoImage"
                                          MinWidth="1120"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="GenusComboSpecies2"
+                                         RelativePanel.Below="ImageId"
                                          Text="{x:Bind ViewModel.ImageSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBox x:Name="SelectedPathImage"
                                          MinWidth="1120"
@@ -2554,8 +2483,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SynonymName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSynonym), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.RightOf="SynonymId"
@@ -2583,9 +2510,7 @@
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Author"
-                                         Background="SlateGray"
                                          CharacterCasing="Upper"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSynonym), Mode=OneWay}"
                                          MaxLength="60"
                                          RelativePanel.AlignLeftWithPanel="True"
@@ -2886,8 +2811,6 @@
                                              MinWidth="1120"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_Info"
-                                             Background="SlateGray"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditGeographic), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.AlignLeftWithPanel="True"

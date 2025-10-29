@@ -1,13 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using Windows.Storage.Pickers;
+using Windows.System;
+using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
-using Windows.System;
 
 //    FoodViewModel Skriptdatum:  09.09.2025  10:32    
 
-namespace ATIS.Views.Main;
+namespace ATIS.Views.Main.Food;
 
 public partial class FoodViewModel(IDataService dataService) : ObservableObject
 {
@@ -36,7 +38,38 @@ public partial class FoodViewModel(IDataService dataService) : ObservableObject
 
     #region [Methods Food]
 
-    #endregion [Methods Food ]  
+    public ICommand SearchRunCommand => new WinUICommunity.RelayCommand(execute: delegate { SearchRun(FilterText); });
+
+    public void SearchRun(string filterText)
+    {
+        FoodsCollection?.Clear();
+
+        if (string.IsNullOrEmpty(filterText))
+        {
+            AllDialogs.NoDatasetFoundWarnMessageDialog();
+            return;
+        }
+
+        IsLoading = true;
+        FoodsCollection = _dataService.GetTblFoodsCollectionOrderByFoodNameFromFilterText(filterText);
+
+        DataSetCount = FoodsCollection.Count;
+        RefreshFoodItems();
+        //   IsLoading = false;
+    }
+
+    #region Report Search
+
+    //public void ReportSearchAll(int id, string tab)
+    //{
+    //    FoodsCollection?.Clear();
+    //    GetTblFoodsById(id);
+
+    //}
+
+    #endregion Report Search
+
+    #endregion [Methods Disease ]  
 
     //    Part 2    
 
@@ -104,6 +137,26 @@ public partial class FoodViewModel(IDataService dataService) : ObservableObject
             _tblFoodsList = value; OnPropertyChanged();
         }
     }
+    private int _dataSetCount;
+    public int DataSetCount
+    {
+        get => _dataSetCount;
+        set
+        {
+            _dataSetCount = value; OnPropertyChanged();
+        }
+    }
+    private int _imageDataSetCount;
+    public int ImageDataSetCount
+    {
+        get => _imageDataSetCount;
+        set
+        {
+            _imageDataSetCount = value; OnPropertyChanged();
+        }
+    }
+
+    public string FilterText { get; private set; }
 
     #endregion Public Properties
 
@@ -132,6 +185,16 @@ public partial class FoodViewModel(IDataService dataService) : ObservableObject
     }
 
     #endregion Refresh Methods
+
+    #region Collection
+
+    public ObservableCollection<TblFood> FoodsCollection
+    {
+        get; set;
+    } = null!;
+
+
+    #endregion Collection
 
     #endregion All Properties
 

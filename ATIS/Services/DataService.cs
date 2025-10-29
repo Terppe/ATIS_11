@@ -3845,20 +3845,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Search_Gets
 
-    public ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText)
-    {
-        if (Context.TblDiseases != null)
-        {
-            var collection = new ObservableCollection<TblDisease>(Context.TblDiseases
-                .Where(e => e.DiseaseName.StartsWith(filterText))
-                .OrderBy(e => e.DiseaseName)
-            );
-            return collection;
-
-        }
-        return null!;
-    }
-
     public ObservableCollection<Tbl03Regnum> GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(string filterText)
     {
         if (Context.Tbl03Regnums != null)
@@ -4350,6 +4336,47 @@ public partial class DataService : ObservableObject, IDataService
         }
         return null!;
     }
+
+    public ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText)
+    {
+        if (Context.TblFoods != null)
+        {
+            var collection = new ObservableCollection<TblFood>(Context.TblFoods
+                .Where(e => e.FoodName.StartsWith(filterText))
+                .OrderBy(e => e.FoodName)
+            );
+            return collection;
+
+        }
+        return null!;
+    }
+    public ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText)
+    {
+        if (Context.TblDiseases != null)
+        {
+            var collection = new ObservableCollection<TblDisease>(Context.TblDiseases
+                .Where(e => e.DiseaseName.StartsWith(filterText))
+                .OrderBy(e => e.DiseaseName)
+            );
+            return collection;
+
+        }
+        return null!;
+    }
+    public ObservableCollection<TblMiscellaneous> GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(string filterText)
+    {
+        if (Context.TblMiscellaneousses != null)
+        {
+            var collection = new ObservableCollection<TblMiscellaneous>(Context.TblMiscellaneousses
+                .Where(e => e.MiscellaneousName.StartsWith(filterText))
+                .OrderBy(e => e.MiscellaneousName)
+            );
+            return collection;
+
+        }
+        return null!;
+    }
+
 
     #endregion Search_Gets
 

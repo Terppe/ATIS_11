@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -9,9 +8,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
-using ATIS.Views.Main;
 using WinRT.Interop;
-using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
@@ -28,8 +25,8 @@ public sealed partial class TblDiseaseListPage : Page
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     public TblDiseaseViewModel ViewModel { get; }
     private TblDisease SingleDisease { get; set; }
-    private static readonly AtisDbContext Context = new();
     private Tbl81Image SingleImage { get; set; }
+    private static readonly AtisDbContext Context = new();
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
 
@@ -115,7 +112,7 @@ public sealed partial class TblDiseaseListPage : Page
                 ImagesExpander.Visibility = Visibility.Collapsed;
 
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                Frame.Navigate(typeof(DiseasePage));
+                Frame.Navigate(typeof(TblDiseaseListPage));
             }
             else
             {
@@ -171,8 +168,6 @@ public sealed partial class TblDiseaseListPage : Page
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
-            ViewModel.RefreshImageItems();
-
             if (ViewModel.Tbl81ImagesList.Count == 0)
             {
                 ImagesExpander.Visibility = Visibility.Collapsed;
@@ -182,6 +177,7 @@ public sealed partial class TblDiseaseListPage : Page
             else
             {
                 ImagesExpander.Visibility = Visibility.Visible;
+                ImageDataGrid.ItemsSource = null;
                 ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             }
         }
@@ -194,6 +190,10 @@ public sealed partial class TblDiseaseListPage : Page
         {
             BackDetailExpanders();
             await AddDisease();
+            DiseaseName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(DiseaseName);
+            };
         }
         catch (Exception xe)
         {
@@ -204,11 +204,6 @@ public sealed partial class TblDiseaseListPage : Page
 
     private async Task AddDisease()
     {
-        DiseaseName.Loaded += (s, e) =>
-        {
-            DiseaseName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditDisease = true;
         ViewModel.IsNewDisease = true;
 
@@ -222,8 +217,6 @@ public sealed partial class TblDiseaseListPage : Page
         DiseaseDetailExpander.IsExpanded = true;
         DiseaseDetailExpander.Visibility = Visibility.Visible;
         SpecificationExpander.IsExpanded = false;
-
-        DiseaseName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DiseaseSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -313,7 +306,6 @@ public sealed partial class TblDiseaseListPage : Page
         ViewModel.DiseaseSelected.ShortInfo = SingleDisease.ShortInfo;
         ViewModel.DiseaseSelected.Symptom = SingleDisease.Symptom;
         ViewModel.DiseaseSelected.Reason = SingleDisease.Reason;
-        ViewModel.DiseaseSelected.Curability = SingleDisease.Curability;
         ViewModel.DiseaseSelected.Therapie = SingleDisease.Therapie;
         ViewModel.DiseaseSelected.Info = SingleDisease.Info;
         ViewModel.DiseaseSelected.Memo = SingleDisease.Memo;
@@ -421,6 +413,7 @@ public sealed partial class TblDiseaseListPage : Page
                 await ViewModel.SaveDiseaseAsync(ViewModel.DiseaseSelected);
                 await BehindSaveDisease(ViewModel.DiseaseSelected);
                 await Refresh();
+                ViewModel.IsNewDisease = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedDisease = true;
@@ -510,6 +503,10 @@ public sealed partial class TblDiseaseListPage : Page
         {
             BackDetailExpanders();
             await AddImage();
+            InfoImage.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoImage);
+            };
         }
         catch (Exception xe)
         {
@@ -520,11 +517,6 @@ public sealed partial class TblDiseaseListPage : Page
 
     private async Task AddImage()
     {
-        InfoImage.Loaded += (s, e) =>
-        {
-            InfoImage.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditImage = true;
         ViewModel.IsNewImage = true;
 
@@ -538,13 +530,9 @@ public sealed partial class TblDiseaseListPage : Page
         ImageDetailExpander.IsExpanded = true;
         ImageDetailExpander.Visibility = Visibility.Visible;
 
-        //FoodDetailExpander.IsExpanded = false;
-        //ImagesExpander.IsExpanded = false;
-
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
-        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -578,7 +566,7 @@ public sealed partial class TblDiseaseListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+            SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
         }
 
         return Task.CompletedTask;
@@ -619,7 +607,8 @@ public sealed partial class TblDiseaseListPage : Page
     }
     private void ImageSingles()
     {
-        ViewModel.ImageSelected.FiSpeciesId = SingleImage.FiSpeciesId;
+        ViewModel.ImageSelected.DiseaseId = SingleImage.DiseaseId;
+        ViewModel.ImageSelected.ImageId = SingleImage.ImageId;
         ViewModel.ImageSelected.Valid = SingleImage.Valid;
         ViewModel.ImageSelected.ValidYear = SingleImage.ValidYear;
         ViewModel.ImageSelected.Filestream = SingleImage.Filestream;
@@ -649,7 +638,7 @@ public sealed partial class TblDiseaseListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+                SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
                 ImageSingles();
             }
         });
@@ -733,6 +722,7 @@ public sealed partial class TblDiseaseListPage : Page
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
                 await BehindSaveImage(ViewModel.ImageSelected);
                 await Refresh();
+                ViewModel.IsNewImage = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedImage = true;
@@ -749,11 +739,19 @@ public sealed partial class TblDiseaseListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
+        //ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+
+        //    .Where(a => a.Info == ViewModel.ImageSelected.Info &&
+        //                a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
+        //                a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-                        a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
-
+                a.DiseaseId == ViewModel.ImageSelected.DiseaseId &&
+                a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
+                a.Valid == ViewModel.ImageSelected.Valid &&
+                a.ShotDate == ViewModel.ImageSelected.ShotDate)];
+                
+        
         if (ViewModel.IsNewImage)
         {
             if (ViewModel.Tbl81ImagesList.Count != 0)
@@ -771,14 +769,14 @@ public sealed partial class TblDiseaseListPage : Page
         {
             ViewModel.Tbl81ImagesList ??= [];
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+                .Where(com => com.DiseaseId == viewModelImageSelected.DiseaseId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+                .Where(com => com.DiseaseId == viewModelImageSelected.DiseaseId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
             ImagesExpander.Visibility = Visibility.Collapsed;
@@ -881,7 +879,7 @@ public sealed partial class TblDiseaseListPage : Page
         }
     }
 
-    #endregion [Image Methods]        
+    #endregion [Image Methods]
 
     #region [Refresh Methods]
     private void BackDetailExpanders()
@@ -915,8 +913,6 @@ public sealed partial class TblDiseaseListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //  DetailPanelDisease.Visibility = Visibility.Visible;
-            //   DiseaseDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -971,7 +967,7 @@ public sealed partial class TblDiseaseListPage : Page
                 ViewModel.DiseaseSelected = ViewModel.TblDiseasesList[iNdx];
             }
         }
-        DiseaseDataGrid_OnCurrentCellChanged(null, null);
+        await DiseaseDataGridCurrentCellChanged();
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingDisease = false;

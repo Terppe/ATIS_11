@@ -5,13 +5,13 @@ using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
+using static ATIS.Views.Report.PdfModels;
 
 //    FoodViewModel Skriptdatum:  09.09.2025  10:32    
 
@@ -226,7 +226,8 @@ public partial class TblFoodViewModel : ObservableObject
             var foodId = FoodSelected.FoodId;
 
             Tbl81ImagesList ??= [];
-            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, FoodId = foodId });
+         //   Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, FoodId = foodId });
+            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = 2, PlSpeciesId = 1, FoodId = foodId });
         });
     }
 
@@ -392,7 +393,8 @@ public partial class TblFoodViewModel : ObservableObject
         ImageSource = image;
     }
 
-    #endregion 
+    #endregion
+
     #region All Properties
 
     #region [Propertys]

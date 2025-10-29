@@ -4,6 +4,7 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
+using ATIS.Views.Main.Disease;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
@@ -171,7 +172,6 @@ public sealed partial class TblFoodListPage : Page
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
-            ViewModel.RefreshImageItems();
 
             if (ViewModel.Tbl81ImagesList.Count == 0)
             {
@@ -182,6 +182,7 @@ public sealed partial class TblFoodListPage : Page
             else
             {
                 ImagesExpander.Visibility = Visibility.Visible;
+                ImageDataGrid.ItemsSource = null;
                 ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             }
         }
@@ -194,6 +195,10 @@ public sealed partial class TblFoodListPage : Page
         {
             BackDetailExpanders();
             await AddFood();
+            FoodName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(FoodName);
+            };
         }
         catch (Exception xe)
         {
@@ -204,11 +209,6 @@ public sealed partial class TblFoodListPage : Page
 
     private async Task AddFood()
     {
-        FoodName.Loaded += (s, e) =>
-        {
-            FoodName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditFood = true;
         ViewModel.IsNewFood = true;
 
@@ -222,8 +222,6 @@ public sealed partial class TblFoodListPage : Page
         FoodDetailExpander.IsExpanded = true;
         FoodDetailExpander.Visibility = Visibility.Visible;
         SpecificationExpander.IsExpanded = false;
-
-        FoodName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void FoodSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -310,16 +308,8 @@ public sealed partial class TblFoodListPage : Page
         ViewModel.FoodSelected.FoodName = SingleFood.FoodName;
         ViewModel.FoodSelected.Valid = SingleFood.Valid;
         ViewModel.FoodSelected.ValidYear = SingleFood.ValidYear;
+        ViewModel.FoodSelected.ShortInfo = SingleFood.ShortInfo;
         ViewModel.FoodSelected.FoodVolume = SingleFood.FoodVolume;
-        ViewModel.FoodSelected.Karnivore = SingleFood.Karnivore;
-        ViewModel.FoodSelected.Herbivore = SingleFood.Herbivore;
-        ViewModel.FoodSelected.Limnivore = SingleFood.Limnivore;
-        ViewModel.FoodSelected.Omnivore = SingleFood.Omnivore;
-        ViewModel.FoodSelected.RegionTop = SingleFood.RegionTop;
-        ViewModel.FoodSelected.RegionMiddle = SingleFood.RegionMiddle;
-        ViewModel.FoodSelected.RegionBottom = SingleFood.RegionBottom;
-        ViewModel.FoodSelected.Kind = SingleFood.Kind;
-        ViewModel.FoodSelected.Help = SingleFood.Help;
         ViewModel.FoodSelected.Info = SingleFood.Info;
         ViewModel.FoodSelected.Memo = SingleFood.Memo;
     }
@@ -515,6 +505,10 @@ public sealed partial class TblFoodListPage : Page
         {
             BackDetailExpanders();
             await AddImage();
+            InfoImage.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoImage);
+            };
         }
         catch (Exception xe)
         {
@@ -525,11 +519,6 @@ public sealed partial class TblFoodListPage : Page
 
     private async Task AddImage()
     {
-        InfoImage.Loaded += (s, e) =>
-        {
-            InfoImage.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditImage = true;
         ViewModel.IsNewImage = true;
 
@@ -543,13 +532,9 @@ public sealed partial class TblFoodListPage : Page
         ImageDetailExpander.IsExpanded = true;
         ImageDetailExpander.Visibility = Visibility.Visible;
 
-        //FoodDetailExpander.IsExpanded = false;
-        //ImagesExpander.IsExpanded = false;
-
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
-        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -583,7 +568,7 @@ public sealed partial class TblFoodListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+            SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
         }
 
         return Task.CompletedTask;
@@ -624,7 +609,7 @@ public sealed partial class TblFoodListPage : Page
     }
     private void ImageSingles()
     {
-        ViewModel.ImageSelected.FiSpeciesId = SingleImage.FiSpeciesId;
+        ViewModel.ImageSelected.FoodId = SingleImage.FoodId;
         ViewModel.ImageSelected.Valid = SingleImage.Valid;
         ViewModel.ImageSelected.ValidYear = SingleImage.ValidYear;
         ViewModel.ImageSelected.Filestream = SingleImage.Filestream;
@@ -654,7 +639,7 @@ public sealed partial class TblFoodListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+                SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
                 ImageSingles();
             }
         });
@@ -738,6 +723,7 @@ public sealed partial class TblFoodListPage : Page
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
                 await BehindSaveImage(ViewModel.ImageSelected);
                 await Refresh();
+                ViewModel.IsNewImage = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedImage = true;
@@ -754,10 +740,16 @@ public sealed partial class TblFoodListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
+        //ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+        //    .Where(a => a.Info == ViewModel.ImageSelected.Info &&
+        //                a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
+        //                a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-                        a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
+                        a.FoodId == ViewModel.ImageSelected.FoodId &&
+                        a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
+                        a.Valid == ViewModel.ImageSelected.Valid &&
+                        a.ShotDate == ViewModel.ImageSelected.ShotDate)];
 
         if (ViewModel.IsNewImage)
         {
@@ -776,14 +768,14 @@ public sealed partial class TblFoodListPage : Page
         {
             ViewModel.Tbl81ImagesList ??= [];
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+                .Where(com => com.FoodId == viewModelImageSelected.FoodId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+                .Where(com => com.FoodId == viewModelImageSelected.FoodId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
             ImagesExpander.Visibility = Visibility.Collapsed;
@@ -976,7 +968,7 @@ public sealed partial class TblFoodListPage : Page
                 ViewModel.FoodSelected = ViewModel.TblFoodsList[iNdx];
             }
         }
-        FoodDataGrid_OnCurrentCellChanged(null, null);
+        await FoodDataGridCurrentCellChanged();
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingFood = false;

@@ -9,9 +9,8 @@ public class Tbl81Image
     [Key]
 
     public int ImageId { get; set; }
-    [Required]
+    public int SpeciesId { get; set; }
     public int FiSpeciesId { get; set; }
-    [Required]
     public int PlSpeciesId { get; set; }
     public int FoodId { get; set; }
     public int DiseaseId { get; set; }
@@ -39,11 +38,21 @@ public class Tbl81Image
     public Guid FilestreamId { get; set; }
     //     public byte[] RowVersion { get; set; }
 
-    [ForeignKey("FiSpeciesId")]
-    public virtual Tbl69FiSpecies Tbl69FiSpeciesses { get; set; }
+    //[ForeignKey("FiSpeciesId")]
+    //public virtual Tbl69FiSpecies Tbl69FiSpeciesses { get; set; }
 
-    [ForeignKey("PlSpeciesId")]
-    public virtual Tbl72PlSpecies Tbl72PlSpeciesses { get; set; }
+    //[ForeignKey("PlSpeciesId")]
+    //public virtual Tbl72PlSpecies Tbl72PlSpeciesses { get; set; }
+
+    //[ForeignKey("FoodId")]
+    //public virtual TblFood TblFoods { get; set; }
+
+    //[ForeignKey("DiseaseId")]
+    //public virtual TblDisease TblDiseases { get; set; }
+
+    //[ForeignKey("MiscellaneousId")]
+    //public virtual TblMiscellaneous TblMiscellaneousses { get; set; }
+
 
 
 }

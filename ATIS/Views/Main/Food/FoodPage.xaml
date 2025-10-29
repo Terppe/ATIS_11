@@ -165,9 +165,9 @@
                             CanUserSort="True"
                             Tag="FoodName" />
                         <toolkit:DataGridTextColumn
-                            loca:Uids.Uid="DataGridTextColumn_Kind"
-                            Binding="{Binding Kind}"
-                            Tag="Kind" />
+                            loca:Uids.Uid="DataGridTextColumn_ShortInfo"
+                            Binding="{Binding ShortInfo}"
+                            Tag="ShortInfo" />
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
                 <StackPanel>

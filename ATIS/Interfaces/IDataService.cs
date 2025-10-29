@@ -427,7 +427,7 @@ public interface IDataService
 
     #endregion Disease
 
-    #region Disease
+    #region Miscellaneous
 
     ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync();
     ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync(int miscellaneousid);
@@ -435,13 +435,12 @@ public interface IDataService
     Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous);
     Task DeleteMiscellaneousAsync(int miscellaneousid);
 
-    #endregion Disease
+    #endregion Miscellaneous
 
     #endregion CRUD
 
     #region Search_Gets
-    
-    ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText);
+
     ObservableCollection<Tbl03Regnum> GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(string filterText);
     ObservableCollection<Tbl06Phylum> GetTbl06PhylumsCollectionOrderByPhylumNameFromFilterText(string filterText);
     ObservableCollection<Tbl09Division> GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(string filterText);
@@ -468,6 +467,9 @@ public interface IDataService
     ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
     ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText);
     ObservableCollection<Tbl84Synonym> GetTbl84SynonymsCollectionOrderBySynonymNameFromFilterText(string filterText);
+    ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText);
+    ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText);
+    ObservableCollection<TblMiscellaneous> GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(string filterText);
 
 
     #endregion Search_Gets

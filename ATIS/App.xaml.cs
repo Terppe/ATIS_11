@@ -20,6 +20,7 @@ using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
+using FoodViewModel = ATIS.Views.Main.Food.FoodViewModel;
 
 namespace ATIS;
 

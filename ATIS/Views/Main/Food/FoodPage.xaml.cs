@@ -21,7 +21,7 @@ public sealed partial class FoodPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public FoodViewModel ViewModel { get; }
+    public Food.FoodViewModel ViewModel { get; }
     private static readonly AtisDbContext Context = new();
     private string _search;
 
@@ -31,13 +31,13 @@ public sealed partial class FoodPage : Page
 
     public FoodPage()
     {
-        ViewModel = App.GetService<FoodViewModel>();
+        ViewModel = App.GetService<Food.FoodViewModel>();
         InitializeComponent();
         SimpleLog.Info(" FoodPage opended ");
     }
     #endregion [Constructor]         
 
-    #region [Disease Methods]
+    #region [Food Methods]
 
     private async void GetFoodsByNameOrId(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
@@ -59,7 +59,7 @@ public sealed partial class FoodPage : Page
                 ViewModel.TblFoodsList?.Clear();
 
                 FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
-                //     ListViewFood.ItemsSource = ViewModel.TblFoodsList;
+                //     ListViewDisease.ItemsSource = ViewModel.TblDiseasesList;
                 ViewModel.IsLoading = false;
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 return;
@@ -167,6 +167,6 @@ public sealed partial class FoodPage : Page
     });
 
 
-    #endregion [Disease Methods]                    
+    #endregion [Food Methods]                    
 
 }

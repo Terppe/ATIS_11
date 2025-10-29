@@ -233,6 +233,7 @@ public partial class DiseaseViewModel(IDataService dataService) : ObservableObje
 
 
     #endregion Collection
+
     #endregion All Properties
 
 }

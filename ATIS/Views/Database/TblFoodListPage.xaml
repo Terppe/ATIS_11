@@ -42,6 +42,13 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Image"
+                            Click="AddImage_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/add.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
                             Click="Refresh_Click">
                 <MenuFlyoutItem.Icon>
@@ -219,9 +226,9 @@
                         <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ValidYear"
                                                     Binding="{Binding ValidYear}"
                                                     Tag="ValidYear" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Kind"
-                                                    Binding="{Binding Kind}"
-                                                    Tag="Kind" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ShortInfo"
+                                                    Binding="{Binding ShortInfo}"
+                                                    Tag="ShortInfo" />
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
 
@@ -341,8 +348,6 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_FoodName"
-                                             Background="SlateGray"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="FoodId"
@@ -366,6 +371,29 @@
                                              RelativePanel.RightOf="ValidCheckFood"
                                              Style="{StaticResource BodyTextBoxStyle}"
                                              Text="{x:Bind ViewModel.FoodSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="ShortInfoTextFood"
+                                             MinWidth="1120"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             HorizontalAlignment="Stretch"
+                                             loca:Uids.Uid="TextBox_ShortInfo"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="FoodId"
+                                             Text="{x:Bind ViewModel.FoodSelected.ShortInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="MemoFoodVolume"
+                                             MinWidth="1120"
+                                             MinHeight="75"
+                                             MaxWidth="1300"
+                                             MaxHeight="150"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_MemoFoodVolume"
+                                             AcceptsReturn="True"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="ShortInfoTextFood"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                             Text="{x:Bind ViewModel.FoodSelected.FoodVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             TextWrapping="Wrap" />
                                 </RelativePanel>
                                 <Expander x:Name="SpecificationExpander"
                                           MinWidth="1200"
@@ -377,154 +405,32 @@
                                         </Grid>
                                     </Expander.Header>
                                     <RelativePanel>
-                                        <TextBox x:Name="MemoFoodVolume"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoFoodVolume"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.FoodVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodKarnivore"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoKarnivore"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodVolume"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.Karnivore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodHerbivore"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoHerbivore"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodKarnivore"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.Herbivore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodLimnivore"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoLimnivore"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodHerbivore"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.Limnivore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodOmnivore"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoOmnivore"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodLimnivore"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.Omnivore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodRegionTop"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoRegionTop"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodOmnivore"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.RegionTop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodRegionMiddle"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoRegionMiddle"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodRegionTop"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.RegionMiddle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoFoodRegionBottom"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoRegionBottom"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodRegionMiddle"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.RegionBottom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="KindTextFood"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 HorizontalAlignment="Stretch"
-                                                 loca:Uids.Uid="TextBox_Kind"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoFoodRegionBottom"
-                                                 Text="{x:Bind ViewModel.FoodSelected.Kind, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="MemoHelpFood"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoHelpFood"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="KindTextFood"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.FoodSelected.Help, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
                                         <TextBox x:Name="MemoInfoFood"
                                                  MinWidth="1120"
                                                  MinHeight="75"
                                                  MaxWidth="1300"
                                                  MaxHeight="150"
                                                  Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoInfoFood"
+                                                 loca:Uids.Uid="TextBox_Info"
                                                  AcceptsReturn="True"
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
                                                  RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoHelpFood"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Text="{x:Bind ViewModel.FoodSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                        <TextBox x:Name="MemoFood"
+                                                 MinWidth="1120"
+                                                 MinHeight="75"
+                                                 MaxWidth="1300"
+                                                 MaxHeight="150"
+                                                 Margin="{StaticResource XSmallRightMargin}"
+                                                 loca:Uids.Uid="TextBox_Memo"
+                                                 AcceptsReturn="True"
+                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditFood), Mode=OneWay}"
+                                                 RelativePanel.AlignLeftWithPanel="True"
+                                                 RelativePanel.Below="MemoInfoFood"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Text="{x:Bind ViewModel.FoodSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  TextWrapping="Wrap" />
                                     </RelativePanel>
                                 </Expander>
@@ -534,126 +440,153 @@
                 </Expander>
 
                 <!--  ImageDetailExpander  -->
-                <Expander x:Name="ImageDetailExpander"
-                          Margin="{StaticResource XSmallTopBottomMargin}"
-                          Visibility="Collapsed">
+                <Expander
+                    x:Name="ImageDetailExpander"
+                    Margin="{StaticResource XSmallTopBottomMargin}"
+                    Visibility="Collapsed">
                     <Expander.Header>
                         <Grid>
-                            <TextBlock loca:Uids.Uid="TextBlock_ImageId"
-                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                            <TextBlock HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                       Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=OneWay}" />
+                            <TextBlock
+                                loca:Uids.Uid="TextBlock_ImageId"
+                                Style="{ThemeResource SubtitleTextBlockStyle}" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=OneWay}" />
                         </Grid>
                     </Expander.Header>
-                    <RelativePanel x:Name="ImageDetailRoot"
-                                   Margin="{StaticResource SmallLeftRightMargin}">
+                    <RelativePanel
+                        x:Name="ImageDetailRoot"
+                        Margin="{StaticResource SmallLeftRightMargin}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup>
                                 <VisualState>
                                     <VisualState.StateTriggers>
-                                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                                        <AdaptiveTrigger
+                                            MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
                                     </VisualState.StateTriggers>
                                 </VisualState>
                                 <VisualState>
                                     <VisualState.StateTriggers>
-                                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                                        <AdaptiveTrigger
+                                            MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
                                     </VisualState.StateTriggers>
                                 </VisualState>
                                 <VisualState>
                                     <VisualState.StateTriggers>
-                                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                                        <AdaptiveTrigger
+                                            MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                                     </VisualState.StateTriggers>
                                     <VisualState.Setters>
-                                        <Setter Target="ImageCommandBar.DefaultLabelPosition" Value="Bottom" />
+                                        <Setter
+                                            Target="ImageCommandBar.DefaultLabelPosition"
+                                            Value="Bottom" />
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <CommandBar x:Name="ImageDetailCommandBar"
-                                    Margin="{StaticResource SmallLeftRightCommandBarMargin}"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Top"
-                                    Background="Transparent"
-                                    DefaultLabelPosition="Right"
-                                    RelativePanel.AlignRightWithPanel="True">
-                            <AppBarButton loca:Uids.Uid="AppBarButtonSave"
-                                          Background="{ThemeResource SystemBaseLowColor}"
-                                          Click="SaveImage_Click"
-                                          Foreground="White"
-                                          Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
+                        <CommandBar
+                            x:Name="ImageDetailCommandBar"
+                            Margin="{StaticResource SmallLeftRightCommandBarMargin}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Background="Transparent"
+                            DefaultLabelPosition="Right"
+                            RelativePanel.AlignRightWithPanel="True">
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonSave"
+                                Background="{ThemeResource SystemBaseLowColor}"
+                                Click="SaveImage_Click"
+                                Foreground="White"
+                                Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
                                 <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/save.png" />
+                                    <BitmapIcon
+                                        ShowAsMonochrome="False"
+                                        UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddImage"
-                                          Click="AddImage_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FoodSelected), Mode=OneWay}">
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonAddImage"
+                                Click="AddImage_Click"
+                                IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.FoodSelected), Mode=OneWay}">
                                 <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
+                                    <BitmapIcon
+                                        ShowAsMonochrome="False"
+                                        UriSource="/Assets/Fluent/add.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonChange"
-                                          Click="ChangeImage_Click"
-                                          Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonChange"
+                                Click="ChangeImage_Click"
+                                Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
                                 <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/imageresizer.png" />
+                                    <BitmapIcon
+                                        ShowAsMonochrome="False"
+                                        UriSource="/Assets/Fluent/imageresizer.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
-                                          Click="CancelEditsImageAsync"
-                                          Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonCancel"
+                                Click="CancelEditsImageAsync"
+                                Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}">
                                 <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/cancel.png" />
+                                    <BitmapIcon
+                                        ShowAsMonochrome="False"
+                                        UriSource="/Assets/Fluent/cancel.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarSeparator Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}" />
-                            <AppBarButton loca:Uids.Uid="AppBarButtonBack"
-                                          Background="{ThemeResource SystemAccentColor}"
-                                          Click="BackImage_Click"
-                                          Foreground="White">
+                            <AppBarSeparator
+                                Visibility="{x:Bind ViewModel.IsInEditImage, Mode=OneWay}" />
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonBack"
+                                Background="{ThemeResource SystemAccentColor}"
+                                Click="BackImage_Click"
+                                Foreground="White">
                                 <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/arrowleft.png" />
+                                    <BitmapIcon
+                                        ShowAsMonochrome="False"
+                                        UriSource="/Assets/Fluent/arrowleft.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonEdit"
-                                          Click="{x:Bind ViewModel.StartEditImage}"
-                                          IsEnabled="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
-                                          Visibility="{x:Bind conv:NotConverter.CollapsedIf(ViewModel.IsNewImage), Mode=OneWay}">
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonEdit"
+                                Click="{x:Bind ViewModel.StartEditImage}"
+                                IsEnabled="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                Visibility="{x:Bind conv:NotConverter.CollapsedIf(ViewModel.IsNewImage), Mode=OneWay}">
                                 <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/edit.png" />
+                                    <BitmapIcon
+                                        ShowAsMonochrome="False"
+                                        UriSource="/Assets/Fluent/edit.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
                         </CommandBar>
-                        <ScrollViewer x:Name="DetailPanelImage"
-                                      Margin="0,36,0,0"
-                                      RelativePanel.AlignLeftWithPanel="True"
-                                      RelativePanel.AlignRightWithPanel="True"
-                                      VerticalScrollBarVisibility="Auto"
-                                      VerticalScrollMode="Auto">
-                            <RelativePanel Margin="4,0,0,0">
-                                <TextBox x:Name="ImageId"
-                                         MinWidth="110"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_ImageId"
-                                         IsReadOnly="True"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <ComboBox x:Name="ImageMimeTypeCombo"
-                                          Width="150"
-                                          Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                          loca:Uids.Uid="ComboBox_ImageMimeType"
-                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
-                                          PlaceholderText="Pick a mime type"
-                                          RelativePanel.RightOf="ImageId"
-                                          SelectedValue="{x:Bind ViewModel.ImageSelected.ImageMimeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ScrollViewer
+                            x:Name="DetailPanelImage"
+                            Margin="0,36,0,0"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True"
+                            VerticalScrollBarVisibility="Auto"
+                            VerticalScrollMode="Auto">
+                            <RelativePanel
+                                Margin="4,0,0,0">
+                                <TextBox
+                                    x:Name="ImageId"
+                                    MinWidth="110"
+                                    Margin="{StaticResource XSmallRightMargin}"
+                                    loca:Uids.Uid="TextBox_ImageId"
+                                    IsReadOnly="True"
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    Text="{x:Bind ViewModel.ImageSelected.ImageId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <ComboBox
+                                    x:Name="ImageMimeTypeCombo"
+                                    Width="150"
+                                    Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                    loca:Uids.Uid="ComboBox_ImageMimeType"
+                                    IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
+                                    PlaceholderText="Pick a mime type"
+                                    RelativePanel.RightOf="ImageId"
+                                    SelectedValue="{x:Bind ViewModel.ImageSelected.ImageMimeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <x:String>jpg</x:String>
                                     <x:String>png</x:String>
                                     <x:String>bmp</x:String>
@@ -672,63 +605,83 @@
                                     <x:String>swf</x:String>
                                     <x:String>flv</x:String>
                                 </ComboBox>
-                                <CheckBox x:Name="ValidCheckImage"
-                                          Width="80"
-                                          Margin="{StaticResource SmallRightCheckBoxMargin}"
-                                          VerticalAlignment="Bottom"
-                                          loca:Uids.Uid="CheckBox_Valid"
-                                          IsChecked="{x:Bind ViewModel.ImageSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
-                                          RelativePanel.RightOf="ImageMimeTypeCombo" />
-                                <TextBox x:Name="AuthorTextShotDate"
-                                         MinWidth="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         HorizontalAlignment="Stretch"
-                                         loca:Uids.Uid="TextBox_ShotDate"
+                                <CheckBox
+                                    x:Name="ValidCheckImage"
+                                    Width="80"
+                                    Margin="{StaticResource SmallRightCheckBoxMargin}"
+                                    VerticalAlignment="Bottom"
+                                    loca:Uids.Uid="CheckBox_Valid"
+                                    IsChecked="{x:Bind ViewModel.ImageSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
+                                    RelativePanel.RightOf="ImageMimeTypeCombo" />
+                                <!--<TextBox x:Name="ValidYearTextImage"
+                                         x:Uid="TextBox_ValidYear"
+                                         Width="70"
+                                         Margin="{StaticResource XSmallTopRightMargin}"
+                                         winUiCommunity:TextBoxExtensions.Mask="9999"
+                                         winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          RelativePanel.RightOf="ValidCheckImage"
-                                         Text="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="InfoImage"
-                                         MinWidth="1120"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         HorizontalAlignment="Stretch"
-                                         loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
-                                         MaxLength="100"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="ImageId"
-                                         Text="{x:Bind ViewModel.ImageSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="SelectedPathImage"
-                                         MinWidth="1120"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         HorizontalAlignment="Stretch"
-                                         loca:Uids.Uid="TextBox_SelectedPath"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="InfoImage"
-                                         Text="{x:Bind ViewModel.SelectedPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TabView x:Name="TabViewImage"
-                                         MinHeight="475"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         Background="LightBlue"
-                                         IsAddTabButtonVisible="False"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="SelectedPathImage">
+                                         Style="{StaticResource BodyTextBoxStyle}"
+                                         Text="{x:Bind ViewModel.ImageSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+                                <TextBox
+                                    x:Name="AuthorTextShotDate"
+                                    MinWidth="150"
+                                    Margin="{StaticResource XSmallRightMargin}"
+                                    HorizontalAlignment="Stretch"
+                                    loca:Uids.Uid="TextBox_ShotDate"
+                                    IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                    RelativePanel.RightOf="ValidCheckImage"
+                                    Text="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--<DatePicker
+                                x:Name="DpShotDate"
+                                Width="300"
+                                Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                                Date="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+                                <TextBox
+                                    x:Name="InfoImage"
+                                    MinWidth="1120"
+                                    Margin="{StaticResource XSmallRightMargin}"
+                                    HorizontalAlignment="Stretch"
+                                    loca:Uids.Uid="TextBox_Info"
+                                    IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                    MaxLength="100"
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.Below="ImageId"
+                                    Text="{x:Bind ViewModel.ImageSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox
+                                    x:Name="SelectedPathImage"
+                                    MinWidth="1120"
+                                    Margin="{StaticResource XSmallRightMargin}"
+                                    HorizontalAlignment="Stretch"
+                                    loca:Uids.Uid="TextBox_SelectedPath"
+                                    IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.Below="InfoImage"
+                                    Text="{x:Bind ViewModel.SelectedPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TabView
+                                    x:Name="TabViewImage"
+                                    MinHeight="475"
+                                    Margin="{StaticResource XSmallRightMargin}"
+                                    Background="LightBlue"
+                                    IsAddTabButtonVisible="False"
+                                    RelativePanel.AlignLeftWithPanel="True"
+                                    RelativePanel.Below="SelectedPathImage">
                                     <TabView.TabItems>
-                                        <TabViewItem Header="Image"
-                                                     IsClosable="False">
-                                            <Image Name="Image"
-                                                   Margin="5"
-                                                   HorizontalAlignment="Left"
-                                                   VerticalAlignment="Top"
-                                                   Opacity="1"
-                                                   RelativePanel.AlignLeftWithPanel="True"
-                                                   RelativePanel.Below="SelectedPathImage"
-                                                   RenderTransformOrigin="0.5,0.5"
-                                                   Source="{x:Bind ViewModel.ImageSelected.Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   Stretch="Uniform" />
+                                        <TabViewItem
+                                            Header="Image"
+                                            IsClosable="False">
+                                            <Image
+                                                Name="Image"
+                                                Margin="5"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Top"
+                                                Opacity="1"
+                                                RelativePanel.AlignLeftWithPanel="True"
+                                                RelativePanel.Below="SelectedPathImage"
+                                                RenderTransformOrigin="0.5,0.5"
+                                                Source="{x:Bind ViewModel.ImageSelected.Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Stretch="Uniform" />
                                         </TabViewItem>
                                     </TabView.TabItems>
                                 </TabView>
@@ -803,6 +756,10 @@
                                         </DataTemplate>
                                     </toolkit:DataGridTemplateColumn.CellTemplate>
                                 </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_FoodName"
+                                                                Binding="{Binding FoodId}"
+                                                                DisplayMemberPath="FoodName"
+                                                                ItemsSource="{x:Bind ViewModel.TblFoodsAllList, Mode=OneWay}" />
                                 <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                                 Binding="{Binding Valid}"
                                                                 Tag="Valid" />

@@ -74,7 +74,7 @@ public partial class TblDiseaseViewModel : ObservableObject
             IsNewDisease = true;
 
             TblDiseasesList ??= [];
-            TblDiseasesList.Insert(index: 0, item: new TblDisease {  });
+            TblDiseasesList.Insert(index: 0, item: new TblDisease());
         });
     }
 
@@ -226,8 +226,9 @@ public partial class TblDiseaseViewModel : ObservableObject
 
             var diseaseId = DiseaseSelected.DiseaseId;
 
-            Tbl81ImagesList ??= [];
-            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, DiseaseId = diseaseId });
+            Tbl81ImagesList ??= [];                     //datenbank ändern fiSpecies und PlSpeciesid nicht 0
+      //      Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, DiseaseId = diseaseId });
+            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = 2, PlSpeciesId = 1, DiseaseId = diseaseId });
         });
     }
 

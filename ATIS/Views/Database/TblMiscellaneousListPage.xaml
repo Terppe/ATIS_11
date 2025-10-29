@@ -42,6 +42,13 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Image"
+                            Click="AddImage_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/add.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
                             Click="Refresh_Click">
                 <MenuFlyoutItem.Icon>
@@ -322,94 +329,132 @@
                                       RelativePanel.AlignRightWithPanel="True"
                                       VerticalScrollBarVisibility="Auto"
                                       VerticalScrollMode="Auto">
-                            <RelativePanel Margin="4,0,0,0">
-                                <TextBox x:Name="MiscellaneousId"
-                                         MinWidth="110"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_MiscellaneousId"
-                                         IsReadOnly="True"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.MiscellaneousId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="MiscellaneousName"
-                                         MinWidth="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_MiscellaneousName"
-                                         Background="SlateGray"
-                                         Foreground="White"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                         LostFocus="MiscellaneousName_OnLostFocus"
-                                         MaxLength="100"
-                                         RelativePanel.RightOf="MiscellaneousId"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.MiscellaneousName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <CheckBox x:Name="ValidCheckMiscellaneous"
-                                          Width="80"
-                                          Margin="{StaticResource SmallRightCheckBoxMargin}"
-                                          VerticalAlignment="Bottom"
-                                          loca:Uids.Uid="CheckBox_Valid"
-                                          IsChecked="{x:Bind ViewModel.MiscellaneousSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                          RelativePanel.RightOf="MiscellaneousName" />
-                                <TextBox x:Name="ValidYearTextMiscellaneous"
-                                         Width="70"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_ValidYear"
-                                         winUiCommunity:TextBoxExtensions.Mask="9999"
-                                         winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
-                                         CornerRadius="3"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                         RelativePanel.RightOf="ValidCheckMiscellaneous"
-                                         Style="{StaticResource BodyTextBoxStyle}"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="Thema1TextMiscellaneous"
-                                         MinWidth="1120"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         HorizontalAlignment="Stretch"
-                                         loca:Uids.Uid="TextBox_Thema1"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="MiscellaneousId"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.Thema1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="Thema2TextMiscellaneous"
-                                         MinWidth="1120"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         HorizontalAlignment="Stretch"
-                                         loca:Uids.Uid="TextBox_Thema2"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="Thema1TextMiscellaneous"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.Thema2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBox x:Name="InfoMiscellaneous"
-                                         MinWidth="1120"
-                                         MinHeight="75"
-                                         MaxWidth="1300"
-                                         MaxHeight="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_Info"
-                                         AcceptsReturn="True"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="Thema2TextMiscellaneous"
-                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         TextWrapping="Wrap" />
-                                <TextBox x:Name="MemoMiscellaneous"
-                                         MinWidth="1120"
-                                         MinHeight="75"
-                                         MaxWidth="1300"
-                                         MaxHeight="150"
-                                         Margin="{StaticResource XSmallRightMargin}"
-                                         loca:Uids.Uid="TextBox_Memo"
-                                         AcceptsReturn="True"
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
-                                         RelativePanel.AlignLeftWithPanel="True"
-                                         RelativePanel.Below="InfoMiscellaneous"
-                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                         Text="{x:Bind ViewModel.MiscellaneousSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         TextWrapping="Wrap" />
-                            </RelativePanel>
+                            <StackPanel Margin="0,8,4,0">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Expander">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <RelativePanel Margin="4,0,0,0">
+                                    <TextBox x:Name="MiscellaneousId"
+                                             MinWidth="110"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_MiscellaneousId"
+                                             IsReadOnly="True"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             Text="{x:Bind ViewModel.MiscellaneousSelected.MiscellaneousId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="MiscellaneousName"
+                                             MinWidth="150"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_MiscellaneousName"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                             LostFocus="MiscellaneousName_OnLostFocus"
+                                             MaxLength="100"
+                                             RelativePanel.RightOf="MiscellaneousId"
+                                             Text="{x:Bind ViewModel.MiscellaneousSelected.MiscellaneousName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox x:Name="ValidCheckMiscellaneous"
+                                              Width="80"
+                                              Margin="{StaticResource SmallRightCheckBoxMargin}"
+                                              VerticalAlignment="Bottom"
+                                              loca:Uids.Uid="CheckBox_Valid"
+                                              IsChecked="{x:Bind ViewModel.MiscellaneousSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                              RelativePanel.RightOf="MiscellaneousName" />
+                                    <TextBox x:Name="ValidYearTextMiscellaneous"
+                                             Width="70"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_ValidYear"
+                                             winUiCommunity:TextBoxExtensions.Mask="9999"
+                                             winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
+                                             CornerRadius="3"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                             RelativePanel.RightOf="ValidCheckMiscellaneous"
+                                             Style="{StaticResource BodyTextBoxStyle}"
+                                             Text="{x:Bind ViewModel.MiscellaneousSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="ShortInfoTextMiscellaneous"
+                                             MinWidth="1120"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             HorizontalAlignment="Stretch"
+                                             loca:Uids.Uid="TextBox_ShortInfo"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="MiscellaneousId"
+                                             Text="{x:Bind ViewModel.MiscellaneousSelected.ShortInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="Thema1TextMiscellaneous"
+                                             MinWidth="1120"
+                                             MinHeight="75"
+                                             MaxWidth="1300"
+                                             MaxHeight="150"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_Info"
+                                             AcceptsReturn="True"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="ShortInfoTextMiscellaneous"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                             Text="{x:Bind ViewModel.MiscellaneousSelected.Thema1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             TextWrapping="Wrap" />
+                                </RelativePanel>
+                                <Expander x:Name="SpecificationExpander"
+                                          MinWidth="1200"
+                                          Margin="0,10,0,0">
+                                    <Expander.Header>
+                                        <Grid>
+                                            <TextBlock loca:Uids.Uid="TextBlock_Specification"
+                                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
+                                        </Grid>
+                                    </Expander.Header>
+                                    <RelativePanel>
+                                        <TextBox x:Name="Thema2TextMiscellaneous"
+                                                 MinWidth="1120"
+                                                 MinHeight="75"
+                                                 MaxWidth="1300"
+                                                 MaxHeight="150"
+                                                 Margin="{StaticResource XSmallRightMargin}"
+                                                 loca:Uids.Uid="TextBox_Info"
+                                                 AcceptsReturn="True"
+                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                                 RelativePanel.AlignLeftWithPanel="True"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Text="{x:Bind ViewModel.MiscellaneousSelected.Thema2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                        <TextBox x:Name="InfoMiscellaneous"
+                                                 MinWidth="1120"
+                                                 MinHeight="75"
+                                                 MaxWidth="1300"
+                                                 MaxHeight="150"
+                                                 Margin="{StaticResource XSmallRightMargin}"
+                                                 loca:Uids.Uid="TextBox_Info"
+                                                 AcceptsReturn="True"
+                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                                 RelativePanel.AlignLeftWithPanel="True"
+                                                 RelativePanel.Below="Thema2TextMiscellaneous"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Text="{x:Bind ViewModel.MiscellaneousSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                        <TextBox x:Name="MemoMiscellaneous"
+                                                 MinWidth="1120"
+                                                 MinHeight="75"
+                                                 MaxWidth="1300"
+                                                 MaxHeight="150"
+                                                 Margin="{StaticResource XSmallRightMargin}"
+                                                 loca:Uids.Uid="TextBox_Memo"
+                                                 AcceptsReturn="True"
+                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditMiscellaneous), Mode=OneWay}"
+                                                 RelativePanel.AlignLeftWithPanel="True"
+                                                 RelativePanel.Below="InfoMiscellaneous"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Text="{x:Bind ViewModel.MiscellaneousSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                    </RelativePanel>
+                                </Expander>
+                            </StackPanel>
                         </ScrollViewer>
                     </RelativePanel>
                 </Expander>
+
+
 
                 <!--  ImageDetailExpander  -->
                 <Expander x:Name="ImageDetailExpander"
@@ -558,6 +603,16 @@
                                           IsChecked="{x:Bind ViewModel.ImageSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
                                           RelativePanel.RightOf="ImageMimeTypeCombo" />
+                                <!--<TextBox x:Name="ValidYearTextImage"
+                                         x:Uid="TextBox_ValidYear"
+                                         Width="70"
+                                         Margin="{StaticResource XSmallTopRightMargin}"
+                                         winUiCommunity:TextBoxExtensions.Mask="9999"
+                                         winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                         RelativePanel.RightOf="ValidCheckImage"
+                                         Style="{StaticResource BodyTextBoxStyle}"
+                                         Text="{x:Bind ViewModel.ImageSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="AuthorTextShotDate"
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
@@ -566,13 +621,16 @@
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          RelativePanel.RightOf="ValidCheckImage"
                                          Text="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--<DatePicker
+                                x:Name="DpShotDate"
+                                Width="300"
+                                Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                                Date="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="InfoImage"
                                          MinWidth="1120"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"

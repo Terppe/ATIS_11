@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -114,7 +113,7 @@ public sealed partial class TblMiscellaneousListPage : Page
                 ImagesExpander.Visibility = Visibility.Collapsed;
 
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                Frame.Navigate(typeof(MiscellaneousPage));
+                Frame.Navigate(typeof(TblMiscellaneousListPage));
             }
             else
             {
@@ -170,7 +169,6 @@ public sealed partial class TblMiscellaneousListPage : Page
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
-            ViewModel.RefreshImageItems();
 
             if (ViewModel.Tbl81ImagesList.Count == 0)
             {
@@ -181,6 +179,7 @@ public sealed partial class TblMiscellaneousListPage : Page
             else
             {
                 ImagesExpander.Visibility = Visibility.Visible;
+                ImageDataGrid.ItemsSource = null;
                 ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             }
         }
@@ -193,6 +192,10 @@ public sealed partial class TblMiscellaneousListPage : Page
         {
             BackDetailExpanders();
             await AddMiscellaneous();
+            MiscellaneousName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(MiscellaneousName);
+            };
         }
         catch (Exception xe)
         {
@@ -203,11 +206,6 @@ public sealed partial class TblMiscellaneousListPage : Page
 
     private async Task AddMiscellaneous()
     {
-        MiscellaneousName.Loaded += (s, e) =>
-        {
-            MiscellaneousName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditMiscellaneous = true;
         ViewModel.IsNewMiscellaneous = true;
 
@@ -220,8 +218,6 @@ public sealed partial class TblMiscellaneousListPage : Page
 
         MiscellaneousDetailExpander.IsExpanded = true;
         MiscellaneousDetailExpander.Visibility = Visibility.Visible;
-
-        MiscellaneousName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void MiscellaneousSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -505,6 +501,10 @@ public sealed partial class TblMiscellaneousListPage : Page
         {
             BackDetailExpanders();
             await AddImage();
+            InfoImage.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoImage);
+            };
         }
         catch (Exception xe)
         {
@@ -515,11 +515,6 @@ public sealed partial class TblMiscellaneousListPage : Page
 
     private async Task AddImage()
     {
-        InfoImage.Loaded += (s, e) =>
-        {
-            InfoImage.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditImage = true;
         ViewModel.IsNewImage = true;
 
@@ -539,7 +534,6 @@ public sealed partial class TblMiscellaneousListPage : Page
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
-        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -614,7 +608,8 @@ public sealed partial class TblMiscellaneousListPage : Page
     }
     private void ImageSingles()
     {
-        ViewModel.ImageSelected.FiSpeciesId = SingleImage.FiSpeciesId;
+        ViewModel.ImageSelected.MiscellaneousId = SingleImage.MiscellaneousId;
+        ViewModel.ImageSelected.ImageId = SingleImage.ImageId;
         ViewModel.ImageSelected.Valid = SingleImage.Valid;
         ViewModel.ImageSelected.ValidYear = SingleImage.ValidYear;
         ViewModel.ImageSelected.Filestream = SingleImage.Filestream;
@@ -744,10 +739,16 @@ public sealed partial class TblMiscellaneousListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
+        //ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+        //    .Where(a => a.Info == ViewModel.ImageSelected.Info &&
+        //                a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
+        //                a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-                        a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
+                        a.MiscellaneousId == ViewModel.ImageSelected.MiscellaneousId &&
+                        a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
+                        a.Valid == ViewModel.ImageSelected.Valid &&
+                        a.ShotDate == ViewModel.ImageSelected.ShotDate)];
 
         if (ViewModel.IsNewImage)
         {
@@ -766,14 +767,14 @@ public sealed partial class TblMiscellaneousListPage : Page
         {
             ViewModel.Tbl81ImagesList ??= [];
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+                .Where(com => com.MiscellaneousId == viewModelImageSelected.MiscellaneousId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                .Where(com => com.FiSpeciesId == viewModelImageSelected.FiSpeciesId)];
+                .Where(com => com.MiscellaneousId == viewModelImageSelected.MiscellaneousId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
             ImagesExpander.Visibility = Visibility.Collapsed;
@@ -911,8 +912,6 @@ public sealed partial class TblMiscellaneousListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //  DetailPanelMiscellaneous.Visibility = Visibility.Visible;
-            //   MiscellaneousDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -967,7 +966,7 @@ public sealed partial class TblMiscellaneousListPage : Page
                 ViewModel.MiscellaneousSelected = ViewModel.TblMiscellaneoussesList[iNdx];
             }
         }
-        MiscellaneousDataGrid_OnCurrentCellChanged(null, null);
+        await MiscellaneousDataGridCurrentCellChanged();
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingMiscellaneous = false;

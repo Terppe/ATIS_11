@@ -351,6 +351,15 @@
   <data name="DataGridComboBoxColumn_DivisionName.Header" xml:space="preserve">
     <value>Division Name</value>
   </data>
+  <data name="DataGridComboBoxColumn_DiseaseName.Header" xml:space="preserve">
+    <value>Disease</value>
+  </data>
+  <data name="DataGridComboBoxColumn_FoodName.Header" xml:space="preserve">
+    <value>Food</value>
+  </data>
+  <data name="DataGridComboBoxColumn_MiscellaneousName.Header" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
   <data name="DataGridComboBoxColumn_FamilyName.Header" xml:space="preserve">
     <value>Family Name</value>
   </data>

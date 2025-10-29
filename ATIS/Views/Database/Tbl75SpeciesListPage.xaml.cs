@@ -5,13 +5,12 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
-//  Tbl75SpeciesListPage.xaml.cs Skriptdatum:  03.07.2025  10:32     
+//  Tbl75SpeciesListPage.xaml.cs Skriptdatum:  20.10.2025  10:32      
 
 namespace ATIS.Views.Database;
 public sealed partial class Tbl75SpeciesListPage : Page, Maps
@@ -33,10 +32,9 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
 
-
-    private double centerOf1LongX;
-    private double centerOf1LatiY;
-    private int zoom;
+    private double _centerOf1LongX;
+    private double _centerOf1LatiY;
+    private int _zoom;
 
     #endregion [Private Data Members]
 
@@ -210,6 +208,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             else
             {
                 ReferencesExpander.Visibility = Visibility.Visible;
+                ReferenceDataGrid.ItemsSource = null;
                 ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             }
 
@@ -233,6 +232,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             else
             {
                 CommentsExpander.Visibility = Visibility.Visible;
+                CommentDataGrid.ItemsSource = null;
                 CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             }
 
@@ -256,6 +256,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             else
             {
                 NamesExpander.Visibility = Visibility.Visible;
+                NameDataGrid.ItemsSource = null;
                 NameDataGrid.ItemsSource = ViewModel.Tbl78NamesList;
             }
 
@@ -268,7 +269,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
-            ViewModel.RefreshImageItems();
 
             if (ViewModel.Tbl81ImagesList.Count == 0)
             {
@@ -279,6 +279,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             else
             {
                 ImagesExpander.Visibility = Visibility.Visible;
+                ImageDataGrid.ItemsSource = null;
                 ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             }
 
@@ -302,6 +303,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             else
             {
                 SynonymsExpander.Visibility = Visibility.Visible;
+                SynonymDataGrid.ItemsSource = null;
                 SynonymDataGrid.ItemsSource = ViewModel.Tbl84SynonymsList;
             }
 
@@ -325,6 +327,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             else
             {
                 GeographicsExpander.Visibility = Visibility.Visible;
+                GeographicDataGrid.ItemsSource = null;
                 GeographicDataGrid.ItemsSource = ViewModel.Tbl87GeographicsList;
             }
         }
@@ -338,6 +341,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddSpecies();
+            SpeciesName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(SpeciesName);
+            };
         }
         catch (Exception xe)
         {
@@ -347,11 +354,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     }
     private async Task AddSpecies()
     {
-        SpeciesName.Loaded += (s, e) =>
-        {
-            SpeciesName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditSpecies = true;
         ViewModel.IsNewSpecies = true;
 
@@ -373,8 +375,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        ViewModel.IsNewSpecies = false;
-
         SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
@@ -385,8 +385,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        SpeciesName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void SpeciesSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -1048,6 +1046,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddReferenceExpert();
+            InfoReferenceExpert.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceExpert);
+            };
         }
         catch (Exception xe)
         {
@@ -1058,11 +1060,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddReferenceExpert()
     {
-        InfoReferenceExpert.Loaded += (s, e) =>
-        {
-            InfoReferenceExpert.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
@@ -1080,9 +1077,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         TabViewItemReferenceExpert.Visibility = Visibility.Visible;
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceExpert.IsReadOnly = false;
-        InfoReferenceExpert.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceExpertAsync(object sender, RoutedEventArgs e)
@@ -1161,6 +1155,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddReferenceSource();
+            InfoReferenceSource.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceSource);
+            };
         }
         catch (Exception xe)
         {
@@ -1171,11 +1169,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddReferenceSource()
     {
-        InfoReferenceSource.Loaded += (s, e) =>
-        {
-            InfoReferenceSource.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
@@ -1193,8 +1186,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         TabViewItemReferenceSource.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
-
-        InfoReferenceSource.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceSourceAsync(object sender, RoutedEventArgs e)
@@ -1270,6 +1261,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddReferenceAuthor();
+            InfoReferenceAuthor.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoReferenceAuthor);
+            };
         }
         catch (Exception xe)
         {
@@ -1280,11 +1275,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddReferenceAuthor()
     {
-        InfoReferenceAuthor.Loaded += (s, e) =>
-        {
-            InfoReferenceAuthor.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
@@ -1302,8 +1292,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         TabViewItemReferenceAuthor.Visibility = Visibility.Visible;
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
-
-        InfoReferenceAuthor.PlaceholderText = StringsRes.EnterText;
     }
 
     private void CancelEditsReferenceAuthorAsync(object sender, RoutedEventArgs e)
@@ -1380,6 +1368,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddComment();
+            InfoComment.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoComment);
+            };
         }
         catch (Exception xe)
         {
@@ -1390,11 +1382,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddComment()
     {
-        InfoComment.Loaded += (s, e) =>
-        {
-            InfoComment.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditComment = true;
         ViewModel.IsNewComment = true;
 
@@ -1418,8 +1405,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        InfoComment.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Comment_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1690,6 +1675,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddName();
+            NameName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(NameName);
+            };
         }
         catch (Exception xe)
         {
@@ -1700,11 +1689,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddName()
     {
-        NameName.Loaded += (s, e) =>
-        {
-            NameName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditName = true;
         ViewModel.IsNewName = true;
 
@@ -1728,8 +1712,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        NameName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Name_Sorting(object sender, DataGridColumnEventArgs e)
@@ -1919,6 +1901,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveNameAsync(ViewModel.NameSelected);
                 await BehindSaveName(ViewModel.NameSelected);
                 await Refresh();
+                ViewModel.IsNewName = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedName = true;
@@ -1996,6 +1979,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddImage();
+            InfoImage.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoImage);
+            };
         }
         catch (Exception xe)
         {
@@ -2006,11 +1993,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddImage()
     {
-        InfoName.Loaded += (s, e) =>
-        {
-            InfoName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditImage = true;
         ViewModel.IsNewImage = true;
 
@@ -2038,7 +2020,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
-        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2227,6 +2208,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
                 await BehindSaveImage(ViewModel.ImageSelected);
                 await Refresh();
+                ViewModel.IsNewImage = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedImage = true;
@@ -2246,7 +2228,11 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
+                        a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId &&
+                a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
+                a.Valid == ViewModel.ImageSelected.Valid &&
+                a.ShotDate == ViewModel.ImageSelected.ShotDate)];
+        
 
         if (ViewModel.IsNewImage)
         {
@@ -2385,6 +2371,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddSynonym();
+            SynonymName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(SynonymName);
+            };
         }
         catch (Exception xe)
         {
@@ -2395,11 +2385,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddSynonym()
     {
-        SynonymName.Loaded += (s, e) =>
-        {
-            SynonymName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditSynonym = true;
         ViewModel.IsNewSynonym = true;
 
@@ -2423,8 +2408,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        SynonymName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Synonym_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2615,6 +2598,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveSynonymAsync(ViewModel.SynonymSelected);
                 await BehindSaveSynonym(ViewModel.SynonymSelected);
                 await Refresh();
+                ViewModel.IsNewSynonym = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSynonym = true;
@@ -2692,6 +2676,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddGeographic();
+            InfoGeographic.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(InfoGeographic);
+            };
         }
         catch (Exception xe)
         {
@@ -2702,11 +2690,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     private async Task AddGeographic()
     {
-        InfoName.Loaded += (s, e) =>
-        {
-            InfoName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditGeographic = true;
         ViewModel.IsNewGeographic = true;
 
@@ -2722,12 +2705,12 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
         //Map
         //wenn Adress leer in Countrylist suchen
-        centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
-        centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
-        zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
+        _centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
+        _centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
+        _zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
 
         var graphSelect = ViewModel.GeographicSelected;
-        MyMap.Map = await ((Maps)this).CreateMapAsync(centerOf1LongX, centerOf1LatiY, zoom, graphSelect);
+        MyMap.Map = await ((Maps)this).CreateMapAsync(_centerOf1LongX, _centerOf1LatiY, _zoom, graphSelect);
 
 
         SpecificationExpanderFiSpecies.IsExpanded = false;
@@ -2740,8 +2723,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
-
-        InfoGeographic.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Geographic_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2778,13 +2759,13 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             SingleGeographic = App.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId, ViewModel.SpeciesSelected.FiSpeciesId);
 
-            centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
-            centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
-            zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
+            _centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
+            _centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
+            _zoom = (int)Convert.ToDouble(ZoomLevelGeographic.Text);
 
             var graphSelect = ViewModel.GeographicSelected;
 
-            MyMap.Map = await ((Maps)this).CreateMapAsync(centerOf1LongX, centerOf1LatiY, zoom, graphSelect);
+            MyMap.Map = await ((Maps)this).CreateMapAsync(_centerOf1LongX, _centerOf1LatiY, _zoom, graphSelect);
         }
     }
     private void CancelEditsGeographicAsync(object sender, RoutedEventArgs e)
@@ -2950,6 +2931,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await ViewModel.SaveGeographicAsync(ViewModel.GeographicSelected);
                 await BehindSaveGeographic(ViewModel.GeographicSelected);
                 await Refresh();
+                ViewModel.IsNewGeographic = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedGeographic = true;
@@ -3147,7 +3129,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
         }
 
-        SpeciesDataGrid_OnCurrentCellChanged(null, null);
+       // SpeciesDataGrid_OnCurrentCellChanged(null, null);
+        await SpeciesDataGridCurrentCellChanged();
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingSpecies = false;

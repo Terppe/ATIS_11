@@ -11,7 +11,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
 
-//    Tbl75SpeciesViewModel Skriptdatum:  03.07.2025  10:32    
+//    Tbl75SpeciesViewModel Skriptdatum:  20.10.2025  10:32    
 
 namespace ATIS.Views.Database;
 
@@ -106,8 +106,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             var speciesgroupId = Tbl68SpeciesgroupsAllList.First().SpeciesgroupId;
 
             Tbl75SpeciessesList ??= [];
-            Tbl75SpeciessesList.Insert(index: 0,
-                item: new Tbl69FiSpecies { GenusId = genusId, SpeciesgroupId = speciesgroupId, Creature = "" });
+            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl69FiSpecies { GenusId = genusId, SpeciesgroupId = speciesgroupId, Creature = "" });
         });
     }
 
@@ -810,7 +809,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             fiSpeciesId = SpeciesSelected.FiSpeciesId;
 
             Tbl84SynonymsList ??= [];
-            Tbl84SynonymsList.Insert(index: 0, item: new Tbl84Synonym() { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
+            Tbl84SynonymsList.Insert(index: 0, item: new Tbl84Synonym { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
         });
     }
     public async Task SaveSynonymAsync(Tbl84Synonym viewModelSynonymSelected)

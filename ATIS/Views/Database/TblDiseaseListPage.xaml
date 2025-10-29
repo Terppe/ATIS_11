@@ -42,6 +42,13 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_Image"
+                            Click="AddImage_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/add.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
                             Click="Refresh_Click">
                 <MenuFlyoutItem.Icon>
@@ -221,12 +228,6 @@
                         <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ShortInfo"
                                                     Binding="{Binding ShortInfo}"
                                                     Tag="ShortInfo" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Symptom"
-                                                    Binding="{Binding Symptom}"
-                                                    Tag="Symptom" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Reason"
-                                                    Binding="{Binding Reason}"
-                                                    Tag="Reason" />
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
 
@@ -347,8 +348,6 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_DiseaseName"
-                                             Background="SlateGray"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="DiseaseId"
@@ -361,17 +360,29 @@
                                               IsChecked="{x:Bind ViewModel.DiseaseSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditDisease), Mode=OneWay}"
                                               RelativePanel.RightOf="DiseaseName" />
-                                    <TextBox x:Name="ValidYearTextDisease"
-                                             Width="70"
+                                    <TextBox x:Name="ShortInfoTextDisease"
+                                             MinWidth="1120"
                                              Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_ValidYear"
-                                             winUiCommunity:TextBoxExtensions.Mask="9999"
-                                             winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
-                                             CornerRadius="3"
+                                             HorizontalAlignment="Stretch"
+                                             loca:Uids.Uid="TextBox_ShortInfo"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
-                                             RelativePanel.RightOf="ValidCheckDisease"
-                                             Style="{StaticResource BodyTextBoxStyle}"
-                                             Text="{x:Bind ViewModel.DiseaseSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="DiseaseId"
+                                             Text="{x:Bind ViewModel.DiseaseSelected.ShortInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="MemoSymptomDisease"
+                                             MinWidth="1120"
+                                             MinHeight="75"
+                                             MaxWidth="1300"
+                                             MaxHeight="150"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_MemoSymptom"
+                                             AcceptsReturn="True"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="ShortInfoTextDisease"
+                                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                             Text="{x:Bind ViewModel.DiseaseSelected.Symptom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             TextWrapping="Wrap" />
                                 </RelativePanel>
                                 <Expander x:Name="SpecificationExpander"
                                           MinWidth="1200"
@@ -383,28 +394,6 @@
                                         </Grid>
                                     </Expander.Header>
                                     <RelativePanel>
-                                        <TextBox x:Name="ShortInfoTextDisease"
-                                                 MinWidth="1120"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 HorizontalAlignment="Stretch"
-                                                 loca:Uids.Uid="TextBox_ShortInfo"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 Text="{x:Bind ViewModel.DiseaseSelected.ShortInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="MemoSymptomDisease"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoSymptom"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="ShortInfoTextDisease"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.DiseaseSelected.Symptom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
                                         <TextBox x:Name="MemoReasonDisease"
                                                  MinWidth="1120"
                                                  MinHeight="75"
@@ -415,23 +404,8 @@
                                                  AcceptsReturn="True"
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
                                                  RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoSymptomDisease"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Text="{x:Bind ViewModel.DiseaseSelected.Reason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 TextWrapping="Wrap" />
-                                        <TextBox x:Name="MemoCurabilityDisease"
-                                                 MinWidth="1120"
-                                                 MinHeight="75"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_MemoCurability"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoReasonDisease"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.DiseaseSelected.Curability, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  TextWrapping="Wrap" />
                                         <TextBox x:Name="MemoTherapieDisease"
                                                  MinWidth="1120"
@@ -443,40 +417,38 @@
                                                  AcceptsReturn="True"
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
                                                  RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="MemoCurabilityDisease"
+                                                 RelativePanel.Below="MemoReasonDisease"
                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                  Text="{x:Bind ViewModel.DiseaseSelected.Therapie, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  TextWrapping="Wrap" />
-                                        <TextBox
-                                            x:Name="MemoInfoDisease"
-                                            MinWidth="1120"
-                                            MinHeight="75"
-                                            MaxWidth="1300"
-                                            MaxHeight="150"
-                                            Margin="{StaticResource XSmallRightMargin}"
-                                            loca:Uids.Uid="TextBox_Info"
-                                            AcceptsReturn="True"
-                                            IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
-                                            RelativePanel.AlignLeftWithPanel="True"
-                                            RelativePanel.Below="MemoTherapieDisease"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            Text="{x:Bind ViewModel.DiseaseSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            TextWrapping="Wrap" />
-                                        <TextBox
-                                            x:Name="MemoDisease"
-                                            MinWidth="1120"
-                                            MinHeight="75"
-                                            MaxWidth="1300"
-                                            MaxHeight="150"
-                                            Margin="{StaticResource XSmallRightMargin}"
-                                            loca:Uids.Uid="TextBox_Memo"
-                                            AcceptsReturn="True"
-                                            IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
-                                            RelativePanel.AlignLeftWithPanel="True"
-                                            RelativePanel.Below="MemoInfoDisease"
-                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                            Text="{x:Bind ViewModel.DiseaseSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            TextWrapping="Wrap" />
+                                        <TextBox x:Name="MemoInfoDisease"
+                                                 MinWidth="1120"
+                                                 MinHeight="75"
+                                                 MaxWidth="1300"
+                                                 MaxHeight="150"
+                                                 Margin="{StaticResource XSmallRightMargin}"
+                                                 loca:Uids.Uid="TextBox_Info"
+                                                 AcceptsReturn="True"
+                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
+                                                 RelativePanel.AlignLeftWithPanel="True"
+                                                 RelativePanel.Below="MemoTherapieDisease"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Text="{x:Bind ViewModel.DiseaseSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
+                                        <TextBox x:Name="MemoDisease"
+                                                 MinWidth="1120"
+                                                 MinHeight="75"
+                                                 MaxWidth="1300"
+                                                 MaxHeight="150"
+                                                 Margin="{StaticResource XSmallRightMargin}"
+                                                 loca:Uids.Uid="TextBox_Memo"
+                                                 AcceptsReturn="True"
+                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditDisease), Mode=OneWay}"
+                                                 RelativePanel.AlignLeftWithPanel="True"
+                                                 RelativePanel.Below="MemoInfoDisease"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                 Text="{x:Bind ViewModel.DiseaseSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextWrapping="Wrap" />
                                     </RelativePanel>
                                 </Expander>
                             </StackPanel>
@@ -631,6 +603,16 @@
                                           IsChecked="{x:Bind ViewModel.ImageSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
                                           RelativePanel.RightOf="ImageMimeTypeCombo" />
+                                <!--<TextBox x:Name="ValidYearTextImage"
+                                         x:Uid="TextBox_ValidYear"
+                                         Width="70"
+                                         Margin="{StaticResource XSmallTopRightMargin}"
+                                         winUiCommunity:TextBoxExtensions.Mask="9999"
+                                         winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
+                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
+                                         RelativePanel.RightOf="ValidCheckImage"
+                                         Style="{StaticResource BodyTextBoxStyle}"
+                                         Text="{x:Bind ViewModel.ImageSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="AuthorTextShotDate"
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
@@ -639,13 +621,16 @@
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          RelativePanel.RightOf="ValidCheckImage"
                                          Text="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--<DatePicker
+                                x:Name="DpShotDate"
+                                Width="300"
+                                Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                                Date="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="InfoImage"
                                          MinWidth="1120"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          HorizontalAlignment="Stretch"
                                          loca:Uids.Uid="TextBox_Info"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.AlignLeftWithPanel="True"
@@ -754,6 +739,10 @@
                                         </DataTemplate>
                                     </toolkit:DataGridTemplateColumn.CellTemplate>
                                 </toolkit:DataGridTemplateColumn>
+                                <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_DiseaseName"
+                                                                Binding="{Binding DiseaseId}"
+                                                                DisplayMemberPath="DiseaseName"
+                                                                ItemsSource="{x:Bind ViewModel.TblDiseasesAllList, Mode=OneWay}" />
                                 <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                                 Binding="{Binding Valid}"
                                                                 Tag="Valid" />
