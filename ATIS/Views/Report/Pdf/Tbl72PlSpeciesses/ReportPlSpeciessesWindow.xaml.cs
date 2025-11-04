@@ -36,7 +36,7 @@ public sealed partial class ReportPlSpeciessesWindow : WindowEx
         Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportHeight"));
         this.CenterOnScreen();
 
-        if (ViewModel.PlSpeciesSubItems.Count == 0)
+        if (ViewModel.SpeciesSubItems.Count == 0)
         {
             TbDirectChildren.Visibility = Visibility.Collapsed;
         }
@@ -47,32 +47,32 @@ public sealed partial class ReportPlSpeciessesWindow : WindowEx
 
     private void PdfPlSpeciesCommand(object sender, RoutedEventArgs e)
     {
-        GeneratePdfPlSpecies(ViewModel.PlSpeciesSelected.PlSpeciesId);
+      //  GeneratePdfPlSpecies(ViewModel.PlSpeciesSelected.PlSpeciesId);
     }
 
     #endregion [Command]             
 
     #region [Methods]
 
-    public void GeneratePdfPlSpecies(int id)
-    {
-        var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
-        var single = _context.Tbl72PlSpeciesses.SingleOrDefault(a => a.PlSpeciesId == id);
-        if (single != null)
-        {
-            var name = single.PlSpeciesName;
-            var countid = single.CountId;
-            const string space = "_";
-            filePath = $"{filePath}{name}{space}{countid}{space}Report.pdf";
+    //public void GeneratePdfPlSpecies(int id)
+    //{
+    //    var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
+    //    var single = _context.Tbl72PlSpeciesses.SingleOrDefault(a => a.PlSpeciesId == id);
+    //    if (single != null)
+    //    {
+    //        var name = single.PlSpeciesName;
+    //        var countid = single.CountId;
+    //        const string space = "_";
+    //        filePath = $"{filePath}{name}{space}{countid}{space}Report.pdf";
 
-            //var filePath = "D:\\Temp\\Animalia b11_57883426_Report.pdf";
+    //        //var filePath = "D:\\Temp\\Animalia b11_57883426_Report.pdf";
 
-            var model = Tbl72PlSpeciessesDocumentDataSource.GetPlSpeciesDetails(id);
-            var document = new Tbl72PlSpeciessesDocument(model);
-            document.GeneratePdf(filePath);
-            PrintPdfMethod(filePath);
-        }
-    }
+    //        var model = Tbl72PlSpeciessesDocumentDataSource.GetPlSpeciesDetails(id);
+    //        var document = new Tbl72PlSpeciessesDocument(model);
+    //        document.GeneratePdf(filePath);
+    //        PrintPdfMethod(filePath);
+    //    }
+    //}
 
     private static async void PrintPdfMethod(string filePath)
     {

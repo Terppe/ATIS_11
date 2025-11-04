@@ -24,7 +24,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     public Tbl87GeographicViewModel ViewModel { get; }
     private Tbl87Geographic SingleGeographic { get; set; }
-    private Tbl69FiSpecies SingleSpecies { get; set; }
+    private Tbl75Species SingleSpecies { get; set; }
     public TblCountry SingleCountry { get; set; }
     private static readonly AtisDbContext Context = new();
     private string _search;
@@ -174,8 +174,8 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-            .Where(com => com.FiSpeciesId == ViewModel.GeographicSelected.FiSpeciesId)];
+                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            .Where(com => com.SpeciesId == ViewModel.GeographicSelected.SpeciesId)];
             });
             ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
             ViewModel.RefreshSpeciesItems();
@@ -313,7 +313,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
     private void GeographicSingles()
     {
-        ViewModel.GeographicSelected.FiSpeciesId = SingleGeographic.FiSpeciesId;
+        ViewModel.GeographicSelected.SpeciesId = SingleGeographic.SpeciesId;
         ViewModel.GeographicSelected.Valid = SingleGeographic.Valid;
         ViewModel.GeographicSelected.ValidYear = SingleGeographic.ValidYear;
         ViewModel.GeographicSelected.Author = SingleGeographic.Author;
@@ -457,8 +457,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
                         a.Address == ViewModel.GeographicSelected.Address &&
                         a.Continent == ViewModel.GeographicSelected.Continent &&
                         a.Country == ViewModel.GeographicSelected.Country &&
-                        a.PlSpeciesId == ViewModel.GeographicSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.GeographicSelected.FiSpeciesId)];
+                        a.SpeciesId == ViewModel.GeographicSelected.SpeciesId)];
 
         //Aus Countrylist Latitude und Longitude und ZoomLevel füllen
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -565,7 +564,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -593,7 +592,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -608,7 +607,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
     private void SpeciesSingles()
     {
-        ViewModel.SpeciesSelected.FiSpeciesName = SingleSpecies.FiSpeciesName;
+        ViewModel.SpeciesSelected.SpeciesName = SingleSpecies.SpeciesName;
         ViewModel.SpeciesSelected.Subspecies = SingleSpecies.Subspecies;
         ViewModel.SpeciesSelected.Divers = SingleSpecies.Divers;
         ViewModel.SpeciesSelected.GenusId = SingleSpecies.GenusId;
@@ -679,7 +678,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             }
             else
             {
-                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
                 SpeciesSingles();
             }
         });
@@ -738,8 +737,8 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(a => a.FiSpeciesName == ViewModel.SpeciesSelected.FiSpeciesName &&
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
                         a.SpeciesgroupId == ViewModel.SpeciesSelected.SpeciesgroupId &&
@@ -758,20 +757,20 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         return false;
     }
 
-    private async Task BehindSaveSpecies(Tbl69FiSpecies viewModelSpeciesSelected)
+    private async Task BehindSaveSpecies(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
             SpeciessesExpander.Visibility = Visibility.Collapsed;

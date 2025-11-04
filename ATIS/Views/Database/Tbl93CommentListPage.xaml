@@ -318,16 +318,16 @@
                                              RelativePanel.RightOf="ValidCheckComment"
                                              Style="{StaticResource BodyTextBoxStyle}"
                                              Text="{x:Bind ViewModel.CommentSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ComboBox x:Name="FiSpeciesCombo"
+                                    <ComboBox x:Name="SpeciesCombo"
                                               MinWidth="300"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                              loca:Uids.Uid="ComboBox_FiSpeciesName"
-                                              DisplayMemberPath="FiSpeciesFullName"
+                                              loca:Uids.Uid="ComboBox_SpeciesName"
+                                              DisplayMemberPath="SpeciesFullName"
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditComment), Mode=OneWay}"
-                                              ItemsSource="{x:Bind ViewModel.Tbl69FiSpeciessesAllList}"
+                                              ItemsSource="{x:Bind ViewModel.Tbl75SpeciessesAllList}"
                                               RelativePanel.RightOf="ValidYearTextComment"
-                                              SelectedValue="{x:Bind ViewModel.CommentSelected.FiSpeciesId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedValuePath="FiSpeciesId" />
+                                              SelectedValue="{x:Bind ViewModel.CommentSelected.SpeciesId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValuePath="SpeciesId" />
                                     <ComboBox x:Name="GenusCombo"
                                               MinWidth="300"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
@@ -335,7 +335,7 @@
                                               DisplayMemberPath="GenusName"
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditComment), Mode=OneWay}"
                                               ItemsSource="{x:Bind ViewModel.Tbl66GenussesAllList}"
-                                              RelativePanel.RightOf="FiSpeciesCombo"
+                                              RelativePanel.RightOf="SpeciesCombo"
                                               SelectedValue="{x:Bind ViewModel.CommentSelected.GenusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="GenusId" />
                                     <TextBox x:Name="InfoComment"

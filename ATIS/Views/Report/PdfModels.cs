@@ -1593,13 +1593,13 @@ public class PdfModels
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("FiSpeciesId")]
-        public virtual Tbl69FiSpecies Tbl69FiSpeciesses
+        public virtual Tbl75Species Tbl69FiSpeciesses
         {
             get; set;
         }
 
         [ForeignKey("PlSpeciesId")]
-        public virtual Tbl72PlSpecies Tbl72PlSpeciesses
+        public virtual Tbl75Species Tbl72PlSpeciesses
         {
             get; set;
         }
@@ -1679,13 +1679,13 @@ public class PdfModels
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("FiSpeciesId")]
-        public virtual Tbl69FiSpecies Tbl69FiSpeciesses
+        public virtual Tbl75Species Tbl69FiSpeciesses
         {
             get; set;
         }
 
         [ForeignKey("PlSpeciesId")]
-        public virtual Tbl72PlSpecies Tbl72PlSpeciesses
+        public virtual Tbl75Species Tbl72PlSpeciesses
         {
             get; set;
         }
@@ -1757,13 +1757,13 @@ public class PdfModels
         //   public byte[] RowVersion { get; set; }
 
         [ForeignKey("FiSpeciesId")]
-        public virtual Tbl69FiSpecies Tbl69FiSpeciesses
+        public virtual Tbl75Species Tbl69FiSpeciesses
         {
             get; set;
         }
 
         [ForeignKey("PlSpeciesId")]
-        public virtual Tbl72PlSpecies Tbl72PlSpeciesses
+        public virtual Tbl75Species Tbl72PlSpeciesses
         {
             get; set;
         }
@@ -1884,13 +1884,13 @@ public class PdfModels
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("FiSpeciesId")]
-        public virtual Tbl69FiSpecies Tbl69FiSpeciesses
+        public virtual Tbl75Species Tbl69FiSpeciesses
         {
             get; set;
         }
 
         [ForeignKey("PlSpeciesId")]
-        public virtual Tbl72PlSpecies Tbl72PlSpeciesses
+        public virtual Tbl75Species Tbl72PlSpeciesses
         {
             get; set;
         }

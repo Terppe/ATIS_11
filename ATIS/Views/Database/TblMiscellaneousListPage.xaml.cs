@@ -169,6 +169,7 @@ public sealed partial class TblMiscellaneousListPage : Page
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
+            ViewModel.RefreshImageItems();
 
             if (ViewModel.Tbl81ImagesList.Count == 0)
             {

@@ -510,18 +510,18 @@
                       x:DataType="models:Tbl66Genus">
             <dataTemplates:SearchItemTemplateTbl66GenusControl />
         </DataTemplate>
-        <DataTemplate x:Key="SearchItemTemplateTbl69FiSpecies"
-                      x:DataType="models:Tbl69FiSpecies">
+        <!--<DataTemplate x:Key="SearchItemTemplateTbl69FiSpecies"
+            x:DataType="models:Tbl75Species">
             <dataTemplates:SearchItemTemplateTbl69FiSpeciesControl />
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate x:Key="SearchItemTemplateTbl75Species"
-                      x:DataType="models:Tbl69FiSpecies">
+            x:DataType="models:Tbl75Species">
             <dataTemplates:SearchItemTemplateTbl75SpeciesControl />
         </DataTemplate>
-        <DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
+        <!--<DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
                       x:DataType="models:Tbl72PlSpecies">
             <dataTemplates:SearchItemTemplateTbl72PlSpeciesControl />
-        </DataTemplate>
+        </DataTemplate>-->
 
 
         <Style x:Key="NoSpacesListViewItemStyle"
@@ -620,16 +620,16 @@
             <dataTemplateHeader1:ReportItemTemplateHeaderGenusControl />
         </DataTemplate>
         <DataTemplate x:Key="ReportItemTemplateHeaderFiSpecies"
-                      x:DataType="models:Tbl69FiSpecies">
+            x:DataType="models:Tbl75Species">
             <dataTemplateHeader1:ReportItemTemplateHeaderFiSpeciesControl />
         </DataTemplate>
         <!--<DataTemplate x:Key="ReportItemTemplateHeaderFiSpeciesSub" x:DataType="models:Tbl69FiSpecies">
         <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesSubsControl />
         </DataTemplate>-->
-        <DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
+        <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
                       x:DataType="models:Tbl72PlSpecies">
             <dataTemplateHeader1:ReportItemTemplateHeaderPlSpeciesControl />
-        </DataTemplate>
+        </DataTemplate>-->
         <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpeciesSub" x:DataType="models:Tbl72PlSpecies">
         <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesSubsControl />
         </DataTemplate>-->
@@ -730,13 +730,13 @@
             <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl />
         </DataTemplate>
         <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpecies"
-                      x:DataType="models:Tbl69FiSpecies">
+            x:DataType="models:Tbl75Species">
             <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl />
         </DataTemplate>
-        <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
+        <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
                       x:DataType="models:Tbl72PlSpecies">
             <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl />
-        </DataTemplate>
+        </DataTemplate>-->
 
         <!--  Hyperlink-ListViews  -->
         <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
@@ -828,31 +828,31 @@
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkGenusControl />
         </DataTemplate>
         <DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpecies"
-                      x:DataType="models:Tbl69FiSpecies">
+            x:DataType="models:Tbl75Species">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkFiSpeciesControl />
         </DataTemplate>
         <DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpeciesSub"
-                      x:DataType="models:Tbl69FiSpecies">
+            x:DataType="models:Tbl75Species">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkFiSpeciesSubControl />
         </DataTemplate>
-        <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
+        <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
                       x:DataType="models:Tbl72PlSpecies">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkPlSpeciesControl />
         </DataTemplate>
         <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpeciesSub"
                       x:DataType="models:Tbl72PlSpecies">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkPlSpeciesSubControl />
-        </DataTemplate>
+        </DataTemplate>-->
 
         <!--  Rest-ListViews  -->
         <DataTemplate x:Key="ReportItemTemplateFiSpecies"
-                      x:DataType="models:Tbl69FiSpecies">
+            x:DataType="models:Tbl75Species">
             <dataTemplates1:ReportItemTemplateFiSpeciesControl />
         </DataTemplate>
-        <DataTemplate x:Key="ReportItemTemplatePlSpecies"
+        <!--<DataTemplate x:Key="ReportItemTemplatePlSpecies"
                       x:DataType="models:Tbl72PlSpecies">
             <dataTemplates1:ReportItemTemplatePlSpeciesControl />
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateName"
                       x:DataType="models:Tbl78Name">
             <dataTemplates1:ReportItemTemplateNameControl />
@@ -975,11 +975,11 @@
                                             <ListView MaxHeight="650"
                                                       ContextFlyout="{StaticResource SpeciesDataContextMenu}"
                                                       ItemTemplate="{StaticResource SearchItemTemplateTbl75Species}"
-                                                      ItemsSource="{x:Bind ViewModel.FiSpeciesItems, Mode=OneWay}"
+                                                      ItemsSource="{x:Bind ViewModel.SpeciesItems, Mode=OneWay}"
                                                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                                       ScrollViewer.IsDeferredScrollingEnabled="True"
                                                       ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                      SelectedItem="{x:Bind ViewModel.FiSpeciesSelected, Mode=TwoWay}" />
+                                                      SelectedItem="{x:Bind ViewModel.SpeciesSelected, Mode=TwoWay}" />
                                         </StackPanel>
                                     </TabViewItem>
                                     <!--<TabViewItem x:Uid="TabViewItem_Speciesses" IsClosable="False">

@@ -206,7 +206,7 @@ public sealed partial class MainPage : Page
     ///Check if database exist or SQLServer not running
     /// </summary>
     /// <returns></returns>
-    public static bool CheckDatabaseExist(string db)
+    private bool CheckDatabaseExist(string db)
     {
         var ret = false;
 
@@ -234,6 +234,7 @@ public sealed partial class MainPage : Page
             }
             else
             {
+                TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
                 ret = true;
             }
         }

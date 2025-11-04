@@ -30,7 +30,7 @@ public abstract class Tbl72PlSpeciessesDocumentDataSource : ObservableObject
     private static Tbl60Subtribus _subtribusSingle = new();
     private static Tbl63Infratribus _infratribusSingle = new();
     private static Tbl66Genus _genusSingle = new();
-    private static Tbl72PlSpecies _plspeciesSingle = new();
+    private static Tbl75Species _plspeciesSingle = new();
     private static readonly Tbl78Name _nameSingle = new();
     private static readonly Tbl84Synonym _synonymSingle = new();
 
@@ -73,13 +73,13 @@ public abstract class Tbl72PlSpeciessesDocumentDataSource : ObservableObject
         }
 
         //find PlSpeciesSubsCollection
-        var singlePlSpecies = dataService.GetPlSpeciesSingleByPlSpeciesId(plspeciesId);
-        var plSpeciesName = singlePlSpecies.PlSpeciesName;
+        var singlePlSpecies = dataService.GetSpeciesSingleBySpeciesId(plspeciesId);
+        var plSpeciesName = singlePlSpecies.SpeciesName;
         var id = singlePlSpecies.GenusId;
-        PlSpeciesSubsCollection = dataService.CollPlSpeciesSubsByPlSpeciesNameandGenusId(plSpeciesName, id);
+        PlSpeciesSubsCollection = dataService.CollSpeciesSubsBySpeciesNameandGenusId(plSpeciesName, id);
 
-        PlSpeciessesCollection = dataService.CollPlSpeciessesByPlSpeciesId(plspeciesId);
-        var genusId = dataService.GenusIdFromPlSpeciessesCollectionSelect(plspeciesId);
+        PlSpeciessesCollection = dataService.CollSpeciessesBySpeciesId(plspeciesId);
+        var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(plspeciesId);
         GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
         var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
         InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
@@ -144,20 +144,20 @@ public abstract class Tbl72PlSpeciessesDocumentDataSource : ObservableObject
         }
 
         //direct children
-        NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(plspeciesId);
-        SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(plspeciesId);
-        ImagesCollection = dataService.CollImagesByFiSpeciesId(plspeciesId);
-        GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(plspeciesId);
+        NamesCollection = dataService.CollNamesBySpeciesIdAndHash(plspeciesId);
+        SynonymsCollection = dataService.CollSynonymsBySpeciesIdAndHash(plspeciesId);
+        ImagesCollection = dataService.CollImagesBySpeciesId(plspeciesId);
+        GeographicsCollection = dataService.CollGeographicsBySpeciesId(plspeciesId);
 
         //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByFiSpeciesId(plspeciesId);
-        SourcesCollection = dataService.CollSourcesByFiSpeciesId(plspeciesId);
-        AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(plspeciesId);
+        ExpertsCollection = dataService.CollExpertsBySpeciesId(plspeciesId);
+        SourcesCollection = dataService.CollSourcesBySpeciesId(plspeciesId);
+        AuthorsCollection = dataService.CollAuthorsBySpeciesId(plspeciesId);
         //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByFiSpeciesId(plspeciesId);
+        CommentsCollection = dataService.CollCommentsBySpeciesId(plspeciesId);
 
 
-        _plspeciesSingle = dataService.GetPlSpeciesSingleByPlSpeciesIdAndHash(plspeciesId);
+        _plspeciesSingle = dataService.GetSpeciesSingleBySpeciesIdAndHash(plspeciesId);
         _genusSingle = dataService.GetGenusSingleByGenusIdAndHash(genusId);
         _infratribusSingle = dataService.GetInfratribusSingleByInfratribusIdAndHash(infratribusId);
         _subtribusSingle = dataService.GetSubtribusSingleBySubtribusIdAndHash(subtribusId);
@@ -178,7 +178,7 @@ public abstract class Tbl72PlSpeciessesDocumentDataSource : ObservableObject
 
         return new Tbl72PlSpeciessesPdfModel
         {
-            PlSpeciesName = _plspeciesSingle.PlSpeciesName,
+            PlSpeciesName = _plspeciesSingle.SpeciesName,
             Subspecies = _plspeciesSingle.Subspecies,
             Divers = _plspeciesSingle.Divers,
             GenusId = _plspeciesSingle.GenusId,
@@ -287,8 +287,8 @@ public abstract class Tbl72PlSpeciessesDocumentDataSource : ObservableObject
 
     public static ObservableCollection<Tbl66Genus> GenussesCollection { get; set; } = null!;
 
-    public static ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection { get; set; } = null!;
-    public static ObservableCollection<Tbl72PlSpecies> PlSpeciesSubsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl75Species> PlSpeciessesCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl75Species> PlSpeciesSubsCollection { get; set; } = null!;
 
     public static ObservableCollection<Tbl78Name> NamesCollection { get; set; } = null!;
 
@@ -309,7 +309,7 @@ public abstract class Tbl72PlSpeciessesDocumentDataSource : ObservableObject
 
     public static void ClearAllCollections()
     {
-        _plspeciesSingle = new Tbl72PlSpecies();
+        _plspeciesSingle = new Tbl75Species();
         _genusSingle = new Tbl66Genus();
         _infratribusSingle = new Tbl63Infratribus();
         _subtribusSingle = new Tbl60Subtribus();

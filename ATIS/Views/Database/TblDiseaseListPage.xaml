@@ -9,7 +9,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="using:ATIS.Models"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-      xmlns:winUiCommunity="using:WinUICommunity"
       NavigationCacheMode="Disabled"
       mc:Ignorable="d">
 

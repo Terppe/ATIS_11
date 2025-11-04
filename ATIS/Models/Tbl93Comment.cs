@@ -8,8 +8,9 @@ public class Tbl93Comment
 
     [Key]
     public int CommentId { get; set; }
-    public int? FiSpeciesId { get; set; }
-    public int? PlSpeciesId { get; set; }
+    public int? SpeciesId { get; set; }
+    //public int? FiSpeciesId { get; set; }
+    //public int? PlSpeciesId { get; set; }
     public int? GenusId { get; set; }
     public int? InfratribusId { get; set; }
     public int? SubtribusId { get; set; }
@@ -48,9 +49,7 @@ public class Tbl93Comment
     public string Memo { get; set; }
     //   public byte[] RowVersion { get; set; }
 
-    [ForeignKey("FiSpeciesId")]
-    public virtual Tbl69FiSpecies Tbl69FiSpeciesses { get; set; }
-    [ForeignKey("PlSpeciesId")]
-    public virtual Tbl72PlSpecies Tbl72PlSpeciesses { get; set; }
+    [ForeignKey("SpeciesId")]
+    public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
 }

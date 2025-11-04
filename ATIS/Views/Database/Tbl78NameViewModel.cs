@@ -20,7 +20,7 @@ public partial class Tbl78NameViewModel : ObservableObject
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl78Name> NameItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> SpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
 
     #endregion [Private Data Members]           
 
@@ -60,19 +60,19 @@ public partial class Tbl78NameViewModel : ObservableObject
             IsInEditName = true;
             IsNewName = true;
 
-            var plSpeciesId = 0;
+            //var plSpeciesId = 0;
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                plSpeciesId = plantaeRegnum.PlSpeciesId;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    plSpeciesId = plantaeRegnum.PlSpeciesId;
+            //}
 
-            var speciesId = Tbl75SpeciessesAllList.First().FiSpeciesId;
+            var speciesId = Tbl75SpeciessesAllList.First().SpeciesId;
 
             Tbl78NamesList ??= [];
-            Tbl78NamesList.Insert(index: 0, item: new Tbl78Name() { FiSpeciesId = speciesId, PlSpeciesId = plSpeciesId });
+            Tbl78NamesList.Insert(index: 0, item: new Tbl78Name { SpeciesId = speciesId });
         });
     }
     public async Task SaveNameAsync(Tbl78Name viewModelNameSelected)
@@ -185,7 +185,7 @@ public partial class Tbl78NameViewModel : ObservableObject
     #region [Methods Species]
 
 
-    public async Task SaveSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
+    public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -195,14 +195,14 @@ public partial class Tbl78NameViewModel : ObservableObject
             }
         });
 
-        Tbl69FiSpecies result = null;
+        Tbl75Species result = null;
         try
         {
             if (IsModifiedSpecies)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertFiSpeciesAsync(viewModelSpeciesSelected);
+                    result = await _dataService.UpsertSpeciesAsync(viewModelSpeciesSelected);
                     IsModifiedSpecies = false;
                 });
             }
@@ -356,8 +356,8 @@ public partial class Tbl78NameViewModel : ObservableObject
         set => SetProperty(ref _genusSelected, value);
     }
 
-    private Tbl69FiSpecies _speciesSelected;
-    public Tbl69FiSpecies SpeciesSelected
+    private Tbl75Species _speciesSelected;
+    public Tbl75Species SpeciesSelected
     {
         get => _speciesSelected;
         set => SetProperty(ref _speciesSelected, value);
@@ -396,8 +396,8 @@ public partial class Tbl78NameViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciessesAllList;
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesAllList
+    private ObservableCollection<Tbl75Species> _tbl75SpeciessesAllList;
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesAllList
     {
         get => _tbl75SpeciessesAllList;
         set
@@ -456,9 +456,9 @@ public partial class Tbl78NameViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciesList;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciesList;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
         get => _tbl75SpeciesList;
         set
@@ -521,7 +521,7 @@ public partial class Tbl78NameViewModel : ObservableObject
         SpeciesItems.Clear();
         if (Tbl75SpeciessesList != null)
         {
-            foreach (var item in Tbl75SpeciessesList)
+            foreach (Tbl75Species item in Tbl75SpeciessesList)
             {
                 SpeciesItems.Add(item);
             }

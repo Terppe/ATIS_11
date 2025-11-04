@@ -42,7 +42,7 @@ public sealed partial class ReportPlSpeciessesSubsWindow : WindowEx
 
     private void PdfPlSpeciesSubCommand(object sender, RoutedEventArgs e)
     {
-        GeneratePdfPlSpeciesSubs(ViewModel.PlSpeciesSelected.PlSpeciesId);
+        GeneratePdfPlSpeciesSubs(ViewModel.SpeciesSelected.SpeciesId);
     }
 
     #endregion [Command]             
@@ -52,10 +52,10 @@ public sealed partial class ReportPlSpeciessesSubsWindow : WindowEx
     public void GeneratePdfPlSpeciesSubs(int id)
     {
         var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
-        var single = _context.Tbl72PlSpeciesses.SingleOrDefault(a => a.PlSpeciesId == id);
+        var single = _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id);
         if (single != null)
         {
-            var name = single.PlSpeciesName;
+            var name = single.SpeciesName;
             var subname = single.Subspecies;
             var divname = single.Divers;
             var countid = single.CountId;

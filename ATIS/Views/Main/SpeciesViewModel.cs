@@ -34,8 +34,7 @@ public class SpeciesViewModel : ObservableObject
     public ObservableCollection<Tbl63Infratribus> InfratribusItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciesItems { get; } = [];
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
 
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];

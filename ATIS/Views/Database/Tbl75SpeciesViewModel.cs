@@ -23,7 +23,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
 
-    public ObservableCollection<Tbl69FiSpecies> SpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl78Name> NameItems { get; } = [];
@@ -38,7 +38,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
     private int _plantId;
     private readonly FileOpenPicker _filePicker = new();
-    public Tbl69FiSpecies SingleSpecies { get; set; }
+    public Tbl75Species SingleSpecies { get; set; }
 
     private readonly List<Data> _fileStreamList = [];
     public struct Data
@@ -106,11 +106,11 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             var speciesgroupId = Tbl68SpeciesgroupsAllList.First().SpeciesgroupId;
 
             Tbl75SpeciessesList ??= [];
-            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl69FiSpecies { GenusId = genusId, SpeciesgroupId = speciesgroupId, Creature = "" });
+            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl75Species { GenusId = genusId, SpeciesgroupId = speciesgroupId, Creature = "" });
         });
     }
 
-    public async Task SaveSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
+    public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -120,7 +120,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             }
         });
 
-        Tbl69FiSpecies result = null;
+        Tbl75Species result = null;
         try
         {
             if (IsModifiedSpecies)
@@ -128,7 +128,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
 
-                    result = await _dataService.UpsertFiSpeciesAsync(viewModelSpeciesSelected);
+                    result = await _dataService.UpsertSpeciesAsync(viewModelSpeciesSelected);
                     IsModifiedSpecies = false;
                 });
             }
@@ -165,12 +165,12 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         }
     }
 
-    public async Task DeleteSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
+    public async Task DeleteSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
-        Tbl69FiSpecies result = null;
+        Tbl75Species result = null;
         try
         {
-            var deleteSpeciesId = viewModelSpeciesSelected.FiSpeciesId;
+            var deleteSpeciesId = viewModelSpeciesSelected.SpeciesId;
             await _dispatcherQueue.EnqueueAsync(async () =>
             {
                 await DeleteSpecies(deleteSpeciesId);
@@ -206,21 +206,21 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         }
     }
 
-    private async Task DeleteSpecies(int fispeciesid)
+    private async Task DeleteSpecies(int speciesid)
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var fispecies = await Context.Tbl69FiSpeciesses.FirstOrDefaultAsync(b => b.FiSpeciesId == fispeciesid);
-            if (fispecies != null)
+            var species = await Context.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
+            if (species != null)
             {
-                await RemoveExtras.RemoveReferencesByFiSpeciesId(fispeciesid);
-                await RemoveExtras.RemoveCommentsByFiSpeciesId(fispeciesid);
-                await RemoveExtras.RemoveNamesByFiSpeciesId(fispeciesid);
-                await RemoveExtras.RemoveImagesByFiSpeciesId(fispeciesid);
-                await RemoveExtras.RemoveSynonymsByFiSpeciesId(fispeciesid);
-                await RemoveExtras.RemoveGeographicsByFiSpeciesId(fispeciesid);
+                await RemoveExtras.RemoveReferencesBySpeciesId(speciesid);
+                await RemoveExtras.RemoveCommentsBySpeciesId(speciesid);
+                await RemoveExtras.RemoveNamesBySpeciesId(speciesid);
+                await RemoveExtras.RemoveImagesBySpeciesId(speciesid);
+                await RemoveExtras.RemoveSynonymsBySpeciesId(speciesid);
+                await RemoveExtras.RemoveGeographicsBySpeciesId(speciesid);
 
-                Context.Tbl69FiSpeciesses.Remove(fispecies);
+                Context.Tbl75Speciesses.Remove(species);
                 await Context.SaveChangesAsync();
             }
         });
@@ -241,7 +241,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
 
             Tbl90ReferencesList ??= [];
-            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, FiSpeciesId = SpeciesSelected.FiSpeciesId });
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, SpeciesId = SpeciesSelected.SpeciesId });
         });
     }
     public async Task AddReferenceSourceAsync()
@@ -255,7 +255,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
 
             Tbl90ReferencesList ??= [];
-            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, FiSpeciesId = SpeciesSelected.FiSpeciesId });
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, SpeciesId = SpeciesSelected.SpeciesId });
         });
     }
     public async Task AddReferenceAuthorAsync()
@@ -269,7 +269,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
             Tbl90ReferencesList ??= [];
-            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, FiSpeciesId = SpeciesSelected.FiSpeciesId });
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, SpeciesId = SpeciesSelected.SpeciesId });
         });
     }
 
@@ -394,10 +394,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             IsInEditComment = true;
             IsNewComment = true;
 
-            var id = SpeciesSelected.FiSpeciesId;
+            var id = SpeciesSelected.SpeciesId;
 
             Tbl93CommentsList ??= [];
-            Tbl93CommentsList.Insert(index: 0, item: new Tbl93Comment() { FiSpeciesId = id });
+            Tbl93CommentsList.Insert(index: 0, item: new Tbl93Comment { SpeciesId = id });
         });
     }
 
@@ -518,29 +518,28 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var fiSpeciesId = 0;
+          //  var fiSpeciesId = 0;
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.PlSpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    _plantId = plantaeRegnum.PlSpeciesId;
+            //}
+            //else
+            //{
+            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+            //    return;
+            //}
 
             IsInEditName = true;
             IsNewName = true;
 
-            fiSpeciesId = SpeciesSelected.FiSpeciesId;
+            var  speciesId = SpeciesSelected.SpeciesId;
 
             Tbl78NamesList ??= [];
-            Tbl78NamesList.Insert(index: 0,
-                item: new Tbl78Name() { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
+            Tbl78NamesList.Insert(index: 0, item: new Tbl78Name { SpeciesId = speciesId });
         });
     }
     public async Task SaveNameAsync(Tbl78Name viewModelNameSelected)
@@ -651,28 +650,28 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
 
-            var fiSpeciesId = 0;
+            //var fiSpeciesId = 0;
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.PlSpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    _plantId = plantaeRegnum.PlSpeciesId;
+            //}
+            //else
+            //{
+            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+            //    return;
+            //}
 
             IsInEditImage = true;
             IsNewImage = true;
 
-            fiSpeciesId = SpeciesSelected.FiSpeciesId;
+            var speciesId = SpeciesSelected.SpeciesId;
 
             Tbl81ImagesList ??= [];
-            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
+            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = speciesId});
         });
     }
 
@@ -788,28 +787,28 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
 
-            var fiSpeciesId = 0;
+            //var fiSpeciesId = 0;
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.PlSpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    _plantId = plantaeRegnum.PlSpeciesId;
+            //}
+            //else
+            //{
+            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+            //    return;
+            //}
 
             IsInEditSynonym = true;
             IsNewSynonym = true;
 
-            fiSpeciesId = SpeciesSelected.FiSpeciesId;
+           var speciesId = SpeciesSelected.SpeciesId;
 
             Tbl84SynonymsList ??= [];
-            Tbl84SynonymsList.Insert(index: 0, item: new Tbl84Synonym { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
+            Tbl84SynonymsList.Insert(index: 0, item: new Tbl84Synonym { SpeciesId = speciesId});
         });
     }
     public async Task SaveSynonymAsync(Tbl84Synonym viewModelSynonymSelected)
@@ -910,28 +909,28 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var fiSpeciesId = 0;
+            //var fiSpeciesId = 0;
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.PlSpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    _plantId = plantaeRegnum.PlSpeciesId;
+            //}
+            //else
+            //{
+            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+            //    return;
+            //}
 
             IsInEditGeographic = true;
             IsNewGeographic = true;
 
-            fiSpeciesId = SpeciesSelected.FiSpeciesId;
+            var speciesId = SpeciesSelected.SpeciesId;
 
             Tbl87GeographicsList ??= [];
-            Tbl87GeographicsList.Insert(index: 0, item: new Tbl87Geographic { FiSpeciesId = fiSpeciesId, PlSpeciesId = _plantId });
+            Tbl87GeographicsList.Insert(index: 0, item: new Tbl87Geographic { SpeciesId = speciesId });
         });
     }
     public async Task SaveGeographicAsync(Tbl87Geographic viewModelGeographicSelected)
@@ -1040,7 +1039,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         get => _selectedFilestream;
         set
         {
-            _selectedFilestream = value; OnPropertyChanged(nameof(SelectedFilestream));
+            _selectedFilestream = value; OnPropertyChanged();
         }
     }
 
@@ -1416,8 +1415,8 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
     #region Selected Properties
 
-    private Tbl69FiSpecies _speciesSelected;
-    public Tbl69FiSpecies SpeciesSelected
+    private Tbl75Species _speciesSelected;
+    public Tbl75Species SpeciesSelected
     {
         get => _speciesSelected;
         set => SetProperty(ref _speciesSelected, value);
@@ -1711,9 +1710,9 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciesList;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciesList;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
         get => _tbl75SpeciesList;
         set
@@ -1721,26 +1720,26 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             _tbl75SpeciesList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl69FiSpecies> _tbl69FiSpeciessesAllList;
-    public ObservableCollection<Tbl69FiSpecies> Tbl69FiSpeciessesAllList
+    private ObservableCollection<Tbl75Species> _tbl75SpeciessesAllList;
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesAllList
     {
-        get => _tbl69FiSpeciessesAllList;
+        get => _tbl75SpeciessesAllList;
         set
         {
-            _tbl69FiSpeciessesAllList = value; OnPropertyChanged();
+            _tbl75SpeciessesAllList = value; OnPropertyChanged();
         }
     }
 
 
-    private ObservableCollection<Tbl72PlSpecies> _tbl72PlSpeciessesAllList;
-    public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesAllList
-    {
-        get => _tbl72PlSpeciessesAllList;
-        set
-        {
-            _tbl72PlSpeciessesAllList = value; OnPropertyChanged();
-        }
-    }
+    //private ObservableCollection<Tbl72PlSpecies> _tbl72PlSpeciessesAllList;
+    //public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesAllList
+    //{
+    //    get => _tbl72PlSpeciessesAllList;
+    //    set
+    //    {
+    //        _tbl72PlSpeciessesAllList = value; OnPropertyChanged();
+    //    }
+    //}
 
     private ObservableCollection<Tbl78Name> _tbl78NamesList;
 

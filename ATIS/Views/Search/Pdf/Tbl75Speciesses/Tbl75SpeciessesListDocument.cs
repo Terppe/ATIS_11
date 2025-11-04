@@ -16,13 +16,13 @@ internal class Tbl75SpeciessesListDocument : IDocument
         get;
     }
 
-    public ObservableCollection<Tbl69FiSpecies> ViewModelSpeciessesCollection
+    public ObservableCollection<Tbl75Species> ViewModelSpeciessesCollection
     {
         get;
     }
 
     public Tbl75SpeciessesListDocument(Tbl75SpeciessesPdfModel model,
-        ObservableCollection<Tbl69FiSpecies> viewModelSpeciessesCollection)
+        ObservableCollection<Tbl75Species> viewModelSpeciessesCollection)
     {
         Model = model;
         ViewModelSpeciessesCollection = viewModelSpeciessesCollection;
@@ -89,7 +89,7 @@ internal class Tbl75SpeciessesListDocument : IDocument
             {
                 table.Cell().Text("");
                 table.Cell()
-                    .Text($"{item.Tbl66Genusses.GenusName} {item.FiSpeciesName} {item.Subspecies} {item.Divers}" +
+                    .Text($"{item.Tbl66Genusses.GenusName} {item.SpeciesName} {item.Subspecies} {item.Divers}" +
                           $" {item.Author} {item.AuthorYear}");
             }
         });

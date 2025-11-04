@@ -600,7 +600,7 @@ public class Tbl69FiSpeciessesDocument : IDocument
             {
                 table.Cell().Text("");
                 table.Cell().Text(Strings.StringsRes.Subspecies);
-                table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.FiSpeciesName}" +
+                table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.SpeciesName}" +
                                   $" {item.Subspecies} {item.Divers} {item.Author} {item.AuthorYear}");
                 //     table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.FiSpeciesName} {item.Subspecies} {item.Divers} {item.Author} {item.AuthorYear}");
 

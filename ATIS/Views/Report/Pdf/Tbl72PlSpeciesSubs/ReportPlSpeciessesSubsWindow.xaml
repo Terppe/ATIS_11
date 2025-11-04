@@ -107,13 +107,13 @@
                 <dataTemplatesSearch:SearchItemTemplateTbl66GenusControl />
             </DataTemplate>
             <DataTemplate x:Key="SearchItemTemplateTbl69FiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
+                x:DataType="models:Tbl75Species">
                 <dataTemplatesSearch:SearchItemTemplateTbl69FiSpeciesControl />
             </DataTemplate>
-            <DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
+            <!--<DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
                           x:DataType="models:Tbl72PlSpecies">
                 <dataTemplatesSearch:SearchItemTemplateTbl72PlSpeciesControl />
-            </DataTemplate>
+            </DataTemplate>-->
 
 
             <Style x:Key="NoSpacesListViewItemStyle"
@@ -212,16 +212,16 @@
                 <dataTemplateHeader:ReportItemTemplateHeaderGenusControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHeaderFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
+                x:DataType="models:Tbl75Species">
                 <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderFiSpeciesSub" x:DataType="models:Tbl69FiSpecies">
             <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesSubsControl />
             </DataTemplate>-->
-            <DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
+            <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
                           x:DataType="models:Tbl72PlSpecies">
                 <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpeciesSub" x:DataType="models:Tbl72PlSpecies">
             <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesSubsControl />
             </DataTemplate>-->
@@ -322,13 +322,13 @@
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
+                x:DataType="models:Tbl75Species">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
+            <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
                           x:DataType="models:Tbl72PlSpecies">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl />
-            </DataTemplate>
+            </DataTemplate>-->
 
             <!--  Hyperlink-ListViews  -->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
@@ -420,31 +420,31 @@
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkGenusControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
+                x:DataType="models:Tbl75Species">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpeciesSub"
-                          x:DataType="models:Tbl69FiSpecies">
+                x:DataType="models:Tbl75Species">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesSubControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
+            <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
                           x:DataType="models:Tbl72PlSpecies">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpeciesSub"
                           x:DataType="models:Tbl72PlSpecies">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesSubControl />
-            </DataTemplate>
+            </DataTemplate>-->
 
             <!--  Rest-ListViews  -->
             <DataTemplate x:Key="ReportItemTemplateFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
+                x:DataType="models:Tbl75Species">
                 <dataTemplatesReport:ReportItemTemplateFiSpeciesControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplatePlSpecies"
+            <!--<DataTemplate x:Key="ReportItemTemplatePlSpecies"
                           x:DataType="models:Tbl72PlSpecies">
                 <dataTemplatesReport:ReportItemTemplatePlSpeciesControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateName"
                           x:DataType="models:Tbl78Name">
                 <dataTemplatesReport:ReportItemTemplateNameControl />
@@ -568,32 +568,32 @@
                         <TextBlock FontSize="18"
                                    FontWeight="Bold"
                                    Style="{StaticResource BodyTextStyle}"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Tbl66Genusses.GenusName, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Tbl66Genusses.GenusName, Mode=OneWay}" />
                         <TextBlock Margin="2,0,0,0"
                                    FontSize="18"
                                    FontWeight="Bold"
                                    Style="{StaticResource BodyTextStyle}"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.PlSpeciesName, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.SpeciesName, Mode=OneWay}" />
                         <TextBlock Margin="2,0,0,0"
                                    FontSize="18"
                                    FontWeight="Bold"
                                    Style="{StaticResource BodyTextStyle}"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Subspecies, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Subspecies, Mode=OneWay}" />
                         <TextBlock Margin="2,0,0,0"
                                    FontSize="18"
                                    FontWeight="Bold"
                                    Style="{StaticResource BodyTextStyle}"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Divers, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Divers, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
                                    FontSize="18"
                                    FontWeight="Bold"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Author, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Author, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
                                    FontSize="18"
                                    FontWeight="Bold"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.AuthorYear, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.AuthorYear, Mode=OneWay}" />
                     </StackPanel>
                     <StackPanel Grid.Row="1"
                                 Grid.Column="0"
@@ -602,7 +602,7 @@
                                    Width="Auto" />
                         <TextBlock Width="Auto"
                                    Margin="8,0,0,0"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.CountId, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.CountId, Mode=OneWay}" />
                     </StackPanel>
                     <ListView Grid.Row="2"
                               Grid.Column="0"
@@ -655,8 +655,8 @@
                               Grid.ColumnSpan="2"
                               Margin="-12,0,0,0"
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                              ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies}"
-                              ItemsSource="{x:Bind ViewModel.PlSpeciesSubItems}" />
+                              ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpecies}"
+                              ItemsSource="{x:Bind ViewModel.SpeciesSubItems}" />
                     <TextBlock x:Uid="TextBlock_TaxonomicHierarchy"
                                Grid.Row="7"
                                Grid.Column="0"
@@ -827,9 +827,9 @@
                               Grid.ColumnSpan="2"
                               Margin="-12,0,0,0"
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                              ItemTemplate="{StaticResource ReportItemTemplateHyperlinkPlSpecies}"
-                              ItemsSource="{x:Bind ViewModel.PlSpeciesItems}"
-                              SelectedValuePath="PlSpeciesId" />
+                              ItemTemplate="{StaticResource ReportItemTemplateHyperlinkFiSpecies}"
+                              ItemsSource="{x:Bind ViewModel.SpeciesItems}"
+                              SelectedValuePath="SpeciesId" />
                     <TextBlock x:Uid="TextBlock_Subspecies"
                                Grid.Row="29"
                                Grid.Column="0"
@@ -839,22 +839,22 @@
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                         <TextBlock Width="Auto"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Tbl66Genusses.GenusName, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Tbl66Genusses.GenusName, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.PlSpeciesName, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.SpeciesName, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Subspecies, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Subspecies, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Divers, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Divers, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.Author, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.Author, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
-                                   Text="{x:Bind ViewModel.PlSpeciesSubSelected.AuthorYear, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSubSelected.AuthorYear, Mode=OneWay}" />
                     </StackPanel>
 
                     <!--  Part 2  -->
@@ -948,8 +948,8 @@
                               Grid.Column="0"
                               Grid.ColumnSpan="2"
                               Margin="-12,-12,10,10"
-                              ItemTemplate="{StaticResource ReportItemTemplatePlSpecies}"
-                              ItemsSource="{x:Bind ViewModel.PlSpeciesItems}" />
+                              ItemTemplate="{StaticResource ReportItemTemplateFiSpecies}"
+                              ItemsSource="{x:Bind ViewModel.SpeciesItems}" />
                 </Grid>
             </ScrollViewer>
 

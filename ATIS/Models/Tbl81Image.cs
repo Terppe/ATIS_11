@@ -10,8 +10,8 @@ public class Tbl81Image
 
     public int ImageId { get; set; }
     public int SpeciesId { get; set; }
-    public int FiSpeciesId { get; set; }
-    public int PlSpeciesId { get; set; }
+    //public int FiSpeciesId { get; set; }
+    //public int PlSpeciesId { get; set; }
     public int FoodId { get; set; }
     public int DiseaseId { get; set; }
     public int MiscellaneousId { get; set; }
@@ -53,6 +53,8 @@ public class Tbl81Image
     //[ForeignKey("MiscellaneousId")]
     //public virtual TblMiscellaneous TblMiscellaneousses { get; set; }
 
+    [ForeignKey("SpeciesId")]
+    public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
 
 }

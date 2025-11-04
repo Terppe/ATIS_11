@@ -97,11 +97,12 @@ public partial class Tbl93CommentViewModel : ObservableObject
         Tbl66GenussesAllList ??= [];
         Tbl66GenussesAllList = _dataService.GetGenusAsync();
 
-        Tbl69FiSpeciessesAllList ??= [];
-        Tbl69FiSpeciessesAllList = _dataService.GetFiSpeciesAsync();
+        //Tbl69FiSpeciessesAllList ??= [];
+        //Tbl69FiSpeciessesAllList = _dataService.GetSpeciesAsync();
 
-        Tbl72PlSpeciessesAllList ??= [];
-        Tbl72PlSpeciessesAllList = _dataService.GetPlSpeciesAsync();
+        Tbl75SpeciessesAllList ??= [];
+        Tbl75SpeciessesAllList = _dataService.GetSpeciesAsync();
+
 
     }
 
@@ -557,29 +558,29 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl66GenussesAllList;
         set
         {
-            _tbl66GenussesAllList = value; OnPropertyChanged(nameof(Tbl66GenussesAllList));
+            _tbl66GenussesAllList = value; OnPropertyChanged();
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl69FiSpeciessesAllList = null!;
-    public ObservableCollection<Tbl69FiSpecies> Tbl69FiSpeciessesAllList
+    private ObservableCollection<Tbl75Species> _tbl75SpeciessesAllList = null!;
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesAllList
     {
-        get => _tbl69FiSpeciessesAllList;
+        get => _tbl75SpeciessesAllList;
         set
         {
-            _tbl69FiSpeciessesAllList = value; OnPropertyChanged(nameof(Tbl69FiSpeciessesAllList));
+            _tbl75SpeciessesAllList = value; OnPropertyChanged();
         }
     }
 
-    private ObservableCollection<Tbl72PlSpecies> _tbl72PlSpeciessesAllList = null!;
-    public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesAllList
-    {
-        get => _tbl72PlSpeciessesAllList;
-        set
-        {
-            _tbl72PlSpeciessesAllList = value; OnPropertyChanged(nameof(Tbl72PlSpeciessesAllList));
-        }
-    }
+    //private ObservableCollection<Tbl72PlSpecies> _tbl72PlSpeciessesAllList = null!;
+    //public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesAllList
+    //{
+    //    get => _tbl72PlSpeciessesAllList;
+    //    set
+    //    {
+    //        _tbl72PlSpeciessesAllList = value; OnPropertyChanged(nameof(Tbl72PlSpeciessesAllList));
+    //    }
+    //}
 
     #endregion Public Properties  
 

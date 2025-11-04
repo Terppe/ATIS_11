@@ -13,11 +13,11 @@ internal class Tbl69FiSpeciessesListDocument : IDocument
     {
         get;
     }
-    public ObservableCollection<Tbl69FiSpecies> ViewModelFiSpeciessesCollection
+    public ObservableCollection<Tbl75Species> ViewModelFiSpeciessesCollection
     {
         get;
     }
-    public Tbl69FiSpeciessesListDocument(Tbl69FiSpeciessesPdfModel model, ObservableCollection<Tbl69FiSpecies> viewModelFiSpeciessesCollection)
+    public Tbl69FiSpeciessesListDocument(Tbl69FiSpeciessesPdfModel model, ObservableCollection<Tbl75Species> viewModelFiSpeciessesCollection)
     {
         Model = model;
         ViewModelFiSpeciessesCollection = viewModelFiSpeciessesCollection;
@@ -81,7 +81,7 @@ internal class Tbl69FiSpeciessesListDocument : IDocument
             foreach (var item in ViewModelFiSpeciessesCollection)
             {
                 table.Cell().Text("");
-                table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.FiSpeciesName} {item.Subspecies} {item.Divers}" +
+                table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.SpeciesName} {item.Subspecies} {item.Divers}" +
                                   $" {item.Author} {item.AuthorYear}");
             }
         });

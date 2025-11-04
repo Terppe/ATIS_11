@@ -287,8 +287,7 @@ public sealed partial class Tbl93CommentListPage : Page
         ViewModel.CommentSelected.SubtribusId = SingleComment.SubtribusId;
         ViewModel.CommentSelected.InfratribusId = SingleComment.InfratribusId;
         ViewModel.CommentSelected.GenusId = SingleComment.GenusId;
-        ViewModel.CommentSelected.FiSpeciesId = SingleComment.FiSpeciesId;
-        ViewModel.CommentSelected.PlSpeciesId = SingleComment.PlSpeciesId;
+        ViewModel.CommentSelected.SpeciesId = SingleComment.SpeciesId;
     }
     private async Task RevertChangesCommentAsync()
     {
@@ -435,8 +434,7 @@ public sealed partial class Tbl93CommentListPage : Page
                         a.SubtribusId == ViewModel.CommentSelected.SubtribusId &&
                         a.InfratribusId == ViewModel.CommentSelected.InfratribusId &&
                         a.GenusId == ViewModel.CommentSelected.GenusId &&
-                        a.PlSpeciesId == ViewModel.CommentSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.CommentSelected.FiSpeciesId)];
+                        a.SpeciesId == ViewModel.CommentSelected.SpeciesId)];
         });
         if (ViewModel.IsNewComment)
         {

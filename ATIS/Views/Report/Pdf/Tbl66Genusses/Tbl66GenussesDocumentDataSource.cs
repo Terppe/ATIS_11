@@ -127,8 +127,7 @@ public class Tbl66GenussesDocumentDataSource : ObservableObject
         }
 
         //direct children
-        FiSpeciessesCollection = dataService.CollFiSpeciessesByGenusIdAndSubspeciesIsNullAndHash(genusId);
-        PlSpeciessesCollection = dataService.CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(genusId);
+        SpeciessesCollection = dataService.CollSpeciessesByGenusIdAndSubspeciesIsNullAndHash(genusId);
 
         //-----------------------------------------------------------------------------
         ExpertsCollection = dataService.CollExpertsByGenusId(genusId);
@@ -247,11 +246,7 @@ public class Tbl66GenussesDocumentDataSource : ObservableObject
 
     public static ObservableCollection<Tbl66Genus> GenussesCollection { get; set; } = null!;
 
-    public static ObservableCollection<Tbl69FiSpecies> FiSpeciessesCollection { get; set; } = null!;
-
-
-    public static ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection { get; set; } = null!;
-
+    public static ObservableCollection<Tbl75Species> SpeciessesCollection { get; set; } = null!;
 
     public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = null!;
 
@@ -291,7 +286,7 @@ public class Tbl66GenussesDocumentDataSource : ObservableObject
         _phylumSingle = new Tbl06Phylum();
         _regnumSingle = new Tbl03Regnum();
 
-        FiSpeciessesCollection?.Clear();
+        SpeciessesCollection?.Clear();
         GenussesCollection?.Clear();
         InfratribussesCollection?.Clear();
         SubtribussesCollection?.Clear();

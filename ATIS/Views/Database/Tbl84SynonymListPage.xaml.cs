@@ -24,7 +24,7 @@ public sealed partial class Tbl84SynonymListPage : Page
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     public Tbl84SynonymViewModel ViewModel { get; }
     private Tbl84Synonym SingleSynonym { get; set; }
-    private Tbl69FiSpecies SingleSpecies { get; set; }
+    private Tbl75Species SingleSpecies { get; set; }
     private static readonly AtisDbContext Context = new();
     private string _search;
 
@@ -161,8 +161,8 @@ public sealed partial class Tbl84SynonymListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-            .Where(com => com.FiSpeciesId == ViewModel.SynonymSelected.FiSpeciesId)];
+                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            .Where(com => com.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
             });
             ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
             ViewModel.RefreshSpeciesItems();
@@ -300,7 +300,7 @@ public sealed partial class Tbl84SynonymListPage : Page
     private void SynonymSingles()
     {
         ViewModel.SynonymSelected.SynonymName = SingleSynonym.SynonymName;
-        ViewModel.SynonymSelected.FiSpeciesId = SingleSynonym.FiSpeciesId;
+        ViewModel.SynonymSelected.SpeciesId = SingleSynonym.SpeciesId;
         ViewModel.SynonymSelected.Valid = SingleSynonym.Valid;
         ViewModel.SynonymSelected.ValidYear = SingleSynonym.ValidYear;
         ViewModel.SynonymSelected.Info = SingleSynonym.Info;
@@ -431,7 +431,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             ViewModel.Tbl84SynonymsList ??= [];
             ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
             .Where(a => a.SynonymName == ViewModel.SynonymSelected.SynonymName &&
-                        a.FiSpeciesId == ViewModel.SynonymSelected.FiSpeciesId)];
+                        a.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
         });
         if (ViewModel.IsNewSynonym)
         {
@@ -516,7 +516,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -544,7 +544,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -559,7 +559,7 @@ public sealed partial class Tbl84SynonymListPage : Page
 
     private void SpeciesSingles()
     {
-        ViewModel.SpeciesSelected.FiSpeciesName = SingleSpecies.FiSpeciesName;
+        ViewModel.SpeciesSelected.SpeciesName = SingleSpecies.SpeciesName;
         ViewModel.SpeciesSelected.Subspecies = SingleSpecies.Subspecies;
         ViewModel.SpeciesSelected.Divers = SingleSpecies.Divers;
         ViewModel.SpeciesSelected.GenusId = SingleSpecies.GenusId;
@@ -630,7 +630,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.FiSpeciesId);
+                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
                 SpeciesSingles();
             }
         });
@@ -689,8 +689,8 @@ public sealed partial class Tbl84SynonymListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(a => a.FiSpeciesName == ViewModel.SpeciesSelected.FiSpeciesName &&
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
                         a.SpeciesgroupId == ViewModel.SpeciesSelected.SpeciesgroupId &&
@@ -709,20 +709,20 @@ public sealed partial class Tbl84SynonymListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSpecies(Tbl69FiSpecies viewModelSpeciesSelected)
+    private async Task BehindSaveSpecies(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
             SpeciessesExpander.Visibility = Visibility.Collapsed;

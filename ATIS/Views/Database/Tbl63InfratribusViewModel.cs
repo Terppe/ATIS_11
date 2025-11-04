@@ -181,19 +181,16 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var arrPlSpecies = new List<Tbl72PlSpecies>();
-            var arrFiSpecies = new List<Tbl69FiSpecies>();
+            var arrSpecies = new List<Tbl75Species>();
             var arrGenus = new List<Tbl66Genus>();
             var infratribus = await Context.Tbl63Infratribusses.FirstOrDefaultAsync(b => b.InfratribusId == infratribusid);
             if (infratribus != null)
             {
                 //SaveToArray
-                await RemoveExtras.SaveToArrayTbl66Genusses(infratribusid, arrGenus, arrFiSpecies, arrPlSpecies);
+                await RemoveExtras.SaveToArrayTbl66Genusses(infratribusid, arrGenus, arrSpecies);
 
-                // remove Tbl72PlSpeciesses
-                await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
-                // remove Tbl69FiSpeciesses
-                await RemoveExtras.RemoveArrFiSpeciesByFiSpeciesId(arrFiSpecies);
+                // remove Tbl75Speciesses
+                await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
                 // remove Tbl66Genusses
                 await RemoveExtras.RemoveArrGenusByGenusId(arrGenus);
 

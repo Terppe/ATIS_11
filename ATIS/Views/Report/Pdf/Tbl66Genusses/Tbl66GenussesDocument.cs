@@ -442,7 +442,7 @@ public class Tbl66GenussesDocument : IDocument
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        if (Tbl66GenussesDocumentDataSource.FiSpeciessesCollection.Count == 0)
+        if (Tbl66GenussesDocumentDataSource.SpeciessesCollection.Count == 0)
         {
             return;
         }
@@ -452,7 +452,7 @@ public class Tbl66GenussesDocument : IDocument
 
     private void ComposeChildrenContent(IContainer container)
     {
-        if (Tbl66GenussesDocumentDataSource.FiSpeciessesCollection.Count == 0)
+        if (Tbl66GenussesDocumentDataSource.SpeciessesCollection.Count == 0)
         {
             return;
         }
@@ -466,11 +466,11 @@ public class Tbl66GenussesDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl66GenussesDocumentDataSource.FiSpeciessesCollection)
+            foreach (var item in Tbl66GenussesDocumentDataSource.SpeciessesCollection)
             {
                 table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.FiSpecies);
-                table.Cell().Text($"{item.FiSpeciesName} {item.Author} {item.AuthorYear}");
+                table.Cell().Text(Strings.StringsRes.Species);
+                table.Cell().Text($"{item.SpeciesName} {item.Author} {item.AuthorYear}");
             }
         });
     }

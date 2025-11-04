@@ -188,8 +188,8 @@ public partial class App : Application
             json.ConfigSectionPage(typeof(Tbl63InfratribusListPage));
             json.ConfigSectionPage(typeof(Tbl66GenusListPage));
             json.ConfigSectionPage(typeof(Tbl68SpeciesgroupListPage));
-            json.ConfigSectionPage(typeof(Tbl69FiSpeciesListPage));
-            json.ConfigSectionPage(typeof(Tbl72PlSpeciesListPage));
+            //json.ConfigSectionPage(typeof(Tbl69FiSpeciesListPage));
+            //json.ConfigSectionPage(typeof(Tbl72PlSpeciesListPage));
             json.ConfigSectionPage(typeof(Tbl75SpeciesListPage));
 
             json.ConfigSectionPage(typeof(Tbl78NameListPage));
@@ -255,8 +255,8 @@ public partial class App : Application
         services.AddTransient<Tbl63InfratribusViewModel>();
         services.AddTransient<Tbl66GenusViewModel>();
         services.AddTransient<Tbl68SpeciesgroupViewModel>();
-        services.AddTransient<Tbl69FiSpeciesViewModel>();
-        services.AddTransient<Tbl72PlSpeciesViewModel>();
+        //services.AddTransient<Tbl69FiSpeciesViewModel>();
+        //services.AddTransient<Tbl72PlSpeciesViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
 
         services.AddTransient<Tbl78NameViewModel>();
@@ -480,41 +480,41 @@ public partial class App : Application
     }
 
     //------------------------------------------------------------------
-    public static Tbl69FiSpecies SingleSpecies(int id)
+    public static Tbl75Species SingleSpecies(int id)
     {
-        return Context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == id);
+        return Context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id);
     }
     public static Tbl90Reference SingleReferenceSpecies(int referenceid, int? speciesId)
     {
-        return Context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.FiSpeciesId == speciesId);
+        return Context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SpeciesId == speciesId);
     }
     public static Tbl93Comment SingleCommentSpecies(int commentid, int? speciesid)
     {
-        return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.FiSpeciesId == speciesid);
+        return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SpeciesId == speciesid);
     }
     public static Tbl78Name SingleNameSpecies(int nameId, int? speciesId)
     {
-        return Context.Tbl78Names.SingleOrDefault(a => a.NameId == nameId & a.FiSpeciesId == speciesId);
+        return Context.Tbl78Names.SingleOrDefault(a => a.NameId == nameId & a.SpeciesId == speciesId);
     }
     public static Tbl81Image SingleImageSpecies(int imageId, int? speciesId)
     {
-        return Context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.FiSpeciesId == speciesId);
+        return Context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.SpeciesId == speciesId);
     }
     public static Tbl84Synonym SingleSynonymSpecies(int synonymId, int? speciesId)
     {
-        return Context.Tbl84Synonyms.SingleOrDefault(a => a.SynonymId == synonymId & a.FiSpeciesId == speciesId);
+        return Context.Tbl84Synonyms.SingleOrDefault(a => a.SynonymId == synonymId & a.SpeciesId == speciesId);
     }
     public static Tbl87Geographic SingleGeographicSpecies(int geographicId, int? speciesId)
     {
-        return Context.Tbl87Geographics.SingleOrDefault(a => a.GeographicId == geographicId & a.FiSpeciesId == speciesId);
+        return Context.Tbl87Geographics.SingleOrDefault(a => a.GeographicId == geographicId & a.SpeciesId == speciesId);
     }
-    public static Tbl69FiSpecies SingleSpeciesGenus(int speciesid, int? genusid)
+    public static Tbl75Species SingleSpeciesGenus(int speciesid, int? genusid)
     {
-        return Context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == speciesid & a.GenusId == genusid);
+        return Context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesid & a.GenusId == genusid);
     }
     public static Tbl78Name SingleNameSpecies(int nameid, int speciesid)
     {
-        return Context.Tbl78Names.SingleOrDefault(a => a.FiSpeciesId == speciesid & a.NameId == nameid);
+        return Context.Tbl78Names.SingleOrDefault(a => a.SpeciesId == speciesid & a.NameId == nameid);
     }
     
     //------------------------------------------------------------------
@@ -522,14 +522,14 @@ public partial class App : Application
     {
         return Context.Tbl68Speciesgroups.SingleOrDefault(a => a.SpeciesgroupId == id);
     }
-    public static Tbl69FiSpecies SingleFiSpeciesSpeciesgroup(int fispeciesId, int? speciesgroupId)
+    public static Tbl75Species SingleSpeciesSpeciesgroup(int speciesId, int? speciesgroupId)
     {
-        return Context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == fispeciesId & a.SpeciesgroupId == speciesgroupId);
+        return Context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesId & a.SpeciesgroupId == speciesgroupId);
     }
-    public static Tbl69FiSpecies SingleSpeciesSpeciesgroup(int speciesid, int? speciesgroupid)
-    {
-        return Context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == speciesid & a.SpeciesgroupId == speciesgroupid);
-    }
+    //public static Tbl75Species SingleSpeciesSpeciesgroup(int speciesid, int? speciesgroupid)
+    //{
+    //    return Context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesid & a.SpeciesgroupId == speciesgroupid);
+    //}
     
     //------------------------------------------------------------------
 
@@ -545,10 +545,10 @@ public partial class App : Application
     {
         return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.GenusId == genusid);
     }
-    public static Tbl69FiSpecies SingleFiSpeciesGenus(int fispeciesId, int? genusId)
-    {
-        return Context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == fispeciesId & a.GenusId == genusId);
-    }
+    //public static Tbl75Species SingleSpeciesGenus(int speciesId, int? genusId)
+    //{
+    //    return Context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesId & a.GenusId == genusId);
+    //}
     //---------------------------------------------------
     public static Tbl63Infratribus SingleInfratribus(int id)
     {

@@ -597,7 +597,7 @@ public class Tbl72PlSpeciessesDocument : IDocument
             {
                 table.Cell().Text("");
                 table.Cell().Text(Strings.StringsRes.Subspecies);
-                table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.PlSpeciesName}" +
+                table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.SpeciesName}" +
                                   $" {item.Subspecies} {item.Divers} {item.Author} {item.AuthorYear}");
             }
         });

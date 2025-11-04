@@ -159,7 +159,7 @@
                                Margin="10,16,10,0"
                                HorizontalAlignment="Left"
                                loca:Uids.Uid="TextBlock_DbExist_SQLActiv"
-                               Foreground="Green"
+                               Foreground="Red"
                                TextWrapping="NoWrap"
                                Visibility="Visible" />
                     <AutoSuggestBox Name="SearchSearchBox"
@@ -217,16 +217,16 @@
                             Margin="0,0,4,0"
                             Click="ThemeButton_Click"
                             Content="{wuc:FontIcon GlyphCode=E793,
-                            FontSize=16}"
+                                                   FontSize=16}"
                             Style="{ThemeResource SubtleButtonStyle}"
                             ToolTipService.ToolTip="Toggle Theme" />
                 </StackPanel>
             </TitleBar.RightHeader>
         </TitleBar>
         <!--
-        Loaded="NavigationView_Loaded"
-        SelectionChanged="NavigationView_SelectionChanged"
-        SuggestionChosen="ControlsSearchBox_SuggestionChosen"
+            Loaded="NavigationView_Loaded"
+            SelectionChanged="NavigationView_SelectionChanged"
+            SuggestionChosen="ControlsSearchBox_SuggestionChosen"
         -->
         <NavigationView x:Name="NavView"
                         Grid.Row="1"
@@ -656,7 +656,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavDiseases"
                                     loca:Uids.Uid="Nav_Diseases"
-                    Tag="ATIS.Views.Main.Disease.DiseasePage">
+                                    Tag="ATIS.Views.Main.Disease.DiseasePage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/disease.png" />
@@ -672,7 +672,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavMiscellaneousses"
                                     loca:Uids.Uid="Nav_Miscellaneousses"
-                    Tag="ATIS.Views.Main.Miscellaneous.MiscellaneousPage">
+                                    Tag="ATIS.Views.Main.Miscellaneous.MiscellaneousPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/miscellaneous.png" />

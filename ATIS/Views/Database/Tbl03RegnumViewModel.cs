@@ -167,8 +167,8 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var arrPlSpecies = new List<Tbl72PlSpecies>();
-            var arrFiSpecies = new List<Tbl69FiSpecies>();
+            //var arrPlSpecies = new List<Tbl72PlSpecies>();
+            var arrSpecies = new List<Tbl75Species>();
             var arrGenus = new List<Tbl66Genus>();
             var arrInfratribus = new List<Tbl63Infratribus>();
             var arrSubtribus = new List<Tbl60Subtribus>();
@@ -198,16 +198,16 @@ public partial class Tbl03RegnumViewModel : ObservableObject
                 await RemoveExtras.SaveToArrayTbl09Divisions(regnumid, arrDivision, arrSubdivision, arrSuperclass,
                     arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily,
                     arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus,
-                    arrGenus, arrFiSpecies, arrPlSpecies);
+                    arrGenus, arrSpecies);
                 await RemoveExtras.SaveToArrayTbl06Phylums(regnumid, arrPhylum, arrSubphylum, arrSuperclass, arrClass,
                     arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily,
                     arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus,
-                    arrFiSpecies, arrPlSpecies);
+                    arrSpecies);
 
                 // remove Tbl72PlSpeciesses
-                await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
-                // remove Tbl69FiSpeciesses
-                await RemoveExtras.RemoveArrFiSpeciesByFiSpeciesId(arrFiSpecies);
+             //   await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
+                // remove Tbl75Speciesses
+                await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
                 // remove Tbl66Genusses
                 await RemoveExtras.RemoveArrGenusByGenusId(arrGenus);
                 // remove Tbl63Infratribusses

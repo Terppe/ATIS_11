@@ -5,16 +5,16 @@ using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 namespace ATIS.Views.Search.Pdf.Tbl75Speciesses;
 internal class Tbl75SpeciessesListDocumentDataSource : ObservableObject
 {
-    private static readonly Tbl69FiSpecies SpeciesSingle = new();
+    private static readonly Tbl75Species SpeciesSingle = new();
 
-    public static Tbl75SpeciessesPdfModel GetSpeciesListDetails(ObservableCollection<Tbl69FiSpecies> speciessesCollection)
+    public static Tbl75SpeciessesPdfModel GetSpeciesListDetails(ObservableCollection<Tbl75Species> speciessesCollection)
     {
 
         SpeciessesCollection = speciessesCollection;
 
         return new Tbl75SpeciessesPdfModel
         {
-            FiSpeciesName = SpeciesSingle.FiSpeciesName,
+            FiSpeciesName = SpeciesSingle.SpeciesName,
             Subspecies = SpeciesSingle.Subspecies,
             Divers = SpeciesSingle.Divers,
             CountId = SpeciesSingle.CountId,
@@ -71,7 +71,7 @@ internal class Tbl75SpeciessesListDocumentDataSource : ObservableObject
 
     #region "Collections"
 
-    public static ObservableCollection<Tbl69FiSpecies> SpeciessesCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl75Species> SpeciessesCollection { get; set; } = null!;
     #endregion "Collections"
 
 }

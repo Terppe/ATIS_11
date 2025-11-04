@@ -20,7 +20,7 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
     private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> SpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
 
     #endregion [Private Data Members]           
 
@@ -187,11 +187,11 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
             var speciesgroupId = SpeciesgroupSelected.SpeciesgroupId;
 
             Tbl75SpeciessesList ??= [];
-            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl69FiSpecies { GenusId = genusid, SpeciesgroupId = speciesgroupId });
+            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl75Species { GenusId = genusid, SpeciesgroupId = speciesgroupId });
         });
     }
 
-    public async Task SaveSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
+    public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -201,14 +201,14 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
             }
         });
 
-        Tbl69FiSpecies result = null;
+        Tbl75Species result = null;
         try
         {
             if (IsModifiedSpecies)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertFiSpeciesAsync(viewModelSpeciesSelected);
+                    result = await _dataService.UpsertSpeciesAsync(viewModelSpeciesSelected);
                     IsModifiedSpecies = false;
                 });
             }
@@ -357,8 +357,8 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
         set => SetProperty(ref _speciesgroupSelected, value);
     }
 
-    private Tbl69FiSpecies _speciesSelected;
-    public Tbl69FiSpecies SpeciesSelected
+    private Tbl75Species _speciesSelected;
+    public Tbl75Species SpeciesSelected
     {
         get => _speciesSelected;
         set => SetProperty(ref _speciesSelected, value);
@@ -422,9 +422,9 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciesList;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciesList;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
         get => _tbl75SpeciesList;
         set
@@ -465,7 +465,7 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
         SpeciesItems.Clear();
         if (Tbl75SpeciessesList != null)
         {
-            foreach (var item in Tbl75SpeciessesList)
+            foreach (Tbl75Species item in Tbl75SpeciessesList)
             {
                 SpeciesItems.Add(item);
             }

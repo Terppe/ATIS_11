@@ -238,35 +238,35 @@ public sealed partial class SearchQuickPage : Page
     {
         //var reportFiSpeciessesWindow = new ReportFiSpeciessesWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
         //reportFiSpeciessesWindow.GeneratePdfFiSpecies(ViewModel.FiSpeciesSelected.FiSpeciesId);
-        var reportSpeciessesWindow = new ReportSpeciessesWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
-        reportSpeciessesWindow.GeneratePdfSpecies(ViewModel.FiSpeciesSelected.FiSpeciesId);
+        var reportSpeciessesWindow = new ReportSpeciessesWindow(ViewModel.SpeciesSelected.SpeciesId);
+        reportSpeciessesWindow.GeneratePdfSpecies(ViewModel.SpeciesSelected.SpeciesId);
     });
 
     public ICommand PdfFiSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
     {
-        var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
-        reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
+        var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.SpeciesSubSelected.SpeciesId);
+        reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.SpeciesSubSelected.SpeciesId);
     });
 
     public ICommand PdfSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
     {
         //var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
         //reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
-        var reportSpeciessesSubsWindow = new ReportSpeciessesSubsWindow(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
-        reportSpeciessesSubsWindow.GeneratePdfSpeciesSubs(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
+        var reportSpeciessesSubsWindow = new ReportSpeciessesSubsWindow(ViewModel.SpeciesSubSelected.SpeciesId);
+        reportSpeciessesSubsWindow.GeneratePdfSpeciesSubs(ViewModel.SpeciesSubSelected.SpeciesId);
     });
 
-    public ICommand PdfPlSpeciesCommand => new WinUICommunity.RelayCommand(execute: delegate
-    {
-        var reportPlSpeciessesWindow = new ReportPlSpeciessesWindow(ViewModel.PlSpeciesSelected.PlSpeciesId);
-        reportPlSpeciessesWindow.GeneratePdfPlSpecies(ViewModel.PlSpeciesSelected.PlSpeciesId);
-    });
+    //public ICommand PdfPlSpeciesCommand => new WinUICommunity.RelayCommand(execute: delegate
+    //{
+    //    var reportPlSpeciessesWindow = new ReportPlSpeciessesWindow(ViewModel.PlSpeciesSelected.PlSpeciesId);
+    //    reportPlSpeciessesWindow.GeneratePdfPlSpecies(ViewModel.PlSpeciesSelected.PlSpeciesId);
+    //});
 
-    public ICommand PdfPlSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
-    {
-        var reportPlSpeciessesSubsWindow = new ReportPlSpeciessesSubsWindow(ViewModel.PlSpeciesSubSelected.PlSpeciesId);
-        reportPlSpeciessesSubsWindow.GeneratePdfPlSpeciesSubs(ViewModel.PlSpeciesSubSelected.PlSpeciesId);
-    });
+    //public ICommand PdfPlSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
+    //{
+    //    var reportPlSpeciessesSubsWindow = new ReportPlSpeciessesSubsWindow(ViewModel.PlSpeciesSubSelected.PlSpeciesId);
+    //    reportPlSpeciessesSubsWindow.GeneratePdfPlSpeciesSubs(ViewModel.PlSpeciesSubSelected.PlSpeciesId);
+    //});
 
     public object PdfListPrintCommand { get; } = new();
 
@@ -612,8 +612,7 @@ public sealed partial class SearchQuickPage : Page
                     if (ViewModel.SpeciessesCollection.Count != 0)
                     {
                         var model =
-                            Tbl75SpeciessesListDocumentDataSource.GetSpeciesListDetails(ViewModel
-                                .SpeciessesCollection);
+                            Tbl75SpeciessesListDocumentDataSource.GetSpeciesListDetails(ViewModel.SpeciessesCollection);
                         var document = new Tbl75SpeciessesListDocument(model, ViewModel.SpeciessesCollection);
                         document.GeneratePdf(filePath);
                     }
@@ -978,23 +977,23 @@ public sealed partial class SearchQuickPage : Page
 
     private void SpeciesSelect_Click(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.FiSpeciesSelected.FiSpeciesId == 0)
+        if (ViewModel.SpeciesSelected.SpeciesId == 0)
         {
             _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
             return;
         }
-        if (string.IsNullOrEmpty(ViewModel.FiSpeciesSelected.Subspecies))
+        if (string.IsNullOrEmpty(ViewModel.SpeciesSelected.Subspecies))
         {
 
             //   var window = new ReportFiSpeciessesWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
-            var window = new ReportSpeciessesWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
+            var window = new ReportSpeciessesWindow(ViewModel.SpeciesSelected.SpeciesId);
             window.IsAlwaysOnTop = true;
             window.Activate();
         }
         else
         {
             //  var window = new ReportFiSpeciessesSubsWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
-            var window = new ReportSpeciessesSubsWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
+            var window = new ReportSpeciessesSubsWindow(ViewModel.SpeciesSelected.SpeciesId);
             window.IsAlwaysOnTop = true;
             window.Activate();
         }
@@ -1002,20 +1001,20 @@ public sealed partial class SearchQuickPage : Page
 
     private void PlSpeciesSelect_Click(object sender, RoutedEventArgs e)
     {
-        if (ViewModel.PlSpeciesSelected.PlSpeciesId == 0)
+        if (ViewModel.SpeciesSelected.SpeciesId == 0)
         {
             _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
             return;
         }
-        if (string.IsNullOrEmpty(ViewModel.FiSpeciesSelected.Subspecies))
+        if (string.IsNullOrEmpty(ViewModel.SpeciesSelected.Subspecies))
         {
-            var window = new ReportPlSpeciessesWindow(ViewModel.PlSpeciesSelected.PlSpeciesId);
+            var window = new ReportPlSpeciessesWindow(ViewModel.SpeciesSelected.SpeciesId);
             window.IsAlwaysOnTop = true;
             window.Activate();
         }
         else
         {
-            var window = new ReportPlSpeciessesSubsWindow(ViewModel.PlSpeciesSelected.PlSpeciesId);
+            var window = new ReportPlSpeciessesSubsWindow(ViewModel.SpeciesSelected.SpeciesId);
             window.IsAlwaysOnTop = true;
             window.Activate();
         }

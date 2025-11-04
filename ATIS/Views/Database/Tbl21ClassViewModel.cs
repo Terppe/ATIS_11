@@ -178,8 +178,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var arrPlSpecies = new List<Tbl72PlSpecies>();
-            var arrFiSpecies = new List<Tbl69FiSpecies>();
+            var arrSpecies = new List<Tbl75Species>();
             var arrGenus = new List<Tbl66Genus>();
             var arrInfratribus = new List<Tbl63Infratribus>();
             var arrSubtribus = new List<Tbl60Subtribus>();
@@ -201,12 +200,10 @@ public partial class Tbl21ClassViewModel : ObservableObject
                 //SaveToArray
                 await RemoveExtras.SaveToArrayTbl24Subclasses(classid, arrSubclass, arrInfraclass, arrLegio, arrOrdo,
                     arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus,
-                    arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                    arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
 
-                // remove Tbl72PlSpeciesses
-                await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
-                // remove Tbl69FiSpeciesses
-                await RemoveExtras.RemoveArrFiSpeciesByFiSpeciesId(arrFiSpecies);
+                // remove Tbl75Speciesses
+                await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
                 // remove Tbl66Genusses
                 await RemoveExtras.RemoveArrGenusByGenusId(arrGenus);
                 // remove Tbl63Infratribusses

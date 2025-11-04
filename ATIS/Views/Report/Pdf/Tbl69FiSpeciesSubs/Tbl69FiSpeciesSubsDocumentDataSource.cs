@@ -29,7 +29,7 @@ internal class Tbl69FiSpeciesSubsDocumentDataSource : ObservableObject
     private static Tbl60Subtribus _subtribusSingle = new();
     private static Tbl63Infratribus _infratribusSingle = new();
     private static Tbl66Genus _genusSingle = new();
-    private static Tbl69FiSpecies _fispeciesSingle = new();
+    private static Tbl75Species _fispeciesSingle = new();
     private static readonly Tbl78Name _nameSingle = new();
     private static readonly Tbl84Synonym _synonymSingle = new();
 
@@ -72,8 +72,8 @@ internal class Tbl69FiSpeciesSubsDocumentDataSource : ObservableObject
             }
         }
 
-        FiSpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(fispeciesId);
-        var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(fispeciesId);
+        FiSpeciessesCollection = dataService.CollSpeciessesBySpeciesId(fispeciesId);
+        var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(fispeciesId);
         GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
         var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
         InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
@@ -138,20 +138,20 @@ internal class Tbl69FiSpeciesSubsDocumentDataSource : ObservableObject
         }
 
         //direct children
-        NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(fispeciesId);
-        SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(fispeciesId);
-        ImagesCollection = dataService.CollImagesByFiSpeciesId(fispeciesId);
-        GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(fispeciesId);
+        NamesCollection = dataService.CollNamesBySpeciesIdAndHash(fispeciesId);
+        SynonymsCollection = dataService.CollSynonymsBySpeciesIdAndHash(fispeciesId);
+        ImagesCollection = dataService.CollImagesBySpeciesId(fispeciesId);
+        GeographicsCollection = dataService.CollGeographicsBySpeciesId(fispeciesId);
 
         //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByFiSpeciesId(fispeciesId);
-        SourcesCollection = dataService.CollSourcesByFiSpeciesId(fispeciesId);
-        AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(fispeciesId);
+        ExpertsCollection = dataService.CollExpertsBySpeciesId(fispeciesId);
+        SourcesCollection = dataService.CollSourcesBySpeciesId(fispeciesId);
+        AuthorsCollection = dataService.CollAuthorsBySpeciesId(fispeciesId);
         //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByFiSpeciesId(fispeciesId);
+        CommentsCollection = dataService.CollCommentsBySpeciesId(fispeciesId);
 
 
-        _fispeciesSingle = dataService.GetFiSpeciesSingleByFiSpeciesIdAndHash(fispeciesId);
+        _fispeciesSingle = dataService.GetSpeciesSingleBySpeciesIdAndHash(fispeciesId);
         _genusSingle = dataService.GetGenusSingleByGenusIdAndHash(genusId);
         _infratribusSingle = dataService.GetInfratribusSingleByInfratribusIdAndHash(infratribusId);
         _subtribusSingle = dataService.GetSubtribusSingleBySubtribusIdAndHash(subtribusId);
@@ -172,7 +172,7 @@ internal class Tbl69FiSpeciesSubsDocumentDataSource : ObservableObject
 
         return new Tbl69FiSpeciesSubsPdfModel
         {
-            FiSpeciesName = _fispeciesSingle.FiSpeciesName,
+            FiSpeciesName = _fispeciesSingle.SpeciesName,
             Subspecies = _fispeciesSingle.Subspecies,
             Divers = _fispeciesSingle.Divers,
             GenusId = _fispeciesSingle.GenusId,
@@ -299,7 +299,7 @@ internal class Tbl69FiSpeciesSubsDocumentDataSource : ObservableObject
 
     public static ObservableCollection<Tbl66Genus> GenussesCollection { get; set; } = null!;
 
-    public static ObservableCollection<Tbl69FiSpecies> FiSpeciessesCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl75Species> FiSpeciessesCollection { get; set; } = null!;
 
     public static ObservableCollection<Tbl78Name> NamesCollection { get; set; } = null!;
 
@@ -319,7 +319,7 @@ internal class Tbl69FiSpeciesSubsDocumentDataSource : ObservableObject
     #endregion "Collections"          
     public static void ClearAllCollections()
     {
-        _fispeciesSingle = new Tbl69FiSpecies();
+        _fispeciesSingle = new Tbl75Species();
         _genusSingle = new Tbl66Genus();
         _infratribusSingle = new Tbl63Infratribus();
         _subtribusSingle = new Tbl60Subtribus();

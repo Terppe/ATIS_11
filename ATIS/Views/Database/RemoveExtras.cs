@@ -41,110 +41,110 @@ public static class RemoveExtras
     }
 
     //------------PlSpecies-------------------
-    public static async Task RemoveReferencesByPlSpeciesId(int plspeciesid)
-    {
-        var references = await Context.Tbl90References.Where(r => r.PlSpeciesId == plspeciesid).ToListAsync();
-        if (references.Count != 0)
-        {
-            Context.Tbl90References.RemoveRange(references);
-            await Context.SaveChangesAsync();
-        }
-    }
-    public static async Task RemoveCommentsByPlSpeciesId(int plspeciesid)
-    {
-        var comments = await Context.Tbl93Comments.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
-        if (comments.Count != 0)
-        {
-            Context.Tbl93Comments.RemoveRange(comments);
-            await Context.SaveChangesAsync();
-        }
-    }
-    public static async Task RemoveNamesByPlSpeciesId(int plspeciesid)
-    {
-        var names = await Context.Tbl78Names.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
-        if (names.Count != 0)
-        {
-            Context.Tbl78Names.RemoveRange(names);
-            await Context.SaveChangesAsync();
-        }
-    }
-    public static async Task RemoveImagesByPlSpeciesId(int plspeciesid)
-    {
-        var images = await Context.Tbl81Images.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
-        if (images.Count != 0)
-        {
-            Context.Tbl81Images.RemoveRange(images);
-            await Context.SaveChangesAsync();
-        }
-    }
-    public static async Task RemoveSynonymsByPlSpeciesId(int plspeciesid)
-    {
-        var synonyms = await Context.Tbl84Synonyms.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
-        if (synonyms.Count != 0)
-        {
-            Context.Tbl84Synonyms.RemoveRange(synonyms);
-            await Context.SaveChangesAsync();
-        }
-    }
-    public static async Task RemoveGeographicsByPlSpeciesId(int plspeciesid)
-    {
-        var geographics = await Context.Tbl87Geographics.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
-        if (geographics.Count != 0)
-        {
-            Context.Tbl87Geographics.RemoveRange(geographics);
-            await Context.SaveChangesAsync();
-        }
-    }
+    //public static async Task RemoveReferencesByPlSpeciesId(int plspeciesid)
+    //{
+    //    var references = await Context.Tbl90References.Where(r => r.PlSpeciesId == plspeciesid).ToListAsync();
+    //    if (references.Count != 0)
+    //    {
+    //        Context.Tbl90References.RemoveRange(references);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
+    //public static async Task RemoveCommentsByPlSpeciesId(int plspeciesid)
+    //{
+    //    var comments = await Context.Tbl93Comments.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
+    //    if (comments.Count != 0)
+    //    {
+    //        Context.Tbl93Comments.RemoveRange(comments);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
+    //public static async Task RemoveNamesByPlSpeciesId(int plspeciesid)
+    //{
+    //    var names = await Context.Tbl78Names.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
+    //    if (names.Count != 0)
+    //    {
+    //        Context.Tbl78Names.RemoveRange(names);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
+    //public static async Task RemoveImagesByPlSpeciesId(int plspeciesid)
+    //{
+    //    var images = await Context.Tbl81Images.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
+    //    if (images.Count != 0)
+    //    {
+    //        Context.Tbl81Images.RemoveRange(images);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
+    //public static async Task RemoveSynonymsByPlSpeciesId(int plspeciesid)
+    //{
+    //    var synonyms = await Context.Tbl84Synonyms.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
+    //    if (synonyms.Count != 0)
+    //    {
+    //        Context.Tbl84Synonyms.RemoveRange(synonyms);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
+    //public static async Task RemoveGeographicsByPlSpeciesId(int plspeciesid)
+    //{
+    //    var geographics = await Context.Tbl87Geographics.Where(c => c.PlSpeciesId == plspeciesid).ToListAsync();
+    //    if (geographics.Count != 0)
+    //    {
+    //        Context.Tbl87Geographics.RemoveRange(geographics);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
 
-    //------------FiSpecies-------------------
-    public static async Task RemoveReferencesByFiSpeciesId(int fispeciesid)
+    //------------Species-------------------
+    public static async Task RemoveReferencesBySpeciesId(int speciesid)
     {
-        var references = await Context.Tbl90References.Where(r => r.FiSpeciesId == fispeciesid).ToListAsync();
+        var references = await Context.Tbl90References.Where(r => r.SpeciesId == speciesid).ToListAsync();
         if (references.Count != 0)
         {
             Context.Tbl90References.RemoveRange(references);
             await Context.SaveChangesAsync();
         }
     }
-    public static async Task RemoveCommentsByFiSpeciesId(int fispeciesid)
+    public static async Task RemoveCommentsBySpeciesId(int speciesid)
     {
-        var comments = await Context.Tbl93Comments.Where(c => c.FiSpeciesId == fispeciesid).ToListAsync();
+        var comments = await Context.Tbl93Comments.Where(c => c.SpeciesId == speciesid).ToListAsync();
         if (comments.Count != 0)
         {
             Context.Tbl93Comments.RemoveRange(comments);
             await Context.SaveChangesAsync();
         }
     }
-    public static async Task RemoveNamesByFiSpeciesId(int fispeciesid)
+    public static async Task RemoveNamesBySpeciesId(int speciesid)
     {
-        var names = await Context.Tbl78Names.Where(c => c.FiSpeciesId == fispeciesid).ToListAsync();
+        var names = await Context.Tbl78Names.Where(c => c.SpeciesId == speciesid).ToListAsync();
         if (names.Count != 0)
         {
             Context.Tbl78Names.RemoveRange(names);
             await Context.SaveChangesAsync();
         }
     }
-    public static async Task RemoveImagesByFiSpeciesId(int fispeciesid)
+    public static async Task RemoveImagesBySpeciesId(int speciesid)
     {
-        var images = await Context.Tbl81Images.Where(c => c.FiSpeciesId == fispeciesid).ToListAsync();
+        var images = await Context.Tbl81Images.Where(c => c.SpeciesId == speciesid).ToListAsync();
         if (images.Count != 0)
         {
             Context.Tbl81Images.RemoveRange(images);
             await Context.SaveChangesAsync();
         }
     }
-    public static async Task RemoveSynonymsByFiSpeciesId(int fispeciesid)
+    public static async Task RemoveSynonymsBySpeciesId(int speciesid)
     {
-        var synonyms = await Context.Tbl84Synonyms.Where(c => c.FiSpeciesId == fispeciesid).ToListAsync();
+        var synonyms = await Context.Tbl84Synonyms.Where(c => c.SpeciesId == speciesid).ToListAsync();
         if (synonyms.Count != 0)
         {
             Context.Tbl84Synonyms.RemoveRange(synonyms);
             await Context.SaveChangesAsync();
         }
     }
-    public static async Task RemoveGeographicsByFiSpeciesId(int fispeciesid)
+    public static async Task RemoveGeographicsBySpeciesId(int speciesid)
     {
-        var geographics = await Context.Tbl87Geographics.Where(c => c.FiSpeciesId == fispeciesid).ToListAsync();
+        var geographics = await Context.Tbl87Geographics.Where(c => c.SpeciesId == speciesid).ToListAsync();
         if (geographics.Count != 0)
         {
             Context.Tbl87Geographics.RemoveRange(geographics);
@@ -612,34 +612,33 @@ public static class RemoveExtras
 
     //--------------------------------------------------------
     //---------------SaveToArray wichtig----------------------
-    public static async Task SaveToArrayTbl72PlSpeciesses(int genusid, List<Tbl72PlSpecies> arrPlSpecies)
+    //public static async Task SaveToArrayTbl72PlSpeciesses(int genusid, List<Tbl72PlSpecies> arrPlSpecies)
+    //{
+    //    var plspeciesses = await Context.Tbl72PlSpeciesses.Where(a => a.GenusId == genusid)
+    //        .ToListAsync();
+    //    if (plspeciesses.Count != 0)
+    //    {
+    //        for (var index = 0; index < plspeciesses.Count; index++)
+    //        {
+    //            var plspecies = plspeciesses[index];
+    //            arrPlSpecies.Add(plspecies);
+    //        }
+    //    }
+    //}
+    public static async Task SaveToArrayTbl75Speciesses(int genusid, List<Tbl75Species> arrSpecies)
     {
-        var plspeciesses = await Context.Tbl72PlSpeciesses.Where(a => a.GenusId == genusid)
+        var speciesses = await Context.Tbl75Speciesses.Where(a => a.GenusId == genusid)
             .ToListAsync();
-        if (plspeciesses.Count != 0)
+        if (speciesses.Count != 0)
         {
-            for (var index = 0; index < plspeciesses.Count; index++)
+            for (var index = 0; index < speciesses.Count; index++)
             {
-                var plspecies = plspeciesses[index];
-                arrPlSpecies.Add(plspecies);
+                var species = speciesses[index];
+                arrSpecies.Add(species);
             }
         }
     }
-    public static async Task SaveToArrayTbl69FiSpeciesses(int genusid, List<Tbl69FiSpecies> arrFiSpecies)
-    {
-        var fispeciesses = await Context.Tbl69FiSpeciesses.Where(a => a.GenusId == genusid)
-            .ToListAsync();
-        if (fispeciesses.Count != 0)
-        {
-            for (var index = 0; index < fispeciesses.Count; index++)
-            {
-                var fispecies = fispeciesses[index];
-                arrFiSpecies.Add(fispecies);
-            }
-        }
-    }
-    public static async Task SaveToArrayTbl66Genusses(int infratribusid, List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies,
-        List<Tbl72PlSpecies> arrPlSpecies)
+    public static async Task SaveToArrayTbl66Genusses(int infratribusid, List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var genusses = await Context.Tbl66Genusses.Where(a => a.InfratribusId == infratribusid)
             .ToListAsync();
@@ -650,13 +649,12 @@ public static class RemoveExtras
                 var genus = genusses[index];
                 var genusid = genus.GenusId;
                 arrGenus.Add(genus);
-                await SaveToArrayTbl69FiSpeciesses(genusid, arrFiSpecies);
-                await SaveToArrayTbl72PlSpeciesses(genusid, arrPlSpecies);
+                await SaveToArrayTbl75Speciesses(genusid, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl63Infratribusses(int subtribusid, List<Tbl63Infratribus> arrInfratribus, List<Tbl66Genus> arrGenus,
-        List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl75Species> arrSpecies)
     {
         var infratribusses = await Context.Tbl63Infratribusses.Where(a => a.SubtribusId == subtribusid)
             .ToListAsync();
@@ -667,12 +665,12 @@ public static class RemoveExtras
                 var infratribus = infratribusses[index];
                 var infratribusid = infratribus.InfratribusId;
                 arrInfratribus.Add(infratribus);
-                await SaveToArrayTbl66Genusses(infratribusid, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl66Genusses(infratribusid, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl60Subtribusses(int tribusid, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var subtribusses = await Context.Tbl60Subtribusses.Where(a => a.TribusId == tribusid).ToListAsync();
         if (subtribusses.Count != 0)
@@ -683,12 +681,12 @@ public static class RemoveExtras
                 var subtribus = subtribusses[index];
                 var subtribusid = subtribus.SubtribusId;
                 arrSubtribus.Add(subtribus);
-                await SaveToArrayTbl63Infratribusses(subtribusid, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl63Infratribusses(subtribusid, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl57Tribusses(int supertribusid, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var tribusses = await Context.Tbl57Tribusses.Where(a => a.SupertribusId == supertribusid).ToListAsync();
         if (tribusses.Count != 0)
@@ -699,12 +697,12 @@ public static class RemoveExtras
                 var tribus = tribusses[index];
                 var tribusid = tribus.TribusId;
                 arrTribus.Add(tribus);
-                await SaveToArrayTbl60Subtribusses(tribusid, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl60Subtribusses(tribusid, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl54Supertribusses(int infrafamilyid, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var supertribusses = await Context.Tbl54Supertribusses.Where(a => a.InfrafamilyId == infrafamilyid).ToListAsync();
         if (supertribusses.Count != 0)
@@ -715,12 +713,12 @@ public static class RemoveExtras
                 var supertribus = supertribusses[index];
                 var supertribusid = supertribus.SupertribusId;
                 arrSupertribus.Add(supertribus);
-                await SaveToArrayTbl57Tribusses(supertribusid, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl57Tribusses(supertribusid, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl51Infrafamilies(int subfamilyid, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var infrafamilys = await Context.Tbl51Infrafamilies.Where(a => a.SubfamilyId == subfamilyid).ToListAsync();
         if (infrafamilys.Count != 0)
@@ -731,13 +729,13 @@ public static class RemoveExtras
                 var infrafamily = infrafamilys[index];
                 var infrafamilyid = infrafamily.InfrafamilyId;
                 arrInfrafamily.Add(infrafamily);
-                await SaveToArrayTbl54Supertribusses(infrafamilyid, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl54Supertribusses(infrafamilyid, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
 
     public static async Task SaveToArrayTbl48Subfamilies(int familyid, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var subfamilys = await Context.Tbl48Subfamilies.Where(a => a.FamilyId == familyid).ToListAsync();
         if (subfamilys.Count != 0)
@@ -748,13 +746,13 @@ public static class RemoveExtras
                 var subfamily = subfamilys[index];
                 var subfamilyid = subfamily.SubfamilyId;
                 arrSubfamily.Add(subfamily);
-                await SaveToArrayTbl51Infrafamilies(subfamilyid, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl51Infrafamilies(subfamilyid, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
 
     public static async Task SaveToArrayTbl45Families(int superfamilyid, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var familys = await Context.Tbl45Families.Where(a => a.SuperfamilyId == superfamilyid).ToListAsync();
         if (familys.Count != 0)
@@ -765,13 +763,13 @@ public static class RemoveExtras
                 var family = familys[index];
                 var familyid = family.FamilyId;
                 arrFamily.Add(family);
-                await SaveToArrayTbl48Subfamilies(familyid, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl48Subfamilies(familyid, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
 
     public static async Task SaveToArrayTbl42Superfamilies(int infraordoid, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var superfamilys = await Context.Tbl42Superfamilies.Where(a => a.InfraordoId == infraordoid).ToListAsync();
         if (superfamilys.Count != 0)
@@ -782,12 +780,12 @@ public static class RemoveExtras
                 var superfamily = superfamilys[index];
                 var superfamilyid = superfamily.SuperfamilyId;
                 arrSuperfamily.Add(superfamily);
-                await SaveToArrayTbl45Families(superfamilyid, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl45Families(superfamilyid, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl39Infraordos(int subordoid, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var infraordos = await Context.Tbl39Infraordos.Where(a => a.SubordoId == subordoid).ToListAsync();
         if (infraordos.Count != 0)
@@ -798,12 +796,12 @@ public static class RemoveExtras
                 var infraordo = infraordos[index];
                 var infraordoid = infraordo.InfraordoId;
                 arrInfraordo.Add(infraordo);
-                await SaveToArrayTbl42Superfamilies(infraordoid, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl42Superfamilies(infraordoid, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl36Subordos(int ordoid, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var subordos = await Context.Tbl36Subordos.Where(a => a.OrdoId == ordoid).ToListAsync();
         if (subordos.Count != 0)
@@ -814,12 +812,12 @@ public static class RemoveExtras
                 var subordo = subordos[index];
                 var subordoid = subordo.SubordoId;
                 arrSubordo.Add(subordo);
-                await SaveToArrayTbl39Infraordos(subordoid, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl39Infraordos(subordoid, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl33Ordos(int legioid, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var ordos = await Context.Tbl33Ordos.Where(a => a.LegioId == legioid).ToListAsync();
         if (ordos.Count != 0)
@@ -830,12 +828,12 @@ public static class RemoveExtras
                 var ordo = ordos[index];
                 var ordoid = ordo.OrdoId;
                 arrOrdo.Add(ordo);
-                await SaveToArrayTbl36Subordos(ordoid, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl36Subordos(ordoid, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl30Legios(int infraclassid, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var legios = await Context.Tbl30Legios.Where(a => a.InfraclassId == infraclassid).ToListAsync();
         if (legios.Count != 0)
@@ -846,12 +844,12 @@ public static class RemoveExtras
                 var legio = legios[index];
                 var legioid = legio.LegioId;
                 arrLegio.Add(legio);
-                await SaveToArrayTbl33Ordos(legioid, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl33Ordos(legioid, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl27Infraclasses(int subclassid, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var infraclasss = await Context.Tbl27Infraclasses.Where(a => a.SubclassId == subclassid).ToListAsync();
         if (infraclasss.Count != 0)
@@ -862,12 +860,12 @@ public static class RemoveExtras
                 var infraclass = infraclasss[index];
                 var infraclassid = infraclass.InfraclassId;
                 arrInfraclass.Add(infraclass);
-                await SaveToArrayTbl30Legios(infraclassid, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl30Legios(infraclassid, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl24Subclasses(int classid, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var subclasss = await Context.Tbl24Subclasses.Where(a => a.ClassId == classid).ToListAsync();
         if (subclasss.Count != 0)
@@ -878,12 +876,12 @@ public static class RemoveExtras
                 var subclass = subclasss[index];
                 var subclassid = subclass.SubclassId;
                 arrSubclass.Add(subclass);
-                await SaveToArrayTbl27Infraclasses(subclassid, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl27Infraclasses(subclassid, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl21Classes(int superclassid, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var classes = await Context.Tbl21Classes.Where(a => a.SuperclassId == superclassid).ToListAsync();
         if (classes.Count != 0)
@@ -894,12 +892,12 @@ public static class RemoveExtras
                 var classe = classes[index];
                 var classid = classe.ClassId;
                 arrClass.Add(classe);
-                await SaveToArrayTbl24Subclasses(classid, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl24Subclasses(classid, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl18Superclasses(int subdivisionid, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var superclasses = await Context.Tbl18Superclasses.Where(a => a.SubdivisionId == subdivisionid).ToListAsync();
         if (superclasses.Count != 0)
@@ -910,12 +908,12 @@ public static class RemoveExtras
                 var superclass = superclasses[index];
                 var superclassid = superclass.SuperclassId;
                 arrSuperclass.Add(superclass);
-                await SaveToArrayTbl21Classes(superclassid, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl21Classes(superclassid, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
     public static async Task SaveToArrayTbl15Subdivisions(int divisionid, List<Tbl15Subdivision> arrSubdivision, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var subdivisions = await Context.Tbl15Subdivisions.Where(a => a.DivisionId == divisionid).ToListAsync();
         if (subdivisions.Count != 0)
@@ -926,13 +924,13 @@ public static class RemoveExtras
                 var subdivision = subdivisions[index];
                 var subdivisionid = subdivision.SubdivisionId;
                 arrSubdivision.Add(subdivision);
-                await SaveToArrayTbl18Superclasses(subdivisionid, arrSuperclass, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl18Superclasses(subdivisionid, arrSuperclass, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
 
     public static async Task SaveToArrayTbl12Subphylums(int phylumid, List<Tbl12Subphylum> arrSubphylum, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var subphylums = await Context.Tbl12Subphylums.Where(a => a.PhylumId == phylumid).ToListAsync();
         if (subphylums.Count != 0)
@@ -943,7 +941,7 @@ public static class RemoveExtras
                 var subphylum = subphylums[index];
                 var subphylumid = subphylum.SubphylumId;
                 arrSubphylum.Add(subphylum);
-                await SaveToArrayTbl18Superclasses(subphylumid, arrSuperclass, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies, arrPlSpecies);
+                await SaveToArrayTbl18Superclasses(subphylumid, arrSuperclass, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
@@ -955,7 +953,7 @@ public static class RemoveExtras
         List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily,
         List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus,
         List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var divisions = await Context.Tbl09Divisions.Where(a => a.RegnumId == regnumid).ToListAsync();
         if (divisions.Count != 0)
@@ -968,8 +966,7 @@ public static class RemoveExtras
                 arrDivision.Add(division);
                 await SaveToArrayTbl15Subdivisions(divisionid, arrSubdivision, arrSuperclass, arrClass, arrSubclass,
                     arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily,
-                    arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies,
-                    arrPlSpecies);
+                    arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
@@ -981,7 +978,7 @@ public static class RemoveExtras
         List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily,
         List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus,
         List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl69FiSpecies> arrFiSpecies, List<Tbl72PlSpecies> arrPlSpecies)
+        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
         var phylums = await Context.Tbl06Phylums.Where(a => a.RegnumId == regnumid).ToListAsync();
         if (phylums.Count != 0)
@@ -994,50 +991,49 @@ public static class RemoveExtras
                 arrPhylum.Add(phylum);
                 await SaveToArrayTbl12Subphylums(phylumid, arrSubphylum, arrSuperclass, arrClass, arrSubclass,
                     arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily,
-                    arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrFiSpecies,
-                    arrPlSpecies);
+                    arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
             }
         }
     }
 
     //--------------------Remove Array wichtig-----------------------
-    public static async Task RemoveArrPlSpeciesByPlSpeciesId(List<Tbl72PlSpecies> arrPlSpecies)
-    {
-        if (arrPlSpecies.Count != 0)
-        {
-            for (var index = 0; index < arrPlSpecies.Count; index++)
-            {
-                var plspecies = arrPlSpecies[index];
-                var plspeciesid = plspecies.PlSpeciesId;
+    //public static async Task RemoveArrPlSpeciesByPlSpeciesId(List<Tbl72PlSpecies> arrPlSpecies)
+    //{
+    //    if (arrPlSpecies.Count != 0)
+    //    {
+    //        for (var index = 0; index < arrPlSpecies.Count; index++)
+    //        {
+    //            var plspecies = arrPlSpecies[index];
+    //            var plspeciesid = plspecies.PlSpeciesId;
 
-                await RemoveReferencesByPlSpeciesId(plspeciesid);
-                await RemoveCommentsByPlSpeciesId(plspeciesid);
-                await RemoveNamesByPlSpeciesId(plspeciesid);
-                await RemoveImagesByPlSpeciesId(plspeciesid);
-                await RemoveSynonymsByPlSpeciesId(plspeciesid);
-                await RemoveGeographicsByPlSpeciesId(plspeciesid);
-            }
-            Context.Tbl72PlSpeciesses.RemoveRange(arrPlSpecies);
-            await Context.SaveChangesAsync();
-        }
-    }
-    public static async Task RemoveArrFiSpeciesByFiSpeciesId(List<Tbl69FiSpecies> arrFiSpecies)
+    //            await RemoveReferencesByPlSpeciesId(plspeciesid);
+    //            await RemoveCommentsByPlSpeciesId(plspeciesid);
+    //            await RemoveNamesByPlSpeciesId(plspeciesid);
+    //            await RemoveImagesByPlSpeciesId(plspeciesid);
+    //            await RemoveSynonymsByPlSpeciesId(plspeciesid);
+    //            await RemoveGeographicsByPlSpeciesId(plspeciesid);
+    //        }
+    //        Context.Tbl72PlSpeciesses.RemoveRange(arrPlSpecies);
+    //        await Context.SaveChangesAsync();
+    //    }
+    //}
+    public static async Task RemoveArrSpeciesBySpeciesId(List<Tbl75Species> arrSpecies)
     {
-        if (arrFiSpecies.Count != 0)
+        if (arrSpecies.Count != 0)
         {
-            for (var index = 0; index < arrFiSpecies.Count; index++)
+            for (var index = 0; index < arrSpecies.Count; index++)
             {
-                var fispecies = arrFiSpecies[index];
-                var fispeciesid = fispecies.FiSpeciesId;
+                var species = arrSpecies[index];
+                var speciesid = species.SpeciesId;
 
-                await RemoveReferencesByFiSpeciesId(fispeciesid);
-                await RemoveCommentsByFiSpeciesId(fispeciesid);
-                await RemoveNamesByFiSpeciesId(fispeciesid);
-                await RemoveImagesByFiSpeciesId(fispeciesid);
-                await RemoveSynonymsByFiSpeciesId(fispeciesid);
-                await RemoveGeographicsByFiSpeciesId(fispeciesid);
+                await RemoveReferencesBySpeciesId(speciesid);
+                await RemoveCommentsBySpeciesId(speciesid);
+                await RemoveNamesBySpeciesId(speciesid);
+                await RemoveImagesBySpeciesId(speciesid);
+                await RemoveSynonymsBySpeciesId(speciesid);
+                await RemoveGeographicsBySpeciesId(speciesid);
             }
-            Context.Tbl69FiSpeciesses.RemoveRange(arrFiSpecies);
+            Context.Tbl75Speciesses.RemoveRange(arrSpecies);
             await Context.SaveChangesAsync();
         }
     }

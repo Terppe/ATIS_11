@@ -557,7 +557,7 @@ public abstract class GenrateModels
     }
     public class GenFiSpeciesses
     {
-        public static PdfModels.FiSpecies GenerateFiSpeciesses(Tbl69FiSpecies single)
+        public static PdfModels.FiSpecies GenerateFiSpeciesses(Tbl75Species single)
         {
             if (single == null)
             {
@@ -567,7 +567,7 @@ public abstract class GenrateModels
             return new PdfModels.FiSpecies
             {
                 Tbl66Genusses = single.Tbl66Genusses,
-                FiSpeciesName = single.FiSpeciesName,
+                FiSpeciesName = single.SpeciesName,
                 Subspecies = single.Subspecies,
                 Divers = single.Divers,
                 Valid = single.Valid,
@@ -626,7 +626,7 @@ public abstract class GenrateModels
     }
     public class GenPlSpeciesses
     {
-        public static PdfModels.PlSpecies GeneratePlSpeciesses(Tbl72PlSpecies single)
+        public static PdfModels.PlSpecies GeneratePlSpeciesses(Tbl75Species single)
         {
             if (single == null)
             {
@@ -636,7 +636,7 @@ public abstract class GenrateModels
             return new PdfModels.PlSpecies
             {
                 Tbl66Genusses = single.Tbl66Genusses,
-                PlSpeciesName = single.PlSpeciesName,
+                PlSpeciesName = single.SpeciesName,
                 Subspecies = single.Subspecies,
                 Divers = single.Divers,
                 GenusId = single.GenusId,

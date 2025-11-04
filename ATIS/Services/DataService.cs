@@ -2320,20 +2320,20 @@ public partial class DataService : ObservableObject, IDataService
         if (genus != null)
         {
             //necessary to delete before
-            //------ FiSpecies -------------
-            var fispeciess = await Context.Tbl69FiSpeciesses.Where(a => a.GenusId == genusid).ToListAsync();
-            foreach (var fispecies in fispeciess)
+            //------ Species -------------
+            var speciess = await Context.Tbl75Speciesses.Where(a => a.GenusId == genusid).ToListAsync();
+            foreach (var species in speciess)
             {
-                for (var i = 0; i <= fispeciess.Count; i++)
+                for (var i = 0; i <= speciess.Count; i++)
                 {
-                    var fispeciesid = fispecies.FiSpeciesId;
-                    var singleref = Context.Tbl90References.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
+                    var speciesid = species.SpeciesId;
+                    var singleref = Context.Tbl90References.SingleOrDefault(a => a.SpeciesId == speciesid);
                     if (singleref != null)
                     {
                         Context.Tbl90References.Remove(singleref);
                         await Context.SaveChangesAsync();
                     }
-                    var singlecom = Context.Tbl93Comments.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
+                    var singlecom = Context.Tbl93Comments.SingleOrDefault(a => a.SpeciesId == speciesid);
                     if (singlecom != null)
                     {
                         Context.Tbl93Comments.Remove(singlecom);
@@ -2341,7 +2341,7 @@ public partial class DataService : ObservableObject, IDataService
                     }
                 }
             }
-            Context.Tbl69FiSpeciesses.RemoveRange(fispeciess);
+            Context.Tbl75Speciesses.RemoveRange(speciess);
             await Context.SaveChangesAsync();
             //---------------------------------------------------------
             var references = await Context.Tbl90References.Where(reference => reference.GenusId == genusid).ToListAsync();
@@ -2450,247 +2450,114 @@ public partial class DataService : ObservableObject, IDataService
         }
     }
 
-    #endregion Speciesgroup 
+    #endregion Speciesgroup
 
-    #region FiSpecies                
+    #region Species                
 
-    public ObservableCollection<Tbl69FiSpecies> GetSpeciesAsync()
+    public ObservableCollection<Tbl75Species> GetSpeciesAsync()
     {
-        //var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+        //var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
         //    .AsNoTracking()
-        //    .OrderBy(a => a.FiSpeciesName));
+        //    .OrderBy(a => a.SpeciesName));
         //return collection;
 
-        var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+        var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
             .OrderBy(a => a.Tbl66Genusses.GenusName)
-            .ThenBy(a => a.FiSpeciesName)
+            .ThenBy(a => a.SpeciesName)
             .ThenBy(a => a.Subspecies)
             .ThenBy(a => a.Divers));
         return collection;
     }
-    public ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync()
+    public ObservableCollection<Tbl75Species> GetSpeciesAsync(int speciesid)
     {
-        //var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
-        //    .AsNoTracking()
-        //    .OrderBy(a => a.FiSpeciesName));
-        //return collection;
-
-        var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
-            .OrderBy(a => a.Tbl66Genusses.GenusName)
-            .ThenBy(a => a.FiSpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(int fispeciesid)
-    {
-        var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+        var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
             .AsNoTracking()
-            .Where(e => e.FiSpeciesId == fispeciesid)
+            .Where(e => e.SpeciesId == speciesid)
             .OrderBy(a => a.Tbl66Genusses.GenusName)
-            .ThenBy(a => a.FiSpeciesName)
+            .ThenBy(a => a.SpeciesName)
             .ThenBy(a => a.Subspecies)
             .ThenBy(a => a.Divers));
 
         return collection;
     }
-
-    public ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(string search)
+    public ObservableCollection<Tbl75Species> GetSpeciesAsync(string search)
     {
         var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
-                .Where(e => e.FiSpeciesId == id))
-            : new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
-                .Where(e => search != null && e.FiSpeciesName.StartsWith(search))
+            ? new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
+                .Where(e => e.SpeciesId == id))
+            : new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
+                .Where(e => search != null && e.SpeciesName.StartsWith(search))
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName)
+                .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
         return collection;
     }
-
-    public ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusNameAsync(string search)
+    public ObservableCollection<Tbl75Species> GetSpeciesFromGenusNameAsync(string search)
     {
         //search about GenusName
         var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
-                .Where(e => e.FiSpeciesId == id))
-            : new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            ? new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
+                .Where(e => e.SpeciesId == id))
+            : new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Where(e => e.Tbl66Genusses.GenusName.StartsWith(search))
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName)
+                .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers)
             );
         return collection;
     }
-
-    public ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusIdAsync(int genusid)
+    public ObservableCollection<Tbl75Species> GetSpeciesFromGenusIdAsync(int genusid)
     {
-        var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+        var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
             .Where(e => e.GenusId == genusid)
-            .OrderBy(k => k.FiSpeciesName)
+            .OrderBy(k => k.SpeciesName)
         );
 
         return collection;
     }
-
-    public async Task<Tbl69FiSpecies> UpsertFiSpeciesAsync(Tbl69FiSpecies fispecies)
+    public async Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species)
     {
-        var current = await Context.Tbl69FiSpeciesses.FirstOrDefaultAsync(c => c.FiSpeciesId == fispecies.FiSpeciesId);
+        var current = await Context.Tbl75Speciesses.FirstOrDefaultAsync(c => c.SpeciesId == species.SpeciesId);
         if (null == current)
         {
-            fispecies.CountId = RandomHelper.Randomnumber();
-            fispecies.Writer = Environment.UserName;
-            fispecies.WriterDate = DateTime.Now;
-            fispecies.Updater = Environment.UserName;
-            fispecies.UpdaterDate = DateTime.Now;
-            Context.Tbl69FiSpeciesses.Add(fispecies);
+            species.CountId = RandomHelper.Randomnumber();
+            species.Writer = Environment.UserName;
+            species.WriterDate = DateTime.Now;
+            species.Updater = Environment.UserName;
+            species.UpdaterDate = DateTime.Now;
+            Context.Tbl75Speciesses.Add(species);
         }
         else
         {
-            fispecies.Updater = Environment.UserName;
-            fispecies.UpdaterDate = DateTime.Now;
-            Context.Entry(current).CurrentValues.SetValues(fispecies);
+            species.Updater = Environment.UserName;
+            species.UpdaterDate = DateTime.Now;
+            Context.Entry(current).CurrentValues.SetValues(species);
         }
         await Context.SaveChangesAsync();
-        return fispecies;
+        return species;
     }
-
-    public async Task DeleteFiSpeciesAsync(int fispeciesid)
+    public async Task DeleteSpeciesAsync(int speciesid)
     {
-        var fispecies = await Context.Tbl69FiSpeciesses.FirstOrDefaultAsync(b => b.FiSpeciesId == fispeciesid);
-        if (fispecies != null)
+        var species = await Context.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
+        if (species != null)
         {
             //necessary to delete before
-            var references = await Context.Tbl90References.Where(reference => reference.FiSpeciesId == fispeciesid).ToListAsync();
+            var references = await Context.Tbl90References.Where(reference => reference.SpeciesId == speciesid).ToListAsync();
             Context.Tbl90References.RemoveRange(references);
             await Context.SaveChangesAsync();
 
-            var comments = await Context.Tbl93Comments.Where(comment => comment.FiSpeciesId == fispeciesid).ToListAsync();
+            var comments = await Context.Tbl93Comments.Where(comment => comment.SpeciesId == speciesid).ToListAsync();
             Context.Tbl93Comments.RemoveRange(comments);
             await Context.SaveChangesAsync();
 
-            Context.Tbl69FiSpeciesses.Remove(fispecies);
+            Context.Tbl75Speciesses.Remove(species);
             await Context.SaveChangesAsync();
         }
     }
 
-    #endregion FiSpecies                       
-
-    #region PlSpecies                
-
-    public ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync()
-    {
-        //var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-        //    .AsNoTracking()
-        //    .OrderBy(a => a.PlSpeciesName));
-        //return collection;
-
-        var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-            .OrderBy(a => a.Tbl66Genusses.GenusName)
-            .ThenBy(a => a.PlSpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers));
-        return collection;
-
-    }
-
-    public ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(int plspeciesid)
-    {
-        var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-            .AsNoTracking()
-            .Where(e => e.PlSpeciesId == plspeciesid)
-            .OrderBy(a => a.Tbl66Genusses.GenusName)
-            .ThenBy(a => a.PlSpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers));
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Where(e => e.PlSpeciesId == id))
-            : new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Where(e => search != null && e.PlSpeciesName.StartsWith(search))
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusNameAsync(string search)
-    {
-        //search about GenusName
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Where(e => e.PlSpeciesId == id))
-            : new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Where(e => e.Tbl66Genusses.GenusName.StartsWith(search))
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers)
-            );
-        return collection;
-    }
-
-    public ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusIdAsync(int genusid)
-    {
-        var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-            .Where(e => e.GenusId == genusid)
-            .OrderBy(k => k.PlSpeciesName)
-        );
-
-        return collection;
-    }
-
-    public async Task<Tbl72PlSpecies> UpsertPlSpeciesAsync(Tbl72PlSpecies plspecies)
-    {
-        var current = await Context.Tbl72PlSpeciesses.FirstOrDefaultAsync(c => c.PlSpeciesId == plspecies.PlSpeciesId);
-        if (null == current)
-        {
-            plspecies.CountId = RandomHelper.Randomnumber();
-            plspecies.Writer = Environment.UserName;
-            plspecies.WriterDate = DateTime.Now;
-            plspecies.Updater = Environment.UserName;
-            plspecies.UpdaterDate = DateTime.Now;
-            Context.Tbl72PlSpeciesses.Add(plspecies);
-        }
-        else
-        {
-            plspecies.Updater = Environment.UserName;
-            plspecies.UpdaterDate = DateTime.Now;
-            Context.Entry(current).CurrentValues.SetValues(plspecies);
-        }
-        await Context.SaveChangesAsync();
-        return plspecies;
-    }
-
-    public async Task DeletePlSpeciesAsync(int plspeciesid)
-    {
-        var plspecies = await Context.Tbl72PlSpeciesses.FirstOrDefaultAsync(b => b.PlSpeciesId == plspeciesid);
-        if (plspecies != null)
-        {
-            var references = await Context.Tbl90References.Where(reference => reference.PlSpeciesId == plspeciesid).ToListAsync();
-            Context.Tbl90References.RemoveRange(references);
-            await Context.SaveChangesAsync();
-
-            var comments = await Context.Tbl93Comments.Where(comment => comment.PlSpeciesId == plspeciesid).ToListAsync();
-            Context.Tbl93Comments.RemoveRange(comments);
-            await Context.SaveChangesAsync();
-
-            Context.Tbl72PlSpeciesses.Remove(plspecies);
-            await Context.SaveChangesAsync();
-        }
-    }
-
-    #endregion PlSpecies                       
+    #endregion Species                       
 
     #region Name                  
 
@@ -2724,25 +2591,25 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public ObservableCollection<Tbl78Name> GetNameFromFiSpeciesIdAsync(int fispeciesid)
+    public ObservableCollection<Tbl78Name> GetNameFromSpeciesIdAsync(int speciesid)
     {
         var collection = new ObservableCollection<Tbl78Name>(Context.Tbl78Names
-            .Where(e => e.FiSpeciesId == fispeciesid)
+            .Where(e => e.SpeciesId == speciesid)
             .OrderBy(k => k.NameName)
         );
 
         return collection;
     }
 
-    public ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid)
-    {
-        var collection = new ObservableCollection<Tbl78Name>(Context.Tbl78Names
-            .Where(e => e.PlSpeciesId == plspeciesid)
-            .OrderBy(k => k.NameName)
-        );
+    //public ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid)
+    //{
+    //    var collection = new ObservableCollection<Tbl78Name>(Context.Tbl78Names
+    //        .Where(e => e.PlSpeciesId == plspeciesid)
+    //        .OrderBy(k => k.NameName)
+    //    );
 
-        return collection;
-    }
+    //    return collection;
+    //}
 
     public async Task<Tbl78Name> UpsertNameAsync(Tbl78Name name)
     {
@@ -2810,20 +2677,20 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public ObservableCollection<Tbl81Image> GetImageFromFiSpeciesIdAsync(int fispeciesid)
+    //public ObservableCollection<Tbl81Image> GetImageFromFiSpeciesIdAsync(int fispeciesid)
+    //{
+    //    var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
+    //        .Where(e => e.FiSpeciesId == fispeciesid)
+    //        .OrderBy(k => k.Info)
+    //    );
+
+    //    return collection;
+    //}
+
+    public ObservableCollection<Tbl81Image> GetImageFromSpeciesIdAsync(int speciesid)
     {
         var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
-            .Where(e => e.FiSpeciesId == fispeciesid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl81Image> GetImageFromPlSpeciesIdAsync(int plspeciesid)
-    {
-        var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
-            .Where(e => e.PlSpeciesId == plspeciesid)
+            .Where(e => e.SpeciesId == speciesid)
             .OrderBy(k => k.Info)
         );
 
@@ -2910,25 +2777,25 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public ObservableCollection<Tbl84Synonym> GetSynonymFromFiSpeciesIdAsync(int fispeciesid)
+    public ObservableCollection<Tbl84Synonym> GetSynonymFromSpeciesIdAsync(int speciesid)
     {
         var collection = new ObservableCollection<Tbl84Synonym>(Context.Tbl84Synonyms
-            .Where(e => e.FiSpeciesId == fispeciesid)
+            .Where(e => e.SpeciesId == speciesid)
             .OrderBy(k => k.SynonymName)
         );
 
         return collection;
     }
 
-    public ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid)
-    {
-        var collection = new ObservableCollection<Tbl84Synonym>(Context.Tbl84Synonyms
-            .Where(e => e.PlSpeciesId == plspeciesid)
-            .OrderBy(k => k.SynonymName)
-        );
+    //public ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid)
+    //{
+    //    var collection = new ObservableCollection<Tbl84Synonym>(Context.Tbl84Synonyms
+    //        .Where(e => e.PlSpeciesId == plspeciesid)
+    //        .OrderBy(k => k.SynonymName)
+    //    );
 
-        return collection;
-    }
+    //    return collection;
+    //}
 
     public async Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym)
     {
@@ -2996,25 +2863,25 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public ObservableCollection<Tbl87Geographic> GetGeographicFromFiSpeciesIdAsync(int fispeciesid)
+    public ObservableCollection<Tbl87Geographic> GetGeographicFromSpeciesIdAsync(int speciesid)
     {
         var collection = new ObservableCollection<Tbl87Geographic>(Context.Tbl87Geographics
-            .Where(e => e.FiSpeciesId == fispeciesid)
+            .Where(e => e.SpeciesId == speciesid)
             .OrderBy(k => k.Info)
         );
 
         return collection;
     }
 
-    public ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid)
-    {
-        var collection = new ObservableCollection<Tbl87Geographic>(Context.Tbl87Geographics
-            .Where(e => e.PlSpeciesId == plspeciesid)
-            .OrderBy(k => k.Info)
-        );
+    //public ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid)
+    //{
+    //    var collection = new ObservableCollection<Tbl87Geographic>(Context.Tbl87Geographics
+    //        .Where(e => e.PlSpeciesId == plspeciesid)
+    //        .OrderBy(k => k.Info)
+    //    );
 
-        return collection;
-    }
+    //    return collection;
+    //}
 
     public async Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic)
     {
@@ -3049,7 +2916,6 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     #endregion Image                  
-
 
 
     #region Reference
@@ -4251,15 +4117,15 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    public ObservableCollection<Tbl69FiSpecies>
-        GetTbl69FiSpeciessesCollectionOrderByGenusNameAndFiSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText)
+    public ObservableCollection<Tbl75Species>
+        GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Include(a => a.Tbl66Genusses)
-                .Where(e => e.FiSpeciesName.StartsWith(filterText) &&
-                            e.FiSpeciesName.Contains(Value) == false ||
+                .Where(e => e.SpeciesName.StartsWith(filterText) &&
+                            e.SpeciesName.Contains(Value) == false ||
                             e.Tbl66Genusses.GenusName.Contains(filterText) ||
                             e.Subspecies.Contains(filterText) ||
                             e.Divers.Contains(filterText) ||
@@ -4267,7 +4133,7 @@ public partial class DataService : ObservableObject, IDataService
                             e.Author.Contains(filterText)
                 )
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName)
+                .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers)
             );
@@ -4277,42 +4143,66 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    public ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(
-        string filterText)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(a => a.Tbl66Genusses)
-                .Where(e => e.PlSpeciesName.StartsWith(filterText) &&
-                            e.PlSpeciesName.Contains(Value) == false ||
-                            e.Tbl66Genusses.GenusName.Contains(filterText) ||
-                            e.Subspecies.Contains(filterText) ||
-                            e.Divers.Contains(filterText) ||
-                            e.TradeName.Contains(filterText) ||
-                            e.Author.Contains(filterText)
-                )
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers)
-            );
+    //public ObservableCollection<Tbl69FiSpecies>
+    //    GetTbl69FiSpeciessesCollectionOrderByGenusNameAndFiSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText)
+    //{
+    //    if (Context.Tbl69FiSpeciesses != null)
+    //    {
+    //        var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+    //            .Include(a => a.Tbl66Genusses)
+    //            .Where(e => e.FiSpeciesName.StartsWith(filterText) &&
+    //                        e.FiSpeciesName.Contains(Value) == false ||
+    //                        e.Tbl66Genusses.GenusName.Contains(filterText) ||
+    //                        e.Subspecies.Contains(filterText) ||
+    //                        e.Divers.Contains(filterText) ||
+    //                        e.TradeName.Contains(filterText) ||
+    //                        e.Author.Contains(filterText)
+    //            )
+    //            .OrderBy(a => a.Tbl66Genusses.GenusName)
+    //            .ThenBy(a => a.FiSpeciesName)
+    //            .ThenBy(a => a.Subspecies)
+    //            .ThenBy(a => a.Divers)
+    //        );
 
-            return collection;
-        }
-        return null!;
-    }
+    //        return collection;
+    //    }
+    //    return null!;
+    //}
+
+    //public ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(
+    //    string filterText)
+    //{
+    //    if (Context.Tbl72PlSpeciesses != null)
+    //    {
+    //        var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
+    //            .Include(a => a.Tbl66Genusses)
+    //            .Where(e => e.PlSpeciesName.StartsWith(filterText) &&
+    //                        e.PlSpeciesName.Contains(Value) == false ||
+    //                        e.Tbl66Genusses.GenusName.Contains(filterText) ||
+    //                        e.Subspecies.Contains(filterText) ||
+    //                        e.Divers.Contains(filterText) ||
+    //                        e.TradeName.Contains(filterText) ||
+    //                        e.Author.Contains(filterText)
+    //            )
+    //            .OrderBy(a => a.Tbl66Genusses.GenusName)
+    //            .ThenBy(a => a.PlSpeciesName)
+    //            .ThenBy(a => a.Subspecies)
+    //            .ThenBy(a => a.Divers)
+    //        );
+
+    //        return collection;
+    //    }
+    //    return null!;
+    //}
 
     public ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText)
     {
         if (Context.Tbl78Names != null)
         {
             var collection = new ObservableCollection<Tbl78Name>(Context.Tbl78Names
-                .Include(a => a.Tbl69FiSpeciesses)
-                .Include(a => a.Tbl72PlSpeciesses)
+                .Include(a => a.Tbl75Speciesses)
                 .Where(e => e.NameName.StartsWith(filterText) &&
-                            e.Tbl69FiSpeciesses.FiSpeciesId == e.FiSpeciesId &&
-                            e.Tbl72PlSpeciesses.PlSpeciesId == e.PlSpeciesId
+                            e.Tbl75Speciesses.SpeciesId == e.SpeciesId
                 )
                 .OrderBy(a => a.NameName));
             return collection;
@@ -4325,11 +4215,9 @@ public partial class DataService : ObservableObject, IDataService
         if (Context.Tbl84Synonyms != null)
         {
             var collection = new ObservableCollection<Tbl84Synonym>(Context.Tbl84Synonyms
-                .Include(a => a.Tbl69FiSpeciesses)
-                .Include(a => a.Tbl72PlSpeciesses)
+                .Include(a => a.Tbl75Speciesses)
                 .Where(e => e.SynonymName.StartsWith(filterText) &&
-                            e.Tbl69FiSpeciesses.FiSpeciesId == e.FiSpeciesId &&
-                            e.Tbl72PlSpeciesses.PlSpeciesId == e.PlSpeciesId
+                            e.Tbl75Speciesses.SpeciesId == e.SpeciesId
                 )
                 .OrderBy(a => a.SynonymName));
             return collection;
@@ -7308,57 +7196,57 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
     //direct children
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByGenusIdAndHash(int id)
+    public ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndHash(int id)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Where(e => e.GenusId == id &&
-                            e.FiSpeciesName.Contains(Value) == false));
+                            e.SpeciesName.Contains(Value) == false));
             return collection;
         }
         return null!;
     }
 
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id)
+    public ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 //        .Include(a => a.Tbl66Genusses)
                 .Where(e => e.GenusId == id &&
                             e.Subspecies == null &&
-                            e.FiSpeciesName.Contains(Value) == false));
+                            e.SpeciesName.Contains(Value) == false));
             return collection;
         }
         return null!;
     }
 
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndHash(int id)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Where(e => e.GenusId == id &&
-                            e.PlSpeciesName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
+    //public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndHash(int id)
+    //{
+    //    if (Context.Tbl72PlSpeciesses != null)
+    //    {
+    //        var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
+    //            .Where(e => e.GenusId == id &&
+    //                        e.PlSpeciesName.Contains(Value) == false));
+    //        return collection;
+    //    }
+    //    return null!;
+    //}
 
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(a => a.Tbl66Genusses)
-                .Where(e => e.GenusId == id &&
-                            e.Subspecies == null &&
-                            e.PlSpeciesName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
+    //public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id)
+    //{
+    //    if (Context.Tbl72PlSpeciesses != null)
+    //    {
+    //        var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
+    //            .Include(a => a.Tbl66Genusses)
+    //            .Where(e => e.GenusId == id &&
+    //                        e.Subspecies == null &&
+    //                        e.PlSpeciesName.Contains(Value) == false));
+    //        return collection;
+    //    }
+    //    return null!;
+    //}
 
     //Function
     public int InfratribusIdFromGenussesCollectionSelect(int id)
@@ -7454,13 +7342,13 @@ public partial class DataService : ObservableObject, IDataService
     }
     #endregion Genus
 
-    #region FiSpecies
-    public Tbl69FiSpecies GetFiSpeciesSingleByFiSpeciesIdAndHash(int id)
+    #region Species
+    public Tbl75Species GetSpeciesSingleBySpeciesIdAndHash(int id)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var single = Context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == id &&
-                                                                     a.FiSpeciesName.Contains(Value) == false);
+            var single = Context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id &&
+                                                                     a.SpeciesName.Contains(Value) == false);
             if (single != null)
             {
                 return single;
@@ -7469,59 +7357,59 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    public Tbl69FiSpecies GetFiSpeciesSingleByFiSpeciesId(int id)
+    public Tbl75Species GetSpeciesSingleBySpeciesId(int id)
     {
         // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = Context.Tbl69FiSpeciesses.FirstOrDefault(a => a.FiSpeciesId == id);
+        var single = Context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == id);
         return single;
     }
-    public Tbl69FiSpecies GetFiSpeciesSingleModelByFiSpeciesId(int id)
+    public Tbl75Species GetSpeciesSingleModelBySpeciesId(int id)
     {
         // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = Context.Tbl69FiSpeciesses.FirstOrDefault(a => a.FiSpeciesId == id);
+        var single = Context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == id);
         return single;
     }
 
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByFiSpeciesId(int id)
+    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesId(int id)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
-                .Where(e => e.FiSpeciesId == id));
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
+                .Where(e => e.SpeciesId == id));
             return collection;
         }
         return null!;
     }
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciesSubsByFiSpeciesNameandGenusId(string name, int genusId)
+    public ObservableCollection<Tbl75Species> CollSpeciesSubsBySpeciesNameandGenusId(string name, int genusId)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Include(d => d.Tbl66Genusses)
                 .Where(e => e.GenusId == genusId &&
-                            e.FiSpeciesName == name &&
+                            e.SpeciesName == name &&
                             e.Subspecies != null &&
                             e.Subspecies != string.Empty)
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName)
+                .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
             return collection;
         }
         return null!;
     }
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByFiSpeciesNameAndNotEmptySubspecies(int id, string name)
+    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndNotEmptySubspecies(int id, string name)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Include(d => d.Tbl66Genusses)
                 .Where(e => e.GenusId == id &&
-                            e.FiSpeciesName == name &&
+                            e.SpeciesName == name &&
                             e.Subspecies != null &&
                             e.Subspecies != string.Empty)
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName)
+                .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
             return collection;
@@ -7535,32 +7423,32 @@ public partial class DataService : ObservableObject, IDataService
     //e.Subspecies == null &&
     //e.FiSpeciesName.Contains(Value) == false));
 
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByGenusIdAndFiSpeciesNameAndEmptySubspecies(int id, string name)
+    public ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSpeciesNameAndEmptySubspecies(int id, string name)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Include(d => d.Tbl66Genusses)
                 .Where(e => e.GenusId == id &&
-                            e.FiSpeciesName == name &&
+                            e.SpeciesName == name &&
                             (e.Subspecies == null || e.Subspecies == string.Empty) &&
                             (e.Divers == null || e.Divers == string.Empty))
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName));
+                .ThenBy(a => a.SpeciesName));
             return collection;
         }
         return null!;
     }
-    public ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByFiSpeciesNameAndSubspeciesAndDivers(string fiSpeciesName, string subspecies,
+    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndSubspeciesAndDivers(string speciesName, string subspecies,
         string divers)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var collection = new ObservableCollection<Tbl69FiSpecies>(Context.Tbl69FiSpeciesses
+            var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
                 .Include(d => d.Tbl66Genusses)
-                .Where(e => e.FiSpeciesName == fiSpeciesName && e.Subspecies == subspecies && e.Divers == divers)
+                .Where(e => e.SpeciesName == speciesName && e.Subspecies == subspecies && e.Divers == divers)
                 .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.FiSpeciesName)
+                .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
             return collection;
@@ -7568,24 +7456,24 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
     //direct children
-    public ObservableCollection<Tbl78Name> CollNamesByFiSpeciesIdAndHash(int id)
+    public ObservableCollection<Tbl78Name> CollNamesBySpeciesIdAndHash(int id)
     {
         if (Context.Tbl78Names != null)
         {
             var collection = new ObservableCollection<Tbl78Name>(Context.Tbl78Names
-                .Where(e => e.FiSpeciesId == id &&
+                .Where(e => e.SpeciesId == id &&
                             e.NameName.Contains(Value) == false)
                 .OrderBy(r => r.NameName));
             return collection;
         }
         return null!;
     }
-    public ObservableCollection<Tbl84Synonym> CollSynonymsByFiSpeciesIdAndHash(int id)
+    public ObservableCollection<Tbl84Synonym> CollSynonymsBySpeciesIdAndHash(int id)
     {
         if (Context.Tbl84Synonyms != null)
         {
             var collection = new ObservableCollection<Tbl84Synonym>(Context.Tbl84Synonyms
-                .Where(e => e.FiSpeciesId == id &&
+                .Where(e => e.SpeciesId == id &&
                             e.SynonymName.Contains(Value) == false)
                 .OrderBy(r => r.SynonymName));
             return collection;
@@ -7593,12 +7481,12 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
     //Function
-    public int GenusIdFromFiSpeciessesCollectionSelect(int id)
+    public int GenusIdFromSpeciessesCollectionSelect(int id)
     {
-        if (Context.Tbl69FiSpeciesses != null)
+        if (Context.Tbl75Speciesses != null)
         {
-            var dbset = Context.Tbl69FiSpeciesses
-                .SingleOrDefault(p => p.FiSpeciesId == id);
+            var dbset = Context.Tbl75Speciesses
+                .SingleOrDefault(p => p.SpeciesId == id);
 
             if (dbset != null)
             {
@@ -7624,14 +7512,14 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
     //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByFiSpeciesId(int id)
+    public ObservableCollection<Tbl90Reference> CollExpertsBySpeciesId(int id)
     {
         if (Context.Tbl90References != null)
         {
             var collection = new ObservableCollection<Tbl90Reference>(Context.Tbl90References
                 .Include(a => a.Tbl90RefExperts)
                 .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.FiSpeciesId == id &&
+                            e.SpeciesId == id &&
                             e.RefAuthorId.HasValue == false &&
                             e.RefSourceId.HasValue == false)
                 .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
@@ -7639,14 +7527,14 @@ public partial class DataService : ObservableObject, IDataService
         }
         return null!;
     }
-    public ObservableCollection<Tbl90Reference> CollSourcesByFiSpeciesId(int id)
+    public ObservableCollection<Tbl90Reference> CollSourcesBySpeciesId(int id)
     {
         if (Context.Tbl90References != null)
         {
             var collection = new ObservableCollection<Tbl90Reference>(Context.Tbl90References
                 .Include(a => a.Tbl90RefSources)
                 .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.FiSpeciesId == id &&
+                            e.SpeciesId == id &&
                             e.RefAuthorId.HasValue == false &&
                             e.RefExpertId.HasValue == false)
                 .OrderBy(a => a.Tbl90RefSources.RefSourceName)
@@ -7655,14 +7543,14 @@ public partial class DataService : ObservableObject, IDataService
         }
         return null!;
     }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByFiSpeciesId(int id)
+    public ObservableCollection<Tbl90Reference> CollAuthorsBySpeciesId(int id)
     {
         if (Context.Tbl90References != null)
         {
             var collection = new ObservableCollection<Tbl90Reference>(Context.Tbl90References
                 .Include(a => a.Tbl90RefAuthors)
                 .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.FiSpeciesId == id &&
+                            e.SpeciesId == id &&
                             e.RefSourceId.HasValue == false &&
                             e.RefExpertId.HasValue == false)
                 .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
@@ -7675,298 +7563,39 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
     // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByFiSpeciesId(int id)
+    public ObservableCollection<Tbl93Comment> CollCommentsBySpeciesId(int id)
     {
         if (Context.Tbl93Comments != null)
         {
             var collection = new ObservableCollection<Tbl93Comment>(Context.Tbl93Comments
-                .Where(e => e.FiSpeciesId == id));
+                .Where(e => e.SpeciesId == id));
             return collection;
         }
         return null!;
     }
     //Images
-    public ObservableCollection<Tbl81Image> CollImagesByFiSpeciesId(int id)
+    public ObservableCollection<Tbl81Image> CollImagesBySpeciesId(int id)
     {
         if (Context.Tbl81Images != null)
         {
             var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
-                .Where(e => e.FiSpeciesId == id));
+                .Where(e => e.SpeciesId == id));
             return collection;
         }
         return null!;
     }
     //Geographics
-    public ObservableCollection<Tbl87Geographic> CollGeographicsByFiSpeciesId(int id)
+    public ObservableCollection<Tbl87Geographic> CollGeographicsBySpeciesId(int id)
     {
         if (Context.Tbl87Geographics != null)
         {
             var collection = new ObservableCollection<Tbl87Geographic>(Context.Tbl87Geographics
-                .Where(e => e.FiSpeciesId == id));
+                .Where(e => e.SpeciesId == id));
             return collection;
         }
         return null!;
     }
 
-
-    #endregion
-
-    #region PlSpecies
-    public Tbl72PlSpecies GetPlSpeciesSingleByPlSpeciesIdAndHash(int id)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var single = Context.Tbl72PlSpeciesses.SingleOrDefault(a => a.PlSpeciesId == id &&
-                                                                     a.PlSpeciesName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-    public Tbl72PlSpecies GetPlSpeciesSingleByPlSpeciesId(int id)
-    {
-        // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = Context.Tbl72PlSpeciesses.FirstOrDefault(a => a.PlSpeciesId == id);
-        return single;
-    }
-    public Tbl72PlSpecies GetPlSpeciesSingleModelByPlSpeciesId(int id)
-    {
-        // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = Context.Tbl72PlSpeciesses.FirstOrDefault(a => a.PlSpeciesId == id);
-        return single;
-    }
-
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesId(int id)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Where(e => e.PlSpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciesSubsByPlSpeciesNameandGenusId(string name, int genusId)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(d => d.Tbl66Genusses)
-                .Where(e => e.GenusId == genusId &&
-                            e.PlSpeciesName == name &&
-                            e.Subspecies != null &&
-                            e.Subspecies != string.Empty)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndPlSpeciesNameAndEmptySubspecies(int id, string name)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(d => d.Tbl66Genusses)
-                .Where(e => e.GenusId == id &&
-                            e.PlSpeciesName == name &&
-                            (e.Subspecies == null || e.Subspecies == string.Empty) &&
-                            (e.Divers == null || e.Divers == string.Empty)
-                )
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesNameAndNotEmptySubspecies(int id, string name)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(d => d.Tbl66Genusses)
-                .Where(e => e.GenusId == id &&
-                            e.PlSpeciesName == name &&
-                            e.Subspecies != null &&
-                            e.Subspecies != string.Empty)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
-    }
-
-    public static ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesNameAndNotEmptySubspeciesAndHash(string name)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(d => d.Tbl66Genusses)
-                .Where(e => e.PlSpeciesName == name &&
-                            e.PlSpeciesName.Contains(Value) == false &&
-                            e.Subspecies != null)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesNameAndSubspeciesAndDivers(string fiSpeciesName, string subspecies,
-        string divers)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl72PlSpecies>(Context.Tbl72PlSpeciesses
-                .Include(d => d.Tbl66Genusses)
-                .Where(e => e.PlSpeciesName == fiSpeciesName && e.Subspecies == subspecies && e.Divers == divers)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.PlSpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl78Name> CollNamesByPlSpeciesIdAndHash(int id)
-    {
-        if (Context.Tbl78Names != null)
-        {
-            var collection = new ObservableCollection<Tbl78Name>(Context.Tbl78Names
-                .Where(e => e.PlSpeciesId == id &&
-                            e.NameName.Contains(Value) == false)
-                .OrderBy(r => r.NameName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl84Synonym> CollSynonymsByPlSpeciesIdAndHash(int id)
-    {
-        if (Context.Tbl84Synonyms != null)
-        {
-            var collection = new ObservableCollection<Tbl84Synonym>(Context.Tbl84Synonyms
-                .Where(e => e.PlSpeciesId == id &&
-                            e.SynonymName.Contains(Value) == false)
-                .OrderBy(r => r.SynonymName));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int GenusIdFromPlSpeciessesCollectionSelect(int id)
-    {
-        if (Context.Tbl72PlSpeciesses != null)
-        {
-            var dbset = Context.Tbl72PlSpeciesses
-                .SingleOrDefault(p => p.PlSpeciesId == id);
-
-            if (dbset != null)
-            {
-                return dbset.GenusId;
-            }
-        }
-
-        return 0;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByPlSpeciesId(int id)
-    {
-        if (Context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(Context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.PlSpeciesId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByPlSpeciesId(int id)
-    {
-        if (Context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(Context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.PlSpeciesId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByPlSpeciesId(int id)
-    {
-        if (Context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(Context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.PlSpeciesId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByPlSpeciesId(int id)
-    {
-        if (Context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(Context.Tbl93Comments
-                .Where(e => e.PlSpeciesId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.PlSpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //Images
-    public ObservableCollection<Tbl81Image> CollImagesByPlSpeciesId(int id)
-    {
-        if (Context.Tbl81Images != null)
-        {
-            var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
-                .Where(e => e.PlSpeciesId == id));
-            //var collection = new ObservableCollection<Tbl81Image>(_uow.Tbl81Images
-            //    .Find(e => e.PlSpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //Geographics
-    public ObservableCollection<Tbl87Geographic> CollGeographicsByPlSpeciesId(int id)
-    {
-        if (Context.Tbl87Geographics != null)
-        {
-            var collection = new ObservableCollection<Tbl87Geographic>(Context.Tbl87Geographics
-                .Where(e => e.PlSpeciesId == id));
-            //var collection = new ObservableCollection<Tbl87Geographic>(_uow.Tbl87Geographics
-            //    .Find(e => e.PlSpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
 
     #endregion
 
@@ -8158,15 +7787,15 @@ public partial class DataService : ObservableObject, IDataService
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl69FiSpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesList
-    {
-        get; set;
-    } = null!;
+    //public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesList
+    //{
+    //    get; set;
+    //} = null!;
 
     public ObservableCollection<Tbl78Name> Tbl78NamesList
     {
@@ -8318,15 +7947,19 @@ public partial class DataService : ObservableObject, IDataService
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciessesCollection
+    public ObservableCollection<Tbl75Species> SpeciessesCollection
     {
         get; set;
     } = null!;
+    //public ObservableCollection<Tbl69FiSpecies> FiSpeciessesCollection
+    //{
+    //    get; set;
+    //} = null!;
 
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection
-    {
-        get; set;
-    } = null!;
+    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection
+    //{
+    //    get; set;
+    //} = null!;
 
     public ObservableCollection<Tbl78Name> NamesCollection
     {

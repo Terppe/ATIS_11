@@ -14,10 +14,11 @@ public class Tbl78Name
     //  [MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     // [MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string NameName { get; set; }
-    [Required]
-    public int FiSpeciesId { get; set; }
-    [Required]
-    public int PlSpeciesId { get; set; }
+    public int SpeciesId { get; set; }
+    //[Required]
+    //public int FiSpeciesId { get; set; }
+    //[Required]
+    //public int PlSpeciesId { get; set; }
     [Required]
     public int CountId { get; set; }
     public bool Valid { get; set; }
@@ -37,11 +38,9 @@ public class Tbl78Name
     public string Memo { get; set; }
     //     public byte[] RowVersion { get; set; }
 
-    [ForeignKey("FiSpeciesId")]
-    public virtual Tbl69FiSpecies Tbl69FiSpeciesses { get; set; }
+    [ForeignKey("SpeciesId")]
+    public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
-    [ForeignKey("PlSpeciesId")]
-    public virtual Tbl72PlSpecies Tbl72PlSpeciesses { get; set; }
 
 
 }

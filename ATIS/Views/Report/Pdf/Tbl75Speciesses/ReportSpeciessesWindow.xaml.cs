@@ -36,7 +36,7 @@ public sealed partial class ReportSpeciessesWindow : WindowEx
         Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportHeight"));
         this.CenterOnScreen();
 
-        if (ViewModel.FiSpeciesSubItems.Count == 0)
+        if (ViewModel.SpeciesSubItems.Count == 0)
         {
             TbDirectChildren.Visibility = Visibility.Collapsed;
         }
@@ -47,7 +47,7 @@ public sealed partial class ReportSpeciessesWindow : WindowEx
 
     private void PdfSpeciesCommand(object sender, RoutedEventArgs e)
     {
-        GeneratePdfSpecies(ViewModel.FiSpeciesSelected.FiSpeciesId);
+        GeneratePdfSpecies(ViewModel.SpeciesSelected.SpeciesId);
     }
 
     #endregion [Command]             
@@ -57,10 +57,10 @@ public sealed partial class ReportSpeciessesWindow : WindowEx
     public void GeneratePdfSpecies(int id)
     {
         var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
-        var single = _context.Tbl69FiSpeciesses.SingleOrDefault(a => a.FiSpeciesId == id);
+        var single = _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id);
         if (single != null)
         {
-            var name = single.FiSpeciesName;
+            var name = single.SpeciesName;
             var countid = single.CountId;
             const string space = "_";
             filePath = $"{filePath}{name}{space}{countid}{space}Report.pdf";

@@ -19,7 +19,7 @@ public partial class Tbl66GenusViewModel : ObservableObject
     private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> SpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
     public ObservableCollection<Tbl63Infratribus> InfratribusItems { get; } = [];
 
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = [];
@@ -180,25 +180,24 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var arrPlSpecies = new List<Tbl72PlSpecies>();
-            var arrFiSpecies = new List<Tbl69FiSpecies>();
+            var arrSpecies = new List<Tbl75Species>();
             var genus = await Context.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
             if (genus != null)
             {
                 //SaveToArray
-                await RemoveExtras.SaveToArrayTbl69FiSpeciesses(genusid, arrFiSpecies);
-                await RemoveExtras.SaveToArrayTbl72PlSpeciesses(genusid, arrPlSpecies);
+                await RemoveExtras.SaveToArrayTbl75Speciesses(genusid, arrSpecies);
+           //     await RemoveExtras.SaveToArrayTbl72PlSpeciesses(genusid, arrPlSpecies);
 
-                if (arrPlSpecies.Count != 0)
-                {
-                    // remove Tbl72PlSpeciesses
-                    await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
-                }
+                //if (arrPlSpecies.Count != 0)
+                //{
+                //    //// remove Tbl72PlSpeciesses
+                //    //await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
+                //}
 
-                if (arrFiSpecies.Count != 0)
+                if (arrSpecies.Count != 0)
                 {
-                    // remove Tbl69FiSpeciesses
-                    await RemoveExtras.RemoveArrFiSpeciesByFiSpeciesId(arrFiSpecies);
+                    // remove Tbl75Speciesses
+                    await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
                 }
 
                 await RemoveExtras.RemoveReferencesByGenusId(genusid);
@@ -496,7 +495,7 @@ public partial class Tbl66GenusViewModel : ObservableObject
 
     #region [Methods Species]
 
-    public async Task SaveSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
+    public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -506,14 +505,14 @@ public partial class Tbl66GenusViewModel : ObservableObject
             }
         });
 
-        Tbl69FiSpecies result = null;
+        Tbl75Species result = null;
         try
         {
             if (IsModifiedSpecies)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertFiSpeciesAsync(viewModelSpeciesSelected);
+                    result = await _dataService.UpsertSpeciesAsync(viewModelSpeciesSelected);
                     IsModifiedSpecies = false;
                 });
             }
@@ -801,8 +800,8 @@ public partial class Tbl66GenusViewModel : ObservableObject
         get => _commentSelected;
         set => SetProperty(ref _commentSelected, value);
     }
-    private Tbl69FiSpecies _speciesSelected;
-    public Tbl69FiSpecies SpeciesSelected
+    private Tbl75Species _speciesSelected;
+    public Tbl75Species SpeciesSelected
     {
         get => _speciesSelected;
         set => SetProperty(ref _speciesSelected, value);
@@ -992,9 +991,9 @@ public partial class Tbl66GenusViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciesList;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciesList;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
         get => _tbl75SpeciesList;
         set

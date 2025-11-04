@@ -33,10 +33,10 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         SynonymsCollection?.Clear();
         ImagesCollection?.Clear();
         NamesCollection?.Clear();
-        PlSpeciessesSubCollection?.Clear();
-        PlSpeciessesCollection?.Clear();
-        FiSpeciessesSubCollection?.Clear();
-        FiSpeciessesCollection?.Clear();
+        //PlSpeciessesSubCollection?.Clear();
+        //PlSpeciessesCollection?.Clear();
+        SpeciessesSubCollection?.Clear();
+        SpeciessesCollection?.Clear();
         GenussesCollection?.Clear();
         InfratribussesCollection?.Clear();
         SubtribussesCollection?.Clear();
@@ -94,7 +94,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             IsLoading = true;
             SpeciessesCollection =
                 dataService
-                    .GetTbl69FiSpeciessesCollectionOrderByGenusNameAndFiSpeciesNameAndSubspeciesAndDiversFromFilterText(filterText);
+                    .GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(filterText);
 
             DataSetCount = SpeciessesCollection.Count;
             OnPropertyChanged(nameof(SpeciessesCollection));
@@ -388,7 +388,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
                 ClearAllCollections();
                 Tbl66GenussesAllList ??= [];
                 Tbl66GenussesAllList = dataService.GetGenusAsync();
-                SpeciessesCollection = dataService.GetTbl69FiSpeciessesCollectionOrderByGenusNameAndFiSpeciesNameAndSubspeciesAndDiversFromFilterText(FilterText);
+                SpeciessesCollection = dataService.GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(FilterText);
 
                 DataSetCount = SpeciessesCollection.Count;
                 RefreshSpeciesItems();
@@ -1139,22 +1139,22 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             //  case "Tbl68Speciesgroups":
             ////      GetTbl68SpeciesgroupsById(id);
             //      break;
-            case "Tbl69FiSpeciesses":
-                var fiSpecies = dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
-                if (string.IsNullOrEmpty(fiSpecies.Divers))
-                {
-                    GetTbl69FiSpeciessesById(id);
-                }
-                else
-                {
-                    GetTbl69FiSpeciessesSubById(id);
-                }
-                break;
-            case "Tbl69FiSpeciessesSub":
-                GetTbl69FiSpeciessesSubById(id);
-                break;
+            //case "Tbl69FiSpeciesses":
+            //    var fiSpecies = dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
+            //    if (string.IsNullOrEmpty(fiSpecies.Divers))
+            //    {
+            //        GetTbl69FiSpeciessesById(id);
+            //    }
+            //    else
+            //    {
+            //        GetTbl69FiSpeciessesSubById(id);
+            //    }
+            //    break;
+            //case "Tbl69FiSpeciessesSub":
+            //    GetTbl69FiSpeciessesSubById(id);
+            //    break;
             case "Tbl75Speciesses":
-                var species = dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
+                var species = dataService.GetSpeciesSingleModelBySpeciesId(id);
                 if (string.IsNullOrEmpty(species.Divers))
                 {
                     GetTbl75SpeciessesById(id);
@@ -1167,20 +1167,20 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             case "Tbl75SpeciessesSub":
                 GetTbl75SpeciessesSubById(id);
                 break;
-            case "Tbl72PlSpeciesses":
-                var plSpecies = dataService.GetPlSpeciesSingleModelByPlSpeciesId(id);
-                if (string.IsNullOrEmpty(plSpecies.Divers))
-                {
-                    GetTbl72PlSpeciessesById(id);
-                }
-                else
-                {
-                    GetTbl72PlSpeciessesSubById(id);
-                }
-                break;
-            case "Tbl72PlSpeciessesSub":
-                GetTbl72PlSpeciessesSubById(id);
-                break;
+            //case "Tbl72PlSpeciesses":
+            //    var plSpecies = dataService.GetPlSpeciesSingleModelByPlSpeciesId(id);
+            //    if (string.IsNullOrEmpty(plSpecies.Divers))
+            //    {
+            //        GetTbl72PlSpeciessesById(id);
+            //    }
+            //    else
+            //    {
+            //        GetTbl72PlSpeciessesSubById(id);
+            //    }
+            //    break;
+            //case "Tbl72PlSpeciessesSub":
+            //    GetTbl72PlSpeciessesSubById(id);
+            //    break;
                 //case "Tbl78Names":
                 //    GetTbl78NamesById(id);
                 //    break;
@@ -1286,13 +1286,13 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         {
             RefreshGenusItems();
         }
-        if (FiSpeciessesCollection != null)
+        if (SpeciessesCollection != null)
         {
-            RefreshFiSpeciesItems();
+            RefreshSpeciesItems();
         }
-        if (FiSpeciessesSubCollection != null)
+        if (SpeciessesSubCollection != null)
         {
-            RefreshFiSpeciesSubItems();
+            RefreshSpeciesSubItems();
         }
         if (SpeciessesCollection != null)
         {
@@ -1304,24 +1304,24 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         }
 
 
-        if (FiSpeciessesFiSpeciesNameCollection != null)
+        if (SpeciessesSpeciesNameCollection != null)
         {
             //  RefreshFiSpeciesFiSpeciesNameItems();
         }
 
 
-        if (PlSpeciessesCollection != null)
-        {
-            RefreshPlSpeciesItems();
-        }
-        if (PlSpeciessesSubCollection != null)
-        {
-            RefreshPlSpeciesSubItems();
-        }
-        if (PlSpeciessesPlSpeciesNameCollection != null)
-        {
-            //  RefreshPlSpeciesFPlSpeciesNameItems();
-        }
+        //if (PlSpeciessesCollection != null)
+        //{
+        //    RefreshPlSpeciesItems();
+        //}
+        //if (PlSpeciessesSubCollection != null)
+        //{
+        //    RefreshPlSpeciesSubItems();
+        //}
+        //if (PlSpeciessesPlSpeciesNameCollection != null)
+        //{
+        //    //  RefreshPlSpeciesFPlSpeciesNameItems();
+        //}
         if (NamesCollection != null)
         {
             RefreshNameItems();
@@ -2342,7 +2342,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
         //direct children
         //      FiSpeciessesCollection = _dataService.CollFiSpeciessesByGenusIdAndSubspeciesIsNullAndHash(id);
-        FiSpeciessesCollection = dataService.CollFiSpeciessesByGenusIdAndHash(id);
+        SpeciessesCollection = dataService.CollSpeciessesByGenusIdAndHash(id);
         //FiSpeciessesCollection = new ObservableCollection<Tbl69FiSpecies>(_context.Tbl69FiSpeciesses
         //    .Include(a => a.Tbl66Genusses)
         //    .Where(e => e.GenusId == id &&
@@ -2350,7 +2350,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         //                e.FiSpeciesName.Contains("#") == false));
 
         //  PlSpeciessesCollection = _dataService.CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(id);
-        PlSpeciessesCollection = dataService.CollPlSpeciessesByGenusIdAndHash(id);
+       // SpeciessesCollection = dataService.CollSpeciessesByGenusIdAndHash(id);
 
 
         //-----------------------------------------------------------------------------
@@ -2376,181 +2376,181 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
     #endregion
 
-    #region FiSpecies
-    public void GetTbl69FiSpeciessesById(int id)
-    {
-        var fiSpecies = dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
-        FiSpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(id);
+    //#region FiSpecies
+    //public void GetTbl69FiSpeciessesById(int id)
+    //{
+    //    var fiSpecies = dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
+    //    FiSpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(id);
 
-        NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(id);
-        SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(id);
-        ImagesCollection = dataService.CollImagesByFiSpeciesId(id);
-        GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(id);
+    //    NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(id);
+    //    SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(id);
+    //    ImagesCollection = dataService.CollImagesByFiSpeciesId(id);
+    //    GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(id);
 
-        var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(id);
-        GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
-        var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
-        InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
-        var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
-        SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
-        var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
-        TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
-        var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
-        SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
-        var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
-        InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
-        var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
-        SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
-        var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
-        FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
-        var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
-        SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
-        var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
-        InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
-        var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
-        SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
-        var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
-        OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
-        var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
-        LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
-        var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
-        InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
-        var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
-        SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
-        var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
-        ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
-        var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
-        SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
-        var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+    //    var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(id);
+    //    GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
+    //    var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
+    //    InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
+    //    var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
+    //    SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
+    //    var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
+    //    TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
+    //    var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
+    //    SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
+    //    var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
+    //    InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
+    //    var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
+    //    SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
+    //    var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
+    //    FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
+    //    var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
+    //    SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
+    //    var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
+    //    InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
+    //    var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
+    //    SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
+    //    var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
+    //    OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
+    //    var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
+    //    LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
+    //    var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
+    //    InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
+    //    var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
+    //    SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
+    //    var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
+    //    ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
+    //    var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
+    //    SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
+    //    var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
+    //    var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
-        {
-            SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
-            var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
-            PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-            var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        //direct children
-        FiSpeciessesSubCollection = dataService.CollFiSpeciessesByFiSpeciesNameAndNotEmptySubspecies(fiSpecies.GenusId, fiSpecies.FiSpeciesName!);
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByFiSpeciesId(id);
-        SourcesCollection = dataService.CollSourcesByFiSpeciesId(id);
-        AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(id);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByFiSpeciesId(id);
-        //----------Refresh-------------
-        Refresh();
-    }
-    #endregion
+    //    if (subphylumId == _fishId)  //Basis #Subphylum#
+    //    {
+    //        SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+    //        var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+    //        DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+    //        var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
+    //    if (subdivisionId == _plantId)  //Basis #Subdivision#
+    //    {
+    //        SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
+    //        var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
+    //        PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
+    //        var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
+    //    //direct children
+    //    FiSpeciessesSubCollection = dataService.CollFiSpeciessesByFiSpeciesNameAndNotEmptySubspecies(fiSpecies.GenusId, fiSpecies.FiSpeciesName!);
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = dataService.CollExpertsByFiSpeciesId(id);
+    //    SourcesCollection = dataService.CollSourcesByFiSpeciesId(id);
+    //    AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(id);
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = dataService.CollCommentsByFiSpeciesId(id);
+    //    //----------Refresh-------------
+    //    Refresh();
+    //}
+    //#endregion
 
-    #region FiSpeciesSub
-    public void GetTbl69FiSpeciessesSubById(int id)
-    {
-        ////  var fiSpecies = _dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
-        //FiSpeciessesCollection = _dataService.CollFiSpeciessesByFiSpeciesId(id);
-        ////  FiSpeciessesSubCollection = _dataService.CollFiSpeciessesByFiSpeciesId(id);
-        //FiSpeciessesSubCollection = FiSpeciessesCollection;
+    //#region FiSpeciesSub
+    //public void GetTbl69FiSpeciessesSubById(int id)
+    //{
+    //    ////  var fiSpecies = _dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
+    //    //FiSpeciessesCollection = _dataService.CollFiSpeciessesByFiSpeciesId(id);
+    //    ////  FiSpeciessesSubCollection = _dataService.CollFiSpeciessesByFiSpeciesId(id);
+    //    //FiSpeciessesSubCollection = FiSpeciessesCollection;
 
-        //  var fiSpecies = _dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
-        FiSpeciessesSubCollection = dataService.CollFiSpeciessesByFiSpeciesId(id);
+    //    //  var fiSpecies = _dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
+    //    FiSpeciessesSubCollection = dataService.CollFiSpeciessesByFiSpeciesId(id);
 
-        var fiSpeciessingle = dataService.GetFiSpeciesSingleByFiSpeciesId(id);
-        var fiSpeciesId = fiSpeciessingle.FiSpeciesId;
-        FiSpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(fiSpeciesId);
+    //    var fiSpeciessingle = dataService.GetFiSpeciesSingleByFiSpeciesId(id);
+    //    var fiSpeciesId = fiSpeciessingle.FiSpeciesId;
+    //    FiSpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(fiSpeciesId);
 
 
-        // FiSpeciessesCollection = _dataService.CollFiSpeciessesByGenusIdAndFiSpeciesNameAndEmptySubspecies(fiSpecies.GenusId, fiSpecies.FiSpeciesName);
-        NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(id);
-        SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(id);
-        ImagesCollection = dataService.CollImagesByFiSpeciesId(id);
-        GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(id);
+    //    // FiSpeciessesCollection = _dataService.CollFiSpeciessesByGenusIdAndFiSpeciesNameAndEmptySubspecies(fiSpecies.GenusId, fiSpecies.FiSpeciesName);
+    //    NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(id);
+    //    SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(id);
+    //    ImagesCollection = dataService.CollImagesByFiSpeciesId(id);
+    //    GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(id);
 
-        var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(id);
-        GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
-        var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
-        InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
-        var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
-        SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
-        var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
-        TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
-        var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
-        SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
-        var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
-        InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
-        var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
-        SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
-        var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
-        FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
-        var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
-        SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
-        var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
-        InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
-        var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
-        SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
-        var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
-        OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
-        var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
-        LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
-        var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
-        InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
-        var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
-        SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
-        var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
-        ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
-        var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
-        SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
-        var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+    //    var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(id);
+    //    GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
+    //    var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
+    //    InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
+    //    var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
+    //    SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
+    //    var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
+    //    TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
+    //    var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
+    //    SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
+    //    var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
+    //    InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
+    //    var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
+    //    SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
+    //    var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
+    //    FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
+    //    var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
+    //    SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
+    //    var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
+    //    InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
+    //    var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
+    //    SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
+    //    var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
+    //    OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
+    //    var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
+    //    LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
+    //    var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
+    //    InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
+    //    var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
+    //    SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
+    //    var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
+    //    ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
+    //    var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
+    //    SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
+    //    var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
+    //    var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
-        {
-            SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
-            var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
-            PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-            var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByFiSpeciesId(id);
-        SourcesCollection = dataService.CollSourcesByFiSpeciesId(id);
-        AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(id);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByFiSpeciesId(id);
-        //----------Refresh-------------
-        Refresh();
-    }
-    #endregion
+    //    if (subphylumId == _fishId)  //Basis #Subphylum#
+    //    {
+    //        SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+    //        var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+    //        DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+    //        var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
+    //    if (subdivisionId == _plantId)  //Basis #Subdivision#
+    //    {
+    //        SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
+    //        var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
+    //        PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
+    //        var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = dataService.CollExpertsByFiSpeciesId(id);
+    //    SourcesCollection = dataService.CollSourcesByFiSpeciesId(id);
+    //    AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(id);
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = dataService.CollCommentsByFiSpeciesId(id);
+    //    //----------Refresh-------------
+    //    Refresh();
+    //}
+    //#endregion
 
     #region Species
     public void GetTbl75SpeciessesById(int id)
     {
-        var fiSpecies = dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
-        SpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(id);
+        var fiSpecies = dataService.GetSpeciesSingleModelBySpeciesId(id);
+        SpeciessesCollection = dataService.CollSpeciessesBySpeciesId(id);
 
-        NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(id);
-        SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(id);
-        ImagesCollection = dataService.CollImagesByFiSpeciesId(id);
-        GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(id);
+        NamesCollection = dataService.CollNamesBySpeciesIdAndHash(id);
+        SynonymsCollection = dataService.CollSynonymsBySpeciesIdAndHash(id);
+        ImagesCollection = dataService.CollImagesBySpeciesId(id);
+        GeographicsCollection = dataService.CollGeographicsBySpeciesId(id);
 
-        var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(id);
+        var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(id);
         GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
         var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
         InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
@@ -2604,13 +2604,13 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
         }
         //direct children
-        SpeciessesSubCollection = dataService.CollFiSpeciessesByFiSpeciesNameAndNotEmptySubspecies(fiSpecies.GenusId, fiSpecies.FiSpeciesName!);
+        SpeciessesSubCollection = dataService.CollSpeciessesBySpeciesNameAndNotEmptySubspecies(fiSpecies.GenusId, fiSpecies.SpeciesName!);
         //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByFiSpeciesId(id);
-        SourcesCollection = dataService.CollSourcesByFiSpeciesId(id);
-        AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(id);
+        ExpertsCollection = dataService.CollExpertsBySpeciesId(id);
+        SourcesCollection = dataService.CollSourcesBySpeciesId(id);
+        AuthorsCollection = dataService.CollAuthorsBySpeciesId(id);
         //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByFiSpeciesId(id);
+        CommentsCollection = dataService.CollCommentsBySpeciesId(id);
         //----------Refresh-------------
         Refresh();
     }
@@ -2625,20 +2625,20 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         //FiSpeciessesSubCollection = FiSpeciessesCollection;
 
         //  var fiSpecies = _dataService.GetFiSpeciesSingleModelByFiSpeciesId(id);
-        SpeciessesSubCollection = dataService.CollFiSpeciessesByFiSpeciesId(id);
+        SpeciessesSubCollection = dataService.CollSpeciessesBySpeciesId(id);
 
-        var fiSpeciessingle = dataService.GetFiSpeciesSingleByFiSpeciesId(id);
-        var fiSpeciesId = fiSpeciessingle.FiSpeciesId;
-        SpeciessesCollection = dataService.CollFiSpeciessesByFiSpeciesId(fiSpeciesId);
+        var fiSpeciessingle = dataService.GetSpeciesSingleBySpeciesId(id);
+        var fiSpeciesId = fiSpeciessingle.SpeciesId;
+        SpeciessesCollection = dataService.CollSpeciessesBySpeciesId(fiSpeciesId);
 
 
         // FiSpeciessesCollection = _dataService.CollFiSpeciessesByGenusIdAndFiSpeciesNameAndEmptySubspecies(fiSpecies.GenusId, fiSpecies.FiSpeciesName);
-        NamesCollection = dataService.CollNamesByFiSpeciesIdAndHash(id);
-        SynonymsCollection = dataService.CollSynonymsByFiSpeciesIdAndHash(id);
-        ImagesCollection = dataService.CollImagesByFiSpeciesId(id);
-        GeographicsCollection = dataService.CollGeographicsByFiSpeciesId(id);
+        NamesCollection = dataService.CollNamesBySpeciesIdAndHash(id);
+        SynonymsCollection = dataService.CollSynonymsBySpeciesIdAndHash(id);
+        ImagesCollection = dataService.CollImagesBySpeciesId(id);
+        GeographicsCollection = dataService.CollGeographicsBySpeciesId(id);
 
-        var genusId = dataService.GenusIdFromFiSpeciessesCollectionSelect(id);
+        var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(id);
         GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
         var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
         InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
@@ -2692,177 +2692,177 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
         }
         //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByFiSpeciesId(id);
-        SourcesCollection = dataService.CollSourcesByFiSpeciesId(id);
-        AuthorsCollection = dataService.CollAuthorsByFiSpeciesId(id);
+        ExpertsCollection = dataService.CollExpertsBySpeciesId(id);
+        SourcesCollection = dataService.CollSourcesBySpeciesId(id);
+        AuthorsCollection = dataService.CollAuthorsBySpeciesId(id);
         //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByFiSpeciesId(id);
+        CommentsCollection = dataService.CollCommentsBySpeciesId(id);
         //----------Refresh-------------
         Refresh();
     }
     #endregion
 
-    #region PlSpecies
+    //#region PlSpecies
 
-    public void GetTbl72PlSpeciessesById(int id)
-    {
-        var plSpecies = dataService.GetPlSpeciesSingleModelByPlSpeciesId(id);
-        PlSpeciessesCollection = dataService.CollPlSpeciessesByPlSpeciesId(id);
+    //public void GetTbl72PlSpeciessesById(int id)
+    //{
+    //    var plSpecies = dataService.GetPlSpeciesSingleModelByPlSpeciesId(id);
+    //    PlSpeciessesCollection = dataService.CollPlSpeciessesByPlSpeciesId(id);
 
-        NamesCollection = dataService.CollNamesByPlSpeciesIdAndHash(id);
-        SynonymsCollection = dataService.CollSynonymsByPlSpeciesIdAndHash(id);
-        ImagesCollection = dataService.CollImagesByPlSpeciesId(id);
-        GeographicsCollection = dataService.CollGeographicsByPlSpeciesId(id);
+    //    NamesCollection = dataService.CollNamesByPlSpeciesIdAndHash(id);
+    //    SynonymsCollection = dataService.CollSynonymsByPlSpeciesIdAndHash(id);
+    //    ImagesCollection = dataService.CollImagesByPlSpeciesId(id);
+    //    GeographicsCollection = dataService.CollGeographicsByPlSpeciesId(id);
 
-        var genusId = dataService.GenusIdFromPlSpeciessesCollectionSelect(id);
-        GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
-        var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
-        InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
-        var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
-        SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
-        var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
-        TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
-        var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
-        SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
-        var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
-        InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
-        var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
-        SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
-        var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
-        FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
-        var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
-        SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
-        var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
-        InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
-        var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
-        SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
-        var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
-        OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
-        var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
-        LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
-        var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
-        InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
-        var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
-        SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
-        var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
-        ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
-        var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
-        SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
-        var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+    //    var genusId = dataService.GenusIdFromPlSpeciessesCollectionSelect(id);
+    //    GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
+    //    var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
+    //    InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
+    //    var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
+    //    SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
+    //    var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
+    //    TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
+    //    var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
+    //    SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
+    //    var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
+    //    InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
+    //    var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
+    //    SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
+    //    var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
+    //    FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
+    //    var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
+    //    SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
+    //    var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
+    //    InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
+    //    var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
+    //    SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
+    //    var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
+    //    OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
+    //    var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
+    //    LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
+    //    var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
+    //    InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
+    //    var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
+    //    SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
+    //    var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
+    //    ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
+    //    var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
+    //    SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
+    //    var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
+    //    var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId) //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
+    //    if (subphylumId == _fishId) //Basis #Subphylum#
+    //    {
+    //        SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+    //        var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+    //        DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+    //        var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
 
-        if (subdivisionId == _plantId) //Basis #Subdivision#
-        {
-            SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
-            var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
-            PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-            var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
+    //    if (subdivisionId == _plantId) //Basis #Subdivision#
+    //    {
+    //        SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
+    //        var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
+    //        PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
+    //        var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
 
-        //direct children
-        PlSpeciessesSubCollection = dataService.CollPlSpeciessesByPlSpeciesNameAndNotEmptySubspecies(plSpecies.GenusId, plSpecies.PlSpeciesName!);
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByPlSpeciesId(id);
-        SourcesCollection = dataService.CollSourcesByPlSpeciesId(id);
-        AuthorsCollection = dataService.CollAuthorsByPlSpeciesId(id);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByPlSpeciesId(id);
-        //----------Refresh-------------
-        Refresh();
-    }
+    //    //direct children
+    //    PlSpeciessesSubCollection = dataService.CollPlSpeciessesByPlSpeciesNameAndNotEmptySubspecies(plSpecies.GenusId, plSpecies.PlSpeciesName!);
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = dataService.CollExpertsByPlSpeciesId(id);
+    //    SourcesCollection = dataService.CollSourcesByPlSpeciesId(id);
+    //    AuthorsCollection = dataService.CollAuthorsByPlSpeciesId(id);
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = dataService.CollCommentsByPlSpeciesId(id);
+    //    //----------Refresh-------------
+    //    Refresh();
+    //}
 
-    #endregion
+    //#endregion
 
-    #region PlSpeciesSub
-    public void GetTbl72PlSpeciessesSubById(int id)
-    {
-        //    var plSpecies = _dataService.GetPlSpeciesSingleModelByPlSpeciesId(id);
+    //#region PlSpeciesSub
+    //public void GetTbl72PlSpeciessesSubById(int id)
+    //{
+    //    //    var plSpecies = _dataService.GetPlSpeciesSingleModelByPlSpeciesId(id);
 
-        PlSpeciessesCollection = dataService.CollPlSpeciessesByPlSpeciesId(id);
-        //  PlSpeciessesSubCollection = _dataService.CollPlSpeciessesByPlSpeciesId(id);
-        PlSpeciessesSubCollection = PlSpeciessesCollection;
+    //    PlSpeciessesCollection = dataService.CollPlSpeciessesByPlSpeciesId(id);
+    //    //  PlSpeciessesSubCollection = _dataService.CollPlSpeciessesByPlSpeciesId(id);
+    //    PlSpeciessesSubCollection = PlSpeciessesCollection;
 
-        //   PlSpeciessesCollection = _dataService.CollPlSpeciessesByGenusIdAndPlSpeciesNameAndEmptySubspecies(plSpecies.GenusId, plSpecies.PlSpeciesName);
-        NamesCollection = dataService.CollNamesByPlSpeciesIdAndHash(id);
-        SynonymsCollection = dataService.CollSynonymsByPlSpeciesIdAndHash(id);
-        ImagesCollection = dataService.CollImagesByPlSpeciesId(id);
-        GeographicsCollection = dataService.CollGeographicsByPlSpeciesId(id);
+    //    //   PlSpeciessesCollection = _dataService.CollPlSpeciessesByGenusIdAndPlSpeciesNameAndEmptySubspecies(plSpecies.GenusId, plSpecies.PlSpeciesName);
+    //    NamesCollection = dataService.CollNamesByPlSpeciesIdAndHash(id);
+    //    SynonymsCollection = dataService.CollSynonymsByPlSpeciesIdAndHash(id);
+    //    ImagesCollection = dataService.CollImagesByPlSpeciesId(id);
+    //    GeographicsCollection = dataService.CollGeographicsByPlSpeciesId(id);
 
-        var genusId = dataService.GenusIdFromPlSpeciessesCollectionSelect(id);
-        GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
-        var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
-        InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
-        var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
-        SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
-        var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
-        TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
-        var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
-        SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
-        var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
-        InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
-        var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
-        SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
-        var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
-        FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
-        var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
-        SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
-        var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
-        InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
-        var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
-        SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
-        var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
-        OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
-        var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
-        LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
-        var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
-        InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
-        var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
-        SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
-        var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
-        ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
-        var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
-        SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
-        var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+    //    var genusId = dataService.GenusIdFromPlSpeciessesCollectionSelect(id);
+    //    GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
+    //    var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
+    //    InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
+    //    var subtribusId = dataService.SubtribusIdFromInfratribussesCollectionSelect(infratribusId);
+    //    SubtribussesCollection = dataService.CollSubtribussesBySubtribusIdAndHash(subtribusId);
+    //    var tribusId = dataService.TribusIdFromSubtribussesCollectionSelect(subtribusId);
+    //    TribussesCollection = dataService.CollTribussesByTribusIdAndHash(tribusId);
+    //    var supertribusId = dataService.SupertribusIdFromTribussesCollectionSelect(tribusId);
+    //    SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
+    //    var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
+    //    InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
+    //    var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
+    //    SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
+    //    var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
+    //    FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
+    //    var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
+    //    SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
+    //    var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
+    //    InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
+    //    var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
+    //    SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
+    //    var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
+    //    OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
+    //    var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
+    //    LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
+    //    var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
+    //    InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
+    //    var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
+    //    SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
+    //    var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
+    //    ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
+    //    var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
+    //    SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
+    //    var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
+    //    var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
-        {
-            SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
-            var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
-            PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-            var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByPlSpeciesId(id);
-        SourcesCollection = dataService.CollSourcesByPlSpeciesId(id);
-        AuthorsCollection = dataService.CollAuthorsByPlSpeciesId(id);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByPlSpeciesId(id);
-        //----------Refresh-------------
-        Refresh();
+    //    if (subphylumId == _fishId)  //Basis #Subphylum#
+    //    {
+    //        SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+    //        var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+    //        DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+    //        var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
+    //    if (subdivisionId == _plantId)  //Basis #Subdivision#
+    //    {
+    //        SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
+    //        var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
+    //        PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
+    //        var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
+    //        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    }
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = dataService.CollExpertsByPlSpeciesId(id);
+    //    SourcesCollection = dataService.CollSourcesByPlSpeciesId(id);
+    //    AuthorsCollection = dataService.CollAuthorsByPlSpeciesId(id);
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = dataService.CollCommentsByPlSpeciesId(id);
+    //    //----------Refresh-------------
+    //    Refresh();
 
-    }
-    //------------------------------------------------------------------------------
-    #endregion
+    //}
+    ////------------------------------------------------------------------------------
+    //#endregion
 
     #endregion
 
@@ -3029,33 +3029,33 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         set => SetProperty(ref _speciesgroupSelected, value);
     }
 
-    private Tbl69FiSpecies _fiSpeciesSelected = null!;
-    public Tbl69FiSpecies FiSpeciesSelected
+    private Tbl75Species _speciesSelected = null!;
+    public Tbl75Species SpeciesSelected
     {
-        get => _fiSpeciesSelected;
-        set => SetProperty(ref _fiSpeciesSelected, value);
+        get => _speciesSelected;
+        set => SetProperty(ref _speciesSelected, value);
     }
 
-    private Tbl69FiSpecies _fiSpeciesSubSelected = null!;
-    public Tbl69FiSpecies FiSpeciesSubSelected
+    private Tbl75Species _speciesSubSelected = null!;
+    public Tbl75Species SpeciesSubSelected
     {
-        get => _fiSpeciesSubSelected;
-        set => SetProperty(ref _fiSpeciesSubSelected, value);
+        get => _speciesSubSelected;
+        set => SetProperty(ref _speciesSubSelected, value);
     }
 
-    private Tbl72PlSpecies _plSpeciesSelected = null!;
-    public Tbl72PlSpecies PlSpeciesSelected
-    {
-        get => _plSpeciesSelected;
-        set => SetProperty(ref _plSpeciesSelected, value);
-    }
+    //private Tbl72PlSpecies _plSpeciesSelected = null!;
+    //public Tbl72PlSpecies PlSpeciesSelected
+    //{
+    //    get => _plSpeciesSelected;
+    //    set => SetProperty(ref _plSpeciesSelected, value);
+    //}
 
-    private Tbl72PlSpecies _plSpeciesSubSelected = null!;
-    public Tbl72PlSpecies PlSpeciesSubSelected
-    {
-        get => _plSpeciesSubSelected;
-        set => SetProperty(ref _plSpeciesSubSelected, value);
-    }
+    //private Tbl72PlSpecies _plSpeciesSubSelected = null!;
+    //public Tbl72PlSpecies PlSpeciesSubSelected
+    //{
+    //    get => _plSpeciesSubSelected;
+    //    set => SetProperty(ref _plSpeciesSubSelected, value);
+    //}
 
     private Tbl78Name _nameSelected = null!;
     public Tbl78Name NameSelected
@@ -3391,80 +3391,55 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             GenusSelected = GenusItems.First();
         }
     }
-    private void RefreshFiSpeciesItems()
-    {
-        FiSpeciesItems.Clear();
-        foreach (var item in FiSpeciessesCollection)
-        {
-            FiSpeciesItems.Add(item);
-        }
-        if (FiSpeciesSelected == null && FiSpeciessesCollection.Count != 0)
-        {
-            FiSpeciesSelected = FiSpeciesItems.First();
-        }
-    }
     private void RefreshSpeciesItems()
     {
-        FiSpeciesItems.Clear();
+        SpeciesItems.Clear();
         foreach (var item in SpeciessesCollection)
         {
-            FiSpeciesItems.Add(item);
+            SpeciesItems.Add(item);
         }
-        if (FiSpeciesSelected == null && SpeciessesCollection.Count != 0)
+        if (SpeciesSelected == null && SpeciessesCollection.Count != 0)
         {
-            FiSpeciesSelected = FiSpeciesItems.First();
+            SpeciesSelected = SpeciesItems.First();
         }
-    }
-    private void RefreshFiSpeciesSubItems()
-    {
-        FiSpeciesSubItems.Clear();
-        foreach (var item in FiSpeciessesSubCollection)
-        {
-            FiSpeciesSubItems.Add(item);
-        }
-        if (FiSpeciesSubSelected == null && FiSpeciessesSubCollection.Count != 0)
-        {
-            FiSpeciesSubSelected = FiSpeciesSubItems.First();
-        }
-
     }
     private void RefreshSpeciesSubItems()
     {
-        FiSpeciesSubItems.Clear();
+        SpeciesSubItems.Clear();
         foreach (var item in SpeciessesSubCollection)
         {
-            FiSpeciesSubItems.Add(item);
+            SpeciesSubItems.Add(item);
         }
-        if (FiSpeciesSubSelected == null && SpeciessesSubCollection.Count != 0)
+        if (SpeciesSubSelected == null && SpeciessesSubCollection.Count != 0)
         {
-            FiSpeciesSubSelected = FiSpeciesSubItems.First();
+            SpeciesSubSelected = SpeciesSubItems.First();
         }
 
     }
-    private void RefreshPlSpeciesItems()
-    {
-        PlSpeciesItems.Clear();
-        foreach (var item in PlSpeciessesCollection)
-        {
-            PlSpeciesItems.Add(item);
-        }
-        if (PlSpeciesSelected == null && PlSpeciessesCollection.Count != 0)
-        {
-            PlSpeciesSelected = PlSpeciesItems.First();
-        }
-    }
-    private void RefreshPlSpeciesSubItems()
-    {
-        PlSpeciesSubItems.Clear();
-        foreach (var item in PlSpeciessesSubCollection)
-        {
-            PlSpeciesSubItems.Add(item);
-        }
-        if (PlSpeciesSubSelected == null && PlSpeciessesSubCollection.Count != 0)
-        {
-            PlSpeciesSubSelected = PlSpeciesSubItems.First();
-        }
-    }
+    //private void RefreshPlSpeciesItems()
+    //{
+    //    PlSpeciesItems.Clear();
+    //    foreach (var item in PlSpeciessesCollection)
+    //    {
+    //        PlSpeciesItems.Add(item);
+    //    }
+    //    if (PlSpeciesSelected == null && PlSpeciessesCollection.Count != 0)
+    //    {
+    //        PlSpeciesSelected = PlSpeciesItems.First();
+    //    }
+    //}
+    //private void RefreshPlSpeciesSubItems()
+    //{
+    //    PlSpeciesSubItems.Clear();
+    //    foreach (var item in PlSpeciessesSubCollection)
+    //    {
+    //        PlSpeciesSubItems.Add(item);
+    //    }
+    //    if (PlSpeciesSubSelected == null && PlSpeciessesSubCollection.Count != 0)
+    //    {
+    //        PlSpeciesSubSelected = PlSpeciesSubItems.First();
+    //    }
+    //}
     private void RefreshNameItems()
     {
         NameItems.Clear();
@@ -3591,10 +3566,10 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     public ObservableCollection<Tbl63Infratribus> InfratribusItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciesItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciesSubItems { get; } = [];
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciesItems { get; } = [];
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciesSubItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesSubItems { get; } = [];
+    //public ObservableCollection<Tbl72PlSpecies> PlSpeciesItems { get; } = [];
+    //public ObservableCollection<Tbl72PlSpecies> PlSpeciesSubItems { get; } = [];
     public ObservableCollection<Tbl78Name> NameItems { get; } = [];
     public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
     public ObservableCollection<Tbl84Synonym> SynonymItems { get; } = [];
@@ -3741,43 +3716,43 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciessesCollection
+    //public ObservableCollection<Tbl69FiSpecies> FiSpeciessesCollection
+    //{
+    //    get; set;
+    //} = null!;
+    public ObservableCollection<Tbl75Species> SpeciessesCollection
     {
         get; set;
     } = null!;
-    public ObservableCollection<Tbl69FiSpecies> SpeciessesCollection
-    {
-        get; set;
-    } = null!;
-    public ObservableCollection<Tbl69FiSpecies> SpeciessesSubCollection
-    {
-        get; set;
-    } = null!;
-
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciessesSubCollection
+    public ObservableCollection<Tbl75Species> SpeciessesSubCollection
     {
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection
+    //public ObservableCollection<Tbl69FiSpecies> FiSpeciessesSubCollection
+    //{
+    //    get; set;
+    //} = null!;
+
+    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection
+    //{
+    //    get; set;
+    //} = null!;
+
+    public ObservableCollection<Tbl75Species> SpeciessesSpeciesNameCollection
     {
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl69FiSpecies> FiSpeciessesFiSpeciesNameCollection
-    {
-        get; set;
-    } = null!;
+    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesSubCollection
+    //{
+    //    get; set;
+    //} = null!;
 
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciessesSubCollection
-    {
-        get; set;
-    } = null!;
-
-    public ObservableCollection<Tbl72PlSpecies> PlSpeciessesPlSpeciesNameCollection
-    {
-        get; set;
-    } = null!;
+    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesPlSpeciesNameCollection
+    //{
+    //    get; set;
+    //} = null!;
 
     public ObservableCollection<Tbl78Name> NamesCollection
     {
@@ -3866,25 +3841,25 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         set => SetProperty(ref _diseaseSelected, value);
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl69FiSpeciessesList = null!;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciessesList = null!;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl69FiSpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
-        get => _tbl69FiSpeciessesList;
+        get => _tbl75SpeciessesList;
         set
         {
-            _tbl69FiSpeciessesList = value; OnPropertyChanged();
+            _tbl75SpeciessesList = value; OnPropertyChanged();
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl69FiSpeciessesAllList = null!;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciessesAllList = null!;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl69FiSpeciessesAllList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesAllList
     {
-        get => _tbl69FiSpeciessesAllList;
+        get => _tbl75SpeciessesAllList;
         set
         {
-            _tbl69FiSpeciessesAllList = value;
+            _tbl75SpeciessesAllList = value;
             OnPropertyChanged();
         }
     }

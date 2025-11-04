@@ -374,7 +374,7 @@
                                 <TextBlock Margin="2,0,0,0"
                                            VerticalAlignment="Center"
                                            Style="{StaticResource CaptionTextBlockStyle}"
-                                           Text="{x:Bind ViewModel.SpeciesSelected.FiSpeciesName, Mode=OneWay}" />
+                                           Text="{x:Bind ViewModel.SpeciesSelected.SpeciesName, Mode=OneWay}" />
                                 <TextBlock Margin="2,0,0,0"
                                            VerticalAlignment="Center"
                                            Style="{StaticResource CaptionTextBlockStyle}"
@@ -475,7 +475,7 @@
                                              loca:Uids.Uid="TextBox_FiSpeciesId"
                                              IsReadOnly="True"
                                              RelativePanel.AlignLeftWithPanel="True"
-                                             Text="{x:Bind ViewModel.SpeciesSelected.FiSpeciesId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{x:Bind ViewModel.SpeciesSelected.SpeciesId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <ComboBox x:Name="GenusComboFiSpecies"
                                               MinWidth="200"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
@@ -498,7 +498,7 @@
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="GenusComboFiSpecies"
-                                             Text="{x:Bind ViewModel.SpeciesSelected.FiSpeciesName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{x:Bind ViewModel.SpeciesSelected.SpeciesName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="FiSpeciesSubspecies"
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
@@ -1063,14 +1063,14 @@
                                           SelectedItem="{x:Bind ViewModel.SpeciesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           SelectionMode="Single">
                             <toolkit:DataGrid.Columns>
-                                <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_FiSpeciesId"
-                                                                Tag="FiSpeciesId">
+                                <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_SpeciesId"
+                                                                Tag="SpeciesId">
                                     <toolkit:DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate x:DataType="models:Tbl69FiSpecies">
+                                        <DataTemplate x:DataType="models:Tbl75Species">
                                             <HyperlinkButton Margin="12,0"
                                                              BorderThickness="0"
                                                              Click="ViewSpeciesHyperlinkButton_Click"
-                                                             Content="{Binding FiSpeciesId}" />
+                                                             Content="{Binding SpeciesId}" />
                                         </DataTemplate>
                                     </toolkit:DataGridTemplateColumn.CellTemplate>
                                 </toolkit:DataGridTemplateColumn>
@@ -1078,10 +1078,10 @@
                                                                 Binding="{Binding GenusId}"
                                                                 DisplayMemberPath="GenusName"
                                                                 ItemsSource="{x:Bind ViewModel.Tbl66GenussesAllList, Mode=OneWay}" />
-                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_FiSpeciesName"
-                                                            Binding="{Binding FiSpeciesName}"
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_SpeciesName"
+                                                            Binding="{Binding SpeciesName}"
                                                             CanUserSort="True"
-                                                            Tag="FiSpeciesName" />
+                                                            Tag="SpeciesName" />
                                 <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Subspecies"
                                                             Binding="{Binding Subspecies}"
                                                             CanUserSort="True"

@@ -20,7 +20,7 @@ public partial class Tbl84SynonymViewModel : ObservableObject
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl84Synonym> SynonymItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
-    public ObservableCollection<Tbl69FiSpecies> SpeciesItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
 
     #endregion [Private Data Members]           
 
@@ -61,20 +61,19 @@ public partial class Tbl84SynonymViewModel : ObservableObject
             IsInEditSynonym = true;
             IsNewSynonym = true;
 
-            var plSpeciesId = 0;
+            //var plSpeciesId = 0;
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                plSpeciesId = plantaeRegnum.PlSpeciesId;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    plSpeciesId = plantaeRegnum.PlSpeciesId;
+            //}
 
-            var speciesId = Tbl75SpeciessesAllList.First().FiSpeciesId;
+            var speciesId = Tbl75SpeciessesAllList.First().SpeciesId;
 
             Tbl84SynonymsList ??= [];
-            Tbl84SynonymsList.Insert(index: 0,
-                item: new Tbl84Synonym() { FiSpeciesId = speciesId, PlSpeciesId = plSpeciesId });
+            Tbl84SynonymsList.Insert(index: 0, item: new Tbl84Synonym { SpeciesId = speciesId});
         });
     }
 
@@ -188,7 +187,7 @@ public partial class Tbl84SynonymViewModel : ObservableObject
 
     #region [Methods Species]
 
-    public async Task SaveSpeciesAsync(Tbl69FiSpecies viewModelSpeciesSelected)
+    public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
@@ -198,14 +197,14 @@ public partial class Tbl84SynonymViewModel : ObservableObject
             }
         });
 
-        Tbl69FiSpecies result = null;
+        Tbl75Species result = null;
         try
         {
             if (IsModifiedSpecies)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertFiSpeciesAsync(viewModelSpeciesSelected);
+                    result = await _dataService.UpsertSpeciesAsync(viewModelSpeciesSelected);
                     IsModifiedSpecies = false;
                 });
             }
@@ -365,8 +364,8 @@ public partial class Tbl84SynonymViewModel : ObservableObject
         set => SetProperty(ref _genusSelected, value);
     }
 
-    private Tbl69FiSpecies _speciesSelected;
-    public Tbl69FiSpecies SpeciesSelected
+    private Tbl75Species _speciesSelected;
+    public Tbl75Species SpeciesSelected
     {
         get => _speciesSelected;
         set => SetProperty(ref _speciesSelected, value);
@@ -416,8 +415,8 @@ public partial class Tbl84SynonymViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciessesAllList;
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesAllList
+    private ObservableCollection<Tbl75Species> _tbl75SpeciessesAllList;
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesAllList
     {
         get => _tbl75SpeciessesAllList;
         set
@@ -456,9 +455,9 @@ public partial class Tbl84SynonymViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl69FiSpecies> _tbl75SpeciesList;
+    private ObservableCollection<Tbl75Species> _tbl75SpeciesList;
 
-    public ObservableCollection<Tbl69FiSpecies> Tbl75SpeciessesList
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
     {
         get => _tbl75SpeciesList;
         set

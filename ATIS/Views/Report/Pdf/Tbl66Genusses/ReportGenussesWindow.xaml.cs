@@ -35,7 +35,7 @@ public sealed partial class ReportGenussesWindow : WindowEx
         Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportHeight"));
         this.CenterOnScreen();
 
-        if (ViewModel.FiSpeciesItems.Count == 0)
+        if (ViewModel.SpeciesItems.Count == 0)
         {
             TbDirectChildren.Visibility = Visibility.Collapsed;
         }

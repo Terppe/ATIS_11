@@ -8,8 +8,9 @@ public class Tbl90Reference
 {
     [Key]
     public int ReferenceId { get; set; }
-    public int? FiSpeciesId { get; set; }
-    public int? PlSpeciesId { get; set; }
+    public int? SpeciesId { get; set; }
+    //public int? FiSpeciesId { get; set; }
+    //public int? PlSpeciesId { get; set; }
     public int? GenusId { get; set; }
     public int? InfratribusId { get; set; }
     public int? SubtribusId { get; set; }
@@ -69,10 +70,8 @@ public class Tbl90Reference
     //public virtual Tbl09Division Tbl09Divisions { get; set; }
     //public virtual Tbl12Subphylum Tbl12Subphylums { get; set; }
     //public virtual Tbl15Subdivision Tbl15Subdivisions { get; set; }
-    [ForeignKey("FiSpeciesId")]
-    public virtual Tbl69FiSpecies Tbl69FiSpeciesses { get; set; }
-    [ForeignKey("PlSpeciesId")]
-    public virtual Tbl72PlSpecies Tbl72PlSpeciesses { get; set; }
+    [ForeignKey("SpeciesId")]
+    public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
     [ForeignKey("RefAuthorId")]
     public virtual Tbl90RefAuthor Tbl90RefAuthors { get; set; }

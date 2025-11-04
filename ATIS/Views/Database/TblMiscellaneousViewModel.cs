@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
+using static ATIS.Views.Report.PdfModels;
 
 //    MiscellaneousViewModel Skriptdatum:  09.09.2025  10:32    
 
@@ -196,23 +197,23 @@ public partial class TblMiscellaneousViewModel : ObservableObject
             //Wenn auf Tbl75Speciesses umgestellt wird raus _plantId und _animalId
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
 
-            var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
+            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
 
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.PlSpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
+            //if (plantaeRegnum != null)
+            //{
+            //    _plantId = plantaeRegnum.PlSpeciesId;
+            //}
+            //else
+            //{
+            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+            //    return;
+            //}
 
-            var animalRegnum = Context.Tbl69FiSpeciesses.FirstOrDefault(x => x.FiSpeciesName == "Animalia#Regnum#");
+            var animalRegnum = Context.Tbl75Speciesses.FirstOrDefault(x => x.SpeciesName == "Animalia#Regnum#");
 
             if (animalRegnum != null)
             {
-                _animalId = animalRegnum.FiSpeciesId;
+                _animalId = animalRegnum.SpeciesId;
             }
             else
             {
@@ -226,7 +227,8 @@ public partial class TblMiscellaneousViewModel : ObservableObject
             var miscellaneousId = MiscellaneousSelected.MiscellaneousId;
 
             Tbl81ImagesList ??= [];
-            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, MiscellaneousId = miscellaneousId });
+            //oder     Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = 2, MiscellaneousId = miscellaneousId});
+            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = _animalId, MiscellaneousId = miscellaneousId });
         });
     }
 

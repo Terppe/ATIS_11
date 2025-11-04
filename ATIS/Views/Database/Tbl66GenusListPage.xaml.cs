@@ -25,7 +25,7 @@ public sealed partial class Tbl66GenusListPage : Page
     private Tbl66Genus SingleGenus { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
-    private Tbl69FiSpecies SingleSpecies { get; set; }
+    private Tbl75Species SingleSpecies { get; set; }
     private static readonly AtisDbContext Context = new();
     private string _search;
 
@@ -218,7 +218,7 @@ public sealed partial class Tbl66GenusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
+                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
             .AsNoTracking()
             .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
             });
@@ -279,7 +279,7 @@ public sealed partial class Tbl66GenusListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        SpecificationExpanderFiSpecies.IsExpanded = false;
+        SpecificationExpanderSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -884,7 +884,7 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
 
-        SpecificationExpanderFiSpecies.IsExpanded = false;
+        SpecificationExpanderSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1002,7 +1002,7 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
 
-        SpecificationExpanderFiSpecies.IsExpanded = false;
+        SpecificationExpanderSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1120,7 +1120,7 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
 
-        SpecificationExpanderFiSpecies.IsExpanded = false;
+        SpecificationExpanderSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1235,7 +1235,7 @@ public sealed partial class Tbl66GenusListPage : Page
 
         ViewModel.IsNewComment = false;
 
-        SpecificationExpanderFiSpecies.IsExpanded = false;
+        SpecificationExpanderSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1538,7 +1538,7 @@ public sealed partial class Tbl66GenusListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.GenusSelected.GenusId);
+            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
         }
 
         return Task.CompletedTask;
@@ -1566,7 +1566,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.GenusSelected.GenusId);
+            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
             SpeciesSingles();
         }
         else
@@ -1581,7 +1581,7 @@ public sealed partial class Tbl66GenusListPage : Page
 
     private void SpeciesSingles()
     {
-        ViewModel.SpeciesSelected.FiSpeciesName = SingleSpecies.FiSpeciesName;
+        ViewModel.SpeciesSelected.SpeciesName = SingleSpecies.SpeciesName;
         ViewModel.SpeciesSelected.Subspecies = SingleSpecies.Subspecies;
         ViewModel.SpeciesSelected.Divers = SingleSpecies.Divers;
         ViewModel.SpeciesSelected.GenusId = SingleSpecies.GenusId;
@@ -1652,7 +1652,7 @@ public sealed partial class Tbl66GenusListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.FiSpeciesId, ViewModel.GenusSelected.GenusId);
+                SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
                 SpeciesSingles();
             }
         });
@@ -1712,8 +1712,8 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(a => a.FiSpeciesName == ViewModel.SpeciesSelected.FiSpeciesName &&
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
                         a.SpeciesgroupId == ViewModel.SpeciesSelected.SpeciesgroupId &&
@@ -1732,20 +1732,20 @@ public sealed partial class Tbl66GenusListPage : Page
         return false;
     }
 
-    private async Task BehindSaveSpecies(Tbl69FiSpecies viewModelSpeciesSelected)
+    private async Task BehindSaveSpecies(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl69FiSpeciesses
-                .Where(com => com.FiSpeciesId == viewModelSpeciesSelected.FiSpeciesId)];
+            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
             SpeciessesExpander.Visibility = Visibility.Collapsed;

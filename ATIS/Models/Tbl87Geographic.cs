@@ -15,10 +15,11 @@ public class Tbl87Geographic
     public string Country { get; set; }
     [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string Continent { get; set; }
-    [Required]
-    public int FiSpeciesId { get; set; }
-    [Required]
-    public int PlSpeciesId { get; set; }
+    public int SpeciesId { get; set; }
+    //[Required]
+    //public int FiSpeciesId { get; set; }
+    //[Required]
+    //public int PlSpeciesId { get; set; }
     [Required]
     public int CountId { get; set; }
     public double Latitude { get; set; }
@@ -50,11 +51,8 @@ public class Tbl87Geographic
     public string Http { get; set; }
     //     public byte[] RowVersion { get; set; }
 
-    [ForeignKey("FiSpeciesId")]
-    public virtual Tbl69FiSpecies Tbl69FiSpeciesses { get; set; }
-
-    [ForeignKey("PlSpeciesId")]
-    public virtual Tbl72PlSpecies Tbl72PlSpeciesses { get; set; }
+    [ForeignKey("SpeciesId")]
+    public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
 
 }

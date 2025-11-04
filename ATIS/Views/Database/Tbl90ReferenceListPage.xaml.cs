@@ -287,8 +287,8 @@ public sealed partial class Tbl90ReferenceListPage : Page
         ViewModel.ReferenceSelected.SubtribusId = SingleReference.SubtribusId;
         ViewModel.ReferenceSelected.InfratribusId = SingleReference.InfratribusId;
         ViewModel.ReferenceSelected.GenusId = SingleReference.GenusId;
-        ViewModel.ReferenceSelected.FiSpeciesId = SingleReference.FiSpeciesId;
-        ViewModel.ReferenceSelected.PlSpeciesId = SingleReference.PlSpeciesId;
+        ViewModel.ReferenceSelected.SpeciesId = SingleReference.SpeciesId;
+        //ViewModel.ReferenceSelected.PlSpeciesId = SingleReference.PlSpeciesId;
     }
     private async Task RevertChangesReferenceAsync()
     {
@@ -438,8 +438,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
                         a.SubtribusId == ViewModel.ReferenceSelected.SubtribusId &&
                         a.InfratribusId == ViewModel.ReferenceSelected.InfratribusId &&
                         a.GenusId == ViewModel.ReferenceSelected.GenusId &&
-                        a.PlSpeciesId == ViewModel.ReferenceSelected.PlSpeciesId &&
-                        a.FiSpeciesId == ViewModel.ReferenceSelected.FiSpeciesId)];
+                        a.SpeciesId == ViewModel.ReferenceSelected.SpeciesId)];
         });
         if (ViewModel.IsNewReference)
         {

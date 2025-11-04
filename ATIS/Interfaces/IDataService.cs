@@ -258,38 +258,50 @@ public interface IDataService
 
     #endregion Speciesgroup
 
-    #region FiSpecies                  
+    #region Species                  
 
-    ObservableCollection<Tbl69FiSpecies> GetSpeciesAsync();
-    ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync();
-    ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(int fispeciesid);
-    ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(string search);
-    ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusNameAsync(string search);
-    ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusIdAsync(int genusid);
-    Task<Tbl69FiSpecies> UpsertFiSpeciesAsync(Tbl69FiSpecies fispecies);
-    Task DeleteFiSpeciesAsync(int fispeciesid);
+    ObservableCollection<Tbl75Species> GetSpeciesAsync();
+    ObservableCollection<Tbl75Species> GetSpeciesAsync(int speciesid);
+    ObservableCollection<Tbl75Species> GetSpeciesAsync(string search);
+    ObservableCollection<Tbl75Species> GetSpeciesFromGenusNameAsync(string search);
+    ObservableCollection<Tbl75Species> GetSpeciesFromGenusIdAsync(int genusid);
+    Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species);
+    Task DeleteSpeciesAsync(int speciesid);
 
-    #endregion FiSpecies
+    #endregion Species
 
-    #region PlSpecies                  
 
-    ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync();
-    ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(int plspeciesid);
-    ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(string search);
-    ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusNameAsync(string search);
-    ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusIdAsync(int genusid);
-    Task<Tbl72PlSpecies> UpsertPlSpeciesAsync(Tbl72PlSpecies plspecies);
-    Task DeletePlSpeciesAsync(int plspeciesid);
+    //#region FiSpecies                  
 
-    #endregion PlSpecies
+    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync();
+    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(int fispeciesid);
+    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(string search);
+    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusNameAsync(string search);
+    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusIdAsync(int genusid);
+    //Task<Tbl69FiSpecies> UpsertFiSpeciesAsync(Tbl69FiSpecies fispecies);
+    //Task DeleteFiSpeciesAsync(int fispeciesid);
+
+    //#endregion FiSpecies
+
+    //#region PlSpecies                  
+
+    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync();
+    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(int plspeciesid);
+    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(string search);
+    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusNameAsync(string search);
+    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusIdAsync(int genusid);
+    //Task<Tbl72PlSpecies> UpsertPlSpeciesAsync(Tbl72PlSpecies plspecies);
+    //Task DeletePlSpeciesAsync(int plspeciesid);
+
+    //#endregion PlSpecies
 
     #region Name                  
 
     ObservableCollection<Tbl78Name> GetNameAsync();
     ObservableCollection<Tbl78Name> GetNameAsync(int nameid);
     ObservableCollection<Tbl78Name> GetNameAsync(string search);
-    ObservableCollection<Tbl78Name> GetNameFromFiSpeciesIdAsync(int fispeciesid);
-    ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid);
+    ObservableCollection<Tbl78Name> GetNameFromSpeciesIdAsync(int speciesid);
+    //ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid);
     Task<Tbl78Name> UpsertNameAsync(Tbl78Name name);
     Task DeleteNameAsync(int nameid);
 
@@ -300,8 +312,8 @@ public interface IDataService
     ObservableCollection<Tbl81Image> GetImageAsync();
     ObservableCollection<Tbl81Image> GetImageAsync(int imageid);
     ObservableCollection<Tbl81Image> GetImageAsync(string search);
-    ObservableCollection<Tbl81Image> GetImageFromFiSpeciesIdAsync(int fispeciesid);
-    ObservableCollection<Tbl81Image> GetImageFromPlSpeciesIdAsync(int plspeciesid);
+    ObservableCollection<Tbl81Image> GetImageFromSpeciesIdAsync(int speciesid);
+    //ObservableCollection<Tbl81Image> GetImageFromPlSpeciesIdAsync(int plspeciesid);
     Task<Tbl81Image> UpsertImageAsync(Tbl81Image image, string selectedpath);
     Task DeleteImageAsync(int imageid);
 
@@ -312,8 +324,8 @@ public interface IDataService
     ObservableCollection<Tbl84Synonym> GetSynonymAsync();
     ObservableCollection<Tbl84Synonym> GetSynonymAsync(int synonymid);
     ObservableCollection<Tbl84Synonym> GetSynonymAsync(string search);
-    ObservableCollection<Tbl84Synonym> GetSynonymFromFiSpeciesIdAsync(int fispeciesid);
-    ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid);
+    ObservableCollection<Tbl84Synonym> GetSynonymFromSpeciesIdAsync(int speciesid);
+    //ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid);
     Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym);
     Task DeleteSynonymAsync(int synonymid);
 
@@ -324,8 +336,8 @@ public interface IDataService
     ObservableCollection<Tbl87Geographic> GetGeographicAsync();
     ObservableCollection<Tbl87Geographic> GetGeographicAsync(int geographicid);
     ObservableCollection<Tbl87Geographic> GetGeographicAsync(string search);
-    ObservableCollection<Tbl87Geographic> GetGeographicFromFiSpeciesIdAsync(int fispeciesid);
-    ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid);
+    ObservableCollection<Tbl87Geographic> GetGeographicFromSpeciesIdAsync(int speciesid);
+    //ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid);
     Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic);
     Task DeleteGeographicAsync(int geographicid);
 
@@ -463,8 +475,8 @@ public interface IDataService
     ObservableCollection<Tbl60Subtribus> GetTbl60SubtribussesCollectionOrderBySubtribusNameFromFilterText(string filterText);
     ObservableCollection<Tbl63Infratribus> GetTbl63InfratribussesCollectionOrderByInfratribusNameFromFilterText(string filterText);
     ObservableCollection<Tbl66Genus> GetTbl66GenussesCollectionOrderByGenusNameFromFilterText(string filterText);
-    ObservableCollection<Tbl69FiSpecies> GetTbl69FiSpeciessesCollectionOrderByGenusNameAndFiSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
-    ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
+    ObservableCollection<Tbl75Species> GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
+    //ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
     ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText);
     ObservableCollection<Tbl84Synonym> GetTbl84SynonymsCollectionOrderBySynonymNameFromFilterText(string filterText);
     ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText);
@@ -861,10 +873,10 @@ public interface IDataService
 
     ObservableCollection<Tbl66Genus> CollGenussesByGenusId(int id);
     //direct children
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByGenusIdAndHash(int id);
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndHash(int id);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id);
+    ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndHash(int id);
+    ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id);
+    //ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndHash(int id);
+    //ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id);
     //Function
     int InfratribusIdFromGenussesCollectionSelect(int id);
     //ForeignKey
@@ -877,63 +889,35 @@ public interface IDataService
     ObservableCollection<Tbl93Comment> CollCommentsByGenusId(int id);
     #endregion Genus
 
-    #region FiSpecies
-    Tbl69FiSpecies GetFiSpeciesSingleByFiSpeciesIdAndHash(int id);
-    Tbl69FiSpecies GetFiSpeciesSingleByFiSpeciesId(int fispeciesId);
-    Tbl69FiSpecies GetFiSpeciesSingleModelByFiSpeciesId(int fispeciesId);
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByFiSpeciesId(int id);
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciesSubsByFiSpeciesNameandGenusId(string name, int genusId);
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByFiSpeciesNameAndNotEmptySubspecies(int id, string name);
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByGenusIdAndFiSpeciesNameAndEmptySubspecies(int id, string name);
-    ObservableCollection<Tbl69FiSpecies> CollFiSpeciessesByFiSpeciesNameAndSubspeciesAndDivers(string fiSpeciesName, string subspecies,
+    #region Species
+
+    Tbl75Species GetSpeciesSingleBySpeciesIdAndHash(int id);
+    Tbl75Species GetSpeciesSingleBySpeciesId(int speciesId);
+    Tbl75Species GetSpeciesSingleModelBySpeciesId(int speciesId);
+    ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesId(int speciesid);
+    ObservableCollection<Tbl75Species> CollSpeciesSubsBySpeciesNameandGenusId(string name, int genusId);
+    ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndNotEmptySubspecies(int id, string name);
+    ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSpeciesNameAndEmptySubspecies(int id, string name);
+    ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndSubspeciesAndDivers(string speciesName, string subspecies,
         string divers);
     //direct children
-    ObservableCollection<Tbl78Name> CollNamesByFiSpeciesIdAndHash(int id);
-    ObservableCollection<Tbl84Synonym> CollSynonymsByFiSpeciesIdAndHash(int id);
+    ObservableCollection<Tbl78Name> CollNamesBySpeciesIdAndHash(int id);
+    ObservableCollection<Tbl84Synonym> CollSynonymsBySpeciesIdAndHash(int id);
     //Function
-    int GenusIdFromFiSpeciessesCollectionSelect(int id);
+    int GenusIdFromSpeciessesCollectionSelect(int id);
     //ForeignKey
     ObservableCollection<Tbl66Genus> CollGenussesByGenusIdAndHash(int id);
     //References
-    ObservableCollection<Tbl90Reference> CollExpertsByFiSpeciesId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByFiSpeciesId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByFiSpeciesId(int id);
+    ObservableCollection<Tbl90Reference> CollExpertsBySpeciesId(int id);
+    ObservableCollection<Tbl90Reference> CollSourcesBySpeciesId(int id);
+    ObservableCollection<Tbl90Reference> CollAuthorsBySpeciesId(int id);
     //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByFiSpeciesId(int id);
+    ObservableCollection<Tbl93Comment> CollCommentsBySpeciesId(int id);
     //Images
-    ObservableCollection<Tbl81Image> CollImagesByFiSpeciesId(int id);
+    ObservableCollection<Tbl81Image> CollImagesBySpeciesId(int id);
     //Geographics
-    ObservableCollection<Tbl87Geographic> CollGeographicsByFiSpeciesId(int id);
-    #endregion FiSpecies
-
-    #region PlSpecies
-    Tbl72PlSpecies GetPlSpeciesSingleByPlSpeciesIdAndHash(int id);
-    Tbl72PlSpecies GetPlSpeciesSingleByPlSpeciesId(int plspeciesId);
-    Tbl72PlSpecies GetPlSpeciesSingleModelByPlSpeciesId(int plspeciesId);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesId(int id);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciesSubsByPlSpeciesNameandGenusId(string name, int genusId);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesNameAndNotEmptySubspecies(int id, string name);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndPlSpeciesNameAndEmptySubspecies(int id, string name);
-    ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByPlSpeciesNameAndSubspeciesAndDivers(string plSpeciesName, string subspecies,
-        string divers);
-
-    //direct children
-    ObservableCollection<Tbl78Name> CollNamesByPlSpeciesIdAndHash(int id);
-    ObservableCollection<Tbl84Synonym> CollSynonymsByPlSpeciesIdAndHash(int id);
-    //Function
-    int GenusIdFromPlSpeciessesCollectionSelect(int id);
-    //ForeignKey
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByPlSpeciesId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByPlSpeciesId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByPlSpeciesId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByPlSpeciesId(int id);
-    //Images
-    ObservableCollection<Tbl81Image> CollImagesByPlSpeciesId(int id);
-    //Geographics
-    ObservableCollection<Tbl87Geographic> CollGeographicsByPlSpeciesId(int id);
-    #endregion PlSpecies
+    ObservableCollection<Tbl87Geographic> CollGeographicsBySpeciesId(int id);
+    #endregion Species
 
     #region Disease
 

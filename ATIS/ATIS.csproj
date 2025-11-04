@@ -152,12 +152,6 @@
 	<Page Update="Views\Database\Tbl78NameListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Database\Tbl72PlSpeciesListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl69FiSpeciesListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Database\Tbl75SpeciesListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -654,8 +648,6 @@
 		<None Remove="Views\Database\Tbl63InfratribusListPage.xaml" />
 		<None Remove="Views\Database\Tbl66GenusListPage.xaml" />
 		<None Remove="Views\Database\Tbl68SpeciesgroupListPage.xaml" />
-		<None Remove="Views\Database\Tbl69FiSpeciesListPage.xaml" />
-		<None Remove="Views\Database\Tbl72PlSpeciesListPage.xaml" />
 		<None Remove="Views\Database\Tbl75SpeciesListPage.xaml" />
 		<None Remove="Views\Database\Tbl78NameListPage.xaml" />
 		<None Remove="Views\Database\Tbl81ImageListPage.xaml" />
