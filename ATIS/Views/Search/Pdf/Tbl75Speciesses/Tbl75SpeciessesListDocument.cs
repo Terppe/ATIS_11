@@ -8,29 +8,17 @@ using QuestPDF.Infrastructure;
 
 namespace ATIS.Views.Search.Pdf.Tbl75Speciesses;
 
-internal class Tbl75SpeciessesListDocument : IDocument
+internal class Tbl75SpeciessesListDocument(
+    Tbl75SpeciessesPdfModel model,
+    ObservableCollection<Tbl75Species> viewModelSpeciessesCollection) : IDocument
 {
 
-    public Tbl75SpeciessesPdfModel Model
-    {
-        get;
-    }
+    public Tbl75SpeciessesPdfModel Model { get; } = model;
 
-    public ObservableCollection<Tbl75Species> ViewModelSpeciessesCollection
-    {
-        get;
-    }
-
-    public Tbl75SpeciessesListDocument(Tbl75SpeciessesPdfModel model,
-        ObservableCollection<Tbl75Species> viewModelSpeciessesCollection)
-    {
-        Model = model;
-        ViewModelSpeciessesCollection = viewModelSpeciessesCollection;
-    }
+    private ObservableCollection<Tbl75Species> ViewModelSpeciessesCollection { get; } = viewModelSpeciessesCollection;
 
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
-    [Obsolete("Obsolete")]
     public void Compose(IDocumentContainer container)
     {
         container
@@ -51,7 +39,6 @@ internal class Tbl75SpeciessesListDocument : IDocument
             });
     }
 
-    [Obsolete("Obsolete")]
     private void ComposeContent(IContainer container)
     {
         container.PaddingVertical(10).Column(column =>
@@ -60,7 +47,7 @@ internal class Tbl75SpeciessesListDocument : IDocument
             {
                 text.Span(Strings.StringsRes.List).FontSize(20).SemiBold();
                 text.Span("          ");
-                text.Span(Strings.StringsRes.FiSpecies).FontSize(20).SemiBold();
+                text.Span(Strings.StringsRes.Species).FontSize(20).SemiBold();
                 text.Span(
                     "                                                                                                       ");
                 text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();

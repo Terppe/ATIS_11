@@ -7357,25 +7357,25 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    public Tbl75Species GetSpeciesSingleBySpeciesId(int id)
+    public Tbl75Species GetSpeciesSingleBySpeciesId(int speciesid)
     {
         // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = Context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == id);
+        var single = Context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == speciesid);
         return single;
     }
-    public Tbl75Species GetSpeciesSingleModelBySpeciesId(int id)
+    public Tbl75Species GetSpeciesSingleModelBySpeciesId(int speciesid)
     {
         // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = Context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == id);
+        var single = Context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == speciesid);
         return single;
     }
 
-    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesId(int id)
+    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesId(int speciesid)
     {
         if (Context.Tbl75Speciesses != null)
         {
             var collection = new ObservableCollection<Tbl75Species>(Context.Tbl75Speciesses
-                .Where(e => e.SpeciesId == id));
+                .Where(e => e.SpeciesId == speciesid));
             return collection;
         }
         return null!;

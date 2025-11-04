@@ -4,7 +4,7 @@ using ATIS.Models;
 namespace ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 public class Tbl75SpeciesSubsPdfModel
 {
-    public string FiSpeciesName
+    public string SpeciesName
     {
         get; set;
     }
@@ -16,7 +16,7 @@ public class Tbl75SpeciesSubsPdfModel
     {
         get; set;
     }
-    public string FiSpeciesFullName => $"{Tbl66Genusses?.GenusName} {FiSpeciesName} {Subspecies} {Divers}";
+    public string SpeciesFullName => $"{Tbl66Genusses?.GenusName} {SpeciesName} {Subspecies} {Divers}";
 
     public int GenusId
     {
@@ -349,7 +349,7 @@ public class Tbl75SpeciesSubsPdfModel
     {
         get; set;
     }
-    public PdfModels.FiSpecies FiSpeciesTree
+    public PdfModels.Species SpeciesTree
     {
         get; set;
     }

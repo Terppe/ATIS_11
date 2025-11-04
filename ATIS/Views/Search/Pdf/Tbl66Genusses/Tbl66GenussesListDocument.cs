@@ -7,24 +7,21 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace ATIS.Views.Search.Pdf.Tbl66Genusses;
-internal class Tbl66GenussesListDocument : IDocument
+internal class Tbl66GenussesListDocument(
+    Tbl66GenussesPdfModel model,
+    ObservableCollection<Tbl66Genus> viewModelGenussesCollection) : IDocument
 {
     public Tbl66GenussesPdfModel Model
     {
         get;
-    }
-    public ObservableCollection<Tbl66Genus> ViewModelGenussesCollection
+    } = model;
+
+    private ObservableCollection<Tbl66Genus> ViewModelGenussesCollection
     {
         get;
-    }
-    public Tbl66GenussesListDocument(Tbl66GenussesPdfModel model, ObservableCollection<Tbl66Genus> viewModelGenussesCollection)
-    {
-        Model = model;
-        ViewModelGenussesCollection = viewModelGenussesCollection;
-    }
+    } = viewModelGenussesCollection;
 
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
-    [Obsolete("Obsolete")]
     public void Compose(IDocumentContainer container)
     {
         container
@@ -45,7 +42,6 @@ internal class Tbl66GenussesListDocument : IDocument
             });
     }
 
-    [Obsolete("Obsolete")]
     private void ComposeContent(IContainer container)
     {
         container.PaddingVertical(10).Column(column =>
@@ -63,7 +59,6 @@ internal class Tbl66GenussesListDocument : IDocument
         });
     }
 
-    [Obsolete("Obsolete")]
     private void ComposeListContent(IContainer container)
     {
         if (ViewModelGenussesCollection.Count == 0)

@@ -27,9 +27,6 @@ using ATIS.Views.Report.Pdf.Tbl57Tribusses;
 using ATIS.Views.Report.Pdf.Tbl60Subtribusses;
 using ATIS.Views.Report.Pdf.Tbl63Infratribusses;
 using ATIS.Views.Report.Pdf.Tbl66Genusses;
-using ATIS.Views.Report.Pdf.Tbl69FiSpeciesSubs;
-using ATIS.Views.Report.Pdf.Tbl72PlSpeciesses;
-using ATIS.Views.Report.Pdf.Tbl72PlSpeciesSubs;
 using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 using ATIS.Views.Search.Pdf.Tbl03Regnums;
@@ -242,11 +239,11 @@ public sealed partial class SearchQuickPage : Page
         reportSpeciessesWindow.GeneratePdfSpecies(ViewModel.SpeciesSelected.SpeciesId);
     });
 
-    public ICommand PdfFiSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
-    {
-        var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.SpeciesSubSelected.SpeciesId);
-        reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.SpeciesSubSelected.SpeciesId);
-    });
+    //public ICommand PdfFiSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
+    //{
+    //    var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.SpeciesSubSelected.SpeciesId);
+    //    reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.SpeciesSubSelected.SpeciesId);
+    //});
 
     public ICommand PdfSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
     {
@@ -998,26 +995,4 @@ public sealed partial class SearchQuickPage : Page
             window.Activate();
         }
     }
-
-    private void PlSpeciesSelect_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.SpeciesSelected.SpeciesId == 0)
-        {
-            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
-            return;
-        }
-        if (string.IsNullOrEmpty(ViewModel.SpeciesSelected.Subspecies))
-        {
-            var window = new ReportPlSpeciessesWindow(ViewModel.SpeciesSelected.SpeciesId);
-            window.IsAlwaysOnTop = true;
-            window.Activate();
-        }
-        else
-        {
-            var window = new ReportPlSpeciessesSubsWindow(ViewModel.SpeciesSelected.SpeciesId);
-            window.IsAlwaysOnTop = true;
-            window.Activate();
-        }
-    }
-
 }

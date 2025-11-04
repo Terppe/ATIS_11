@@ -3,7 +3,7 @@ using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl66Genusses;
 
 namespace ATIS.Views.Search.Pdf.Tbl66Genusses;
-internal class Tbl66GenussesListDocumentDataSource : ObservableObject
+internal abstract class Tbl66GenussesListDocumentDataSource : ObservableObject
 {
     private static readonly Tbl66Genus GenusSingle = new();
 

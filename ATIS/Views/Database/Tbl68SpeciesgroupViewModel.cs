@@ -175,21 +175,21 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
 
     #region [Methods Species]
 
-    public async Task AddSpeciesAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            Tbl66GenussesAllList ??= [];
-            Tbl66GenussesAllList = [.. _dataService.GetGenusAsync()];
+    //public async Task AddSpeciesAsync()
+    //{
+    //    await _dispatcherQueue.EnqueueAsync(() =>
+    //    {
+    //        Tbl66GenussesAllList ??= [];
+    //        Tbl66GenussesAllList = [.. _dataService.GetGenusAsync()];
 
-            var genusid = Tbl66GenussesAllList.First().GenusId;
+    //        var genusid = Tbl66GenussesAllList.First().GenusId;
 
-            var speciesgroupId = SpeciesgroupSelected.SpeciesgroupId;
+    //        var speciesgroupId = SpeciesgroupSelected.SpeciesgroupId;
 
-            Tbl75SpeciessesList ??= [];
-            Tbl75SpeciessesList.Insert(index: 0, item: new Tbl75Species { GenusId = genusid, SpeciesgroupId = speciesgroupId });
-        });
-    }
+    //        Tbl75SpeciessesList ??= [];
+    //        Tbl75SpeciessesList.Insert(index: 0, item: new Tbl75Species { GenusId = genusid, SpeciesgroupId = speciesgroupId });
+    //    });
+    //}
 
     public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
@@ -465,7 +465,7 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
         SpeciesItems.Clear();
         if (Tbl75SpeciessesList != null)
         {
-            foreach (Tbl75Species item in Tbl75SpeciessesList)
+            foreach (var item in Tbl75SpeciessesList)
             {
                 SpeciesItems.Add(item);
             }

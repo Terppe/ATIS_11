@@ -4,10 +4,10 @@
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace ATIS.Views.Report.DataTemplates;
-public sealed partial class ReportItemTemplateSynonymControl : UserControl
+public sealed partial class ReportItemTemplateTbl84SynonymControl : UserControl
 {
-    public ReportItemTemplateSynonymControl()
+    public ReportItemTemplateTbl84SynonymControl()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

@@ -3,7 +3,7 @@ using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 
 namespace ATIS.Views.Search.Pdf.Tbl75Speciesses;
-internal class Tbl75SpeciessesListDocumentDataSource : ObservableObject
+internal abstract class Tbl75SpeciessesListDocumentDataSource : ObservableObject
 {
     private static readonly Tbl75Species SpeciesSingle = new();
 
@@ -14,7 +14,7 @@ internal class Tbl75SpeciessesListDocumentDataSource : ObservableObject
 
         return new Tbl75SpeciessesPdfModel
         {
-            FiSpeciesName = SpeciesSingle.SpeciesName,
+            SpeciesName = SpeciesSingle.SpeciesName,
             Subspecies = SpeciesSingle.Subspecies,
             Divers = SpeciesSingle.Divers,
             CountId = SpeciesSingle.CountId,

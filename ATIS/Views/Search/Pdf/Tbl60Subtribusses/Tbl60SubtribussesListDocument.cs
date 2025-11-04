@@ -7,21 +7,12 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace ATIS.Views.Search.Pdf.Tbl60Subtribusses;
-internal class Tbl60SubtribussesListDocument : IDocument
+internal class Tbl60SubtribussesListDocument(
+    Tbl60SubtribussesPdfModel model,
+    ObservableCollection<Tbl60Subtribus> viewModelSubtribussesCollection) : IDocument
 {
-    public Tbl60SubtribussesPdfModel Model
-    {
-        get;
-    }
-    public ObservableCollection<Tbl60Subtribus> ViewModelSubtribussesCollection
-    {
-        get;
-    }
-    public Tbl60SubtribussesListDocument(Tbl60SubtribussesPdfModel model, ObservableCollection<Tbl60Subtribus> viewModelSubtribussesCollection)
-    {
-        Model = model;
-        ViewModelSubtribussesCollection = viewModelSubtribussesCollection;
-    }
+    public Tbl60SubtribussesPdfModel Model { get; } = model;
+    private ObservableCollection<Tbl60Subtribus> ViewModelSubtribussesCollection { get; } = viewModelSubtribussesCollection;
 
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
     public void Compose(IDocumentContainer container)

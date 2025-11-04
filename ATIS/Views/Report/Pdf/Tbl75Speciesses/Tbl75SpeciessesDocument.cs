@@ -63,9 +63,9 @@ public class Tbl75SpeciessesDocument : IDocument
                 });
                 column.Item().Text(text =>
                 {
-                    text.Span($"{Model.GenusTree?.GenusName} {Model.FiSpeciesTree?.FiSpeciesName} {Model.FiSpeciesTree?.Subspecies}" +
-                              $"{Model.FiSpeciesTree?.Divers}").FontSize(TextHight).SemiBold().Italic();
-                    text.Span($" {Model.FiSpeciesTree?.Author} {Model.FiSpeciesTree?.AuthorYear}").FontSize(TextHight).SemiBold();
+                    text.Span($"{Model.GenusTree?.GenusName} {Model.SpeciesTree?.SpeciesName} {Model.SpeciesTree?.Subspecies}" +
+                              $"{Model.SpeciesTree?.Divers}").FontSize(TextHight).SemiBold().Italic();
+                    text.Span($" {Model.SpeciesTree?.Author} {Model.SpeciesTree?.AuthorYear}").FontSize(TextHight).SemiBold();
                 });
 
             });
@@ -523,14 +523,14 @@ public class Tbl75SpeciessesDocument : IDocument
 
                     CompTaxoHieras.ComposeTaxoHierGenus(column, _tabLeftRel, _tabRightRel, Model.GenusTree);
                 }
-                if (Model.FiSpeciesTree != null)
+                if (Model.SpeciesTree != null)
                 {
                     _tabLeftRel += 4;
                     _tabRightRel -= 4;
                     _tabLeftLastRel = _tabLeftRel;
                     _tabRightLastRel = _tabRightRel;
 
-                    CompTaxoHieras.ComposeTaxoHierFiSpecies(column, _tabLeftRel, _tabRightRel, Model.FiSpeciesTree);
+                    CompTaxoHieras.ComposeTaxoHierSpecies(column, _tabLeftRel, _tabRightRel, Model.SpeciesTree);
                 }
             });
             _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
@@ -541,8 +541,8 @@ public class Tbl75SpeciessesDocument : IDocument
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        //   if (Tbl75SpeciessesDocumentDataSource.FiSpeciessesCollection.Count == 0)
-        if (!string.IsNullOrEmpty(Model.FiSpeciesTree?.Subspecies))
+        //   if (Tbl75SpeciessesDocumentDataSource.SpeciessesCollection.Count == 0)
+        if (!string.IsNullOrEmpty(Model.SpeciesTree?.Subspecies))
         {
             return;
         }
@@ -552,7 +552,7 @@ public class Tbl75SpeciessesDocument : IDocument
 
     private void ComposeChildrenContent(IContainer container)
     {
-        if (!string.IsNullOrEmpty(Model.FiSpeciesTree?.Subspecies))
+        if (!string.IsNullOrEmpty(Model.SpeciesTree?.Subspecies))
         {
             return;
         }
@@ -565,7 +565,7 @@ public class Tbl75SpeciessesDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl75SpeciessesDocumentDataSource.FiSpeciesSubsCollection)
+            foreach (var item in Tbl75SpeciessesDocumentDataSource.SpeciesSubsCollection)
             {
                 table.Cell().Text("");
                 table.Cell().Text(Strings.StringsRes.Subspecies);

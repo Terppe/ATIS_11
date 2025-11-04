@@ -7,21 +7,19 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace ATIS.Views.Search.Pdf.Tbl63Infratribusses;
-internal class Tbl63InfratribussesListDocument : IDocument
+internal class Tbl63InfratribussesListDocument(
+    Tbl63InfratribussesPdfModel model,
+    ObservableCollection<Tbl63Infratribus> viewModelInfratribussesCollection) : IDocument
 {
     public Tbl63InfratribussesPdfModel Model
     {
         get;
-    }
-    public ObservableCollection<Tbl63Infratribus> ViewModelInfratribussesCollection
+    } = model;
+
+    private ObservableCollection<Tbl63Infratribus> ViewModelInfratribussesCollection
     {
         get;
-    }
-    public Tbl63InfratribussesListDocument(Tbl63InfratribussesPdfModel model, ObservableCollection<Tbl63Infratribus> viewModelInfratribussesCollection)
-    {
-        Model = model;
-        ViewModelInfratribussesCollection = viewModelInfratribussesCollection;
-    }
+    } = viewModelInfratribussesCollection;
 
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
     [Obsolete("Obsolete")]

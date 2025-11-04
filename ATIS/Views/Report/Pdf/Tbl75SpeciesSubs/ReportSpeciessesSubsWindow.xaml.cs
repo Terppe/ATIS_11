@@ -64,7 +64,7 @@ public sealed partial class ReportSpeciessesSubsWindow : WindowEx
 
             //var filePath = "D:\\Temp\\Animalia corydoras corydoras_57883426_Report.pdf";
 
-            var model = Tbl75SpeciesSubsDocumentDataSource.GetFiSpeciesSubDetails(id);
+            var model = Tbl75SpeciesSubsDocumentDataSource.GetSpeciesSubDetails(id);
             var document = new Tbl75SpeciesSubsDocument(model);
             document.GeneratePdf(filePath);
             PrintPdfMethod(filePath);

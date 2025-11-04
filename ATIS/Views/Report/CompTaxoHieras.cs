@@ -1,7 +1,7 @@
 ﻿using QuestPDF.Fluent;
 
 namespace ATIS.Views.Report;
-public class CompTaxoHieras
+public abstract class CompTaxoHieras
 {
     public static void ComposeTaxoHierRegnum(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Regnum modelRegnumTree)
     {
@@ -412,9 +412,9 @@ public class CompTaxoHieras
         });
     }
 
-    public static void ComposeTaxoHierFiSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.FiSpecies modelFiSpeciesTree)
+    public static void ComposeTaxoHierSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Species modelSpeciesTree)
     {
-        if (string.IsNullOrEmpty(modelFiSpeciesTree.Subspecies))
+        if (string.IsNullOrEmpty(modelSpeciesTree.Subspecies))
         {
             column.Item().Table(table =>
             {
@@ -425,9 +425,9 @@ public class CompTaxoHieras
                     columns.RelativeColumn();
                 });
                 table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.FiSpecies);
-                table.Cell().Text($"{modelFiSpeciesTree.Tbl66Genusses?.GenusName} {modelFiSpeciesTree.FiSpeciesName}" +
-                                  $" {modelFiSpeciesTree.Author} {modelFiSpeciesTree.AuthorYear}");
+                table.Cell().Text(Strings.StringsRes.Species);
+                table.Cell().Text($"{modelSpeciesTree.Tbl66Genusses?.GenusName} {modelSpeciesTree.SpeciesName}" +
+                                  $" {modelSpeciesTree.Author} {modelSpeciesTree.AuthorYear}");
             });
         }
         else
@@ -441,9 +441,9 @@ public class CompTaxoHieras
                     columns.RelativeColumn();
                 });
                 table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.FiSpecies);
-                table.Cell().Text($"{modelFiSpeciesTree.Tbl66Genusses?.GenusName} {modelFiSpeciesTree.FiSpeciesName}" +
-                                  $" {modelFiSpeciesTree.Author} {modelFiSpeciesTree.AuthorYear}");
+                table.Cell().Text(Strings.StringsRes.Species);
+                table.Cell().Text($"{modelSpeciesTree.Tbl66Genusses?.GenusName} {modelSpeciesTree.SpeciesName}" +
+                                  $" {modelSpeciesTree.Author} {modelSpeciesTree.AuthorYear}");
             });
             column.Item().Table(table =>
             {
@@ -455,62 +455,62 @@ public class CompTaxoHieras
                 });
                 table.Cell().Text("");
                 table.Cell().Text(Strings.StringsRes.Subspecies);
-                table.Cell().Text($"{modelFiSpeciesTree.Tbl66Genusses?.GenusName} {modelFiSpeciesTree.FiSpeciesName}" +
-                                  $" {modelFiSpeciesTree.Subspecies} {modelFiSpeciesTree.Divers}" +
-                                  $" {modelFiSpeciesTree.Author} {modelFiSpeciesTree.AuthorYear}");
+                table.Cell().Text($"{modelSpeciesTree.Tbl66Genusses?.GenusName} {modelSpeciesTree.SpeciesName}" +
+                                  $" {modelSpeciesTree.Subspecies} {modelSpeciesTree.Divers}" +
+                                  $" {modelSpeciesTree.Author} {modelSpeciesTree.AuthorYear}");
             });
         }
     }
 
-    public static void ComposeTaxoHierPlSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.PlSpecies modelPlSpeciesTree)
-    {
-        if (string.IsNullOrEmpty(modelPlSpeciesTree.Subspecies))
-        {
-            column.Item().Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(tabLeftRel);
-                    columns.ConstantColumn(tabRightRel);
-                    columns.RelativeColumn();
-                });
-                table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.PlSpecies);
-                table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
-                                  $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
-            });
-        }
-        else
-        {
-            column.Item().Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(tabLeftRel);
-                    columns.ConstantColumn(tabRightRel);
-                    columns.RelativeColumn();
-                });
-                table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.PlSpecies);
-                table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
-                                  $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
-            });
-            column.Item().Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(tabLeftRel + 4);
-                    columns.ConstantColumn(tabRightRel - 4);
-                    columns.RelativeColumn();
-                });
-                table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.Subspecies);
-                table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
-                                  $" {modelPlSpeciesTree.Subspecies} {modelPlSpeciesTree.Divers}" +
-                                  $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
-            });
-        }
-    }
+    //public static void ComposeTaxoHierPlSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.PlSpecies modelPlSpeciesTree)
+    //{
+    //    if (string.IsNullOrEmpty(modelPlSpeciesTree.Subspecies))
+    //    {
+    //        column.Item().Table(table =>
+    //        {
+    //            table.ColumnsDefinition(columns =>
+    //            {
+    //                columns.ConstantColumn(tabLeftRel);
+    //                columns.ConstantColumn(tabRightRel);
+    //                columns.RelativeColumn();
+    //            });
+    //            table.Cell().Text("");
+    //            table.Cell().Text(Strings.StringsRes.PlSpecies);
+    //            table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
+    //                              $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
+    //        });
+    //    }
+    //    else
+    //    {
+    //        column.Item().Table(table =>
+    //        {
+    //            table.ColumnsDefinition(columns =>
+    //            {
+    //                columns.ConstantColumn(tabLeftRel);
+    //                columns.ConstantColumn(tabRightRel);
+    //                columns.RelativeColumn();
+    //            });
+    //            table.Cell().Text("");
+    //            table.Cell().Text(Strings.StringsRes.PlSpecies);
+    //            table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
+    //                              $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
+    //        });
+    //        column.Item().Table(table =>
+    //        {
+    //            table.ColumnsDefinition(columns =>
+    //            {
+    //                columns.ConstantColumn(tabLeftRel + 4);
+    //                columns.ConstantColumn(tabRightRel - 4);
+    //                columns.RelativeColumn();
+    //            });
+    //            table.Cell().Text("");
+    //            table.Cell().Text(Strings.StringsRes.Subspecies);
+    //            table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
+    //                              $" {modelPlSpeciesTree.Subspecies} {modelPlSpeciesTree.Divers}" +
+    //                              $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
+    //        });
+    //    }
+    //}
 
     public static void ComposeTaxoHierSynonym(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Synonym modelSynonymsTree)
     {

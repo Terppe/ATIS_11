@@ -32,7 +32,7 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
     private static Tbl60Subtribus _subtribusSingle = new();
     private static Tbl63Infratribus _infratribusSingle = new();
     private static Tbl66Genus _genusSingle = new();
-    private static Tbl75Species _fispeciesSingle = new();
+    private static Tbl75Species _speciesSingle = new();
     private static readonly Tbl78Name _nameSingle = new();
     private static readonly Tbl84Synonym _synonymSingle = new();
 
@@ -43,7 +43,7 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
     //    Part 1    
 
 
-    public static Tbl75SpeciessesPdfModel GetSpeciesDetails(int fispeciesId)
+    public static Tbl75SpeciessesPdfModel GetSpeciesDetails(int speciesId)
 
     {
         #region [Private Data Members]
@@ -78,13 +78,13 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
 
 
         //find SpeciesSubsCollection
-        var singleFiSpecies = dataService.GetSpeciesSingleBySpeciesId(fispeciesId);
-        var fiSpeciesName = singleFiSpecies.SpeciesName;
-        var id = singleFiSpecies.GenusId;
-        FiSpeciesSubsCollection = dataService.CollSpeciesSubsBySpeciesNameandGenusId(fiSpeciesName, id);
+        var singleSpecies = dataService.GetSpeciesSingleBySpeciesId(speciesId);
+        var speciesName = singleSpecies.SpeciesName;
+        var id = singleSpecies.GenusId;
+        SpeciesSubsCollection = dataService.CollSpeciesSubsBySpeciesNameandGenusId(speciesName, id);
 
-        FiSpeciessesCollection = dataService.CollSpeciessesBySpeciesId(fispeciesId);
-        var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(fispeciesId);
+        SpeciessesCollection = dataService.CollSpeciessesBySpeciesId(speciesId);
+        var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(speciesId);
         GenussesCollection = dataService.CollGenussesByGenusIdAndHash(genusId);
         var infratribusId = dataService.InfratribusIdFromGenussesCollectionSelect(genusId);
         InfratribussesCollection = dataService.CollInfratribussesByInfratribusIdAndHash(infratribusId);
@@ -148,20 +148,20 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
         }
 
         //direct children
-        NamesCollection = dataService.CollNamesBySpeciesIdAndHash(fispeciesId);
-        SynonymsCollection = dataService.CollSynonymsBySpeciesIdAndHash(fispeciesId);
-        ImagesCollection = dataService.CollImagesBySpeciesId(fispeciesId);
-        GeographicsCollection = dataService.CollGeographicsBySpeciesId(fispeciesId);
+        NamesCollection = dataService.CollNamesBySpeciesIdAndHash(speciesId);
+        SynonymsCollection = dataService.CollSynonymsBySpeciesIdAndHash(speciesId);
+        ImagesCollection = dataService.CollImagesBySpeciesId(speciesId);
+        GeographicsCollection = dataService.CollGeographicsBySpeciesId(speciesId);
 
         //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsBySpeciesId(fispeciesId);
-        SourcesCollection = dataService.CollSourcesBySpeciesId(fispeciesId);
-        AuthorsCollection = dataService.CollAuthorsBySpeciesId(fispeciesId);
+        ExpertsCollection = dataService.CollExpertsBySpeciesId(speciesId);
+        SourcesCollection = dataService.CollSourcesBySpeciesId(speciesId);
+        AuthorsCollection = dataService.CollAuthorsBySpeciesId(speciesId);
         //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsBySpeciesId(fispeciesId);
+        CommentsCollection = dataService.CollCommentsBySpeciesId(speciesId);
 
 
-        _fispeciesSingle = dataService.GetSpeciesSingleBySpeciesIdAndHash(fispeciesId);
+        _speciesSingle = dataService.GetSpeciesSingleBySpeciesIdAndHash(speciesId);
         _genusSingle = dataService.GetGenusSingleByGenusIdAndHash(genusId);
         _infratribusSingle = dataService.GetInfratribusSingleByInfratribusIdAndHash(infratribusId);
         _subtribusSingle = dataService.GetSubtribusSingleBySubtribusIdAndHash(subtribusId);
@@ -182,65 +182,65 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
 
         return new Tbl75SpeciessesPdfModel
         {
-            FiSpeciesName = _fispeciesSingle.SpeciesName,
-            Subspecies = _fispeciesSingle.Subspecies,
-            Divers = _fispeciesSingle.Divers,
-            GenusId = _fispeciesSingle.GenusId,
-            SpeciesgroupId = _fispeciesSingle.SpeciesgroupId,
-            CountId = _fispeciesSingle.CountId,
-            Valid = _fispeciesSingle.Valid,
-            ValidYear = _fispeciesSingle.ValidYear,
-            MemoSpecies = _fispeciesSingle.MemoSpecies,
-            TradeName = _fispeciesSingle.TradeName,
-            Author = _fispeciesSingle.Author,
-            AuthorYear = _fispeciesSingle.AuthorYear,
-            Importer = _fispeciesSingle.Importer,
-            ImportingYear = _fispeciesSingle.ImportingYear,
-            TypeSpecies = _fispeciesSingle.TypeSpecies,
-            LNumber = _fispeciesSingle.LNumber,
-            LOrigin = _fispeciesSingle.LOrigin,
-            LdaOrigin = _fispeciesSingle.LdaOrigin,
-            LdaNumber = _fispeciesSingle.LdaNumber,
-            BasinLength = _fispeciesSingle.BasinLength,
-            FishLength = _fispeciesSingle.FishLength,
-            Karnivore = _fispeciesSingle.Karnivore,
-            Herbivore = _fispeciesSingle.Herbivore,
-            Limnivore = _fispeciesSingle.Limnivore,
-            Omnivore = _fispeciesSingle.Omnivore,
-            MemoFoods = _fispeciesSingle.MemoFoods,
-            Difficult1 = _fispeciesSingle.Difficult1,
-            Difficult2 = _fispeciesSingle.Difficult2,
-            Difficult3 = _fispeciesSingle.Difficult3,
-            Difficult4 = _fispeciesSingle.Difficult4,
-            RegionTop = _fispeciesSingle.RegionTop,
-            RegionMiddle = _fispeciesSingle.RegionMiddle,
-            RegionBottom = _fispeciesSingle.RegionBottom,
-            MemoRegion = _fispeciesSingle.MemoRegion,
-            MemoTech = _fispeciesSingle.MemoTech,
-            Ph1 = _fispeciesSingle.Ph1,
-            Ph2 = _fispeciesSingle.Ph2,
-            Temp1 = _fispeciesSingle.Temp1,
-            Temp2 = _fispeciesSingle.Temp2,
-            Hardness1 = _fispeciesSingle.Hardness1,
-            Hardness2 = _fispeciesSingle.Hardness2,
-            CarboHardness1 = _fispeciesSingle.CarboHardness1,
-            CarboHardness2 = _fispeciesSingle.CarboHardness2,
-            MemoHusbandry = _fispeciesSingle.MemoHusbandry,
-            MemoBuilt = _fispeciesSingle.MemoBuilt,
-            MemoColor = _fispeciesSingle.MemoColor,
-            MemoSozial = _fispeciesSingle.MemoSozial,
-            MemoDomorphism = _fispeciesSingle.MemoDomorphism,
-            MemoSpecial = _fispeciesSingle.MemoSpecial,
-            WriterDate = _fispeciesSingle.WriterDate,
-            UpdaterDate = _fispeciesSingle.UpdaterDate,
-            MemoBreeding = _fispeciesSingle.MemoBreeding,
+            SpeciesName = _speciesSingle.SpeciesName,
+            Subspecies = _speciesSingle.Subspecies,
+            Divers = _speciesSingle.Divers,
+            GenusId = _speciesSingle.GenusId,
+            SpeciesgroupId = _speciesSingle.SpeciesgroupId,
+            CountId = _speciesSingle.CountId,
+            Valid = _speciesSingle.Valid,
+            ValidYear = _speciesSingle.ValidYear,
+            MemoSpecies = _speciesSingle.MemoSpecies,
+            TradeName = _speciesSingle.TradeName,
+            Author = _speciesSingle.Author,
+            AuthorYear = _speciesSingle.AuthorYear,
+            Importer = _speciesSingle.Importer,
+            ImportingYear = _speciesSingle.ImportingYear,
+            TypeSpecies = _speciesSingle.TypeSpecies,
+            LNumber = _speciesSingle.LNumber,
+            LOrigin = _speciesSingle.LOrigin,
+            LdaOrigin = _speciesSingle.LdaOrigin,
+            LdaNumber = _speciesSingle.LdaNumber,
+            BasinLength = _speciesSingle.BasinLength,
+            FishLength = _speciesSingle.FishLength,
+            Karnivore = _speciesSingle.Karnivore,
+            Herbivore = _speciesSingle.Herbivore,
+            Limnivore = _speciesSingle.Limnivore,
+            Omnivore = _speciesSingle.Omnivore,
+            MemoFoods = _speciesSingle.MemoFoods,
+            Difficult1 = _speciesSingle.Difficult1,
+            Difficult2 = _speciesSingle.Difficult2,
+            Difficult3 = _speciesSingle.Difficult3,
+            Difficult4 = _speciesSingle.Difficult4,
+            RegionTop = _speciesSingle.RegionTop,
+            RegionMiddle = _speciesSingle.RegionMiddle,
+            RegionBottom = _speciesSingle.RegionBottom,
+            MemoRegion = _speciesSingle.MemoRegion,
+            MemoTech = _speciesSingle.MemoTech,
+            Ph1 = _speciesSingle.Ph1,
+            Ph2 = _speciesSingle.Ph2,
+            Temp1 = _speciesSingle.Temp1,
+            Temp2 = _speciesSingle.Temp2,
+            Hardness1 = _speciesSingle.Hardness1,
+            Hardness2 = _speciesSingle.Hardness2,
+            CarboHardness1 = _speciesSingle.CarboHardness1,
+            CarboHardness2 = _speciesSingle.CarboHardness2,
+            MemoHusbandry = _speciesSingle.MemoHusbandry,
+            MemoBuilt = _speciesSingle.MemoBuilt,
+            MemoColor = _speciesSingle.MemoColor,
+            MemoSozial = _speciesSingle.MemoSozial,
+            MemoDomorphism = _speciesSingle.MemoDomorphism,
+            MemoSpecial = _speciesSingle.MemoSpecial,
+            WriterDate = _speciesSingle.WriterDate,
+            UpdaterDate = _speciesSingle.UpdaterDate,
+            MemoBreeding = _speciesSingle.MemoBreeding,
             //plant
-            BasinHeight = _fispeciesSingle.BasinHeight,
-            PlantLength = _fispeciesSingle.PlantLength,
-            MemoReproduction = _fispeciesSingle.MemoReproduction,
-            MemoCulture = _fispeciesSingle.MemoCulture,
-            MemoGlobal = _fispeciesSingle.MemoGlobal,
-            Creature = _fispeciesSingle.Creature,
+            BasinHeight = _speciesSingle.BasinHeight,
+            PlantLength = _speciesSingle.PlantLength,
+            MemoReproduction = _speciesSingle.MemoReproduction,
+            MemoCulture = _speciesSingle.MemoCulture,
+            MemoGlobal = _speciesSingle.MemoGlobal,
+            Creature = _speciesSingle.Creature,
             //-------------------------------
             RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
             PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
@@ -264,7 +264,7 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
             SubtribusTree = GenrateModels.GenSubtribusses.GenerateSubtribusses(_subtribusSingle),
             InfratribusTree = GenrateModels.GenInfratribusses.GenerateInfratribusses(_infratribusSingle),
             GenusTree = GenrateModels.GenGenusses.GenerateGenusses(_genusSingle),
-            FiSpeciesTree = GenrateModels.GenFiSpeciesses.GenerateFiSpeciesses(_fispeciesSingle),
+            SpeciesTree = GenrateModels.GenSpeciesses.GenerateSpeciesses(_speciesSingle),
             SynonymsTree = GenrateModels.GenSynonyms.GenerateSynonyms(_synonymSingle),
             NamesTree = GenrateModels.GenNames.GenerateNames(_nameSingle),
         };
@@ -316,8 +316,8 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
 
     public static ObservableCollection<Tbl66Genus> GenussesCollection { get; set; } = null!;
 
-    public static ObservableCollection<Tbl75Species> FiSpeciessesCollection { get; set; } = null!;
-    public static ObservableCollection<Tbl75Species> FiSpeciesSubsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl75Species> SpeciessesCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl75Species> SpeciesSubsCollection { get; set; } = null!;
 
     public static ObservableCollection<Tbl78Name> NamesCollection { get; set; } = null!;
 
@@ -338,7 +338,7 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
 
     public static void ClearAllCollections()
     {
-        _fispeciesSingle = new Tbl75Species();
+        _speciesSingle = new Tbl75Species();
         _genusSingle = new Tbl66Genus();
         _infratribusSingle = new Tbl63Infratribus();
         _subtribusSingle = new Tbl60Subtribus();
@@ -362,7 +362,7 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
         _phylumSingle = new Tbl06Phylum();
         _regnumSingle = new Tbl03Regnum();
 
-        FiSpeciessesCollection?.Clear();
+        SpeciessesCollection?.Clear();
         GenussesCollection?.Clear();
         InfratribussesCollection?.Clear();
         SubtribussesCollection?.Clear();

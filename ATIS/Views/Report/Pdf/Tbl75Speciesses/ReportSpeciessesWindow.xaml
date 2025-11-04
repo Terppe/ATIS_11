@@ -8,10 +8,11 @@
                   xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
                   xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
                   xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
+                  xmlns:diseasePdf="using:ATIS.Views.Main.Disease.DiseasePdf"
+                  xmlns:loca="using:WinUI3Localizer"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:models="using:ATIS.Models"
                   xmlns:winUiEx="using:WinUIEx"
-                  xmlns:diseasePdf="using:ATIS.Views.Main.Disease.DiseasePdf"
                   mc:Ignorable="d">
 
     <!--  ReportSpeciessWindow.xaml  Skriptdatum:  16.06.2023  10:32  -->
@@ -107,18 +108,10 @@
                           x:DataType="models:Tbl66Genus">
                 <dataTemplatesSearch:SearchItemTemplateTbl66GenusControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="SearchItemTemplateTbl69FiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplatesSearch:SearchItemTemplateTbl69FiSpeciesControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl75Species"
-                x:DataType="models:Tbl75Species">
+                          x:DataType="models:Tbl75Species">
                 <dataTemplatesSearch:SearchItemTemplateTbl75SpeciesControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplatesSearch:SearchItemTemplateTbl72PlSpeciesControl />
-            </DataTemplate>-->
 
 
             <Style x:Key="NoSpacesListViewItemStyle"
@@ -216,24 +209,14 @@
                           x:DataType="models:Tbl66Genus">
                 <dataTemplateHeader:ReportItemTemplateHeaderGenusControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHeaderFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderSpecies"
-                x:DataType="models:Tbl75Species">
+                          x:DataType="models:Tbl75Species">
                 <dataTemplateHeader:ReportItemTemplateHeaderSpeciesControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHeaderFiSpeciesSub" x:DataType="models:Tbl69FiSpecies">
-            <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesSubsControl />
-            </DataTemplate>-->
-            <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesControl />
-            </DataTemplate>-->
-            <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpeciesSub" x:DataType="models:Tbl72PlSpecies">
-            <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesSubsControl />
-            </DataTemplate>-->
+            <DataTemplate x:Key="ReportItemTemplateHeaderSpeciesSub"
+                          x:DataType="models:Tbl75Species">
+                <dataTemplateHeader:ReportItemTemplateHeaderSpeciesSubsControl />
+            </DataTemplate>
 
             <!--  Taxonomy-Header  -->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
@@ -330,18 +313,10 @@
                           x:DataType="models:Tbl66Genus">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySpecies"
-                x:DataType="models:Tbl75Species">
+                          x:DataType="models:Tbl75Species">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySpeciesControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl />
-            </DataTemplate>-->
 
             <!--  Hyperlink-ListViews  -->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
@@ -432,59 +407,35 @@
                           x:DataType="models:Tbl66Genus">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkGenusControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSpecies"
-                x:DataType="models:Tbl75Species">
+                          x:DataType="models:Tbl75Species">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkSpeciesControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpeciesSub"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesSubControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSpeciesSub"
-                x:DataType="models:Tbl75Species">
+                          x:DataType="models:Tbl75Species">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkSpeciesSubControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesControl />
-            </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpeciesSub"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesSubControl />
-            </DataTemplate>-->
 
             <!--  Rest-ListViews  -->
-            <!--<DataTemplate x:Key="ReportItemTemplateFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplatesReport:ReportItemTemplateFiSpeciesControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateSpecies"
-                x:DataType="models:Tbl75Species">
-                <dataTemplatesReport:ReportItemTemplateSpeciesControl />
+                          x:DataType="models:Tbl75Species">
+                <dataTemplatesReport:ReportItemTemplateTbl75SpeciesControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="ReportItemTemplatePlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplatesReport:ReportItemTemplatePlSpeciesControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateName"
                           x:DataType="models:Tbl78Name">
-                <dataTemplatesReport:ReportItemTemplateNameControl />
+                <dataTemplatesReport:ReportItemTemplateTbl78NameControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateImage"
                           x:DataType="models:Tbl81Image">
-                <diseasePdf:ReportItemTemplateImageControl />
+                <dataTemplatesReport:ReportItemTemplateTbl81ImageControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateSynonym"
                           x:DataType="models:Tbl84Synonym">
-                <dataTemplatesReport:ReportItemTemplateSynonymControl />
+                <dataTemplatesReport:ReportItemTemplateTbl84SynonymControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateGeographic"
                           x:DataType="models:Tbl87Geographic">
-                <dataTemplatesReport:ReportItemTemplateGeographicControl />
+                <dataTemplatesReport:ReportItemTemplateTbl87GeographicControl />
             </DataTemplate>
 
             <DataTemplate x:Key="ReportItemTemplateTbl90RefExpert"
@@ -518,13 +469,13 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Button x:Uid="Button_PrintPdf"
-                        Margin="50,5,10,5"
+                <Button Margin="50,5,10,5"
+                        loca:Uids.Uid="Button_PrintPdf"
                         Click="PdfSpeciesCommand"
                         Style="{StaticResource CrudButtonStyle}" />
-                <Button x:Uid="Button_Close_Window"
-                        Margin="50,5,10,5"
+                <Button Margin="50,5,10,5"
                         HorizontalAlignment="Right"
+                        loca:Uids.Uid="Button_Close_Window"
                         Click="OnCloseClick"
                         Style="{StaticResource CrudButtonStyle}" />
             </StackPanel>
@@ -629,18 +580,18 @@
                               ItemsSource="{x:Bind ViewModel.RegnumItems}" />
                     <StackPanel Grid.Row="3"
                                 Grid.Column="0">
-                        <TextBlock x:Uid="TextBlock_TaxonomicRank"
-                                   Margin="8,0,0,0" />
+                        <TextBlock Margin="8,0,0,0"
+                                   loca:Uids.Uid="TextBlock_TaxonomicRank" />
                     </StackPanel>
                     <StackPanel Grid.Row="3"
                                 Grid.Column="1">
-                        <TextBlock x:Uid="TextBlock_Species"
-                                   Width="Auto" />
+                        <TextBlock Width="Auto"
+                                   loca:Uids.Uid="TextBlock_Species" />
                     </StackPanel>
                     <StackPanel Grid.Row="4"
                                 Grid.Column="0">
-                        <TextBlock x:Uid="TextBlock_SynonymsReport"
-                                   Margin="8,0,0,0" />
+                        <TextBlock Margin="8,0,0,0"
+                                   loca:Uids.Uid="TextBlock_SynonymsReport" />
                     </StackPanel>
                     <ListView Grid.Row="4"
                               Grid.Column="1"
@@ -650,8 +601,8 @@
                               ItemsSource="{x:Bind ViewModel.SynonymItems}" />
                     <StackPanel Grid.Row="5"
                                 Grid.Column="0">
-                        <TextBlock x:Uid="TextBlock_NamesReport"
-                                   Margin="8,0,0,0" />
+                        <TextBlock Margin="8,0,0,0"
+                                   loca:Uids.Uid="TextBlock_NamesReport" />
                     </StackPanel>
                     <ListView Grid.Row="5"
                               Grid.Column="1"
@@ -666,9 +617,9 @@
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodySpecies}"
                               ItemsSource="{x:Bind ViewModel.SpeciesItems}" />
-                    <TextBlock x:Uid="TextBlock_TaxonomicHierarchy"
-                               Grid.Row="7"
+                    <TextBlock Grid.Row="7"
                                Grid.Column="0"
+                               loca:Uids.Uid="TextBlock_TaxonomicHierarchy"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="8"
@@ -831,11 +782,11 @@
                               ItemTemplate="{StaticResource ReportItemTemplateHyperlinkGenus}"
                               ItemsSource="{x:Bind ViewModel.GenusItems}"
                               SelectedValuePath="GenusId" />
-                    <TextBlock x:Uid="TextBlock_Species"
-                               Grid.Row="28"
+                    <TextBlock Grid.Row="28"
                                Grid.Column="0"
                                Width="Auto"
-                               Margin="168,0,0,0" />
+                               Margin="168,0,0,0"
+                               loca:Uids.Uid="TextBlock_Species" />
                     <StackPanel Grid.Row="28"
                                 Grid.Column="1"
                                 Orientation="Horizontal">
@@ -855,11 +806,11 @@
                     <!--  Part 2  -->
 
                     <TextBlock x:Name="TbDirectChildren"
-                               x:Uid="TextBlock_DirectChildren"
                                Grid.Row="29"
                                Grid.Column="1"
                                Width="Auto"
                                Margin="0,5,0,10"
+                               loca:Uids.Uid="TextBlock_DirectChildren"
                                FontWeight="Bold" />
                     <ListView Grid.Row="30"
                               Grid.Column="0"
@@ -868,7 +819,7 @@
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemsSource="{x:Bind ViewModel.SpeciesSubItems}"
                               SelectedItem="{x:Bind ViewModel.SpeciesSubSelected, Mode=TwoWay}"
-                              SelectedValuePath="FiSpeciesId">
+                              SelectedValuePath="SpeciesId">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -877,17 +828,17 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock x:Uid="TextBlock_Subspecies"
-                                                   Width="Auto"
-                                                   Margin="176,0,0,0" />
+                                        <TextBlock Width="Auto"
+                                                   Margin="176,0,0,0"
+                                                   loca:Uids.Uid="TextBlock_Subspecies" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
                                                 Orientation="Horizontal">
-                                        <TextBlock Text="{Binding FiSpeciesId}"
+                                        <TextBlock Text="{Binding SpeciesId}"
                                                    Visibility="Collapsed" />
                                         <TextBlock Text="{Binding Tbl66Genusses.GenusName}" />
                                         <TextBlock Margin="2,0,0,0"
-                                                   Text="{Binding FiSpeciesName}" />
+                                                   Text="{Binding SpeciesName}" />
                                         <TextBlock Margin="2,0,0,0"
                                                    Text="{Binding Subspecies}" />
                                         <TextBlock Margin="2,0,0,0"
@@ -904,16 +855,16 @@
 
                     <!--  Part 3  -->
 
-                    <TextBlock x:Uid="TextBlock_References"
-                               Grid.Row="31"
+                    <TextBlock Grid.Row="31"
                                Grid.Column="0"
+                               loca:Uids.Uid="TextBlock_References"
                                FontSize="19"
                                FontWeight="Bold" />
-                    <TextBlock x:Uid="TextBlock_Experts"
-                               Grid.Row="32"
+                    <TextBlock Grid.Row="32"
                                Grid.Column="0"
                                Width="Auto"
                                Margin="8,0,0,10"
+                               loca:Uids.Uid="TextBlock_Experts"
                                FontWeight="Bold" />
                     <ListView Grid.Row="33"
                               Grid.Column="0"
@@ -921,11 +872,11 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
                               ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
-                    <TextBlock x:Uid="TextBlock_Sources"
-                               Grid.Row="34"
+                    <TextBlock Grid.Row="34"
                                Grid.Column="0"
                                Width="Auto"
                                Margin="8,0,0,10"
+                               loca:Uids.Uid="TextBlock_Sources"
                                FontWeight="Bold" />
                     <ListView Grid.Row="35"
                               Grid.Column="0"
@@ -933,11 +884,11 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
                               ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
-                    <TextBlock x:Uid="TextBlock_Publications"
-                               Grid.Row="36"
+                    <TextBlock Grid.Row="36"
                                Grid.Column="0"
                                Width="Auto"
                                Margin="8,0,0,10"
+                               loca:Uids.Uid="TextBlock_Publications"
                                FontWeight="Bold" />
                     <ListView Grid.Row="37"
                               Grid.Column="0"
@@ -945,10 +896,10 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
                               ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
-                    <TextBlock x:Uid="TextBlock_GeographicsInformation"
-                               Grid.Row="38"
+                    <TextBlock Grid.Row="38"
                                Grid.Column="0"
                                Margin="0,0,0,10"
+                               loca:Uids.Uid="TextBlock_GeographicsInformation"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="39"
@@ -958,10 +909,10 @@
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemTemplate="{StaticResource ReportItemTemplateGeographic}"
                               ItemsSource="{x:Bind ViewModel.GeographicItems}" />
-                    <TextBlock x:Uid="TextBlock_ImagesInformation"
-                               Grid.Row="40"
+                    <TextBlock Grid.Row="40"
                                Grid.Column="0"
                                Margin="0,0,0,10"
+                               loca:Uids.Uid="TextBlock_ImagesInformation"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="41"
@@ -971,10 +922,10 @@
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemTemplate="{StaticResource ReportItemTemplateImage}"
                               ItemsSource="{x:Bind ViewModel.ImageItems}" />
-                    <TextBlock x:Uid="TextBlock_Comments"
-                               Grid.Row="42"
+                    <TextBlock Grid.Row="42"
                                Grid.Column="0"
                                Margin="0,0,0,10"
+                               loca:Uids.Uid="TextBlock_Comments"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="43"
@@ -983,10 +934,10 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
                               ItemsSource="{x:Bind ViewModel.CommentItems}" />
-                    <TextBlock x:Uid="TextBlock_WorthKnowing"
-                               Grid.Row="44"
+                    <TextBlock Grid.Row="44"
                                Grid.Column="0"
                                Margin="0,0,0,10"
+                               loca:Uids.Uid="TextBlock_WorthKnowing"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="45"

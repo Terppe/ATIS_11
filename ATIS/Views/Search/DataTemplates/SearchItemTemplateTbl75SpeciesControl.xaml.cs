@@ -8,6 +8,6 @@ public sealed partial class SearchItemTemplateTbl75SpeciesControl : UserControl
 {
     public SearchItemTemplateTbl75SpeciesControl()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

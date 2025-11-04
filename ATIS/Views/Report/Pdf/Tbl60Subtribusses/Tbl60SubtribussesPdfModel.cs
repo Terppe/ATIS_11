@@ -162,14 +162,14 @@ public class Tbl60SubtribussesPdfModel
     {
         get; set;
     }
-    public PdfModels.FiSpecies FiSpeciesTree
+    public PdfModels.Species SpeciesTree
     {
         get; set;
     }
-    public PdfModels.PlSpecies PlSpeciesTree
-    {
-        get; set;
-    }
+    //public PdfModels.PlSpecies PlSpeciesTree
+    //{
+    //    get; set;
+    //}
 
 }
 

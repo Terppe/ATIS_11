@@ -4,10 +4,10 @@
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace ATIS.Views.Report.DataTemplates;
-public sealed partial class ReportItemTemplateFiSpeciesControl : UserControl
+public sealed partial class ReportItemTemplateTbl81ImageControl : UserControl
 {
-    public ReportItemTemplateFiSpeciesControl()
+    public ReportItemTemplateTbl81ImageControl()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

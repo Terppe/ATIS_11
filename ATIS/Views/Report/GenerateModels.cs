@@ -555,19 +555,19 @@ public abstract class GenrateModels
             };
         }
     }
-    public class GenFiSpeciesses
+    public class GenSpeciesses
     {
-        public static PdfModels.FiSpecies GenerateFiSpeciesses(Tbl75Species single)
+        public static PdfModels.Species GenerateSpeciesses(Tbl75Species single)
         {
             if (single == null)
             {
                 return null!;
             }
 
-            return new PdfModels.FiSpecies
+            return new PdfModels.Species
             {
                 Tbl66Genusses = single.Tbl66Genusses,
-                FiSpeciesName = single.SpeciesName,
+                SpeciesName = single.SpeciesName,
                 Subspecies = single.Subspecies,
                 Divers = single.Divers,
                 Valid = single.Valid,
@@ -624,54 +624,54 @@ public abstract class GenrateModels
             };
         }
     }
-    public class GenPlSpeciesses
-    {
-        public static PdfModels.PlSpecies GeneratePlSpeciesses(Tbl75Species single)
-        {
-            if (single == null)
-            {
-                return null!;
-            }
+    //public class GenPlSpeciesses
+    //{
+    //    public static PdfModels.PlSpecies GeneratePlSpeciesses(Tbl75Species single)
+    //    {
+    //        if (single == null)
+    //        {
+    //            return null!;
+    //        }
 
-            return new PdfModels.PlSpecies
-            {
-                Tbl66Genusses = single.Tbl66Genusses,
-                PlSpeciesName = single.SpeciesName,
-                Subspecies = single.Subspecies,
-                Divers = single.Divers,
-                GenusId = single.GenusId,
-                SpeciesgroupId = single.SpeciesgroupId,
-                Valid = single.Valid,
-                ValidYear = single.ValidYear,
-                MemoSpecies = single.MemoSpecies,
-                TradeName = single.TradeName,
-                Author = single.Author,
-                AuthorYear = single.AuthorYear,
-                Importer = single.Importer,
-                ImportingYear = single.ImportingYear,
-                BasinHeight = single.BasinHeight,
-                PlantLength = single.PlantLength,
-                Difficult1 = single.Difficult1,
-                Difficult2 = single.Difficult2,
-                Difficult3 = single.Difficult3,
-                Difficult4 = single.Difficult4,
-                MemoTech = single.MemoTech,
-                Ph1 = single.Ph1,
-                Ph2 = single.Ph2,
-                Temp1 = single.Temp1,
-                Temp2 = single.Temp2,
-                Hardness1 = single.Hardness1,
-                Hardness2 = single.Hardness2,
-                CarboHardness1 = single.CarboHardness1,
-                CarboHardness2 = single.CarboHardness2,
-                MemoBuilt = single.MemoBuilt,
-                MemoColor = single.MemoColor,
-                MemoReproduction = single.MemoReproduction,
-                MemoCulture = single.MemoCulture,
-                MemoGlobal = single.MemoGlobal
-            };
-        }
-    }
+    //        return new PdfModels.PlSpecies
+    //        {
+    //            Tbl66Genusses = single.Tbl66Genusses,
+    //            PlSpeciesName = single.SpeciesName,
+    //            Subspecies = single.Subspecies,
+    //            Divers = single.Divers,
+    //            GenusId = single.GenusId,
+    //            SpeciesgroupId = single.SpeciesgroupId,
+    //            Valid = single.Valid,
+    //            ValidYear = single.ValidYear,
+    //            MemoSpecies = single.MemoSpecies,
+    //            TradeName = single.TradeName,
+    //            Author = single.Author,
+    //            AuthorYear = single.AuthorYear,
+    //            Importer = single.Importer,
+    //            ImportingYear = single.ImportingYear,
+    //            BasinHeight = single.BasinHeight,
+    //            PlantLength = single.PlantLength,
+    //            Difficult1 = single.Difficult1,
+    //            Difficult2 = single.Difficult2,
+    //            Difficult3 = single.Difficult3,
+    //            Difficult4 = single.Difficult4,
+    //            MemoTech = single.MemoTech,
+    //            Ph1 = single.Ph1,
+    //            Ph2 = single.Ph2,
+    //            Temp1 = single.Temp1,
+    //            Temp2 = single.Temp2,
+    //            Hardness1 = single.Hardness1,
+    //            Hardness2 = single.Hardness2,
+    //            CarboHardness1 = single.CarboHardness1,
+    //            CarboHardness2 = single.CarboHardness2,
+    //            MemoBuilt = single.MemoBuilt,
+    //            MemoColor = single.MemoColor,
+    //            MemoReproduction = single.MemoReproduction,
+    //            MemoCulture = single.MemoCulture,
+    //            MemoGlobal = single.MemoGlobal
+    //        };
+    //    }
+    //}
 
     public class GenSynonyms
     {

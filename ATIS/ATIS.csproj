@@ -230,18 +230,6 @@
 	<Page Update="Views\Report\Pdf\Tbl75Speciesses\ReportSpeciessesWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\Pdf\Tbl72PlSpeciesSubs\ReportPlSpeciessesSubsWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl72PlSpeciesses\ReportPlSpeciessesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl69FiSpeciesSubs\ReportFiSpeciessesSubsWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl69FiSpeciesses\ReportFiSpeciessesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\Pdf\Tbl66Genusses\ReportGenussesWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -350,12 +338,6 @@
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkRegnumControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPlSpeciesSubControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPlSpeciesControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPhylumControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -378,12 +360,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkGenusControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFiSpeciesSubControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFiSpeciesControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFamilyControl.xaml">
@@ -434,9 +410,6 @@
 	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -459,9 +432,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl.xaml">
@@ -512,12 +482,6 @@
 	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderRegnumControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPlSpeciesSubsControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPlSpeciesControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPhylumControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -537,12 +501,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderGenusControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFiSpeciesSubsControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFiSpeciesControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFamilyControl.xaml">
@@ -673,7 +631,6 @@
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraclassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfrafamilyControl.xaml" />
@@ -682,7 +639,6 @@
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyLegioControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyOrdoControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySpeciesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubclassControl.xaml" />
@@ -699,8 +655,6 @@
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderClassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderDivisionControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFiSpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFiSpeciesSubsControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderGenusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfraclassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfrafamilyControl.xaml" />
@@ -709,8 +663,6 @@
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderLegioControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderOrdoControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPhylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPlSpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPlSpeciesSubsControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderRegnumControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSpeciesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSpeciesSubsControl.xaml" />
@@ -727,8 +679,6 @@
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkClassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkDivisionControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFiSpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFiSpeciesSubControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkGenusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfraclassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfrafamilyControl.xaml" />
@@ -737,8 +687,6 @@
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkLegioControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkOrdoControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPhylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPlSpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPlSpeciesSubControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkRegnumControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesSubControl.xaml" />
@@ -774,10 +722,6 @@
 		<None Remove="Views\Report\Pdf\Tbl60Subtribusses\ReportSubtribussesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl63Infratribusses\ReportInfratribussesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl66Genusses\ReportGenussesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl69FiSpeciesses\ReportFiSpeciessesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl69FiSpeciesSubs\ReportFiSpeciessesSubsWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl72PlSpeciesses\ReportPlSpeciessesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl72PlSpeciesSubs\ReportPlSpeciessesSubsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl75Speciesses\ReportSpeciessesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl75SpeciesSubs\ReportSpeciessesSubsWindow.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateFiSpeciesControl.xaml" />
@@ -814,8 +758,6 @@
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl60SubtribusControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl63InfratribusControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl66GenusControl.xaml" />
-		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl69FiSpeciesControl.xaml" />
-		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl72PlSpeciesControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl75SpeciesControl.xaml" />
 		<None Remove="Views\Search\SearchQuickPage.xaml" />
 		<None Remove="Views\Settings\GitUpdateSettingPage.xaml" />
@@ -832,9 +774,6 @@
 	<ItemGroup>
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\sp-SP\" />
-	<Folder Include="Views\Report\DataTemplates\" />
-	<Folder Include="Views\Search\Pdf\Tbl69FiSpeciesSubs\" />
-	<Folder Include="Views\Search\Pdf\Tbl72PlSpeciesSubs\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
 

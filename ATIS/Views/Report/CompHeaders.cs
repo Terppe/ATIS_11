@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using QuestPDF.Fluent;
-using IContainer = QuestPDF.Infrastructure.IContainer;
+using QuestPDF.Infrastructure;
 
 namespace ATIS.Views.Report;
 public class CompHeaders

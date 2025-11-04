@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<UserControl x:Class="ATIS.Views.Report.DataTemplates.ReportItemTemplateNameControl"
+<UserControl x:Class="ATIS.Views.Report.DataTemplates.ReportItemTemplateTbl84SynonymControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,16 +19,19 @@
                     Grid.Column="0"
                     Orientation="Horizontal">
             <TextBlock Width="Auto"
-                       Text="{Binding NameName}" />
+                       Text="{Binding SynonymName}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="[" />
+                       Text="(" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="{Binding Language}" />
+                       Text="{Binding Author}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="]" />
+                       Text="{Binding AuthorYear}" />
+            <TextBlock Width="Auto"
+                       Margin="2,0,0,0"
+                       Text=")" />
         </StackPanel>
     </Grid>
 </UserControl>

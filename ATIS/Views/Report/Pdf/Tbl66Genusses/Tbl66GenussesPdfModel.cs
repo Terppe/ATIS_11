@@ -142,8 +142,8 @@ public class Tbl66GenussesPdfModel
     public PdfModels.Subtribus SubtribusTree { get; set; }
     public PdfModels.Infratribus InfratribusTree { get; set; }
     public PdfModels.Genus GenusTree { get; set; }
-    public PdfModels.FiSpecies FiSpeciesTree { get; set; }
-    public PdfModels.PlSpecies PlSpeciesTree { get; set; }
+    public PdfModels.Species SpeciesTree { get; set; }
+    //public PdfModels.PlSpecies PlSpeciesTree { get; set; }
 
 }
 

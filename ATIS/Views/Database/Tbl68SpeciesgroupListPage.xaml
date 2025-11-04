@@ -52,7 +52,7 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
-        <MenuFlyout x:Key="SpeciesDataContextMenu">
+        <!--<MenuFlyout x:Key="SpeciesDataContextMenu">
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_FiSpecies"
                             Click="AddSpecies_Click">
                 <MenuFlyoutItem.Icon>
@@ -60,7 +60,7 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-        </MenuFlyout>
+        </MenuFlyout>-->
     </Page.Resources>
 
     <RelativePanel x:Name="SpeciesgroupRoot"
@@ -127,7 +127,7 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonAddSpecies"
+            <!--<AppBarButton x:Name="AppBarButtonAddSpecies"
                           loca:Uids.Uid="AppBarButtonAddSpecies"
                           Click="AddSpecies_Click"
                           IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SpeciesgroupSelected), Mode=OneWay}">
@@ -135,7 +135,7 @@
                     <BitmapIcon ShowAsMonochrome="False"
                                 UriSource="/Assets/Fluent/add.png" />
                 </AppBarButton.Icon>
-            </AppBarButton>
+            </AppBarButton>-->
             <AppBarButton x:Name="AppBarButtonSync"
                           loca:Uids.Uid="AppBarButtonSync"
                           Click="Refresh_Click"
@@ -541,14 +541,14 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonAddSpecies"
+                            <!--<AppBarButton loca:Uids.Uid="AppBarButtonAddSpecies"
                                           Click="AddSpecies_Click"
                                           IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SpeciesSelected), Mode=OneWay}">
                                 <AppBarButton.Icon>
                                     <BitmapIcon ShowAsMonochrome="False"
                                                 UriSource="/Assets/Fluent/add.png" />
                                 </AppBarButton.Icon>
-                            </AppBarButton>
+                            </AppBarButton>-->
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsSpeciesAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditSpecies, Mode=OneWay}">
@@ -1155,14 +1155,14 @@
                           Visibility="Collapsed">
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="FiSpeciessesTitle"
-                                       loca:Uids.Uid="TextBlock_FiSpeciesses"
+                            <TextBlock x:Name="SpeciessesTitle"
+                                       loca:Uids.Uid="TextBlock_Speciesses"
                                        Style="{ThemeResource PageTitleTextBlockStyle}" />
-                            <TextBlock x:Name="FiSpeciessesDatasetText"
+                            <TextBlock x:Name="SpeciessesDatasetText"
                                        Margin="5,0,0,2"
                                        loca:Uids.Uid="TextBlock_DataSetCount"
                                        Style="{StaticResource DatasetTitleStyle}" />
-                            <TextBlock x:Name="FiSpeciessesDatasetCountText"
+                            <TextBlock x:Name="SpeciessesDatasetCountText"
                                        Margin="5,0,0,2"
                                        Style="{StaticResource DatasetTitleStyle}"
                                        Text="{x:Bind ViewModel.SpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

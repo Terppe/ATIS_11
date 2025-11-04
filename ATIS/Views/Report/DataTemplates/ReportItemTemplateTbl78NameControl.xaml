@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<UserControl x:Class="ATIS.Views.Report.DataTemplates.ReportItemTemplateGeographicControl"
+<UserControl x:Class="ATIS.Views.Report.DataTemplates.ReportItemTemplateTbl78NameControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,29 +15,20 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock x:Uid="TextBlock_Name"
-                       Width="Auto"
-                       Margin="8,0,0,0"
-                       Text="Name:" />
-        </StackPanel>
         <StackPanel Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="0"
                     Orientation="Horizontal">
             <TextBlock Width="Auto"
-                       Text="{Binding GeographicId}" />
+                       Text="{Binding NameName}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="(" />
+                       Text="[" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="{Binding Continent}" />
+                       Text="{Binding Language}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="{Binding Country}" />
-            <TextBlock Width="Auto"
-                       Margin="2,0,0,0"
-                       Text=")" />
+                       Text="]" />
         </StackPanel>
     </Grid>
 </UserControl>

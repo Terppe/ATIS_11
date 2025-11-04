@@ -25,7 +25,7 @@
             <TextBlock Width="50"
                        Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListTitleStyle}"
-                       Text="{Binding FiSpeciesId}" />
+                       Text="{Binding SpeciesId}" />
             <CheckBox Width="80"
                       Margin="{StaticResource SmallLeftMargin}"
                       Content="Valid"
@@ -35,7 +35,7 @@
                        Text="{Binding Tbl66Genusses.GenusName}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding FiSpeciesName}" />
+                       Text="{Binding SpeciesName}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
                        Text="{Binding Subspecies}" />

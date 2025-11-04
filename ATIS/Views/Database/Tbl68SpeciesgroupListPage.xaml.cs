@@ -188,6 +188,10 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         {
             BackDetailExpanders();
             await AddSpeciesgroup();
+            SpeciesgroupName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(SpeciesgroupName);
+            };
         }
         catch (Exception xe)
         {
@@ -198,11 +202,6 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
     private async Task AddSpeciesgroup()
     {
-        SpeciesgroupName.Loaded += (s, e) =>
-        {
-            SpeciesgroupName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditSpeciesgroup = true;
         ViewModel.IsNewSpeciesgroup = true;
 
@@ -417,6 +416,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
                 await ViewModel.SaveSpeciesgroupAsync(ViewModel.SpeciesgroupSelected);
                 await BehindSaveSpeciesgroup(ViewModel.SpeciesgroupSelected);
                 await Refresh();
+                ViewModel.IsNewSpeciesgroup = false;
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpeciesgroup = true;
@@ -499,52 +499,52 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
     #region [Species Methods]
 
-    private async void AddSpecies_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            BackDetailExpanders();
-            await AddSpecies();
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
+    //private async void AddSpecies_Click(object sender, RoutedEventArgs e)
+    //{
+    //    try
+    //    {
+    //        BackDetailExpanders();
+    //        await AddSpecies();
+    //    }
+    //    catch (Exception xe)
+    //    {
+    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+    //        SimpleLog.Log(xe);
+    //    }
+    //}
 
-    private async Task AddSpecies()
-    {
-        SpeciesName.Loaded += (s, e) =>
-        {
-            SpeciesName.Focus(FocusState.Programmatic);
-        };
+    //private async Task AddSpecies()
+    //{
+    //    SpeciesName.Loaded += (s, e) =>
+    //    {
+    //        SpeciesName.Focus(FocusState.Programmatic);
+    //    };
 
-        ViewModel.IsInEditSpecies = true;
-        ViewModel.IsNewSpecies = true;
+    //    ViewModel.IsInEditSpecies = true;
+    //    ViewModel.IsNewSpecies = true;
 
-        await ViewModel.AddSpeciesAsync();
+    //    await ViewModel.AddSpeciesAsync();
 
-        if (ViewModel.Tbl75SpeciessesList != null)
-        {
-            ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[0];
-        }
-        SpeciesDetailExpander.IsExpanded = true;
-        SpeciesDetailExpander.Visibility = Visibility.Visible;
+    //    if (ViewModel.Tbl75SpeciessesList != null)
+    //    {
+    //        ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[0];
+    //    }
+    //    SpeciesDetailExpander.IsExpanded = true;
+    //    SpeciesDetailExpander.Visibility = Visibility.Visible;
 
-        SpecificationExpanderSpecies.IsExpanded = false;
-        FoodExpanderFiSpecies.IsExpanded = false;
-        TechnikExpanderFiSpecies.IsExpanded = false;
-        HusbandryExpanderFiSpecies.IsExpanded = false;
-        BreedingExpanderFiSpecies.IsExpanded = false;
-        BuiltExpanderFiSpecies.IsExpanded = false;
-        SpecialExpanderFiSpecies.IsExpanded = false;
-        ReproductionExpanderPlSpecies.IsExpanded = false;
-        CultureExpanderPlSpecies.IsExpanded = false;
-        GlobalExpanderPlSpecies.IsExpanded = false;
+    //    SpecificationExpanderSpecies.IsExpanded = false;
+    //    FoodExpanderFiSpecies.IsExpanded = false;
+    //    TechnikExpanderFiSpecies.IsExpanded = false;
+    //    HusbandryExpanderFiSpecies.IsExpanded = false;
+    //    BreedingExpanderFiSpecies.IsExpanded = false;
+    //    BuiltExpanderFiSpecies.IsExpanded = false;
+    //    SpecialExpanderFiSpecies.IsExpanded = false;
+    //    ReproductionExpanderPlSpecies.IsExpanded = false;
+    //    CultureExpanderPlSpecies.IsExpanded = false;
+    //    GlobalExpanderPlSpecies.IsExpanded = false;
 
-        SpeciesName.PlaceholderText = StringsRes.EnterText;
-    }
+    //    SpeciesName.PlaceholderText = StringsRes.EnterText;
+    //}
     private void DataGrid_Species_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl75SpeciessesList.Sort);
