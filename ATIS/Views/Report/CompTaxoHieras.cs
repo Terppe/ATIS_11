@@ -42,23 +42,23 @@ public abstract class CompTaxoHieras
     }
 
 
-    public static void ComposeTaxoHierDivision(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Division modelDivisionTree)
-    {
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Strings.StringsRes.Division);
-            table.Cell().Text($"{modelDivisionTree.DivisionName} {modelDivisionTree.Author} {modelDivisionTree.AuthorYear}" +
-                              $" {modelDivisionTree.EngName} {modelDivisionTree.GerName}" +
-                              $" {modelDivisionTree.FraName} {modelDivisionTree.PorName}");
-        });
-    }
+    //public static void ComposeTaxoHierDivision(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Division modelDivisionTree)
+    //{
+    //    column.Item().Table(table =>
+    //    {
+    //        table.ColumnsDefinition(columns =>
+    //        {
+    //            columns.ConstantColumn(tabLeftRel);
+    //            columns.ConstantColumn(tabRightRel);
+    //            columns.RelativeColumn();
+    //        });
+    //        table.Cell().Text("");
+    //        table.Cell().Text(Strings.StringsRes.Division);
+    //        table.Cell().Text($"{modelDivisionTree.DivisionName} {modelDivisionTree.Author} {modelDivisionTree.AuthorYear}" +
+    //                          $" {modelDivisionTree.EngName} {modelDivisionTree.GerName}" +
+    //                          $" {modelDivisionTree.FraName} {modelDivisionTree.PorName}");
+    //    });
+    //}
 
  
     public static void ComposeTaxoHierSubphylum(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
@@ -81,24 +81,24 @@ public abstract class CompTaxoHieras
     }
 
 
-    public static void ComposeTaxoHierSubdivision(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Subdivision modelSubdivisionTree)
-    {
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Strings.StringsRes.Subdivision);
-            table.Cell().Text($"{modelSubdivisionTree.SubdivisionName} {modelSubdivisionTree.Author} {modelSubdivisionTree.AuthorYear}" +
-                              $" {modelSubdivisionTree.EngName} {modelSubdivisionTree.GerName}" +
-                              $" {modelSubdivisionTree.FraName} {modelSubdivisionTree.PorName}");
-        });
-    }
+    //public static void ComposeTaxoHierSubdivision(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
+    //    PdfModels.Subdivision modelSubdivisionTree)
+    //{
+    //    column.Item().Table(table =>
+    //    {
+    //        table.ColumnsDefinition(columns =>
+    //        {
+    //            columns.ConstantColumn(tabLeftRel);
+    //            columns.ConstantColumn(tabRightRel);
+    //            columns.RelativeColumn();
+    //        });
+    //        table.Cell().Text("");
+    //        table.Cell().Text(Strings.StringsRes.Subdivision);
+    //        table.Cell().Text($"{modelSubdivisionTree.SubdivisionName} {modelSubdivisionTree.Author} {modelSubdivisionTree.AuthorYear}" +
+    //                          $" {modelSubdivisionTree.EngName} {modelSubdivisionTree.GerName}" +
+    //                          $" {modelSubdivisionTree.FraName} {modelSubdivisionTree.PorName}");
+    //    });
+    //}
 
     public static void ComposeTaxoHierSuperclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
         PdfModels.Superclass modelSuperclassTree)

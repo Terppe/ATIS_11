@@ -310,12 +310,12 @@ public class Tbl45FamiliesDocument : IDocument
                     CompTaxoHieras.ComposeTaxoHierPhylum(column, _tabLeftRel, _tabRightRel, Model.PhylumTree);
                 }
 
-                if (Model.DivisionTree != null && !string.IsNullOrWhiteSpace(Model.DivisionTree!.DivisionName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierDivision(column, _tabLeftRel, _tabRightRel, Model.DivisionTree);
-                }
+                //if (Model.DivisionTree != null && !string.IsNullOrWhiteSpace(Model.DivisionTree!.DivisionName))
+                //{
+                //    _tabLeftRel += 4;
+                //    _tabRightRel -= 4;
+                //    CompTaxoHieras.ComposeTaxoHierDivision(column, _tabLeftRel, _tabRightRel, Model.DivisionTree);
+                //}
 
                 if (Model.SubphylumTree != null && !string.IsNullOrWhiteSpace(Model.SubphylumTree!.SubphylumName))
                 {
@@ -323,12 +323,12 @@ public class Tbl45FamiliesDocument : IDocument
                     _tabRightRel -= 4;
                     CompTaxoHieras.ComposeTaxoHierSubphylum(column, _tabLeftRel, _tabRightRel, Model.SubphylumTree);
                 }
-                if (Model.SubdivisionTree != null && !string.IsNullOrWhiteSpace(Model.SubdivisionTree!.SubdivisionName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierSubdivision(column, _tabLeftRel, _tabRightRel, Model.SubdivisionTree);
-                }
+                //if (Model.SubdivisionTree != null && !string.IsNullOrWhiteSpace(Model.SubdivisionTree!.SubdivisionName))
+                //{
+                //    _tabLeftRel += 4;
+                //    _tabRightRel -= 4;
+                //    CompTaxoHieras.ComposeTaxoHierSubdivision(column, _tabLeftRel, _tabRightRel, Model.SubdivisionTree);
+                //}
                 if (Model.SuperclassTree != null)
                 {
                     _tabLeftRel += 4;

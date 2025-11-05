@@ -31,9 +31,7 @@ using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 using ATIS.Views.Search.Pdf.Tbl03Regnums;
 using ATIS.Views.Search.Pdf.Tbl06Phylums;
-using ATIS.Views.Search.Pdf.Tbl09Divisions;
 using ATIS.Views.Search.Pdf.Tbl12Subphylums;
-using ATIS.Views.Search.Pdf.Tbl15Subdivisions;
 using ATIS.Views.Search.Pdf.Tbl18Superclasses;
 using ATIS.Views.Search.Pdf.Tbl21Classes;
 using ATIS.Views.Search.Pdf.Tbl24Subclasses;
@@ -111,22 +109,10 @@ public sealed partial class SearchQuickPage : Page
         reportPhylumsWindow.GeneratePdfPhylum(ViewModel.PhylumSelected.PhylumId);
     });
 
-    public ICommand PdfDivisionCommand => new WinUICommunity.RelayCommand(execute: delegate
-    {
-        var reportDivisionsWindow = new ReportDivisionsWindow(ViewModel.DivisionSelected.DivisionId);
-        reportDivisionsWindow.GeneratePdfDivision(ViewModel.DivisionSelected.DivisionId);
-    });
-
     public ICommand PdfSubphylumCommand => new WinUICommunity.RelayCommand(execute: delegate
     {
         var reportSubphylumsWindow = new ReportSubphylumsWindow(ViewModel.SubphylumSelected.SubphylumId);
         reportSubphylumsWindow.GeneratePdfSubphylum(ViewModel.SubphylumSelected.SubphylumId);
-    });
-
-    public ICommand PdfSubdivisionCommand => new WinUICommunity.RelayCommand(execute: delegate
-    {
-        var reportSubdivisionsWindow = new ReportSubdivisionsWindow(ViewModel.SubdivisionSelected.SubdivisionId);
-        reportSubdivisionsWindow.GeneratePdfSubdivision(ViewModel.SubdivisionSelected.SubdivisionId);
     });
 
     public ICommand PdfSuperclassCommand => new WinUICommunity.RelayCommand(execute: delegate
@@ -284,7 +270,7 @@ public sealed partial class SearchQuickPage : Page
 
         switch (ViewModel.SelectedMainTabIndex)
         {
-            case 8:
+            case 7:
                 {
                     filePath = $"{filePath}PdfListRegnum.pdf";
                     {
@@ -298,7 +284,7 @@ public sealed partial class SearchQuickPage : Page
                     }
                     break;
                 }
-            case 7 when ViewModel.SelectedPhylumTabIndex == 0:
+            case 6 when ViewModel.SelectedPhylumTabIndex == 0:
                 {
                     filePath = $"{filePath}PdfListSubphylum.pdf";
                     {
@@ -313,7 +299,7 @@ public sealed partial class SearchQuickPage : Page
                     }
                     break;
                 }
-            case 7 when ViewModel.SelectedPhylumTabIndex == 1:
+            case 6 when ViewModel.SelectedPhylumTabIndex == 1:
                 {
                     filePath = $"{filePath}PdfListPhylum.pdf";
                     {
@@ -327,35 +313,35 @@ public sealed partial class SearchQuickPage : Page
                     }
                     break;
                 }
-            case 6 when ViewModel.SelectedDivisionTabIndex == 0:
-                {
-                    filePath = $"{filePath}PdfListSubdivision.pdf";
-                    {
-                        if (ViewModel.SubdivisionsCollection.Count != 0)
-                        {
-                            var model =
-                                Tbl15SubdivisionsListDocumentDataSource.GetSubdivisionListDetails(ViewModel
-                                    .SubdivisionsCollection);
-                            var document = new Tbl15SubdivisionsListDocument(model, ViewModel.SubdivisionsCollection);
-                            document.GeneratePdf(filePath);
-                        }
-                    }
-                    break;
-                }
-            case 6 when ViewModel.SelectedDivisionTabIndex == 1:
-                {
-                    filePath = $"{filePath}PdfListDivision.pdf";
-                    {
-                        if (ViewModel.DivisionsCollection.Count != 0)
-                        {
-                            var model =
-                                Tbl09DivisionsListDocumentDataSource.GetDivisionListDetails(ViewModel.DivisionsCollection);
-                            var document = new Tbl09DivisionsListDocument(model, ViewModel.DivisionsCollection);
-                            document.GeneratePdf(filePath);
-                        }
-                    }
-                    break;
-                }
+            //case 6 when ViewModel.SelectedDivisionTabIndex == 0:
+            //    {
+            //        filePath = $"{filePath}PdfListSubdivision.pdf";
+            //        {
+            //            if (ViewModel.SubdivisionsCollection.Count != 0)
+            //            {
+            //                var model =
+            //                    Tbl15SubdivisionsListDocumentDataSource.GetSubdivisionListDetails(ViewModel
+            //                        .SubdivisionsCollection);
+            //                var document = new Tbl15SubdivisionsListDocument(model, ViewModel.SubdivisionsCollection);
+            //                document.GeneratePdf(filePath);
+            //            }
+            //        }
+            //        break;
+            //    }
+            //case 6 when ViewModel.SelectedDivisionTabIndex == 1:
+            //    {
+            //        filePath = $"{filePath}PdfListDivision.pdf";
+            //        {
+            //            if (ViewModel.DivisionsCollection.Count != 0)
+            //            {
+            //                var model =
+            //                    Tbl09DivisionsListDocumentDataSource.GetDivisionListDetails(ViewModel.DivisionsCollection);
+            //                var document = new Tbl09DivisionsListDocument(model, ViewModel.DivisionsCollection);
+            //                document.GeneratePdf(filePath);
+            //            }
+            //        }
+            //        break;
+            //    }
             case 5 when ViewModel.SelectedClassTabIndex == 0:
                 {
                     filePath = $"{filePath}PdfListInfraclass.pdf";
@@ -710,18 +696,18 @@ public sealed partial class SearchQuickPage : Page
         window.Activate();
     }
 
-    private void DivisionSelect_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.DivisionSelected.DivisionId == 0)
-        {
-            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
-            return;
-        }
+    //private void DivisionSelect_Click(object sender, RoutedEventArgs e)
+    //{
+    //    if (ViewModel.DivisionSelected.DivisionId == 0)
+    //    {
+    //        _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
+    //        return;
+    //    }
 
-        var window = new ReportDivisionsWindow(ViewModel.DivisionSelected.DivisionId);
-        window.IsAlwaysOnTop = true;
-        window.Activate();
-    }
+    //    var window = new ReportDivisionsWindow(ViewModel.DivisionSelected.DivisionId);
+    //    window.IsAlwaysOnTop = true;
+    //    window.Activate();
+    //}
 
     private void SubphylumSelect_Click(object sender, RoutedEventArgs e)
     {
@@ -738,18 +724,18 @@ public sealed partial class SearchQuickPage : Page
         window.Activate();
     }
 
-    private void SubdivisionSelect_Click(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel.SubdivisionSelected.SubdivisionId == 0)
-        {
-            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
-            return;
-        }
+    //private void SubdivisionSelect_Click(object sender, RoutedEventArgs e)
+    //{
+    //    if (ViewModel.SubdivisionSelected.SubdivisionId == 0)
+    //    {
+    //        _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
+    //        return;
+    //    }
 
-        var window = new ReportSubdivisionsWindow(ViewModel.SubdivisionSelected.SubdivisionId);
-        window.IsAlwaysOnTop = true;
-        window.Activate();
-    }
+    //    var window = new ReportSubdivisionsWindow(ViewModel.SubdivisionSelected.SubdivisionId);
+    //    window.IsAlwaysOnTop = true;
+    //    window.Activate();
+    //}
 
     private void SuperclassSelect_Click(object sender, RoutedEventArgs e)
     {

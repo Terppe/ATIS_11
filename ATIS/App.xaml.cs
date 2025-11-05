@@ -167,9 +167,9 @@ public partial class App : Application
             json.ConfigSectionPage(typeof(UtilityPage));
             json.ConfigSectionPage(typeof(Tbl03RegnumListPage));
             json.ConfigSectionPage(typeof(Tbl06PhylumListPage));
-            json.ConfigSectionPage(typeof(Tbl09DivisionListPage));
+            //json.ConfigSectionPage(typeof(Tbl09DivisionListPage));
             json.ConfigSectionPage(typeof(Tbl12SubphylumListPage));
-            json.ConfigSectionPage(typeof(Tbl15SubdivisionListPage));
+            //json.ConfigSectionPage(typeof(Tbl15SubdivisionListPage));
             json.ConfigSectionPage(typeof(Tbl18SuperclassListPage));
             json.ConfigSectionPage(typeof(Tbl21ClassListPage));
             json.ConfigSectionPage(typeof(Tbl24SubclassListPage));
@@ -234,9 +234,9 @@ public partial class App : Application
 
         services.AddTransient<Tbl03RegnumViewModel>();
         services.AddTransient<Tbl06PhylumViewModel>();
-        services.AddTransient<Tbl09DivisionViewModel>();
+        //services.AddTransient<Tbl09DivisionViewModel>();
         services.AddTransient<Tbl12SubphylumViewModel>();
-        services.AddTransient<Tbl15SubdivisionViewModel>();
+        //services.AddTransient<Tbl15SubdivisionViewModel>();
         services.AddTransient<Tbl18SuperclassViewModel>();
         services.AddTransient<Tbl21ClassViewModel>();
         services.AddTransient<Tbl24SubclassViewModel>();

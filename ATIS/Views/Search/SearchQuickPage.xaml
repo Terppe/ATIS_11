@@ -49,7 +49,7 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <MenuFlyout x:Key="DivisionDataContextMenu">
+        <!--<MenuFlyout x:Key="DivisionDataContextMenu">
             <MenuFlyoutItem x:Uid="MenuFlyout_Select"
                             Click="DivisionSelect_Click">
                 <MenuFlyoutItem.Icon>
@@ -64,7 +64,7 @@
                                 UriSource="/Assets/Fluent/pdf.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-        </MenuFlyout>
+        </MenuFlyout>-->
 
         <MenuFlyout x:Key="SubphylumDataContextMenu">
             <MenuFlyoutItem x:Uid="MenuFlyout_Select"
@@ -83,7 +83,7 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <MenuFlyout x:Key="SubdivisionDataContextMenu">
+        <!--<MenuFlyout x:Key="SubdivisionDataContextMenu">
             <MenuFlyoutItem x:Uid="MenuFlyout_Select"
                             Click="SubdivisionSelect_Click">
                 <MenuFlyoutItem.Icon>
@@ -98,7 +98,7 @@
                                 UriSource="/Assets/Fluent/pdf.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-        </MenuFlyout>
+        </MenuFlyout>-->
 
         <MenuFlyout x:Key="SuperclassDataContextMenu">
             <MenuFlyoutItem x:Uid="MenuFlyout_Select"
@@ -417,18 +417,18 @@
                       x:DataType="models:Tbl06Phylum">
             <dataTemplates:SearchItemTemplateTbl06PhylumControl />
         </DataTemplate>
-        <DataTemplate x:Key="SearchItemTemplateTbl09Division"
+        <!--<DataTemplate x:Key="SearchItemTemplateTbl09Division"
                       x:DataType="models:Tbl09Division">
             <dataTemplates:SearchItemTemplateTbl09DivisionControl />
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
                       x:DataType="models:Tbl12Subphylum">
             <dataTemplates:SearchItemTemplateTbl12SubphylumControl />
         </DataTemplate>
-        <DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
+        <!--<DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
                       x:DataType="models:Tbl15Subdivision">
             <dataTemplates:SearchItemTemplateTbl15SubdivisionControl />
-        </DataTemplate>
+        </DataTemplate>-->
         <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
                       x:DataType="models:Tbl18Superclass">
             <dataTemplates:SearchItemTemplateTbl18SuperclassControl />
@@ -1146,7 +1146,7 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
-                                    <TabViewItem x:Uid="TabViewItem_Divisions"
+                                    <!--<TabViewItem x:Uid="TabViewItem_Divisions"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"
                                                  SelectedIndex="{x:Bind ViewModel.SelectedDivisionTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1175,7 +1175,7 @@
                                                 </TabViewItem>
                                             </TabView.TabItems>
                                         </TabView>
-                                    </TabViewItem>
+                                    </TabViewItem>-->
                                     <TabViewItem x:Uid="TabViewItem_Phylums"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"

@@ -308,12 +308,12 @@ public class Tbl12SubphylumsDocument : IDocument
                     CompTaxoHieras.ComposeTaxoHierPhylum(column, _tabLeftRel, _tabRightRel, Model.PhylumTree);
                 }
 
-                if (Model.DivisionTree != null && !string.IsNullOrWhiteSpace(Model.DivisionTree!.DivisionName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierDivision(column, _tabLeftRel, _tabRightRel, Model.DivisionTree);
-                }
+                //if (Model.DivisionTree != null && !string.IsNullOrWhiteSpace(Model.DivisionTree!.DivisionName))
+                //{
+                //    _tabLeftRel += 4;
+                //    _tabRightRel -= 4;
+                //    CompTaxoHieras.ComposeTaxoHierDivision(column, _tabLeftRel, _tabRightRel, Model.DivisionTree);
+                //}
 
                 if (Model.SubphylumTree != null && !string.IsNullOrWhiteSpace(Model.SubphylumTree!.SubphylumName))
                 {

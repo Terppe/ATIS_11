@@ -80,18 +80,18 @@ public class Tbl57TribussesPdfModel
     {
         get; set;
     }
-    public PdfModels.Division DivisionTree
-    {
-        get; set;
-    }
+    //public PdfModels.Division DivisionTree
+    //{
+    //    get; set;
+    //}
     public PdfModels.Subphylum SubphylumTree
     {
         get; set;
     }
-    public PdfModels.Subdivision SubdivisionTree
-    {
-        get; set;
-    }
+    //public PdfModels.Subdivision SubdivisionTree
+    //{
+    //    get; set;
+    //}
     public PdfModels.Superclass SuperclassTree
     {
         get; set;

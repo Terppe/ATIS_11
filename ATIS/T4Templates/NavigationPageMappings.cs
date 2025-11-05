@@ -34,8 +34,6 @@ public partial class NavigationPageMappings
         {"ATIS.Views.Database.Tbl24SubclassListPage", typeof(ATIS.Views.Database.Tbl24SubclassListPage)},
         {"ATIS.Views.Database.Tbl21ClassListPage", typeof(ATIS.Views.Database.Tbl21ClassListPage)},
         {"ATIS.Views.Database.Tbl18SuperclassListPage", typeof(ATIS.Views.Database.Tbl18SuperclassListPage)},
-        {"ATIS.Views.Database.Tbl15SubdivisionListPage", typeof(ATIS.Views.Database.Tbl15SubdivisionListPage)},
-        {"ATIS.Views.Database.Tbl09DivisionListPage", typeof(ATIS.Views.Database.Tbl09DivisionListPage)},
         {"ATIS.Views.Database.Tbl12SubphylumListPage", typeof(ATIS.Views.Database.Tbl12SubphylumListPage)},
         {"ATIS.Views.Database.Tbl06PhylumListPage", typeof(ATIS.Views.Database.Tbl06PhylumListPage)},
         {"ATIS.Views.Database.Tbl03RegnumListPage", typeof(ATIS.Views.Database.Tbl03RegnumListPage)},

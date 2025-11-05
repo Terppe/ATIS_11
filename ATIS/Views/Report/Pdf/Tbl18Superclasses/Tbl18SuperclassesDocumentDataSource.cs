@@ -121,8 +121,8 @@ public abstract class Tbl18SuperclassesDocumentDataSource : ObservableObject
             RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
             PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
             SubphylumTree = GenrateModels.GenSubphylums.GenerateSubphylums(_subphylumSingle),
-            DivisionTree = GenrateModels.GenDivisions.GenerateDivisions(_divisionSingle),
-            SubdivisionTree = GenrateModels.GenSubdivisions.GenerateSubdivisions(_subdivisionSingle),
+            //DivisionTree = GenrateModels.GenDivisions.GenerateDivisions(_divisionSingle),
+            //SubdivisionTree = GenrateModels.GenSubdivisions.GenerateSubdivisions(_subdivisionSingle),
             SuperclassTree = GenrateModels.GenSuperclasses.GenerateSuperclasses(_superclassSingle)
         };
     }

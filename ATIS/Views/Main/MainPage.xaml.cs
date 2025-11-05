@@ -592,15 +592,15 @@ public sealed partial class MainPage : Page
         }
 
         //--------------------------------------------
-        if ((string)args.ChosenSuggestion == (string)NavSubdivision.Content)
-        {
-            NavFrame.Navigate(typeof(Tbl15SubdivisionListPage));
-        }
+        //if ((string)args.ChosenSuggestion == (string)NavSubdivision.Content)
+        //{
+        //    NavFrame.Navigate(typeof(Tbl15SubdivisionListPage));
+        //}
 
-        if ((string)args.ChosenSuggestion == (string)NavDivision.Content)
-        {
-            NavFrame.Navigate(typeof(Tbl09DivisionListPage));
-        }
+        //if ((string)args.ChosenSuggestion == (string)NavDivision.Content)
+        //{
+        //    NavFrame.Navigate(typeof(Tbl09DivisionListPage));
+        //}
 
         //-------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavSubphylum.Content)

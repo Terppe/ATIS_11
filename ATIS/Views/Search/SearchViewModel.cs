@@ -276,29 +276,29 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             IsLoading = false;
             return;
         }
-        if (_selectedMainTabIndex == 6 && _selectedDivisionTabIndex == 0)  //Subdivision
-        {
-            IsLoading = true;
-            SubdivisionsCollection = dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(filterText);
-            DataSetCount = SubdivisionsCollection.Count;
+        //if (_selectedMainTabIndex == 6 && _selectedDivisionTabIndex == 0)  //Subdivision
+        //{
+        //    IsLoading = true;
+        //    SubdivisionsCollection = dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(filterText);
+        //    DataSetCount = SubdivisionsCollection.Count;
 
-            OnPropertyChanged(nameof(SubdivisionsCollection));
-            RefreshSubdivisionItems();
-            IsLoading = false;
-            return;
-        }
-        if (_selectedMainTabIndex == 6 && _selectedDivisionTabIndex == 1)  //Division
-        {
-            IsLoading = true;
-            DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(filterText);
-            DataSetCount = DivisionsCollection.Count;
+        //    OnPropertyChanged(nameof(SubdivisionsCollection));
+        //    RefreshSubdivisionItems();
+        //    IsLoading = false;
+        //    return;
+        //}
+        //if (_selectedMainTabIndex == 6 && _selectedDivisionTabIndex == 1)  //Division
+        //{
+        //    IsLoading = true;
+        //    DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(filterText);
+        //    DataSetCount = DivisionsCollection.Count;
 
-            OnPropertyChanged(nameof(DivisionsCollection));
-            RefreshDivisionItems();
-            IsLoading = false;
-            return;
-        }
-        if (_selectedMainTabIndex == 7 && _selectedPhylumTabIndex == 0)  //Subphylum
+        //    OnPropertyChanged(nameof(DivisionsCollection));
+        //    RefreshDivisionItems();
+        //    IsLoading = false;
+        //    return;
+        //}
+        if (_selectedMainTabIndex == 6 && _selectedPhylumTabIndex == 0)  //Subphylum
         {
             IsLoading = true;
             SubphylumsCollection = dataService.GetTbl12SubphylumsCollectionOrderBySubphylumNameFromFilterText(filterText);
@@ -309,7 +309,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             IsLoading = false;
             return;
         }
-        if (_selectedMainTabIndex == 7 && _selectedPhylumTabIndex == 1)  //Phylum
+        if (_selectedMainTabIndex == 6 && _selectedPhylumTabIndex == 1)  //Phylum
         {
             IsLoading = true;
             PhylumsCollection = dataService.GetTbl06PhylumsCollectionOrderByPhylumNameFromFilterText(filterText);
@@ -320,7 +320,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             IsLoading = false;
             return;
         }
-        if (_selectedMainTabIndex == 8 && _selectedRegnumTabIndex == 0)  //Regnum
+        if (_selectedMainTabIndex == 7 && _selectedRegnumTabIndex == 0)  //Regnum
         {
             IsLoading = true;
             RegnumsCollection = dataService.GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(filterText);

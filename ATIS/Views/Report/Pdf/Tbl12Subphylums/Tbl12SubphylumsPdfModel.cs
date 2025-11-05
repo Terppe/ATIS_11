@@ -80,10 +80,10 @@ public class Tbl12SubphylumsPdfModel
     {
         get; set;
     }
-    public PdfModels.Division DivisionTree
-    {
-        get; set;
-    }
+    //public PdfModels.Division DivisionTree
+    //{
+    //    get; set;
+    //}
     public PdfModels.Subphylum SubphylumTree
     {
         get; set;

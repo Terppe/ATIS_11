@@ -81,56 +81,56 @@ public abstract class GenrateModels
             };
         }
     }
-    public abstract class GenDivisions
-    {
-        public static PdfModels.Division GenerateDivisions(Tbl09Division single)
-        {
-            if (single == null)
-            {
-                return null!;
-            }
+    //public abstract class GenDivisions
+    //{
+    //    public static PdfModels.Division GenerateDivisions(Tbl09Division single)
+    //    {
+    //        if (single == null)
+    //        {
+    //            return null!;
+    //        }
 
-            return new PdfModels.Division
-            {
-                DivisionName = single.DivisionName,
-                Author = single.Author,
-                AuthorYear = single.AuthorYear,
-                GerName = single.GerName,
-                EngName = single.EngName,
-                FraName = single.FraName,
-                PorName = single.PorName,
-                Valid = single.Valid,
-                ValidYear = single.ValidYear,
-                Info = single.Info,
-                Memo = single.Memo
-            };
-        }
-    }
-    public abstract class GenSubdivisions
-    {
-        public static PdfModels.Subdivision GenerateSubdivisions(Tbl15Subdivision single)
-        {
-            if (single == null)
-            {
-                return null!;
-            }
+    //        return new PdfModels.Division
+    //        {
+    //            DivisionName = single.DivisionName,
+    //            Author = single.Author,
+    //            AuthorYear = single.AuthorYear,
+    //            GerName = single.GerName,
+    //            EngName = single.EngName,
+    //            FraName = single.FraName,
+    //            PorName = single.PorName,
+    //            Valid = single.Valid,
+    //            ValidYear = single.ValidYear,
+    //            Info = single.Info,
+    //            Memo = single.Memo
+    //        };
+    //    }
+    //}
+    //public abstract class GenSubdivisions
+    //{
+    //    public static PdfModels.Subdivision GenerateSubdivisions(Tbl15Subdivision single)
+    //    {
+    //        if (single == null)
+    //        {
+    //            return null!;
+    //        }
 
-            return new PdfModels.Subdivision
-            {
-                SubdivisionName = single.SubdivisionName,
-                Author = single.Author,
-                AuthorYear = single.AuthorYear,
-                GerName = single.GerName,
-                EngName = single.EngName,
-                FraName = single.FraName,
-                PorName = single.PorName,
-                Valid = single.Valid,
-                ValidYear = single.ValidYear,
-                Info = single.Info,
-                Memo = single.Memo
-            };
-        }
-    }
+    //        return new PdfModels.Subdivision
+    //        {
+    //            SubdivisionName = single.SubdivisionName,
+    //            Author = single.Author,
+    //            AuthorYear = single.AuthorYear,
+    //            GerName = single.GerName,
+    //            EngName = single.EngName,
+    //            FraName = single.FraName,
+    //            PorName = single.PorName,
+    //            Valid = single.Valid,
+    //            ValidYear = single.ValidYear,
+    //            Info = single.Info,
+    //            Memo = single.Memo
+    //        };
+    //    }
+    //}
     public abstract class GenSuperclasses
     {
         public static PdfModels.Superclass GenerateSuperclasses(Tbl18Superclass single)

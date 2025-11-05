@@ -308,10 +308,10 @@
                                                         Binding="{Binding SubphylumId}"
                                                         DisplayMemberPath="SubphylumName"
                                                         ItemsSource="{x:Bind ViewModel.Tbl12SubphylumsAllList, Mode=OneWay}" />
-                        <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_SubdivisionName"
+                        <!--<toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_SubdivisionName"
                                                         Binding="{Binding SubdivisionId}"
                                                         DisplayMemberPath="SubdivisionName"
-                                                        ItemsSource="{x:Bind ViewModel.Tbl15SubdivisionsAllList, Mode=OneWay}" />
+                                                        ItemsSource="{x:Bind ViewModel.Tbl15SubdivisionsAllList, Mode=OneWay}" />-->
                         <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                         Binding="{Binding Valid}"
                                                         Tag="Valid" />
@@ -466,7 +466,7 @@
                                           RelativePanel.RightOf="ValidYearTextSuperclass"
                                           SelectedValue="{x:Bind ViewModel.SuperclassSelected.SubphylumId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           SelectedValuePath="SubphylumId" />
-                                <ComboBox x:Name="SubdivisionCombo"
+                                <!--<ComboBox x:Name="SubdivisionCombo"
                                           MinWidth="200"
                                           Margin="{StaticResource XSmallRightComboBoxMargin}"
                                           loca:Uids.Uid="ComboBox_SubdivisionName"
@@ -475,7 +475,7 @@
                                           ItemsSource="{x:Bind ViewModel.Tbl15SubdivisionsAllList}"
                                           RelativePanel.RightOf="SubphylumCombo"
                                           SelectedValue="{x:Bind ViewModel.SuperclassSelected.SubdivisionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          SelectedValuePath="SubdivisionId" />
+                                          SelectedValuePath="SubdivisionId" />-->
                                 <TextBox x:Name="AuthorTextSuperclass"
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
