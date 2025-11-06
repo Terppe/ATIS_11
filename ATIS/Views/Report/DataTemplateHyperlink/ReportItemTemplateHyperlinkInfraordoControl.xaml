@@ -3,6 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loca="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -12,9 +13,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <TextBlock x:Uid="TextBlock_Infraordo"
-                       Width="Auto"
-                       Margin="88,0,0,0" />
+            <TextBlock Width="Auto"
+                       Margin="88,0,0,0"
+                       loca:Uids.Uid="TextBlock_Infraordo" />
         </StackPanel>
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal">

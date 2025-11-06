@@ -3,6 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loca="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -12,9 +13,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <TextBlock x:Uid="TextBlock_Subspecies"
-                       Width="Auto"
-                       Margin="176,0,0,0" />
+            <TextBlock Width="Auto"
+                       Margin="176,0,0,0"
+                       loca:Uids.Uid="TextBlock_Subspecies" />
         </StackPanel>
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal">
@@ -23,7 +24,7 @@
             <Hyperlink.Inlines>
             <Run Text="{Binding Tbl66Genusses.GenusName}" />
             <Run Text="" />
-            <Run Text="{Binding FiSpeciesName}" />
+            <Run Text="{Binding SpeciesName}" />
             <Run Text="" />
             <Run Text="{Binding Subspecies}" />
             <Run Text="" />
@@ -32,16 +33,16 @@
             </Hyperlink>
             </TextBlock>-->
             <RelativePanel>
-                <TextBlock x:Name="TbFiSpecies"
+                <TextBlock x:Name="TbSpecies"
                            Width="Auto"
                            Text="{Binding Tbl66Genusses.GenusName}" />
-                <TextBlock x:Name="TbFiSpeciesName"
+                <TextBlock x:Name="TbSpeciesName"
                            Margin="2,0,0,0"
-                           RelativePanel.RightOf="TbFiSpecies"
-                           Text="{Binding FiSpeciesName}" />
+                           RelativePanel.RightOf="TbSpecies"
+                           Text="{Binding SpeciesName}" />
                 <TextBlock x:Name="TbSubspecies"
                            Margin="2,0,0,0"
-                           RelativePanel.RightOf="TbFiSpeciesName"
+                           RelativePanel.RightOf="TbSpeciesName"
                            Text="{Binding Subspecies}" />
                 <TextBlock Margin="2,0,0,0"
                            RelativePanel.RightOf="TbSubspecies"
