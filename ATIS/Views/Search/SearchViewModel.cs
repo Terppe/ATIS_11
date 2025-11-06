@@ -52,9 +52,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         SubclassesCollection?.Clear();
         ClassesCollection?.Clear();
         SuperclassesCollection?.Clear();
-        SubdivisionsCollection?.Clear();
+        //SubdivisionsCollection?.Clear();
         SubphylumsCollection?.Clear();
-        DivisionsCollection?.Clear();
+        //DivisionsCollection?.Clear();
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
     }
@@ -430,20 +430,20 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
                 SelectedClassTabIndex = 2;
                 return;
             }
-            if (_selectedMainTabIndex == 6)  //Division
-            {
-                ClearAllCollections();
-                Tbl03RegnumsAllList ??= [];
-                Tbl03RegnumsAllList = dataService.GetRegnumAsync();
-                DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(FilterText);
-                DataSetCount = DivisionsCollection.Count;
+            //if (_selectedMainTabIndex == 6)  //Division
+            //{
+            //    ClearAllCollections();
+            //    Tbl03RegnumsAllList ??= [];
+            //    Tbl03RegnumsAllList = dataService.GetRegnumAsync();
+            //    DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(FilterText);
+            //    DataSetCount = DivisionsCollection.Count;
 
-                RefreshDivisionItems();
+            //    RefreshDivisionItems();
 
-                SelectedDivisionTabIndex = 1;
-                return;
-            }
-            if (_selectedMainTabIndex == 7)  //Phylum
+            //    SelectedDivisionTabIndex = 1;
+            //    return;
+            //}
+            if (_selectedMainTabIndex ==6)  //Phylum
             {
                 ClearAllCollections();
                 Tbl03RegnumsAllList ??= [];
@@ -457,7 +457,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
                 SelectedPhylumTabIndex = 1;
                 return;
             }
-            if (_selectedMainTabIndex == 8)  //Regnum
+            if (_selectedMainTabIndex == 7)  //Regnum
             {
                 ClearAllCollections();
                 RegnumsCollection ??= [];
@@ -587,27 +587,27 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             }
         }
     }
-    public int SelectedReportDivisionTabIndex
-    {
-        get => _selectedReportDivisionTabIndex;
-        set
-        {
-            if (value == _selectedReportDivisionTabIndex)
-            {
-                return;
-            }
+    //public int SelectedReportDivisionTabIndex
+    //{
+    //    get => _selectedReportDivisionTabIndex;
+    //    set
+    //    {
+    //        if (value == _selectedReportDivisionTabIndex)
+    //        {
+    //            return;
+    //        }
 
-            _selectedReportDivisionTabIndex = value; OnPropertyChanged();
+    //        _selectedReportDivisionTabIndex = value; OnPropertyChanged();
 
-            if (_selectedReportDivisionTabIndex == 0)
-            {
-            }
+    //        if (_selectedReportDivisionTabIndex == 0)
+    //        {
+    //        }
 
-            if (_selectedReportDivisionTabIndex == 1)
-            {
-            }
-        }
-    }
+    //        if (_selectedReportDivisionTabIndex == 1)
+    //        {
+    //        }
+    //    }
+    //}
     public int SelectedReportPhylumTabIndex
     {
         get => _selectedReportPhylumTabIndex;
@@ -915,58 +915,58 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
                 RefreshClassItems();
             }
 
-            if (_selectedClassTabIndex == 3)
-            {
-                ClearAllCollections();
-                Tbl15SubdivisionsAllList ??= [];
-                Tbl15SubdivisionsAllList = dataService.GetSubdivisionAsync();
-                Tbl12SubphylumsAllList ??= [];
-                Tbl12SubphylumsAllList = dataService.GetSubphylumAsync();
-                SuperclassesCollection = dataService.GetTbl18SuperclassesCollectionOrderBySuperclassNameFromFilterText(FilterText);
-                DataSetCount = SuperclassesCollection.Count;
+            //if (_selectedClassTabIndex == 3)
+            //{
+            //    ClearAllCollections();
+            //    Tbl15SubdivisionsAllList ??= [];
+            //    Tbl15SubdivisionsAllList = dataService.GetSubdivisionAsync();
+            //    Tbl12SubphylumsAllList ??= [];
+            //    Tbl12SubphylumsAllList = dataService.GetSubphylumAsync();
+            //    SuperclassesCollection = dataService.GetTbl18SuperclassesCollectionOrderBySuperclassNameFromFilterText(FilterText);
+            //    DataSetCount = SuperclassesCollection.Count;
 
-                OnPropertyChanged(nameof(SuperclassesCollection));
-                RefreshSuperclassItems();
-            }
+            //    OnPropertyChanged(nameof(SuperclassesCollection));
+            //    RefreshSuperclassItems();
+            //}
         }
     }
-    public int SelectedDivisionTabIndex
-    {
-        get => _selectedDivisionTabIndex;
-        set
-        {
-            if (value == _selectedDivisionTabIndex)
-            {
-                return;
-            }
+    //public int SelectedDivisionTabIndex
+    //{
+    //    get => _selectedDivisionTabIndex;
+    //    set
+    //    {
+    //        if (value == _selectedDivisionTabIndex)
+    //        {
+    //            return;
+    //        }
 
-            _selectedDivisionTabIndex = value; OnPropertyChanged();
+    //        _selectedDivisionTabIndex = value; OnPropertyChanged();
 
-            if (_selectedDivisionTabIndex == 0)
-            {
-                ClearAllCollections();
-                Tbl09DivisionsAllList ??= [];
-                Tbl09DivisionsAllList = dataService.GetDivisionAsync();
-                SubdivisionsCollection = dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(FilterText);
-                DataSetCount = SubdivisionsCollection.Count;
+    //        if (_selectedDivisionTabIndex == 0)
+    //        {
+    //            ClearAllCollections();
+    //            Tbl09DivisionsAllList ??= [];
+    //            Tbl09DivisionsAllList = dataService.GetDivisionAsync();
+    //            SubdivisionsCollection = dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(FilterText);
+    //            DataSetCount = SubdivisionsCollection.Count;
 
-                OnPropertyChanged(nameof(SubdivisionsCollection));
-                RefreshSubdivisionItems();
-            }
+    //            OnPropertyChanged(nameof(SubdivisionsCollection));
+    //            RefreshSubdivisionItems();
+    //        }
 
-            if (_selectedDivisionTabIndex == 1)
-            {
-                ClearAllCollections();
-                Tbl03RegnumsAllList ??= [];
-                Tbl03RegnumsAllList = dataService.GetRegnumAsync();
-                DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(FilterText);
-                DataSetCount = DivisionsCollection.Count;
+    //        if (_selectedDivisionTabIndex == 1)
+    //        {
+    //            ClearAllCollections();
+    //            Tbl03RegnumsAllList ??= [];
+    //            Tbl03RegnumsAllList = dataService.GetRegnumAsync();
+    //            DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(FilterText);
+    //            DataSetCount = DivisionsCollection.Count;
 
-                OnPropertyChanged(nameof(DivisionsCollection));
-                RefreshDivisionItems();
-            }
-        }
-    }
+    //            OnPropertyChanged(nameof(DivisionsCollection));
+    //            RefreshDivisionItems();
+    //        }
+    //    }
+    //}
     public int SelectedPhylumTabIndex
     {
         get => _selectedPhylumTabIndex;
@@ -1063,15 +1063,15 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             case "Tbl06Phylums":
                 GetTbl06PhylumsById(id);
                 break;
-            case "Tbl09Divisions":
-                GetTbl09DivisionsById(id);
-                break;
+            //case "Tbl09Divisions":
+            //    GetTbl09DivisionsById(id);
+            //    break;
             case "Tbl12Subphylums":
                 GetTbl12SubphylumsById(id);
                 break;
-            case "Tbl15Subdivisions":
-                GetTbl15SubdivisionsById(id);
-                break;
+            //case "Tbl15Subdivisions":
+            //    GetTbl15SubdivisionsById(id);
+            //    break;
             case "Tbl18Superclasses":
                 GetTbl18SuperclassesById(id);
                 break;
@@ -1155,14 +1155,14 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         {
             RefreshPhylumItems();
         }
-        if (DivisionsCollection != null)
-        {
-            RefreshDivisionItems();
-        }
-        if (SubdivisionsCollection != null)
-        {
-            RefreshSubdivisionItems();
-        }
+        //if (DivisionsCollection != null)
+        //{
+        //    RefreshDivisionItems();
+        //}
+        //if (SubdivisionsCollection != null)
+        //{
+        //    RefreshSubdivisionItems();
+        //}
         if (SubphylumsCollection != null)
         {
             RefreshSubphylumItems();
@@ -1299,7 +1299,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
         //direct children
         PhylumsCollection = dataService.CollPhylumsByRegnumIdAndHash(id);
-        DivisionsCollection = dataService.CollDivisionsByRegnumIdAndHash(id);
+        //DivisionsCollection = dataService.CollDivisionsByRegnumIdAndHash(id);
         //------------------------------------------------------------------------------
         ExpertsCollection = dataService.CollExpertsByRegnumId(id);
         SourcesCollection = dataService.CollSourcesByRegnumId(id);
@@ -1332,27 +1332,27 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     }
     #endregion
 
-    #region Division
+    //#region Division
 
-    public void GetTbl09DivisionsById(int id)
-    {
-        DivisionsCollection = dataService.CollDivisionsByDivisionId(id);
-        var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(id);
-        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //public void GetTbl09DivisionsById(int id)
+    //{
+    //    DivisionsCollection = dataService.CollDivisionsByDivisionId(id);
+    //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(id);
+    //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
 
-        //direct children
-        SubdivisionsCollection = dataService.CollSubdivisionsByDivisionIdAndHash(id);
-        //------------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByDivisionId(id);
-        SourcesCollection = dataService.CollSourcesByDivisionId(id);
-        AuthorsCollection = dataService.CollAuthorsByDivisionId(id);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByDivisionId(id);
-        //----------Refresh-------------
-        Refresh();
-    }
+    //    //direct children
+    //    SubdivisionsCollection = dataService.CollSubdivisionsByDivisionIdAndHash(id);
+    //    //------------------------------------------------------------------------------
+    //    ExpertsCollection = dataService.CollExpertsByDivisionId(id);
+    //    SourcesCollection = dataService.CollSourcesByDivisionId(id);
+    //    AuthorsCollection = dataService.CollAuthorsByDivisionId(id);
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = dataService.CollCommentsByDivisionId(id);
+    //    //----------Refresh-------------
+    //    Refresh();
+    //}
 
-    #endregion
+    //#endregion
 
     #region Subphylum
     public void GetTbl12SubphylumsById(int id)
@@ -1377,45 +1377,45 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     }
     #endregion
 
-    #region Subdivision
-    public void GetTbl15SubdivisionsById(int id)
-    {
-        SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionId(id);
+    //#region Subdivision
+    //public void GetTbl15SubdivisionsById(int id)
+    //{
+    //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionId(id);
 
-        var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(id);
-        DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-        var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+    //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(id);
+    //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+    //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+    //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
 
-        //direct children
-        SuperclassesCollection = dataService.CollSuperclassesBySubdivisionIdAndHash(id);
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsBySubdivisionId(id);
-        SourcesCollection = dataService.CollSourcesBySubdivisionId(id);
-        AuthorsCollection = dataService.CollAuthorsBySubdivisionId(id);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsBySubdivisionId(id);
-        //----------Refresh-------------
-        Refresh();
-    }
-    #endregion
+    //    //direct children
+    //    SuperclassesCollection = dataService.CollSuperclassesBySubdivisionIdAndHash(id);
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = dataService.CollExpertsBySubdivisionId(id);
+    //    SourcesCollection = dataService.CollSourcesBySubdivisionId(id);
+    //    AuthorsCollection = dataService.CollAuthorsBySubdivisionId(id);
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = dataService.CollCommentsBySubdivisionId(id);
+    //    //----------Refresh-------------
+    //    Refresh();
+    //}
+    //#endregion
 
     #region Superclass
     public void GetTbl18SuperclassesById(int id)
     {
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassId(id);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(id);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(id);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(id);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+  //      if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1444,17 +1444,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(id);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+      //  var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1485,17 +1485,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+    //    var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1528,17 +1528,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+      //  var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1572,17 +1572,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+      //  var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1618,17 +1618,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+    //    var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1666,17 +1666,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+     //   var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1716,17 +1716,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+      //  var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1768,17 +1768,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1822,17 +1822,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1878,17 +1878,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1936,17 +1936,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -1996,17 +1996,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2058,17 +2058,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2122,17 +2122,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2188,17 +2188,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2256,17 +2256,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2359,17 +2359,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2447,17 +2447,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
@@ -2495,12 +2495,12 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         set => SetProperty(ref _phylumSelected, value);
     }
 
-    private Tbl09Division _divisionSelected = null!;
-    public Tbl09Division DivisionSelected
-    {
-        get => _divisionSelected;
-        set => SetProperty(ref _divisionSelected, value);
-    }
+    //private Tbl09Division _divisionSelected = null!;
+    //public Tbl09Division DivisionSelected
+    //{
+    //    get => _divisionSelected;
+    //    set => SetProperty(ref _divisionSelected, value);
+    //}
 
     private Tbl12Subphylum _subphylumSelected = null!;
     public Tbl12Subphylum SubphylumSelected
@@ -2508,12 +2508,12 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         get => _subphylumSelected;
         set => SetProperty(ref _subphylumSelected, value);
     }
-    private Tbl15Subdivision _subdivisionSelected = null!;
-    public Tbl15Subdivision SubdivisionSelected
-    {
-        get => _subdivisionSelected;
-        set => SetProperty(ref _subdivisionSelected, value);
-    }
+    //private Tbl15Subdivision _subdivisionSelected = null!;
+    //public Tbl15Subdivision SubdivisionSelected
+    //{
+    //    get => _subdivisionSelected;
+    //    set => SetProperty(ref _subdivisionSelected, value);
+    //}
 
     private Tbl18Superclass _superclassSelected = null!;
     public Tbl18Superclass SuperclassSelected
@@ -2746,19 +2746,19 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             PhylumSelected = PhylumItems.FirstOrDefault();
         }
     }
-    private void RefreshDivisionItems()
-    {
-        DivisionItems.Clear();
-        foreach (var item in DivisionsCollection)
-        {
-            DivisionItems.Add(item);
-        }
-        if (DivisionSelected == null && DivisionsCollection.Count != 0)
-        {
-            DivisionSelected = DivisionItems.FirstOrDefault();
-        }
+    //private void RefreshDivisionItems()
+    //{
+    //    DivisionItems.Clear();
+    //    foreach (var item in DivisionsCollection)
+    //    {
+    //        DivisionItems.Add(item);
+    //    }
+    //    if (DivisionSelected == null && DivisionsCollection.Count != 0)
+    //    {
+    //        DivisionSelected = DivisionItems.FirstOrDefault();
+    //    }
 
-    }
+    //}
     private void RefreshSubphylumItems()
     {
         SubphylumItems.Clear();
@@ -2772,19 +2772,19 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         }
 
     }
-    private void RefreshSubdivisionItems()
-    {
-        SubdivisionItems.Clear();
-        foreach (var item in SubdivisionsCollection)
-        {
-            SubdivisionItems.Add(item);
-        }
-        if (SubdivisionSelected == null && SubdivisionsCollection.Count != 0)
-        {
-            SubdivisionSelected = SubdivisionItems.First();
-        }
+    //private void RefreshSubdivisionItems()
+    //{
+    //    SubdivisionItems.Clear();
+    //    foreach (var item in SubdivisionsCollection)
+    //    {
+    //        SubdivisionItems.Add(item);
+    //    }
+    //    if (SubdivisionSelected == null && SubdivisionsCollection.Count != 0)
+    //    {
+    //        SubdivisionSelected = SubdivisionItems.First();
+    //    }
 
-    }
+    //}
     private void RefreshSuperclassItems()
     {
         SuperclassItems.Clear();
@@ -3119,9 +3119,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
-    public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
+    //public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = [];
-    public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = [];
+    //public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = [];
     public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = [];
     public ObservableCollection<Tbl21Class> ClassItems { get; } = [];
     public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = [];
@@ -3191,9 +3191,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
     public ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
 
-    public ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
+    //public ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
 
-    public ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
+    //public ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
 
     public ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
 
@@ -3602,15 +3602,15 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl15Subdivision> _tbl15SubdivisionsAllList = null!;
-    public ObservableCollection<Tbl15Subdivision> Tbl15SubdivisionsAllList
-    {
-        get => _tbl15SubdivisionsAllList;
-        set
-        {
-            _tbl15SubdivisionsAllList = value; OnPropertyChanged();
-        }
-    }
+    //private ObservableCollection<Tbl15Subdivision> _tbl15SubdivisionsAllList = null!;
+    //public ObservableCollection<Tbl15Subdivision> Tbl15SubdivisionsAllList
+    //{
+    //    get => _tbl15SubdivisionsAllList;
+    //    set
+    //    {
+    //        _tbl15SubdivisionsAllList = value; OnPropertyChanged();
+    //    }
+    //}
 
     private ObservableCollection<Tbl12Subphylum> _tbl12SubphylumsAllList;
     public ObservableCollection<Tbl12Subphylum> Tbl12SubphylumsAllList
@@ -3630,15 +3630,15 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             _tbl06PhylumsAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl09Division> _tbl09DivisionsAllList = null!;
-    public ObservableCollection<Tbl09Division> Tbl09DivisionsAllList
-    {
-        get => _tbl09DivisionsAllList;
-        set
-        {
-            _tbl09DivisionsAllList = value; OnPropertyChanged();
-        }
-    }
+    //private ObservableCollection<Tbl09Division> _tbl09DivisionsAllList = null!;
+    //public ObservableCollection<Tbl09Division> Tbl09DivisionsAllList
+    //{
+    //    get => _tbl09DivisionsAllList;
+    //    set
+    //    {
+    //        _tbl09DivisionsAllList = value; OnPropertyChanged();
+    //    }
+    //}
 
     private ObservableCollection<Tbl90RefSource> _tbl90SourcesAllList = null!;
 

@@ -3,6 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loca="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -33,14 +34,14 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_TaxonomicStatus"
-                       Margin="8,0,0,0"
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_TaxonomicStatus"
                        FontWeight="Bold" />
         </StackPanel>
         <StackPanel Grid.Row="2"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_CurrentStanding"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_CurrentStanding" />
         </StackPanel>
         <StackPanel Grid.Row="2"
                     Grid.Column="1"
@@ -53,19 +54,19 @@
         </StackPanel>
         <StackPanel Grid.Row="3"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_DataQualityIndicator"
-                       Margin="8,0,0,0"
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_DataQualityIndicator"
                        FontWeight="Bold" />
         </StackPanel>
         <StackPanel Grid.Row="4"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_RecordCredibilityRating"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_RecordCredibilityRating" />
         </StackPanel>
         <StackPanel Grid.Row="5"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_RecordUpdate"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_RecordUpdate" />
         </StackPanel>
         <StackPanel Grid.Row="5"
                     Grid.Column="1">
@@ -73,8 +74,8 @@
         </StackPanel>
         <StackPanel Grid.Row="6"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_TradeName"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_TradeName" />
         </StackPanel>
         <StackPanel Grid.Row="6"
                     Grid.Column="1">
@@ -83,8 +84,8 @@
         </StackPanel>
         <StackPanel Grid.Row="9"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_MemoSpecies"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_MemoSpecies" />
         </StackPanel>
         <StackPanel Grid.Row="9"
                     Grid.Column="1">
@@ -93,8 +94,8 @@
         </StackPanel>
         <StackPanel Grid.Row="10"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_Importer"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_Importer" />
         </StackPanel>
         <StackPanel Grid.Row="10"
                     Grid.Column="1">
@@ -102,13 +103,13 @@
                        TextWrapping="Wrap" />
         </StackPanel>
         <!--<StackPanel Grid.Row="11" Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_LNummer" Margin="8,0,0,0" />
+            <TextBlock loca:Uids.Uid="TextBlock_LNummer" Margin="8,0,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="11" Grid.Column="1">
             <TextBlock Text="{Binding LNumber}" TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="12" Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_LDANummer" Margin="8,0,0,0" />
+            <TextBlock loca:Uids.Uid="TextBlock_LDANummer" Margin="8,0,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="12" Grid.Column="1">
             <TextBlock Text="{Binding LdaNumber}" TextWrapping="Wrap" />
@@ -116,8 +117,8 @@
         <StackPanel x:Name="Sp1BasinLength"
                     Grid.Row="13"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_BasinLength"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_BasinLength" />
         </StackPanel>
         <StackPanel x:Name="Sp2BasinLength"
                     Grid.Row="13"
@@ -129,8 +130,8 @@
         <StackPanel x:Name="Sp1BasinHeight"
                     Grid.Row="14"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_BasinHeight"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_BasinHeight" />
         </StackPanel>
         <StackPanel x:Name="Sp2BasinHeight"
                     Grid.Row="14"
@@ -141,8 +142,8 @@
         </StackPanel>
         <StackPanel Grid.Row="15"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_FishLength"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_FishLength" />
         </StackPanel>
         <StackPanel Grid.Row="15"
                     Grid.Column="1">
@@ -151,8 +152,8 @@
         </StackPanel>
         <StackPanel Grid.Row="16"
                     Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_PlantLength"
-                       Margin="8,0,0,0" />
+            <TextBlock Margin="8,0,0,0"
+                       loca:Uids.Uid="TextBlock_PlantLength" />
         </StackPanel>
         <StackPanel Grid.Row="16"
                     Grid.Column="1">
@@ -160,7 +161,7 @@
                        TextWrapping="Wrap" />
         </StackPanel>
         <!--<StackPanel Grid.Row="17" Grid.Column="0">
-            <TextBlock x:Uid="TextBlock_MemoSpecial" Margin="8,0,0,0" />
+            <TextBlock loca:Uids.Uid="TextBlock_MemoSpecial" Margin="8,0,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="17" Grid.Column="1">
             <TextBlock Text="{Binding MemoSpecial}" TextWrapping="Wrap" />

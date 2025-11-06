@@ -27,18 +27,18 @@
                           x:DataType="models:Tbl06Phylum">
                 <dataTemplatesSearch:SearchItemTemplateTbl06PhylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="SearchItemTemplateTbl09Division"
+            <!--<DataTemplate x:Key="SearchItemTemplateTbl09Division"
                           x:DataType="models:Tbl09Division">
                 <dataTemplatesSearch:SearchItemTemplateTbl09DivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplatesSearch:SearchItemTemplateTbl12SubphylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
+            <!--<DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
                           x:DataType="models:Tbl15Subdivision">
                 <dataTemplatesSearch:SearchItemTemplateTbl15SubdivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
                           x:DataType="models:Tbl18Superclass">
                 <dataTemplatesSearch:SearchItemTemplateTbl18SuperclassControl />
@@ -124,18 +124,18 @@
                           x:DataType="models:Tbl06Phylum">
                 <dataTemplateHeader:ReportItemTemplateHeaderPhylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHeaderDivision"
+            <!--<DataTemplate x:Key="ReportItemTemplateHeaderDivision"
                           x:DataType="models:Tbl09Division">
                 <dataTemplateHeader:ReportItemTemplateHeaderDivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderSubphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplateHeader:ReportItemTemplateHeaderSubphylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHeaderSubdivision"
+            <!--<DataTemplate x:Key="ReportItemTemplateHeaderSubdivision"
                           x:DataType="models:Tbl15Subdivision">
                 <dataTemplateHeader:ReportItemTemplateHeaderSubdivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderSuperclass"
                           x:DataType="models:Tbl18Superclass">
                 <dataTemplateHeader:ReportItemTemplateHeaderSuperclassControl />
@@ -220,18 +220,18 @@
                           x:DataType="models:Tbl06Phylum">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
+            <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
                           x:DataType="models:Tbl09Division">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision"
+            <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision"
                           x:DataType="models:Tbl15Subdivision">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclass"
                           x:DataType="models:Tbl18Superclass">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl />
@@ -310,18 +310,18 @@
                           x:DataType="models:Tbl06Phylum">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
+            <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
                           x:DataType="models:Tbl09Division">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkDivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubphylumControl />
             </DataTemplate>
-            <DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
+            <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
                           x:DataType="models:Tbl15Subdivision">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubdivisionControl />
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
                           x:DataType="models:Tbl18Superclass">
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
@@ -520,14 +520,14 @@
                               ItemTemplate="{StaticResource ReportItemTemplateHyperlinkPhylum}"
                               ItemsSource="{x:Bind ViewModel.PhylumItems}"
                               SelectedValuePath="PhylumId" />
-                    <ListView Grid.Row="6"
+                    <!--<ListView Grid.Row="6"
                               Grid.Column="0"
                               Grid.ColumnSpan="2"
                               Margin="-12,0,0,0"
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemTemplate="{StaticResource ReportItemTemplateHyperlinkDivision}"
                               ItemsSource="{x:Bind ViewModel.DivisionItems}"
-                              SelectedValuePath="DivisionId" />
+                              SelectedValuePath="DivisionId" />-->
                     <ListView Grid.Row="7"
                               Grid.Column="0"
                               Grid.ColumnSpan="2"
@@ -536,14 +536,14 @@
                               ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubphylum}"
                               ItemsSource="{x:Bind ViewModel.SubphylumItems}"
                               SelectedValuePath="SubphylumId" />
-                    <ListView Grid.Row="8"
+                    <!--<ListView Grid.Row="8"
                               Grid.Column="0"
                               Grid.ColumnSpan="2"
                               Margin="-12,0,0,0"
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubdivision}"
                               ItemsSource="{x:Bind ViewModel.SubdivisionItems}"
-                              SelectedValuePath="SubdivisionId" />
+                              SelectedValuePath="SubdivisionId" />-->
                     <ListView Grid.Row="9"
                               Grid.Column="0"
                               Grid.ColumnSpan="2"

@@ -1898,6 +1898,51 @@ public class PdfModels
 
     }
 
+    public class Food
+    {
+        public string FoodName
+        {
+            get; set;
+        }
+        public bool Valid
+        {
+            get; set;
+        }
+        public string ValidYear
+        {
+            get; set;
+        }
+        public string ShortInfo
+        {
+            get; set;
+        }
+        public string FoodVolume
+        {
+            get; set;
+        }
+        public string Info
+        {
+            get; set;
+        }
+        public string Memo
+        {
+            get; set;
+        }
+        public string Kind
+        {
+            get; set;
+        }
+        public string Help
+        {
+            get; set;
+        }
+        public string Symptom
+        {
+            get; set;
+        }
+
+    }
+
     public class Disease
     {
         public string DiseaseName
@@ -1939,41 +1984,9 @@ public class PdfModels
 
     }
 
-    public class Food
+    public class Miscellaneous
     {
-        public string FoodName
-        {
-            get; set;
-        }
-        public string FoodVolume
-        {
-            get; set;
-        }
-        public string Karnivore
-        {
-            get; set;
-        }
-        public string Herbivore
-        {
-            get; set;
-        }
-        public string Limnivore
-        {
-            get; set;
-        }
-        public string Omnivore
-        {
-            get; set;
-        }
-        public string RegionTop
-        {
-            get; set;
-        }
-        public string RegionMiddle
-        {
-            get; set;
-        }
-        public string RegionBottom
+        public string MiscellaneousName
         {
             get; set;
         }
@@ -1985,19 +1998,23 @@ public class PdfModels
         {
             get; set;
         }
+        public string ShortInfo
+        {
+            get; set;
+        }
+        public string Thema1
+        {
+            get; set;
+        }
+        public string Thema2
+        {
+            get; set;
+        }
         public string Info
         {
             get; set;
         }
         public string Memo
-        {
-            get; set;
-        }
-        public string Kind
-        {
-            get; set;
-        }
-        public string Help
         {
             get; set;
         }
