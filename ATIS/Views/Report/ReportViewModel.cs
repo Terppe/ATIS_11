@@ -13,11 +13,11 @@ public class ReportViewModel : ObservableObject
 
     private readonly IDataService _dataService;
     private readonly AtisDbContext _context = new();
-    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
-    public ObservableCollection<TblFood> FoodItems { get; } = [];
-    public ObservableCollection<TblMiscellaneous> MiscellaneousItems { get; } = [];
     private static int _fishId;
     private static int _plantId;
+    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
+    public ObservableCollection<TblFood> FoodItems { get; set; } = [];
+    public ObservableCollection<TblMiscellaneous> MiscellaneousItems { get; } = [];
 
     #endregion [Private Data Members]
 
@@ -110,25 +110,6 @@ public class ReportViewModel : ObservableObject
             SpeciessesCollection =
                 _dataService
                     .GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(filterText);
-
-
-
-            //FiSpeciessesCollection = new ObservableCollection<Tbl69FiSpecies>(_context.Tbl69FiSpeciesses
-            //    .Include(a => a.Tbl66Genusses)
-            //    .Where(e => e.FiSpeciesName.StartsWith(filterText) &&
-            //                e.FiSpeciesName.Contains("#") == false ||
-            //                e.Tbl66Genusses.GenusName.Contains(filterText) ||
-            //                e.Subspecies.Contains(filterText) ||
-            //                e.Divers.Contains(filterText) ||
-            //                e.TradeName.Contains(filterText) ||
-            //                e.Author.Contains(filterText)
-            //    )
-            //    .OrderBy(a => a.Tbl66Genusses.GenusName)
-            //    .ThenBy(a => a.FiSpeciesName)
-            //    .ThenBy(a => a.Subspecies)
-            //    .ThenBy(a => a.Divers)
-            //);
-
             DataSetCount = SpeciessesCollection.Count;
 
             OnPropertyChanged(nameof(SpeciessesCollection));
@@ -271,22 +252,6 @@ public class ReportViewModel : ObservableObject
             OnPropertyChanged(nameof(SuperclassesCollection));
             RefreshSuperclassItems();
         }
-        //if (_selectedMainTabIndex == 7 && _selectedDivisionTabIndex == 0)
-        //{
-        //    SubdivisionsCollection = _dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(filterText);
-        //    DataSetCount = SubdivisionsCollection.Count;
-
-        //    OnPropertyChanged(nameof(SubdivisionsCollection));
-        //    RefreshSubdivisionItems();
-        //}
-        //if (_selectedMainTabIndex == 7 && _selectedDivisionTabIndex == 1)
-        //{
-        //    DivisionsCollection = _dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(filterText);
-        //    DataSetCount = DivisionsCollection.Count;
-
-        //    OnPropertyChanged(nameof(DivisionsCollection));
-        //    RefreshDivisionItems();
-        //}
         if (_selectedMainTabIndex == 7 && _selectedPhylumTabIndex == 0)
         {
             SubphylumsCollection = _dataService.GetTbl12SubphylumsCollectionOrderBySubphylumNameFromFilterText(filterText);
@@ -1020,14 +985,14 @@ public class ReportViewModel : ObservableObject
     public void ReportSearchAll(int id, string tab)
     {
         ClearAllCollections();
-        if (_context.Tbl15Subdivisions != null)
-        {
-            var plantaeRegnum = _context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.SubdivisionId;
-            }
-        }
+        //if (_context.Tbl15Subdivisions != null)
+        //{
+        //    var plantaeRegnum = _context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
+        //    if (plantaeRegnum != null)
+        //    {
+        //        _plantId = plantaeRegnum.SubdivisionId;
+        //    }
+        //}
 
         if (_context.Tbl12Subphylums != null)
         {
@@ -1125,12 +1090,15 @@ public class ReportViewModel : ObservableObject
                 GetTbl75SpeciessesSubById(id);
                 break;
 
-                //case "Tbl78Names":
-                //    GetTbl78NamesById(id);
-                //    break;
-                //case "Tbl84Synonyms":
-                //    GetTbl84SynonymsById(id);
-                //    break;
+            //case "Tbl78Names":
+            //    GetTbl78NamesById(id);
+            //    break;
+            //case "Tbl84Synonyms":
+            //    GetTbl84SynonymsById(id);
+            //    break;
+            case "TblFood":
+                GetTblFoodId(id);
+                break;
 
         }
 
@@ -1287,6 +1255,10 @@ public class ReportViewModel : ObservableObject
         if (CommentsCollection != null)
         {
             RefreshCommentItems();
+        }
+        if (FoodsCollection != null)
+        {
+            RefreshFoodItems();
         }
     }
 
@@ -2798,6 +2770,18 @@ public class ReportViewModel : ObservableObject
     ////------------------------------------------------------------------------------
     //#endregion
 
+    #region Food
+    public void GetTblFoodId(int id)
+    {
+        FoodsCollection = _dataService.CollFoodsByFoodId(id);
+
+        //----------Refresh-------------
+        Refresh();
+    }
+
+
+    #endregion
+
     #endregion
 
     #region Selected Properties
@@ -3491,6 +3475,44 @@ public class ReportViewModel : ObservableObject
         }
 
     }
+    private void RefreshDiseaseItems()
+    {
+        DiseaseItems.Clear();
+        foreach (var item in DiseasesCollection)
+        {
+            DiseaseItems.Add(item);
+        }
+        if (DiseaseSelected == null && DiseasesCollection.Count != 0)
+        {
+            DiseaseSelected = DiseaseItems.First();
+        }
+    }
+
+    private void RefreshFoodItems()
+    {
+        FoodItems.Clear();
+        foreach (var item in FoodsCollection)
+        {
+            FoodItems.Add(item);
+        }
+        if (FoodSelected == null && FoodsCollection.Count != 0)
+        {
+            FoodSelected = FoodItems.First();
+        }
+    }
+
+    private void RefreshMiscellaneousItems()
+    {
+        MiscellaneousItems.Clear();
+        foreach (var item in MiscellaneoussesCollection)
+        {
+            MiscellaneousItems.Add(item);
+        }
+        if (MiscellaneousSelected == null && MiscellaneoussesCollection.Count != 0)
+        {
+            MiscellaneousSelected = MiscellaneousItems.First();
+        }
+    }
 
     #endregion
 
@@ -3498,9 +3520,7 @@ public class ReportViewModel : ObservableObject
 
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = new();
-    //public ObservableCollection<Tbl09Division> DivisionItems { get; } = new();
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = new();
-    //public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = new();
     public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = new();
     public ObservableCollection<Tbl21Class> ClassItems { get; } = new();
     public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = new();
@@ -3521,8 +3541,6 @@ public class ReportViewModel : ObservableObject
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = new();
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = new();
     public ObservableCollection<Tbl75Species> SpeciesSubItems { get; } = new();
-    //public ObservableCollection<Tbl72PlSpecies> PlSpeciesItems { get; } = new();
-    //public ObservableCollection<Tbl72PlSpecies> PlSpeciesSubItems { get; } = new();
     public ObservableCollection<Tbl78Name> NameItems { get; } = new();
     public ObservableCollection<Tbl81Image> ImageItems { get; } = new();
     public ObservableCollection<Tbl84Synonym> SynonymItems { get; } = new();
@@ -3567,15 +3585,8 @@ public class ReportViewModel : ObservableObject
     } = null!;
 
     public ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;
-
     public ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; }
-
     public ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
-
-    //public ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
-
-    //public ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
-
     public ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
     public ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = null!;
     public ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = null!;
@@ -3596,22 +3607,7 @@ public class ReportViewModel : ObservableObject
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupsCollection { get; set; } = null!;
     public ObservableCollection<Tbl75Species> SpeciessesCollection { get; set; } = null!;
     public ObservableCollection<Tbl75Species> SpeciessesSubCollection { get; set; } = null!;
-    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesCollection
-    //{
-    //    get; set;
-    //} = null!;
-
     public ObservableCollection<Tbl75Species> SpeciessesSpeciesNameCollection { get; set; } = null!;
-    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesSubCollection
-    //{
-    //    get; set;
-    //} = null!;
-
-    //public ObservableCollection<Tbl72PlSpecies> PlSpeciessesPlSpeciesNameCollection
-    //{
-    //    get; set;
-    //} = null!;
-
     public ObservableCollection<Tbl78Name> NamesCollection { get; set; } = null!;
     public ObservableCollection<Tbl81Image> ImagesCollection { get; set; } = null!;
     public ObservableCollection<Tbl84Synonym> SynonymsCollection { get; set; } = null!;
@@ -3623,6 +3619,9 @@ public class ReportViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = null!;
     public ObservableCollection<Tbl90Reference> Tbl90RefExpertsList { get; set; } = null!;
     public ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = null!;
+    public ObservableCollection<TblDisease> DiseasesCollection { get; set; } = null!;
+    public ObservableCollection<TblFood> FoodsCollection { get; set; } = null!;
+    public ObservableCollection<TblMiscellaneous> MiscellaneoussesCollection { get; set; } = null!;
     #endregion "Collections"
 
     #region Public Properties  
@@ -4061,7 +4060,6 @@ public class ReportViewModel : ObservableObject
 
 
     private ObservableCollection<Tbl93Comment> _tbl93CommentsList = null!;
-
     public ObservableCollection<Tbl93Comment> Tbl93CommentsList
     {
         get => _tbl93CommentsList;
@@ -4069,6 +4067,33 @@ public class ReportViewModel : ObservableObject
         {
             _tbl93CommentsList = value;
             OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<TblDisease> _tblDiseasesList = null!;
+    public ObservableCollection<TblDisease> TblDiseasesList
+    {
+        get => _tblDiseasesList;
+        set
+        {
+            _tblDiseasesList = value; OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<TblFood> _tblFoodsList = null!;
+    public ObservableCollection<TblFood> TblFoodsList
+    {
+        get => _tblFoodsList;
+        set
+        {
+            _tblFoodsList = value; OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<TblMiscellaneous> _tblMiscellaneoussList = null!;
+    public ObservableCollection<TblMiscellaneous> TblMiscellaneoussList
+    {
+        get => _tblMiscellaneoussList;
+        set
+        {
+            _tblMiscellaneoussList = value; OnPropertyChanged();
         }
     }
     private ObservableCollection<TblCountry> _tblCountriesAllList = null!;

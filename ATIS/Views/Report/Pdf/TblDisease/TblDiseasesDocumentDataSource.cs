@@ -1,18 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using ATIS.Models;
 using ATIS.Services;
-using ATIS.Views.Report;
-using static ATIS.Views.Report.PdfModels;
 
-namespace ATIS.Views.Main.Disease.DiseasePdf;
+namespace ATIS.Views.Report.Pdf.TblDisease;
 public abstract class TblDiseasesDocumentDataSource : ObservableObject
 {
     #region [Private Data Members]
 
-    private static TblDisease _diseaseSingle = new();
-
+    private static Models.TblDisease _diseaseSingle = new();
     #endregion [Private Data Members]      
 
+    //    Part 1 
     public static TblDiseasesPdfModel GetDiseaseDetails(int diseaseId)
     {
         #region [Private Data Members]
@@ -21,49 +18,42 @@ public abstract class TblDiseasesDocumentDataSource : ObservableObject
 
         #endregion [Private Data Members]
 
-        ImagesCollection = dataService.CollImagesByDiseaseId(diseaseId);
-
         ClearAllCollections();
+
+        DiseasesCollection = dataService.CollDiseasesByDiseaseId(diseaseId);
 
         _diseaseSingle = dataService.GetDiseaseSingleByDiseaseId(diseaseId);
 
-        return new Disease.DiseasePdf.TblDiseasesPdfModel
+        return new TblDiseasesPdfModel
         {
             DiseaseName = _diseaseSingle.DiseaseName,
             CountId = _diseaseSingle.CountId,
-            Valid = _diseaseSingle.Valid,
-            ValidYear = _diseaseSingle.ValidYear,
             ShortInfo = _diseaseSingle.ShortInfo,
             Symptom = _diseaseSingle.Symptom,
             Reason = _diseaseSingle.Reason,
             Therapie = _diseaseSingle.Therapie,
             Info = _diseaseSingle.Info,
+            Valid = _diseaseSingle.Valid,
+            ValidYear = _diseaseSingle.ValidYear,
             Memo = _diseaseSingle.Memo,
             WriterDate = _diseaseSingle.WriterDate,
             UpdaterDate = _diseaseSingle.UpdaterDate,
             //-------------------------------
-            DiseaseTree = GenrateModels.GenDiseases.GenerateDiseases(_diseaseSingle),
+            DiseaseTree = GenrateModels.GenDiseases.GenerateDiseases(_diseaseSingle)
         };
-
     }
 
     #region "Collections"
 
-
-
-
-    public static ObservableCollection<Tbl81Image> ImagesCollection
-    {
-        get; set;
-    } = null!;
+    private static ObservableCollection<Models.TblDisease> DiseasesCollection { get; set; } = null!;
 
     #endregion "Collections"
 
-    public static void ClearAllCollections()
+    private static void ClearAllCollections()
     {
-        _diseaseSingle = new TblDisease();
-        ImagesCollection?.Clear();
+        _diseaseSingle = new Models.TblDisease();
 
+        DiseasesCollection?.Clear();
     }
 
 }

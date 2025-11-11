@@ -8,7 +8,6 @@
                   xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
                   xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
                   xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
-                  xmlns:diseasePdf="using:ATIS.Views.Main.Disease.DiseasePdf"
                   xmlns:loca="using:WinUI3Localizer"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:models="using:ATIS.Models"

@@ -923,13 +923,14 @@ public interface IDataService
 
     TblDisease GetDiseaseSingleByDiseaseId(int id);
     
-        ObservableCollection<Tbl81Image> CollImagesByDiseaseId(int id);
+    ObservableCollection<TblDisease> CollDiseasesByDiseaseId(int id);
 
     #endregion Disease
 
     #region Food
 
     TblFood GetFoodSingleByFoodId(int id);
+    ObservableCollection<TblFood> CollFoodsByFoodId(int id);
 
 
     #endregion Food
@@ -937,6 +938,7 @@ public interface IDataService
     #region Miscellaneou
 
     TblMiscellaneous GetMiscellaneousSingleByMiscellaneousId(int id);
+    ObservableCollection<TblMiscellaneous> CollMiscellaneoussesByMiscellaneousId(int id);
 
 
     #endregion Miscellaneou

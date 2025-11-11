@@ -3,7 +3,7 @@ using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Main.Disease.DiseasePdf;
+using ATIS.Views.Report.Pdf.TblDisease;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;

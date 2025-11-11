@@ -8,6 +8,6 @@ public sealed partial class ReportItemTemplateHeaderTribusControl : UserControl
 {
     public ReportItemTemplateHeaderTribusControl()
     {
-        this.InitializeComponent();
+        InitializeComponent();
     }
 }

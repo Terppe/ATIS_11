@@ -8,6 +8,7 @@
                   xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
                   xmlns:dataTemplatesReport="using:ATIS.Views.Report.DataTemplates"
                   xmlns:dataTemplatesSearch="using:ATIS.Views.Search.DataTemplates"
+                  xmlns:loca="using:WinUI3Localizer"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:models="using:ATIS.Models"
                   xmlns:winUiEx="using:WinUIEx"
@@ -403,13 +404,13 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Button x:Uid="Button_PrintPdf"
-                        Margin="50,5,10,5"
+                <Button Margin="50,5,10,5"
+                        loca:Uids.Uid="Button_PrintPdf"
                         Click="PdfSubtribusCommand"
                         Style="{StaticResource CrudButtonStyle}" />
-                <Button x:Uid="Button_Close_Window"
-                        Margin="50,5,10,5"
+                <Button Margin="50,5,10,5"
                         HorizontalAlignment="Right"
+                        loca:Uids.Uid="Button_Close_Window"
                         Click="OnCloseClick"
                         Style="{StaticResource CrudButtonStyle}" />
             </StackPanel>
@@ -482,9 +483,9 @@
                               ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
                               ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodySubtribus}"
                               ItemsSource="{x:Bind ViewModel.SubtribusItems}" />
-                    <TextBlock x:Uid="TextBlock_TaxonomicHierarchy"
-                               Grid.Row="3"
+                    <TextBlock Grid.Row="3"
                                Grid.Column="0"
+                               loca:Uids.Uid="TextBlock_TaxonomicHierarchy"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="4"
@@ -639,11 +640,11 @@
                               ItemTemplate="{StaticResource ReportItemTemplateHyperlinkTribus}"
                               ItemsSource="{x:Bind ViewModel.TribusItems}"
                               SelectedValuePath="TribusId" />
-                    <TextBlock x:Uid="TextBlock_Subtribus"
-                               Grid.Row="23"
+                    <TextBlock Grid.Row="23"
                                Grid.Column="0"
                                Width="Auto"
-                               Margin="144,0,0,0" />
+                               Margin="144,0,0,0"
+                               loca:Uids.Uid="TextBlock_Subtribus" />
                     <StackPanel Grid.Row="23"
                                 Grid.Column="1"
                                 Orientation="Horizontal">
@@ -672,11 +673,11 @@
                     <!--  Part 2  -->
 
                     <TextBlock x:Name="TbDirectChildren"
-                               x:Uid="TextBlock_DirectChildren"
                                Grid.Row="24"
                                Grid.Column="1"
                                Width="Auto"
                                Margin="0,5,0,10"
+                               loca:Uids.Uid="TextBlock_DirectChildren"
                                FontWeight="Bold" />
                     <ListView Grid.Row="25"
                               Grid.Column="0"
@@ -694,9 +695,9 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock x:Uid="TextBlock_Infratribus"
-                                                   Width="Auto"
-                                                   Margin="152,0,0,0" />
+                                        <TextBlock Width="Auto"
+                                                   Margin="152,0,0,0"
+                                                   loca:Uids.Uid="TextBlock_Infratribus" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1"
                                                 Orientation="Horizontal">
@@ -719,16 +720,16 @@
 
                     <!--  Part 3  -->
 
-                    <TextBlock x:Uid="TextBlock_References"
-                               Grid.Row="26"
+                    <TextBlock Grid.Row="26"
                                Grid.Column="0"
+                               loca:Uids.Uid="TextBlock_References"
                                FontSize="19"
                                FontWeight="Bold" />
-                    <TextBlock x:Uid="TextBlock_Experts"
-                               Grid.Row="27"
+                    <TextBlock Grid.Row="27"
                                Grid.Column="0"
                                Width="Auto"
                                Margin="8,0,0,10"
+                               loca:Uids.Uid="TextBlock_Experts"
                                FontWeight="Bold" />
                     <ListView Grid.Row="28"
                               Grid.Column="0"
@@ -736,11 +737,11 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
                               ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
-                    <TextBlock x:Uid="TextBlock_Sources"
-                               Grid.Row="29"
+                    <TextBlock Grid.Row="29"
                                Grid.Column="0"
                                Width="Auto"
                                Margin="8,0,0,10"
+                               loca:Uids.Uid="TextBlock_Sources"
                                FontWeight="Bold" />
                     <ListView Grid.Row="30"
                               Grid.Column="0"
@@ -748,11 +749,11 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
                               ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
-                    <TextBlock x:Uid="TextBlock_Publications"
-                               Grid.Row="31"
+                    <TextBlock Grid.Row="31"
                                Grid.Column="0"
                                Width="Auto"
                                Margin="8,0,0,10"
+                               loca:Uids.Uid="TextBlock_Publications"
                                FontWeight="Bold" />
                     <ListView Grid.Row="32"
                               Grid.Column="0"
@@ -760,10 +761,10 @@
                               Margin="-12,-12,10,10"
                               ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
                               ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
-                    <TextBlock x:Uid="TextBlock_Comments"
-                               Grid.Row="33"
+                    <TextBlock Grid.Row="33"
                                Grid.Column="0"
                                Margin="0,0,0,10"
+                               loca:Uids.Uid="TextBlock_Comments"
                                FontSize="18"
                                FontWeight="Bold" />
                     <ListView Grid.Row="34"

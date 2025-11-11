@@ -7,9 +7,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Report.Pdf.Tbl03Regnums;
 using ATIS.Views.Report.Pdf.Tbl06Phylums;
-//using ATIS.Views.Report.Pdf.Tbl09Divisions;
 using ATIS.Views.Report.Pdf.Tbl12Subphylums;
-//using ATIS.Views.Report.Pdf.Tbl15Subdivisions;
 using ATIS.Views.Report.Pdf.Tbl18Superclasses;
 using ATIS.Views.Report.Pdf.Tbl21Classes;
 using ATIS.Views.Report.Pdf.Tbl24Subclasses;
@@ -29,6 +27,9 @@ using ATIS.Views.Report.Pdf.Tbl63Infratribusses;
 using ATIS.Views.Report.Pdf.Tbl66Genusses;
 using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
+using ATIS.Views.Report.Pdf.TblDisease;
+using ATIS.Views.Report.Pdf.TblFoods;
+using ATIS.Views.Report.Pdf.TblMiscellaneous;
 using ATIS.Views.Search.Pdf.Tbl03Regnums;
 using ATIS.Views.Search.Pdf.Tbl06Phylums;
 using ATIS.Views.Search.Pdf.Tbl12Subphylums;
@@ -73,7 +74,7 @@ public sealed partial class SearchQuickPage : Page
         QuestPDF.Settings.EnableCaching = true;
         QuestPDF.Settings.License = LicenseType.Community;
         LoadingProgressRing.IsActive = true;
-        SimpleLog.Info(" SearchQuickPage aufgerufen ");
+        SimpleLog.Info(" SearchQuickPage opend ");
     }
 
     private void SearchAutoSuggestBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -93,6 +94,15 @@ public sealed partial class SearchQuickPage : Page
     private void GetNameByName(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         ViewModel.SearchRun(SearchAutoSuggestBox.Text);
+
+        ViewModel.TblFoodsList ??= [];
+        ViewModel.TblFoodsList = int.TryParse(SearchAutoSuggestBox.Text, out var id)
+            ? [.. _context.TblFoods
+                .Where(e => e.FoodId == id)]
+            : [.. _context.TblFoods
+                .Where(e => SearchAutoSuggestBox.Text != null && e.FoodName.StartsWith(SearchAutoSuggestBox.Text))
+                .OrderBy(a => a.FoodName)];
+
     }
 
 
@@ -219,37 +229,32 @@ public sealed partial class SearchQuickPage : Page
 
     public ICommand PdfSpeciesCommand => new WinUICommunity.RelayCommand(execute: delegate
     {
-        //var reportFiSpeciessesWindow = new ReportFiSpeciessesWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
-        //reportFiSpeciessesWindow.GeneratePdfFiSpecies(ViewModel.FiSpeciesSelected.FiSpeciesId);
         var reportSpeciessesWindow = new ReportSpeciessesWindow(ViewModel.SpeciesSelected.SpeciesId);
         reportSpeciessesWindow.GeneratePdfSpecies(ViewModel.SpeciesSelected.SpeciesId);
     });
 
-    //public ICommand PdfFiSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
-    //{
-    //    var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.SpeciesSubSelected.SpeciesId);
-    //    reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.SpeciesSubSelected.SpeciesId);
-    //});
-
     public ICommand PdfSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
     {
-        //var reportFiSpeciessesSubsWindow = new ReportFiSpeciessesSubsWindow(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
-        //reportFiSpeciessesSubsWindow.GeneratePdfFiSpeciesSubs(ViewModel.FiSpeciesSubSelected.FiSpeciesId);
         var reportSpeciessesSubsWindow = new ReportSpeciessesSubsWindow(ViewModel.SpeciesSubSelected.SpeciesId);
         reportSpeciessesSubsWindow.GeneratePdfSpeciesSubs(ViewModel.SpeciesSubSelected.SpeciesId);
     });
 
-    //public ICommand PdfPlSpeciesCommand => new WinUICommunity.RelayCommand(execute: delegate
-    //{
-    //    var reportPlSpeciessesWindow = new ReportPlSpeciessesWindow(ViewModel.PlSpeciesSelected.PlSpeciesId);
-    //    reportPlSpeciessesWindow.GeneratePdfPlSpecies(ViewModel.PlSpeciesSelected.PlSpeciesId);
-    //});
+    public ICommand PdfDiseaseCommand => new WinUICommunity.RelayCommand(execute: delegate
+    {
+        var reportDiseasesWindow = new ReportDiseasesWindow(ViewModel.DiseaseSelected.DiseaseId);
+        reportDiseasesWindow.GeneratePdfDisease(ViewModel.DiseaseSelected.DiseaseId);
+    });
 
-    //public ICommand PdfPlSpeciesSubCommand => new WinUICommunity.RelayCommand(execute: delegate
-    //{
-    //    var reportPlSpeciessesSubsWindow = new ReportPlSpeciessesSubsWindow(ViewModel.PlSpeciesSubSelected.PlSpeciesId);
-    //    reportPlSpeciessesSubsWindow.GeneratePdfPlSpeciesSubs(ViewModel.PlSpeciesSubSelected.PlSpeciesId);
-    //});
+    public ICommand PdfFoodCommand => new WinUICommunity.RelayCommand(execute: delegate
+    {
+        var reportFoodsWindow = new ReportFoodsWindow(ViewModel.FoodSelected.FoodId);
+        reportFoodsWindow.GeneratePdfFood(ViewModel.FoodSelected.FoodId);
+    });
+    public ICommand PdfMiscellaneousCommand => new WinUICommunity.RelayCommand(execute: delegate
+    {
+        var reportMiscellaneoussesWindow = new ReportMiscellaneoussesWindow(ViewModel.MiscellaneousSelected.MiscellaneousId);
+        reportMiscellaneoussesWindow.GeneratePdfMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
+    });
 
     public object PdfListPrintCommand { get; } = new();
 
@@ -953,8 +958,10 @@ public sealed partial class SearchQuickPage : Page
             return;
         }
 
-        var window = new ReportGenussesWindow(ViewModel.GenusSelected.GenusId);
-        window.IsAlwaysOnTop = true;
+        var window = new ReportGenussesWindow(ViewModel.GenusSelected.GenusId)
+        {
+            IsAlwaysOnTop = true
+        };
         window.Activate();
     }
 
@@ -975,10 +982,60 @@ public sealed partial class SearchQuickPage : Page
         }
         else
         {
-            //  var window = new ReportFiSpeciessesSubsWindow(ViewModel.FiSpeciesSelected.FiSpeciesId);
-            var window = new ReportSpeciessesSubsWindow(ViewModel.SpeciesSelected.SpeciesId);
-            window.IsAlwaysOnTop = true;
+            var window = new ReportSpeciessesSubsWindow(ViewModel.SpeciesSelected.SpeciesId)
+            {
+                IsAlwaysOnTop = true
+            };
             window.Activate();
         }
+    }
+
+    private void DiseaseSelect_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.DiseaseSelected.DiseaseId == 0)
+        {
+            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
+            return;
+        }
+
+        var window = new ReportDiseasesWindow(ViewModel.DiseaseSelected.DiseaseId)
+        {
+            IsAlwaysOnTop = true
+        };
+
+        window.Activate();
+    }
+
+    private void FoodSelect_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.FoodSelected.FoodId == 0)
+        {
+            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
+            return;
+        }
+
+        var window = new ReportFoodsWindow(ViewModel.FoodSelected.FoodId)
+        {
+            IsAlwaysOnTop = true
+        };
+
+        window.Activate();
+    }
+
+
+    private void MiscellaneousSelect_Click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.MiscellaneousSelected.MiscellaneousId == 0)
+        {
+            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
+            return;
+        }
+
+        var window = new ReportMiscellaneoussesWindow(ViewModel.MiscellaneousSelected.MiscellaneousId)
+        {
+            IsAlwaysOnTop = true
+        };
+
+        window.Activate();
     }
 }

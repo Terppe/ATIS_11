@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ATIS.Models;
 
@@ -16,7 +14,7 @@ public class TblFood
     public string FoodName { get; set; }
     [Required]
     public int CountId { get; set; }
-    public bool? Valid { get; set; }
+    public bool Valid { get; set; }
     [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string ValidYear { get; set; }
     [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
@@ -33,6 +31,8 @@ public class TblFood
     public DateTime UpdaterDate { get; set; }
     [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     public string Memo { get; set; }
+    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Symptom { get; set; }
     //     public byte[] RowVersion { get; set; }
 
 

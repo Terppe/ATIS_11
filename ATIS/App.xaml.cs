@@ -10,6 +10,8 @@ using ATIS.Views.Authentication;
 using ATIS.Views.Database;
 using ATIS.Views.Main;
 using ATIS.Views.Main.Disease;
+using ATIS.Views.Main.Food;
+using ATIS.Views.Main.Miscellaneous;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
@@ -20,7 +22,6 @@ using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
-using FoodViewModel = ATIS.Views.Main.Food.FoodViewModel;
 
 namespace ATIS;
 
@@ -167,9 +168,7 @@ public partial class App : Application
             json.ConfigSectionPage(typeof(UtilityPage));
             json.ConfigSectionPage(typeof(Tbl03RegnumListPage));
             json.ConfigSectionPage(typeof(Tbl06PhylumListPage));
-            //json.ConfigSectionPage(typeof(Tbl09DivisionListPage));
             json.ConfigSectionPage(typeof(Tbl12SubphylumListPage));
-            //json.ConfigSectionPage(typeof(Tbl15SubdivisionListPage));
             json.ConfigSectionPage(typeof(Tbl18SuperclassListPage));
             json.ConfigSectionPage(typeof(Tbl21ClassListPage));
             json.ConfigSectionPage(typeof(Tbl24SubclassListPage));
@@ -188,8 +187,6 @@ public partial class App : Application
             json.ConfigSectionPage(typeof(Tbl63InfratribusListPage));
             json.ConfigSectionPage(typeof(Tbl66GenusListPage));
             json.ConfigSectionPage(typeof(Tbl68SpeciesgroupListPage));
-            //json.ConfigSectionPage(typeof(Tbl69FiSpeciesListPage));
-            //json.ConfigSectionPage(typeof(Tbl72PlSpeciesListPage));
             json.ConfigSectionPage(typeof(Tbl75SpeciesListPage));
 
             json.ConfigSectionPage(typeof(Tbl78NameListPage));
@@ -234,9 +231,7 @@ public partial class App : Application
 
         services.AddTransient<Tbl03RegnumViewModel>();
         services.AddTransient<Tbl06PhylumViewModel>();
-        //services.AddTransient<Tbl09DivisionViewModel>();
         services.AddTransient<Tbl12SubphylumViewModel>();
-        //services.AddTransient<Tbl15SubdivisionViewModel>();
         services.AddTransient<Tbl18SuperclassViewModel>();
         services.AddTransient<Tbl21ClassViewModel>();
         services.AddTransient<Tbl24SubclassViewModel>();
@@ -255,8 +250,6 @@ public partial class App : Application
         services.AddTransient<Tbl63InfratribusViewModel>();
         services.AddTransient<Tbl66GenusViewModel>();
         services.AddTransient<Tbl68SpeciesgroupViewModel>();
-        //services.AddTransient<Tbl69FiSpeciesViewModel>();
-        //services.AddTransient<Tbl72PlSpeciesViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
 
         services.AddTransient<Tbl78NameViewModel>();
@@ -271,8 +264,8 @@ public partial class App : Application
         services.AddTransient<Tbl93CommentViewModel>();
         services.AddTransient<TblCountryViewModel>();
         services.AddTransient<TblUserProfileViewModel>();
-        services.AddTransient<TblFoodViewModel>();
         services.AddTransient<FoodViewModel>();
+        services.AddTransient<TblFoodViewModel>();
         services.AddTransient<TblDiseaseViewModel>();
         services.AddTransient<DiseaseViewModel>();
         services.AddTransient<TblMiscellaneousViewModel>();

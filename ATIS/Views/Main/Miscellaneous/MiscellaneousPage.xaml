@@ -4,10 +4,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:miscellaneousPdf="using:ATIS.Views.Main.MiscellaneousPdf"
     xmlns:loca="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:ATIS.Models"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
@@ -38,11 +36,11 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <DataTemplate
+        <!--<DataTemplate
             x:Key="SearchItemTemplateTblMiscellaneous"
             x:DataType="models:TblMiscellaneous">
             <miscellaneousPdf:SearchItemTemplateTblMiscellaneousControl />
-        </DataTemplate>
+        </DataTemplate>-->
 
     </Page.Resources>
 

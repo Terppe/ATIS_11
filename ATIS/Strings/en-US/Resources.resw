@@ -1314,6 +1314,12 @@
   <data name="TabViewItem_Divisions.Header" xml:space="preserve">
     <value>Divisions</value>
   </data>
+  <data name="TabViewItem_Diseases.Header" xml:space="preserve">
+    <value>Diseases</value>
+  </data>
+  <data name="TabViewItem_Extras.Header" xml:space="preserve">
+    <value>Special</value>
+  </data>
   <data name="TabViewItem_Expert.Header" xml:space="preserve">
     <value>Expert</value>
   </data>
@@ -1325,6 +1331,9 @@
   </data>
   <data name="TabViewItem_Family.Header" xml:space="preserve">
     <value>Family</value>
+  </data>
+  <data name="TabViewItem_Foods.Header" xml:space="preserve">
+    <value>Foods</value>
   </data>
   <data name="TabViewItem_FiBreeding.Header" xml:space="preserve">
     <value>Breeding</value>
@@ -1400,6 +1409,9 @@
   </data>
   <data name="TabViewItem_Name.Header" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="TabViewItem_Miscellaneousses.Header" xml:space="preserve">
+    <value>Miscellaneousses</value>
   </data>
   <data name="TabViewItem_Names.Header" xml:space="preserve">
     <value>Names</value>
@@ -2384,6 +2396,9 @@
   </data>
   <data name="TextBox_FoodName.Header" xml:space="preserve">
     <value>Food Name</value>
+  </data>
+  <data name="TextBox_FoodSymptom.Header" xml:space="preserve">
+    <value>Food Symptom</value>
   </data>
   <data name="TextBox_FilestreamId.Header" xml:space="preserve">
     <value>Filestream ID</value>
@@ -3788,6 +3803,9 @@
   </data>
   <data name="TextBlock_Foods.Text" xml:space="preserve">
     <value>Foods</value>
+  </data>
+  <data name="TextBlock_FoodVolume.Text" xml:space="preserve">
+    <value>Report</value>
   </data>
   <data name="TextBlock_ShotDate.Text" xml:space="preserve">
     <value>Shot Date</value>

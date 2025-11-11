@@ -4,6 +4,7 @@ using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using static ATIS.Views.Report.PdfModels;
 using RelayCommand = WinUICommunity.RelayCommand;
 
 namespace ATIS.Views.Search;
@@ -14,16 +15,16 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     private readonly AtisDbContext _context = new();
     private static int _fishId;
     private static int _plantId;
-    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
 
     #endregion [Private Data Members]
 
-    #region [Constructor]
-
-    #endregion [Constructor]
 
     private void ClearAllCollections()
     {
+        DiseasesCollection?.Clear();
+        FoodsCollection?.Clear();
+        MiscellaneoussesCollection?.Clear();
+
         CommentsCollection?.Clear();
         ExpertsCollection?.Clear();
         SourcesCollection?.Clear();
@@ -52,9 +53,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         SubclassesCollection?.Clear();
         ClassesCollection?.Clear();
         SuperclassesCollection?.Clear();
-        //SubdivisionsCollection?.Clear();
         SubphylumsCollection?.Clear();
-        //DivisionsCollection?.Clear();
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
     }
@@ -276,28 +275,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             IsLoading = false;
             return;
         }
-        //if (_selectedMainTabIndex == 6 && _selectedDivisionTabIndex == 0)  //Subdivision
-        //{
-        //    IsLoading = true;
-        //    SubdivisionsCollection = dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(filterText);
-        //    DataSetCount = SubdivisionsCollection.Count;
-
-        //    OnPropertyChanged(nameof(SubdivisionsCollection));
-        //    RefreshSubdivisionItems();
-        //    IsLoading = false;
-        //    return;
-        //}
-        //if (_selectedMainTabIndex == 6 && _selectedDivisionTabIndex == 1)  //Division
-        //{
-        //    IsLoading = true;
-        //    DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(filterText);
-        //    DataSetCount = DivisionsCollection.Count;
-
-        //    OnPropertyChanged(nameof(DivisionsCollection));
-        //    RefreshDivisionItems();
-        //    IsLoading = false;
-        //    return;
-        //}
         if (_selectedMainTabIndex == 6 && _selectedPhylumTabIndex == 0)  //Subphylum
         {
             IsLoading = true;
@@ -330,6 +307,41 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             RefreshRegnumItems();
             IsLoading = false;
         }
+        if (_selectedMainTabIndex == 8 && _selectedExtraTabIndex == 0)  //Disease
+        {
+            IsLoading = true;
+            DiseasesCollection = dataService.GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(filterText);
+            DataSetCount = DiseasesCollection.Count;
+
+            OnPropertyChanged(nameof(DiseasesCollection));
+            RefreshDiseaseItems();
+            IsLoading = false;
+            return;
+        }
+
+        if (_selectedMainTabIndex == 8 && _selectedExtraTabIndex == 1)  //Food
+        {
+            IsLoading = true;
+            FoodsCollection = dataService.GetTblFoodsCollectionOrderByFoodNameFromFilterText(filterText);
+            DataSetCount = FoodsCollection.Count;
+
+            OnPropertyChanged(nameof(FoodsCollection));
+            RefreshFoodItems();
+            IsLoading = false;
+            return;
+        }
+        if (_selectedMainTabIndex == 8 && _selectedExtraTabIndex == 2)  //Miscellaneous
+        {
+            IsLoading = true;
+            MiscellaneoussesCollection = dataService.GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(filterText);
+            DataSetCount = MiscellaneoussesCollection.Count;
+
+            OnPropertyChanged(nameof(MiscellaneoussesCollection));
+            RefreshMiscellaneousItems();
+            IsLoading = false;
+            return;
+        }
+
     }
 
     #endregion
@@ -343,9 +355,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     private int _selectedReportFamilyTabIndex;
     private int _selectedReportOrdoTabIndex;
     private int _selectedReportClassTabIndex;
-    private int _selectedReportDivisionTabIndex;
     private int _selectedReportPhylumTabIndex;
     private int _selectedReportRegnumTabIndex;
+    private int _selectedReportExtraTabIndex;
 
     public int SelectedMainTabIndex
     {
@@ -430,20 +442,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
                 SelectedClassTabIndex = 2;
                 return;
             }
-            //if (_selectedMainTabIndex == 6)  //Division
-            //{
-            //    ClearAllCollections();
-            //    Tbl03RegnumsAllList ??= [];
-            //    Tbl03RegnumsAllList = dataService.GetRegnumAsync();
-            //    DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(FilterText);
-            //    DataSetCount = DivisionsCollection.Count;
-
-            //    RefreshDivisionItems();
-
-            //    SelectedDivisionTabIndex = 1;
-            //    return;
-            //}
-            if (_selectedMainTabIndex ==6)  //Phylum
+            if (_selectedMainTabIndex == 6)  //Phylum
             {
                 ClearAllCollections();
                 Tbl03RegnumsAllList ??= [];
@@ -468,6 +467,19 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
                 SelectedRegnumTabIndex = 0;
             }
+
+            if (_selectedMainTabIndex == 8)  //Extra
+            {
+                ClearAllCollections();
+                FoodsCollection = dataService.GetTblFoodsCollectionOrderByFoodNameFromFilterText(FilterText);
+                DataSetCount = FoodsCollection.Count;
+
+                OnPropertyChanged(nameof(FoodsCollection));
+                RefreshFoodItems();
+
+                SelectedExtraTabIndex = 1;
+            }
+
         }
     }
 
@@ -587,27 +599,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             }
         }
     }
-    //public int SelectedReportDivisionTabIndex
-    //{
-    //    get => _selectedReportDivisionTabIndex;
-    //    set
-    //    {
-    //        if (value == _selectedReportDivisionTabIndex)
-    //        {
-    //            return;
-    //        }
-
-    //        _selectedReportDivisionTabIndex = value; OnPropertyChanged();
-
-    //        if (_selectedReportDivisionTabIndex == 0)
-    //        {
-    //        }
-
-    //        if (_selectedReportDivisionTabIndex == 1)
-    //        {
-    //        }
-    //    }
-    //}
     public int SelectedReportPhylumTabIndex
     {
         get => _selectedReportPhylumTabIndex;
@@ -647,13 +638,38 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         }
     }
 
+    public int SelectedReportExtraTabIndex
+    {
+        get => _selectedReportExtraTabIndex;
+        set
+        {
+            if (value == _selectedReportExtraTabIndex)
+            {
+                return;
+            }
+
+            _selectedReportExtraTabIndex = value; OnPropertyChanged();
+
+            if (_selectedReportPhylumTabIndex == 0)
+            {
+            }
+
+            if (_selectedReportPhylumTabIndex == 1)
+            {
+            }
+            if (_selectedReportPhylumTabIndex == 2)
+            {
+            }
+        }
+    }
+
     private int _selectedTribusTabIndex;
     private int _selectedFamilyTabIndex;
     private int _selectedOrdoTabIndex;
     private int _selectedClassTabIndex;
-    private int _selectedDivisionTabIndex;
     private int _selectedPhylumTabIndex;
     private int _selectedRegnumTabIndex;
+    private int _selectedExtraTabIndex;
 
     public int SelectedReportTabIndex
     {
@@ -930,43 +946,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             //}
         }
     }
-    //public int SelectedDivisionTabIndex
-    //{
-    //    get => _selectedDivisionTabIndex;
-    //    set
-    //    {
-    //        if (value == _selectedDivisionTabIndex)
-    //        {
-    //            return;
-    //        }
-
-    //        _selectedDivisionTabIndex = value; OnPropertyChanged();
-
-    //        if (_selectedDivisionTabIndex == 0)
-    //        {
-    //            ClearAllCollections();
-    //            Tbl09DivisionsAllList ??= [];
-    //            Tbl09DivisionsAllList = dataService.GetDivisionAsync();
-    //            SubdivisionsCollection = dataService.GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(FilterText);
-    //            DataSetCount = SubdivisionsCollection.Count;
-
-    //            OnPropertyChanged(nameof(SubdivisionsCollection));
-    //            RefreshSubdivisionItems();
-    //        }
-
-    //        if (_selectedDivisionTabIndex == 1)
-    //        {
-    //            ClearAllCollections();
-    //            Tbl03RegnumsAllList ??= [];
-    //            Tbl03RegnumsAllList = dataService.GetRegnumAsync();
-    //            DivisionsCollection = dataService.GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(FilterText);
-    //            DataSetCount = DivisionsCollection.Count;
-
-    //            OnPropertyChanged(nameof(DivisionsCollection));
-    //            RefreshDivisionItems();
-    //        }
-    //    }
-    //}
     public int SelectedPhylumTabIndex
     {
         get => _selectedPhylumTabIndex;
@@ -1028,6 +1007,48 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             }
         }
     }
+    public int SelectedExtraTabIndex
+    {
+        get => _selectedExtraTabIndex;
+        set
+        {
+            if (value == _selectedExtraTabIndex)
+            {
+                return;
+            }
+
+            _selectedExtraTabIndex = value; OnPropertyChanged();
+
+            if (_selectedExtraTabIndex == 0)
+            {
+                ClearAllCollections();
+                DiseasesCollection = dataService.GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(FilterText);
+                DataSetCount = DiseasesCollection.Count;
+
+                OnPropertyChanged(nameof(DiseasesCollection));
+                RefreshDiseaseItems();
+            }
+            if (_selectedExtraTabIndex == 1)
+            {
+                ClearAllCollections();
+                FoodsCollection = dataService.GetTblFoodsCollectionOrderByFoodNameFromFilterText(FilterText);
+                DataSetCount = FoodsCollection.Count;
+
+                OnPropertyChanged(nameof(FoodsCollection));
+                RefreshFoodItems();
+            }
+            if (_selectedExtraTabIndex == 2)
+            {
+                ClearAllCollections();
+                MiscellaneoussesCollection = dataService.GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(FilterText);
+                DataSetCount = MiscellaneoussesCollection.Count;
+
+                OnPropertyChanged(nameof(MiscellaneoussesCollection));
+                RefreshMiscellaneousItems();
+            }
+
+        }
+    }
 
     #endregion "Public Commands to change TabItems"
 
@@ -1036,14 +1057,14 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     public void SearchAll(int id, string tab)
     {
         ClearAllCollections();
-        if (_context.Tbl15Subdivisions != null)
-        {
-            var plantaeRegnum = _context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-            if (plantaeRegnum != null)
-            {
-                _plantId = plantaeRegnum.SubdivisionId;
-            }
-        }
+        //if (_context.Tbl15Subdivisions != null)
+        //{
+        //    var plantaeRegnum = _context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
+        //    if (plantaeRegnum != null)
+        //    {
+        //        _plantId = plantaeRegnum.SubdivisionId;
+        //    }
+        //}
 
         if (_context.Tbl12Subphylums != null)
         {
@@ -1063,15 +1084,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             case "Tbl06Phylums":
                 GetTbl06PhylumsById(id);
                 break;
-            //case "Tbl09Divisions":
-            //    GetTbl09DivisionsById(id);
-            //    break;
             case "Tbl12Subphylums":
                 GetTbl12SubphylumsById(id);
                 break;
-            //case "Tbl15Subdivisions":
-            //    GetTbl15SubdivisionsById(id);
-            //    break;
             case "Tbl18Superclasses":
                 GetTbl18SuperclassesById(id);
                 break;
@@ -1137,6 +1152,17 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             case "Tbl75SpeciessesSub":
                 GetTbl75SpeciessesSubById(id);
                 break;
+            //case "TblDiseases":
+            //    GetTblDiseasesById(id);
+            //    break;
+            //case "TblFoods":
+            //    GetTblFoodsById(id);
+            //    break;
+            //case "TblMiscellaneousses":
+            //    GetTblMiscellaneoussesById(id);
+            //    break;
+
+                
         }
 
     }
@@ -1155,14 +1181,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         {
             RefreshPhylumItems();
         }
-        //if (DivisionsCollection != null)
-        //{
-        //    RefreshDivisionItems();
-        //}
-        //if (SubdivisionsCollection != null)
-        //{
-        //    RefreshSubdivisionItems();
-        //}
         if (SubphylumsCollection != null)
         {
             RefreshSubphylumItems();
@@ -1332,28 +1350,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     }
     #endregion
 
-    //#region Division
-
-    //public void GetTbl09DivisionsById(int id)
-    //{
-    //    DivisionsCollection = dataService.CollDivisionsByDivisionId(id);
-    //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(id);
-    //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-
-    //    //direct children
-    //    SubdivisionsCollection = dataService.CollSubdivisionsByDivisionIdAndHash(id);
-    //    //------------------------------------------------------------------------------
-    //    ExpertsCollection = dataService.CollExpertsByDivisionId(id);
-    //    SourcesCollection = dataService.CollSourcesByDivisionId(id);
-    //    AuthorsCollection = dataService.CollAuthorsByDivisionId(id);
-    //    //------------------------------------------------------------------------------
-    //    CommentsCollection = dataService.CollCommentsByDivisionId(id);
-    //    //----------Refresh-------------
-    //    Refresh();
-    //}
-
-    //#endregion
-
     #region Subphylum
     public void GetTbl12SubphylumsById(int id)
     {
@@ -1376,29 +1372,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         Refresh();
     }
     #endregion
-
-    //#region Subdivision
-    //public void GetTbl15SubdivisionsById(int id)
-    //{
-    //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionId(id);
-
-    //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(id);
-    //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-    //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-    //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
-
-    //    //direct children
-    //    SuperclassesCollection = dataService.CollSuperclassesBySubdivisionIdAndHash(id);
-    //    //-----------------------------------------------------------------------------
-    //    ExpertsCollection = dataService.CollExpertsBySubdivisionId(id);
-    //    SourcesCollection = dataService.CollSourcesBySubdivisionId(id);
-    //    AuthorsCollection = dataService.CollAuthorsBySubdivisionId(id);
-    //    //------------------------------------------------------------------------------
-    //    CommentsCollection = dataService.CollCommentsBySubdivisionId(id);
-    //    //----------Refresh-------------
-    //    Refresh();
-    //}
-    //#endregion
 
     #region Superclass
     public void GetTbl18SuperclassesById(int id)
@@ -2312,7 +2285,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
     #endregion
 
-
     #region Species
     public void GetTbl75SpeciessesById(int id)
     {
@@ -2495,25 +2467,12 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         set => SetProperty(ref _phylumSelected, value);
     }
 
-    //private Tbl09Division _divisionSelected = null!;
-    //public Tbl09Division DivisionSelected
-    //{
-    //    get => _divisionSelected;
-    //    set => SetProperty(ref _divisionSelected, value);
-    //}
-
     private Tbl12Subphylum _subphylumSelected = null!;
     public Tbl12Subphylum SubphylumSelected
     {
         get => _subphylumSelected;
         set => SetProperty(ref _subphylumSelected, value);
     }
-    //private Tbl15Subdivision _subdivisionSelected = null!;
-    //public Tbl15Subdivision SubdivisionSelected
-    //{
-    //    get => _subdivisionSelected;
-    //    set => SetProperty(ref _subdivisionSelected, value);
-    //}
 
     private Tbl18Superclass _superclassSelected = null!;
     public Tbl18Superclass SuperclassSelected
@@ -2716,7 +2675,26 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         get => _commentSelected;
         set => SetProperty(ref _commentSelected, value);
     }
+    private TblDisease _diseaseSelected = null!;
+    public TblDisease DiseaseSelected
+    {
+        get => _diseaseSelected;
+        set => SetProperty(ref _diseaseSelected, value);
+    }
 
+    private TblFood _foodSelected = null!;
+    public TblFood FoodSelected
+    {
+        get => _foodSelected;
+        set => SetProperty(ref _foodSelected, value);
+    }
+    private TblMiscellaneous _miscellaneousSelected = null!;
+    public TblMiscellaneous MiscellaneousSelected
+    {
+        get => _miscellaneousSelected;
+        set => SetProperty(ref _miscellaneousSelected, value);
+    }
+    
     #endregion
 
     #region Refresh Methods
@@ -2746,19 +2724,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             PhylumSelected = PhylumItems.FirstOrDefault();
         }
     }
-    //private void RefreshDivisionItems()
-    //{
-    //    DivisionItems.Clear();
-    //    foreach (var item in DivisionsCollection)
-    //    {
-    //        DivisionItems.Add(item);
-    //    }
-    //    if (DivisionSelected == null && DivisionsCollection.Count != 0)
-    //    {
-    //        DivisionSelected = DivisionItems.FirstOrDefault();
-    //    }
-
-    //}
     private void RefreshSubphylumItems()
     {
         SubphylumItems.Clear();
@@ -2772,19 +2737,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         }
 
     }
-    //private void RefreshSubdivisionItems()
-    //{
-    //    SubdivisionItems.Clear();
-    //    foreach (var item in SubdivisionsCollection)
-    //    {
-    //        SubdivisionItems.Add(item);
-    //    }
-    //    if (SubdivisionSelected == null && SubdivisionsCollection.Count != 0)
-    //    {
-    //        SubdivisionSelected = SubdivisionItems.First();
-    //    }
-
-    //}
     private void RefreshSuperclassItems()
     {
         SuperclassItems.Clear();
@@ -3112,6 +3064,42 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         }
 
     }
+    private void RefreshDiseaseItems()
+    {
+        DiseaseItems.Clear();
+        foreach (var item in DiseasesCollection)
+        {
+            DiseaseItems.Add(item);
+        }
+        if (DiseaseSelected == null && DiseasesCollection.Count != 0)
+        {
+            DiseaseSelected = DiseaseItems.First();
+        }
+    }
+    private void RefreshFoodItems()
+    {
+        FoodItems.Clear();
+        foreach (var item in FoodsCollection)
+        {
+            FoodItems.Add(item);
+        }
+        if (FoodSelected == null && FoodsCollection.Count != 0)
+        {
+            FoodSelected = FoodItems.First();
+        }
+    }
+    private void RefreshMiscellaneousItems()
+    {
+        MiscellaneousItems.Clear();
+        foreach (var item in MiscellaneoussesCollection)
+        {
+            MiscellaneousItems.Add(item);
+        }
+        if (MiscellaneousSelected == null && MiscellaneoussesCollection.Count != 0)
+        {
+            MiscellaneousSelected = MiscellaneousItems.First();
+        }
+    }
 
     #endregion
 
@@ -3119,9 +3107,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
 
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
-    //public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = [];
-    //public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = [];
     public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = [];
     public ObservableCollection<Tbl21Class> ClassItems { get; } = [];
     public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = [];
@@ -3150,6 +3136,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
+    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
+    public ObservableCollection<TblFood> FoodItems { get; } = [];
+    public ObservableCollection<TblMiscellaneous> MiscellaneousItems { get; } = [];
     #endregion Items
 
     #region "Collections"
@@ -3180,20 +3169,13 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         set => SetProperty(ref _isLoading, value);
     }
 
-    public string FilterText
-    {
-        get; set;
-    } = null!;
+    public string FilterText { get; set; } = null!;
 
     public ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;
 
     public ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; }
 
     public ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
-
-    //public ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
-
-    //public ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
 
     public ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
 
@@ -3258,6 +3240,9 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
     public ObservableCollection<Tbl90Reference> Tbl90RefExpertsList { get; set; } = null!;
 
     public ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = null!;
+    public ObservableCollection<TblDisease> DiseasesCollection { get; set; } = null!;
+    public ObservableCollection<TblFood> FoodsCollection { get; set; } = null!;
+    public ObservableCollection<TblMiscellaneous> MiscellaneoussesCollection { get; set; } = null!;
 
     #endregion "Collections"
 
@@ -3283,12 +3268,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
         {
             _searchSpeciesName = value; OnPropertyChanged();
         }
-    }
-    private TblDisease _diseaseSelected = null!;
-    public TblDisease DiseaseSelected
-    {
-        get => _diseaseSelected;
-        set => SetProperty(ref _diseaseSelected, value);
     }
 
     private ObservableCollection<Tbl75Species> _tbl75SpeciessesList = null!;
@@ -3630,15 +3609,6 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             _tbl06PhylumsAllList = value; OnPropertyChanged();
         }
     }
-    //private ObservableCollection<Tbl09Division> _tbl09DivisionsAllList = null!;
-    //public ObservableCollection<Tbl09Division> Tbl09DivisionsAllList
-    //{
-    //    get => _tbl09DivisionsAllList;
-    //    set
-    //    {
-    //        _tbl09DivisionsAllList = value; OnPropertyChanged();
-    //    }
-    //}
 
     private ObservableCollection<Tbl90RefSource> _tbl90SourcesAllList = null!;
 
@@ -3724,6 +3694,41 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             OnPropertyChanged();
         }
     }
+
+    private ObservableCollection<TblDisease> _tblDiseasesList = null!;
+
+    public ObservableCollection<TblDisease> TblDiseasesList
+    {
+        get => _tblDiseasesList;
+        set
+        {
+            _tblDiseasesList = value;
+            OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<TblFood> _tblFoodsList = null!;
+
+    public ObservableCollection<TblFood> TblFoodsList
+    {
+        get => _tblFoodsList;
+        set
+        {
+            _tblFoodsList = value;
+            OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<TblMiscellaneous> _tblMiscellaneoussList = null!;
+
+    public ObservableCollection<TblMiscellaneous> TblMiscellaneoussList
+    {
+        get => _tblMiscellaneoussList;
+        set
+        {
+            _tblMiscellaneoussList = value;
+            OnPropertyChanged();
+        }
+    }
+
     //private void GetValueContinent()
     //{
     //    _continents = new List<Continent>()

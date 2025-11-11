@@ -17,6 +17,7 @@ using ATIS.Views.Admin;
 using ATIS.Views.User;
 using WinUI3Localizer;
 using System.Globalization;
+using ATIS.Views.Main.Disease;
 using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 
 namespace ATIS.Views.Main;
@@ -591,17 +592,6 @@ public sealed partial class MainPage : Page
             NavFrame.Navigate(typeof(Tbl18SuperclassListPage));
         }
 
-        //--------------------------------------------
-        //if ((string)args.ChosenSuggestion == (string)NavSubdivision.Content)
-        //{
-        //    NavFrame.Navigate(typeof(Tbl15SubdivisionListPage));
-        //}
-
-        //if ((string)args.ChosenSuggestion == (string)NavDivision.Content)
-        //{
-        //    NavFrame.Navigate(typeof(Tbl09DivisionListPage));
-        //}
-
         //-------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavSubphylum.Content)
         {
@@ -692,7 +682,7 @@ public sealed partial class MainPage : Page
         //--------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavDiseases.Content)
         {
-            NavFrame.Navigate(typeof(Disease.DiseasePage));
+            NavFrame.Navigate(typeof(DiseasePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavFoods.Content)
@@ -718,6 +708,21 @@ public sealed partial class MainPage : Page
 
     private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
+        if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Disease.DiseasePage")
+        {
+            NavFrame.Navigate(typeof(DiseasePage), null, args.RecommendedNavigationTransitionInfo);
+            return;
+        }
+        if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Food.FoodPage")
+        {
+            NavFrame.Navigate(typeof(FoodPage), null, args.RecommendedNavigationTransitionInfo);
+            return;
+        }
+        if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
+        {
+            NavFrame.Navigate(typeof(MiscellaneousPage), null, args.RecommendedNavigationTransitionInfo);
+            return;
+        }
         if (args.IsSettingsInvoked)
         {
             NavFrame.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);
@@ -746,6 +751,21 @@ public sealed partial class MainPage : Page
             var tag = (string)nvi.Tag;
             if (tag != null)
             {
+                if (tag == "ATIS.Views.Main.Disease.DiseasePage")
+                {
+                    NavFrame.Navigate(typeof(DiseasePage));
+                    return;
+                }
+                if (tag == "ATIS.Views.Main.Food.FoodPage")
+                {
+                    NavFrame.Navigate(typeof(FoodPage));
+                    return;
+                }
+                if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
+                {
+                    NavFrame.Navigate(typeof(MiscellaneousPage));
+                    return;
+                }
                 if (tag == "Settings")
                 {
                     NavFrame.Navigate(typeof(SettingsPage));
@@ -755,7 +775,6 @@ public sealed partial class MainPage : Page
                     var type = Type.GetType(tag);
                     NavFrame.Navigate(type);
                 }
-
             }
         }
     }

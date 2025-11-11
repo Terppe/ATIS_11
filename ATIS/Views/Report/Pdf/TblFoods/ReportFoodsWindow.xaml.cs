@@ -1,0 +1,116 @@
+﻿using System.Configuration;
+using System.Diagnostics;
+using ATIS.Helpers;
+using ATIS.Services;
+using ATIS.Strings;
+using Microsoft.UI;
+using QuestPDF.Fluent;
+using WinUIEx;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace ATIS.Views.Report.Pdf.TblFoods;
+
+/// <summary>
+/// An empty window that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class ReportFoodsWindow : WindowEx
+{
+    #region [Private Data Members]
+    private readonly AtisDbContext _context = new();
+    public ReportViewModel ViewModel { get; set; }
+
+    #endregion [Private Data Members]   
+
+    #region [Constructor]
+
+    public ReportFoodsWindow(int foodid)
+    {
+        ViewModel = App.GetService<ReportViewModel>();
+        InitializeComponent();
+        ViewModel.ReportSearchAll(foodid, "TblFoods");
+
+        ViewModel.FoodSelected = _context.TblFoods.SingleOrDefault(a => a.FoodId == foodid);
+
+        Title = StringsRes.Food;
+        Width = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportWidth"));
+        Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportHeight"));
+        this.CenterOnScreen();
+    }
+    #endregion [Constructor]   
+
+    #region [Command]
+
+    private void PdfFoodCommand(object sender, RoutedEventArgs e)
+    {
+        GeneratePdfFood(ViewModel.FoodSelected.FoodId);
+    }
+
+    #endregion [Command]             
+
+    #region [Methods]
+
+    public void GeneratePdfFood(int foodid)
+    {
+        var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
+        var single = _context.TblFoods.SingleOrDefault(a => a.FoodId == foodid);
+        if (single != null)
+        {
+            var name = single.FoodName;
+            var countid = single.CountId;
+            const string space = "_";
+            filePath = $"{filePath}{name}{space}{countid}{space}Report.pdf";
+
+            //var filePath = "D:\\Temp\\Animalia b11_57883426_Report.pdf";
+
+            var model = TblFoodsDocumentDataSource.GetFoodDetails(foodid);
+            var document = new TblFoodsDocument(model);
+            document.GeneratePdf(filePath);
+            PrintPdfMethod(filePath);
+        }
+    }
+    private static async void PrintPdfMethod(string filePath)
+    {
+        // Process.Start("explorer.exe", filePath);
+
+        {
+            try
+            {
+                await File.ReadAllTextAsync(filePath!);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                AllDialogs.NoFileFoundInfoWarnDialogAsync();
+                return;
+            }
+            catch (FileNotFoundException)
+            {
+                AllDialogs.NoFileFoundInfoWarnDialogAsync();
+                return;
+            }
+
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(filePath!)
+                {
+                    UseShellExecute = true
+                }
+            };
+            process.Start();
+        }
+    }
+    private void OnCloseClick(object sender, RoutedEventArgs e)
+    {
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+        var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+        if (appWindow != null)
+        {
+            App.WindowsCounter -= 1;  //counter 1 window back
+            appWindow.Hide();
+        }
+    }
+
+    #endregion [Methods]
+}

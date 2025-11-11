@@ -525,13 +525,59 @@ namespace ATIS.Strings {
                 return ResourceManager.GetString("FailedToSave", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Family ähnelt.
         /// </summary>
-        internal static string Family {
-            get {
+        internal static string Family
+        {
+            get
+            {
                 return ResourceManager.GetString("Family", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Disease ähnelt.
+        /// </summary>
+        internal static string Disease
+        {
+            get
+            {
+                return ResourceManager.GetString("Disease", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Miscellaneous ähnelt.
+        /// </summary>
+        internal static string Miscellaneous
+        {
+            get
+            {
+                return ResourceManager.GetString("Miscellaneous", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Food ähnelt.
+        /// </summary>
+        internal static string Food
+        {
+            get
+            {
+                return ResourceManager.GetString("Food", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die FoodVolume ähnelt.
+        /// </summary>
+        internal static string FoodVolume
+        {
+            get
+            {
+                return ResourceManager.GetString("FoodVolume", resourceCulture);
             }
         }
 
@@ -1062,13 +1108,26 @@ namespace ATIS.Strings {
                 return ResourceManager.GetString("MaxLength_100", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Name should be longer than one character ähnelt.
         /// </summary>
-        internal static string MinLength_1 {
-            get {
+        internal static string MinLength_1
+        {
+            get
+            {
                 return ResourceManager.GetString("MinLength_1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Memo ähnelt.
+        /// </summary>
+        internal static string Memo
+        {
+            get
+            {
+                return ResourceManager.GetString("Memo", resourceCulture);
             }
         }
 
@@ -2806,12 +2865,25 @@ namespace ATIS.Strings {
                 return ResourceManager.GetString("RequiredUserName", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, Reason: ähnelt.
+        /// </summary>
+        internal static string Reason
+        {
+            get
+            {
+                return ResourceManager.GetString("Reason", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Please enter value in the range: ähnelt.
         /// </summary>
-        internal static string RequiredValueRange {
-            get {
+        internal static string RequiredValueRange
+        {
+            get
+            {
                 return ResourceManager.GetString("RequiredValueRange", resourceCulture);
             }
         }
@@ -2961,6 +3033,17 @@ namespace ATIS.Strings {
             get
             {
                 return ResourceManager.GetString("SearchRegnum", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die ShortInfo ähnelt.
+        /// </summary>
+        internal static string ShortInfo
+        {
+            get
+            {
+                return ResourceManager.GetString("ShortInfo", resourceCulture);
             }
         }
 
@@ -3207,6 +3290,17 @@ namespace ATIS.Strings {
         }
 
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Symptom ähnelt.
+        /// </summary>
+        internal static string Symptom
+        {
+            get
+            {
+                return ResourceManager.GetString("Symptom", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Tables ähnelt.
         /// </summary>
         internal static string Tables {
@@ -3232,7 +3326,39 @@ namespace ATIS.Strings {
                 return ResourceManager.GetString("TryAgain", resourceCulture);
             }
         }
-        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, Therapie: ähnelt.
+        /// </summary>
+        internal static string Therapie
+        {
+            get
+            {
+                return ResourceManager.GetString("Therapie", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, Thema1: ähnelt.
+        /// </summary>
+        internal static string Thema1
+        {
+            get
+            {
+                return ResourceManager.GetString("Thema1", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, Thema2: ähnelt.
+        /// </summary>
+        internal static string Thema2
+        {
+            get
+            {
+                return ResourceManager.GetString("Thema2", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die User Profile ähnelt.
         /// </summary>

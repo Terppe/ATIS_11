@@ -1,12 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using Windows.Storage.Pickers;
 using Windows.System;
 
 //    MiscellaneousViewModel Skriptdatum:  09.09.2025  10:32    
 
-namespace ATIS.Views.Main;
+namespace ATIS.Views.Main.Miscellaneous;
 public partial class MiscellaneousViewModel(IDataService dataService) : ObservableObject
 {
     #region [Private Data Members]
@@ -16,15 +19,56 @@ public partial class MiscellaneousViewModel(IDataService dataService) : Observab
     private readonly IDataService _dataService = dataService;
     public ObservableCollection<TblMiscellaneous> MiscellaneousItems { get; } = [];
     public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
+    public string Search;
+    private int _plantId;
+    private int _animalId;
 
-    #endregion [Private Data Members]           
+    private readonly FileOpenPicker _filePicker = new();
 
+    private readonly List<Data> _fileStreamList = [];
+    public struct Data
+    {
+        public int ImageCountId;
+        public byte[] ImageFileStream;
+    };
+    #endregion [Private Data Members]              
 
     //    Part 1    
 
-    #region [Methods Miscellaneous]
+    #region [Methods Food]
 
-    #endregion [Methods Miscellaneous ]  
+    public ICommand SearchRunCommand => new WinUICommunity.RelayCommand(execute: delegate { SearchRun(FilterText); });
+
+    public void SearchRun(string filterText)
+    {
+        MiscellaneoussesCollection?.Clear();
+
+        if (string.IsNullOrEmpty(filterText))
+        {
+            AllDialogs.NoDatasetFoundWarnMessageDialog();
+            return;
+        }
+
+        IsLoading = true;
+        MiscellaneoussesCollection = _dataService.GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(filterText);
+
+        DataSetCount = MiscellaneoussesCollection.Count;
+        RefreshMiscellaneousItems();
+        //   IsLoading = false;
+    }
+
+    #region Report Search
+
+    //public void ReportSearchAll(int id, string tab)
+    //{
+    //    FoodsCollection?.Clear();
+    //    GetTblFoodsById(id);
+
+    //}
+
+    #endregion Report Search
+
+    #endregion [Methods Disease ]  
 
     //    Part 2    
 
@@ -73,7 +117,7 @@ public partial class MiscellaneousViewModel(IDataService dataService) : Observab
 
     private string _searchMiscellaneousName = "";
 
-    public string SearchMiscellaneousName
+    public string SearchFoodName
     {
         get => _searchMiscellaneousName;
         set
@@ -92,6 +136,26 @@ public partial class MiscellaneousViewModel(IDataService dataService) : Observab
             _tblMiscellaneoussesList = value; OnPropertyChanged();
         }
     }
+    private int _dataSetCount;
+    public int DataSetCount
+    {
+        get => _dataSetCount;
+        set
+        {
+            _dataSetCount = value; OnPropertyChanged();
+        }
+    }
+    private int _imageDataSetCount;
+    public int ImageDataSetCount
+    {
+        get => _imageDataSetCount;
+        set
+        {
+            _imageDataSetCount = value; OnPropertyChanged();
+        }
+    }
+
+    public string FilterText { get; private set; }
 
     #endregion Public Properties
 
@@ -120,6 +184,16 @@ public partial class MiscellaneousViewModel(IDataService dataService) : Observab
     }
 
     #endregion Refresh Methods
+
+    #region Collection
+
+    public ObservableCollection<TblMiscellaneous> MiscellaneoussesCollection
+    {
+        get; set;
+    } = null!;
+
+
+    #endregion Collection
 
     #endregion All Properties
 

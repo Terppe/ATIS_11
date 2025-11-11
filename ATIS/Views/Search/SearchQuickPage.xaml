@@ -50,23 +50,6 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <!--<MenuFlyout x:Key="DivisionDataContextMenu">
-            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
-                            Click="DivisionSelect_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/select.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
-                            Command="{x:Bind PdfDivisionCommand}">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/pdf.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>-->
-
         <MenuFlyout x:Key="SubphylumDataContextMenu">
             <MenuFlyoutItem x:Uid="MenuFlyout_Select"
                             Click="SubphylumSelect_Click">
@@ -83,23 +66,6 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
-
-        <!--<MenuFlyout x:Key="SubdivisionDataContextMenu">
-            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
-                            Click="SubdivisionSelect_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/select.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
-                            Command="{x:Bind PdfSubdivisionCommand}">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/pdf.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>-->
 
         <MenuFlyout x:Key="SuperclassDataContextMenu">
             <MenuFlyoutItem x:Uid="MenuFlyout_Select"
@@ -407,6 +373,67 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
+        <MenuFlyout
+            x:Key="DiseaseDataContextMenu">
+            <MenuFlyoutItem
+                x:Uid="MenuFlyout_Select"
+                Click="DiseaseSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon
+                        ShowAsMonochrome="False"
+                        UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem
+                x:Uid="MenuFlyout_Print"
+                Command="{x:Bind PdfDiseaseCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon
+                        ShowAsMonochrome="False"
+                        UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="FoodDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="FoodSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfFoodCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
+        <MenuFlyout
+            x:Key="MiscellaneousDataContextMenu">
+            <MenuFlyoutItem
+                x:Uid="MenuFlyout_Select"
+                Click="MiscellaneousSelect_Click">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon
+                        ShowAsMonochrome="False"
+                        UriSource="/Assets/Fluent/select.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem
+                x:Uid="MenuFlyout_Print"
+                Command="{x:Bind PdfMiscellaneousCommand}">
+                <MenuFlyoutItem.Icon>
+                    <BitmapIcon
+                        ShowAsMonochrome="False"
+                        UriSource="/Assets/Fluent/pdf.png" />
+                </MenuFlyoutItem.Icon>
+            </MenuFlyoutItem>
+        </MenuFlyout>
+
         <!--  Templates  -->
 
         <DataTemplate x:Key="SearchItemTemplateTbl03Regnum"
@@ -418,18 +445,10 @@
                       x:DataType="models:Tbl06Phylum">
             <dataTemplates:SearchItemTemplateTbl06PhylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="SearchItemTemplateTbl09Division"
-                      x:DataType="models:Tbl09Division">
-            <dataTemplates:SearchItemTemplateTbl09DivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
                       x:DataType="models:Tbl12Subphylum">
             <dataTemplates:SearchItemTemplateTbl12SubphylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
-                      x:DataType="models:Tbl15Subdivision">
-            <dataTemplates:SearchItemTemplateTbl15SubdivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
                       x:DataType="models:Tbl18Superclass">
             <dataTemplates:SearchItemTemplateTbl18SuperclassControl />
@@ -502,6 +521,21 @@
                       x:DataType="models:Tbl75Species">
             <dataTemplates:SearchItemTemplateTbl75SpeciesControl />
         </DataTemplate>
+        <DataTemplate
+            x:Key="SearchItemTemplateTblDisease"
+            x:DataType="models:TblDisease">
+            <dataTemplates:SearchItemTemplateTblDiseaseControl />
+        </DataTemplate>
+        <DataTemplate
+            x:Key="SearchItemTemplateTblFood"
+            x:DataType="models:TblFood">
+            <dataTemplates:SearchItemTemplateTblFoodControl />
+        </DataTemplate>
+        <DataTemplate
+            x:Key="SearchItemTemplateTblMiscellaneous"
+            x:DataType="models:TblMiscellaneous">
+            <dataTemplates:SearchItemTemplateTblMiscellaneousControl />
+        </DataTemplate>
 
 
         <Style x:Key="NoSpacesListViewItemStyle"
@@ -519,18 +553,10 @@
                       x:DataType="models:Tbl06Phylum">
             <dataTemplateHeader1:ReportItemTemplateHeaderPhylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="ReportItemTemplateHeaderDivision"
-                      x:DataType="models:Tbl09Division">
-            <dataTemplateHeader1:ReportItemTemplateHeaderDivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateHeaderSubphylum"
                       x:DataType="models:Tbl12Subphylum">
             <dataTemplateHeader1:ReportItemTemplateHeaderSubphylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="ReportItemTemplateHeaderSubdivision"
-                      x:DataType="models:Tbl15Subdivision">
-            <dataTemplateHeader1:ReportItemTemplateHeaderSubdivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateHeaderSuperclass"
                       x:DataType="models:Tbl18Superclass">
             <dataTemplateHeader1:ReportItemTemplateHeaderSuperclassControl />
@@ -623,18 +649,10 @@
                       x:DataType="models:Tbl06Phylum">
             <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
-                      x:DataType="models:Tbl09Division">
-            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylum"
                       x:DataType="models:Tbl12Subphylum">
             <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision"
-                      x:DataType="models:Tbl15Subdivision">
-            <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclass"
                       x:DataType="models:Tbl18Superclass">
             <dataTemplateHeaderTaxoNomen1:ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl />
@@ -717,18 +735,10 @@
                       x:DataType="models:Tbl06Phylum">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkPhylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
-                      x:DataType="models:Tbl09Division">
-            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkDivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
                       x:DataType="models:Tbl12Subphylum">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubphylumControl />
         </DataTemplate>
-        <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
-                      x:DataType="models:Tbl15Subdivision">
-            <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSubdivisionControl />
-        </DataTemplate>-->
         <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
                       x:DataType="models:Tbl18Superclass">
             <dataTemplateHyperlink1:ReportItemTemplateHyperlinkSuperclassControl />
@@ -977,8 +987,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.TribusSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Supertribusses"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Supertribusses"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource SupertribusDataContextMenu}"
@@ -992,14 +1001,12 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
-                                    <TabViewItem
-                                        loca:Uids.Uid="TabViewItem_Families"
+                                    <TabViewItem loca:Uids.Uid="TabViewItem_Families"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"
                                                  SelectedIndex="{x:Bind ViewModel.SelectedFamilyTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <TabView.TabItems>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Infrafamilies"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Infrafamilies"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource InfrafamilyDataContextMenu}"
@@ -1010,8 +1017,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.InfrafamilySelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Subfamilies"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Subfamilies"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource SubfamilyDataContextMenu}"
@@ -1022,8 +1028,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.SubfamilySelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Families"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Families"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource FamilyDataContextMenu}"
@@ -1034,8 +1039,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.FamilySelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Superfamilies"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Superfamilies"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource SuperfamilyDataContextMenu}"
@@ -1049,14 +1053,12 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
-                                    <TabViewItem
-                                        loca:Uids.Uid="TabViewItem_Ordos"
+                                    <TabViewItem loca:Uids.Uid="TabViewItem_Ordos"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"
                                                  SelectedIndex="{x:Bind ViewModel.SelectedOrdoTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <TabView.TabItems>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Infraordos"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Infraordos"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource InfraordoDataContextMenu}"
@@ -1067,8 +1069,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.InfraordoSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Subordos"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Subordos"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource SubordoDataContextMenu}"
@@ -1079,8 +1080,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.SubordoSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Ordos"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Ordos"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource OrdoDataContextMenu}"
@@ -1091,8 +1091,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.OrdoSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_legios"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_legios"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource LegioDataContextMenu}"
@@ -1106,14 +1105,12 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
-                                    <TabViewItem
-                                        loca:Uids.Uid="TabViewItem_Classes"
+                                    <TabViewItem loca:Uids.Uid="TabViewItem_Classes"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"
                                                  SelectedIndex="{x:Bind ViewModel.SelectedClassTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <TabView.TabItems>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Infraclasses"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Infraclasses"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource InfraclassDataContextMenu}"
@@ -1124,8 +1121,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.InfraclassSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Subclasses"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Subclasses"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource SubclassDataContextMenu}"
@@ -1136,8 +1132,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.SubclassSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Classes"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Classes"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource ClassDataContextMenu}"
@@ -1148,8 +1143,7 @@
                                                               ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                               SelectedItem="{x:Bind ViewModel.ClassSelected, Mode=TwoWay}" />
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Superclasses"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Superclasses"
                                                              IsClosable="False">
                                                     <ListView Height="600"
                                                               ContextFlyout="{StaticResource SuperclassDataContextMenu}"
@@ -1163,44 +1157,12 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
-                                    <!--<TabViewItem x:Uid="TabViewItem_Divisions"
-                                                 IsClosable="False">
-                                        <TabView IsAddTabButtonVisible="False"
-                                                 SelectedIndex="{x:Bind ViewModel.SelectedDivisionTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                            <TabView.TabItems>
-                                                <TabViewItem x:Uid="TabViewItem_Subdivisions"
-                                                             IsClosable="False">
-                                                    <ListView Height="600"
-                                                              ContextFlyout="{StaticResource SubdivisionDataContextMenu}"
-                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl15Subdivision}"
-                                                              ItemsSource="{x:Bind ViewModel.SubdivisionItems, Mode=OneWay}"
-                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
-                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                              SelectedItem="{x:Bind ViewModel.SubdivisionSelected, Mode=TwoWay}" />
-                                                </TabViewItem>
-                                                <TabViewItem x:Uid="TabViewItem_Divisions"
-                                                             IsClosable="False">
-                                                    <ListView Height="600"
-                                                              ContextFlyout="{StaticResource DivisionDataContextMenu}"
-                                                              ItemTemplate="{StaticResource SearchItemTemplateTbl09Division}"
-                                                              ItemsSource="{x:Bind ViewModel.DivisionItems, Mode=OneWay}"
-                                                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                                              ScrollViewer.IsDeferredScrollingEnabled="True"
-                                                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                              SelectedItem="{x:Bind ViewModel.DivisionSelected, Mode=TwoWay}" />
-                                                </TabViewItem>
-                                            </TabView.TabItems>
-                                        </TabView>
-                                    </TabViewItem>-->
-                                    <TabViewItem
-                                        loca:Uids.Uid="TabViewItem_Phylums"
+                                    <TabViewItem loca:Uids.Uid="TabViewItem_Phylums"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"
                                                  SelectedIndex="{x:Bind ViewModel.SelectedPhylumTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <TabView.TabItems>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Subphylums"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Subphylums"
                                                              IsClosable="False">
                                                     <StackPanel>
                                                         <ListView Height="600"
@@ -1213,8 +1175,7 @@
                                                                   SelectedItem="{x:Bind ViewModel.SubphylumSelected, Mode=TwoWay}" />
                                                     </StackPanel>
                                                 </TabViewItem>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Phylums"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Phylums"
                                                              IsClosable="False">
                                                     <StackPanel>
                                                         <ListView Height="600"
@@ -1230,14 +1191,12 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
-                                    <TabViewItem
-                                        loca:Uids.Uid="TabViewItem_Regnums"
+                                    <TabViewItem loca:Uids.Uid="TabViewItem_Regnums"
                                                  IsClosable="False">
                                         <TabView IsAddTabButtonVisible="False"
                                                  SelectedIndex="{x:Bind ViewModel.SelectedRegnumTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             <TabView.TabItems>
-                                                <TabViewItem
-                                                    loca:Uids.Uid="TabViewItem_Regnums"
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Regnums"
                                                              IsClosable="False">
                                                     <StackPanel>
                                                         <ListView Height="600"
@@ -1253,6 +1212,56 @@
                                             </TabView.TabItems>
                                         </TabView>
                                     </TabViewItem>
+
+                                    <TabViewItem loca:Uids.Uid="TabViewItem_Extras"
+                                                 IsClosable="False">
+                                        <TabView IsAddTabButtonVisible="False"
+                                                 SelectedIndex="{x:Bind ViewModel.SelectedExtraTabIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            <TabView.TabItems>
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Diseases"
+                                                             IsClosable="False">
+                                                    <StackPanel>
+                                                        <ListView Height="600"
+                                                                  ContextFlyout="{StaticResource DiseaseDataContextMenu}"
+                                                                  ItemTemplate="{StaticResource SearchItemTemplateTblDisease}"
+                                                                  ItemsSource="{x:Bind ViewModel.DiseaseItems, Mode=OneWay}"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  SelectedItem="{x:Bind ViewModel.DiseaseSelected, Mode=TwoWay}" />
+                                                    </StackPanel>
+                                                </TabViewItem>
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Foods"
+                                                             IsClosable="False">
+                                                    <StackPanel>
+                                                        <ListView Height="600"
+                                                                  ContextFlyout="{StaticResource FoodDataContextMenu}"
+                                                                  ItemTemplate="{StaticResource SearchItemTemplateTblFood}"
+                                                                  ItemsSource="{x:Bind ViewModel.FoodItems, Mode=OneWay}"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  SelectedItem="{x:Bind ViewModel.FoodSelected, Mode=TwoWay}" />
+                                                    </StackPanel>
+                                                </TabViewItem>
+                                                <TabViewItem loca:Uids.Uid="TabViewItem_Miscellaneousses"
+                                                             IsClosable="False">
+                                                    <StackPanel>
+                                                        <ListView Height="600"
+                                                                  ContextFlyout="{StaticResource MiscellaneousDataContextMenu}"
+                                                                  ItemTemplate="{StaticResource SearchItemTemplateTblMiscellaneous}"
+                                                                  ItemsSource="{x:Bind ViewModel.MiscellaneousItems, Mode=OneWay}"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  SelectedItem="{x:Bind ViewModel.MiscellaneousSelected, Mode=TwoWay}" />
+                                                    </StackPanel>
+                                                </TabViewItem>
+                                            </TabView.TabItems>
+                                        </TabView>
+                                    </TabViewItem>
+
+
                                 </TabView.TabItems>
                             </TabView>
                         </StackPanel>

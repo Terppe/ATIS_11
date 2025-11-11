@@ -1,8 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Diagnostics;
 using ATIS.Helpers;
-using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.UI;
@@ -12,70 +10,61 @@ using WinUIEx;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace ATIS.Views.Main.Disease.DiseasePdf;
-
+namespace ATIS.Views.Report.Pdf.TblMiscellaneous;
 /// <summary>
 /// An empty window that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class ReportDiseasesWindow : WindowEx
+public sealed partial class ReportMiscellaneoussesWindow : WindowEx
 {
-
     #region [Private Data Members]
     private readonly AtisDbContext _context = new();
-    public DiseaseViewModel ViewModel { get; set; }
+    public ReportViewModel ViewModel { get; set; }
 
     #endregion [Private Data Members]   
 
     #region [Constructor]
 
-    public ReportDiseasesWindow(int diseaseid)
+    public ReportMiscellaneoussesWindow(int miscellaneousid)
     {
-        ViewModel = App.GetService<DiseaseViewModel>();
+        ViewModel = App.GetService<ReportViewModel>();
         InitializeComponent();
-        ViewModel.DiseasesCollection = new ObservableCollection<TblDisease>(_context.TblDiseases
-            .Where(e => e.DiseaseId == diseaseid));
+        ViewModel.ReportSearchAll(miscellaneousid, "TblMiscellaneousses");
 
-        ViewModel.DiseaseSelected = ViewModel.DiseasesCollection[0];
+        ViewModel.MiscellaneousSelected = _context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == miscellaneousid);
 
-
-        Title = StringsRes.Report;
+        Title = StringsRes.Miscellaneous;
         Width = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportWidth"));
         Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportHeight"));
         this.CenterOnScreen();
-
-        //if (ViewModel.DiseaseItems.Count == 0)
-        //{
-        //    TbDirectChildren.Visibility = Visibility.Collapsed;
-        //}
     }
     #endregion [Constructor]   
 
     #region [Command]
 
-    private void PdfDiseaseCommand(object sender, RoutedEventArgs e)
+    private void PdfMiscellaneousCommand(object sender, RoutedEventArgs e)
     {
-        GeneratePdfDisease(ViewModel.DiseaseSelected.DiseaseId);
+        GeneratePdfMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
     }
 
     #endregion [Command]             
 
     #region [Methods]
 
-    public void GeneratePdfDisease(int id)
+    public void GeneratePdfMiscellaneous(int miscellaneousid)
     {
         var filePath = ConfigurationManager.AppSettings.Get("PdfPath");
-        var single = _context.TblDiseases.SingleOrDefault(a => a.DiseaseId == id);
+        var single = _context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == miscellaneousid);
         if (single != null)
         {
-            var name = single.DiseaseName;
+            var name = single.MiscellaneousName;
             var countid = single.CountId;
             const string space = "_";
             filePath = $"{filePath}{name}{space}{countid}{space}Report.pdf";
 
-            //var filePath = "D:\\Temp\\Abmagerung_57883426_Report.pdf";
+            //var filePath = "D:\\Temp\\Animalia b11_57883426_Report.pdf";
 
-            var model = TblDiseasesDocumentDataSource.GetDiseaseDetails(id);
-            var document = new TblDiseasesDocument(model);
+            var model = TblMiscellaneoussesDocumentDataSource.GetMiscellaneousDetails(miscellaneousid);
+            var document = new TblMiscellaneoussesDocument(model);
             document.GeneratePdf(filePath);
             PrintPdfMethod(filePath);
         }
@@ -122,30 +111,5 @@ public sealed partial class ReportDiseasesWindow : WindowEx
         }
     }
 
-    ////Phylums
-    //private void Phylum_OnTapped(object sender, TappedRoutedEventArgs e)
-    //{
-    //    if (ViewModel.PhylumSelected.PhylumId == 0)
-    //    {
-    //        return;
-    //    }
-
-    //    ViewModel.ReportSearchAll(ViewModel.PhylumSelected.PhylumId, "Tbl06Phylums");
-    //    var window = new Tbl06Phylums.ReportPhylumsWindow(ViewModel.PhylumSelected.PhylumId);
-    //    window.Activate();
-    //}
-    ////Divisions
-    //private void Division_OnTapped(object sender, TappedRoutedEventArgs e)
-    //{
-    //    if (ViewModel.DivisionSelected.DivisionId == 0)
-    //    {
-    //        return;
-    //    }
-
-    //    ViewModel.ReportSearchAll(ViewModel.DivisionSelected.DivisionId, "Tbl09Divisions");
-    //    var window = new Tbl09Divisions.ReportDivisionsWindow(ViewModel.DivisionSelected.DivisionId);
-    //    window.Activate();
-    //}
     #endregion [Methods]
-
 }

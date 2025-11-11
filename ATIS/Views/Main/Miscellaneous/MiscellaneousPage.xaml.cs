@@ -3,7 +3,7 @@ using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Main.MiscellaneousPdf;
+using ATIS.Views.Report.Pdf.TblMiscellaneous;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
@@ -20,7 +20,7 @@ public sealed partial class MiscellaneousPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public MiscellaneousViewModel ViewModel { get; }
+    public Miscellaneous.MiscellaneousViewModel ViewModel { get; }
     private static readonly AtisDbContext Context = new();
     private string _search;
 
@@ -30,7 +30,7 @@ public sealed partial class MiscellaneousPage : Page
 
     public MiscellaneousPage()
     {
-        ViewModel = App.GetService<MiscellaneousViewModel>();
+        ViewModel = App.GetService<Miscellaneous.MiscellaneousViewModel>();
         InitializeComponent();
         SimpleLog.Info(" MiscellaneousPage opended ");
     }

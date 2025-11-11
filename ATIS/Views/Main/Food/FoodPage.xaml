@@ -4,10 +4,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:foodPdf="using:ATIS.Views.Main.FoodPdf"
     xmlns:loca="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:ATIS.Models"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     NavigationCacheMode="Disabled"
     mc:Ignorable="d">
@@ -38,11 +36,11 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <DataTemplate
+        <!--<DataTemplate
             x:Key="SearchItemTemplateTblFood"
             x:DataType="models:TblFood">
             <foodPdf:SearchItemTemplateTblFoodControl />
-        </DataTemplate>
+        </DataTemplate>-->
 
     </Page.Resources>
 
@@ -146,9 +144,9 @@
                     AutoGenerateColumns="False"
                     Background="Transparent"
                     BorderThickness="0"
+                    ContextFlyout="{StaticResource FoodDataContextMenu}"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="False"
-                    ContextFlyout="{StaticResource FoodDataContextMenu}"
                     GridLinesVisibility="Horizontal"
                     ItemsSource="{x:Bind ViewModel.FoodItems}"
                     SelectedItem="{x:Bind ViewModel.FoodSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

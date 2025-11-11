@@ -463,31 +463,6 @@
                                 </NavigationViewItem>
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
-                        <!--<NavigationViewItem loca:Uids.Uid="Nav_Divisions"
-                                            Tag="">
-                            <NavigationViewItem.Icon>
-                                <BitmapIcon ShowAsMonochrome="False"
-                                            UriSource="ms-appx:///Assets/Fluent/collection.png" />
-                            </NavigationViewItem.Icon>
-                            <NavigationViewItem.MenuItems>
-                                <NavigationViewItem x:Name="NavSubdivision"
-                                                    loca:Uids.Uid="Nav_Subdivision"
-                                                    Tag="ATIS.Views.Database.Tbl15SubdivisionListPage">
-                                    <NavigationViewItem.Icon>
-                                        <BitmapIcon ShowAsMonochrome="False"
-                                                    UriSource="ms-appx:///Assets/Fluent/database.png" />
-                                    </NavigationViewItem.Icon>
-                                </NavigationViewItem>
-                                <NavigationViewItem x:Name="NavDivision"
-                                                    loca:Uids.Uid="Nav_Division"
-                                                    Tag="ATIS.Views.Database.Tbl09DivisionListPage">
-                                    <NavigationViewItem.Icon>
-                                        <BitmapIcon ShowAsMonochrome="False"
-                                                    UriSource="ms-appx:///Assets/Fluent/database.png" />
-                                    </NavigationViewItem.Icon>
-                                </NavigationViewItem>
-                            </NavigationViewItem.MenuItems>
-                        </NavigationViewItem>-->
                         <NavigationViewItem loca:Uids.Uid="Nav_Phylums"
                                             Tag="">
                             <NavigationViewItem.Icon>

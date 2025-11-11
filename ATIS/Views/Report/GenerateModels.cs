@@ -1,5 +1,4 @@
 ﻿using ATIS.Models;
-using Tbl18Superclass = ATIS.Models.Tbl18Superclass;
 
 namespace ATIS.Views.Report;
 
@@ -752,10 +751,34 @@ public abstract class GenrateModels
             {
                 FoodName = single.FoodName,
                 FoodVolume = single.FoodVolume,
+                ShortInfo = single.ShortInfo,
                 Valid = (bool)single.Valid,
                 ValidYear = single.ValidYear,
                 Info = single.Info,
-                Memo = single.Memo
+                Memo = single.Memo,
+                Symptom = single.Symptom
+            };
+        }
+    }
+    public class GenMiscellaneousses
+    {
+        public static PdfModels.Miscellaneous GenerateMiscellaneoussess(TblMiscellaneous single)
+        {
+            if (single == null)
+            {
+                return null!;
+            }
+
+            return new PdfModels.Miscellaneous
+            {
+                MiscellaneousName = single.MiscellaneousName,
+                ShortInfo = single.ShortInfo,
+                Thema1 = single.Thema1,
+                Thema2 = single.Thema2,
+                Valid = (bool)single.Valid,
+                ValidYear = single.ValidYear,
+                Info = single.Info,
+                Memo = single.Memo,
             };
         }
     }

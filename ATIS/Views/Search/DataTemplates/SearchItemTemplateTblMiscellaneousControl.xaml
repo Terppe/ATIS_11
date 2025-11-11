@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<UserControl x:Class="ATIS.Views.Main.FoodPdf.SearchItemTemplateTblFoodControl"
+<UserControl x:Class="ATIS.Views.Search.DataTemplates.SearchItemTemplateTblMiscellaneousControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -25,17 +25,20 @@
             <TextBlock Width="50"
                        Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListTitleStyle}"
-                       Text="{Binding FoodId}" />
+                       Text="{Binding MiscellaneousId}" />
             <CheckBox Width="80"
                       Margin="{StaticResource SmallLeftMargin}"
                       Content="Valid"
                       IsChecked="{Binding Valid}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding FoodName}" />
+                       Text="{Binding ValidYear}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding Kind}" />
+                       Text="{Binding MiscellaneousName}" />
+            <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
+                       Style="{StaticResource ListSubTitleStyle}"
+                       Text="{Binding ShortInfo}" />
         </StackPanel>
     </Grid>
 </UserControl>

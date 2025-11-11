@@ -7613,22 +7613,34 @@ public partial class DataService : ObservableObject, IDataService
         }
         return null!;
     }
-    public ObservableCollection<Tbl81Image> CollImagesByDiseaseId(int id)
+    public ObservableCollection<TblDisease> CollDiseasesByDiseaseId(int id)
     {
-        if (Context.Tbl81Images != null)
+        if (Context.TblDiseases != null)
         {
-            var collection = new ObservableCollection<Tbl81Image>(Context.Tbl81Images
+            var collection = new ObservableCollection<TblDisease>(Context.TblDiseases
                 .Where(e => e.DiseaseId == id));
             return collection;
         }
         return null!;
     }
 
-    
+
     #endregion Disease
 
     #region Food
 
+    public ObservableCollection<TblFood> CollFoodsByFoodId(int id)
+    {
+        if (Context.TblFoods != null)
+        {
+            var collection = new ObservableCollection<TblFood>(Context.TblFoods
+                .Where(e => e.FoodId == id));
+            return collection;
+        }
+        return null!;
+    }
+
+    
     public TblFood GetFoodSingleByFoodId(int id)
     {
         if (Context.TblFoods != null)
@@ -7646,6 +7658,17 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Food
 
     #region Miscellaneous
+
+    public ObservableCollection<TblMiscellaneous> CollMiscellaneoussesByMiscellaneousId(int id)
+    {
+        if (Context.TblMiscellaneousses != null)
+        {
+            var collection = new ObservableCollection<TblMiscellaneous>(Context.TblMiscellaneousses
+                .Where(e => e.MiscellaneousId == id));
+            return collection;
+        }
+        return null!;
+    }
 
     public TblMiscellaneous GetMiscellaneousSingleByMiscellaneousId(int id)
     {

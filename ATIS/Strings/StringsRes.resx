@@ -228,6 +228,9 @@
   <data name="Division" xml:space="preserve">
     <value>Division</value>
   </data>
+  <data name="Disease" xml:space="preserve">
+    <value>Disease</value>
+  </data>
   <data name="EMailNotExist" xml:space="preserve">
     <value>eMail does't exist</value>
   </data>
@@ -320,6 +323,12 @@
   </data>
   <data name="FiSpecies" xml:space="preserve">
     <value>FiSpecies</value>
+  </data>
+  <data name="Food" xml:space="preserve">
+    <value>Food</value>
+  </data>
+  <data name="FoodVolume" xml:space="preserve">
+    <value>Info</value>
   </data>
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot Password</value>
@@ -453,11 +462,20 @@
   <data name="MainWindowUserArea" xml:space="preserve">
     <value>User Area</value>
   </data>
+  <data name="Miscellaneous" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
   <data name="MaxLength_100" xml:space="preserve">
     <value>Name should not be longer than 100 characters</value>
   </data>
   <data name="MinLength_1" xml:space="preserve">
     <value>Name should be longer than one character</value>
+  </data>
+  <data name="MinLength_2" xml:space="preserve">
+    <value>Name should be longer than one character</value>
+  </data>
+  <data name="Memo" xml:space="preserve">
+    <value>Memo</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
@@ -488,6 +506,9 @@
   </data>
   <data name="RefAuthor" xml:space="preserve">
     <value>Reference Author</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
   </data>
   <data name="Reference" xml:space="preserve">
     <value>Reference</value>
@@ -984,6 +1005,9 @@
   <data name="Special" xml:space="preserve">
     <value>Special</value>
   </data>
+  <data name="ShortInfo" xml:space="preserve">
+    <value>Short Info</value>
+  </data>
   <data name="Speciesgroup" xml:space="preserve">
     <value>Speciesgroup</value>
   </data>
@@ -1056,8 +1080,20 @@
   <data name="Synonym" xml:space="preserve">
     <value>Synonym</value>
   </data>
+  <data name="Symptom" xml:space="preserve">
+    <value>Symptom</value>
+  </data>
   <data name="Tables" xml:space="preserve">
     <value>Tables</value>
+  </data>
+  <data name="Therapie" xml:space="preserve">
+    <value>Therapie</value>
+  </data>
+  <data name="Thema1" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Thema2" xml:space="preserve">
+    <value>Beschreibung</value>
   </data>
   <data name="Tribus" xml:space="preserve">
     <value>Tribus</value>
