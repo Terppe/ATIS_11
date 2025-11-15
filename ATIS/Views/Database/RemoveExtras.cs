@@ -896,10 +896,10 @@ public static class RemoveExtras
             }
         }
     }
-    public static async Task SaveToArrayTbl18Superclasses(int subdivisionid, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
+    public static async Task SaveToArrayTbl18Superclasses(int subphylumid, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
         List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
     {
-        var superclasses = await Context.Tbl18Superclasses.Where(a => a.SubdivisionId == subdivisionid).ToListAsync();
+        var superclasses = await Context.Tbl18Superclasses.Where(a => a.SubphylumId == subphylumid).ToListAsync();
         if (superclasses.Count != 0)
         {
             //Save  Array
@@ -912,22 +912,22 @@ public static class RemoveExtras
             }
         }
     }
-    public static async Task SaveToArrayTbl15Subdivisions(int divisionid, List<Tbl15Subdivision> arrSubdivision, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
-    {
-        var subdivisions = await Context.Tbl15Subdivisions.Where(a => a.DivisionId == divisionid).ToListAsync();
-        if (subdivisions.Count != 0)
-        {
-            //Save  Array
-            for (var index = 0; index < subdivisions.Count; index++)
-            {
-                var subdivision = subdivisions[index];
-                var subdivisionid = subdivision.SubdivisionId;
-                arrSubdivision.Add(subdivision);
-                await SaveToArrayTbl18Superclasses(subdivisionid, arrSuperclass, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
-            }
-        }
-    }
+    //public static async Task SaveToArrayTbl15Subdivisions(int divisionid, List<Tbl15Subdivision> arrSubdivision, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
+    //    List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
+    //{
+    //    var subdivisions = await Context.Tbl15Subdivisions.Where(a => a.DivisionId == divisionid).ToListAsync();
+    //    if (subdivisions.Count != 0)
+    //    {
+    //        //Save  Array
+    //        for (var index = 0; index < subdivisions.Count; index++)
+    //        {
+    //            var subdivision = subdivisions[index];
+    //            var subdivisionid = subdivision.SubdivisionId;
+    //            arrSubdivision.Add(subdivision);
+    //            await SaveToArrayTbl18Superclasses(subdivisionid, arrSuperclass, arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
+    //        }
+    //    }
+    //}
 
     public static async Task SaveToArrayTbl12Subphylums(int phylumid, List<Tbl12Subphylum> arrSubphylum, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass, List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio, List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo, List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily, List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus, List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
         List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
@@ -946,30 +946,30 @@ public static class RemoveExtras
         }
     }
 
-    public static async Task SaveToArrayTbl09Divisions(int regnumid, List<Tbl09Division> arrDivision,
-        List<Tbl15Subdivision> arrSubdivision, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass,
-        List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio,
-        List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo,
-        List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily,
-        List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus,
-        List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
-        List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
-    {
-        var divisions = await Context.Tbl09Divisions.Where(a => a.RegnumId == regnumid).ToListAsync();
-        if (divisions.Count != 0)
-        {
-            //Save  Array
-            for (var index = 0; index < divisions.Count; index++)
-            {
-                var division = divisions[index];
-                var divisionid = division.DivisionId;
-                arrDivision.Add(division);
-                await SaveToArrayTbl15Subdivisions(divisionid, arrSubdivision, arrSuperclass, arrClass, arrSubclass,
-                    arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily,
-                    arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
-            }
-        }
-    }
+    //public static async Task SaveToArrayTbl09Divisions(int regnumid, List<Tbl09Division> arrDivision,
+    //    List<Tbl15Subdivision> arrSubdivision, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass,
+    //    List<Tbl24Subclass> arrSubclass, List<Tbl27Infraclass> arrInfraclass, List<Tbl30Legio> arrLegio,
+    //    List<Tbl33Ordo> arrOrdo, List<Tbl36Subordo> arrSubordo, List<Tbl39Infraordo> arrInfraordo,
+    //    List<Tbl42Superfamily> arrSuperfamily, List<Tbl45Family> arrFamily, List<Tbl48Subfamily> arrSubfamily,
+    //    List<Tbl51Infrafamily> arrInfrafamily, List<Tbl54Supertribus> arrSupertribus, List<Tbl57Tribus> arrTribus,
+    //    List<Tbl60Subtribus> arrSubtribus, List<Tbl63Infratribus> arrInfratribus,
+    //    List<Tbl66Genus> arrGenus, List<Tbl75Species> arrSpecies)
+    //{
+    //    var divisions = await Context.Tbl09Divisions.Where(a => a.RegnumId == regnumid).ToListAsync();
+    //    if (divisions.Count != 0)
+    //    {
+    //        //Save  Array
+    //        for (var index = 0; index < divisions.Count; index++)
+    //        {
+    //            var division = divisions[index];
+    //            var divisionid = division.DivisionId;
+    //            arrDivision.Add(division);
+    //            await SaveToArrayTbl15Subdivisions(divisionid, arrSubdivision, arrSuperclass, arrClass, arrSubclass,
+    //                arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily, arrSubfamily,
+    //                arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus, arrSpecies);
+    //        }
+    //    }
+    //}
 
     public static async Task SaveToArrayTbl06Phylums(int regnumid, List<Tbl06Phylum> arrPhylum,
         List<Tbl12Subphylum> arrSubphylum, List<Tbl18Superclass> arrSuperclass, List<Tbl21Class> arrClass,

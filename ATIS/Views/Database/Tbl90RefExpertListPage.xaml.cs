@@ -154,6 +154,10 @@ public sealed partial class Tbl90RefExpertListPage : Page
         try
         {
             await AddRefExpert();
+            RefExpertName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(RefExpertName);
+            };
         }
         catch (Exception xe)
         {
@@ -164,11 +168,6 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
     private async Task AddRefExpert()
     {
-        RefExpertName.Loaded += (s, e) =>
-        {
-            RefExpertName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditRefExpert = true;
         ViewModel.IsNewRefExpert = true;
 

@@ -97,22 +97,22 @@ public class Tbl63InfratribussesDocumentDataSource : ObservableObject
         var superclassId = _dataService.SuperclassIdFromClassesCollectionSelect(classId);
         SuperclassesCollection = _dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
         var subphylumId = _dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        var subdivisionId = _dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        //var subdivisionId = _dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
 
-        if (subphylumId == _fishId)  //Basis #Subphylum#
-        {
-            SubdivisionsCollection = _dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-            var divisionId = _dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-            DivisionsCollection = _dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-            var regnumId = _dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-            RegnumsCollection = _dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        //if (subphylumId == _fishId)  //Basis #Subphylum#
+        //{
+        //    SubdivisionsCollection = _dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
+        //    var divisionId = _dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
+        //    DivisionsCollection = _dataService.CollDivisionsByDivisionIdAndHash(divisionId);
+        //    var regnumId = _dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
+        //    RegnumsCollection = _dataService.CollRegnumsByRegnumIdAndHash(regnumId);
 
-            _regnumSingle = _dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
-            _divisionSingle = _dataService.GetDivisionSingleByDivisionIdAndHash(divisionId);
-            _subdivisionSingle = _dataService.GetSubdivisionSingleBySubdivisionIdAndHash(subdivisionId);
+        //    _regnumSingle = _dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
+        //    _divisionSingle = _dataService.GetDivisionSingleByDivisionIdAndHash(divisionId);
+        //    _subdivisionSingle = _dataService.GetSubdivisionSingleBySubdivisionIdAndHash(subdivisionId);
 
-        }
-        if (subdivisionId == _plantId)  //Basis #Subdivision#
+        //}
+        //if (subdivisionId == _plantId)  //Basis #Subdivision#
         {
             SubphylumsCollection = _dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
             var phylumId = _dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);

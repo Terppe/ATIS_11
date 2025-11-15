@@ -14,8 +14,8 @@ public class Tbl18Superclass
     public string SuperclassName { get; set; }
     [Required]
     public int SubphylumId { get; set; }
-    [Required]
-    public int SubdivisionId { get; set; }
+    //[Required]
+    //public int SubdivisionId { get; set; }
     [Required]
     public int CountId { get; set; }
     public bool Valid { get; set; }

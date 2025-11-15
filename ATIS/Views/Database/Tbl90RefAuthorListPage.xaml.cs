@@ -154,6 +154,10 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         try
         {
             await AddRefAuthor();
+            RefAuthorName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(RefAuthorName);
+            };
         }
         catch (Exception xe)
         {
@@ -164,11 +168,6 @@ public sealed partial class Tbl90RefAuthorListPage : Page
 
     private async Task AddRefAuthor()
     {
-        RefAuthorName.Loaded += (s, e) =>
-        {
-            RefAuthorName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditRefAuthor = true;
         ViewModel.IsNewRefAuthor = true;
 

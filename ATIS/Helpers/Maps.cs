@@ -50,7 +50,7 @@ public interface Maps
             var centerOf2 = new MPoint(centerOf1LongX, centerOf1LatiY);
             var sphericalMercatorCoordinate2 = SphericalMercator.FromLonLat(centerOf2.X, centerOf2.Y).ToMPoint();
             map.Layers.Add(CreatePointLayer(centerOf1LongX, centerOf1LatiY));
-            map.Home = n => n.CenterOnAndZoomTo(sphericalMercatorCoordinate2, n.Resolutions[(int)zoom]);
+      //      map.Home = n => n.CenterOnAndZoomTo(sphericalMercatorCoordinate2, n.Resolutions[(int)zoom]);
 
             return Task.FromResult(map);
         }
@@ -79,7 +79,7 @@ public interface Maps
         var centerOf = new MPoint(centerOf1LongX, centerOf1LatiY);
         var sphericalMercatorCoordinate1 = SphericalMercator.FromLonLat(centerOf.X, centerOf.Y).ToMPoint();
         map.Layers.Add(CreatePointLayer(centerOf1LongX, centerOf1LatiY));
-        map.Home = n => n.CenterOnAndZoomTo(sphericalMercatorCoordinate1, n.Resolutions[(int)zoom]);
+      //  map.Home = n => n.CenterOnAndZoomTo(sphericalMercatorCoordinate1, n.Resolutions[(int)zoom]);
 
         return Task.FromResult(map);
     }
@@ -88,7 +88,6 @@ public interface Maps
         return new MemoryLayer
         {
             Name = "Points",
-            IsMapInfoLayer = true,
             Features = [new PointFeature(SphericalMercator.FromLonLat(centerOf1LongX, centerOf1LatiY).ToMPoint())]
             // Style = SymbolStyles.CreatePinStyle(symbolScale: 0.7)
         };

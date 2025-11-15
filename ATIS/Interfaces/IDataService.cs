@@ -28,16 +28,16 @@ public interface IDataService
 
     #endregion Phylum
 
-    #region Division                  
+    //#region Division                  
 
-    ObservableCollection<Tbl09Division> GetDivisionAsync();
-    ObservableCollection<Tbl09Division> GetDivisionAsync(int divisionid);
-    ObservableCollection<Tbl09Division> GetDivisionAsync(string search);
-    ObservableCollection<Tbl09Division> GetDivisionFromRegnumIdAsync(int regnumid);
-    Task<Tbl09Division> UpsertDivisionAsync(Tbl09Division division);
-    Task DeleteDivisionAsync(int divisionid);
+    //ObservableCollection<Tbl09Division> GetDivisionAsync();
+    //ObservableCollection<Tbl09Division> GetDivisionAsync(int divisionid);
+    //ObservableCollection<Tbl09Division> GetDivisionAsync(string search);
+    //ObservableCollection<Tbl09Division> GetDivisionFromRegnumIdAsync(int regnumid);
+    //Task<Tbl09Division> UpsertDivisionAsync(Tbl09Division division);
+    //Task DeleteDivisionAsync(int divisionid);
 
-    #endregion Division
+    //#endregion Division
 
     #region Subphylum
 
@@ -50,16 +50,16 @@ public interface IDataService
 
     #endregion Subphylum
 
-    #region Subdivision
+    //#region Subdivision
 
-    ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync();
-    ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(int subdivisionid);
-    ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(string search);
-    ObservableCollection<Tbl15Subdivision> GetSubdivisionFromDivisionIdAsync(int divisionid);
-    Task<Tbl15Subdivision> UpsertSubdivisionAsync(Tbl15Subdivision subdivision);
-    Task DeleteSubdivisionAsync(int subdivisionid);
+    //ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync();
+    //ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(int subdivisionid);
+    //ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(string search);
+    //ObservableCollection<Tbl15Subdivision> GetSubdivisionFromDivisionIdAsync(int divisionid);
+    //Task<Tbl15Subdivision> UpsertSubdivisionAsync(Tbl15Subdivision subdivision);
+    //Task DeleteSubdivisionAsync(int subdivisionid);
 
-    #endregion Subdivision
+    //#endregion Subdivision
 
     #region Superclass
 
@@ -523,23 +523,23 @@ public interface IDataService
     ObservableCollection<Tbl93Comment> CollCommentsByPhylumId(int id);
     #endregion Phylum
 
-    #region Division
-    Tbl09Division GetDivisionSingleByDivisionIdAndHash(int id);
-    Tbl09Division GetDivisionSingleByDivisionId(int id);
+    //#region Division
+    //Tbl09Division GetDivisionSingleByDivisionIdAndHash(int id);
+    //Tbl09Division GetDivisionSingleByDivisionId(int id);
 
-    ObservableCollection<Tbl09Division> CollDivisionsByDivisionId(int id);
-    //direct children
-    ObservableCollection<Tbl15Subdivision> CollSubdivisionsByDivisionIdAndHash(int id);
-    //Function
-    int RegnumIdFromDivisionsCollectionSelect(int id);
-    //ForeignKey
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByDivisionId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByDivisionId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByDivisionId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByDivisionId(int id);
-    #endregion Division
+    //ObservableCollection<Tbl09Division> CollDivisionsByDivisionId(int id);
+    ////direct children
+    //ObservableCollection<Tbl15Subdivision> CollSubdivisionsByDivisionIdAndHash(int id);
+    ////Function
+    //int RegnumIdFromDivisionsCollectionSelect(int id);
+    ////ForeignKey
+    ////References
+    //ObservableCollection<Tbl90Reference> CollExpertsByDivisionId(int id);
+    //ObservableCollection<Tbl90Reference> CollSourcesByDivisionId(int id);
+    //ObservableCollection<Tbl90Reference> CollAuthorsByDivisionId(int id);
+    ////Comments
+    //ObservableCollection<Tbl93Comment> CollCommentsByDivisionId(int id);
+    //#endregion Division
 
     #region Subphylum
     Tbl12Subphylum GetSubphylumSingleBySubphylumIdAndHash(int id);
@@ -560,24 +560,24 @@ public interface IDataService
     ObservableCollection<Tbl93Comment> CollCommentsBySubphylumId(int id);
     #endregion Subphylum
 
-    #region Subdivision
-    Tbl15Subdivision GetSubdivisionSingleBySubdivisionIdAndHash(int id);
-    Tbl15Subdivision GetSubdivisionSingleBySubdivisionId(int id);
+    //#region Subdivision
+    //Tbl15Subdivision GetSubdivisionSingleBySubdivisionIdAndHash(int id);
+    //Tbl15Subdivision GetSubdivisionSingleBySubdivisionId(int id);
 
-    ObservableCollection<Tbl15Subdivision> CollSubdivisionsBySubdivisionId(int id);
-    //direct children
-    ObservableCollection<Tbl18Superclass> CollSuperclassesBySubdivisionIdAndHash(int id);
-    //Function
-    int DivisionIdFromSubdivisionsCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl09Division> CollDivisionsByDivisionIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySubdivisionId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySubdivisionId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySubdivisionId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySubdivisionId(int id);
-    #endregion Subdivision
+    //ObservableCollection<Tbl15Subdivision> CollSubdivisionsBySubdivisionId(int id);
+    ////direct children
+    //ObservableCollection<Tbl18Superclass> CollSuperclassesBySubdivisionIdAndHash(int id);
+    ////Function
+    //int DivisionIdFromSubdivisionsCollectionSelect(int id);
+    ////ForeignKey
+    //ObservableCollection<Tbl09Division> CollDivisionsByDivisionIdAndHash(int id);
+    ////References
+    //ObservableCollection<Tbl90Reference> CollExpertsBySubdivisionId(int id);
+    //ObservableCollection<Tbl90Reference> CollSourcesBySubdivisionId(int id);
+    //ObservableCollection<Tbl90Reference> CollAuthorsBySubdivisionId(int id);
+    ////Comments
+    //ObservableCollection<Tbl93Comment> CollCommentsBySubdivisionId(int id);
+    //#endregion Subdivision
 
     #region Superclass
     Tbl18Superclass GetSuperclassSingleBySuperclassIdAndHash(int id);
@@ -585,7 +585,7 @@ public interface IDataService
     //direct children
     ObservableCollection<Tbl21Class> CollClassesBySuperclassIdAndHash(int id);
     //Function
-    int SubdivisionIdFromSuperclassesCollectionSelect(int id);
+ //   int SubdivisionIdFromSuperclassesCollectionSelect(int id);
     int SubphylumIdFromSuperclassesCollectionSelect(int id);
     //ForeignKey
     ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumIdAndHash(int id);

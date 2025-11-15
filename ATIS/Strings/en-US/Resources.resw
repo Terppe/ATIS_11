@@ -672,6 +672,9 @@
   <data name="DataGridTextColumn_SubfamilyName.Header" xml:space="preserve">
     <value>Subfamily Name</value>
   </data>
+  <data name="DataGridTextColumn_SubordoName.Header" xml:space="preserve">
+    <value>Subordo Name</value>
+  </data>
   <data name="DataGridTextColumn_SubordoId.Header" xml:space="preserve">
     <value>Subordo ID</value>
   </data>
@@ -1192,10 +1195,10 @@
     <value>Password Forgot</value>
   </data>
   <data name="Nav_Phylum.Content" xml:space="preserve">
-    <value>Phylum</value>
+    <value>Phylum/Division</value>
   </data>
   <data name="Nav_Phylums.Content" xml:space="preserve">
-    <value>Phylums</value>
+    <value>Phylums/Divisions</value>
   </data>
   <data name="Nav_PlSpecies.Content" xml:space="preserve">
     <value>Species</value>
@@ -1255,7 +1258,7 @@
     <value>Subordo</value>
   </data>
   <data name="Nav_Subphylum.Content" xml:space="preserve">
-    <value>Subphylum</value>
+    <value>Sub-Phylum/-Division</value>
   </data>
   <data name="Nav_Subtribus.Content" xml:space="preserve">
     <value>Subtribus</value>
@@ -3100,7 +3103,7 @@
     <value>Comment</value>
   </data>
   <data name="AppBarButtonAddPhylum.Label" xml:space="preserve">
-    <value>Phylum</value>
+    <value>Phylum/Division</value>
   </data>
   <data name="AppBarButtonAddReference.Label" xml:space="preserve">
     <value>Reference</value>
@@ -3127,7 +3130,7 @@
     <value>Languages</value>
   </data>
   <data name="AppBarButtonAddSubphylum.Label" xml:space="preserve">
-    <value>Subphylum</value>
+    <value>Sub-Phylum/Division</value>
   </data>
   <data name="AppBarButtonDeleteSubphylum.Label" xml:space="preserve">
     <value>Subphylum</value>
@@ -3247,13 +3250,13 @@
     <value>Subclass</value>
   </data>
   <data name="MenuFlyout_Add_Subphylum.Text" xml:space="preserve">
-    <value>Add Subphylum</value>
+    <value>Add Sub-Phylum/Division</value>
   </data>
   <data name="MenuFlyout_Delete_Subphylum.Text" xml:space="preserve">
     <value>Delete Subphylum</value>
   </data>
   <data name="MenuFlyout_Add_Phylum.Text" xml:space="preserve">
-    <value>Add Phylum</value>
+    <value>Add Phylum/Division</value>
   </data>
   <data name="MenuFlyout_View_Details_Comment.Text" xml:space="preserve">
     <value>View Details Comment</value>
@@ -3872,6 +3875,9 @@
   </data>
   <data name="DataGridTemplateColumn_SubfamilyId.Header" xml:space="preserve">
     <value>Subfamily ID</value>
+  </data>
+  <data name="DataGridTemplateColumn_SubordoId.Header" xml:space="preserve">
+    <value>Subordo ID</value>
   </data>
   <data name="DataGridTemplateColumn_InfrafamilyId.Header" xml:space="preserve">
     <value>Infrafamily ID</value>

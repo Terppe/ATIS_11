@@ -162,6 +162,10 @@
                             Binding="{Binding MiscellaneousName}"
                             CanUserSort="True"
                             Tag="MiscellaneousName" />
+                        <toolkit:DataGridTextColumn
+                            loca:Uids.Uid="DataGridTextColumn_ShortInfo"
+                            Binding="{Binding ShortInfo}"
+                            Tag="ShortInfo" />
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
                 <StackPanel>

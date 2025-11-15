@@ -37,14 +37,14 @@ public partial class Tbl93CommentViewModel : ObservableObject
         Tbl06PhylumsAllList ??= [];
         Tbl06PhylumsAllList = _dataService.GetPhylumAsync();
 
-        Tbl09DivisionsAllList ??= [];
-        Tbl09DivisionsAllList = _dataService.GetDivisionAsync();
+        //Tbl09DivisionsAllList ??= [];
+        //Tbl09DivisionsAllList = _dataService.GetDivisionAsync();
 
         Tbl12SubphylumsAllList ??= [];
         Tbl12SubphylumsAllList = _dataService.GetSubphylumAsync();
 
-        Tbl15SubdivisionsAllList ??= [];
-        Tbl15SubdivisionsAllList = _dataService.GetSubdivisionAsync();
+        //Tbl15SubdivisionsAllList ??= [];
+        //Tbl15SubdivisionsAllList = _dataService.GetSubdivisionAsync();
 
         Tbl18SuperclassesAllList ??= [];
         Tbl18SuperclassesAllList = _dataService.GetSuperclassAsync();

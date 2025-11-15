@@ -819,22 +819,22 @@ public partial class App : Application
         return Context.Tbl21Classes.SingleOrDefault(a => a.ClassId == classeId & a.SuperclassId == superclassId);
     }
     //------------------------------------------------------------------
-    public static Tbl15Subdivision SingleSubdivision(int id)
-    {
-        return Context.Tbl15Subdivisions.SingleOrDefault(a => a.SubdivisionId == id);
-    }
-    public static Tbl90Reference SingleReferenceSubdivision(int referenceid, int? subdivisionId)
-    {
-        return Context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubdivisionId == subdivisionId);
-    }
-    public static Tbl93Comment SingleCommentSubdivision(int commentid, int? subdivisionid)
-    {
-        return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubdivisionId == subdivisionid);
-    }
-    public static Tbl18Superclass SingleSuperclassSubdivision(int superclassId, int? subdivisionId)
-    {
-        return Context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == superclassId & a.SubdivisionId == subdivisionId);
-    }
+    //public static Tbl15Subdivision SingleSubdivision(int id)
+    //{
+    //    return Context.Tbl15Subdivisions.SingleOrDefault(a => a.SubdivisionId == id);
+    //}
+    //public static Tbl90Reference SingleReferenceSubdivision(int referenceid)
+    //{
+    //    return Context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid );
+    //}
+    //public static Tbl93Comment SingleCommentSubdivision(int commentid)
+    //{
+    //    return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid );
+    //}
+    //public static Tbl18Superclass SingleSuperclassSubdivision(int superclassId)
+    //{
+    //    return Context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == superclassId );
+    //}
     //------------------------------------------------------------------
     public static Tbl12Subphylum SingleSubphylum(int id)
     {
@@ -853,22 +853,22 @@ public partial class App : Application
         return Context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == superclassId & a.SubphylumId == subphylumId);
     }
     //------------------------------------------------------------------
-    public static Tbl09Division SingleDivision(int id)
-    {
-        return Context.Tbl09Divisions.SingleOrDefault(a => a.DivisionId == id);
-    }
-    public static Tbl90Reference SingleReferenceDivision(int referenceid, int? divisionId)
-    {
-        return Context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.DivisionId == divisionId);
-    }
-    public static Tbl93Comment SingleCommentDivision(int commentid, int? divisionid)
-    {
-        return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.DivisionId == divisionid);
-    }
-    public static Tbl15Subdivision SingleSubdivisionDivision(int subdivisionId, int? divisionId)
-    {
-        return Context.Tbl15Subdivisions.SingleOrDefault(a => a.SubdivisionId == subdivisionId & a.DivisionId == divisionId);
-    }
+    //public static Tbl09Division SingleDivision(int id)
+    //{
+    //    return Context.Tbl09Divisions.SingleOrDefault(a => a.DivisionId == id);
+    //}
+    //public static Tbl90Reference SingleReferenceDivision(int referenceid, int? divisionId)
+    //{
+    //    return Context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.DivisionId == divisionId);
+    //}
+    //public static Tbl93Comment SingleCommentDivision(int commentid, int? divisionid)
+    //{
+    //    return Context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.DivisionId == divisionid);
+    //}
+    //public static Tbl15Subdivision SingleSubdivisionDivision(int subdivisionId, int? divisionId)
+    //{
+    //    return Context.Tbl15Subdivisions.SingleOrDefault(a => a.SubdivisionId == subdivisionId & a.DivisionId == divisionId);
+    //}
     //------------------------------------------------------------------
     public static Tbl06Phylum SinglePhylum(int id)
     {

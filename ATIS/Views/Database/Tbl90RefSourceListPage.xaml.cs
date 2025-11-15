@@ -154,6 +154,10 @@ public sealed partial class Tbl90RefSourceListPage : Page
         try
         {
             await AddRefSource();
+            RefSourceName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(RefSourceName);
+            };
         }
         catch (Exception xe)
         {
@@ -164,11 +168,6 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
     private async Task AddRefSource()
     {
-        RefSourceName.Loaded += (s, e) =>
-        {
-            RefSourceName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditRefSource = true;
         ViewModel.IsNewRefSource = true;
 

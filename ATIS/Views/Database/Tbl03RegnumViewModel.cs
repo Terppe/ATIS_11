@@ -195,10 +195,10 @@ public partial class Tbl03RegnumViewModel : ObservableObject
             if (regnum != null)
             {
                 //SaveToArray
-                await RemoveExtras.SaveToArrayTbl09Divisions(regnumid, arrDivision, arrSubdivision, arrSuperclass,
-                    arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily,
-                    arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus,
-                    arrGenus, arrSpecies);
+                //await RemoveExtras.SaveToArrayTbl09Divisions(regnumid, arrDivision, arrSubdivision, arrSuperclass,
+                //    arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily,
+                //    arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus,
+                //    arrGenus, arrSpecies);
                 await RemoveExtras.SaveToArrayTbl06Phylums(regnumid, arrPhylum, arrSubphylum, arrSuperclass, arrClass,
                     arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily,
                     arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus,
@@ -242,12 +242,12 @@ public partial class Tbl03RegnumViewModel : ObservableObject
                 await RemoveExtras.RemoveArrClassByClassId(arrClass);
                 // remove Tbl18Superclasses
                 await RemoveExtras.RemoveArrSuperclassBySuperclassId(arrSuperclass);
-                // remove Tbl15Subdivisions
-                await RemoveExtras.RemoveArrSubdivisionBySubdivisionId(arrSubdivision);
+                //// remove Tbl15Subdivisions
+                //await RemoveExtras.RemoveArrSubdivisionBySubdivisionId(arrSubdivision);
                 // remove Tbl12Subphylums
                 await RemoveExtras.RemoveArrSubphylumBySubphylumId(arrSubphylum);
-                // remove Tbl09Divisions
-                await RemoveExtras.RemoveArrDivisionByDivisionId(arrDivision);
+                //// remove Tbl09Divisions
+                //await RemoveExtras.RemoveArrDivisionByDivisionId(arrDivision);
                 // remove Tbl06Phylums
                 await RemoveExtras.RemoveArrPhylumByPhylumId(arrPhylum);
 
@@ -602,61 +602,61 @@ public partial class Tbl03RegnumViewModel : ObservableObject
 
     #endregion [Methods Phylum]   
 
-    #region [Methods Division]             
+    //#region [Methods Division]             
 
-    public async Task SaveDivisionAsync(Tbl09Division viewModelDivisionSelected)
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            if (IsNewDivision)
-            {
-                IsNewDivision = false;
-            }
-        });
-        Tbl09Division result = null;
-        try
-        {
-            if (IsModifiedDivision)
-            {
-                await _dispatcherQueue.EnqueueAsync(async () =>
-                {
-                    result = await _dataService.UpsertDivisionAsync(viewModelDivisionSelected);
-                    IsModifiedDivision = false;
-                });
-            }
-            else
-            {
-                IsModifiedDivision = true;
-            }
-        }
-        catch (DbUpdateException e)
-        {
-            if (e.InnerException != null)
-            {
-                await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
-                SimpleLog.Log(e);
-                return;
-            }
-        }
-        catch (Exception ex)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(ex.Message);
-            SimpleLog.Log(ex);
-            return;
-        }
-        if (result != null)
-        {
-            IsInEditDivision = false;
-            IsModifiedDivision = false;
-            IsExistingDivision = true;
-        }
-        else
-        {
-            _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
-        }
-    }
+    //public async Task SaveDivisionAsync(Tbl09Division viewModelDivisionSelected)
+    //{
+    //    await _dispatcherQueue.EnqueueAsync(() =>
+    //    {
+    //        if (IsNewDivision)
+    //        {
+    //            IsNewDivision = false;
+    //        }
+    //    });
+    //    Tbl09Division result = null;
+    //    try
+    //    {
+    //        if (IsModifiedDivision)
+    //        {
+    //            await _dispatcherQueue.EnqueueAsync(async () =>
+    //            {
+    //                result = await _dataService.UpsertDivisionAsync(viewModelDivisionSelected);
+    //                IsModifiedDivision = false;
+    //            });
+    //        }
+    //        else
+    //        {
+    //            IsModifiedDivision = true;
+    //        }
+    //    }
+    //    catch (DbUpdateException e)
+    //    {
+    //        if (e.InnerException != null)
+    //        {
+    //            await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
+    //            SimpleLog.Log(e);
+    //            return;
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        await AllDialogs.ErrorMessageDialogAsync(ex.Message);
+    //        SimpleLog.Log(ex);
+    //        return;
+    //    }
+    //    if (result != null)
+    //    {
+    //        IsInEditDivision = false;
+    //        IsModifiedDivision = false;
+    //        IsExistingDivision = true;
+    //    }
+    //    else
+    //    {
+    //        _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
+    //    }
+    //}
 
-    #endregion [Methods Division]     
+    //#endregion [Methods Division]     
 
 
 
@@ -903,7 +903,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public async void EndEditReferenceAuthor() => await SaveReferenceAsync(ReferenceSelected);
     public async void EndEditComment() => await SaveCommentAsync(CommentSelected);
     public async void EndEditPhylum() => await SavePhylumAsync(PhylumSelected);
-    public async void EndEditDivision() => await SaveDivisionAsync(DivisionSelected);
+ //   public async void EndEditDivision() => await SaveDivisionAsync(DivisionSelected);
     //-------------CanRefresh--------------------------------------
     public bool CanRefreshRegnum => !IsModifiedRegnum && IsExistingRegnum;
     public bool CanRefreshReferenceExpert => !IsModifiedReferenceExpert && IsExistingReference;

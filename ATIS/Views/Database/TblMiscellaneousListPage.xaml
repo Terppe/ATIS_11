@@ -225,9 +225,9 @@
                         <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ValidYear"
                                                     Binding="{Binding ValidYear}"
                                                     Tag="ValidYear" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Info"
-                                                    Binding="{Binding Info}"
-                                                    Tag="Info" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ShortInfo"
+                                                    Binding="{Binding ShortInfo}"
+                                                    Tag="ShortInfo" />
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
 

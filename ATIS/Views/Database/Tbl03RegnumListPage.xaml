@@ -1551,7 +1551,7 @@
                 </Expander>
 
                 <!--  DivisionDetailExpander  -->
-                <Expander x:Name="DivisionDetailExpander"
+                <!--<Expander x:Name="DivisionDetailExpander"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           Visibility="Collapsed">
                     <Expander.Header>
@@ -1789,7 +1789,7 @@
                             </RelativePanel>
                         </ScrollViewer>
                     </RelativePanel>
-                </Expander>
+                </Expander>-->
 
                 <!--  ReferencesExpander  -->
                 <Expander x:Name="ReferencesExpander"
@@ -2005,7 +2005,7 @@
                     </Grid>
                 </Expander>
                 <!--  DivisionsExpander  -->
-                <Expander x:Name="DivisionsExpander"
+                <!--<Expander x:Name="DivisionsExpander"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           IsExpanded="True"
                           Visibility="Collapsed">
@@ -2079,7 +2079,7 @@
                             </toolkit:DataGrid.Columns>
                         </toolkit:DataGrid>
                     </Grid>
-                </Expander>
+                </Expander>-->
             </StackPanel>
         </ScrollViewer>
 

@@ -241,7 +241,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             {
                 ViewModel.Tbl78NamesList ??= [];
                 ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
-                        .Where(com => com.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
+                        .Where(nam => nam.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
             ViewModel.NameDataSetCount = ViewModel.Tbl78NamesList.Count;
@@ -265,7 +265,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             {
                 ViewModel.Tbl81ImagesList ??= [];
                 ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-                        .Where(com => com.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
+                        .Where(img => img.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
@@ -289,7 +289,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             {
                 ViewModel.Tbl84SynonymsList ??= [];
                 ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
-                        .Where(com => com.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
+                        .Where(sym => sym.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
             ViewModel.SynonymDataSetCount = ViewModel.Tbl84SynonymsList.Count;
@@ -313,7 +313,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             {
                 ViewModel.Tbl87GeographicsList ??= [];
                 ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
-                        .Where(com => com.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
+                        .Where(geo => geo.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
             ViewModel.GeographicDataSetCount = ViewModel.Tbl87GeographicsList.Count;

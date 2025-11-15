@@ -680,20 +680,6 @@ public sealed partial class MainPage : Page
         }
 
         //--------------------------------------------
-        if ((string)args.ChosenSuggestion == (string)NavDiseases.Content)
-        {
-            NavFrame.Navigate(typeof(DiseasePage));
-        }
-
-        if ((string)args.ChosenSuggestion == (string)NavFoods.Content)
-        {
-            NavFrame.Navigate(typeof(FoodPage));
-        }
-
-        if ((string)args.ChosenSuggestion == (string)NavMiscellaneousses.Content)
-        {
-            NavFrame.Navigate(typeof(MiscellaneousPage));
-        }
 
         if ((string)args.ChosenSuggestion == (string)NavAdmin_Area.Content)
         {

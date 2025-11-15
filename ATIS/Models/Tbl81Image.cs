@@ -53,8 +53,8 @@ public class Tbl81Image
     //[ForeignKey("MiscellaneousId")]
     //public virtual TblMiscellaneous TblMiscellaneousses { get; set; }
 
-    [ForeignKey("SpeciesId")]
-    public virtual Tbl75Species Tbl75Speciesses { get; set; }
+    //[ForeignKey("SpeciesId")]
+    //public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
 
 }
