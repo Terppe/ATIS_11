@@ -323,6 +323,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         ViewModel.GeographicSelected.Address = SingleGeographic.Address;
         ViewModel.GeographicSelected.Http = SingleGeographic.Http;
         ViewModel.GeographicSelected.ZoomLevel = SingleGeographic.ZoomLevel;
+        ViewModel.GeographicSelected.Jurisdiction = SingleGeographic.Jurisdiction;
         ViewModel.GeographicSelected.Latitude = SingleGeographic.Latitude;
         ViewModel.GeographicSelected.Latitude1 = SingleGeographic.Latitude1;
         ViewModel.GeographicSelected.Latitude2 = SingleGeographic.Latitude2;
@@ -331,6 +332,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         ViewModel.GeographicSelected.Longitude1 = SingleGeographic.Longitude1;
         ViewModel.GeographicSelected.Longitude2 = SingleGeographic.Longitude2;
         ViewModel.GeographicSelected.Longitude3 = SingleGeographic.Longitude3;
+        ViewModel.GeographicSelected.Jurisdiction = SingleGeographic.Jurisdiction;
         ViewModel.GeographicSelected.Info = SingleGeographic.Info;
         ViewModel.GeographicSelected.Memo = SingleGeographic.Memo;
     }
@@ -457,6 +459,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
                         a.Address == ViewModel.GeographicSelected.Address &&
                         a.Continent == ViewModel.GeographicSelected.Continent &&
                         a.Country == ViewModel.GeographicSelected.Country &&
+                        a.Jurisdiction == ViewModel.GeographicSelected.Jurisdiction &&
                         a.SpeciesId == ViewModel.GeographicSelected.SpeciesId)];
 
         //Aus Countrylist Latitude und Longitude und ZoomLevel füllen
@@ -481,7 +484,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         ViewModel.GeographicSelected.Latitude = selected.Latitude;
         ViewModel.GeographicSelected.Longitude = selected.Longitude;
 
-        if (ViewModel.IsNewGeographic)
+ //       if (ViewModel.IsNewGeographic)
         {
             if (ViewModel.Tbl87GeographicsList.Count != 0)
             {

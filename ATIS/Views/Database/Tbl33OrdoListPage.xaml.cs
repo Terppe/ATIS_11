@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -39,6 +38,8 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             ViewModel = App.GetService<Tbl33OrdoViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +135,8 @@ public sealed partial class Tbl33OrdoListPage : Page
                 OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
                 ViewModel.OrdoSelected = ViewModel.Tbl33OrdosList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +250,8 @@ public sealed partial class Tbl33OrdoListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(OrdoName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +395,10 @@ public sealed partial class Tbl33OrdoListPage : Page
         }
         else
         {
+            if (ViewModel.OrdoSelected.OrdoId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleOrdo = App.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
             OrdoSingles();
         }
@@ -477,10 +486,14 @@ public sealed partial class Tbl33OrdoListPage : Page
                 await BehindSaveOrdo(ViewModel.OrdoSelected);
                 await Refresh();
                 ViewModel.IsNewOrdo = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedOrdo = true;
                 await RevertChangesOrdoAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1790,6 +1803,35 @@ public sealed partial class Tbl33OrdoListPage : Page
 
         SubordoDetailExpander.IsExpanded = false;
         SubordoDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteOrdo.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteOrdo.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteOrdo.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteOrdo.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

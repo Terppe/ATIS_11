@@ -112,6 +112,7 @@
                         CommandParameter="{Binding ElementName=PasswordBox}"
                         Content="Log in"
                         IsEnabled="False"
+                        LostFocus="BtnLogin_OnLostFocus"
                         Style="{StaticResource CrudButtonStyle}" />
                 <!--<Button
                 Margin="20,0,0,0"

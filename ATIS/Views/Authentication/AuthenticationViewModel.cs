@@ -1,7 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using ATIS.Helpers;
@@ -14,7 +11,6 @@ using MailKit.Net.Imap;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ATIS.Views.Authentication;
 public interface IViewModel

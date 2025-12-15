@@ -191,6 +191,9 @@
                         <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                         Binding="{Binding Valid}"
                                                         Tag="Valid" />
+                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Jurisdiction"
+                                                    Binding="{Binding Jurisdiction}"
+                                                    Tag="Jurisdiction" />
                         <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Info"
                                                     Binding="{Binding Info}"
                                                     Tag="Info" />
@@ -370,6 +373,16 @@
                                              RelativePanel.AlignLeftWithPanel="True"
                                              RelativePanel.Below="GeographicId"
                                              Text="{x:Bind ViewModel.GeographicSelected.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="JurisdictionGeographic"
+                                             MinWidth="1120"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             HorizontalAlignment="Stretch"
+                                             loca:Uids.Uid="TextBox_Jurisdiction"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditGeographic), Mode=OneWay}"
+                                             MaxLength="100"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="AddressGeographic"
+                                             Text="{x:Bind ViewModel.GeographicSelected.Jurisdiction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="InfoGeographic"
                                              MinWidth="1120"
                                              Margin="{StaticResource XSmallRightMargin}"
@@ -378,7 +391,7 @@
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditGeographic), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.AlignLeftWithPanel="True"
-                                             RelativePanel.Below="AddressGeographic"
+                                             RelativePanel.Below="JurisdictionGeographic"
                                              Text="{x:Bind ViewModel.GeographicSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </RelativePanel>
                                 <Expander x:Name="MapExpanderGeographic">

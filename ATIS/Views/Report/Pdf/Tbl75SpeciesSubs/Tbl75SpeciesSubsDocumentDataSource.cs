@@ -3,15 +3,15 @@ using ATIS.Models;
 using ATIS.Services;
 
 namespace ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
-public class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
+public abstract class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
 {
     #region [Private Data Members]   
 
     private static Tbl03Regnum _regnumSingle = new();
     private static Tbl06Phylum _phylumSingle = new();
-    private static Tbl09Division _divisionSingle = new();
+    //private static Tbl09Division _divisionSingle = new();
     private static Tbl12Subphylum _subphylumSingle = new();
-    private static Tbl15Subdivision _subdivisionSingle = new();
+    //private static Tbl15Subdivision _subdivisionSingle = new();
     private static Tbl18Superclass _superclassSingle = new();
     private static Tbl21Class _classSingle = new();
     private static Tbl24Subclass _subclassSingle = new();
@@ -45,32 +45,32 @@ public class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
         #region [Private Data Members]
 
         var dataService = new DataService();
-        var context = new AtisDbContext();
-        var fishId = 0;
-        var plantId = 0;
+        //var context = new AtisDbContext();
+        //var fishId = 0;
+        //var plantId = 0;
 
-        #endregion [Private Data Members]
+        //#endregion [Private Data Members]
 
-        ClearAllCollections();
+        //ClearAllCollections();
 
-        if (context.Tbl15Subdivisions != null)
-        {
-            var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-            if (plantaeRegnum != null)
-            {
-                plantId = plantaeRegnum.SubdivisionId;
-            }
-        }
+        //if (context.Tbl15Subdivisions != null)
+        //{
+        //    var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
+        //    if (plantaeRegnum != null)
+        //    {
+        //        plantId = plantaeRegnum.SubdivisionId;
+        //    }
+        //}
 
-        if (context.Tbl12Subphylums != null)
-        {
-            var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
+        //if (context.Tbl12Subphylums != null)
+        //{
+        //    var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
 
-            if (animaliaRegnum != null)
-            {
-                fishId = animaliaRegnum.SubphylumId;
-            }
-        }
+        //    if (animaliaRegnum != null)
+        //    {
+        //        fishId = animaliaRegnum.SubphylumId;
+        //    }
+        //}
 
         SpeciessesCollection = dataService.CollSpeciessesBySpeciesId(speciesId);
         var genusId = dataService.GenusIdFromSpeciessesCollectionSelect(speciesId);
@@ -260,6 +260,7 @@ public class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
             NamesTree = GenrateModels.GenNames.GenerateNames(_nameSingle),
         };
     }
+    #endregion [Private Data Members]
 
     #region "Collections"
 
@@ -269,9 +270,9 @@ public class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
 
     public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
 
-    public static ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
+    //public static ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
 
-    public static ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
+    //public static ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
 
     public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
 
@@ -345,8 +346,8 @@ public class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
         _subclassSingle = new Tbl24Subclass();
         _classSingle = new Tbl21Class();
         _superclassSingle = new Tbl18Superclass();
-        _subdivisionSingle = new Tbl15Subdivision();
-        _divisionSingle = new Tbl09Division();
+        //_subdivisionSingle = new Tbl15Subdivision();
+        //_divisionSingle = new Tbl09Division();
         _subphylumSingle = new Tbl12Subphylum();
         _phylumSingle = new Tbl06Phylum();
         _regnumSingle = new Tbl03Regnum();
@@ -369,9 +370,9 @@ public class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
         SubclassesCollection?.Clear();
         ClassesCollection?.Clear();
         SuperclassesCollection?.Clear();
-        SubdivisionsCollection?.Clear();
+        //SubdivisionsCollection?.Clear();
         SubphylumsCollection?.Clear();
-        DivisionsCollection?.Clear();
+        //DivisionsCollection?.Clear();
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
 

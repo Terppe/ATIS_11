@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -39,6 +38,8 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             ViewModel = App.GetService<Tbl51InfrafamilyViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +135,8 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
                 InfrafamilyDataGrid.ItemsSource = ViewModel.Tbl51InfrafamiliesList;
                 ViewModel.InfrafamilySelected = ViewModel.Tbl51InfrafamiliesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +250,8 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(InfrafamilyName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +395,10 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         }
         else
         {
+            if (ViewModel.InfrafamilySelected.InfrafamilyId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleInfrafamily = App.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
             InfrafamilySingles();
         }
@@ -477,10 +486,14 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
                 await BehindSaveInfrafamily(ViewModel.InfrafamilySelected);
                 await Refresh();
                 ViewModel.IsNewInfrafamily = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedInfrafamily = true;
                 await RevertChangesInfrafamilyAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1790,6 +1803,35 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
 
         SupertribusDetailExpander.IsExpanded = false;
         SupertribusDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteInfrafamily.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteInfrafamily.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteInfrafamily.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteInfrafamily.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

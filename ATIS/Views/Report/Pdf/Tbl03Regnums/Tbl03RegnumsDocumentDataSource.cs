@@ -3,7 +3,7 @@ using ATIS.Models;
 using ATIS.Services;
 
 namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
-public class TblFoodsDocumentDataSource : ObservableObject
+public abstract class TblFoodsDocumentDataSource : ObservableObject
 {
     #region [Private Data Members]
 

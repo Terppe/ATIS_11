@@ -36,7 +36,7 @@
                        Text="{Binding Info}"
                        TextWrapping="Wrap" />
         </StackPanel>
-        <StackPanel Grid.Row="2"
+        <!--<StackPanel Grid.Row="2"
                     Grid.Column="0">
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
@@ -47,7 +47,7 @@
             <TextBlock Width="Auto"
                        Text="{Binding Info}"
                        TextWrapping="Wrap" />
-        </StackPanel>
+        </StackPanel>-->
         <StackPanel Grid.Row="3"
                     Grid.Column="0">
             <TextBlock Width="Auto"

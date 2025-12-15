@@ -39,12 +39,16 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel = App.GetService<Tbl66GenusViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
+
     #endregion [Constructor]   
 
     #region [Genus Methods]
@@ -115,11 +119,6 @@ public sealed partial class Tbl66GenusListPage : Page
                 ViewModel.Tbl93CommentsList?.Clear();
                 ViewModel.Tbl75SpeciessesList?.Clear();
 
-                AppBarButtonDeleteGenus.IsEnabled = false;
-                AppBarButtonAddReference.IsEnabled = false;
-                AppBarButtonAddComment.IsEnabled = false;
-                AppBarButtonSync.IsEnabled = false;
-
                 DetailPanelGenus.Visibility = Visibility.Visible;
                 GenusDetailExpander.Visibility = Visibility.Collapsed;
                 ReferencesExpander.Visibility = Visibility.Collapsed;
@@ -134,6 +133,8 @@ public sealed partial class Tbl66GenusListPage : Page
                 GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
                 ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -249,6 +250,8 @@ public sealed partial class Tbl66GenusListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(GenusName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -279,7 +282,7 @@ public sealed partial class Tbl66GenusListPage : Page
         CommentsExpander.Visibility = Visibility.Collapsed;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
 
-        SpecificationExpanderSpecies.IsExpanded = false;
+        SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -317,7 +320,6 @@ public sealed partial class Tbl66GenusListPage : Page
             SimpleLog.Log(xe);
         }
     }
-
     private Task ViewGenusHyperlink()
     {
         ViewModel.IsInEditGenus = false;
@@ -403,6 +405,10 @@ public sealed partial class Tbl66GenusListPage : Page
         }
         else
         {
+            if (ViewModel.GenusSelected.GenusId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
             GenusSingles();
         }
@@ -490,10 +496,14 @@ public sealed partial class Tbl66GenusListPage : Page
                 await BehindSaveGenus(ViewModel.GenusSelected);
                 await Refresh();
                 ViewModel.IsNewGenus = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedGenus = true;
                 await RevertChangesGenusAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -501,6 +511,7 @@ public sealed partial class Tbl66GenusListPage : Page
                 throw new ArgumentOutOfRangeException();
         }
     }
+
 
     private async Task<bool> BeforeSaveGenus()
     {
@@ -884,7 +895,7 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceSource.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
 
-        SpecificationExpanderSpecies.IsExpanded = false;
+        SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1002,7 +1013,7 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceAuthor.IsEnabled = false;
 
-        SpecificationExpanderSpecies.IsExpanded = false;
+        SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1120,7 +1131,7 @@ public sealed partial class Tbl66GenusListPage : Page
         TabViewItemReferenceExpert.IsEnabled = false;
         TabViewItemReferenceSource.IsEnabled = false;
 
-        SpecificationExpanderSpecies.IsExpanded = false;
+        SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1235,7 +1246,7 @@ public sealed partial class Tbl66GenusListPage : Page
 
         ViewModel.IsNewComment = false;
 
-        SpecificationExpanderSpecies.IsExpanded = false;
+        SpecificationExpanderFiSpecies.IsExpanded = false;
         FoodExpanderFiSpecies.IsExpanded = false;
         TechnikExpanderFiSpecies.IsExpanded = false;
         HusbandryExpanderFiSpecies.IsExpanded = false;
@@ -1928,6 +1939,36 @@ public sealed partial class Tbl66GenusListPage : Page
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
     }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteGenus.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteGenus.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteGenus.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteGenus.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
+    }
+
     #endregion [Refresh Methods]
 
 }

@@ -186,13 +186,6 @@ public partial class Tbl66GenusViewModel : ObservableObject
             {
                 //SaveToArray
                 await RemoveExtras.SaveToArrayTbl75Speciesses(genusid, arrSpecies);
-           //     await RemoveExtras.SaveToArrayTbl72PlSpeciesses(genusid, arrPlSpecies);
-
-                //if (arrPlSpecies.Count != 0)
-                //{
-                //    //// remove Tbl72PlSpeciesses
-                //    //await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
-                //}
 
                 if (arrSpecies.Count != 0)
                 {

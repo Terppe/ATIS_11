@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -39,6 +38,8 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ViewModel = App.GetService<Tbl24SubclassViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +135,8 @@ public sealed partial class Tbl24SubclassListPage : Page
                 SubclassDataGrid.ItemsSource = ViewModel.Tbl24SubclassesList;
                 ViewModel.SubclassSelected = ViewModel.Tbl24SubclassesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +250,8 @@ public sealed partial class Tbl24SubclassListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(SubclassName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +395,10 @@ public sealed partial class Tbl24SubclassListPage : Page
         }
         else
         {
+            if (ViewModel.SubclassSelected.SubclassId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
             SubclassSingles();
         }
@@ -477,10 +486,14 @@ public sealed partial class Tbl24SubclassListPage : Page
                 await BehindSaveSubclass(ViewModel.SubclassSelected);
                 await Refresh();
                 ViewModel.IsNewSubclass = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubclass = true;
                 await RevertChangesSubclassAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1790,6 +1803,35 @@ public sealed partial class Tbl24SubclassListPage : Page
 
         InfraclassDetailExpander.IsExpanded = false;
         InfraclassDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSubclass.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSubclass.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSubclass.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSubclass.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

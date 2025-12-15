@@ -433,7 +433,7 @@ public sealed partial class Tbl78NameListPage : Page
                         a.Language == ViewModel.NameSelected.Language &&
                         a.SpeciesId == ViewModel.NameSelected.SpeciesId)];
         });
-        if (ViewModel.IsNewName)
+    //    if (ViewModel.IsNewName)
         {
             if (ViewModel.Tbl78NamesList.Count != 0)
             {

@@ -38,6 +38,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         {
             ViewModel = App.GetService<Tbl48SubfamilyViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -133,6 +135,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
                 SubfamilyDataGrid.ItemsSource = ViewModel.Tbl48SubfamiliesList;
                 ViewModel.SubfamilySelected = ViewModel.Tbl48SubfamiliesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -246,6 +250,8 @@ public sealed partial class Tbl48SubfamilyListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(SubfamilyName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -389,6 +395,10 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         }
         else
         {
+            if (ViewModel.SubfamilySelected.SubfamilyId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSubfamily = App.SingleSubfamily(ViewModel.SubfamilySelected.SubfamilyId);
             SubfamilySingles();
         }
@@ -476,10 +486,14 @@ public sealed partial class Tbl48SubfamilyListPage : Page
                 await BehindSaveSubfamily(ViewModel.SubfamilySelected);
                 await Refresh();
                 ViewModel.IsNewSubfamily = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubfamily = true;
                 await RevertChangesSubfamilyAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1789,6 +1803,35 @@ public sealed partial class Tbl48SubfamilyListPage : Page
 
         InfrafamilyDetailExpander.IsExpanded = false;
         InfrafamilyDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSubfamily.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSubfamily.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSubfamily.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSubfamily.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -39,6 +38,8 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             ViewModel = App.GetService<Tbl12SubphylumViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +135,8 @@ public sealed partial class Tbl12SubphylumListPage : Page
                 SubphylumDataGrid.ItemsSource = ViewModel.Tbl12SubphylumsList;
                 ViewModel.SubphylumSelected = ViewModel.Tbl12SubphylumsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +250,8 @@ public sealed partial class Tbl12SubphylumListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(SubphylumName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +395,10 @@ public sealed partial class Tbl12SubphylumListPage : Page
         }
         else
         {
+            if (ViewModel.SubphylumSelected.SubphylumId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSubphylum = App.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
             SubphylumSingles();
         }
@@ -477,10 +486,14 @@ public sealed partial class Tbl12SubphylumListPage : Page
                 await BehindSaveSubphylum(ViewModel.SubphylumSelected);
                 await Refresh();
                 ViewModel.IsNewSubphylum = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSubphylum = true;
                 await RevertChangesSubphylumAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1790,6 +1803,35 @@ public sealed partial class Tbl12SubphylumListPage : Page
 
         SuperclassDetailExpander.IsExpanded = false;
         SuperclassDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSubphylum.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSubphylum.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSubphylum.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSubphylum.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

@@ -1,4 +1,6 @@
 ﻿using ATIS.Views.Authentication;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,5 +29,10 @@ public sealed partial class LogInControl : UserControl
         {
             BtnLogin.IsEnabled = false;
         }
+    }
+
+    private void BtnLogin_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        TbAuthUser.Foreground = new SolidColorBrush(Colors.Green);
     }
 }

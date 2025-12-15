@@ -445,10 +445,14 @@ public sealed partial class Tbl81ImageListPage : Page
         {
             ViewModel.Tbl81ImagesList ??= [];
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-            .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-                        a.SpeciesId == ViewModel.ImageSelected.SpeciesId)];
+                .Where(a => a.Info == ViewModel.ImageSelected.Info &&
+                            a.SpeciesId == ViewModel.ImageSelected.SpeciesId &&
+                            a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
+                            a.FilestreamId == ViewModel.ImageSelected.FilestreamId &&
+                            a.Valid == ViewModel.ImageSelected.Valid &&
+                            a.ShotDate == ViewModel.ImageSelected.ShotDate)];
         });
-        if (ViewModel.IsNewImage)
+    //    if (ViewModel.IsNewImage)
         {
             if (ViewModel.Tbl81ImagesList.Count != 0)
             {

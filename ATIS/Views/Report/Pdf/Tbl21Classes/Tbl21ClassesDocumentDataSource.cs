@@ -13,9 +13,9 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
 
     private static Tbl03Regnum _regnumSingle = new();
     private static Tbl06Phylum _phylumSingle = new();
-    private static Tbl09Division _divisionSingle = new();
+    //private static Tbl09Division _divisionSingle = new();
     private static Tbl12Subphylum _subphylumSingle = new();
-    private static Tbl15Subdivision _subdivisionSingle = new();
+    //private static Tbl15Subdivision _subdivisionSingle = new();
     private static Tbl18Superclass _superclassSingle = new();
     private static Tbl21Class _classSingle = new();
     #endregion [Private Data Members]      
@@ -29,32 +29,32 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
         #region [Private Data Members]
 
         var dataService = new DataService();
-        var context = new AtisDbContext();
-        var fishId = 0;
-        var plantId = 0;
+        //var context = new AtisDbContext();
+        //var fishId = 0;
+        //var plantId = 0;
 
         #endregion [Private Data Members]
 
         ClearAllCollections();
 
-        if (context.Tbl15Subdivisions != null)
-        {
-            var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-            if (plantaeRegnum != null)
-            {
-                plantId = plantaeRegnum.SubdivisionId;
-            }
-        }
+        //if (context.Tbl15Subdivisions != null)
+        //{
+        //    var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
+        //    if (plantaeRegnum != null)
+        //    {
+        //        plantId = plantaeRegnum.SubdivisionId;
+        //    }
+        //}
 
-        if (context.Tbl12Subphylums != null)
-        {
-            var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
+        //if (context.Tbl12Subphylums != null)
+        //{
+        //    var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
 
-            if (animaliaRegnum != null)
-            {
-                fishId = animaliaRegnum.SubphylumId;
-            }
-        }
+        //    if (animaliaRegnum != null)
+        //    {
+        //        fishId = animaliaRegnum.SubphylumId;
+        //    }
+        //}
 
         ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
         var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
@@ -162,8 +162,8 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
     {
         _classSingle = new Tbl21Class();
         _superclassSingle = new Tbl18Superclass();
-        _subdivisionSingle = new Tbl15Subdivision();
-        _divisionSingle = new Tbl09Division();
+        //_subdivisionSingle = new Tbl15Subdivision();
+        //_divisionSingle = new Tbl09Division();
         _subphylumSingle = new Tbl12Subphylum();
         _phylumSingle = new Tbl06Phylum();
         _regnumSingle = new Tbl03Regnum();

@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -39,6 +38,8 @@ public sealed partial class Tbl57TribusListPage : Page
         {
             ViewModel = App.GetService<Tbl57TribusViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +135,8 @@ public sealed partial class Tbl57TribusListPage : Page
                 TribusDataGrid.ItemsSource = ViewModel.Tbl57TribussesList;
                 ViewModel.TribusSelected = ViewModel.Tbl57TribussesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +250,8 @@ public sealed partial class Tbl57TribusListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(TribusName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +395,10 @@ public sealed partial class Tbl57TribusListPage : Page
         }
         else
         {
+            if (ViewModel.TribusSelected.TribusId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleTribus = App.SingleTribus(ViewModel.TribusSelected.TribusId);
             TribusSingles();
         }
@@ -477,10 +486,14 @@ public sealed partial class Tbl57TribusListPage : Page
                 await BehindSaveTribus(ViewModel.TribusSelected);
                 await Refresh();
                 ViewModel.IsNewTribus = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedTribus = true;
                 await RevertChangesTribusAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1790,6 +1803,35 @@ public sealed partial class Tbl57TribusListPage : Page
 
         SubtribusDetailExpander.IsExpanded = false;
         SubtribusDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteTribus.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteTribus.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteTribus.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteTribus.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

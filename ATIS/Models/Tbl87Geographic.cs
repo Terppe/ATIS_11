@@ -22,6 +22,8 @@ public class Tbl87Geographic
     //public int PlSpeciesId { get; set; }
     [Required]
     public int CountId { get; set; }
+    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    public string Jurisdiction { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
     public double Latitude1 { get; set; }

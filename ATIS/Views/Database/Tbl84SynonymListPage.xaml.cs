@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -431,9 +430,11 @@ public sealed partial class Tbl84SynonymListPage : Page
             ViewModel.Tbl84SynonymsList ??= [];
             ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
             .Where(a => a.SynonymName == ViewModel.SynonymSelected.SynonymName &&
+                        a.Author == ViewModel.SynonymSelected.Author &&
+                        a.AuthorYear == ViewModel.SynonymSelected.AuthorYear &&
                         a.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
         });
-        if (ViewModel.IsNewSynonym)
+     //   if (ViewModel.IsNewSynonym)
         {
             if (ViewModel.Tbl84SynonymsList.Count != 0)
             {

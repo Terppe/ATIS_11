@@ -52,15 +52,6 @@
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
-        <!--<MenuFlyout x:Key="SpeciesDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_FiSpecies"
-                            Click="AddSpecies_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
-        </MenuFlyout>-->
     </Page.Resources>
 
     <RelativePanel x:Name="SpeciesgroupRoot"
@@ -1180,7 +1171,6 @@
                                           BorderThickness="0"
                                           CanUserReorderColumns="False"
                                           CanUserResizeColumns="False"
-                                          ContextFlyout="{StaticResource SpeciesDataContextMenu}"
                                           GridLinesVisibility="Horizontal"
                                           ItemsSource="{x:Bind ViewModel.SpeciesItems, Mode=OneWay}"
                                           SelectedItem="{x:Bind ViewModel.SpeciesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -1190,8 +1180,7 @@
                                 <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_SpeciesId"
                                                                 Tag="SpeciesId">
                                     <toolkit:DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate
-                                            x:DataType="models:Tbl75Species">
+                                        <DataTemplate x:DataType="models:Tbl75Species">
                                             <HyperlinkButton Margin="12,0"
                                                              BorderThickness="0"
                                                              Click="ViewSpeciesHyperlinkButton_Click"

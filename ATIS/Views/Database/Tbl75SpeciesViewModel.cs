@@ -516,7 +516,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
     public async Task AddNameAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
           //  var fiSpeciesId = 0;
             //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
@@ -540,6 +540,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
             Tbl78NamesList ??= [];
             Tbl78NamesList.Insert(index: 0, item: new Tbl78Name { SpeciesId = speciesId });
+            return Task.CompletedTask;
         });
     }
     public async Task SaveNameAsync(Tbl78Name viewModelNameSelected)
@@ -784,7 +785,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     #region [Methods Synonym]
     public async Task AddSynonymAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
 
             //var fiSpeciesId = 0;
@@ -809,6 +810,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
             Tbl84SynonymsList ??= [];
             Tbl84SynonymsList.Insert(index: 0, item: new Tbl84Synonym { SpeciesId = speciesId});
+            return Task.CompletedTask;
         });
     }
     public async Task SaveSynonymAsync(Tbl84Synonym viewModelSynonymSelected)

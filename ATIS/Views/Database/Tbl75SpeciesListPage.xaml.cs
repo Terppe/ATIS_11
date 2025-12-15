@@ -6,8 +6,10 @@ using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
+using Microsoft.UI;
 using WinRT.Interop;
 
 //  Tbl75SpeciesListPage.xaml.cs Skriptdatum:  20.10.2025  10:32      
@@ -46,6 +48,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel = App.GetService<Tbl75SpeciesViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -149,6 +153,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
                 ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -346,6 +352,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(SpeciesName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -619,10 +627,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 await BehindSaveSpecies(ViewModel.SpeciesSelected);
                 await Refresh();
                 ViewModel.IsNewSpecies = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpecies = true;
                 await RevertChangesSpeciesAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1793,6 +1805,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         ViewModel.NameSelected.NameName = SingleName.NameName;
         ViewModel.NameSelected.SpeciesId = SingleName.SpeciesId;
+        ViewModel.NameSelected.Language = SingleName.Language;
         ViewModel.NameSelected.Valid = SingleName.Valid;
         ViewModel.NameSelected.ValidYear = SingleName.ValidYear;
         ViewModel.NameSelected.Info = SingleName.Info;
@@ -1922,9 +1935,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             ViewModel.Tbl78NamesList ??= [];
             ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
                 .Where(a => a.NameName == ViewModel.NameSelected.NameName &&
+                            a.Language == ViewModel.NameSelected.Language &&
                             a.SpeciesId == ViewModel.NameSelected.SpeciesId)];
         });
-        if (ViewModel.IsNewName)
+  //      if (ViewModel.IsNewName)
         {
             if (ViewModel.Tbl78NamesList.Count != 0)
             {
@@ -2229,12 +2243,13 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.SpeciesId == ViewModel.ImageSelected.SpeciesId &&
-                a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
-                a.Valid == ViewModel.ImageSelected.Valid &&
-                a.ShotDate == ViewModel.ImageSelected.ShotDate)];
-        
+                        a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
+                        a.FilestreamId == ViewModel.ImageSelected.FilestreamId &&
+                        a.Valid == ViewModel.ImageSelected.Valid &&
+                        a.ShotDate == ViewModel.ImageSelected.ShotDate)];
 
-        if (ViewModel.IsNewImage)
+
+        //     if (ViewModel.IsNewImage)
         {
             if (ViewModel.Tbl81ImagesList.Count != 0)
             {
@@ -2371,9 +2386,9 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddSynonym();
-            SynonymName.Loaded += (s, e) =>
+            AuthorTextSynonym.Loaded += (s, e) =>
             {
-                SetFocusses.SetFocusAndChangePlaceholderText(SynonymName);
+                SetFocusses.SetFocusAndChangePlaceholderText(AuthorTextSynonym);
             };
         }
         catch (Exception xe)
@@ -2408,6 +2423,13 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ReproductionExpanderPlSpecies.IsExpanded = false;
         CultureExpanderPlSpecies.IsExpanded = false;
         GlobalExpanderPlSpecies.IsExpanded = false;
+    }
+
+    private void AuthorTextSynonym_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        //Placeholdertext and Foreground
+        SynonymName.PlaceholderText = StringsRes.EnterText;
+        SynonymName.PlaceholderForeground = new SolidColorBrush(Colors.Red);
     }
 
     private void DataGrid_Synonym_Sorting(object sender, DataGridColumnEventArgs e)
@@ -2618,6 +2640,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
             .Where(a => a.SynonymName == ViewModel.SynonymSelected.SynonymName &&
                         a.Author == ViewModel.SynonymSelected.Author &&
+                        a.AuthorYear == ViewModel.SynonymSelected.AuthorYear &&
                         a.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
 
         if (ViewModel.IsNewSynonym)
@@ -2811,6 +2834,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.GeographicSelected.Continent = SingleGeographic.Continent;
         ViewModel.GeographicSelected.Country = SingleGeographic.Country;
         ViewModel.GeographicSelected.Address = SingleGeographic.Address;
+        ViewModel.GeographicSelected.Jurisdiction = SingleGeographic.Jurisdiction;
         ViewModel.GeographicSelected.Info = SingleGeographic.Info;
         ViewModel.GeographicSelected.Memo = SingleGeographic.Memo;
         ViewModel.GeographicSelected.Http = SingleGeographic.Http;
@@ -2952,6 +2976,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                         a.Address == ViewModel.GeographicSelected.Address &&
                         a.Continent == ViewModel.GeographicSelected.Continent &&
                         a.Country == ViewModel.GeographicSelected.Country &&
+                        a.Jurisdiction == ViewModel.GeographicSelected.Jurisdiction &&
                         a.SpeciesId == ViewModel.GeographicSelected.SpeciesId)];
 
         //Aus Countrylist Latitude und Longitude und ZoomLevel füllen
@@ -2976,7 +3001,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.GeographicSelected.Latitude = selected.Latitude;
         ViewModel.GeographicSelected.Longitude = selected.Longitude;
 
-        if (ViewModel.IsNewGeographic)
+   //     if (ViewModel.IsNewGeographic)
         {
             if (ViewModel.Tbl87GeographicsList.Count != 0)
             {
@@ -3156,6 +3181,50 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
         GeographicDetailExpander.IsExpanded = false;
         GeographicDetailExpander.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSpecies.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddName.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddImage.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddSynonym.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddGeographic.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSpecies.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddName.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddImage.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddSynonym.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddGeographic.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSpecies.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonAddName.Visibility = Visibility.Visible;
+        AppBarButtonAddImage.Visibility = Visibility.Visible;
+        AppBarButtonAddSynonym.Visibility = Visibility.Visible;
+        AppBarButtonAddGeographic.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSpecies.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonAddName.Visibility = Visibility.Collapsed;
+        AppBarButtonAddImage.Visibility = Visibility.Collapsed;
+        AppBarButtonAddSynonym.Visibility = Visibility.Collapsed;
+        AppBarButtonAddGeographic.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods]

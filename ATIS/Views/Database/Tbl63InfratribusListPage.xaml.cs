@@ -3,6 +3,7 @@ using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Authentication;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
@@ -39,6 +40,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ViewModel = App.GetService<Tbl63InfratribusViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +137,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
                 InfratribusDataGrid.ItemsSource = ViewModel.Tbl63InfratribussesList;
                 ViewModel.InfratribusSelected = ViewModel.Tbl63InfratribussesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +252,8 @@ public sealed partial class Tbl63InfratribusListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(InfratribusName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +397,10 @@ public sealed partial class Tbl63InfratribusListPage : Page
         }
         else
         {
+            if (ViewModel.InfratribusSelected.InfratribusId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleInfratribus = App.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
             InfratribusSingles();
         }
@@ -477,10 +488,14 @@ public sealed partial class Tbl63InfratribusListPage : Page
                 await BehindSaveInfratribus(ViewModel.InfratribusSelected);
                 await Refresh();
                 ViewModel.IsNewInfratribus = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedInfratribus = true;
                 await RevertChangesInfratribusAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1791,6 +1806,36 @@ public sealed partial class Tbl63InfratribusListPage : Page
         GenusDetailExpander.IsExpanded = false;
         GenusDetailExpander.Visibility = Visibility.Collapsed;
     }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteInfratribus.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteInfratribus.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteInfratribus.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteInfratribus.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
+    }
+
     #endregion [Refresh Methods] 
 
 

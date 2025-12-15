@@ -2512,6 +2512,7 @@
                                          loca:Uids.Uid="TextBox_Author"
                                          CharacterCasing="Upper"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSynonym), Mode=OneWay}"
+                                         LostFocus="AuthorTextSynonym_OnLostFocus"
                                          MaxLength="60"
                                          RelativePanel.AlignLeftWithPanel="True"
                                          RelativePanel.Below="SynonymId"
@@ -2807,6 +2808,15 @@
                                              RelativePanel.Below="AddressGeographic"
                                              RelativePanel.RightOf="SpeciesSubspecies4"
                                              Text="{x:Bind ViewModel.SpeciesSelected.Divers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox x:Name="JurisdictionGeographic"
+                                             MinWidth="1120"
+                                             Margin="{StaticResource XSmallRightMargin}"
+                                             loca:Uids.Uid="TextBox_Jurisdiction"
+                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditGeographic), Mode=OneWay}"
+                                             MaxLength="100"
+                                             RelativePanel.AlignLeftWithPanel="True"
+                                             RelativePanel.Below="GenusComboSpecies4"
+                                             Text="{x:Bind ViewModel.GeographicSelected.Jurisdiction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="InfoGeographic"
                                              MinWidth="1120"
                                              Margin="{StaticResource XSmallRightMargin}"
@@ -2814,7 +2824,7 @@
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditGeographic), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.AlignLeftWithPanel="True"
-                                             RelativePanel.Below="GenusComboSpecies4"
+                                             RelativePanel.Below="JurisdictionGeographic"
                                              Text="{x:Bind ViewModel.GeographicSelected.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </RelativePanel>
                                 <Expander x:Name="MapExpanderGeographic">
@@ -3406,6 +3416,9 @@
                                 <toolkit:DataGridCheckBoxColumn loca:Uids.Uid="DataGridCheckBoxColumn_Valid"
                                                                 Binding="{Binding Valid}"
                                                                 Tag="Valid" />
+                                <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Jurisdiction"
+                                                            Binding="{Binding Jurisdiction}"
+                                                            Tag="Jurisdiction" />
                                 <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Info"
                                                             Binding="{Binding Info}"
                                                             Tag="Info" />

@@ -567,6 +567,9 @@
   <data name="DataGridTextColumn_Kind.Header" xml:space="preserve">
     <value>Kind</value>
   </data>
+  <data name="DataGridTextColumn_Jurisdiction.Header" xml:space="preserve">
+    <value>Jurisdiction/Origin</value>
+  </data>
   <data name="DataGridTextColumn_LastName.Header" xml:space="preserve">
     <value>Last Name</value>
   </data>
@@ -2465,6 +2468,9 @@
   </data>
   <data name="TextBox_ISBN.Header" xml:space="preserve">
     <value>ISBN</value>
+  </data>
+  <data name="TextBox_Jurisdiction.Header" xml:space="preserve">
+    <value>Jurisdiction/Origin</value>
   </data>
   <data name="TextBox_Kind.Header" xml:space="preserve">
     <value>Kind</value>

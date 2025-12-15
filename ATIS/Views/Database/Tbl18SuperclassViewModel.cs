@@ -23,8 +23,6 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
 
     public ObservableCollection<Tbl21Class> ClassItems { get; } = [];
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = [];
-    //public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = [];
-
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
@@ -43,8 +41,6 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
     {
         Tbl12SubphylumsAllList ??= [];
         Tbl12SubphylumsAllList = new ObservableCollection<Tbl12Subphylum>(_dataService.GetSubphylumAsync());
-        //Tbl15SubdivisionsAllList ??= [];
-        //Tbl15SubdivisionsAllList = new ObservableCollection<Tbl15Subdivision>(_dataService.GetSubdivisionAsync());
         Tbl18SuperclassesAllList ??= [];
         Tbl18SuperclassesAllList = new ObservableCollection<Tbl18Superclass>(_dataService.GetSuperclassAsync());
         Tbl90ExpertsAllList ??= [];
@@ -75,11 +71,6 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
             Tbl12SubphylumsAllList = [.. _dataService.GetSubphylumAsync()];
 
             var subphylumId = Tbl12SubphylumsAllList.First().SubphylumId;
-
-            //Tbl15SubdivisionsAllList ??= [];
-            //Tbl15SubdivisionsAllList = [.. _dataService.GetSubdivisionAsync()];
-
-            //var subdivisionId = Tbl15SubdivisionsAllList.First().SubdivisionId;
 
             Tbl18SuperclassesList ??= [];
             Tbl18SuperclassesList.Insert(index: 0, item: new Tbl18Superclass { SubphylumId = subphylumId });

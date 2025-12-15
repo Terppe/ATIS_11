@@ -22,7 +22,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
 
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
-    public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
+ //   public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
 
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];
@@ -167,7 +167,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            //var arrPlSpecies = new List<Tbl72PlSpecies>();
             var arrSpecies = new List<Tbl75Species>();
             var arrGenus = new List<Tbl66Genus>();
             var arrInfratribus = new List<Tbl63Infratribus>();
@@ -195,17 +194,11 @@ public partial class Tbl03RegnumViewModel : ObservableObject
             if (regnum != null)
             {
                 //SaveToArray
-                //await RemoveExtras.SaveToArrayTbl09Divisions(regnumid, arrDivision, arrSubdivision, arrSuperclass,
-                //    arrClass, arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily,
-                //    arrFamily, arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus,
-                //    arrGenus, arrSpecies);
                 await RemoveExtras.SaveToArrayTbl06Phylums(regnumid, arrPhylum, arrSubphylum, arrSuperclass, arrClass,
                     arrSubclass, arrInfraclass, arrLegio, arrOrdo, arrSubordo, arrInfraordo, arrSuperfamily, arrFamily,
                     arrSubfamily, arrInfrafamily, arrSupertribus, arrTribus, arrSubtribus, arrInfratribus, arrGenus,
                     arrSpecies);
 
-                // remove Tbl72PlSpeciesses
-             //   await RemoveExtras.RemoveArrPlSpeciesByPlSpeciesId(arrPlSpecies);
                 // remove Tbl75Speciesses
                 await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
                 // remove Tbl66Genusses
@@ -242,12 +235,8 @@ public partial class Tbl03RegnumViewModel : ObservableObject
                 await RemoveExtras.RemoveArrClassByClassId(arrClass);
                 // remove Tbl18Superclasses
                 await RemoveExtras.RemoveArrSuperclassBySuperclassId(arrSuperclass);
-                //// remove Tbl15Subdivisions
-                //await RemoveExtras.RemoveArrSubdivisionBySubdivisionId(arrSubdivision);
                 // remove Tbl12Subphylums
                 await RemoveExtras.RemoveArrSubphylumBySubphylumId(arrSubphylum);
-                //// remove Tbl09Divisions
-                //await RemoveExtras.RemoveArrDivisionByDivisionId(arrDivision);
                 // remove Tbl06Phylums
                 await RemoveExtras.RemoveArrPhylumByPhylumId(arrPhylum);
 
@@ -602,63 +591,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
 
     #endregion [Methods Phylum]   
 
-    //#region [Methods Division]             
-
-    //public async Task SaveDivisionAsync(Tbl09Division viewModelDivisionSelected)
-    //{
-    //    await _dispatcherQueue.EnqueueAsync(() =>
-    //    {
-    //        if (IsNewDivision)
-    //        {
-    //            IsNewDivision = false;
-    //        }
-    //    });
-    //    Tbl09Division result = null;
-    //    try
-    //    {
-    //        if (IsModifiedDivision)
-    //        {
-    //            await _dispatcherQueue.EnqueueAsync(async () =>
-    //            {
-    //                result = await _dataService.UpsertDivisionAsync(viewModelDivisionSelected);
-    //                IsModifiedDivision = false;
-    //            });
-    //        }
-    //        else
-    //        {
-    //            IsModifiedDivision = true;
-    //        }
-    //    }
-    //    catch (DbUpdateException e)
-    //    {
-    //        if (e.InnerException != null)
-    //        {
-    //            await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
-    //            SimpleLog.Log(e);
-    //            return;
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(ex.Message);
-    //        SimpleLog.Log(ex);
-    //        return;
-    //    }
-    //    if (result != null)
-    //    {
-    //        IsInEditDivision = false;
-    //        IsModifiedDivision = false;
-    //        IsExistingDivision = true;
-    //    }
-    //    else
-    //    {
-    //        _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
-    //    }
-    //}
-
-    //#endregion [Methods Division]     
-
-
 
     //    Part 2    
 
@@ -675,7 +607,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public bool IsModifiedReferenceAuthor { get; set; }
     public bool IsModifiedComment { get; set; }
     public bool IsModifiedPhylum { get; set; }
-    public bool IsModifiedDivision { get; set; }
     //------------Load--------------------------------------
     private bool IsLoaded => RegnumItems != null;
     public bool IsNotLoaded => !IsLoaded;
@@ -711,12 +642,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         set => SetProperty(ref _isDeletingPhylum, value);
     }
 
-    private bool _isDeletingDivision;
-    public bool IsDeletingDivision
-    {
-        get => _isDeletingDivision;
-        set => SetProperty(ref _isDeletingDivision, value);
-    }
     //------------IsNew---------------------------------------
     private bool _isNewRegnum;
     public bool IsNewRegnum
@@ -762,12 +687,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         get => _isNewPhylum;
         set => SetProperty(ref _isNewPhylum, value);
     }
-    private bool _isNewDivision;
-    public bool IsNewDivision
-    {
-        get => _isNewDivision;
-        set => SetProperty(ref _isNewDivision, value);
-    }
 
     //----------IsExisting-----------------------------------------
     private bool _isExistingRegnum;
@@ -796,12 +715,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     {
         get => _isExistingPhylum;
         set => SetProperty(ref _isExistingPhylum, value);
-    }
-    private bool _isExistingDivision;
-    public bool IsExistingDivision
-    {
-        get => _isExistingDivision;
-        set => SetProperty(ref _isExistingDivision, value);
     }
 
     //-----------IsInEdit----------------------------------------
@@ -848,12 +761,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         get => _isInEditPhylum;
         set => SetProperty(ref _isInEditPhylum, value);
     }
-    private bool _isInEditDivision;
-    public bool IsInEditDivision
-    {
-        get => _isInEditDivision;
-        set => SetProperty(ref _isInEditDivision, value);
-    }
 
     //----------StartEdit-----------------------------------------
     public void StartEditRegnum()
@@ -886,11 +793,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         IsInEditPhylum = true;
         IsModifiedPhylum = false;
     }
-    public void StartEditDivision()
-    {
-        IsInEditDivision = true;
-        IsModifiedDivision = false;
-    }
     //------------BeginEdit---------------------------------------
     public static void BeginEdit()
     {
@@ -903,7 +805,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public async void EndEditReferenceAuthor() => await SaveReferenceAsync(ReferenceSelected);
     public async void EndEditComment() => await SaveCommentAsync(CommentSelected);
     public async void EndEditPhylum() => await SavePhylumAsync(PhylumSelected);
- //   public async void EndEditDivision() => await SaveDivisionAsync(DivisionSelected);
     //-------------CanRefresh--------------------------------------
     public bool CanRefreshRegnum => !IsModifiedRegnum && IsExistingRegnum;
     public bool CanRefreshReferenceExpert => !IsModifiedReferenceExpert && IsExistingReference;
@@ -911,7 +812,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public bool CanRefreshReferenceAuthor => !IsModifiedReferenceAuthor && IsExistingReference;
     public bool CanRefreshComment => !IsModifiedComment && IsExistingComment;
     public bool CanRefreshPhylum => !IsModifiedPhylum && IsExistingPhylum;
-    public bool CanRefreshDivision => !IsModifiedDivision && IsExistingDivision;
     //--------------CanRevert-------------------------------------
     public bool CanRevertRegnum => IsModifiedRegnum && IsExistingRegnum;
     public bool CanRevertReferenceExpert => IsModifiedReferenceExpert && IsExistingReference;
@@ -919,7 +819,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
     public bool CanRevertReferenceAuthor => IsModifiedReferenceAuthor && IsExistingReference;
     public bool CanRevertComment => IsModifiedComment && IsExistingComment;
     public bool CanRevertPhylum => IsModifiedPhylum && IsExistingPhylum;
-    public bool CanRevertDivision => IsModifiedDivision && IsExistingDivision;
 
     #endregion [Propertys]     
 
@@ -956,13 +855,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
          set => SetProperty(ref _phylumSelected, value);
     }
 
-    private Tbl09Division _divisionSelected;
-
-    public Tbl09Division DivisionSelected
-    {
-         get => _divisionSelected;
-         set => SetProperty(ref _divisionSelected, value);
-    }
     private Tbl90Reference _referenceExpertSelected;
     public Tbl90Reference ReferenceExpertSelected
     {
@@ -1025,16 +917,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
             _phylumDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _divisionDataSetCount;
 
-    public int DivisionDataSetCount
-    {
-        get => _divisionDataSetCount;
-        set
-        {
-            _divisionDataSetCount = value; OnPropertyChanged();
-        }
-    }
     //---------------------------------------------------
     private ObservableCollection<Tbl03Regnum> _tbl03RegnumsList;
 
@@ -1065,16 +948,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         set
         {
             _tbl06PhylumsList = value; OnPropertyChanged();
-        }
-    }
-    private ObservableCollection<Tbl09Division> _tbl09DivisionsList;
-
-    public ObservableCollection<Tbl09Division> Tbl09DivisionsList
-    {
-        get => _tbl09DivisionsList;
-        set
-        {
-            _tbl09DivisionsList = value; OnPropertyChanged();
         }
     }
 
@@ -1212,27 +1085,6 @@ public partial class Tbl03RegnumViewModel : ObservableObject
             if (PhylumSelected == null && Tbl06PhylumsList.Count != 0)
             {
                 PhylumSelected = PhylumItems.FirstOrDefault()!;
-            }
-        }
-    }
-    public void RefreshDivisionItems()
-    {
-        DivisionItems.Clear();
-        if (Tbl09DivisionsList != null)
-        {
-            foreach (var item in Tbl09DivisionsList)
-            {
-                DivisionItems.Add(item);
-            }
-
-            if (Tbl09DivisionsList.Count == 0)
-            {
-                return;
-            }
-
-            if (DivisionSelected == null && Tbl09DivisionsList.Count != 0)
-            {
-                DivisionSelected = DivisionItems.FirstOrDefault()!;
             }
         }
     }

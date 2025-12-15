@@ -168,6 +168,7 @@
                     DefaultLabelPosition="Right"
                     RelativePanel.LeftOf="GenusSearchBox"
                     RelativePanel.RightOf="GenusDatasetCountText">
+
             <AppBarButton x:Name="AppBarButtonDeleteGenus"
                           loca:Uids.Uid="AppBarButtonDeleteGenus"
                           Click="DeleteGenus_Click"
@@ -178,7 +179,8 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton loca:Uids.Uid="AppBarButtonAddGenus"
+            <AppBarButton x:Name="AppBarButtonAddGenus"
+                          loca:Uids.Uid="AppBarButtonAddGenus"
                           Background="{ThemeResource SystemAccentColor}"
                           Click="AddGenus_Click"
                           Foreground="White">
@@ -1535,7 +1537,7 @@
                                              RelativePanel.RightOf="AuthorTextSpecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.AuthorYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </RelativePanel>
-                                <Expander x:Name="SpecificationExpanderSpecies">
+                                <Expander x:Name="SpecificationExpanderFiSpecies">
                                     <Expander.Header>
                                         <Grid>
                                             <TextBlock loca:Uids.Uid="TextBlock_Specification"
@@ -2161,8 +2163,7 @@
                                 <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_SpeciesId"
                                                                 Tag="SpeciesId">
                                     <toolkit:DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate
-                                            x:DataType="models:Tbl75Species">
+                                        <DataTemplate x:DataType="models:Tbl75Species">
                                             <HyperlinkButton Margin="12,0"
                                                              BorderThickness="0"
                                                              Click="ViewSpeciesHyperlinkButton_Click"

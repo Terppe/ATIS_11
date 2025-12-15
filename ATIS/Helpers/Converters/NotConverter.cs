@@ -17,6 +17,10 @@ public static class NotConverter
     /// <summary>
     /// Returns true if the specified value is not null; otherwise, returns false.
     /// </summary>
+    public static bool IsNull(object value) => value == null;
+    /// <summary>
+    /// Returns true if the specified value is not null; otherwise, returns false.
+    /// </summary>
     public static bool IsNotNull(object value) => value != null;
 
     /// <summary>

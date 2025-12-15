@@ -41,6 +41,8 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ViewModel = App.GetService<Tbl03RegnumViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -74,12 +76,10 @@ public sealed partial class Tbl03RegnumListPage : Page
                 ViewModel.Tbl90ReferencesList?.Clear();
                 ViewModel.Tbl93CommentsList?.Clear();
                 ViewModel.Tbl06PhylumsList?.Clear();
-                ViewModel.Tbl09DivisionsList?.Clear();
 
                 ReferencesExpander.Visibility = Visibility.Collapsed;
                 CommentsExpander.Visibility = Visibility.Collapsed;
                 PhylumsExpander.Visibility = Visibility.Collapsed;
-     //           DivisionsExpander.Visibility = Visibility.Collapsed;
 
                 ViewModel.IsLoading = false;
                 ViewModel.IsDeletingRegnum = false;
@@ -110,8 +110,6 @@ public sealed partial class Tbl03RegnumListPage : Page
             CommentDetailExpander.Visibility = Visibility.Collapsed;
             PhylumsExpander.Visibility = Visibility.Collapsed;
             PhylumDetailExpander.Visibility = Visibility.Collapsed;
-            //DivisionsExpander.Visibility = Visibility.Collapsed;
-            //DivisionDetailExpander.Visibility = Visibility.Collapsed;
 
             ViewModel.RegnumDataSetCount = ViewModel.Tbl03RegnumsList.Count;
 
@@ -121,7 +119,6 @@ public sealed partial class Tbl03RegnumListPage : Page
                 ViewModel.Tbl90ReferencesList?.Clear();
                 ViewModel.Tbl93CommentsList?.Clear();
                 ViewModel.Tbl06PhylumsList?.Clear();
-                ViewModel.Tbl09DivisionsList?.Clear();
 
                 AppBarButtonDeleteRegnum.IsEnabled = false;
                 AppBarButtonAddReference.IsEnabled = false;
@@ -133,7 +130,6 @@ public sealed partial class Tbl03RegnumListPage : Page
                 ReferencesExpander.Visibility = Visibility.Collapsed;
                 CommentsExpander.Visibility = Visibility.Collapsed;
                 PhylumsExpander.Visibility = Visibility.Collapsed;
-                //DivisionsExpander.Visibility = Visibility.Collapsed;
 
                 await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 Frame.Navigate(typeof(Tbl03RegnumListPage));
@@ -143,6 +139,8 @@ public sealed partial class Tbl03RegnumListPage : Page
                 RegnumDataGrid.ItemsSource = ViewModel.Tbl03RegnumsList;
                 ViewModel.RegnumSelected = ViewModel.Tbl03RegnumsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -244,27 +242,6 @@ public sealed partial class Tbl03RegnumListPage : Page
                 PhylumsExpander.Visibility = Visibility.Visible;
                 PhylumDataGrid.ItemsSource = ViewModel.Tbl06PhylumsList;
             }
-            //--------------------------Division-----------------------------  
-            //await _dispatcherQueue.EnqueueAsync(() =>
-            //{
-            //    ViewModel.Tbl09DivisionsList ??= [];
-            //    ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
-            //.AsNoTracking()
-            //.Where(c => c.RegnumId == ViewModel.RegnumSelected.RegnumId)];
-            //});
-            //ViewModel.DivisionDataSetCount = ViewModel.Tbl09DivisionsList.Count;
-            //ViewModel.RefreshDivisionItems();
-
-            //if (ViewModel.Tbl09DivisionsList.Count == 0)
-            //{
-            //    DivisionsExpander.Visibility = Visibility.Collapsed;
-            //    DivisionDataGrid.ItemsSource = null;
-            //}
-            //else
-            //{
-            //    DivisionsExpander.Visibility = Visibility.Visible;
-            //    DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
-            //}
         }
         ViewModel.IsLoading = false;
     }
@@ -279,6 +256,8 @@ public sealed partial class Tbl03RegnumListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(RegnumName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -424,6 +403,10 @@ public sealed partial class Tbl03RegnumListPage : Page
         }
         else
         {
+            if (ViewModel.RegnumSelected.RegnumId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleRegnum = App.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
             RegnumSingles();
         }
@@ -511,10 +494,14 @@ public sealed partial class Tbl03RegnumListPage : Page
                 await BehindSaveRegnum(ViewModel.RegnumSelected);
                 await Refresh();
                 ViewModel.IsNewRegnum = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRegnum = true;
                 await RevertChangesRegnumAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1708,230 +1695,6 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     #endregion [Phylum Methods] 
 
-    //#region [Division Methods]
-
-    //private void DataGrid_Division_Sorting(object sender, DataGridColumnEventArgs e)
-    //{
-    //    (sender as DataGrid).Sort(e.Column, ViewModel.Tbl09DivisionsList.Sort);
-    //}
-
-    //private async void ViewDivisionHyperlinkButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    try
-    //    {
-    //        await ViewDivisionHyperlink();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private Task ViewDivisionHyperlink()
-    //{
-    //    ViewModel.IsInEditDivision = false;
-    //    ViewModel.IsNewDivision = false;
-    //    DivisionDetailExpander.IsExpanded = true;
-    //    DivisionDetailExpander.Visibility = Visibility.Visible;
-
-    //    if (DivisionDataGrid.SelectedIndex == -1)
-    //    {
-    //        _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
-    //    }
-    //    else
-    //    {
-    //        SingleDivision = App.SingleDivisionRegnum(ViewModel.DivisionSelected.DivisionId,
-    //                ViewModel.RegnumSelected.RegnumId);
-    //    }
-
-    //    return Task.CompletedTask;
-    //}
-
-    //private void CancelEditsDivisionAsync(object sender, RoutedEventArgs e)
-    //{
-    //    if (ViewModel.IsNewDivision)
-    //    {
-    //        DivisionDetailExpander.IsExpanded = false;
-    //        DivisionDetailExpander.Visibility = Visibility.Collapsed;
-    //        _ = Refresh();
-    //    }
-    //    else
-    //    {
-    //        CancelDivisionEdits();
-    //    }
-    //}
-
-    //private void CancelDivisionEdits()
-    //{
-    //    var x = (DataGrid)FindName("DivisionDataGrid");
-    //    var iNdx = x.SelectedIndex;
-    //    if (iNdx is not -1)
-    //    {
-    //        ViewModel.DivisionSelected = ViewModel.Tbl09DivisionsList[iNdx];
-
-    //        SingleDivision = App.SingleDivisionRegnum(ViewModel.DivisionSelected.DivisionId, ViewModel.RegnumSelected.RegnumId);
-    //        DivisionSingles();
-    //    }
-    //    else
-    //    {
-    //        DivisionDetailExpander.IsExpanded = false;
-    //        DivisionDetailExpander.Visibility = Visibility.Collapsed;
-    //        _ = Refresh();
-    //    }
-    //    ViewModel.IsInEditDivision = false;
-    //    ViewModel.IsNewDivision = false;
-    //}
-
-    //private void DivisionSingles()
-    //{
-    //    ViewModel.DivisionSelected.DivisionName = SingleDivision.DivisionName;
-    //    ViewModel.DivisionSelected.RegnumId = SingleDivision.RegnumId;
-    //    ViewModel.DivisionSelected.Valid = SingleDivision.Valid;
-    //    ViewModel.DivisionSelected.ValidYear = SingleDivision.ValidYear;
-    //    ViewModel.DivisionSelected.Author = SingleDivision.Author;
-    //    ViewModel.DivisionSelected.AuthorYear = SingleDivision.AuthorYear;
-    //    ViewModel.DivisionSelected.Info = SingleDivision.Info;
-    //    ViewModel.DivisionSelected.Synonym = SingleDivision.Synonym;
-    //    ViewModel.DivisionSelected.EngName = SingleDivision.EngName;
-    //    ViewModel.DivisionSelected.GerName = SingleDivision.GerName;
-    //    ViewModel.DivisionSelected.FraName = SingleDivision.FraName;
-    //    ViewModel.DivisionSelected.PorName = SingleDivision.PorName;
-    //    ViewModel.DivisionSelected.Memo = SingleDivision.Memo;
-    //}
-
-    //private async Task RevertChangesDivisionAsync()
-    //{
-    //    ViewModel.IsInEditDivision = false;
-    //    if (ViewModel.IsModifiedDivision)
-    //    {
-    //        await RefreshDivisionAsync();
-    //        ViewModel.IsModifiedDivision = false;
-    //    }
-    //}
-    //private async Task RefreshDivisionAsync()
-    //{
-    //    await _dispatcherQueue.EnqueueAsync(() =>
-    //    {
-    //        if (DivisionDataGrid.SelectedIndex == -1)
-    //        {
-    //            _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
-    //        }
-    //        else
-    //        {
-    //            SingleDivision = App.SingleDivisionRegnum(ViewModel.DivisionSelected.DivisionId, ViewModel.RegnumSelected.RegnumId);
-    //            DivisionSingles();
-    //        }
-    //    });
-    //}
-
-    //private async void SaveDivision_Click(object sender, RoutedEventArgs e)
-    //{
-    //    try
-    //    {
-    //        await SaveDivision();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async Task SaveDivision()
-    //{
-    //    var saveDialog = new SaveChangesDialog
-    //    {
-    //        PrimaryButtonText = StringsRes.Save,
-    //        SecondaryButtonText = StringsRes.DoNotSave,
-    //        CloseButtonText = StringsRes.Cancel,
-    //        Title = StringsRes.Save,
-    //        XamlRoot = Content.XamlRoot
-    //    };
-    //    await saveDialog.ShowAsync();
-    //    var res = saveDialog.Result;
-
-    //    switch (res)
-    //    {
-    //        case SaveChangesDialogResult.Save:
-    //            if (await BeforeSaveDivision())
-    //            {
-    //                return;
-    //            }
-    //            await ViewModel.SaveDivisionAsync(ViewModel.DivisionSelected);
-    //            await BehindSaveDivision(ViewModel.DivisionSelected);
-    //            await Refresh();
-    //            break;
-    //        case SaveChangesDialogResult.DontSave:
-    //            ViewModel.IsModifiedDivision = true;
-    //            await RevertChangesDivisionAsync();
-    //            break;
-    //        case SaveChangesDialogResult.Cancel:
-    //            break;
-    //        default:
-    //            throw new ArgumentOutOfRangeException();
-    //    }
-    //}
-
-    //private async Task<bool> BeforeSaveDivision()
-    //{
-    //    await _dispatcherQueue.EnqueueAsync(() =>
-    //    {
-    //        ViewModel.Tbl09DivisionsList ??= [];
-    //        ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
-    //        .Where(a => a.DivisionName == ViewModel.DivisionSelected.DivisionName &&
-    //                    a.RegnumId == ViewModel.DivisionSelected.RegnumId)];
-    //    });
-    //    if (ViewModel.IsNewDivision)
-    //    {
-    //        if (ViewModel.Tbl09DivisionsList.Count != 0)
-    //        {
-    //            await AllDialogs.DatasetExistInfoMessageDialogAsync();
-    //            return true;
-    //        }
-    //    }
-    //    ViewModel.IsModifiedDivision = true;
-    //    return false;
-    //}
-
-    //private async Task BehindSaveDivision(Tbl09Division viewModelDivisionSelected)
-    //{
-    //    await _dispatcherQueue.EnqueueAsync(() =>
-    //    {
-    //        ViewModel.Tbl09DivisionsList ??= [];
-    //        ViewModel.Tbl09DivisionsList = [.. Context.Tbl09Divisions
-    //            .AsNoTracking()
-    //            .Where(com => com.RegnumId == viewModelDivisionSelected.RegnumId)];
-    //    });
-    //    ViewModel.RefreshDivisionItems();
-
-    //    if (ViewModel.Tbl09DivisionsList.Count == 0)
-    //    {
-    //        DivisionsExpander.Visibility = Visibility.Collapsed;
-    //        DivisionDataGrid.ItemsSource = null;
-    //    }
-    //    else
-    //    {
-    //        DivisionsExpander.Visibility = Visibility.Visible;
-    //        DivisionDataGrid.ItemsSource = ViewModel.Tbl09DivisionsList;
-    //        DivisionDataGrid.SelectedIndex = 0;
-    //    }
-    //    BackDetailExpanders();
-    //    ViewModel.DivisionDataSetCount = ViewModel.Tbl09DivisionsList.Count;
-    //}
-
-    //private void DivisionName_OnLostFocus(object sender, RoutedEventArgs e)
-    //{
-    //    ChangeChar.UpperCaseFirstChar(sender);
-    //}
-
-    //private void BackDivision_Click(object sender, RoutedEventArgs e)
-    //{
-    //    BackDetailExpanders();
-    //}
-
-    //#endregion [Division Methods] 
-
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
     {
@@ -2018,7 +1781,6 @@ public sealed partial class Tbl03RegnumListPage : Page
                 ViewModel.Tbl90ReferencesList?.Clear();
                 ViewModel.Tbl93CommentsList?.Clear();
                 ViewModel.Tbl06PhylumsList?.Clear();
-                ViewModel.Tbl09DivisionsList?.Clear();
                 ViewModel.IsLoading = false;
 
                 BackDetailExpanders();
@@ -2046,9 +1808,37 @@ public sealed partial class Tbl03RegnumListPage : Page
 
         PhylumDetailExpander.IsExpanded = false;
         PhylumDetailExpander.Visibility = Visibility.Collapsed;
-        //DivisionDetailExpander.IsExpanded = false;
-        //DivisionDetailExpander.Visibility = Visibility.Collapsed;
+
     }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteRegnum.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteRegnum.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteRegnum.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteRegnum.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
+    }
+
     #endregion [Refresh Methods] 
 
 

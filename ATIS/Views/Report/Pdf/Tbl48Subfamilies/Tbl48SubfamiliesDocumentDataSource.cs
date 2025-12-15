@@ -39,32 +39,32 @@ public abstract class Tbl48SubfamiliesDocumentDataSource : ObservableObject
         #region [Private Data Members]
 
         var dataService = new DataService();
-        var context = new AtisDbContext();
-        var fishId = 0;
-        var plantId = 0;
+        //var context = new AtisDbContext();
+        //var fishId = 0;
+        //var plantId = 0;
 
         #endregion [Private Data Members]
 
         ClearAllCollections();
 
-        if (context.Tbl15Subdivisions != null)
-        {
-            var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-            if (plantaeRegnum != null)
-            {
-                plantId = plantaeRegnum.SubdivisionId;
-            }
-        }
+        //if (context.Tbl15Subdivisions != null)
+        //{
+        //    var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
+        //    if (plantaeRegnum != null)
+        //    {
+        //        plantId = plantaeRegnum.SubdivisionId;
+        //    }
+        //}
 
-        if (context.Tbl12Subphylums != null)
-        {
-            var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
+        //if (context.Tbl12Subphylums != null)
+        //{
+        //    var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
 
-            if (animaliaRegnum != null)
-            {
-                fishId = animaliaRegnum.SubphylumId;
-            }
-        }
+        //    if (animaliaRegnum != null)
+        //    {
+        //        fishId = animaliaRegnum.SubphylumId;
+        //    }
+        //}
 
         SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
         var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);

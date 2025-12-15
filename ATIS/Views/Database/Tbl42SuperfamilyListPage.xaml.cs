@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -39,6 +38,8 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             ViewModel = App.GetService<Tbl42SuperfamilyViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -134,6 +135,8 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
                 SuperfamilyDataGrid.ItemsSource = ViewModel.Tbl42SuperfamiliesList;
                 ViewModel.SuperfamilySelected = ViewModel.Tbl42SuperfamiliesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -247,6 +250,8 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(SuperfamilyName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -390,6 +395,10 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         }
         else
         {
+            if (ViewModel.SuperfamilySelected.SuperfamilyId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSuperfamily = App.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
             SuperfamilySingles();
         }
@@ -477,10 +486,14 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
                 await BehindSaveSuperfamily(ViewModel.SuperfamilySelected);
                 await Refresh();
                 ViewModel.IsNewSuperfamily = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSuperfamily = true;
                 await RevertChangesSuperfamilyAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -1790,6 +1803,35 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
 
         FamilyDetailExpander.IsExpanded = false;
         FamilyDetailExpander.Visibility = Visibility.Collapsed;
+    }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSuperfamily.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSuperfamily.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSuperfamily.Visibility = Visibility.Visible;
+        AppBarButtonAddReference.Visibility = Visibility.Visible;
+        AppBarButtonAddComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSuperfamily.Visibility = Visibility.Collapsed;
+        AppBarButtonAddReference.Visibility = Visibility.Collapsed;
+        AppBarButtonAddComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
     #endregion [Refresh Methods] 
 

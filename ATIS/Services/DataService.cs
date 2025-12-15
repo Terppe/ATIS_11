@@ -2984,19 +2984,19 @@ public partial class DataService : ObservableObject, IDataService
 
     public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync()
     {
-        //var collection = new ObservableCollection<Tbl90RefAuthor>(Context.Tbl90RefAuthors
-        //    .AsNoTracking()
-        //    .OrderBy(k => k.RefAuthorName)
-        //    .ThenBy(a => a.BookName)
-        //    .ThenBy(a => a.Page1));
         var collection = new ObservableCollection<Tbl90RefAuthor>(Context.Tbl90RefAuthors
             .AsNoTracking()
-            .OrderBy(x => x.RefAuthorName)
-            .ThenBy(y => y.ArticelTitle)
-            .ThenBy(y => y.BookName)
-            .ThenBy(y => y.Page1)
-            .ThenBy(y => y.Publisher)
-            .ThenBy(y => y.PublicationPlace));
+            .OrderBy(k => k.RefAuthorName)
+            .ThenBy(a => a.BookName)
+            .ThenBy(a => a.Page1));
+        //var collection = new ObservableCollection<Tbl90RefAuthor>(Context.Tbl90RefAuthors
+        //    .AsNoTracking()
+        //    .OrderBy(x => x.RefAuthorName)
+        //    .ThenBy(y => y.ArticelTitle)
+        //    .ThenBy(y => y.BookName)
+        //    .ThenBy(y => y.Page1)
+        //    .ThenBy(y => y.Publisher)
+        //    .ThenBy(y => y.PublicationPlace));
 
         return collection;
     }
@@ -3004,13 +3004,7 @@ public partial class DataService : ObservableObject, IDataService
     public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync(int refauthorid)
     {
         var collection = new ObservableCollection<Tbl90RefAuthor>(Context.Tbl90RefAuthors
-            .Where(e => e.RefAuthorId == refauthorid)
-            .OrderBy(x => x.RefAuthorName)
-            .ThenBy(y => y.ArticelTitle)
-            .ThenBy(y => y.BookName)
-            .ThenBy(y => y.Page1)
-            .ThenBy(y => y.Publisher)
-            .ThenBy(y => y.PublicationPlace));
+            .Where(e => e.RefAuthorId == refauthorid));
 
         return collection;
     }
