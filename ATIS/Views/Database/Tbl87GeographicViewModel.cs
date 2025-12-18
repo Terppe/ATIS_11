@@ -5,8 +5,8 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
-using Windows.Storage.Pickers;
 using Windows.System;
+using Windows.Storage.Pickers;
 
 //    Tbl87GeographicViewModel Skriptdatum:  08.07.2025  10:32    
 
@@ -69,20 +69,10 @@ public partial class Tbl87GeographicViewModel : ObservableObject
             IsInEditGeographic = true;
             IsNewGeographic = true;
 
-            //var plSpeciesId = 0;
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    plSpeciesId = plantaeRegnum.PlSpeciesId;
-            //}
-
             var speciesId = Tbl75SpeciessesAllList.First().SpeciesId;
 
             Tbl87GeographicsList ??= [];
-            Tbl87GeographicsList.Insert(index: 0,
-                item: new Tbl87Geographic { SpeciesId = speciesId });
+            Tbl87GeographicsList.Insert(index: 0, item: new Tbl87Geographic { SpeciesId = speciesId });
         });
     }
 

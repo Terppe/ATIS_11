@@ -60,15 +60,6 @@ public partial class Tbl78NameViewModel : ObservableObject
             IsInEditName = true;
             IsNewName = true;
 
-            //var plSpeciesId = 0;
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    plSpeciesId = plantaeRegnum.PlSpeciesId;
-            //}
-
             var speciesId = Tbl75SpeciessesAllList.First().SpeciesId;
 
             Tbl78NamesList ??= [];
@@ -521,7 +512,7 @@ public partial class Tbl78NameViewModel : ObservableObject
         SpeciesItems.Clear();
         if (Tbl75SpeciessesList != null)
         {
-            foreach (Tbl75Species item in Tbl75SpeciessesList)
+            foreach (var item in Tbl75SpeciessesList)
             {
                 SpeciesItems.Add(item);
             }

@@ -5,7 +5,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,6 +36,8 @@ public sealed partial class Tbl84SynonymListPage : Page
         {
             ViewModel = App.GetService<Tbl84SynonymViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -118,6 +119,8 @@ public sealed partial class Tbl84SynonymListPage : Page
                 SynonymDataGrid.ItemsSource = ViewModel.Tbl84SynonymsList;
                 ViewModel.SynonymSelected = ViewModel.Tbl84SynonymsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -186,6 +189,12 @@ public sealed partial class Tbl84SynonymListPage : Page
         {
             BackDetailExpanders();
             await AddSynonym();
+            SynonymName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(SynonymName);
+            };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -196,11 +205,6 @@ public sealed partial class Tbl84SynonymListPage : Page
 
     private async Task AddSynonym()
     {
-        SynonymName.Loaded += (s, e) =>
-        {
-            SynonymName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditSynonym = true;
         ViewModel.IsNewSynonym = true;
 
@@ -236,6 +240,10 @@ public sealed partial class Tbl84SynonymListPage : Page
         try
         {
             await ViewSynonymHyperlink();
+            SynonymName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(SynonymName);
+            };
         }
         catch (Exception xe)
         {
@@ -324,6 +332,10 @@ public sealed partial class Tbl84SynonymListPage : Page
         }
         else
         {
+            if (ViewModel.SynonymSelected.SynonymId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSynonym = App.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
             SynonymSingles();
         }
@@ -410,10 +422,15 @@ public sealed partial class Tbl84SynonymListPage : Page
                 await ViewModel.SaveSynonymAsync(ViewModel.SynonymSelected);
                 await BehindSaveSynonym(ViewModel.SynonymSelected);
                 await Refresh();
+                ViewModel.IsNewSynonym = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSynonym = true;
                 await RevertChangesSynonymAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -434,14 +451,11 @@ public sealed partial class Tbl84SynonymListPage : Page
                         a.AuthorYear == ViewModel.SynonymSelected.AuthorYear &&
                         a.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
         });
-     //   if (ViewModel.IsNewSynonym)
-        {
             if (ViewModel.Tbl84SynonymsList.Count != 0)
             {
                 await AllDialogs.DatasetExistInfoMessageDialogAsync();
                 return true;
             }
-        }
         ViewModel.IsModifiedSynonym = true;
         return false;
     }
@@ -828,8 +842,6 @@ public sealed partial class Tbl84SynonymListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //   DetailPanelSynonym.Visibility = Visibility.Visible;
-            //  SynonymDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -898,6 +910,26 @@ public sealed partial class Tbl84SynonymListPage : Page
 
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSynonym.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSynonym.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSynonym.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSynonym.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

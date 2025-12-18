@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -192,44 +191,16 @@ public partial class TblDiseaseViewModel : ObservableObject
     #region [Methods Image]
     public async Task AddImageAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            //Wenn auf Tbl75Speciesses umgestellt wird raus _plantId und _animalId
-            //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    _plantId = plantaeRegnum.PlSpeciesId;
-            //}
-            //else
-            //{
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            //    return;
-            //}
-
-            var animalRegnum = Context.Tbl75Speciesses.FirstOrDefault(x => x.SpeciesName == "Animalia#Regnum#");
-
-            if (animalRegnum != null)
-            {
-                _animalId = animalRegnum.SpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
-
             IsInEditImage = true;
             IsNewImage = true;
 
             var diseaseId = DiseaseSelected.DiseaseId;
 
-            Tbl81ImagesList ??= [];                     //datenbank ändern fiSpecies und PlSpeciesid nicht 0
-      //      Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, DiseaseId = diseaseId });
-       //oder     Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = 2, DiseaseId = diseaseId });
-            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = _animalId, DiseaseId = diseaseId });
+            Tbl81ImagesList ??= [];
+            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { DiseaseId = diseaseId });  //Fehlt FilestreamID ???
+            return Task.CompletedTask;
         });
     }
 

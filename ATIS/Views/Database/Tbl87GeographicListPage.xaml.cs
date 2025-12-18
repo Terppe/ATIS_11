@@ -1,12 +1,10 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -43,6 +41,8 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         {
             ViewModel = App.GetService<Tbl87GeographicViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -132,6 +132,8 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
                 GeographicDataGrid.ItemsSource = ViewModel.Tbl87GeographicsList;
                 ViewModel.GeographicSelected = ViewModel.Tbl87GeographicsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -200,6 +202,8 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         {
             BackDetailExpanders();
             await AddGeographic();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -332,7 +336,6 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         ViewModel.GeographicSelected.Longitude1 = SingleGeographic.Longitude1;
         ViewModel.GeographicSelected.Longitude2 = SingleGeographic.Longitude2;
         ViewModel.GeographicSelected.Longitude3 = SingleGeographic.Longitude3;
-        ViewModel.GeographicSelected.Jurisdiction = SingleGeographic.Jurisdiction;
         ViewModel.GeographicSelected.Info = SingleGeographic.Info;
         ViewModel.GeographicSelected.Memo = SingleGeographic.Memo;
     }
@@ -353,6 +356,10 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         }
         else
         {
+            if (ViewModel.GeographicSelected.GeographicId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleGeographic = App.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
             GeographicSingles();
         }
@@ -439,10 +446,15 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
                 await ViewModel.SaveGeographicAsync(ViewModel.GeographicSelected);
                 await BehindSaveGeographic(ViewModel.GeographicSelected);
                 await Refresh();
+                ViewModel.IsNewGeographic = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedGeographic = true;
                 await RevertChangesGeographicAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -484,14 +496,11 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         ViewModel.GeographicSelected.Latitude = selected.Latitude;
         ViewModel.GeographicSelected.Longitude = selected.Longitude;
 
- //       if (ViewModel.IsNewGeographic)
-        {
             if (ViewModel.Tbl87GeographicsList.Count != 0)
             {
                 await AllDialogs.DatasetExistInfoMessageDialogAsync();
                 return true;
             }
-        }
         ViewModel.IsModifiedGeographic = true;
         return false;
     }
@@ -878,8 +887,6 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
         if (string.IsNullOrEmpty(_search))
         {
-            //   DetailPanelGeographic.Visibility = Visibility.Visible;
-            //  GeographicDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -948,6 +955,26 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteGeographic.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteGeographic.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteGeographic.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteGeographic.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

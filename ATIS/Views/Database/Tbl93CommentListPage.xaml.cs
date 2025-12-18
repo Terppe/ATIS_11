@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,6 +36,8 @@ public sealed partial class Tbl93CommentListPage : Page
         {
             ViewModel = App.GetService<Tbl93CommentViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -111,6 +112,8 @@ public sealed partial class Tbl93CommentListPage : Page
                 CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
                 ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -154,6 +157,8 @@ public sealed partial class Tbl93CommentListPage : Page
         try
         {
             await AddComment();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -306,6 +311,10 @@ public sealed partial class Tbl93CommentListPage : Page
         }
         else
         {
+            if (ViewModel.CommentSelected.CommentId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleComment = App.SingleComment(ViewModel.CommentSelected.CommentId);
             CommentSingles();
         }
@@ -391,11 +400,16 @@ public sealed partial class Tbl93CommentListPage : Page
                 }
                 await ViewModel.SaveCommentAsync(ViewModel.CommentSelected);
                 await BehindSaveComment(ViewModel.CommentSelected);
+                ViewModel.IsNewComment = false;
                 await Refresh();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedComment = true;
                 await RevertChangesCommentAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -414,9 +428,7 @@ public sealed partial class Tbl93CommentListPage : Page
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.RegnumId == ViewModel.CommentSelected.RegnumId &&
                         a.PhylumId == ViewModel.CommentSelected.PhylumId &&
-                        a.DivisionId == ViewModel.CommentSelected.DivisionId &&
                         a.SubphylumId == ViewModel.CommentSelected.SubphylumId &&
-                        a.SubdivisionId == ViewModel.CommentSelected.SubdivisionId &&
                         a.SuperclassId == ViewModel.CommentSelected.SuperclassId &&
                         a.ClassId == ViewModel.CommentSelected.ClassId &&
                         a.SubclassId == ViewModel.CommentSelected.SubclassId &&
@@ -522,8 +534,6 @@ public sealed partial class Tbl93CommentListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelComment.Visibility = Visibility.Visible;
-            //CommentDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -579,6 +589,26 @@ public sealed partial class Tbl93CommentListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingComment = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteComment.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteComment.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteComment.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteComment.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,6 +36,8 @@ public sealed partial class Tbl90ReferenceListPage : Page
         {
             ViewModel = App.GetService<Tbl90ReferenceViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -111,6 +112,8 @@ public sealed partial class Tbl90ReferenceListPage : Page
                 ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
                 ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -154,6 +157,8 @@ public sealed partial class Tbl90ReferenceListPage : Page
         try
         {
             await AddReference();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -288,7 +293,6 @@ public sealed partial class Tbl90ReferenceListPage : Page
         ViewModel.ReferenceSelected.InfratribusId = SingleReference.InfratribusId;
         ViewModel.ReferenceSelected.GenusId = SingleReference.GenusId;
         ViewModel.ReferenceSelected.SpeciesId = SingleReference.SpeciesId;
-        //ViewModel.ReferenceSelected.PlSpeciesId = SingleReference.PlSpeciesId;
     }
     private async Task RevertChangesReferenceAsync()
     {
@@ -307,6 +311,10 @@ public sealed partial class Tbl90ReferenceListPage : Page
         }
         else
         {
+            if (ViewModel.ReferenceSelected.ReferenceId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             ReferenceSingles();
         }
@@ -393,10 +401,15 @@ public sealed partial class Tbl90ReferenceListPage : Page
                 await ViewModel.SaveReferenceAsync(ViewModel.ReferenceSelected);
                 await BehindSaveReference(ViewModel.ReferenceSelected);
                 await Refresh();
+                ViewModel.IsNewReference = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedReference = true;
                 await RevertChangesReferenceAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -418,9 +431,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
                         a.RefSourceId == ViewModel.ReferenceSelected.RefSourceId &&
                         a.RegnumId == ViewModel.ReferenceSelected.RegnumId &&
                         a.PhylumId == ViewModel.ReferenceSelected.PhylumId &&
-                        a.DivisionId == ViewModel.ReferenceSelected.DivisionId &&
                         a.SubphylumId == ViewModel.ReferenceSelected.SubphylumId &&
-                        a.SubdivisionId == ViewModel.ReferenceSelected.SubdivisionId &&
                         a.SuperclassId == ViewModel.ReferenceSelected.SuperclassId &&
                         a.ClassId == ViewModel.ReferenceSelected.ClassId &&
                         a.SubclassId == ViewModel.ReferenceSelected.SubclassId &&
@@ -531,8 +542,6 @@ public sealed partial class Tbl90ReferenceListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            DetailPanelReference.Visibility = Visibility.Visible;
-            ReferenceDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -588,6 +597,26 @@ public sealed partial class Tbl90ReferenceListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingReference = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteReference.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteReference.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteReference.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteReference.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

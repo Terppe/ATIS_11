@@ -602,16 +602,6 @@
                                           IsChecked="{x:Bind ViewModel.ImageSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditImage), Mode=OneWay}"
                                           RelativePanel.RightOf="ImageMimeTypeCombo" />
-                                <!--<TextBox x:Name="ValidYearTextImage"
-                                         x:Uid="TextBox_ValidYear"
-                                         Width="70"
-                                         Margin="{StaticResource XSmallTopRightMargin}"
-                                         winUiCommunity:TextBoxExtensions.Mask="9999"
-                                         winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
-                                         IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
-                                         RelativePanel.RightOf="ValidCheckImage"
-                                         Style="{StaticResource BodyTextBoxStyle}"
-                                         Text="{x:Bind ViewModel.ImageSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="AuthorTextShotDate"
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
@@ -620,11 +610,6 @@
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditImage), Mode=OneWay}"
                                          RelativePanel.RightOf="ValidCheckImage"
                                          Text="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--<DatePicker
-                                x:Name="DpShotDate"
-                                Width="300"
-                                Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
-                                Date="{x:Bind ViewModel.ImageSelected.ShotDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="InfoImage"
                                          MinWidth="1120"
                                          Margin="{StaticResource XSmallRightMargin}"

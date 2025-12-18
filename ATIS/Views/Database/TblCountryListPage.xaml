@@ -291,8 +291,6 @@
                                          MinWidth="500"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_CountryName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditCountry), Mode=OneWay}"
                                          LostFocus="CountryName_OnLostFocus"
                                          MaxLength="100"

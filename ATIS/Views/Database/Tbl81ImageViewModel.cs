@@ -75,15 +75,6 @@ public partial class Tbl81ImageViewModel : ObservableObject
             IsInEditImage = true;
             IsNewImage = true;
 
-            //var plSpeciesId = 0;
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    plSpeciesId = plantaeRegnum.PlSpeciesId;
-            //}
-
             var speciesId = Tbl75SpeciessesAllList.First().SpeciesId;
 
             Tbl81ImagesList ??= [];
@@ -382,6 +373,7 @@ public partial class Tbl81ImageViewModel : ObservableObject
     }
     //---------------EndEdit------------------------------------
     public async void EndEditImage() => await SaveImageAsync(ImageSelected, SelectedPath);
+    public async void EndEditSpecies() => await SaveSpeciesAsync(SpeciesSelected);
     //-------------CanRefresh--------------------------------------
     public bool CanRefreshImage => !IsModifiedImage && IsExistingImage;
     public bool CanRefreshSpecies => !IsModifiedSpecies && IsExistingSpecies;
@@ -390,7 +382,6 @@ public partial class Tbl81ImageViewModel : ObservableObject
     public bool CanRevertSpecies => IsModifiedSpecies && IsExistingSpecies;
 
     #endregion [Propertys]     
-
 
     #region Selected Properties
 

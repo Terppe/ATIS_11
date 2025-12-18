@@ -308,8 +308,6 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_UserProfileEmail"
-                                             Background="SlateGray"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditUserProfile), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="UserProfileId"

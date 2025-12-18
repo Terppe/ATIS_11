@@ -300,8 +300,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_NameName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditName), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.RightOf="NameId"
@@ -360,6 +358,7 @@
 
                 <!--  SpeciesDetailExpander  -->
                 <Expander x:Name="SpeciesDetailExpander"
+                          MinWidth="1200"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           Visibility="Collapsed">
                     <Expander.Header>
@@ -469,14 +468,14 @@
                                     </Style>
                                 </StackPanel.Resources>
                                 <RelativePanel Margin="8,0,0,0">
-                                    <TextBox x:Name="FiSpeciesId"
+                                    <TextBox x:Name="SpeciesId"
                                              MinWidth="110"
                                              Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_FiSpeciesId"
+                                             loca:Uids.Uid="TextBox_SpeciesId"
                                              IsReadOnly="True"
                                              RelativePanel.AlignLeftWithPanel="True"
                                              Text="{x:Bind ViewModel.SpeciesSelected.SpeciesId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ComboBox x:Name="GenusComboFiSpecies"
+                                    <ComboBox x:Name="GenusComboSpecies"
                                               MinWidth="200"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
                                               loca:Uids.Uid="ComboBox_GenusName"
@@ -485,39 +484,37 @@
                                               IsEditable="False"
                                               IsEnabled="False"
                                               ItemsSource="{x:Bind ViewModel.Tbl66GenussesAllList}"
-                                              RelativePanel.RightOf="FiSpeciesId"
+                                              RelativePanel.RightOf="SpeciesId"
                                               SelectedValue="{x:Bind ViewModel.SpeciesSelected.GenusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="GenusId" />
-                                    <TextBox x:Name="FiSpeciesName"
+                                    <TextBox x:Name="SpeciesName"
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_FiSpeciesName"
-                                             Background="SlateGray"
+                                             loca:Uids.Uid="TextBox_SpeciesName"
                                              CharacterCasing="Lower"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
-                                             RelativePanel.RightOf="GenusComboFiSpecies"
+                                             RelativePanel.RightOf="GenusComboSpecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.SpeciesName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox x:Name="FiSpeciesSubspecies"
+                                    <TextBox x:Name="SpeciesSubspecies"
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_Subspecies"
                                              CharacterCasing="Lower"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
-                                             RelativePanel.RightOf="FiSpeciesName"
+                                             RelativePanel.RightOf="SpeciesName"
                                              Text="{x:Bind ViewModel.SpeciesSelected.Subspecies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox x:Name="FiSpeciesDivers"
+                                    <TextBox x:Name="SpeciesDivers"
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_Divers"
                                              CharacterCasing="Lower"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
-                                             RelativePanel.RightOf="FiSpeciesSubspecies"
+                                             RelativePanel.RightOf="SpeciesSubspecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.Divers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ComboBox x:Name="SpeciesgroupComboFiSpecies"
+                                    <ComboBox x:Name="SpeciesgroupComboSpecies"
                                               MinWidth="200"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
                                               loca:Uids.Uid="ComboBox_SpeciesgroupFullName"
@@ -525,26 +522,26 @@
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                               ItemsSource="{x:Bind ViewModel.Tbl68SpeciesgroupsAllList}"
                                               RelativePanel.AlignLeftWithPanel="True"
-                                              RelativePanel.Below="FiSpeciesId"
+                                              RelativePanel.Below="SpeciesId"
                                               SelectedValue="{x:Bind ViewModel.SpeciesSelected.SpeciesgroupId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectedValuePath="SpeciesgroupId" />
-                                    <CheckBox x:Name="ValidCheckFiSpecies"
+                                    <CheckBox x:Name="ValidCheckSpecies"
                                               Width="80"
                                               Margin="{StaticResource SmallRightCheckBoxMargin}"
                                               VerticalAlignment="Bottom"
                                               loca:Uids.Uid="CheckBox_Valid"
                                               IsChecked="{x:Bind ViewModel.SpeciesSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditSpecies), Mode=OneWay}"
-                                              RelativePanel.Below="FiSpeciesId"
-                                              RelativePanel.RightOf="SpeciesgroupComboFiSpecies" />
+                                              RelativePanel.Below="SpeciesId"
+                                              RelativePanel.RightOf="SpeciesgroupComboSpecies" />
                                     <ComboBox x:Name="ComboCreature"
                                               Width="150"
                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
                                               loca:Uids.Uid="ComboBox_Creature"
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                               PlaceholderText="Select Creature"
-                                              RelativePanel.Below="FiSpeciesId"
-                                              RelativePanel.RightOf="ValidCheckFiSpecies"
+                                              RelativePanel.Below="SpeciesId"
+                                              RelativePanel.RightOf="ValidCheckSpecies"
                                               SelectedValue="{x:Bind ViewModel.SpeciesSelected.Creature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SelectionChanged="ComboCreature_OnSelectionChangedComboBox_SelectionChanged">
                                         <x:String>Animalia</x:String>
@@ -555,7 +552,7 @@
                                         <x:String>Chromista</x:String>
                                         <x:String>Protozoa</x:String>
                                     </ComboBox>
-                                    <TextBox x:Name="AuthorTextFiSpecies"
+                                    <TextBox x:Name="AuthorTextSpecies"
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              HorizontalAlignment="Stretch"
@@ -564,9 +561,9 @@
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="60"
                                              RelativePanel.AlignLeftWithPanel="True"
-                                             RelativePanel.Below="SpeciesgroupComboFiSpecies"
+                                             RelativePanel.Below="SpeciesgroupComboSpecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox x:Name="AuthorYearTextFiSpecies"
+                                    <TextBox x:Name="AuthorYearTextSpecies"
                                              Width="70"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_AuthorYear"
@@ -574,11 +571,11 @@
                                              winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
                                              CornerRadius="3"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
-                                             RelativePanel.Below="SpeciesgroupComboFiSpecies"
-                                             RelativePanel.RightOf="AuthorTextFiSpecies"
+                                             RelativePanel.Below="SpeciesgroupComboSpecies"
+                                             RelativePanel.RightOf="AuthorTextSpecies"
                                              Text="{x:Bind ViewModel.SpeciesSelected.AuthorYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </RelativePanel>
-                                <Expander x:Name="SpecificationExpanderFiSpecies">
+                                <Expander x:Name="SpecificationExpanderSpecies">
                                     <Expander.Header>
                                         <Grid>
                                             <TextBlock loca:Uids.Uid="TextBlock_Specification"
@@ -1033,14 +1030,14 @@
                           Visibility="Collapsed">
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="FiSpeciessesTitle"
-                                       loca:Uids.Uid="TextBlock_FiSpeciesses"
+                            <TextBlock x:Name="SpeciessesTitle"
+                                       loca:Uids.Uid="TextBlock_Speciesses"
                                        Style="{ThemeResource PageTitleTextBlockStyle}" />
-                            <TextBlock x:Name="FiSpeciessesDatasetText"
+                            <TextBlock x:Name="SpeciessesDatasetText"
                                        Margin="5,0,0,2"
                                        loca:Uids.Uid="TextBlock_DataSetCount"
                                        Style="{StaticResource DatasetTitleStyle}" />
-                            <TextBlock x:Name="FiSpeciessesDatasetCountText"
+                            <TextBlock x:Name="SpeciessesDatasetCountText"
                                        Margin="5,0,0,2"
                                        Style="{StaticResource DatasetTitleStyle}"
                                        Text="{x:Bind ViewModel.SpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

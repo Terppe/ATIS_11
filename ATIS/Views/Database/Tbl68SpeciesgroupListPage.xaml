@@ -14,7 +14,7 @@
       mc:Ignorable="d">
 
 
-    <!--  SpeciesgroupListPage.xaml  Skriptdatum: 10.01.2025  10:32  -->
+    <!--  SpeciesgroupListPage.xaml  Skriptdatum: 15.12.2025  10:32  -->
 
 
 
@@ -118,15 +118,6 @@
                                 UriSource="/Assets/Fluent/add.png" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <!--<AppBarButton x:Name="AppBarButtonAddSpecies"
-                          loca:Uids.Uid="AppBarButtonAddSpecies"
-                          Click="AddSpecies_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SpeciesgroupSelected), Mode=OneWay}">
-                <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
-                </AppBarButton.Icon>
-            </AppBarButton>-->
             <AppBarButton x:Name="AppBarButtonSync"
                           loca:Uids.Uid="AppBarButtonSync"
                           Click="Refresh_Click"
@@ -323,8 +314,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SpeciesgroupName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpeciesgroup), Mode=OneWay}"
                                          LostFocus="SpeciesgroupName_OnLostFocus"
                                          MaxLength="100"
@@ -465,6 +454,7 @@
 
                 <!--  SpeciesDetailExpander  -->
                 <Expander x:Name="SpeciesDetailExpander"
+                          MinWidth="1200"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           Visibility="Collapsed">
                     <Expander.Header>
@@ -532,14 +522,6 @@
                                                 UriSource="/Assets/Fluent/save.png" />
                                 </AppBarButton.Icon>
                             </AppBarButton>
-                            <!--<AppBarButton loca:Uids.Uid="AppBarButtonAddSpecies"
-                                          Click="AddSpecies_Click"
-                                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.SpeciesSelected), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/add.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>-->
                             <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
                                           Click="CancelEditsSpeciesAsync"
                                           Visibility="{x:Bind ViewModel.IsInEditSpecies, Mode=OneWay}">
@@ -605,9 +587,7 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_SpeciesName"
-                                             Background="SlateGray"
                                              CharacterCasing="Lower"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="GenusComboSpecies"

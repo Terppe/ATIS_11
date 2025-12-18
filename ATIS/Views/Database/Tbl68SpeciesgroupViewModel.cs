@@ -7,7 +7,7 @@ using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
 
-//    Tbl68SpeciesgroupViewModel Skriptdatum:  10.01.2025  10:32    
+//    Tbl68SpeciesgroupViewModel Skriptdatum:  15.12.2025  10:32    
 
 namespace ATIS.Views.Database;
 
@@ -174,22 +174,6 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
     #endregion [Methods Speciesgroup ]  
 
     #region [Methods Species]
-
-    //public async Task AddSpeciesAsync()
-    //{
-    //    await _dispatcherQueue.EnqueueAsync(() =>
-    //    {
-    //        Tbl66GenussesAllList ??= [];
-    //        Tbl66GenussesAllList = [.. _dataService.GetGenusAsync()];
-
-    //        var genusid = Tbl66GenussesAllList.First().GenusId;
-
-    //        var speciesgroupId = SpeciesgroupSelected.SpeciesgroupId;
-
-    //        Tbl75SpeciessesList ??= [];
-    //        Tbl75SpeciessesList.Insert(index: 0, item: new Tbl75Species { GenusId = genusid, SpeciesgroupId = speciesgroupId });
-    //    });
-    //}
 
     public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {

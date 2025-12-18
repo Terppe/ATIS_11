@@ -4,7 +4,6 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
-using ATIS.Views.Main;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,7 @@ using Microsoft.UI.Dispatching;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-//  Tbl68SpeciesgroupListPage.xaml.cs Skriptdatum:  10.01.2025  10:32         
+//  Tbl68SpeciesgroupListPage.xaml.cs Skriptdatum:  15.12.2025  10:32         
 
 namespace ATIS.Views.Database;
 
@@ -39,6 +38,8 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         {
             ViewModel = App.GetService<Tbl68SpeciesgroupViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -119,6 +120,8 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
                 SpeciesgroupDataGrid.ItemsSource = ViewModel.Tbl68SpeciesgroupsList;
                 ViewModel.SpeciesgroupSelected = ViewModel.Tbl68SpeciesgroupsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -192,6 +195,8 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(SpeciesgroupName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -330,6 +335,10 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         }
         else
         {
+            if (ViewModel.SpeciesgroupSelected.SpeciesgroupId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSpeciesgroup = App.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
             SpeciesgroupSingles();
         }
@@ -417,10 +426,14 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
                 await BehindSaveSpeciesgroup(ViewModel.SpeciesgroupSelected);
                 await Refresh();
                 ViewModel.IsNewSpeciesgroup = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedSpeciesgroup = true;
                 await RevertChangesSpeciesgroupAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -499,52 +512,6 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
     #region [Species Methods]
 
-    //private async void AddSpecies_Click(object sender, RoutedEventArgs e)
-    //{
-    //    try
-    //    {
-    //        BackDetailExpanders();
-    //        await AddSpecies();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async Task AddSpecies()
-    //{
-    //    SpeciesName.Loaded += (s, e) =>
-    //    {
-    //        SpeciesName.Focus(FocusState.Programmatic);
-    //    };
-
-    //    ViewModel.IsInEditSpecies = true;
-    //    ViewModel.IsNewSpecies = true;
-
-    //    await ViewModel.AddSpeciesAsync();
-
-    //    if (ViewModel.Tbl75SpeciessesList != null)
-    //    {
-    //        ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[0];
-    //    }
-    //    SpeciesDetailExpander.IsExpanded = true;
-    //    SpeciesDetailExpander.Visibility = Visibility.Visible;
-
-    //    SpecificationExpanderSpecies.IsExpanded = false;
-    //    FoodExpanderFiSpecies.IsExpanded = false;
-    //    TechnikExpanderFiSpecies.IsExpanded = false;
-    //    HusbandryExpanderFiSpecies.IsExpanded = false;
-    //    BreedingExpanderFiSpecies.IsExpanded = false;
-    //    BuiltExpanderFiSpecies.IsExpanded = false;
-    //    SpecialExpanderFiSpecies.IsExpanded = false;
-    //    ReproductionExpanderPlSpecies.IsExpanded = false;
-    //    CultureExpanderPlSpecies.IsExpanded = false;
-    //    GlobalExpanderPlSpecies.IsExpanded = false;
-
-    //    SpeciesName.PlaceholderText = StringsRes.EnterText;
-    //}
     private void DataGrid_Species_Sorting(object sender, DataGridColumnEventArgs e)
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl75SpeciessesList.Sort);
@@ -888,8 +855,6 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //    DetailPanelSpeciesgroup.Visibility = Visibility.Visible;
-            //   SpeciesgroupDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -960,6 +925,27 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
     }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteSpeciesgroup.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteSpeciesgroup.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteSpeciesgroup.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteSpeciesgroup.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
+    }
+
     #endregion [Refresh Methods]
 
 

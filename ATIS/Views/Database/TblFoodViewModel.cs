@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -11,9 +10,8 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
-using static ATIS.Views.Report.PdfModels;
 
-//    FoodViewModel Skriptdatum:  09.09.2025  10:32    
+//    TblFoodViewModel Skriptdatum:  09.09.2025  10:32    
 
 namespace ATIS.Views.Database;
 
@@ -191,44 +189,16 @@ public partial class TblFoodViewModel : ObservableObject
     #region [Methods Image]
     public async Task AddImageAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            //Wenn auf Tbl75Speciesses umgestellt wird raus _plantId und _animalId
-            //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    _plantId = plantaeRegnum.PlSpeciesId;
-            //}
-            //else
-            //{
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            //    return;
-            //}
-
-            var animalRegnum = Context.Tbl75Speciesses.FirstOrDefault(x => x.SpeciesName == "Animalia#Regnum#");
-
-            if (animalRegnum != null)
-            {
-                _animalId = animalRegnum.SpeciesId;
-            }
-            else
-            {
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
-
             IsInEditImage = true;
             IsNewImage = true;
 
             var foodId = FoodSelected.FoodId;
 
             Tbl81ImagesList ??= [];
-         //   Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FiSpeciesId = _animalId, PlSpeciesId = _plantId, FoodId = foodId });
-      //oder      Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = 2, FoodId = foodId });
-            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = _animalId, FoodId = foodId });
+            Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { FoodId = foodId });  //Fehlt FilestreamID ???
+            return Task.CompletedTask;
         });
     }
 

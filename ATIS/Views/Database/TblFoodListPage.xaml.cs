@@ -1,10 +1,8 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
-using ATIS.Views.Main.Disease;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
@@ -15,7 +13,7 @@ using WinRT.Interop;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-//  FoodPage.xaml.cs Skriptdatum:  09.09.2025  10:32         
+//  TblFoodPage.xaml.cs Skriptdatum:  09.09.2025  10:32         
 
 namespace ATIS.Views.Database;
 
@@ -42,6 +40,8 @@ public sealed partial class TblFoodListPage : Page
         {
             ViewModel = App.GetService<TblFoodViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -121,6 +121,8 @@ public sealed partial class TblFoodListPage : Page
                 FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
                 ViewModel.FoodSelected = ViewModel.TblFoodsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -199,6 +201,8 @@ public sealed partial class TblFoodListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(FoodName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -222,6 +226,8 @@ public sealed partial class TblFoodListPage : Page
         FoodDetailExpander.IsExpanded = true;
         FoodDetailExpander.Visibility = Visibility.Visible;
         SpecificationExpander.IsExpanded = false;
+
+        FoodName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void FoodSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -330,6 +336,10 @@ public sealed partial class TblFoodListPage : Page
         }
         else
         {
+            if (ViewModel.FoodSelected.FoodId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleFood = App.SingleFood(ViewModel.FoodSelected.FoodId);
             FoodSingles();
         }
@@ -415,11 +425,16 @@ public sealed partial class TblFoodListPage : Page
                 }
                 await ViewModel.SaveFoodAsync(ViewModel.FoodSelected);
                 await BehindSaveFood(ViewModel.FoodSelected);
+                ViewModel.IsNewFood = false;
                 await Refresh();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedFood = true;
                 await RevertChangesFoodAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -535,6 +550,7 @@ public sealed partial class TblFoodListPage : Page
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
+        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -568,7 +584,7 @@ public sealed partial class TblFoodListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+            SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
         }
 
         return Task.CompletedTask;
@@ -639,7 +655,7 @@ public sealed partial class TblFoodListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+                SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
                 ImageSingles();
             }
         });
@@ -724,10 +740,14 @@ public sealed partial class TblFoodListPage : Page
                 await BehindSaveImage(ViewModel.ImageSelected);
                 await Refresh();
                 ViewModel.IsNewImage = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedImage = true;
                 await RevertChangesImageAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -740,10 +760,6 @@ public sealed partial class TblFoodListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        //ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-        //    .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-        //                a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-        //                a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.FoodId == ViewModel.ImageSelected.FoodId &&
@@ -912,8 +928,6 @@ public sealed partial class TblFoodListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //  DetailPanelFood.Visibility = Visibility.Visible;
-            //  FoodDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -972,6 +986,26 @@ public sealed partial class TblFoodListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingFood = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteFood.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteFood.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteFood.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteFood.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods]

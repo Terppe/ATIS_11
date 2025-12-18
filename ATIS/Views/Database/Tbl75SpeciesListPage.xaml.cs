@@ -12,7 +12,7 @@ using Windows.Storage.Pickers;
 using Microsoft.UI;
 using WinRT.Interop;
 
-//  Tbl75SpeciesListPage.xaml.cs Skriptdatum:  20.10.2025  10:32      
+//  Tbl75SpeciesListPage.xaml.cs Skriptdatum:  15.12.2025  10:32      
 
 namespace ATIS.Views.Database;
 public sealed partial class Tbl75SpeciesListPage : Page, Maps
@@ -536,14 +536,23 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
     }
 
-    private async Task RefreshSpeciesAsync()
+    private Task RefreshSpeciesAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(() =>
+        if (SpeciesDataGrid.SelectedIndex == -1)
         {
+            _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
+        }
+        else
+        {
+            if (ViewModel.SpeciesSelected.SpeciesId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
-
             SpeciesSingles();
-        });
+        }
+
+        return Task.CompletedTask;
     }
 
     private async void DeleteSpecies_Click(object sender, RoutedEventArgs e)
@@ -641,9 +650,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
     }
-
     private async Task<bool> BeforeSaveSpecies()
     {
         _search = SpeciesSearchBox.Text;
@@ -1152,7 +1159,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceExpertSingles();
         });
@@ -1258,7 +1266,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceSourceSingles();
         });
@@ -1365,7 +1374,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceAuthorSingles();
         });
@@ -1479,8 +1489,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSpecies(ViewModel.CommentSelected.CommentId,
-                ViewModel.SpeciesSelected.SpeciesId);
+            SingleComment = App.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
             CommentSingles();
         }
         else
@@ -1938,13 +1947,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                             a.Language == ViewModel.NameSelected.Language &&
                             a.SpeciesId == ViewModel.NameSelected.SpeciesId)];
         });
-  //      if (ViewModel.IsNewName)
+        if (ViewModel.Tbl78NamesList.Count != 0)
         {
-            if (ViewModel.Tbl78NamesList.Count != 0)
-            {
-                await AllDialogs.DatasetExistInfoMessageDialogAsync();
-                return true;
-            }
+            await AllDialogs.DatasetExistInfoMessageDialogAsync();
+            return true;
         }
         ViewModel.IsModifiedName = true;
         return false;
@@ -2249,13 +2255,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                         a.ShotDate == ViewModel.ImageSelected.ShotDate)];
 
 
-        //     if (ViewModel.IsNewImage)
+        if (ViewModel.Tbl81ImagesList.Count != 0)
         {
-            if (ViewModel.Tbl81ImagesList.Count != 0)
-            {
-                await AllDialogs.DatasetExistInfoMessageDialogAsync();
-                return true;
-            }
+            await AllDialogs.DatasetExistInfoMessageDialogAsync();
+            return true;
         }
         ViewModel.IsModifiedImage = true;
         return false;
@@ -2643,13 +2646,10 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                         a.AuthorYear == ViewModel.SynonymSelected.AuthorYear &&
                         a.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
 
-        if (ViewModel.IsNewSynonym)
+        if (ViewModel.Tbl84SynonymsList.Count != 0)
         {
-            if (ViewModel.Tbl84SynonymsList.Count != 0)
-            {
-                await AllDialogs.DatasetExistInfoMessageDialogAsync();
-                return true;
-            }
+            await AllDialogs.DatasetExistInfoMessageDialogAsync();
+            return true;
         }
         ViewModel.IsModifiedSynonym = true;
         return false;
@@ -3001,14 +3001,11 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.GeographicSelected.Latitude = selected.Latitude;
         ViewModel.GeographicSelected.Longitude = selected.Longitude;
 
-   //     if (ViewModel.IsNewGeographic)
-        {
             if (ViewModel.Tbl87GeographicsList.Count != 0)
             {
                 await AllDialogs.DatasetExistInfoMessageDialogAsync();
                 return true;
             }
-        }
         ViewModel.IsModifiedGeographic = true;
         return false;
     }
@@ -3075,8 +3072,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelSpecies.Visibility = Visibility.Visible;
-            //SpeciesDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -3152,7 +3147,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
         }
 
-       // SpeciesDataGrid_OnCurrentCellChanged(null, null);
         await SpeciesDataGridCurrentCellChanged();
 
         ViewModel.IsLoading = false;

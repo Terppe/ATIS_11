@@ -37,14 +37,8 @@ public partial class Tbl93CommentViewModel : ObservableObject
         Tbl06PhylumsAllList ??= [];
         Tbl06PhylumsAllList = _dataService.GetPhylumAsync();
 
-        //Tbl09DivisionsAllList ??= [];
-        //Tbl09DivisionsAllList = _dataService.GetDivisionAsync();
-
         Tbl12SubphylumsAllList ??= [];
         Tbl12SubphylumsAllList = _dataService.GetSubphylumAsync();
-
-        //Tbl15SubdivisionsAllList ??= [];
-        //Tbl15SubdivisionsAllList = _dataService.GetSubdivisionAsync();
 
         Tbl18SuperclassesAllList ??= [];
         Tbl18SuperclassesAllList = _dataService.GetSuperclassAsync();
@@ -96,9 +90,6 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
         Tbl66GenussesAllList ??= [];
         Tbl66GenussesAllList = _dataService.GetGenusAsync();
-
-        //Tbl69FiSpeciessesAllList ??= [];
-        //Tbl69FiSpeciessesAllList = _dataService.GetSpeciesAsync();
 
         Tbl75SpeciessesAllList ??= [];
         Tbl75SpeciessesAllList = _dataService.GetSpeciesAsync();
@@ -358,7 +349,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl06PhylumsAllList;
         set
         {
-            _tbl06PhylumsAllList = value; OnPropertyChanged(nameof(Tbl06PhylumsAllList));
+            _tbl06PhylumsAllList = value; OnPropertyChanged();
         }
     }
 
@@ -368,7 +359,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl09DivisionsAllList;
         set
         {
-            _tbl09DivisionsAllList = value; OnPropertyChanged(nameof(Tbl09DivisionsAllList));
+            _tbl09DivisionsAllList = value; OnPropertyChanged();
         }
     }
 
@@ -378,7 +369,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl12SubphylumsAllList;
         set
         {
-            _tbl12SubphylumsAllList = value; OnPropertyChanged(nameof(Tbl12SubphylumsAllList));
+            _tbl12SubphylumsAllList = value; OnPropertyChanged();
         }
     }
 
@@ -388,7 +379,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl15SubdivisionsAllList;
         set
         {
-            _tbl15SubdivisionsAllList = value; OnPropertyChanged(nameof(Tbl15SubdivisionsAllList));
+            _tbl15SubdivisionsAllList = value; OnPropertyChanged();
         }
     }
 
@@ -398,7 +389,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl18SuperclassesAllList;
         set
         {
-            _tbl18SuperclassesAllList = value; OnPropertyChanged(nameof(Tbl18SuperclassesAllList));
+            _tbl18SuperclassesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -408,7 +399,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl21ClassesAllList;
         set
         {
-            _tbl21ClassesAllList = value; OnPropertyChanged(nameof(Tbl21ClassesAllList));
+            _tbl21ClassesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -418,7 +409,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl24SubclassesAllList;
         set
         {
-            _tbl24SubclassesAllList = value; OnPropertyChanged(nameof(Tbl24SubclassesAllList));
+            _tbl24SubclassesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -428,7 +419,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl27InfraclassesAllList;
         set
         {
-            _tbl27InfraclassesAllList = value; OnPropertyChanged(nameof(Tbl27InfraclassesAllList));
+            _tbl27InfraclassesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -438,7 +429,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl30LegiosAllList;
         set
         {
-            _tbl30LegiosAllList = value; OnPropertyChanged(nameof(Tbl30LegiosAllList));
+            _tbl30LegiosAllList = value; OnPropertyChanged();
         }
     }
 
@@ -448,7 +439,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl33OrdosAllList;
         set
         {
-            _tbl33OrdosAllList = value; OnPropertyChanged(nameof(Tbl33OrdosAllList));
+            _tbl33OrdosAllList = value; OnPropertyChanged();
         }
     }
 
@@ -458,7 +449,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl36SubordosAllList;
         set
         {
-            _tbl36SubordosAllList = value; OnPropertyChanged(nameof(Tbl36SubordosAllList));
+            _tbl36SubordosAllList = value; OnPropertyChanged();
         }
     }
 
@@ -468,7 +459,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl39InfraordosAllList;
         set
         {
-            _tbl39InfraordosAllList = value; OnPropertyChanged(nameof(Tbl39InfraordosAllList));
+            _tbl39InfraordosAllList = value; OnPropertyChanged();
         }
     }
 
@@ -478,7 +469,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl42SuperfamiliesAllList;
         set
         {
-            _tbl42SuperfamiliesAllList = value; OnPropertyChanged(nameof(Tbl42SuperfamiliesAllList));
+            _tbl42SuperfamiliesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -488,7 +479,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl45FamiliesAllList;
         set
         {
-            _tbl45FamiliesAllList = value; OnPropertyChanged(nameof(Tbl45FamiliesAllList));
+            _tbl45FamiliesAllList = value; OnPropertyChanged(   );
         }
     }
 
@@ -498,7 +489,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl48SubfamiliesAllList;
         set
         {
-            _tbl48SubfamiliesAllList = value; OnPropertyChanged(nameof(Tbl48SubfamiliesAllList));
+            _tbl48SubfamiliesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -508,7 +499,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl51InfrafamiliesAllList;
         set
         {
-            _tbl51InfrafamiliesAllList = value; OnPropertyChanged(nameof(Tbl51InfrafamiliesAllList));
+            _tbl51InfrafamiliesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -518,7 +509,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl54SupertribussesAllList;
         set
         {
-            _tbl54SupertribussesAllList = value; OnPropertyChanged(nameof(Tbl54SupertribussesAllList));
+            _tbl54SupertribussesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -528,7 +519,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl57TribussesAllList;
         set
         {
-            _tbl57TribussesAllList = value; OnPropertyChanged(nameof(Tbl57TribussesAllList));
+            _tbl57TribussesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -538,7 +529,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl60SubtribussesAllList;
         set
         {
-            _tbl60SubtribussesAllList = value; OnPropertyChanged(nameof(Tbl60SubtribussesAllList));
+            _tbl60SubtribussesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -548,7 +539,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl63InfratribussesAllList;
         set
         {
-            _tbl63InfratribussesAllList = value; OnPropertyChanged(nameof(Tbl63InfratribussesAllList));
+            _tbl63InfratribussesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -572,15 +563,6 @@ public partial class Tbl93CommentViewModel : ObservableObject
         }
     }
 
-    //private ObservableCollection<Tbl72PlSpecies> _tbl72PlSpeciessesAllList = null!;
-    //public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesAllList
-    //{
-    //    get => _tbl72PlSpeciessesAllList;
-    //    set
-    //    {
-    //        _tbl72PlSpeciessesAllList = value; OnPropertyChanged(nameof(Tbl72PlSpeciessesAllList));
-    //    }
-    //}
 
     #endregion Public Properties  
 
@@ -603,7 +585,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
             if (CommentSelected == null && Tbl93CommentsList.Count != 0)
             {
-                CommentSelected = CommentItems.FirstOrDefault()!;
+                CommentSelected = CommentItems.FirstOrDefault();
             }
         }
     }

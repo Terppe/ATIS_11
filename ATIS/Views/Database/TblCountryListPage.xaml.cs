@@ -1,12 +1,10 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -38,6 +36,8 @@ public sealed partial class TblCountryListPage : Page
             ViewModel = App.GetService<TblCountryViewModel>();
             InitializeComponent();
             SimpleLog.Info(" TblCountryListPage opended ");
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -112,6 +112,8 @@ public sealed partial class TblCountryListPage : Page
                 CountryDataGrid.ItemsSource = ViewModel.TblCountriesList;
                 ViewModel.CountrySelected = ViewModel.TblCountriesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -156,6 +158,12 @@ public sealed partial class TblCountryListPage : Page
         {
             BackDetailExpanders();
             await AddCountry();
+            CountryName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(CountryName);
+            };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -166,11 +174,6 @@ public sealed partial class TblCountryListPage : Page
 
     private async Task AddCountry()
     {
-        CountryName.Loaded += (s, e) =>
-        {
-            CountryName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditCountry = true;
         ViewModel.IsNewCountry = true;
 
@@ -288,6 +291,10 @@ public sealed partial class TblCountryListPage : Page
         }
         else
         {
+            if (ViewModel.CountrySelected.CountryId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleCountry = App.SingleCountry(ViewModel.CountrySelected.CountryId);
             CountrySingles();
         }
@@ -373,11 +380,16 @@ public sealed partial class TblCountryListPage : Page
                 }
                 await ViewModel.SaveCountryAsync(ViewModel.CountrySelected);
                 await BehindSaveCountry(ViewModel.CountrySelected);
+                ViewModel.IsNewCountry = false;
                 await Refresh();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedCountry = true;
                 await RevertChangesCountryAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -486,8 +498,6 @@ public sealed partial class TblCountryListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelCountry.Visibility = Visibility.Visible;
-            //CountryDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -545,6 +555,26 @@ public sealed partial class TblCountryListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingCountry = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteCountry.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteCountry.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteCountry.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteCountry.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

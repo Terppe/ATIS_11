@@ -4,10 +4,8 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
-using ATIS.Views.Main;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
@@ -43,6 +41,8 @@ public sealed partial class Tbl81ImageListPage : Page
         {
             ViewModel = App.GetService<Tbl81ImageViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -130,6 +130,8 @@ public sealed partial class Tbl81ImageListPage : Page
                 ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
                 ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -200,6 +202,8 @@ public sealed partial class Tbl81ImageListPage : Page
         {
             BackDetailExpanders();
             await AddImage();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -340,6 +344,10 @@ public sealed partial class Tbl81ImageListPage : Page
         }
         else
         {
+            if (ViewModel.ImageSelected.ImageId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
             ImageSingles();
         }
@@ -426,10 +434,15 @@ public sealed partial class Tbl81ImageListPage : Page
                 await ViewModel.SaveImageAsync(ViewModel.ImageSelected, ViewModel.SelectedPath);
                 await BehindSaveImage(ViewModel.ImageSelected, ViewModel.SelectedPath);
                 await Refresh();
+                ViewModel.IsNewImage = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedImage = true;
                 await RevertChangesImageAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -446,20 +459,13 @@ public sealed partial class Tbl81ImageListPage : Page
             ViewModel.Tbl81ImagesList ??= [];
             ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
                 .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-                            a.SpeciesId == ViewModel.ImageSelected.SpeciesId &&
-                            a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
-                            a.FilestreamId == ViewModel.ImageSelected.FilestreamId &&
-                            a.Valid == ViewModel.ImageSelected.Valid &&
-                            a.ShotDate == ViewModel.ImageSelected.ShotDate)];
+                            a.SpeciesId == ViewModel.ImageSelected.SpeciesId)];
         });
-    //    if (ViewModel.IsNewImage)
-        {
             if (ViewModel.Tbl81ImagesList.Count != 0)
             {
                 await AllDialogs.DatasetExistInfoMessageDialogAsync();
                 return true;
             }
-        }
         ViewModel.IsModifiedImage = true;
         return false;
     }
@@ -927,8 +933,6 @@ public sealed partial class Tbl81ImageListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //   DetailPanelImage.Visibility = Visibility.Visible;
-            //   ImageDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -997,6 +1001,26 @@ public sealed partial class Tbl81ImageListPage : Page
 
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteImage.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteImage.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteImage.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteImage.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

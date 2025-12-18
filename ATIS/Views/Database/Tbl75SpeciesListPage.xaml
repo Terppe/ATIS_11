@@ -14,7 +14,6 @@
       NavigationCacheMode="Disabled"
       mc:Ignorable="d">
 
-
     <!--  SpeciesListPage.xaml  Skriptdatum: 20.10.2025  10:32  -->
 
     <Page.Resources>
@@ -3409,7 +3408,7 @@
                                 <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Country"
                                                             Binding="{Binding Country}"
                                                             Tag="Country" />
-                                <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_FiSpeciesName"
+                                <toolkit:DataGridComboBoxColumn loca:Uids.Uid="DataGridComboBoxColumn_SpeciesName"
                                                                 Binding="{Binding SpeciesId}"
                                                                 DisplayMemberPath="SpeciesName"
                                                                 ItemsSource="{x:Bind ViewModel.Tbl75SpeciessesAllList, Mode=OneWay}" />

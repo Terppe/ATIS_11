@@ -1,13 +1,10 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Authentication;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -39,6 +36,8 @@ public sealed partial class Tbl78NameListPage : Page
         {
             ViewModel = App.GetService<Tbl78NameViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -120,6 +119,8 @@ public sealed partial class Tbl78NameListPage : Page
                 NameDataGrid.ItemsSource = ViewModel.Tbl78NamesList;
                 ViewModel.NameSelected = ViewModel.Tbl78NamesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -187,6 +188,12 @@ public sealed partial class Tbl78NameListPage : Page
         {
             BackDetailExpanders();
             await AddName();
+            NameName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(NameName);
+            };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -197,11 +204,6 @@ public sealed partial class Tbl78NameListPage : Page
 
     private async Task AddName()
     {
-        NameName.Loaded += (s, e) =>
-        {
-            NameName.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditName = true;
         ViewModel.IsNewName = true;
 
@@ -237,6 +239,10 @@ public sealed partial class Tbl78NameListPage : Page
         try
         {
             await ViewNameHyperlink();
+            NameName.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(NameName);
+            };
         }
         catch (Exception xe)
         {
@@ -324,6 +330,10 @@ public sealed partial class Tbl78NameListPage : Page
         }
         else
         {
+            if (ViewModel.NameSelected.NameId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleName = App.SingleName(ViewModel.NameSelected.NameId);
             NameSingles();
         }
@@ -410,10 +420,15 @@ public sealed partial class Tbl78NameListPage : Page
                 await ViewModel.SaveNameAsync(ViewModel.NameSelected);
                 await BehindSaveName(ViewModel.NameSelected);
                 await Refresh();
+                ViewModel.IsNewName = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedName = true;
                 await RevertChangesNameAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -433,14 +448,11 @@ public sealed partial class Tbl78NameListPage : Page
                         a.Language == ViewModel.NameSelected.Language &&
                         a.SpeciesId == ViewModel.NameSelected.SpeciesId)];
         });
-    //    if (ViewModel.IsNewName)
-        {
             if (ViewModel.Tbl78NamesList.Count != 0)
             {
                 await AllDialogs.DatasetExistInfoMessageDialogAsync();
                 return true;
             }
-        }
         ViewModel.IsModifiedName = true;
         return false;
     }
@@ -609,6 +621,7 @@ public sealed partial class Tbl78NameListPage : Page
         ViewModel.SpeciesSelected.MemoDomorphism = SingleSpecies.MemoDomorphism;
         ViewModel.SpeciesSelected.MemoBreeding = SingleSpecies.MemoBreeding;
         ViewModel.SpeciesSelected.MemoSpecial = SingleSpecies.MemoSpecial;
+        ViewModel.SpeciesSelected.Creature = SingleSpecies.Creature;
     }
 
     private async Task RevertChangesSpeciesAsync()
@@ -828,8 +841,6 @@ public sealed partial class Tbl78NameListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //   DetailPanelName.Visibility = Visibility.Visible;
-            //   NameDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -897,6 +908,26 @@ public sealed partial class Tbl78NameListPage : Page
 
         SpeciesDetailExpander.IsExpanded = false;
         SpeciesDetailExpander.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteName.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteName.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteName.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteName.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

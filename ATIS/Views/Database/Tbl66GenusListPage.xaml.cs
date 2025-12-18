@@ -8,9 +8,6 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info. 
-
 //  Tbl66GenusListPage.xaml.cs Skriptdatum:  13.06.2024  10:32         
 
 namespace ATIS.Views.Database;
@@ -1202,7 +1199,8 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
+            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+                ViewModel.GenusSelected.GenusId);
 
             ReferenceAuthorSingles();
         });
@@ -1861,8 +1859,6 @@ public sealed partial class Tbl66GenusListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //   DetailPanelGenus.Visibility = Visibility.Visible;
-            //   GenusDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {

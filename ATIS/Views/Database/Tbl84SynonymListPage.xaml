@@ -303,8 +303,6 @@
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SynonymName"
-                                         Background="SlateGray"
-                                         Foreground="White"
                                          IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSynonym), Mode=OneWay}"
                                          MaxLength="100"
                                          RelativePanel.RightOf="SynonymId"
@@ -371,6 +369,7 @@
 
                 <!--  SpeciesDetailExpander  -->
                 <Expander x:Name="SpeciesDetailExpander"
+                          MinWidth="1200"
                           Margin="{StaticResource XSmallTopBottomMargin}"
                           Visibility="Collapsed">
                     <Expander.Header>
@@ -503,9 +502,7 @@
                                              MinWidth="150"
                                              Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_SpeciesName"
-                                             Background="SlateGray"
                                              CharacterCasing="Lower"
-                                             Foreground="White"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditSpecies), Mode=OneWay}"
                                              MaxLength="100"
                                              RelativePanel.RightOf="GenusComboSpecies"
@@ -1044,14 +1041,14 @@
                           Visibility="Collapsed">
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="FiSpeciessesTitle"
-                                       loca:Uids.Uid="TextBlock_FiSpeciesses"
+                            <TextBlock x:Name="SpeciessesTitle"
+                                       loca:Uids.Uid="TextBlock_Speciesses"
                                        Style="{ThemeResource PageTitleTextBlockStyle}" />
-                            <TextBlock x:Name="FiSpeciessesDatasetText"
+                            <TextBlock x:Name="SpeciessesDatasetText"
                                        Margin="5,0,0,2"
                                        loca:Uids.Uid="TextBlock_DataSetCount"
                                        Style="{StaticResource DatasetTitleStyle}" />
-                            <TextBlock x:Name="FiSpeciessesDatasetCountText"
+                            <TextBlock x:Name="SpeciessesDatasetCountText"
                                        Margin="5,0,0,2"
                                        Style="{StaticResource DatasetTitleStyle}"
                                        Text="{x:Bind ViewModel.SpeciesDataSetCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -1077,8 +1074,7 @@
                                 <toolkit:DataGridTemplateColumn loca:Uids.Uid="DataGridTemplateColumn_SpeciesId"
                                                                 Tag="SpeciesId">
                                     <toolkit:DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate
-                                            x:DataType="models:Tbl75Species">
+                                        <DataTemplate x:DataType="models:Tbl75Species">
                                             <HyperlinkButton Margin="12,0"
                                                              BorderThickness="0"
                                                              Click="ViewSpeciesHyperlinkButton_Click"
@@ -1093,7 +1089,7 @@
                                 <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_SpeciesName"
                                                             Binding="{Binding SpeciesName}"
                                                             CanUserSort="True"
-                                                            Tag="FiSpeciesName" />
+                                                            Tag="SpeciesName" />
                                 <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Subspecies"
                                                             Binding="{Binding Subspecies}"
                                                             CanUserSort="True"

@@ -1,12 +1,10 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,6 +35,8 @@ public sealed partial class Tbl90RefSourceListPage : Page
         {
             ViewModel = App.GetService<Tbl90RefSourceViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -111,6 +111,8 @@ public sealed partial class Tbl90RefSourceListPage : Page
                 RefSourceDataGrid.ItemsSource = ViewModel.Tbl90RefSourcesList;
                 ViewModel.RefSourceSelected = ViewModel.Tbl90RefSourcesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -158,6 +160,8 @@ public sealed partial class Tbl90RefSourceListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(RefSourceName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -291,6 +295,10 @@ public sealed partial class Tbl90RefSourceListPage : Page
         }
         else
         {
+            if (ViewModel.RefSourceSelected.RefSourceId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
             RefSourceSingles();
         }
@@ -376,11 +384,16 @@ public sealed partial class Tbl90RefSourceListPage : Page
                 }
                 await ViewModel.SaveRefSourceAsync(ViewModel.RefSourceSelected);
                 await BehindSaveRefSource(ViewModel.RefSourceSelected);
+                ViewModel.IsNewRefSource = false;
                 await Refresh();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRefSource = true;
                 await RevertChangesRefSourceAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -487,8 +500,6 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelRefSource.Visibility = Visibility.Visible;
-            //RefSourceDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -544,6 +555,26 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingRefSource = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteRefSource.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteRefSource.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteRefSource.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteRefSource.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

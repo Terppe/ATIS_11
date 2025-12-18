@@ -61,15 +61,6 @@ public partial class Tbl84SynonymViewModel : ObservableObject
             IsInEditSynonym = true;
             IsNewSynonym = true;
 
-            //var plSpeciesId = 0;
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    plSpeciesId = plantaeRegnum.PlSpeciesId;
-            //}
-
             var speciesId = Tbl75SpeciessesAllList.First().SpeciesId;
 
             Tbl84SynonymsList ??= [];

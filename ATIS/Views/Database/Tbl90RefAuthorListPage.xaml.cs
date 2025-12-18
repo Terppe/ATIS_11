@@ -1,12 +1,10 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,6 +35,8 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         {
             ViewModel = App.GetService<Tbl90RefAuthorViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -111,6 +111,8 @@ public sealed partial class Tbl90RefAuthorListPage : Page
                 RefAuthorDataGrid.ItemsSource = ViewModel.Tbl90RefAuthorsList;
                 ViewModel.RefAuthorSelected = ViewModel.Tbl90RefAuthorsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -158,6 +160,8 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(RefAuthorName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -296,6 +300,10 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         }
         else
         {
+            if (ViewModel.RefAuthorSelected.RefAuthorId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
             RefAuthorSingles();
         }
@@ -382,10 +390,15 @@ public sealed partial class Tbl90RefAuthorListPage : Page
                 await ViewModel.SaveRefAuthorAsync(ViewModel.RefAuthorSelected);
                 await BehindSaveRefAuthor(ViewModel.RefAuthorSelected);
                 await Refresh();
+                ViewModel.IsNewRefAuthor = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRefAuthor = true;
                 await RevertChangesRefAuthorAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -496,8 +509,6 @@ public sealed partial class Tbl90RefAuthorListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //    DetailPanelRefAuthor.Visibility = Visibility.Visible;
-            //    RefAuthorDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -554,6 +565,28 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingRefAuthor = false;
     }
+
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteRefAuthor.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteRefAuthor.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteRefAuthor.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteRefAuthor.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
+    }
+
     #endregion [Refresh Methods] 
 
 

@@ -518,21 +518,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-          //  var fiSpeciesId = 0;
-            //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    _plantId = plantaeRegnum.PlSpeciesId;
-            //}
-            //else
-            //{
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            //    return;
-            //}
-
             IsInEditName = true;
             IsNewName = true;
 
@@ -648,24 +633,8 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     #region [Methods Image]
     public async Task AddImageAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-
-            //var fiSpeciesId = 0;
-            //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    _plantId = plantaeRegnum.PlSpeciesId;
-            //}
-            //else
-            //{
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            //    return;
-            //}
-
             IsInEditImage = true;
             IsNewImage = true;
 
@@ -673,6 +642,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
             Tbl81ImagesList ??= [];
             Tbl81ImagesList.Insert(index: 0, item: new Tbl81Image { SpeciesId = speciesId});
+            return Task.CompletedTask;
         });
     }
 
@@ -787,22 +757,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-
-            //var fiSpeciesId = 0;
-            //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    _plantId = plantaeRegnum.PlSpeciesId;
-            //}
-            //else
-            //{
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            //    return;
-            //}
-
             IsInEditSynonym = true;
             IsNewSynonym = true;
 
@@ -909,23 +863,8 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     #region [Methods Geographic]
     public async Task AddGeographicAsync()
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
+        await _dispatcherQueue.EnqueueAsync(() =>
         {
-            //var fiSpeciesId = 0;
-            //    _plantId = 1;  //weil in Tbl72PlSpeciesses nicht mehr gespeichert wird
-
-            //var plantaeRegnum = Context.Tbl72PlSpeciesses.FirstOrDefault(x => x.PlSpeciesName == "Plantae#Regnum#");
-
-            //if (plantaeRegnum != null)
-            //{
-            //    _plantId = plantaeRegnum.PlSpeciesId;
-            //}
-            //else
-            //{
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            //    return;
-            //}
-
             IsInEditGeographic = true;
             IsNewGeographic = true;
 
@@ -933,6 +872,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
             Tbl87GeographicsList ??= [];
             Tbl87GeographicsList.Insert(index: 0, item: new Tbl87Geographic { SpeciesId = speciesId });
+            return Task.CompletedTask;
         });
     }
     public async Task SaveGeographicAsync(Tbl87Geographic viewModelGeographicSelected)
@@ -1731,17 +1671,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             _tbl75SpeciessesAllList = value; OnPropertyChanged();
         }
     }
-
-
-    //private ObservableCollection<Tbl72PlSpecies> _tbl72PlSpeciessesAllList;
-    //public ObservableCollection<Tbl72PlSpecies> Tbl72PlSpeciessesAllList
-    //{
-    //    get => _tbl72PlSpeciessesAllList;
-    //    set
-    //    {
-    //        _tbl72PlSpeciessesAllList = value; OnPropertyChanged();
-    //    }
-    //}
 
     private ObservableCollection<Tbl78Name> _tbl78NamesList;
 

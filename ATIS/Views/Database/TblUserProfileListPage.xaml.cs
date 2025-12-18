@@ -1,12 +1,10 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -38,6 +36,8 @@ public sealed partial class TblUserProfileListPage : Page
             ViewModel = App.GetService<TblUserProfileViewModel>();
             InitializeComponent();
             SimpleLog.Info(" TblUserProfileListPage opended ");
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -112,6 +112,8 @@ public sealed partial class TblUserProfileListPage : Page
                 UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
                 ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -154,7 +156,14 @@ public sealed partial class TblUserProfileListPage : Page
     {
         try
         {
+            BackDetailExpanders();
             await AddUserProfile();
+            UserProfileEmail.Loaded += (s, e) =>
+            {
+                SetFocusses.SetFocusAndChangePlaceholderText(UserProfileEmail);
+            };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -165,11 +174,6 @@ public sealed partial class TblUserProfileListPage : Page
 
     private async Task AddUserProfile()
     {
-        UserProfileEmail.Loaded += (s, e) =>
-        {
-            UserProfileEmail.Focus(FocusState.Programmatic);
-        };
-
         ViewModel.IsInEditUserProfile = true;
         ViewModel.IsNewUserProfile = true;
 
@@ -314,6 +318,10 @@ public sealed partial class TblUserProfileListPage : Page
         }
         else
         {
+            if (ViewModel.UserProfileSelected.UserProfileId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
             UserProfileSingles();
         }
@@ -399,11 +407,16 @@ public sealed partial class TblUserProfileListPage : Page
                 }
                 await ViewModel.SaveUserProfileAsync(ViewModel.UserProfileSelected);
                 await BehindSaveUserProfile(ViewModel.UserProfileSelected);
+                ViewModel.IsNewUserProfile = false;
                 await Refresh();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedUserProfile = true;
                 await RevertChangesUserProfileAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -510,8 +523,6 @@ public sealed partial class TblUserProfileListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelUserProfile.Visibility = Visibility.Visible;
-            //UserProfileDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -564,10 +575,30 @@ public sealed partial class TblUserProfileListPage : Page
                 ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
             }
         }
-        UserProfileDataGrid_OnCurrentCellChanged(null, null);
+        await UserProfileDataGridCurrentCellChanged();
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingUserProfile = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteUserProfile.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteUserProfile.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteUserProfile.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteUserProfile.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

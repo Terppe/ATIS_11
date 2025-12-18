@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -37,6 +36,8 @@ public sealed partial class Tbl90RefExpertListPage : Page
         {
             ViewModel = App.GetService<Tbl90RefExpertViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -111,6 +112,8 @@ public sealed partial class Tbl90RefExpertListPage : Page
                 RefExpertDataGrid.ItemsSource = ViewModel.Tbl90RefExpertsList;
                 ViewModel.RefExpertSelected = ViewModel.Tbl90RefExpertsList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -158,6 +161,8 @@ public sealed partial class Tbl90RefExpertListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(RefExpertName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -289,6 +294,10 @@ public sealed partial class Tbl90RefExpertListPage : Page
         }
         else
         {
+            if (ViewModel.RefExpertSelected.RefExpertId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
             RefExpertSingles();
         }
@@ -374,11 +383,16 @@ public sealed partial class Tbl90RefExpertListPage : Page
                 }
                 await ViewModel.SaveRefExpertAsync(ViewModel.RefExpertSelected);
                 await BehindSaveRefExpert(ViewModel.RefExpertSelected);
+                ViewModel.IsNewRefExpert = false;
                 await Refresh();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedRefExpert = true;
                 await RevertChangesRefExpertAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -484,8 +498,6 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
         if (string.IsNullOrEmpty(_search))
         {
-            //DetailPanelRefExpert.Visibility = Visibility.Visible;
-            //RefExpertDetailExpander.Visibility = Visibility.Visible;
         }
         else
         {
@@ -542,6 +554,26 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingRefExpert = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteRefExpert.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteRefExpert.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteRefExpert.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteRefExpert.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

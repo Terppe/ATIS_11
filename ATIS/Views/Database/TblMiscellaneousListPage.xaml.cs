@@ -14,7 +14,7 @@ using WinRT.Interop;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-//  MiscellaneousPage.xaml.cs Skriptdatum:  09.09.2025  10:32      
+//  TblMiscellaneousPage.xaml.cs Skriptdatum:  09.09.2025  10:32      
 
 namespace ATIS.Views.Database;
 
@@ -41,6 +41,8 @@ public sealed partial class TblMiscellaneousListPage : Page
         {
             ViewModel = App.GetService<TblMiscellaneousViewModel>();
             InitializeComponent();
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -120,6 +122,8 @@ public sealed partial class TblMiscellaneousListPage : Page
                 MiscellaneousDataGrid.ItemsSource = ViewModel.TblMiscellaneoussesList;
                 ViewModel.MiscellaneousSelected = ViewModel.TblMiscellaneoussesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -169,7 +173,6 @@ public sealed partial class TblMiscellaneousListPage : Page
             });
 
             ViewModel.ImageDataSetCount = ViewModel.Tbl81ImagesList.Count;
-            ViewModel.RefreshImageItems();
 
             if (ViewModel.Tbl81ImagesList.Count == 0)
             {
@@ -197,6 +200,8 @@ public sealed partial class TblMiscellaneousListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(MiscellaneousName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -219,6 +224,8 @@ public sealed partial class TblMiscellaneousListPage : Page
 
         MiscellaneousDetailExpander.IsExpanded = true;
         MiscellaneousDetailExpander.Visibility = Visibility.Visible;
+
+        MiscellaneousName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void MiscellaneousSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -327,6 +334,10 @@ public sealed partial class TblMiscellaneousListPage : Page
         }
         else
         {
+            if (ViewModel.MiscellaneousSelected.MiscellaneousId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleMiscellaneous = App.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
             MiscellaneousSingles();
         }
@@ -413,10 +424,15 @@ public sealed partial class TblMiscellaneousListPage : Page
                 await ViewModel.SaveMiscellaneousAsync(ViewModel.MiscellaneousSelected);
                 await BehindSaveMiscellaneous(ViewModel.MiscellaneousSelected);
                 await Refresh();
+                ViewModel.IsNewMiscellaneous = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedMiscellaneous = true;
                 await RevertChangesMiscellaneousAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -529,12 +545,12 @@ public sealed partial class TblMiscellaneousListPage : Page
         ImageDetailExpander.IsExpanded = true;
         ImageDetailExpander.Visibility = Visibility.Visible;
 
-        //FoodDetailExpander.IsExpanded = false;
-        //ImagesExpander.IsExpanded = false;
 
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
+
+        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -610,7 +626,6 @@ public sealed partial class TblMiscellaneousListPage : Page
     private void ImageSingles()
     {
         ViewModel.ImageSelected.MiscellaneousId = SingleImage.MiscellaneousId;
-        ViewModel.ImageSelected.ImageId = SingleImage.ImageId;
         ViewModel.ImageSelected.Valid = SingleImage.Valid;
         ViewModel.ImageSelected.ValidYear = SingleImage.ValidYear;
         ViewModel.ImageSelected.Filestream = SingleImage.Filestream;
@@ -740,10 +755,6 @@ public sealed partial class TblMiscellaneousListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        //ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-        //    .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-        //                a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-        //                a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.MiscellaneousId == ViewModel.ImageSelected.MiscellaneousId &&
@@ -971,6 +982,26 @@ public sealed partial class TblMiscellaneousListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingMiscellaneous = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteMiscellaneous.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteMiscellaneous.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteMiscellaneous.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteMiscellaneous.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 
