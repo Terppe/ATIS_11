@@ -295,8 +295,6 @@ public sealed partial class Tbl27InfraclassListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl27InfraclassesList.Sort);
     }
 
-    private void AddNewInfraclassCanceled(object sender, EventArgs e) => InfraclassDetailExpander.IsExpanded = false;
-
     private async void ViewInfraclassHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -378,6 +376,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         ViewModel.InfraclassSelected.PorName = SingleInfraclass.PorName;
         ViewModel.InfraclassSelected.Memo = SingleInfraclass.Memo;
     }
+
     private async Task RevertChangesInfraclassAsync()
     {
         ViewModel.IsInEditInfraclass = false;
@@ -387,6 +386,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             ViewModel.IsModifiedInfraclass = false;
         }
     }
+
     private Task RefreshInfraclassAsync()
     {
         if (InfraclassDataGrid.SelectedIndex == -1)
@@ -573,8 +573,6 @@ public sealed partial class Tbl27InfraclassListPage : Page
     #endregion [Infraclass Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

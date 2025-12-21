@@ -295,8 +295,6 @@ public sealed partial class Tbl33OrdoListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl33OrdosList.Sort);
     }
 
-    private void AddNewOrdoCanceled(object sender, EventArgs e) => OrdoDetailExpander.IsExpanded = false;
-
     private async void ViewOrdoHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl33OrdoListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsOrdoAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewOrdo)
@@ -378,6 +377,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         ViewModel.OrdoSelected.PorName = SingleOrdo.PorName;
         ViewModel.OrdoSelected.Memo = SingleOrdo.Memo;
     }
+
     private async Task RevertChangesOrdoAsync()
     {
         ViewModel.IsInEditOrdo = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             ViewModel.IsModifiedOrdo = false;
         }
     }
+
     private Task RefreshOrdoAsync()
     {
         if (OrdoDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl33OrdoListPage : Page
     #endregion [Ordo Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

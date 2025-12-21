@@ -18,13 +18,6 @@
 
         <conv:DateConverter x:Key="DateConverter" />
         <MenuFlyout x:Key="UserProfileDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_UserProfile"
-                            Click="SaveUserProfile_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_UserProfile"
                             Click="DeleteUserProfile_Click">
                 <MenuFlyoutItem.Icon>

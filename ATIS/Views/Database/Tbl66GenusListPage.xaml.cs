@@ -303,8 +303,6 @@ public sealed partial class Tbl66GenusListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl66GenussesList.Sort);
     }
 
-    private void AddNewGenusCanceled(object sender, EventArgs e) => GenusDetailExpander.IsExpanded = false;
-
     private async void ViewGenusHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -317,6 +315,7 @@ public sealed partial class Tbl66GenusListPage : Page
             SimpleLog.Log(xe);
         }
     }
+
     private Task ViewGenusHyperlink()
     {
         ViewModel.IsInEditGenus = false;
@@ -335,6 +334,7 @@ public sealed partial class Tbl66GenusListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsGenusAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewGenus)
@@ -385,6 +385,7 @@ public sealed partial class Tbl66GenusListPage : Page
         ViewModel.GenusSelected.PorName = SingleGenus.PorName;
         ViewModel.GenusSelected.Memo = SingleGenus.Memo;
     }
+
     private async Task RevertChangesGenusAsync()
     {
         ViewModel.IsInEditGenus = false;
@@ -394,6 +395,7 @@ public sealed partial class Tbl66GenusListPage : Page
             ViewModel.IsModifiedGenus = false;
         }
     }
+
     private Task RefreshGenusAsync()
     {
         if (GenusDataGrid.SelectedIndex == -1)
@@ -509,7 +511,6 @@ public sealed partial class Tbl66GenusListPage : Page
         }
     }
 
-
     private async Task<bool> BeforeSaveGenus()
     {
         _search = GenusSearchBox.Text;
@@ -581,8 +582,6 @@ public sealed partial class Tbl66GenusListPage : Page
     #endregion [Genus Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

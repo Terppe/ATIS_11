@@ -21,13 +21,6 @@
         <conv:ImageSourceConverter x:Key="ImageSourceConverter" />
         <conv:DateConverter x:Key="DateConverter" />
         <MenuFlyout x:Key="SpeciesDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Species"
-                            Click="SaveSpecies_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Species"
                             Click="DeleteSpecies_Click">
                 <MenuFlyoutItem.Icon>

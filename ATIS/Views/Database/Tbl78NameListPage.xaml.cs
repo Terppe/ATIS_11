@@ -232,8 +232,6 @@ public sealed partial class Tbl78NameListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl78NamesList.Sort);
     }
 
-    private void AddNewNameCanceled(object sender, EventArgs e) => NameDetailExpander.IsExpanded = false;
-
     private async void ViewNameHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -269,6 +267,7 @@ public sealed partial class Tbl78NameListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsNameAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewName)
@@ -313,6 +312,7 @@ public sealed partial class Tbl78NameListPage : Page
         ViewModel.NameSelected.Language = SingleName.Language;
         ViewModel.NameSelected.Memo = SingleName.Memo;
     }
+
     private async Task RevertChangesNameAsync()
     {
         ViewModel.IsInEditName = false;
@@ -322,6 +322,7 @@ public sealed partial class Tbl78NameListPage : Page
             ViewModel.IsModifiedName = false;
         }
     }
+
     private Task RefreshNameAsync()
     {
         if (NameDataGrid.SelectedIndex == -1)

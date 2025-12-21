@@ -1,9 +1,7 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Authentication;
 using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
@@ -297,8 +295,6 @@ public sealed partial class Tbl63InfratribusListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl63InfratribussesList.Sort);
     }
 
-    private void AddNewInfratribusCanceled(object sender, EventArgs e) => InfratribusDetailExpander.IsExpanded = false;
-
     private async void ViewInfratribusHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -330,6 +326,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsInfratribusAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewInfratribus)
@@ -380,6 +377,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         ViewModel.InfratribusSelected.PorName = SingleInfratribus.PorName;
         ViewModel.InfratribusSelected.Memo = SingleInfratribus.Memo;
     }
+
     private async Task RevertChangesInfratribusAsync()
     {
         ViewModel.IsInEditInfratribus = false;
@@ -389,6 +387,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             ViewModel.IsModifiedInfratribus = false;
         }
     }
+
     private Task RefreshInfratribusAsync()
     {
         if (InfratribusDataGrid.SelectedIndex == -1)
@@ -575,8 +574,6 @@ public sealed partial class Tbl63InfratribusListPage : Page
     #endregion [Infratribus Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {
@@ -934,6 +931,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         //ViewModel.ReferenceSelected.RefSourceId = SingleReference.RefSourceId;
         //ViewModel.ReferenceSelected.RefAuthorId = SingleReference.RefAuthorId;
     }
+
     public async Task RevertChangesReferenceExpertAsync()
     {
         ViewModel.IsInEditReferenceExpert = false;
@@ -943,6 +941,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             ViewModel.IsModifiedReferenceExpert = false;
         }
     }
+
     private async Task RefreshReferenceExpertAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -953,6 +952,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             ReferenceExpertSingles();
         });
     }
+
     #endregion [Reference Expert Methods]
 
     #region [Reference Source Methods]
@@ -1009,6 +1009,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             CancelReferenceSourceEdits();
         }
     }
+
     private void CancelReferenceSourceEdits()
     {
         var x = (DataGrid)FindName("ReferenceDataGrid");
@@ -1041,6 +1042,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         ViewModel.ReferenceSelected.RefSourceId = SingleReference.RefSourceId;
         //ViewModel.ReferenceSelected.RefAuthorId = SingleReference.RefAuthorId;
     }
+
     public async Task RevertChangesReferenceSourceAsync()
     {
         ViewModel.IsInEditReferenceSource = false;
@@ -1050,6 +1052,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             ViewModel.IsModifiedReferenceSource = false;
         }
     }
+
     private async Task RefreshReferenceSourceAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -1150,6 +1153,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         // ViewModel.ReferenceSelected.RefSourceId = SingleReference.RefSourceId;
         ViewModel.ReferenceSelected.RefAuthorId = SingleReference.RefAuthorId;
     }
+
     public async Task RevertChangesReferenceAuthorAsync()
     {
         ViewModel.IsInEditReferenceAuthor = false;
@@ -1159,6 +1163,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             ViewModel.IsModifiedReferenceAuthor = false;
         }
     }
+
     private async Task RefreshReferenceAuthorAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -1212,7 +1217,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl93CommentsList.Sort);
     }
 
-    private void AddNewCommentCanceled(object sender, EventArgs e) => CommentsExpander.IsExpanded = false;
+    //private void AddNewCommentCanceled(object sender, EventArgs e) => CommentsExpander.IsExpanded = false;
 
     private async void ViewCommentHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -1566,6 +1571,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             ViewModel.IsModifiedGenus = false;
         }
     }
+
     private async Task RefreshGenusAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>

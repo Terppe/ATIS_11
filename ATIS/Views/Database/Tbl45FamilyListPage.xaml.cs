@@ -295,8 +295,6 @@ public sealed partial class Tbl45FamilyListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl45FamiliesList.Sort);
     }
 
-    private void AddNewFamilyCanceled(object sender, EventArgs e) => FamilyDetailExpander.IsExpanded = false;
-
     private async void ViewFamilyHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl45FamilyListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsFamilyAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewFamily)
@@ -378,6 +377,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         ViewModel.FamilySelected.PorName = SingleFamily.PorName;
         ViewModel.FamilySelected.Memo = SingleFamily.Memo;
     }
+
     private async Task RevertChangesFamilyAsync()
     {
         ViewModel.IsInEditFamily = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             ViewModel.IsModifiedFamily = false;
         }
     }
+
     private Task RefreshFamilyAsync()
     {
         if (FamilyDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl45FamilyListPage : Page
     #endregion [Family Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

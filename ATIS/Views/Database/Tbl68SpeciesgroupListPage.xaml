@@ -23,13 +23,6 @@
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
 
         <MenuFlyout x:Key="SpeciesgroupDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Speciesgroup"
-                            Click="SaveSpeciesgroup_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Speciesgroup"
                             Click="DeleteSpeciesgroup_Click">
                 <MenuFlyoutItem.Icon>

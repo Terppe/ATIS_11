@@ -295,8 +295,6 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl42SuperfamiliesList.Sort);
     }
 
-    private void AddNewSuperfamilyCanceled(object sender, EventArgs e) => SuperfamilyDetailExpander.IsExpanded = false;
-
     private async void ViewSuperfamilyHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSuperfamilyAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSuperfamily)
@@ -378,6 +377,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         ViewModel.SuperfamilySelected.PorName = SingleSuperfamily.PorName;
         ViewModel.SuperfamilySelected.Memo = SingleSuperfamily.Memo;
     }
+
     private async Task RevertChangesSuperfamilyAsync()
     {
         ViewModel.IsInEditSuperfamily = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             ViewModel.IsModifiedSuperfamily = false;
         }
     }
+
     private Task RefreshSuperfamilyAsync()
     {
         if (SuperfamilyDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     #endregion [Superfamily Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

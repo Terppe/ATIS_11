@@ -17,15 +17,7 @@
     <!--  SubclassListPage.xaml  Skriptdatum: 15.06.2024  18:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="SubclassDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Subclass"
-                            Click="SaveSubclass_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Subclass"
                             Click="DeleteSubclass_Click">
                 <MenuFlyoutItem.Icon>

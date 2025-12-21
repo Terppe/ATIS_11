@@ -17,15 +17,7 @@
     <!--  InfratribusListPage.xaml  Skriptdatum: 30.12.2024  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="InfratribusDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Infratribus"
-                            Click="SaveInfratribus_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Infratribus"
                             Click="DeleteInfratribus_Click">
                 <MenuFlyoutItem.Icon>

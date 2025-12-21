@@ -295,8 +295,6 @@ public sealed partial class Tbl36SubordoListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl36SubordosList.Sort);
     }
 
-    private void AddNewSubordoCanceled(object sender, EventArgs e) => SubordoDetailExpander.IsExpanded = false;
-
     private async void ViewSubordoHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl36SubordoListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSubordoAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSubordo)
@@ -573,8 +572,6 @@ public sealed partial class Tbl36SubordoListPage : Page
     #endregion [Subordo Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

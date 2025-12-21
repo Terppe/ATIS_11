@@ -16,15 +16,7 @@
     <!--  RefSourceListPage.xaml  Skriptdatum:  06.01.2025  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="RefSourceDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_RefSource"
-                            Click="SaveRefSource_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_RefSource"
                             Click="DeleteRefSource_Click">
                 <MenuFlyoutItem.Icon>

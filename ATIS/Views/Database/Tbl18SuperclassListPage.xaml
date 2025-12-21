@@ -19,13 +19,6 @@
     <Page.Resources>
 
         <MenuFlyout x:Key="SuperclassDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Superclass"
-                            Click="SaveSuperclass_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Superclass"
                             Click="DeleteSuperclass_Click">
                 <MenuFlyoutItem.Icon>

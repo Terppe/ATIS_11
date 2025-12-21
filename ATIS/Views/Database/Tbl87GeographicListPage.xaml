@@ -17,16 +17,8 @@
     <!--  GeographicListPage.xaml  Skriptdatum: 08.07.2025  10:32  -->
 
     <Page.Resources>
-
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
         <MenuFlyout x:Key="GeographicDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Geographic"
-                            Click="SaveGeographic_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Geographic"
                             Click="DeleteGeographic_Click">
                 <MenuFlyoutItem.Icon>

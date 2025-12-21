@@ -295,8 +295,6 @@ public sealed partial class Tbl24SubclassListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl24SubclassesList.Sort);
     }
 
-    private void AddNewSubclassCanceled(object sender, EventArgs e) => SubclassDetailExpander.IsExpanded = false;
-
     private async void ViewSubclassHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl24SubclassListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSubclassAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSubclass)
@@ -378,6 +377,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         ViewModel.SubclassSelected.PorName = SingleSubclass.PorName;
         ViewModel.SubclassSelected.Memo = SingleSubclass.Memo;
     }
+
     private async Task RevertChangesSubclassAsync()
     {
         ViewModel.IsInEditSubclass = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             ViewModel.IsModifiedSubclass = false;
         }
     }
+
     private Task RefreshSubclassAsync()
     {
         if (SubclassDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl24SubclassListPage : Page
     #endregion [Subclass Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

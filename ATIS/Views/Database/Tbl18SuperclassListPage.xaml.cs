@@ -295,8 +295,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl18SuperclassesList.Sort);
     }
 
-    private void AddNewSuperclassCanceled(object sender, EventArgs e) => SuperclassDetailExpander.IsExpanded = false;
-
     private async void ViewSuperclassHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -573,8 +571,6 @@ public sealed partial class Tbl18SuperclassListPage : Page
     #endregion [Superclass Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

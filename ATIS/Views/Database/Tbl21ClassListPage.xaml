@@ -19,13 +19,6 @@
     <Page.Resources>
 
         <MenuFlyout x:Key="ClassDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Class"
-                            Click="SaveClass_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Class"
                             Click="DeleteClass_Click">
                 <MenuFlyoutItem.Icon>

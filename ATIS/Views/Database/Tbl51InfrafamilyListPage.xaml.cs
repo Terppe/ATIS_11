@@ -295,8 +295,6 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl51InfrafamiliesList.Sort);
     }
 
-    private void AddNewInfrafamilyCanceled(object sender, EventArgs e) => InfrafamilyDetailExpander.IsExpanded = false;
-
     private async void ViewInfrafamilyHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsInfrafamilyAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewInfrafamily)
@@ -378,6 +377,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         ViewModel.InfrafamilySelected.PorName = SingleInfrafamily.PorName;
         ViewModel.InfrafamilySelected.Memo = SingleInfrafamily.Memo;
     }
+
     private async Task RevertChangesInfrafamilyAsync()
     {
         ViewModel.IsInEditInfrafamily = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             ViewModel.IsModifiedInfrafamily = false;
         }
     }
+
     private Task RefreshInfrafamilyAsync()
     {
         if (InfrafamilyDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     #endregion [Infrafamily Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

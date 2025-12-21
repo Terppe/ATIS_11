@@ -15,18 +15,10 @@
     <!--  TblDiseaseListPage.xaml  Skriptdatum: 09.09.2025  10:32  -->
 
     <Page.Resources>
-        <conv:DoubleToStringConverter x:Key="DoubleToStringConverter" />
         <conv:ImageSourceConverter x:Key="ImageSourceConverter" />
         <conv:DateConverter x:Key="DateConverter" />
 
         <MenuFlyout x:Key="DiseaseDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Disease"
-                            Click="SaveDisease_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Disease"
                             Click="DeleteDisease_Click">
                 <MenuFlyoutItem.Icon>

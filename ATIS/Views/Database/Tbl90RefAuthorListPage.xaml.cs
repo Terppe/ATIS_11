@@ -200,8 +200,6 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl90RefAuthorsList.Sort);
     }
 
-    private void AddNewRefAuthorCanceled(object sender, EventArgs e) => RefAuthorDetailExpander.IsExpanded = false;
-
     private async void ViewRefAuthorHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -233,6 +231,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsRefAuthorAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewRefAuthor)
@@ -283,6 +282,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         ViewModel.RefAuthorSelected.PublicationPlace = SingleRefAuthor.PublicationPlace;
         ViewModel.RefAuthorSelected.PublicationYear = SingleRefAuthor.PublicationYear;
     }
+
     private async Task RevertChangesRefAuthorAsync()
     {
         ViewModel.IsInEditRefAuthor = false;
@@ -292,6 +292,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             ViewModel.IsModifiedRefAuthor = false;
         }
     }
+
     private Task RefreshRefAuthorAsync()
     {
         if (RefAuthorDataGrid.SelectedIndex == -1)
@@ -471,19 +472,19 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         ViewModel.RefAuthorDataSetCount = ViewModel.Tbl90RefAuthorsList.Count;
     }
 
-
     private void BackRefAuthor_Click(object sender, RoutedEventArgs e)
     {
         RefAuthorDetailExpander.IsExpanded = false;
         RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [RefAuthor Methods]        
     private void BackDetailExpanders()
     {
         RefAuthorDetailExpander.IsExpanded = false;
         RefAuthorDetailExpander.Visibility = Visibility.Collapsed;
     }
+
+    #endregion [RefAuthor Methods]        
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

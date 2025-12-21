@@ -17,13 +17,6 @@
     <Page.Resources>
 
         <MenuFlyout x:Key="RefExpertDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_RefExpert"
-                            Click="SaveRefExpert_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_RefExpert"
                             Click="DeleteRefExpert_Click">
                 <MenuFlyoutItem.Icon>

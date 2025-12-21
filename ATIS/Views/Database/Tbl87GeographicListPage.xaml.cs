@@ -242,8 +242,6 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl87GeographicsList.Sort);
     }
 
-    private void AddNewGeographicCanceled(object sender, EventArgs e) => GeographicDetailExpander.IsExpanded = false;
-
     private async void ViewGeographicHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -281,6 +279,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             MyMap.Map = await ((Maps)this).CreateMapAsync(centerOf1LongX, centerOf1LatiY, zoom, graphSelect);
         }
     }
+
     private void CancelEditsGeographicAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewGeographic)
@@ -339,6 +338,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         ViewModel.GeographicSelected.Info = SingleGeographic.Info;
         ViewModel.GeographicSelected.Memo = SingleGeographic.Memo;
     }
+
     private async Task RevertChangesGeographicAsync()
     {
         ViewModel.IsInEditGeographic = false;
@@ -348,6 +348,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             ViewModel.IsModifiedGeographic = false;
         }
     }
+
     private Task RefreshGeographicAsync()
     {
         if (GeographicDataGrid.SelectedIndex == -1)

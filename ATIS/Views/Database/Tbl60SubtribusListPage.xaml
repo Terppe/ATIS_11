@@ -17,15 +17,7 @@
     <!--  SubtribusListPage.xaml  Skriptdatum: 30.12.2024  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="SubtribusDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Subtribus"
-                            Click="SaveSubtribus_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Subtribus"
                             Click="DeleteSubtribus_Click">
                 <MenuFlyoutItem.Icon>

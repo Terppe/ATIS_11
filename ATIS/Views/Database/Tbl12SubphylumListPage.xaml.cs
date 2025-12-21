@@ -295,7 +295,6 @@ public sealed partial class Tbl12SubphylumListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl12SubphylumsList.Sort);
     }
 
-    private void AddNewSubphylumCanceled(object sender, EventArgs e) => SubphylumDetailExpander.IsExpanded = false;
 
     private async void ViewSubphylumHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -573,8 +572,6 @@ public sealed partial class Tbl12SubphylumListPage : Page
     #endregion [Subphylum Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

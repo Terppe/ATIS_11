@@ -17,15 +17,7 @@
     <!--  InfrafamilyListPage.xaml  Skriptdatum: 21.01.2025  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="InfrafamilyDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Infrafamily"
-                            Click="SaveInfrafamily_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Infrafamily"
                             Click="DeleteInfrafamily_Click">
                 <MenuFlyoutItem.Icon>

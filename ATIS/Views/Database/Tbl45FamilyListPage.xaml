@@ -18,13 +18,6 @@
 
     <Page.Resources>
         <MenuFlyout x:Key="FamilyDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Family"
-                            Click="SaveFamily_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Family"
                             Click="DeleteFamily_Click">
                 <MenuFlyoutItem.Icon>

@@ -202,8 +202,6 @@ public sealed partial class TblUserProfileListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.TblUserProfilesList.Sort);
     }
 
-    private void AddNewUserProfileCanceled(object sender, EventArgs e) => UserProfileDetailExpander.IsExpanded = false;
-
     private async void ViewUserProfileHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -235,6 +233,7 @@ public sealed partial class TblUserProfileListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsUserProfileAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewUserProfile)
@@ -301,6 +300,7 @@ public sealed partial class TblUserProfileListPage : Page
         ViewModel.UserProfileSelected.Title = SingleUserProfile.Title;
         ViewModel.UserProfileSelected.Tel = SingleUserProfile.Tel;
     }
+
     private async Task RevertChangesUserProfileAsync()
     {
         ViewModel.IsInEditUserProfile = false;
@@ -310,6 +310,7 @@ public sealed partial class TblUserProfileListPage : Page
             ViewModel.IsModifiedUserProfile = false;
         }
     }
+
     private Task RefreshUserProfileAsync()
     {
         if (UserProfileDataGrid.SelectedIndex == -1)
@@ -491,13 +492,13 @@ public sealed partial class TblUserProfileListPage : Page
         UserProfileDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [UserProfile Methods]                    
-
     private void BackDetailExpanders()
     {
         UserProfileDetailExpander.IsExpanded = false;
         UserProfileDetailExpander.Visibility = Visibility.Collapsed;
     }
+    #endregion [UserProfile Methods]                    
+
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

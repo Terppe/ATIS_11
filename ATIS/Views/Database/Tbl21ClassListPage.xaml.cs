@@ -295,8 +295,6 @@ public sealed partial class Tbl21ClassListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl21ClassesList.Sort);
     }
 
-    private void AddNewClassCanceled(object sender, EventArgs e) => ClassDetailExpander.IsExpanded = false;
-
     private async void ViewClassHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -378,6 +376,7 @@ public sealed partial class Tbl21ClassListPage : Page
         ViewModel.ClassSelected.PorName = SingleClass.PorName;
         ViewModel.ClassSelected.Memo = SingleClass.Memo;
     }
+
     private async Task RevertChangesClassAsync()
     {
         ViewModel.IsInEditClass = false;
@@ -387,6 +386,7 @@ public sealed partial class Tbl21ClassListPage : Page
             ViewModel.IsModifiedClass = false;
         }
     }
+
     private Task RefreshClassAsync()
     {
         if (ClassDataGrid.SelectedIndex == -1)
@@ -573,8 +573,6 @@ public sealed partial class Tbl21ClassListPage : Page
     #endregion [Class Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

@@ -295,8 +295,6 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl48SubfamiliesList.Sort);
     }
 
-    private void AddNewSubfamilyCanceled(object sender, EventArgs e) => SubfamilyDetailExpander.IsExpanded = false;
-
     private async void ViewSubfamilyHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -378,6 +376,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
         ViewModel.SubfamilySelected.PorName = SingleSubfamily.PorName;
         ViewModel.SubfamilySelected.Memo = SingleSubfamily.Memo;
     }
+
     private async Task RevertChangesSubfamilyAsync()
     {
         ViewModel.IsInEditSubfamily = false;
@@ -387,6 +386,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
             ViewModel.IsModifiedSubfamily = false;
         }
     }
+
     private Task RefreshSubfamilyAsync()
     {
         if (SubfamilyDataGrid.SelectedIndex == -1)
@@ -573,8 +573,6 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     #endregion [Subfamily Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

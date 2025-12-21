@@ -202,8 +202,6 @@ public sealed partial class TblCountryListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.TblCountriesList.Sort);
     }
 
-    private void AddNewCountryCanceled(object sender, EventArgs e) => CountryDetailExpander.IsExpanded = false;
-
     private async void ViewCountryHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -465,14 +463,13 @@ public sealed partial class TblCountryListPage : Page
         CountryDetailExpander.IsExpanded = false;
         CountryDetailExpander.Visibility = Visibility.Collapsed;
     }
-
-    #endregion [Country Methods]                    
-
     private void BackDetailExpanders()
     {
         CountryDetailExpander.IsExpanded = false;
         CountryDetailExpander.Visibility = Visibility.Collapsed;
     }
+
+    #endregion [Country Methods]                    
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

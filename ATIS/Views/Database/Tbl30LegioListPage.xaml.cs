@@ -295,8 +295,6 @@ public sealed partial class Tbl30LegioListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl30LegiosList.Sort);
     }
 
-    private void AddNewLegioCanceled(object sender, EventArgs e) => LegioDetailExpander.IsExpanded = false;
-
     private async void ViewLegioHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -573,8 +571,6 @@ public sealed partial class Tbl30LegioListPage : Page
     #endregion [Legio Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

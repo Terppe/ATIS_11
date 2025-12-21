@@ -19,13 +19,6 @@
 
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
         <MenuFlyout x:Key="NameDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Name"
-                            Click="SaveName_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Name"
                             Click="DeleteName_Click">
                 <MenuFlyoutItem.Icon>

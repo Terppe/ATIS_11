@@ -295,8 +295,6 @@ public sealed partial class Tbl60SubtribusListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl60SubtribussesList.Sort);
     }
 
-    private void AddNewSubtribusCanceled(object sender, EventArgs e) => SubtribusDetailExpander.IsExpanded = false;
-
     private async void ViewSubtribusHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl60SubtribusListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSubtribusAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSubtribus)
@@ -378,6 +377,7 @@ public sealed partial class Tbl60SubtribusListPage : Page
         ViewModel.SubtribusSelected.PorName = SingleSubtribus.PorName;
         ViewModel.SubtribusSelected.Memo = SingleSubtribus.Memo;
     }
+
     private async Task RevertChangesSubtribusAsync()
     {
         ViewModel.IsInEditSubtribus = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl60SubtribusListPage : Page
             ViewModel.IsModifiedSubtribus = false;
         }
     }
+
     private Task RefreshSubtribusAsync()
     {
         if (SubtribusDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl60SubtribusListPage : Page
     #endregion [Subtribus Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

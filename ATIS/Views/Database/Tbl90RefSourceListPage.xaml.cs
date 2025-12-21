@@ -200,8 +200,6 @@ public sealed partial class Tbl90RefSourceListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl90RefSourcesList.Sort);
     }
 
-    private void AddNewRefSourceCanceled(object sender, EventArgs e) => RefSourceDetailExpander.IsExpanded = false;
-
     private async void ViewRefSourceHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -233,6 +231,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsRefSourceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewRefSource)
@@ -278,6 +277,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
         ViewModel.RefSourceSelected.Notes = SingleRefSource.Notes;
         ViewModel.RefSourceSelected.Memo = SingleRefSource.Memo;
     }
+
     private async Task RevertChangesRefSourceAsync()
     {
         ViewModel.IsInEditRefSource = false;
@@ -287,6 +287,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
             ViewModel.IsModifiedRefSource = false;
         }
     }
+
     private Task RefreshRefSourceAsync()
     {
         if (RefSourceDataGrid.SelectedIndex == -1)
@@ -468,13 +469,12 @@ public sealed partial class Tbl90RefSourceListPage : Page
         RefSourceDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [RefSource Methods]        
-
     private void BackDetailExpanders()
     {
         RefSourceDetailExpander.IsExpanded = false;
         RefSourceDetailExpander.Visibility = Visibility.Collapsed;
     }
+    #endregion [RefSource Methods]        
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

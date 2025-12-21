@@ -19,13 +19,6 @@
 
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
         <MenuFlyout x:Key="SynonymDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Synonym"
-                            Click="SaveSynonym_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Synonym"
                             Click="DeleteSynonym_Click">
                 <MenuFlyoutItem.Icon>

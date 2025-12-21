@@ -13,7 +13,7 @@ using WinRT.Interop;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info. 
 
-//  DiseasePage.xaml.cs Skriptdatum:  09.09.2025  10:32      
+//  TblDiseasePage.xaml.cs Skriptdatum:  09.09.2025  10:32      
 
 namespace ATIS.Views.Database;
 
@@ -25,8 +25,8 @@ public sealed partial class TblDiseaseListPage : Page
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     public TblDiseaseViewModel ViewModel { get; }
     private TblDisease SingleDisease { get; set; }
-    private Tbl81Image SingleImage { get; set; }
     private static readonly AtisDbContext Context = new();
+    private Tbl81Image SingleImage { get; set; }
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
 
@@ -40,6 +40,9 @@ public sealed partial class TblDiseaseListPage : Page
         {
             ViewModel = App.GetService<TblDiseaseViewModel>();
             InitializeComponent();
+            SimpleLog.Info(" TblDiseaseListPage opended ");
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         else
         {
@@ -119,6 +122,8 @@ public sealed partial class TblDiseaseListPage : Page
                 DiseaseDataGrid.ItemsSource = ViewModel.TblDiseasesList;
                 ViewModel.DiseaseSelected = ViewModel.TblDiseasesList[0];
             }
+            ButtonsVisible();
+            ButtonsIconVisible();
             ViewModel.IsLoading = false;
         }
         catch (Exception xe)
@@ -194,6 +199,8 @@ public sealed partial class TblDiseaseListPage : Page
             {
                 SetFocusses.SetFocusAndChangePlaceholderText(DiseaseName);
             };
+            ButtonsNotVisible();
+            ButtonsIconNotVisible();
         }
         catch (Exception xe)
         {
@@ -217,6 +224,8 @@ public sealed partial class TblDiseaseListPage : Page
         DiseaseDetailExpander.IsExpanded = true;
         DiseaseDetailExpander.Visibility = Visibility.Visible;
         SpecificationExpander.IsExpanded = false;
+
+        DiseaseName.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DiseaseSearchBox_OnLoaded(object sender, RoutedEventArgs e)
@@ -230,8 +239,6 @@ public sealed partial class TblDiseaseListPage : Page
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.TblDiseasesList.Sort);
     }
-
-    private void AddNewDiseaseCanceled(object sender, EventArgs e) => DiseaseDetailExpander.IsExpanded = false;
 
     private async void ViewDiseaseHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -264,6 +271,7 @@ public sealed partial class TblDiseaseListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsDiseaseAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewDisease)
@@ -310,6 +318,7 @@ public sealed partial class TblDiseaseListPage : Page
         ViewModel.DiseaseSelected.Info = SingleDisease.Info;
         ViewModel.DiseaseSelected.Memo = SingleDisease.Memo;
     }
+
     private async Task RevertChangesDiseaseAsync()
     {
         ViewModel.IsInEditDisease = false;
@@ -319,6 +328,7 @@ public sealed partial class TblDiseaseListPage : Page
             ViewModel.IsModifiedDisease = false;
         }
     }
+
     private Task RefreshDiseaseAsync()
     {
         if (DiseaseDataGrid.SelectedIndex == -1)
@@ -327,6 +337,10 @@ public sealed partial class TblDiseaseListPage : Page
         }
         else
         {
+            if (ViewModel.DiseaseSelected.DiseaseId == 0)
+            {
+                return Task.CompletedTask;
+            }
             SingleDisease = App.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
             DiseaseSingles();
         }
@@ -414,10 +428,14 @@ public sealed partial class TblDiseaseListPage : Page
                 await BehindSaveDisease(ViewModel.DiseaseSelected);
                 await Refresh();
                 ViewModel.IsNewDisease = false;
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.DontSave:
                 ViewModel.IsModifiedDisease = true;
                 await RevertChangesDiseaseAsync();
+                ButtonsVisible();
+                ButtonsIconVisible();
                 break;
             case SaveChangesDialogResult.Cancel:
                 break;
@@ -483,11 +501,6 @@ public sealed partial class TblDiseaseListPage : Page
         ViewModel.DiseaseDataSetCount = ViewModel.TblDiseasesList.Count;
     }
 
-    private void DiseaseName_OnLostFocus(object sender, RoutedEventArgs e)
-    {
-        ChangeChar.UpperCaseFirstChar(sender);
-    }
-
     private void BackDisease_Click(object sender, RoutedEventArgs e)
     {
         BackDetailExpanders();
@@ -533,6 +546,7 @@ public sealed partial class TblDiseaseListPage : Page
         //New Image search
         OpenFileDialog();
         ViewModel.RefreshImageItems();
+        InfoImage.PlaceholderText = StringsRes.EnterText;
     }
 
     private void DataGrid_Image_Sorting(object sender, DataGridColumnEventArgs e)
@@ -566,7 +580,7 @@ public sealed partial class TblDiseaseListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+            SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
         }
 
         return Task.CompletedTask;
@@ -608,7 +622,6 @@ public sealed partial class TblDiseaseListPage : Page
     private void ImageSingles()
     {
         ViewModel.ImageSelected.DiseaseId = SingleImage.DiseaseId;
-        ViewModel.ImageSelected.ImageId = SingleImage.ImageId;
         ViewModel.ImageSelected.Valid = SingleImage.Valid;
         ViewModel.ImageSelected.ValidYear = SingleImage.ValidYear;
         ViewModel.ImageSelected.Filestream = SingleImage.Filestream;
@@ -638,7 +651,7 @@ public sealed partial class TblDiseaseListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+                SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
                 ImageSingles();
             }
         });
@@ -739,11 +752,6 @@ public sealed partial class TblDiseaseListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        //ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
-
-        //    .Where(a => a.Info == ViewModel.ImageSelected.Info &&
-        //                a.PlSpeciesId == ViewModel.ImageSelected.PlSpeciesId &&
-        //                a.FiSpeciesId == ViewModel.ImageSelected.FiSpeciesId)];
         ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                 a.DiseaseId == ViewModel.ImageSelected.DiseaseId &&
@@ -971,6 +979,26 @@ public sealed partial class TblDiseaseListPage : Page
 
         ViewModel.IsLoading = false;
         ViewModel.IsDeletingDisease = false;
+    }
+    private void ButtonsIconNotVisible()
+    {
+        AppBarButtonDeleteDisease.Icon.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Icon.Visibility = Visibility.Collapsed;
+    }
+    private void ButtonsIconVisible()
+    {
+        AppBarButtonDeleteDisease.Icon.Visibility = Visibility.Visible;
+        AppBarButtonSync.Icon.Visibility = Visibility.Visible;
+    }
+    private void ButtonsVisible()
+    {
+        AppBarButtonDeleteDisease.Visibility = Visibility.Visible;
+        AppBarButtonSync.Visibility = Visibility.Visible;
+    }
+    private void ButtonsNotVisible()
+    {
+        AppBarButtonDeleteDisease.Visibility = Visibility.Collapsed;
+        AppBarButtonSync.Visibility = Visibility.Collapsed;
     }
 
     #endregion [Refresh Methods] 

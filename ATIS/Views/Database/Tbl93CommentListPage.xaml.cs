@@ -197,8 +197,6 @@ public sealed partial class Tbl93CommentListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl93CommentsList.Sort);
     }
 
-    private void AddNewCommentCanceled(object sender, EventArgs e) => CommentDetailExpander.IsExpanded = false;
-
     private async void ViewCommentHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -230,6 +228,7 @@ public sealed partial class Tbl93CommentListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsCommentAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewComment)
@@ -294,6 +293,7 @@ public sealed partial class Tbl93CommentListPage : Page
         ViewModel.CommentSelected.GenusId = SingleComment.GenusId;
         ViewModel.CommentSelected.SpeciesId = SingleComment.SpeciesId;
     }
+
     private async Task RevertChangesCommentAsync()
     {
         ViewModel.IsInEditComment = false;
@@ -303,6 +303,7 @@ public sealed partial class Tbl93CommentListPage : Page
             ViewModel.IsModifiedComment = false;
         }
     }
+
     private Task RefreshCommentAsync()
     {
         if (CommentDataGrid.SelectedIndex == -1)
@@ -502,13 +503,13 @@ public sealed partial class Tbl93CommentListPage : Page
         CommentDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [Comment Methods]        
-
     private void BackDetailExpanders()
     {
         CommentDetailExpander.IsExpanded = false;
         CommentDetailExpander.Visibility = Visibility.Collapsed;
     }
+
+    #endregion [Comment Methods]        
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -197,8 +196,6 @@ public sealed partial class Tbl90ReferenceListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl90ReferencesList.Sort);
     }
 
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferenceDetailExpander.IsExpanded = false;
-
     private async void ViewReferenceHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -230,6 +227,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsReferenceAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewReference)
@@ -294,6 +292,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
         ViewModel.ReferenceSelected.GenusId = SingleReference.GenusId;
         ViewModel.ReferenceSelected.SpeciesId = SingleReference.SpeciesId;
     }
+
     private async Task RevertChangesReferenceAsync()
     {
         ViewModel.IsInEditReference = false;
@@ -303,6 +302,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
             ViewModel.IsModifiedReference = false;
         }
     }
+
     private Task RefreshReferenceAsync()
     {
         if (ReferenceDataGrid.SelectedIndex == -1)
@@ -499,10 +499,6 @@ public sealed partial class Tbl90ReferenceListPage : Page
         ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
     }
 
-    private void ReferenceName_OnLostFocus(object sender, RoutedEventArgs e)
-    {
-        ChangeChar.UpperCaseFirstChar(sender);
-    }
 
     private void BackReference_Click(object sender, RoutedEventArgs e)
     {
@@ -510,13 +506,13 @@ public sealed partial class Tbl90ReferenceListPage : Page
         ReferenceDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [Reference Methods]        
-
     private void BackDetailExpanders()
     {
         ReferenceDetailExpander.IsExpanded = false;
         ReferenceDetailExpander.Visibility = Visibility.Collapsed;
     }
+
+    #endregion [Reference Methods]        
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)
@@ -620,7 +616,6 @@ public sealed partial class Tbl90ReferenceListPage : Page
     }
 
     #endregion [Refresh Methods] 
-
 
 }
 

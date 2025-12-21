@@ -17,15 +17,7 @@
     <!--  LegioListPage.xaml  Skriptdatum: 15.06.2024  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="LegioDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Legio"
-                            Click="SaveLegio_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Legio"
                             Click="DeleteLegio_Click">
                 <MenuFlyoutItem.Icon>

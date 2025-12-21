@@ -17,13 +17,6 @@
     <Page.Resources>
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
         <MenuFlyout x:Key="CountryDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Country"
-                            Click="SaveCountry_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Country"
                             Click="DeleteCountry_Click">
                 <MenuFlyoutItem.Icon>

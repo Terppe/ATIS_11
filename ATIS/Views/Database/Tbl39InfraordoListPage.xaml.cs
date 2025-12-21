@@ -295,8 +295,6 @@ public sealed partial class Tbl39InfraordoListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl39InfraordosList.Sort);
     }
 
-    private void AddNewInfraordoCanceled(object sender, EventArgs e) => InfraordoDetailExpander.IsExpanded = false;
-
     private async void ViewInfraordoHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl39InfraordoListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsInfraordoAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewInfraordo)
@@ -378,6 +377,7 @@ public sealed partial class Tbl39InfraordoListPage : Page
         ViewModel.InfraordoSelected.PorName = SingleInfraordo.PorName;
         ViewModel.InfraordoSelected.Memo = SingleInfraordo.Memo;
     }
+
     private async Task RevertChangesInfraordoAsync()
     {
         ViewModel.IsInEditInfraordo = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl39InfraordoListPage : Page
             ViewModel.IsModifiedInfraordo = false;
         }
     }
+
     private Task RefreshInfraordoAsync()
     {
         if (InfraordoDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl39InfraordoListPage : Page
     #endregion [Infraordo Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

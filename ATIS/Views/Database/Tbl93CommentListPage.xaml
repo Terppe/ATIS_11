@@ -18,13 +18,6 @@
     <Page.Resources>
 
         <MenuFlyout x:Key="CommentDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Comment"
-                            Click="SaveComment_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Comment"
                             Click="DeleteComment_Click">
                 <MenuFlyoutItem.Icon>

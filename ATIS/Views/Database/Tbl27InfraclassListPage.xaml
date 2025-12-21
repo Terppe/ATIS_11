@@ -17,15 +17,7 @@
     <!--  InfraclassListPage.xaml  Skriptdatum: 15.06.2024  18:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="InfraclassDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Infraclass"
-                            Click="SaveInfraclass_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Infraclass"
                             Click="DeleteInfraclass_Click">
                 <MenuFlyoutItem.Icon>

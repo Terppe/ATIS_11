@@ -242,8 +242,6 @@ public sealed partial class TblFoodListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.TblFoodsList.Sort);
     }
 
-    private void AddNewFoodCanceled(object sender, EventArgs e) => FoodDetailExpander.IsExpanded = false;
-
     private async void ViewFoodHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -275,6 +273,7 @@ public sealed partial class TblFoodListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsFoodAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewFood)
@@ -319,6 +318,7 @@ public sealed partial class TblFoodListPage : Page
         ViewModel.FoodSelected.Info = SingleFood.Info;
         ViewModel.FoodSelected.Memo = SingleFood.Memo;
     }
+
     private async Task RevertChangesFoodAsync()
     {
         ViewModel.IsInEditFood = false;
@@ -328,6 +328,7 @@ public sealed partial class TblFoodListPage : Page
             ViewModel.IsModifiedFood = false;
         }
     }
+
     private Task RefreshFoodAsync()
     {
         if (FoodDataGrid.SelectedIndex == -1)
@@ -498,11 +499,6 @@ public sealed partial class TblFoodListPage : Page
         }
         BackDetailExpanders();
         ViewModel.FoodDataSetCount = ViewModel.TblFoodsList.Count;
-    }
-
-    private void FoodName_OnLostFocus(object sender, RoutedEventArgs e)
-    {
-        ChangeChar.UpperCaseFirstChar(sender);
     }
 
     private void BackFood_Click(object sender, RoutedEventArgs e)

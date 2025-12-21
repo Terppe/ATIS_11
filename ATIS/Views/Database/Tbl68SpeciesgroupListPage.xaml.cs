@@ -48,7 +48,6 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
     }
     #endregion [Constructor]   
 
-
     #region [Speciesgroup Methods]
     private async void GetSpeciesgroupsByNameOrId(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
@@ -235,8 +234,6 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl68SpeciesgroupsList.Sort);
     }
 
-    private void AddNewSpeciesgroupCanceled(object sender, EventArgs e) => SpeciesgroupDetailExpander.IsExpanded = false;
-
     private async void ViewSpeciesgroupHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -268,6 +265,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSpeciesgroupAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSpeciesgroup)
@@ -318,6 +316,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         ViewModel.SpeciesgroupSelected.PorName = SingleSpeciesgroup.PorName;
         ViewModel.SpeciesgroupSelected.Memo = SingleSpeciesgroup.Memo;
     }
+
     private async Task RevertChangesSpeciesgroupAsync()
     {
         ViewModel.IsInEditSpeciesgroup = false;
@@ -327,6 +326,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             ViewModel.IsModifiedSpeciesgroup = false;
         }
     }
+
     private Task RefreshSpeciesgroupAsync()
     {
         if (SpeciesgroupDataGrid.SelectedIndex == -1)

@@ -361,6 +361,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             SimpleLog.Log(xe);
         }
     }
+
     private async Task AddSpecies()
     {
         ViewModel.IsInEditSpecies = true;
@@ -408,7 +409,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl75SpeciessesList.Sort);
     }
 
-    private void AddNewSpeciesCanceled(object sender, EventArgs e) => SpeciesDetailExpander.IsExpanded = false;
     private async void ViewSpeciesHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -421,6 +421,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             SimpleLog.Log(xe);
         }
     }
+
     private Task ViewSpeciesHyperlink()
     {
         ViewModel.IsInEditSpecies = false;
@@ -651,6 +652,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 throw new ArgumentOutOfRangeException();
         }
     }
+
     private async Task<bool> BeforeSaveSpecies()
     {
         _search = SpeciesSearchBox.Text;
@@ -716,6 +718,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         BackDetailExpanders();
         ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
     }
+
     private void BackSpecies_Click(object sender, RoutedEventArgs e)
     {
         BackDetailExpanders();
@@ -785,8 +788,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     #endregion [Species Methods]
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {
@@ -1741,8 +1742,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl78NamesList.Sort);
     }
 
-    private void AddNewNameCanceled(object sender, EventArgs e) => NamesExpander.IsExpanded = false;
-
     private async void ViewNameHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -2048,8 +2047,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl81ImagesList.Sort);
     }
 
-    private void AddNewImageCanceled(object sender, EventArgs e) => ImagesExpander.IsExpanded = false;
-
     private async void ViewImageHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -2062,6 +2059,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             SimpleLog.Log(xe);
         }
     }
+
     private Task ViewImageHyperlink()
     {
         ViewModel.IsInEditImage = false;
@@ -2093,6 +2091,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             CancelImageEdits();
         }
     }
+
     private void CancelImageEdits()
     {
         var x = (DataGrid)FindName("ImageDataGrid");
@@ -2113,6 +2112,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsInEditImage = false;
         ViewModel.IsNewImage = false;
     }
+
     private void ImageSingles()
     {
         ViewModel.ImageSelected.SpeciesId = SingleImage.SpeciesId;
@@ -2126,6 +2126,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.ImageSelected.Memo = SingleImage.Memo;
         ViewModel.ImageSelected.ShotDate = SingleImage.ShotDate;
     }
+
     private async Task RevertChangesImageAsync()
     {
         ViewModel.IsInEditImage = false;
@@ -2135,6 +2136,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             ViewModel.IsModifiedImage = false;
         }
     }
+
     private async Task RefreshImageAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -2263,6 +2265,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsModifiedImage = true;
         return false;
     }
+
     private async Task BehindSaveImage(Tbl81Image viewModelImageSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -2439,7 +2442,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl84SynonymsList.Sort);
     }
-    private void AddNewSynonymCanceled(object sender, EventArgs e) => SynonymsExpander.IsExpanded = false;
 
     private async void ViewSynonymHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -2453,6 +2455,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             SimpleLog.Log(xe);
         }
     }
+
     private Task ViewSynonymHyperlink()
     {
         ViewModel.IsInEditSynonym = false;
@@ -2471,6 +2474,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSynonymAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSynonym)
@@ -2506,6 +2510,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsInEditSynonym = false;
         ViewModel.IsNewSynonym = false;
     }
+
     private void SynonymSingles()
     {
         ViewModel.SynonymSelected.SynonymName = SingleSynonym.SynonymName;
@@ -2654,6 +2659,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsModifiedSynonym = true;
         return false;
     }
+
     private async Task BehindSaveSynonym(Tbl84Synonym viewModelSynonymSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -2752,7 +2758,6 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl87GeographicsList.Sort);
     }
 
-    private void AddNewGeographicCanceled(object sender, EventArgs e) => GeographicsExpander.IsExpanded = false;
 
     private async void ViewGeographicHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -2766,6 +2771,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             SimpleLog.Log(xe);
         }
     }
+
     private async Task ViewGeographicHyperlink()
     {
         ViewModel.IsInEditGeographic = false;
@@ -2790,6 +2796,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             MyMap.Map = await ((Maps)this).CreateMapAsync(_centerOf1LongX, _centerOf1LatiY, _zoom, graphSelect);
         }
     }
+
     private void CancelEditsGeographicAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewGeographic)
@@ -2803,6 +2810,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             CancelGeographicEdits();
         }
     }
+
     private void CancelGeographicEdits()
     {
         var x = (DataGrid)FindName("GeographicDataGrid");
@@ -2824,6 +2832,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsInEditGeographic = false;
         ViewModel.IsNewGeographic = false;
     }
+
     private void GeographicSingles()
     {
         ViewModel.GeographicSelected.SpeciesId = SingleGeographic.SpeciesId;
@@ -2858,6 +2867,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             ViewModel.IsModifiedGeographic = false;
         }
     }
+
     private async Task RefreshGeographicAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -3009,6 +3019,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         ViewModel.IsModifiedGeographic = true;
         return false;
     }
+
     private async Task BehindSaveGeographic(Tbl87Geographic viewModelGeographicSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>

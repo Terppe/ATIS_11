@@ -16,15 +16,7 @@
     <!--  ReferenceListPage.xaml  Skriptdatum: 06.01.2025  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="ReferenceDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Reference"
-                            Click="SaveReference_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Reference"
                             Click="DeleteReference_Click">
                 <MenuFlyoutItem.Icon>

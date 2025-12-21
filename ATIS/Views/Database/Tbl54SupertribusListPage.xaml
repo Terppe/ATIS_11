@@ -17,15 +17,7 @@
     <!--  SupertribusListPage.xaml  Skriptdatum: 22.01.2025  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="SupertribusDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Supertribus"
-                            Click="SaveSupertribus_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Supertribus"
                             Click="DeleteSupertribus_Click">
                 <MenuFlyoutItem.Icon>

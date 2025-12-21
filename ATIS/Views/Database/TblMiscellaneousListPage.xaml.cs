@@ -8,7 +8,6 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
-using ATIS.Views.Main;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -240,8 +239,6 @@ public sealed partial class TblMiscellaneousListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.TblMiscellaneoussesList.Sort);
     }
 
-    private void AddNewMiscellaneousCanceled(object sender, EventArgs e) => MiscellaneousDetailExpander.IsExpanded = false;
-
     private async void ViewMiscellaneousHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -273,6 +270,7 @@ public sealed partial class TblMiscellaneousListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsMiscellaneousAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewMiscellaneous)
@@ -317,6 +315,7 @@ public sealed partial class TblMiscellaneousListPage : Page
         ViewModel.MiscellaneousSelected.Info = SingleMiscellaneous.Info;
         ViewModel.MiscellaneousSelected.Memo = SingleMiscellaneous.Memo;
     }
+
     private async Task RevertChangesMiscellaneousAsync()
     {
         ViewModel.IsInEditMiscellaneous = false;
@@ -326,6 +325,7 @@ public sealed partial class TblMiscellaneousListPage : Page
             ViewModel.IsModifiedMiscellaneous = false;
         }
     }
+
     private Task RefreshMiscellaneousAsync()
     {
         if (MiscellaneousDataGrid.SelectedIndex == -1)
@@ -1005,7 +1005,6 @@ public sealed partial class TblMiscellaneousListPage : Page
     }
 
     #endregion [Refresh Methods] 
-
 
 }
 

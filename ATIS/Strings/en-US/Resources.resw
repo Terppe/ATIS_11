@@ -1168,7 +1168,7 @@
     <value>Infrafamily</value>
   </data>
   <data name="Nav_Infraordo.Content" xml:space="preserve">
-    <value>Infraordo</value>
+    <value>Infraorder</value>
   </data>
   <data name="Nav_Infratribus.Content" xml:space="preserve">
     <value>Infratribus</value>
@@ -1177,7 +1177,7 @@
     <value>Keyboard Manager</value>
   </data>
   <data name="Nav_Legio.Content" xml:space="preserve">
-    <value>Legio</value>
+    <value>Superorder</value>
   </data>
   <data name="Nav_LogIn.Content" xml:space="preserve">
     <value>Log In</value>
@@ -1186,10 +1186,10 @@
     <value>Names</value>
   </data>
   <data name="Nav_Ordo.Content" xml:space="preserve">
-    <value>Ordo</value>
+    <value>Order</value>
   </data>
   <data name="Nav_Ordos.Content" xml:space="preserve">
-    <value>Ordos</value>
+    <value>Orders</value>
   </data>
   <data name="Nav_PasswordChange.Content" xml:space="preserve">
     <value>Password Change</value>
@@ -1258,7 +1258,7 @@
     <value>Subfamily</value>
   </data>
   <data name="Nav_Subordo.Content" xml:space="preserve">
-    <value>Subordo</value>
+    <value>Suborder</value>
   </data>
   <data name="Nav_Subphylum.Content" xml:space="preserve">
     <value>Sub-Phylum/-Division</value>

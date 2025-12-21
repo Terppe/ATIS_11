@@ -17,15 +17,7 @@
     <!--  TribusListPage.xaml  Skriptdatum: 22.01.2025  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="TribusDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Tribus"
-                            Click="SaveTribus_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Tribus"
                             Click="DeleteTribus_Click">
                 <MenuFlyoutItem.Icon>

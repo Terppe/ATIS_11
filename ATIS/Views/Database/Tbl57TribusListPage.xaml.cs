@@ -295,8 +295,6 @@ public sealed partial class Tbl57TribusListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl57TribussesList.Sort);
     }
 
-    private void AddNewTribusCanceled(object sender, EventArgs e) => TribusDetailExpander.IsExpanded = false;
-
     private async void ViewTribusHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl57TribusListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsTribusAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewTribus)
@@ -378,6 +377,7 @@ public sealed partial class Tbl57TribusListPage : Page
         ViewModel.TribusSelected.PorName = SingleTribus.PorName;
         ViewModel.TribusSelected.Memo = SingleTribus.Memo;
     }
+
     private async Task RevertChangesTribusAsync()
     {
         ViewModel.IsInEditTribus = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl57TribusListPage : Page
             ViewModel.IsModifiedTribus = false;
         }
     }
+
     private Task RefreshTribusAsync()
     {
         if (TribusDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl57TribusListPage : Page
     #endregion [Tribus Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

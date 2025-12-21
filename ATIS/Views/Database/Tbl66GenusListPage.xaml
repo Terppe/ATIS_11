@@ -19,13 +19,6 @@
     <Page.Resources>
         <conv:DoubleToStringConverter x:Key="DoubleConverter" />
         <MenuFlyout x:Key="GenusDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Genus"
-                            Click="SaveGenus_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Genus"
                             Click="DeleteGenus_Click">
                 <MenuFlyoutItem.Icon>

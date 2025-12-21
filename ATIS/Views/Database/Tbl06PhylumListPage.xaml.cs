@@ -295,8 +295,6 @@ public sealed partial class Tbl06PhylumListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl06PhylumsList.Sort);
     }
 
-    private void AddNewPhylumCanceled(object sender, EventArgs e) => PhylumDetailExpander.IsExpanded = false;
-
     private async void ViewPhylumHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -378,6 +376,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         ViewModel.PhylumSelected.PorName = SinglePhylum.PorName;
         ViewModel.PhylumSelected.Memo = SinglePhylum.Memo;
     }
+
     private async Task RevertChangesPhylumAsync()
     {
         ViewModel.IsInEditPhylum = false;
@@ -387,6 +386,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             ViewModel.IsModifiedPhylum = false;
         }
     }
+
     private Task RefreshPhylumAsync()
     {
         if (PhylumDataGrid.SelectedIndex == -1)
@@ -573,8 +573,6 @@ public sealed partial class Tbl06PhylumListPage : Page
     #endregion [Phylum Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

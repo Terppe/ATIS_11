@@ -233,7 +233,6 @@ public sealed partial class Tbl84SynonymListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl84SynonymsList.Sort);
     }
 
-    private void AddNewSynonymCanceled(object sender, EventArgs e) => SynonymDetailExpander.IsExpanded = false;
 
     private async void ViewSynonymHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
@@ -270,6 +269,7 @@ public sealed partial class Tbl84SynonymListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSynonymAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSynonym)
@@ -315,6 +315,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         ViewModel.SynonymSelected.AuthorYear = SingleSynonym.AuthorYear;
         ViewModel.SynonymSelected.Memo = SingleSynonym.Memo;
     }
+
     private async Task RevertChangesSynonymAsync()
     {
         ViewModel.IsInEditSynonym = false;
@@ -324,6 +325,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             ViewModel.IsModifiedSynonym = false;
         }
     }
+
     private Task RefreshSynonymAsync()
     {
         if (SynonymDataGrid.SelectedIndex == -1)

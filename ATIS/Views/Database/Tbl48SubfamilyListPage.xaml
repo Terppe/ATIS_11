@@ -17,15 +17,7 @@
     <!--  SubfamilyListPage.xaml  Skriptdatum: 15.06.2024  10:32  -->
 
     <Page.Resources>
-
         <MenuFlyout x:Key="SubfamilyDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_Subfamily"
-                            Click="SaveSubfamily_Click">
-                <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
-                </MenuFlyoutItem.Icon>
-            </MenuFlyoutItem>
             <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_Subfamily"
                             Click="DeleteSubfamily_Click">
                 <MenuFlyoutItem.Icon>

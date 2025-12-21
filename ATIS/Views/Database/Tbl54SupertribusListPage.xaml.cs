@@ -295,8 +295,6 @@ public sealed partial class Tbl54SupertribusListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl54SupertribussesList.Sort);
     }
 
-    private void AddNewSupertribusCanceled(object sender, EventArgs e) => SupertribusDetailExpander.IsExpanded = false;
-
     private async void ViewSupertribusHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -328,6 +326,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsSupertribusAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewSupertribus)
@@ -378,6 +377,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         ViewModel.SupertribusSelected.PorName = SingleSupertribus.PorName;
         ViewModel.SupertribusSelected.Memo = SingleSupertribus.Memo;
     }
+
     private async Task RevertChangesSupertribusAsync()
     {
         ViewModel.IsInEditSupertribus = false;
@@ -387,6 +387,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             ViewModel.IsModifiedSupertribus = false;
         }
     }
+
     private Task RefreshSupertribusAsync()
     {
         if (SupertribusDataGrid.SelectedIndex == -1)
@@ -573,8 +574,6 @@ public sealed partial class Tbl54SupertribusListPage : Page
     #endregion [Supertribus Methods]                    
 
     #region [Reference Methods]
-
-    private void AddNewReferenceCanceled(object sender, EventArgs e) => ReferencesExpander.IsExpanded = false;
 
     private void DataGrid_Reference_Sorting(object sender, DataGridColumnEventArgs e)
     {

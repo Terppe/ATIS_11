@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -201,8 +200,6 @@ public sealed partial class Tbl90RefExpertListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl90RefExpertsList.Sort);
     }
 
-    private void AddNewRefExpertCanceled(object sender, EventArgs e) => RefExpertDetailExpander.IsExpanded = false;
-
     private async void ViewRefExpertHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -234,6 +231,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsRefExpertAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewRefExpert)
@@ -277,6 +275,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
         ViewModel.RefExpertSelected.Notes = SingleRefExpert.Notes;
         ViewModel.RefExpertSelected.Memo = SingleRefExpert.Memo;
     }
+
     private async Task RevertChangesRefExpertAsync()
     {
         ViewModel.IsInEditRefExpert = false;
@@ -286,6 +285,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
             ViewModel.IsModifiedRefExpert = false;
         }
     }
+
     private Task RefreshRefExpertAsync()
     {
         if (RefExpertDataGrid.SelectedIndex == -1)
@@ -466,13 +466,13 @@ public sealed partial class Tbl90RefExpertListPage : Page
         RefExpertDetailExpander.Visibility = Visibility.Collapsed;
     }
 
-    #endregion [RefExpert Methods]        
-
     private void BackDetailExpanders()
     {
         RefExpertDetailExpander.IsExpanded = false;
         RefExpertDetailExpander.Visibility = Visibility.Collapsed;
     }
+    #endregion [RefExpert Methods]        
+
 
     #region [Refresh Methods]
     private async void Refresh_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,4 @@
-﻿
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -247,8 +246,6 @@ public sealed partial class Tbl81ImageListPage : Page
         (sender as DataGrid).Sort(e.Column, ViewModel.Tbl81ImagesList.Sort);
     }
 
-    private void AddNewImageCanceled(object sender, EventArgs e) => ImageDetailExpander.IsExpanded = false;
-
     private async void ViewImageHyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -280,6 +277,7 @@ public sealed partial class Tbl81ImageListPage : Page
 
         return Task.CompletedTask;
     }
+
     private void CancelEditsImageAsync(object sender, RoutedEventArgs e)
     {
         if (ViewModel.IsNewImage)
@@ -327,6 +325,7 @@ public sealed partial class Tbl81ImageListPage : Page
         ViewModel.ImageSelected.ImageData = SingleImage.ImageData;
         ViewModel.ImageSelected.ShotDate = SingleImage.ShotDate;
     }
+
     private async Task RevertChangesImageAsync()
     {
         ViewModel.IsInEditImage = false;
@@ -336,6 +335,7 @@ public sealed partial class Tbl81ImageListPage : Page
             ViewModel.IsModifiedImage = false;
         }
     }
+
     private Task RefreshImageAsync()
     {
         if (ImageDataGrid.SelectedIndex == -1)
@@ -1024,7 +1024,6 @@ public sealed partial class Tbl81ImageListPage : Page
     }
 
     #endregion [Refresh Methods] 
-
 
 }
 
