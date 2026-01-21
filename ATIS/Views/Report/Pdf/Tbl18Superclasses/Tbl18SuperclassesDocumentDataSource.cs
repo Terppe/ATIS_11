@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 
@@ -27,7 +28,7 @@ public abstract class Tbl18SuperclassesDocumentDataSource : ObservableObject
     {
         #region [Private Data Members]
 
-        var dataService = new DataService();
+        var dataService = App.GetService<IDataService>();
         //var context = new AtisDbContext();
         //var fishId = 0;
         //var plantId = 0;

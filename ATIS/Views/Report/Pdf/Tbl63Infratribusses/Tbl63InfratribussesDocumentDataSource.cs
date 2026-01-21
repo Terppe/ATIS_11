@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 
@@ -34,7 +35,7 @@ public abstract class Tbl63InfratribussesDocumentDataSource : ObservableObject
     {
         #region [Private Data Members]
 
-        var dataService = new DataService();
+        var dataService = App.GetService<IDataService>();
         //var _context = new AtisDbContext();
         //int _mainId;
         //var _fishId = 0;

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.UserControls.AtisDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:global="using:ATIS.Views.UserControls"
+             xmlns:local="using:ATIS.Views.UserControls">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <Grid x:Name="HeaderGrid"
+              Height="32"
+              Background="Transparent" />
+
+        <ScrollViewer Grid.Row="1">
+            <ItemsRepeater x:Name="RowsRepeater">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="global:DataGridRowModel">
+                        <local:DataGridRowControl />
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>

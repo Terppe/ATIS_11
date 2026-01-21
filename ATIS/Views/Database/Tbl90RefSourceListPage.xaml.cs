@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,9 +21,10 @@ public sealed partial class Tbl90RefSourceListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl90RefSourceViewModel ViewModel { get; }
+    public Tbl90RefSourceViewModel ViewModel { get; set; }
+
     private Tbl90RefSource SingleRefSource { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -31,10 +33,16 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
     public Tbl90RefSourceListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl90RefSourceViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -43,6 +51,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [RefSource Methods]
@@ -82,9 +91,9 @@ public sealed partial class Tbl90RefSourceListPage : Page
             {
                 ViewModel.Tbl90RefSourcesList ??= [];
                 ViewModel.Tbl90RefSourcesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90RefSources
+                ? [.. AppData.Data.Tbl90RefSources
                 .Where(a => a.RefSourceId == id)]
-                : [.. Context.Tbl90RefSources
+                : [.. AppData.Data.Tbl90RefSources
                 .Where(a => _search != null && a.RefSourceName.StartsWith(_search))
                 .OrderBy(a => a.RefSourceName)];
 
@@ -226,7 +235,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
         }
         else
         {
-            SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
+            SingleRefSource = AppData.Data.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
         }
 
         return Task.CompletedTask;
@@ -253,7 +262,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.RefSourceSelected = ViewModel.Tbl90RefSourcesList[iNdx];
-            SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
+            SingleRefSource = AppData.Data.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
             RefSourceSingles();
         }
         else
@@ -300,7 +309,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleRefSource = App.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
+            SingleRefSource = AppData.Data.SingleRefSource(ViewModel.RefSourceSelected.RefSourceId);
             RefSourceSingles();
         }
 
@@ -409,7 +418,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90RefSourcesList ??= [];
-            ViewModel.Tbl90RefSourcesList = [.. Context.Tbl90RefSources
+            ViewModel.Tbl90RefSourcesList = [.. AppData.Data.Tbl90RefSources
             .Where(a => a.RefSourceName == ViewModel.RefSourceSelected.RefSourceName &&
                         a.Info == ViewModel.RefSourceSelected.Info &&
                         a.SourceYear == ViewModel.RefSourceSelected.SourceYear &&
@@ -435,9 +444,9 @@ public sealed partial class Tbl90RefSourceListPage : Page
             if (RefSourceSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl90RefSourcesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl90RefSources
+                    ? [.. AppData.Data.Tbl90RefSources
                     .Where(a => a.RefSourceId == id)]
-                    : [.. Context.Tbl90RefSources
+                    : [.. AppData.Data.Tbl90RefSources
                     .Where(a => _search != null && a.RefSourceName.StartsWith(_search))
                     .OrderBy(a => a.RefSourceName)];
             }
@@ -447,7 +456,7 @@ public sealed partial class Tbl90RefSourceListPage : Page
 
         if (ViewModel.Tbl90RefSourcesList.Count == 0)
         {
-            ViewModel.Tbl90RefSourcesList = [.. Context.Tbl90RefSources
+            ViewModel.Tbl90RefSourcesList = [.. AppData.Data.Tbl90RefSources
                 .Where(a => a.RefSourceId == viewModelRefSourceSelected.RefSourceId)];
             RefSourceDataGrid.ItemsSource = ViewModel.Tbl90RefSourcesList;
             await Refresh();
@@ -522,9 +531,9 @@ public sealed partial class Tbl90RefSourceListPage : Page
             {
                 ViewModel.Tbl90RefSourcesList ??= [];
                 ViewModel.Tbl90RefSourcesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90RefSources
+                ? [.. AppData.Data.Tbl90RefSources
                 .Where(a => a.RefSourceId == id)]
-                : [.. Context.Tbl90RefSources
+                : [.. AppData.Data.Tbl90RefSources
                 .Where(a => _search != null && a.RefSourceName.StartsWith(_search))
                 .OrderBy(a => a.RefSourceName)];
             });

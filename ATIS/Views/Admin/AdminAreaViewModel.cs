@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Windows.System;
 using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
@@ -14,8 +15,7 @@ public partial class AdminAreaViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
     public ObservableCollection<TblUserProfile> UserProfileItems { get; } = [];
 
@@ -153,11 +153,11 @@ public partial class AdminAreaViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var userprofile = await Context.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofileid);
+            var userprofile = await AppData.Data.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofileid);
             if (userprofile != null)
             {
-                Context.TblUserProfiles.Remove(userprofile);
-                await Context.SaveChangesAsync();
+                //AppData.Data.TblUserProfiles.Remove(userprofile);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

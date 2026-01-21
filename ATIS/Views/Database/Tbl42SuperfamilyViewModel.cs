@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl42SuperfamilyViewModel Skriptdatum:  15.06.2024  10:32    
 
@@ -16,9 +17,9 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl42Superfamily> SuperfamilyItems { get; } = [];
 
     public ObservableCollection<Tbl45Family> FamilyItems { get; } = [];
@@ -188,7 +189,7 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
             var arrSubfamily = new List<Tbl48Subfamily>();
             var arrFamily = new List<Tbl45Family>();
             var superfamily =
-                await Context.Tbl42Superfamilies.FirstOrDefaultAsync(b => b.SuperfamilyId == superfamilyid);
+                await AppData.Data.Tbl42Superfamilies.FirstOrDefaultAsync(b => b.SuperfamilyId == superfamilyid);
             if (superfamily != null)
             {
                 //SaveToArray
@@ -216,8 +217,8 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesBySuperfamilyId(superfamilyid);
                 await RemoveExtras.RemoveCommentsBySuperfamilyId(superfamilyid);
-                Context.Tbl42Superfamilies.Remove(superfamily);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl42Superfamilies.Remove(superfamily);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -373,10 +374,10 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -500,10 +501,10 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

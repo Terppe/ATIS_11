@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl27InfraclassViewModel Skriptdatum:  15.06.2024  18:32    
 
@@ -16,8 +17,9 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
+    private readonly IDataService _data;
+
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl27Infraclass> InfraclassItems { get; } = [];
 
@@ -192,7 +194,7 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
             var arrSubordo = new List<Tbl36Subordo>();
             var arrOrdo = new List<Tbl33Ordo>();
             var arrLegio = new List<Tbl30Legio>();
-            var infraclass = await Context.Tbl27Infraclasses.FirstOrDefaultAsync(b => b.InfraclassId == infraclassid);
+            var infraclass = await AppData.Data.Tbl27Infraclasses.FirstOrDefaultAsync(b => b.InfraclassId == infraclassid);
             if (infraclass != null)
             {
                 //SaveToArray
@@ -231,8 +233,8 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesByInfraclassId(infraclassid);
                 await RemoveExtras.RemoveCommentsByInfraclassId(infraclassid);
-                Context.Tbl27Infraclasses.Remove(infraclass);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl27Infraclasses.Remove(infraclass);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -388,10 +390,10 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -515,10 +517,10 @@ public partial class Tbl27InfraclassViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl66GenusViewModel Skriptdatum:  13.06.2024  10:32    
 
@@ -15,9 +16,9 @@ public partial class Tbl66GenusViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
     public ObservableCollection<Tbl63Infratribus> InfratribusItems { get; } = [];
@@ -181,7 +182,7 @@ public partial class Tbl66GenusViewModel : ObservableObject
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
             var arrSpecies = new List<Tbl75Species>();
-            var genus = await Context.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
+            var genus = await AppData.Data.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
             if (genus != null)
             {
                 //SaveToArray
@@ -195,8 +196,8 @@ public partial class Tbl66GenusViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesByGenusId(genusid);
                 await RemoveExtras.RemoveCommentsByGenusId(genusid);
-                Context.Tbl66Genusses.Remove(genus);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl66Genusses.Remove(genus);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -350,10 +351,10 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -477,10 +478,10 @@ public partial class Tbl66GenusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

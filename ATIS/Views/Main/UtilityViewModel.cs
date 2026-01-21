@@ -6,7 +6,6 @@ namespace ATIS.Views.Main;
 public partial class UtilityViewModel(IDataService dataService) : ObservableObject
 {
     #region [Private Data Members]
-    public IJsonNavigationViewService JsonNavigationViewService;
     private readonly IDataService _dataService = dataService;
     public ObservableCollection<Tbl78Name> NameItems { get; } = [];
     public ObservableCollection<Tbl81Image> ImageItems { get; } = [];

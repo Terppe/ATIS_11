@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    TblDiseaseViewModel Skriptdatum:  09.09.2025  10:32    
 
@@ -20,14 +21,11 @@ public partial class TblDiseaseViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
     public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
-    public string Search;
-    private int _plantId;
-    private int _animalId;
 
     private readonly FileOpenPicker _filePicker = new();
 
@@ -175,13 +173,13 @@ public partial class TblDiseaseViewModel : ObservableObject
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
 
-            var disease = await Context.TblDiseases.FirstOrDefaultAsync(b => b.DiseaseId == diseaseid);
+            var disease = await AppData.Data.TblDiseases.FirstOrDefaultAsync(b => b.DiseaseId == diseaseid);
         if (disease != null)
         {
             await RemoveExtras.RemoveImagesByDiseaseId(diseaseid);
 
-            Context.TblDiseases.Remove(disease);
-            await Context.SaveChangesAsync();
+            //AppData.Data.TblDiseases.Remove(disease);
+            //await AppData.Data.SaveChangesAsync();
         }
         });
     }
@@ -292,10 +290,10 @@ public partial class TblDiseaseViewModel : ObservableObject
 
     public static async Task DeleteImage(int imageid)
     {
-        var image = await Context.Tbl81Images.FirstOrDefaultAsync(co => co.ImageId == imageid);
+        var image = await AppData.Data.Tbl81Images.FirstOrDefaultAsync(co => co.ImageId == imageid);
 
-        Context.Tbl81Images.Remove(image);
-        await Context.SaveChangesAsync();
+        //AppData.Data.Tbl81Images.Remove(image);
+        //await AppData.Data.SaveChangesAsync();
     }
 
     private static byte[] LoadImageData(string filePath)

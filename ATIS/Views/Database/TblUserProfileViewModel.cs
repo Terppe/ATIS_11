@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    TblUserProfileViewModel Skriptdatum:   06.01.2025  10:32    
 
@@ -16,9 +17,9 @@ public partial class TblUserProfileViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<TblUserProfile> UserProfileItems { get; } = [];
 
     #endregion [Private Data Members]           
@@ -150,11 +151,11 @@ public partial class TblUserProfileViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var userprofile = await Context.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofileid);
+            var userprofile = await AppData.Data.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofileid);
             if (userprofile != null)
             {
-                Context.TblUserProfiles.Remove(userprofile);
-                await Context.SaveChangesAsync();
+                //AppData.Data.TblUserProfiles.Remove(userprofile);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

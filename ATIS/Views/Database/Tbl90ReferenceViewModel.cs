@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl90ReferenceViewModel Skriptdatum:  06.01.2025  10:32    
 
@@ -15,9 +16,9 @@ public partial class Tbl90ReferenceViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public int ZRef;
     public int ZCom;
@@ -215,11 +216,11 @@ public partial class Tbl90ReferenceViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(b => b.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(b => b.ReferenceId == referenceid);
             if (reference != null)
             {
-                Context.Tbl90References.Remove(reference);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl90References.Remove(reference);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

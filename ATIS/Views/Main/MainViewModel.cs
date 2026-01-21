@@ -1,10 +1,14 @@
 ﻿
+using ATIS.Interfaces;
+
 namespace ATIS.Views.Main;
 public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAware
 {
-    public MainViewModel()
-    {
+    private readonly IDataService _dataService;
 
+    public MainViewModel(IDataService dataService)
+    {
+        _dataService = dataService;
     }
 
 

@@ -7,14 +7,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:settings="using:ATIS.Views.Settings"
       xmlns:wuc="using:WinUICommunity"
-      wuc:BreadcrumbNavigator.IsHeaderVisible="True"
       mc:Ignorable="d">
     <ScrollView Margin="{ThemeResource ContentPageMargin}"
                 HorizontalAlignment="Stretch"
                 VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="10"
                     wuc:PanelAttach.ChildrenTransitions="Default"
-                    wuc:SettingsNavigationAttach.JsonNavigationViewService="{x:Bind local:App.GetJsonNavigationViewService}"
                     Spacing="5">
             <wuc:SettingsCard wuc:NavigationHelperEx.NavigateToSetting="settings:GeneralSettingPage"
                               Description="Change your app Settings"

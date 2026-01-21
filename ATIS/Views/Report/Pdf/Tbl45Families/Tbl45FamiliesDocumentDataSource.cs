@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
 
 //    Tbl45FamiliesDocumentDataSourceSkriptdatum:  13.06.2023  10:32    
 
@@ -31,7 +31,7 @@ public abstract class Tbl45FamiliesDocumentDataSource : ObservableObject
     {
         #region [Private Data Members]
 
-        var dataService = new DataService();
+        var dataService = App.GetService<IDataService>();
         //var context = new AtisDbContext();
         //var fishId = 0;
         //var plantId = 0;

@@ -1,0 +1,43 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="ms-appx:///Themes/Border.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/ThemeResources.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Button.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Controls/Buttons.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/TextBlock.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/TextBox.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Fonts.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Converters.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Thickness.xaml" />
+
+        <!-- 1. Basis-Farben (müssen ganz oben stehen) --><!--
+        <ResourceDictionary Source="ms-appx:///Themes/Colors/Colors.xaml" />
+
+        --><!-- 2. DataGrid-Farben (benötigen die Basisfarben) --><!--
+        <ResourceDictionary Source="ms-appx:///Themes/Colors/DataGridColors.xaml" />
+
+        --><!-- 3. Typografie & Layout (nutzen Farben, aber überschreiben nichts Kritisches) --><!--
+        <ResourceDictionary Source="ms-appx:///Themes/Styles/Typography.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Styles/PageLayout.xaml" />
+
+        --><!-- 4. Globale Control-Styles (Buttons, TextBox, AutoSuggestBox, NavigationView usw.) --><!--
+        <ResourceDictionary Source="ms-appx:///Themes/Controls/Controls.xaml" />
+
+        --><!-- 5. App-weite Styles (dein eigenes Theme, überschreibt Controls) --><!--
+        <ResourceDictionary Source="ms-appx:///Themes/Styles/AtisTheme.xaml" />
+
+        --><!-- 6. DataGrid Styles (müssen IMMER ganz unten stehen) --><!--
+        <ResourceDictionary Source="ms-appx:///Themes/Styles/DataGridStyles.xaml" />-->
+
+
+</ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>
+

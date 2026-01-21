@@ -9,6 +9,7 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
+using ATIS.Infrastructure;
 using Microsoft.UI;
 using WinRT.Interop;
 
@@ -20,7 +21,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl75SpeciesViewModel ViewModel { get; }
+    public Tbl75SpeciesViewModel ViewModel { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -30,7 +31,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     private Tbl87Geographic SingleGeographic { get; set; }
     public TblCountry SingleCountry { get; set; }
 
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
 
@@ -44,10 +45,16 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
     public Tbl75SpeciesListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl75SpeciesViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -89,9 +96,9 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 ViewModel.Tbl75SpeciessesList ??= [];
                 //search about GenusName
                 ViewModel.Tbl75SpeciessesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl75Speciesses
+                    ? [.. AppData.Data.Tbl75Speciesses
                     .Where(e => e.SpeciesId == id)]
-                    : [.. Context.Tbl75Speciesses
+                    : [.. AppData.Data.Tbl75Speciesses
                     .Where(e => e.Tbl66Genusses.GenusName.StartsWith(_search))
                     .OrderBy(a => a.Tbl66Genusses.GenusName)
                     .ThenBy(a => a.SpeciesName)
@@ -196,7 +203,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                         .Where(refe => refe.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
@@ -222,7 +229,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                         .Where(com => com.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
@@ -246,7 +253,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl78NamesList ??= [];
-                ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+                ViewModel.Tbl78NamesList = [.. AppData.Data.Tbl78Names
                         .Where(nam => nam.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
@@ -270,7 +277,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl81ImagesList ??= [];
-                ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+                ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                         .Where(img => img.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
@@ -294,7 +301,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl84SynonymsList ??= [];
-                ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
+                ViewModel.Tbl84SynonymsList = [.. AppData.Data.Tbl84Synonyms
                         .Where(sym => sym.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
@@ -318,7 +325,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl87GeographicsList ??= [];
-                ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
+                ViewModel.Tbl87GeographicsList = [.. AppData.Data.Tbl87Geographics
                         .Where(geo => geo.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
             });
 
@@ -435,7 +442,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -461,7 +468,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         if (iNdx is not -1)
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -549,7 +556,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             {
                 return Task.CompletedTask;
             }
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
 
@@ -659,7 +666,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                             a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                             a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -688,9 +695,9 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             if (SpeciesSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl75SpeciessesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl75Speciesses
+                    ? [.. AppData.Data.Tbl75Speciesses
                             .Where(e => e.SpeciesId == id)]
-                    : [.. Context.Tbl75Speciesses
+                    : [.. AppData.Data.Tbl75Speciesses
                             .Where(e => e.Tbl66Genusses.GenusName.StartsWith(_search))
                             .OrderBy(a => a.Tbl66Genusses.GenusName)
                             .ThenBy(a => a.SpeciesName)
@@ -703,7 +710,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(e => e.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -865,7 +872,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
         return Task.CompletedTask;
@@ -900,7 +907,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SpeciesSelected.SpeciesId);
             ReferenceSingles();
         }
 
@@ -1004,7 +1011,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SpeciesId == ViewModel.ReferenceSelected.SpeciesId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -1028,14 +1035,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SpeciesId == viewModelReferenceSelected.SpeciesId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SpeciesId == viewModelReferenceSelected.SpeciesId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -1122,7 +1129,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceExpertSingles();
@@ -1160,7 +1167,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceExpertSingles();
@@ -1231,7 +1238,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.SpeciesSelected.SpeciesId);
             ReferenceSourceSingles();
         }
@@ -1267,7 +1274,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceSourceSingles();
@@ -1339,7 +1346,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.SpeciesSelected.SpeciesId);
             ReferenceAuthorSingles();
         }
@@ -1375,7 +1382,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSpecies(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.SpeciesSelected.SpeciesId);
 
             ReferenceAuthorSingles();
@@ -1463,7 +1470,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleComment = App.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleComment = AppData.Data.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
         }
         return Task.CompletedTask;
     }
@@ -1490,7 +1497,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleComment = AppData.Data.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
             CommentSingles();
         }
         else
@@ -1532,7 +1539,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
             else
             {
-                SingleComment = App.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
+                SingleComment = AppData.Data.SingleCommentSpecies(ViewModel.CommentSelected.CommentId, ViewModel.SpeciesSelected.SpeciesId);
                 CommentSingles();
             }
         });
@@ -1637,7 +1644,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SpeciesId == ViewModel.CommentSelected.SpeciesId)];
@@ -1659,14 +1666,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SpeciesId == viewModelCommentSelected.SpeciesId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SpeciesId == viewModelCommentSelected.SpeciesId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1768,7 +1775,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleName = App.SingleNameSpecies(ViewModel.NameSelected.NameId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleName = AppData.Data.SingleNameSpecies(ViewModel.NameSelected.NameId, ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -1796,7 +1803,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.NameSelected = ViewModel.Tbl78NamesList[iNdx];
 
-            SingleName = App.SingleNameSpecies(ViewModel.NameSelected.NameId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleName = AppData.Data.SingleNameSpecies(ViewModel.NameSelected.NameId, ViewModel.SpeciesSelected.SpeciesId);
             NameSingles();
         }
         else
@@ -1839,7 +1846,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
             else
             {
-                SingleName = App.SingleNameSpecies(ViewModel.NameSelected.NameId, ViewModel.SpeciesSelected.SpeciesId);
+                SingleName = AppData.Data.SingleNameSpecies(ViewModel.NameSelected.NameId, ViewModel.SpeciesSelected.SpeciesId);
                 NameSingles();
             }
         });
@@ -1941,7 +1948,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl78NamesList ??= [];
-            ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+            ViewModel.Tbl78NamesList = [.. AppData.Data.Tbl78Names
                 .Where(a => a.NameName == ViewModel.NameSelected.NameName &&
                             a.Language == ViewModel.NameSelected.Language &&
                             a.SpeciesId == ViewModel.NameSelected.SpeciesId)];
@@ -1960,14 +1967,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl78NamesList ??= [];
-            ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+            ViewModel.Tbl78NamesList = [.. AppData.Data.Tbl78Names
                 .Where(com => com.SpeciesId == viewModelNameSelected.SpeciesId)];
         });
         ViewModel.RefreshNameItems();
 
         if (ViewModel.Tbl78NamesList.Count == 0)
         {
-            ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+            ViewModel.Tbl78NamesList = [.. AppData.Data.Tbl78Names
                 .Where(com => com.SpeciesId == viewModelNameSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl78NamesList;
             await Refresh();
@@ -2072,7 +2079,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleImage = AppData.Data.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -2100,7 +2107,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
 
-            SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleImage = AppData.Data.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.SpeciesId);
             ImageSingles();
         }
         else
@@ -2147,7 +2154,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
             else
             {
-                SingleImage = App.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.SpeciesId);
+                SingleImage = AppData.Data.SingleImageSpecies(ViewModel.ImageSelected.ImageId, ViewModel.SpeciesSelected.SpeciesId);
                 ImageSingles();
             }
         });
@@ -2248,7 +2255,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+        ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.SpeciesId == ViewModel.ImageSelected.SpeciesId &&
                         a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
@@ -2271,14 +2278,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.SpeciesId == viewModelImageSelected.SpeciesId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.SpeciesId == viewModelImageSelected.SpeciesId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
@@ -2469,7 +2476,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleSynonym = App.SingleSynonymSpecies(ViewModel.SynonymSelected.SynonymId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleSynonym = AppData.Data.SingleSynonymSpecies(ViewModel.SynonymSelected.SynonymId, ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -2497,7 +2504,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.SynonymSelected = ViewModel.Tbl84SynonymsList[iNdx];
 
-            SingleSynonym = App.SingleSynonymSpecies(ViewModel.SynonymSelected.SynonymId,
+            SingleSynonym = AppData.Data.SingleSynonymSpecies(ViewModel.SynonymSelected.SynonymId,
                 ViewModel.SpeciesSelected.SpeciesId);
             SynonymSingles();
         }
@@ -2543,7 +2550,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
             else
             {
-                SingleSynonym = App.SingleSynonymSpecies(ViewModel.SynonymSelected.SynonymId, ViewModel.SpeciesSelected.SpeciesId);
+                SingleSynonym = AppData.Data.SingleSynonymSpecies(ViewModel.SynonymSelected.SynonymId, ViewModel.SpeciesSelected.SpeciesId);
                 NameSingles();
             }
         });
@@ -2645,7 +2652,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     private async Task<bool> BeforeSaveSynonym()
     {
         ViewModel.Tbl84SynonymsList ??= [];
-        ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
+        ViewModel.Tbl84SynonymsList = [.. AppData.Data.Tbl84Synonyms
             .Where(a => a.SynonymName == ViewModel.SynonymSelected.SynonymName &&
                         a.Author == ViewModel.SynonymSelected.Author &&
                         a.AuthorYear == ViewModel.SynonymSelected.AuthorYear &&
@@ -2665,14 +2672,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl84SynonymsList ??= [];
-            ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
+            ViewModel.Tbl84SynonymsList = [.. AppData.Data.Tbl84Synonyms
                 .Where(com => com.SpeciesId == viewModelSynonymSelected.SpeciesId)];
         });
         ViewModel.RefreshSynonymItems();
 
         if (ViewModel.Tbl84SynonymsList.Count == 0)
         {
-            ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
+            ViewModel.Tbl84SynonymsList = [.. AppData.Data.Tbl84Synonyms
                 .Where(com => com.SpeciesId == viewModelSynonymSelected.SpeciesId)];
             SynonymDataGrid.ItemsSource = ViewModel.Tbl84SynonymsList;
             await Refresh();
@@ -2785,7 +2792,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         }
         else
         {
-            SingleGeographic = App.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId, ViewModel.SpeciesSelected.SpeciesId);
+            SingleGeographic = AppData.Data.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId, ViewModel.SpeciesSelected.SpeciesId);
 
             _centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
             _centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
@@ -2819,7 +2826,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         {
             ViewModel.GeographicSelected = ViewModel.Tbl87GeographicsList[iNdx];
 
-            SingleGeographic = App.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId,
+            SingleGeographic = AppData.Data.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId,
                 ViewModel.SpeciesSelected.SpeciesId);
             ImageSingles();
         }
@@ -2878,7 +2885,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             }
             else
             {
-                SingleGeographic = App.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId, ViewModel.SpeciesSelected.SpeciesId);
+                SingleGeographic = AppData.Data.SingleGeographicSpecies(ViewModel.GeographicSelected.GeographicId, ViewModel.SpeciesSelected.SpeciesId);
                 GeographicSingles();
             }
         });
@@ -2981,7 +2988,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     private async Task<bool> BeforeSaveGeographic()
     {
         ViewModel.Tbl87GeographicsList ??= [];
-        ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
+        ViewModel.Tbl87GeographicsList = [.. AppData.Data.Tbl87Geographics
             .Where(a => a.Info == ViewModel.GeographicSelected.Info &&
                         a.Address == ViewModel.GeographicSelected.Address &&
                         a.Continent == ViewModel.GeographicSelected.Continent &&
@@ -2995,13 +3002,13 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
             if (ViewModel.GeographicSelected.Country == null)
             {
                 ViewModel.TblCountriesList ??= [];
-                ViewModel.TblCountriesList = [.. Context.TblCountries
+                ViewModel.TblCountriesList = [.. AppData.Data.TblCountries
                     .Where(e => e.Name == ViewModel.GeographicSelected.Continent)];
             }
             else
             {
                 ViewModel.TblCountriesList ??= [];
-                ViewModel.TblCountriesList = [.. Context.TblCountries
+                ViewModel.TblCountriesList = [.. AppData.Data.TblCountries
                     .Where(e => e.Name == ViewModel.GeographicSelected.Country)];
             }
         });
@@ -3025,14 +3032,14 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl87GeographicsList ??= [];
-            ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
+            ViewModel.Tbl87GeographicsList = [.. AppData.Data.Tbl87Geographics
                 .Where(com => com.SpeciesId == viewModelGeographicSelected.SpeciesId)];
         });
         ViewModel.RefreshGeographicItems();
 
         if (ViewModel.Tbl87GeographicsList.Count == 0)
         {
-            ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
+            ViewModel.Tbl87GeographicsList = [.. AppData.Data.Tbl87Geographics
                 .Where(com => com.SpeciesId == viewModelGeographicSelected.SpeciesId)];
             GeographicDataGrid.ItemsSource = ViewModel.Tbl87GeographicsList;
             await Refresh();
@@ -3108,16 +3115,16 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                 if (ViewModel.Tbl75SpeciessesList.Count == 0)
                 {
                     ViewModel.Tbl75SpeciessesList ??= [];
-                    ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                    ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                             .Where(a => a.SpeciesId == ViewModel.SpeciesSelected.SpeciesId)];
                 }
                 else
                 {
                     ViewModel.Tbl75SpeciessesList ??= [];
                     ViewModel.Tbl75SpeciessesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl75Speciesses
+                        ? [.. AppData.Data.Tbl75Speciesses
                                 .Where(a => a.SpeciesId == id)]
-                        : [.. Context.Tbl75Speciesses
+                        : [.. AppData.Data.Tbl75Speciesses
                                 .Where(a => a.Tbl66Genusses.GenusName.StartsWith(_search))
                                 .OrderBy(a => a.Tbl66Genusses.GenusName)
                                 .ThenBy(a => a.SpeciesName)

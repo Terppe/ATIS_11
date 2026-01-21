@@ -9,20 +9,27 @@ namespace ATIS.Views.Main;
 /// </summary>
 public sealed partial class UtilityPage : Page
 {
-    public UtilityViewModel ViewModel { get; }
+    public UtilityViewModel ViewModel { get; set; }
     private readonly AllDialogs _allDialogs = new();
 
     public UtilityPage()
+    {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         //var permis = new Permission();
         //if (permis.RolePermission())
         {
             ViewModel = App.GetService<UtilityViewModel>();
-            InitializeComponent();
         }
         //else
         //{
         //    _allDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         //}
+
     }
 }

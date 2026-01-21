@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl21ClassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl21ClassViewModel ViewModel { get; }
+    public Tbl21ClassViewModel ViewModel { get; set; }
     private Tbl21Class SingleClass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl24Subclass SingleSubclass { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl21ClassListPage : Page
 
     public Tbl21ClassListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl21ClassViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Class Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl21ClassListPage : Page
             {
                 ViewModel.Tbl21ClassesList ??= [];
                 ViewModel.Tbl21ClassesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl21Classes
+                ? [.. AppData.Data.Tbl21Classes
                 .Where(a => a.ClassId == id)]
-                : [.. Context.Tbl21Classes
+                : [.. AppData.Data.Tbl21Classes
                 .Where(a => _search != null && a.ClassName.StartsWith(_search))
                 .OrderBy(a => a.ClassName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl21ClassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.ClassId == ViewModel.ClassSelected.ClassId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl21ClassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.ClassId == ViewModel.ClassSelected.ClassId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl21ClassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl24SubclassesList ??= [];
-                ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+                ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
             .Where(com => com.ClassId == ViewModel.ClassSelected.ClassId)];
             });
             ViewModel.SubclassDataSetCount = ViewModel.Tbl24SubclassesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl21ClassListPage : Page
         }
         else
         {
-            SingleClass = App.SingleClass(ViewModel.ClassSelected.ClassId);
+            SingleClass = AppData.Data.SingleClass(ViewModel.ClassSelected.ClassId);
         }
 
         return Task.CompletedTask;
@@ -347,7 +356,7 @@ public sealed partial class Tbl21ClassListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.ClassSelected = ViewModel.Tbl21ClassesList[iNdx];
-            SingleClass = App.SingleClass(ViewModel.ClassSelected.ClassId);
+            SingleClass = AppData.Data.SingleClass(ViewModel.ClassSelected.ClassId);
             ClassSingles();
         }
         else
@@ -399,7 +408,7 @@ public sealed partial class Tbl21ClassListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleClass = App.SingleClass(ViewModel.ClassSelected.ClassId);
+            SingleClass = AppData.Data.SingleClass(ViewModel.ClassSelected.ClassId);
             ClassSingles();
         }
 
@@ -508,7 +517,7 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl21ClassesList ??= [];
-            ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+            ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
                 .Where(a => a.ClassName == ViewModel.ClassSelected.ClassName &&
                         a.SuperclassId == ViewModel.ClassSelected.SuperclassId)];
         });
@@ -532,9 +541,9 @@ public sealed partial class Tbl21ClassListPage : Page
             if (ClassSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl21ClassesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl21Classes
+                    ? [.. AppData.Data.Tbl21Classes
                     .Where(a => a.ClassId == id)]
-                    : [.. Context.Tbl21Classes
+                    : [.. AppData.Data.Tbl21Classes
                     .Where(a => _search != null && a.ClassName.StartsWith(_search))
                     .OrderBy(a => a.ClassName)];
             }
@@ -544,7 +553,7 @@ public sealed partial class Tbl21ClassListPage : Page
 
         if (ViewModel.Tbl21ClassesList.Count == 0)
         {
-            ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+            ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
                 .Where(a => a.ClassId == viewModelClassSelected.ClassId)];
             ClassDataGrid.ItemsSource = ViewModel.Tbl21ClassesList;
             await Refresh();
@@ -650,7 +659,7 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -685,7 +694,7 @@ public sealed partial class Tbl21ClassListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.ClassSelected.ClassId);
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.ClassSelected.ClassId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -788,7 +797,7 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.ClassId == ViewModel.ReferenceSelected.ClassId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -812,14 +821,14 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.ClassId == viewModelReferenceSelected.ClassId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.ClassId == viewModelReferenceSelected.ClassId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -906,7 +915,7 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.ClassSelected.ClassId);
             ReferenceExpertSingles();
         }
@@ -943,7 +952,7 @@ public sealed partial class Tbl21ClassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.ClassSelected.ClassId);
 
             ReferenceExpertSingles();
@@ -1013,7 +1022,7 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.ClassSelected.ClassId);
             ReferenceSourceSingles();
         }
@@ -1050,7 +1059,7 @@ public sealed partial class Tbl21ClassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.ClassSelected.ClassId);
 
             ReferenceSourceSingles();
@@ -1122,7 +1131,7 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.ClassSelected.ClassId);
             ReferenceAuthorSingles();
         }
@@ -1159,7 +1168,7 @@ public sealed partial class Tbl21ClassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceClass(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.ClassSelected.ClassId);
 
             ReferenceAuthorSingles();
@@ -1235,7 +1244,7 @@ public sealed partial class Tbl21ClassListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentClass(ViewModel.CommentSelected.CommentId, ViewModel.ClassSelected.ClassId);
+            SingleComment = AppData.Data.SingleCommentClass(ViewModel.CommentSelected.CommentId, ViewModel.ClassSelected.ClassId);
         }
         return Task.CompletedTask;
     }
@@ -1262,7 +1271,7 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentClass(ViewModel.CommentSelected.CommentId, ViewModel.ClassSelected.ClassId);
+            SingleComment = AppData.Data.SingleCommentClass(ViewModel.CommentSelected.CommentId, ViewModel.ClassSelected.ClassId);
             CommentSingles();
         }
         else
@@ -1304,7 +1313,7 @@ public sealed partial class Tbl21ClassListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentClass(ViewModel.CommentSelected.CommentId, ViewModel.ClassSelected.ClassId);
+                SingleComment = AppData.Data.SingleCommentClass(ViewModel.CommentSelected.CommentId, ViewModel.ClassSelected.ClassId);
                 CommentSingles();
             }
         });
@@ -1408,7 +1417,7 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.ClassId == ViewModel.CommentSelected.ClassId)];
@@ -1430,14 +1439,14 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.ClassId == viewModelCommentSelected.ClassId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.ClassId == viewModelCommentSelected.ClassId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1494,7 +1503,7 @@ public sealed partial class Tbl21ClassListPage : Page
         }
         else
         {
-            SingleSubclass = App.SingleSubclassClass(ViewModel.SubclassSelected.SubclassId,
+            SingleSubclass = AppData.Data.SingleSubclassClass(ViewModel.SubclassSelected.SubclassId,
                     ViewModel.ClassSelected.ClassId);
         }
 
@@ -1523,7 +1532,7 @@ public sealed partial class Tbl21ClassListPage : Page
         {
             ViewModel.SubclassSelected = ViewModel.Tbl24SubclassesList[iNdx];
 
-            SingleSubclass = App.SingleSubclassClass(ViewModel.SubclassSelected.SubclassId, ViewModel.ClassSelected.ClassId);
+            SingleSubclass = AppData.Data.SingleSubclassClass(ViewModel.SubclassSelected.SubclassId, ViewModel.ClassSelected.ClassId);
             SubclassSingles();
         }
         else
@@ -1572,7 +1581,7 @@ public sealed partial class Tbl21ClassListPage : Page
             }
             else
             {
-                SingleSubclass = App.SingleSubclassClass(ViewModel.SubclassSelected.SubclassId, ViewModel.ClassSelected.ClassId);
+                SingleSubclass = AppData.Data.SingleSubclassClass(ViewModel.SubclassSelected.SubclassId, ViewModel.ClassSelected.ClassId);
                 SubclassSingles();
             }
         });
@@ -1632,7 +1641,7 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl24SubclassesList ??= [];
-            ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+            ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
             .Where(a => a.SubclassName == ViewModel.SubclassSelected.SubclassName &&
                         a.ClassId == ViewModel.SubclassSelected.ClassId)];
         });
@@ -1653,14 +1662,14 @@ public sealed partial class Tbl21ClassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl24SubclassesList ??= [];
-            ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+            ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
                 .Where(com => com.ClassId == viewModelSubclassSelected.ClassId)];
         });
         ViewModel.RefreshSubclassItems();
 
         if (ViewModel.Tbl24SubclassesList.Count == 0)
         {
-            ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+            ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
                 .Where(com => com.ClassId == viewModelSubclassSelected.ClassId)];
             SubclassDataGrid.ItemsSource = ViewModel.Tbl24SubclassesList;
             await Refresh();
@@ -1739,16 +1748,16 @@ public sealed partial class Tbl21ClassListPage : Page
                 if (ViewModel.Tbl21ClassesList.Count == 0)
                 {
                     ViewModel.Tbl21ClassesList ??= [];
-                    ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+                    ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
                             .Where(a => a.ClassId == ViewModel.ClassSelected.ClassId)];
                 }
                 else
                 {
                     ViewModel.Tbl21ClassesList ??= [];
                     ViewModel.Tbl21ClassesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl21Classes
+                        ? [.. AppData.Data.Tbl21Classes
                            .Where(a => a.ClassId == id)]
-                       : [.. Context.Tbl21Classes
+                       : [.. AppData.Data.Tbl21Classes
                            .Where(a => _search != null && a.ClassName.StartsWith(_search))
                          .OrderBy(a => a.ClassName)];
                 }

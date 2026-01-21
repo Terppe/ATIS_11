@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl45FamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl45FamilyViewModel ViewModel { get; }
+    public Tbl45FamilyViewModel ViewModel { get; set; }
     private Tbl45Family SingleFamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl48Subfamily SingleSubfamily { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl45FamilyListPage : Page
 
     public Tbl45FamilyListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl45FamilyViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Family Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl45FamilyListPage : Page
             {
                 ViewModel.Tbl45FamiliesList ??= [];
                 ViewModel.Tbl45FamiliesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl45Families
+                ? [.. AppData.Data.Tbl45Families
                 .Where(a => a.FamilyId == id)]
-                : [.. Context.Tbl45Families
+                : [.. AppData.Data.Tbl45Families
                 .Where(a => _search != null && a.FamilyName.StartsWith(_search))
                 .OrderBy(a => a.FamilyName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.FamilyId == ViewModel.FamilySelected.FamilyId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.FamilyId == ViewModel.FamilySelected.FamilyId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl48SubfamiliesList ??= [];
-                ViewModel.Tbl48SubfamiliesList = [.. Context.Tbl48Subfamilies
+                ViewModel.Tbl48SubfamiliesList = [.. AppData.Data.Tbl48Subfamilies
             .Where(com => com.FamilyId == ViewModel.FamilySelected.FamilyId)];
             });
             ViewModel.SubfamilyDataSetCount = ViewModel.Tbl48SubfamiliesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         }
         else
         {
-            SingleFamily = App.SingleFamily(ViewModel.FamilySelected.FamilyId);
+            SingleFamily = AppData.Data.SingleFamily(ViewModel.FamilySelected.FamilyId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.FamilySelected = ViewModel.Tbl45FamiliesList[iNdx];
-            SingleFamily = App.SingleFamily(ViewModel.FamilySelected.FamilyId);
+            SingleFamily = AppData.Data.SingleFamily(ViewModel.FamilySelected.FamilyId);
             FamilySingles();
         }
         else
@@ -400,7 +409,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleFamily = App.SingleFamily(ViewModel.FamilySelected.FamilyId);
+            SingleFamily = AppData.Data.SingleFamily(ViewModel.FamilySelected.FamilyId);
             FamilySingles();
         }
 
@@ -509,7 +518,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl45FamiliesList ??= [];
-            ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+            ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
                 .Where(a => a.FamilyName == ViewModel.FamilySelected.FamilyName &&
                         a.SuperfamilyId == ViewModel.FamilySelected.SuperfamilyId)];
         });
@@ -533,9 +542,9 @@ public sealed partial class Tbl45FamilyListPage : Page
             if (FamilySearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl45FamiliesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl45Families
+                    ? [.. AppData.Data.Tbl45Families
                     .Where(a => a.FamilyId == id)]
-                    : [.. Context.Tbl45Families
+                    : [.. AppData.Data.Tbl45Families
                     .Where(a => _search != null && a.FamilyName.StartsWith(_search))
                     .OrderBy(a => a.FamilyName)];
             }
@@ -545,7 +554,7 @@ public sealed partial class Tbl45FamilyListPage : Page
 
         if (ViewModel.Tbl45FamiliesList.Count == 0)
         {
-            ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+            ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
                 .Where(a => a.FamilyId == viewModelFamilySelected.FamilyId)];
             FamilyDataGrid.ItemsSource = ViewModel.Tbl45FamiliesList;
             await Refresh();
@@ -651,7 +660,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +695,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.FamilySelected.FamilyId);
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.FamilySelected.FamilyId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +798,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.FamilyId == ViewModel.ReferenceSelected.FamilyId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +822,14 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.FamilyId == viewModelReferenceSelected.FamilyId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.FamilyId == viewModelReferenceSelected.FamilyId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +916,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.FamilySelected.FamilyId);
             ReferenceExpertSingles();
         }
@@ -944,7 +953,7 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.FamilySelected.FamilyId);
 
             ReferenceExpertSingles();
@@ -1014,7 +1023,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.FamilySelected.FamilyId);
             ReferenceSourceSingles();
         }
@@ -1051,7 +1060,7 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.FamilySelected.FamilyId);
 
             ReferenceSourceSingles();
@@ -1123,7 +1132,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.FamilySelected.FamilyId);
             ReferenceAuthorSingles();
         }
@@ -1160,7 +1169,7 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceFamily(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.FamilySelected.FamilyId);
 
             ReferenceAuthorSingles();
@@ -1236,7 +1245,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
+            SingleComment = AppData.Data.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
         }
         return Task.CompletedTask;
     }
@@ -1263,7 +1272,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
+            SingleComment = AppData.Data.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
             CommentSingles();
         }
         else
@@ -1305,7 +1314,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
+                SingleComment = AppData.Data.SingleCommentFamily(ViewModel.CommentSelected.CommentId, ViewModel.FamilySelected.FamilyId);
                 CommentSingles();
             }
         });
@@ -1409,7 +1418,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.FamilyId == ViewModel.CommentSelected.FamilyId)];
@@ -1431,14 +1440,14 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.FamilyId == viewModelCommentSelected.FamilyId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.FamilyId == viewModelCommentSelected.FamilyId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1495,7 +1504,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         }
         else
         {
-            SingleSubfamily = App.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId,
+            SingleSubfamily = AppData.Data.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId,
                     ViewModel.FamilySelected.FamilyId);
         }
 
@@ -1524,7 +1533,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         {
             ViewModel.SubfamilySelected = ViewModel.Tbl48SubfamiliesList[iNdx];
 
-            SingleSubfamily = App.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId, ViewModel.FamilySelected.FamilyId);
+            SingleSubfamily = AppData.Data.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId, ViewModel.FamilySelected.FamilyId);
             SubfamilySingles();
         }
         else
@@ -1573,7 +1582,7 @@ public sealed partial class Tbl45FamilyListPage : Page
             }
             else
             {
-                SingleSubfamily = App.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId, ViewModel.FamilySelected.FamilyId);
+                SingleSubfamily = AppData.Data.SingleSubfamilyFamily(ViewModel.SubfamilySelected.SubfamilyId, ViewModel.FamilySelected.FamilyId);
                 SubfamilySingles();
             }
         });
@@ -1633,7 +1642,7 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl48SubfamiliesList ??= [];
-            ViewModel.Tbl48SubfamiliesList = [.. Context.Tbl48Subfamilies
+            ViewModel.Tbl48SubfamiliesList = [.. AppData.Data.Tbl48Subfamilies
             .Where(a => a.SubfamilyName == ViewModel.SubfamilySelected.SubfamilyName &&
                         a.FamilyId == ViewModel.SubfamilySelected.FamilyId)];
         });
@@ -1654,14 +1663,14 @@ public sealed partial class Tbl45FamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl48SubfamiliesList ??= [];
-            ViewModel.Tbl48SubfamiliesList = [.. Context.Tbl48Subfamilies
+            ViewModel.Tbl48SubfamiliesList = [.. AppData.Data.Tbl48Subfamilies
                 .Where(com => com.FamilyId == viewModelSubfamilySelected.FamilyId)];
         });
         ViewModel.RefreshSubfamilyItems();
 
         if (ViewModel.Tbl48SubfamiliesList.Count == 0)
         {
-            ViewModel.Tbl48SubfamiliesList = [.. Context.Tbl48Subfamilies
+            ViewModel.Tbl48SubfamiliesList = [.. AppData.Data.Tbl48Subfamilies
                 .Where(com => com.FamilyId == viewModelSubfamilySelected.FamilyId)];
             SubfamilyDataGrid.ItemsSource = ViewModel.Tbl48SubfamiliesList;
             await Refresh();
@@ -1740,16 +1749,16 @@ public sealed partial class Tbl45FamilyListPage : Page
                 if (ViewModel.Tbl45FamiliesList.Count == 0)
                 {
                     ViewModel.Tbl45FamiliesList ??= [];
-                    ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+                    ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
                             .Where(a => a.FamilyId == ViewModel.FamilySelected.FamilyId)];
                 }
                 else
                 {
                     ViewModel.Tbl45FamiliesList ??= [];
                     ViewModel.Tbl45FamiliesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl45Families
+                        ? [.. AppData.Data.Tbl45Families
                            .Where(a => a.FamilyId == id)]
-                       : [.. Context.Tbl45Families
+                       : [.. AppData.Data.Tbl45Families
                            .Where(a => _search != null && a.FamilyName.StartsWith(_search))
                          .OrderBy(a => a.FamilyName)];
                 }

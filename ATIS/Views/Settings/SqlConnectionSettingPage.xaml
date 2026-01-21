@@ -6,7 +6,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:userControls="using:ATIS.Views.UserControls"
       xmlns:wuc="using:WinUICommunity"
-      wuc:BreadcrumbNavigator.IsHeaderVisible="True"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       mc:Ignorable="d">
 

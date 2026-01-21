@@ -1,0 +1,113 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="AtisComboBox"
+           TargetType="ComboBox">
+        <Setter Property="Background" Value="{ThemeResource AtisTextBoxBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource AtisTextBoxForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+
+                    <Grid x:Name="RootGrid">
+
+                        <!--  VISUAL STATES  -->
+                        <VisualStateManager.VisualStateGroups>
+
+                            <VisualStateGroup x:Name="CommonStates">
+
+                                <VisualState x:Name="Normal" />
+
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootBorder.BorderBrush" Value="{ThemeResource AtisTextBoxHoverBorderBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Focused">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootBorder.BorderBrush" Value="{ThemeResource AtisPrimaryBrush}" />
+                                        <Setter Target="RootBorder.BorderThickness" Value="2" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootBorder.Background" Value="{ThemeResource AtisTextBoxDisabledBackgroundBrush}" />
+                                        <Setter Target="RootBorder.BorderBrush" Value="{ThemeResource AtisTextBoxDisabledBorderBrush}" />
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AtisTextBoxDisabledForegroundBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+
+                            <VisualStateGroup x:Name="PopupStates">
+
+                                <VisualState x:Name="Closed" />
+
+                                <VisualState x:Name="Opened">
+                                    <VisualState.Setters>
+                                        <Setter Target="Popup.IsOpen" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="RootBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+
+                            <Grid>
+                                <ContentPresenter x:Name="ContentPresenter"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Center" />
+
+                                <FontIcon Margin="0,0,10,0"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          FontSize="12"
+                                          Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
+                                          Glyph="&#xE70D;" />
+                            </Grid>
+
+                        </Border>
+
+                        <!--  Popup  -->
+                        <Popup x:Name="Popup">
+                            <Border Padding="4"
+                                    Background="{ThemeResource AtisTextBoxBackgroundBrush}"
+                                    BorderBrush="{ThemeResource AtisTextBoxBorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6">
+
+                                <ScrollViewer>
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+
+                            </Border>
+                        </Popup>
+
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

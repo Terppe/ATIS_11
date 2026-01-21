@@ -1,4 +1,6 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
+using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,9 +22,12 @@ public sealed partial class TblUserProfileListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public TblUserProfileViewModel ViewModel { get; }
+    public TblUserProfileViewModel ViewModel { get; set; }
+
     private TblUserProfile SingleUserProfile { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
+    private readonly IDataService _data;
+    private readonly IDataService _dataService;
     private string _search;
 
     #endregion [Private Data Members]   
@@ -31,10 +36,16 @@ public sealed partial class TblUserProfileListPage : Page
 
     public TblUserProfileListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<TblUserProfileViewModel>();
-            InitializeComponent();
             SimpleLog.Info(" TblUserProfileListPage opended ");
             ButtonsNotVisible();
             ButtonsIconNotVisible();
@@ -44,6 +55,7 @@ public sealed partial class TblUserProfileListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [UserProfile Methods]
@@ -83,9 +95,9 @@ public sealed partial class TblUserProfileListPage : Page
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                ? [.. Context.TblUserProfiles
+                ? [.. AppData.Data.TblUserProfiles
                 .Where(e => e.UserProfileId == id)]
-                : [.. Context.TblUserProfiles
+                : [.. AppData.Data.TblUserProfiles
                 .Where(e => e.Email.StartsWith(_search))
                 .OrderBy(a => a.Email)];
             });
@@ -228,7 +240,7 @@ public sealed partial class TblUserProfileListPage : Page
         }
         else
         {
-            SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
+            SingleUserProfile = AppData.Data.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
         }
 
         return Task.CompletedTask;
@@ -255,7 +267,7 @@ public sealed partial class TblUserProfileListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
-            SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
+            SingleUserProfile = AppData.Data.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
             UserProfileSingles();
         }
         else
@@ -323,7 +335,7 @@ public sealed partial class TblUserProfileListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleUserProfile = App.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
+            SingleUserProfile = AppData.Data.SingleUserProfile(ViewModel.UserProfileSelected.UserProfileId);
             UserProfileSingles();
         }
 
@@ -432,7 +444,7 @@ public sealed partial class TblUserProfileListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.TblUserProfilesList ??= [];
-            ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
+            ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
             .Where(a => a.Email == ViewModel.UserProfileSelected.Email &&
                         a.FirstName == ViewModel.UserProfileSelected.FirstName &&
                         a.LastName == ViewModel.UserProfileSelected.LastName)];
@@ -458,9 +470,9 @@ public sealed partial class TblUserProfileListPage : Page
             if (UserProfileSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                    ? [.. Context.TblUserProfiles
+                    ? [.. AppData.Data.TblUserProfiles
                     .Where(a => a.UserProfileId == id)]
-                    : [.. Context.TblUserProfiles
+                    : [.. AppData.Data.TblUserProfiles
                     .Where(a => _search != null && a.Email.StartsWith(_search))
                     .OrderBy(a => a.Email)];
             }
@@ -470,7 +482,7 @@ public sealed partial class TblUserProfileListPage : Page
 
         if (ViewModel.TblUserProfilesList.Count == 0)
         {
-            ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
+            ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
                 .Where(a => a.UserProfileId == viewModelUserProfileSelected.UserProfileId)];
             UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
             await Refresh();
@@ -547,9 +559,9 @@ public sealed partial class TblUserProfileListPage : Page
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                ? [.. Context.TblUserProfiles
+                ? [.. AppData.Data.TblUserProfiles
                 .Where(a => a.UserProfileId == id)]
-                : [.. Context.TblUserProfiles
+                : [.. AppData.Data.TblUserProfiles
                     .Where(a => a.Email.StartsWith(_search))
                     .OrderBy(a => a.Email)];
             });

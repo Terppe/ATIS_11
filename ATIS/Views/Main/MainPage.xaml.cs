@@ -1,50 +1,59 @@
-﻿using System.Configuration;
+﻿using System.ComponentModel;
+using System.Configuration;
+using System.Globalization;
+using System.Net.Sockets;
+using System.Threading;
 using ATIS.Helpers;
 using ATIS.Models;
-using System.Net.Sockets;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Search;
-using Microsoft.Data.SqlClient;
+using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
+using ATIS.Views.Database;
+using ATIS.Views.Main.Disease;
+using ATIS.Views.Search;
+using ATIS.Views.Settings;
+using ATIS.Views.User;
+using Microsoft.Data.SqlClient;
 using Microsoft.UI;
+using WinUI3Localizer;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
-using ATIS.Views.Database;
-using ATIS.Views.Settings;
-using ATIS.Views.Admin;
-using ATIS.Views.User;
-using WinUI3Localizer;
-using System.Globalization;
-using ATIS.Views.Main.Disease;
 using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 
 namespace ATIS.Views.Main;
 
 public sealed partial class MainPage : Page
 {
-    public MainViewModel ViewModel { get; }
+    public MainViewModel ViewModel { get; set; }
 
     public MainPage()
     {
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
+
+                NavFrame.Navigate(typeof(HomePage)); // ← garantiert sofort sichtbar
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        ViewModel = App.GetService<MainViewModel>();
+
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
 
-        var jsonNavigationViewService = (JsonNavigationViewService)App.GetService<IJsonNavigationViewService>();
-        if (jsonNavigationViewService != null)
-        {
+        //Check Server and Database
+        CheckSql_Db();
 
-            jsonNavigationViewService.Initialize(NavView, NavFrame, NavigationPageMappings.PageDictionary);
-            //   jsonNavigationViewService.ConfigJson("Assets/NavViewMenu/AppData.json");
-            jsonNavigationViewService.ConfigJson("Assets/NavViewMenu/AppDataEmpty.json");
-            jsonNavigationViewService.ConfigBreadcrumbBar(JsonBreadCrumbNavigator,
-                BreadcrumbPageMappings.PageDictionary);
-            //    jsonNavigationViewService.ConfigAutoSuggestBox(ControlsSearchBox);
-        }
+        CloseApp();
+        // Write info message to log
+        SimpleLog.Info("MainWindow logging started.");
+    }
 
+    private void CheckSql_Db()
+    {
         if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
                 Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
         {
@@ -59,111 +68,6 @@ public sealed partial class MainPage : Page
             }
         }
 
-        // Write info message to log
-        SimpleLog.Info("MainWindow logging started.");
-
-        //Close Application
-        var closing = false;
-        App.MainWindow.Closed += async (se, ee) =>
-        {
-            if (closing)
-            {
-                return;
-            }
-
-            closing = true;
-            ee.Handled = true;
-
-            var dialog = new ContentDialog
-            {
-                XamlRoot = Content.XamlRoot,
-                Title = StringsRes.WantToCloseApp,
-                PrimaryButtonText = StringsRes.Yes,
-                CloseButtonText = StringsRes.No,
-                DefaultButton = ContentDialogButton.Close
-            };
-          //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.None)
-            {
-                closing = false;
-            }
-            else
-            {
-                dialog.Hide();
-                // to write in App.config not possible in unpacked version find solution
-                //SaveCulture(App.Cult);
-
-                // Write info message to log
-                SimpleLog.Info(StringsRes.AppClosed);
-
-                // Close this Application
-                App.MainWindow.Close();
-
-                //   Process.GetCurrentProcess().Kill();
-                Application.Current.Exit();
-            }
-        };
-    }
-
-    private void AppTitleBar_OnBackRequested(TitleBar sender, object args)
-    {
-        if (NavFrame.CanGoBack)
-        {
-            NavFrame.GoBack();
-        }
-    }
-
-    private void AppTitleBar_OnPaneToggleRequested(TitleBar sender, object args)
-    {
-        NavView.IsPaneOpen = !NavView.IsPaneOpen;
-    }
-
-
-    private void NavFrame_Navigated(object sender, NavigationEventArgs e)
-    {
-        AppTitleBar.IsBackButtonVisible = NavFrame.CanGoBack;
-    }
-
-    private void ThemeButton_Click(object sender, RoutedEventArgs e)
-    {
-        ThemeService.ChangeThemeWithoutSave(App.MainWindow);
-    }
-
-    //private void OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    //{
-    //    AutoSuggestBoxHelper.OnITitleBarAutoSuggestBoxTextChangedEvent(sender, args, NavFrame);
-    //}
-
-    //private void OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    //{
-    //    AutoSuggestBoxHelper.OnITitleBarAutoSuggestBoxQuerySubmittedEvent(sender, args, NavFrame);
-    //}
-
-    private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    {
-        _ = args.QueryText;
-
-        App.SearchQuickString = args.QueryText;
-
-
-        NavFrame.Navigate(typeof(SearchQuickPage));
-    }
-
-    private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    {
-        var viewModel = NavFrame.GetPageViewModel();
-        if (viewModel != null && viewModel is ITitleBarAutoSuggestBoxAware titleBarAutoSuggestBoxAware)
-        {
-            titleBarAutoSuggestBoxAware.OnAutoSuggestBoxTextChanged(sender, args);
-        }
-    }
-
-    private void SearchSearchBox_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        SearchSearchBox.Visibility = Visibility.Visible;
-        SearchSearchBox.Focus(FocusState.Programmatic);
-        SearchSearchBox.PlaceholderText = StringsRes.SearchName;
     }
 
     //------------------------Check Server and Database-------------------------------
@@ -255,6 +159,105 @@ public sealed partial class MainPage : Page
     }
     //--------------------------------------------------------------------
 
+    private void CloseApp()
+    {
+        //Close Application
+        var closing = false;
+        App.MainWindow.Closed += async (se, ee) =>
+        {
+            if (closing)
+            {
+                return;
+            }
+
+            closing = true;
+            ee.Handled = true;
+
+            var dialog = new ContentDialog
+            {
+                XamlRoot = Content.XamlRoot,
+                Title = StringsRes.WantToCloseApp,
+                PrimaryButtonText = StringsRes.Yes,
+                CloseButtonText = StringsRes.No,
+                DefaultButton = ContentDialogButton.Close
+            };
+            //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.None)
+            {
+                closing = false;
+            }
+            else
+            {
+                dialog.Hide();
+                // to write in App.config not possible in unpacked version find solution
+                //SaveCulture(App.Cult);
+
+                // Write info message to log
+                SimpleLog.Info(StringsRes.AppClosed);
+
+                // Close this Application
+                App.MainWindow.Close();
+
+                //   Process.GetCurrentProcess().Kill();
+                Application.Current.Exit();
+            }
+        };
+
+    }
+    //--------------------------------------------------------------------
+    private void AppTitleBar_OnBackRequested(TitleBar sender, object args)
+    {
+        if (NavFrame.CanGoBack)
+        {
+            NavFrame.GoBack();
+        }
+    }
+
+    private void AppTitleBar_OnPaneToggleRequested(TitleBar sender, object args)
+    {
+        NavView.IsPaneOpen = !NavView.IsPaneOpen;
+    }
+
+
+    private void NavFrame_Navigated(object sender, NavigationEventArgs e)
+    {
+        AppTitleBar.IsBackButtonVisible = NavFrame.CanGoBack;
+    }
+
+    private void ThemeButton_Click(object sender, RoutedEventArgs e)
+    {
+        ThemeService.ChangeThemeWithoutSave(App.MainWindow);
+    }
+
+
+    private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        _ = args.QueryText;
+
+        App.SearchQuickString = args.QueryText;
+
+
+        NavFrame.Navigate(typeof(SearchQuickPage));
+    }
+
+    private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        var viewModel = NavFrame.GetPageViewModel();
+        if (viewModel != null && viewModel is ITitleBarAutoSuggestBoxAware titleBarAutoSuggestBoxAware)
+        {
+            titleBarAutoSuggestBoxAware.OnAutoSuggestBoxTextChanged(sender, args);
+        }
+    }
+
+    private void SearchSearchBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        SearchSearchBox.Visibility = Visibility.Visible;
+        SearchSearchBox.Focus(FocusState.Programmatic);
+        SearchSearchBox.PlaceholderText = StringsRes.SearchName;
+    }
+
+
     private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
     {
         if (sender is MenuFlyoutItem selectedItem)
@@ -311,11 +314,15 @@ public sealed partial class MainPage : Page
         ReloadLanguage("sp-SP");
     }
     //--------------------------------------------------------------------
+    //  App.SetCulture(languageOverride);
+
     private void ReloadLanguage(string languageOverride)
     {
         Thread.CurrentThread.CurrentCulture = new CultureInfo(languageOverride);
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageOverride);
+
         Localizer.Get().SetLanguage(languageOverride);
+
         App.Cult = languageOverride;
 
         ChangeLanguageLoginReset();
@@ -335,6 +342,7 @@ public sealed partial class MainPage : Page
             TbUser.Text = name + " " + StringsRes.LoggedIn;
         }
     }
+
     //----------------------------------------------------
     private async Task LogIn()
     {
@@ -459,7 +467,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavHome.Content)
         {
-            NavFrame.Navigate(typeof(HomeLandingPage));
+            NavFrame.Navigate(typeof(HomePage));
             return;
         }
 
@@ -701,12 +709,12 @@ public sealed partial class MainPage : Page
         }
         if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Food.FoodPage")
         {
-            NavFrame.Navigate(typeof(FoodPage), null, args.RecommendedNavigationTransitionInfo);
+            NavFrame.Navigate(typeof(Food.FoodPage), null, args.RecommendedNavigationTransitionInfo);
             return;
         }
         if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
         {
-            NavFrame.Navigate(typeof(MiscellaneousPage), null, args.RecommendedNavigationTransitionInfo);
+            NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage), null, args.RecommendedNavigationTransitionInfo);
             return;
         }
         if (args.IsSettingsInvoked)
@@ -726,7 +734,7 @@ public sealed partial class MainPage : Page
 
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)
     {
-        NavFrame.Navigate(typeof(HomeLandingPage));
+        NavFrame.Navigate(typeof(HomePage));
     }
 
     private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -739,17 +747,17 @@ public sealed partial class MainPage : Page
             {
                 if (tag == "ATIS.Views.Main.Disease.DiseasePage")
                 {
-                    NavFrame.Navigate(typeof(DiseasePage));
+                    NavFrame.Navigate(typeof(Disease.DiseasePage));
                     return;
                 }
                 if (tag == "ATIS.Views.Main.Food.FoodPage")
                 {
-                    NavFrame.Navigate(typeof(FoodPage));
+                    NavFrame.Navigate(typeof(Food.FoodPage));
                     return;
                 }
                 if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
                 {
-                    NavFrame.Navigate(typeof(MiscellaneousPage));
+                    NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage));
                     return;
                 }
                 if (tag == "Settings")

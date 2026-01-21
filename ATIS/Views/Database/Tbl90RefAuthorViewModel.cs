@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl90RefAuthorViewModel Skriptdatum:  06.01.2025  10:32    
 
@@ -15,8 +16,8 @@ public partial class Tbl90RefAuthorViewModel(IDataService _dataService) : Observ
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
+    private readonly IDataService _data;
     public ObservableCollection<Tbl90RefAuthor> RefAuthorItems { get; } = [];
     #endregion [Private Data Members]
 
@@ -133,11 +134,11 @@ public partial class Tbl90RefAuthorViewModel(IDataService _dataService) : Observ
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var refAuthor = await Context.Tbl90RefAuthors.FirstOrDefaultAsync(b => b.RefAuthorId == refAuthorid);
+            var refAuthor = await AppData.Data.Tbl90RefAuthors.FirstOrDefaultAsync(b => b.RefAuthorId == refAuthorid);
             if (refAuthor != null)
             {
-                Context.Tbl90RefAuthors.Remove(refAuthor);
-                await Context.SaveChangesAsync();
+                ////AppData.Data.Tbl90RefAuthors.Remove(refAuthor);
+                ////await AppData.Data.SaveChangesAsync();
             }
         });
     }

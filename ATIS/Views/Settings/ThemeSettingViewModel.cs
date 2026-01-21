@@ -2,9 +2,8 @@
 
 namespace ATIS.Views.Settings;
 
-public partial class ThemeSettingViewModel(IJsonNavigationViewService jsonNavigationViewService) : ObservableObject
+public partial class ThemeSettingViewModel() : ObservableObject
 {
-    public readonly IJsonNavigationViewService JsonNavigationViewService = jsonNavigationViewService;
 
     [RelayCommand]
     private void GoToThemeSettingPage(object sender)
@@ -20,7 +19,7 @@ public partial class ThemeSettingViewModel(IJsonNavigationViewService jsonNaviga
                 {
                     Effect = SlideNavigationTransitionEffect.FromRight
                 };
-                JsonNavigationViewService.NavigateTo(pageType, item.Header, false, entranceNavigation);
+     //           JsonNavigationViewService.NavigateTo(pageType, item.Header, false, entranceNavigation);
             }
         }
     }

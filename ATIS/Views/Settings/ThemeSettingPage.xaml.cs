@@ -20,12 +20,12 @@ public sealed partial class ThemeSettingPage : Page
     }
     private void CmbBackdrop_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        App.GetThemeService.OnBackdropComboBoxSelectionChanged(sender);
+  //      App.GetThemeService.OnBackdropComboBoxSelectionChanged(sender);
     }
 
     private void CmbTheme_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        App.GetThemeService.OnThemeComboBoxSelectionChanged(sender);
+  //      App.GetThemeService.OnThemeComboBoxSelectionChanged(sender);
     }
     private async void SettingsCard_Click(object sender, RoutedEventArgs e)
     {

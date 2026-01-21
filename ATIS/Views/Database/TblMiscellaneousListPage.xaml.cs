@@ -8,6 +8,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
+using ATIS.Infrastructure;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -23,9 +24,10 @@ public sealed partial class TblMiscellaneousListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public TblMiscellaneousViewModel ViewModel { get; }
+    public TblMiscellaneousViewModel ViewModel { get; set; }
+
     private TblMiscellaneous SingleMiscellaneous { get; set; }
-    private static readonly AtisDbContext Context = new();
+ //   private static readonly AtisDbContext Context = new();
     private Tbl81Image SingleImage { get; set; }
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
@@ -36,10 +38,16 @@ public sealed partial class TblMiscellaneousListPage : Page
 
     public TblMiscellaneousListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<TblMiscellaneousViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -48,6 +56,7 @@ public sealed partial class TblMiscellaneousListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [Miscellaneous Methods]
@@ -88,9 +97,9 @@ public sealed partial class TblMiscellaneousListPage : Page
             {
                 ViewModel.TblMiscellaneoussesList ??= [];
                 ViewModel.TblMiscellaneoussesList = int.TryParse(_search, out var id)
-                ? [.. Context.TblMiscellaneousses
+                ? [.. AppData.Data.TblMiscellaneousses
                 .Where(a => a.MiscellaneousId == id)]
-                : [.. Context.TblMiscellaneousses
+                : [.. AppData.Data.TblMiscellaneousses
                 .Where(a => _search != null && a.MiscellaneousName.StartsWith(_search))
                 .OrderBy(a => a.MiscellaneousName)];
             });
@@ -166,7 +175,7 @@ public sealed partial class TblMiscellaneousListPage : Page
                 ViewModel.Tbl81ImagesList ??= [];
                 ViewModel.Tbl81ImagesList =
                 [
-                    .. Context.Tbl81Images
+                    .. AppData.Data.Tbl81Images
                         .Where(com => com.MiscellaneousId == ViewModel.MiscellaneousSelected.MiscellaneousId)
                 ];
             });
@@ -265,7 +274,7 @@ public sealed partial class TblMiscellaneousListPage : Page
         }
         else
         {
-            SingleMiscellaneous = App.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
+            SingleMiscellaneous = AppData.Data.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
         }
 
         return Task.CompletedTask;
@@ -292,7 +301,7 @@ public sealed partial class TblMiscellaneousListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.MiscellaneousSelected = ViewModel.TblMiscellaneoussesList[iNdx];
-            SingleMiscellaneous = App.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
+            SingleMiscellaneous = AppData.Data.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
             MiscellaneousSingles();
         }
         else
@@ -338,7 +347,7 @@ public sealed partial class TblMiscellaneousListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleMiscellaneous = App.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
+            SingleMiscellaneous = AppData.Data.SingleMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
             MiscellaneousSingles();
         }
 
@@ -447,7 +456,7 @@ public sealed partial class TblMiscellaneousListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.TblMiscellaneoussesList ??= [];
-            ViewModel.TblMiscellaneoussesList = [.. Context.TblMiscellaneousses
+            ViewModel.TblMiscellaneoussesList = [.. AppData.Data.TblMiscellaneousses
                 .Where(a => a.MiscellaneousName == ViewModel.MiscellaneousSelected.MiscellaneousName)];
         });
         if (ViewModel.IsNewMiscellaneous)
@@ -470,9 +479,9 @@ public sealed partial class TblMiscellaneousListPage : Page
             if (MiscellaneousSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.TblMiscellaneoussesList = int.TryParse(_search, out var id)
-                    ? [.. Context.TblMiscellaneousses
+                    ? [.. AppData.Data.TblMiscellaneousses
                     .Where(a => a.MiscellaneousId == id)]
-                    : [.. Context.TblMiscellaneousses
+                    : [.. AppData.Data.TblMiscellaneousses
                     .Where(a => _search != null && a.MiscellaneousName.StartsWith(_search))
                     .OrderBy(a => a.MiscellaneousName)];
             }
@@ -482,7 +491,7 @@ public sealed partial class TblMiscellaneousListPage : Page
 
         if (ViewModel.TblMiscellaneoussesList.Count == 0)
         {
-            ViewModel.TblMiscellaneoussesList = [.. Context.TblMiscellaneousses
+            ViewModel.TblMiscellaneoussesList = [.. AppData.Data.TblMiscellaneousses
                 .Where(a => a.MiscellaneousId == viewModelMiscellaneousSelected.MiscellaneousId)];
             MiscellaneousDataGrid.ItemsSource = ViewModel.TblMiscellaneoussesList;
             await Refresh();
@@ -584,7 +593,7 @@ public sealed partial class TblMiscellaneousListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageMiscellaneous(ViewModel.ImageSelected.ImageId, ViewModel.MiscellaneousSelected.MiscellaneousId);
+            SingleImage = AppData.Data.SingleImageMiscellaneous(ViewModel.ImageSelected.ImageId, ViewModel.MiscellaneousSelected.MiscellaneousId);
         }
 
         return Task.CompletedTask;
@@ -611,7 +620,7 @@ public sealed partial class TblMiscellaneousListPage : Page
         {
             ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
 
-            SingleImage = App.SingleImageMiscellaneous(ViewModel.ImageSelected.ImageId, ViewModel.MiscellaneousSelected.MiscellaneousId);
+            SingleImage = AppData.Data.SingleImageMiscellaneous(ViewModel.ImageSelected.ImageId, ViewModel.MiscellaneousSelected.MiscellaneousId);
             ImageSingles();
         }
         else
@@ -655,7 +664,7 @@ public sealed partial class TblMiscellaneousListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageMiscellaneous(ViewModel.ImageSelected.ImageId, ViewModel.MiscellaneousSelected.MiscellaneousId);
+                SingleImage = AppData.Data.SingleImageMiscellaneous(ViewModel.ImageSelected.ImageId, ViewModel.MiscellaneousSelected.MiscellaneousId);
                 ImageSingles();
             }
         });
@@ -755,7 +764,7 @@ public sealed partial class TblMiscellaneousListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+        ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.MiscellaneousId == ViewModel.ImageSelected.MiscellaneousId &&
                         a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
@@ -778,14 +787,14 @@ public sealed partial class TblMiscellaneousListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.MiscellaneousId == viewModelImageSelected.MiscellaneousId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.MiscellaneousId == viewModelImageSelected.MiscellaneousId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
@@ -948,16 +957,16 @@ public sealed partial class TblMiscellaneousListPage : Page
                 if (ViewModel.TblMiscellaneoussesList.Count == 0)
                 {
                     ViewModel.TblMiscellaneoussesList ??= [];
-                    ViewModel.TblMiscellaneoussesList = [.. Context.TblMiscellaneousses
+                    ViewModel.TblMiscellaneoussesList = [.. AppData.Data.TblMiscellaneousses
                             .Where(a => a.MiscellaneousId == ViewModel.MiscellaneousSelected.MiscellaneousId)];
                 }
                 else
                 {
                     ViewModel.TblMiscellaneoussesList ??= [];
                     ViewModel.TblMiscellaneoussesList = int.TryParse(_search, out var id)
-                        ? [.. Context.TblMiscellaneousses
+                        ? [.. AppData.Data.TblMiscellaneousses
                            .Where(a => a.MiscellaneousId == id)]
-                       : [.. Context.TblMiscellaneousses
+                       : [.. AppData.Data.TblMiscellaneousses
                            .Where(a => _search != null && a.MiscellaneousName.StartsWith(_search))
                          .OrderBy(a => a.MiscellaneousName)];
                 }

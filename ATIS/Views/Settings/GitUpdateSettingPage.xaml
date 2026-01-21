@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:wuc="using:WinUICommunity"
-      wuc:BreadcrumbNavigator.IsHeaderVisible="True"
       mc:Ignorable="d">
 
     <ScrollView Margin="{ThemeResource ContentPageMargin}"
@@ -24,20 +23,33 @@
                                      IsClosable="False"
                                      IsOpen="True"
                                      Severity="Warning" />
-                            <Button HorizontalAlignment="Center"
+                            <!--<Button HorizontalAlignment="Center"
                                     Click="Button_Click"
+                                    Content="Check for Update" />-->
+                            <Button Command="{Binding UpdateCommand}"
                                     Content="Check for Update" />
-                            <TextBox Name="TxtUser"
+                            <TextBox PlaceholderText="Github Username: rudolf@terppe.de"
+                                     Text="{Binding User, Mode=TwoWay}" />
+                            <TextBox PlaceholderText="Github Repository: https://github.com/Terppe/ATIS"
+                                     Text="{Binding Repo, Mode=TwoWay}" />
+                            <!--<TextBox Name="TxtUser"
                                      PlaceholderText="Github Username: rudolf@terppe.de" />
                             <TextBox Name="TxtRepo"
-                                     PlaceholderText="Github Repository: https://github.com/Terppe/ATIS" />
-                            <TextBlock Name="TxtReleaseUrl" />
+                                     PlaceholderText="Github Repository: https://github.com/Terppe/ATIS" />-->
+                            <!--<TextBlock Name="TxtReleaseUrl" />
                             <TextBlock Name="TxtCreatedAt" />
                             <TextBlock Name="TxtPublishedAt" />
                             <TextBlock Name="TxtIsPreRelease" />
                             <TextBlock Name="TxtTagName" />
-                            <TextBlock Name="TxtChangelog" />
-                            <ListView Name="ListView" />
+                            <TextBlock Name="TxtChangelog" />-->
+                            <TextBlock Text="{Binding ReleaseUrl}" />
+                            <TextBlock Text="{Binding CreatedAt}" />
+                            <TextBlock Text="{Binding PublishedAt}" />
+                            <TextBlock Text="{Binding IsPreRelease}" />
+                            <TextBlock Text="{Binding TagName}" />
+                            <TextBlock Text="{Binding Changelog}" />
+                            <!--<ListView Name="ListView" />-->
+                            <ListView ItemsSource="{Binding Assets}" />
                         </StackPanel>
                     </wuc:SettingsPageControl.ModuleContent>
                 </wuc:SettingsPageControl>

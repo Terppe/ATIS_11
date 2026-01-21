@@ -2,12 +2,19 @@
 
 public sealed partial class AboutUsSettingPage : Page
 {
-    public AboutUsSettingViewModel ViewModel { get; }
+    public AboutUsSettingViewModel ViewModel { get; set; }
 
     public AboutUsSettingPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         ViewModel = App.GetService<AboutUsSettingViewModel>();
-        this.InitializeComponent();
+
     }
 }
 

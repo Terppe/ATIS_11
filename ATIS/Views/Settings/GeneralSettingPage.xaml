@@ -6,7 +6,6 @@
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:wuc="using:WinUICommunity"
-      wuc:BreadcrumbNavigator.IsHeaderVisible="True"
       mc:Ignorable="d">
 
     <ScrollView Margin="{ThemeResource ContentPageMargin}"

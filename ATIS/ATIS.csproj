@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 	<OutputType>WinExe</OutputType>
-	<TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
+	<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
 	<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 	<RootNamespace>ATIS</RootNamespace>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
@@ -10,7 +10,7 @@
 	<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 	<UseWinUI>true</UseWinUI>
 	<EnableMsixTooling>true</EnableMsixTooling>
-	<Nullable>disable</Nullable>
+	<Nullable>enable</Nullable>
 		<TrimMode>partial</TrimMode>
 		<SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -19,12 +19,12 @@
 		<!--Uncomment this to make the app non-packaged.-->
 		<WindowsPackageType>None</WindowsPackageType>
 		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+		<PublishAot>False</PublishAot>
 
 		<IsAotCompatible>False</IsAotCompatible>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-	<Version>9.2.0.2512</Version>
-		<!--Regex-->
-		<NoWarn>$(NoWarn);SYSLIB1045</NoWarn>
+	<Version>10.1.0.2602</Version>
+
 		<!--Remove git hash from assembly informational version in .NET >= 8, Example: false = 1.0.0, true = 1.0.0+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 
@@ -43,6 +43,73 @@
 	</Target>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
+		<PackageReference Include="log4net" Version="3.2.0" />
+		<PackageReference Include="MailKit" Version="4.14.1" />
+		<PackageReference Include="Mapsui.WinUI" Version="5.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
+		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
+		<PackageReference Include="QuestPDF" Version="2025.12.1" />
+		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
+		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
+		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
+		<PackageReference Include="WinUICommunity.LandingPages" Version="7.1.0" />
+	</ItemGroup>
+	<PropertyGroup Label="Globals">
+		<WebView2EnableCsWinRTProjection>False</WebView2EnableCsWinRTProjection>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ExcludeAssetsFromBuild>true</ExcludeAssetsFromBuild>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3179.45" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="WinUIEx" Version="2.9.0" />
+	</ItemGroup>
+
+	<!--<PropertyGroup>
+		--><!-- Unterdrückt Obsolete-Warnungen global NICHT, nur für generierte Dateien --><!--
+		<NoWarn>$(NoWarn)</NoWarn>
+	</PropertyGroup>-->
+
+	<!--<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+			--><!--Debug: keine Filter, alles sichtbar--><!-- 
+		 <NoWarn>$(NoWarn)</NoWarn>
+	</PropertyGroup>-->
+
+	<ItemGroup>
+		 <!-- WinUI generierte XAML TypeInfo-Dateien -->
+		 <Compile Update="obj\**\XamlTypeInfo.g.cs">
+				<NoWarn>SYSLIB0050;SYSLIB0039;SYSLIB0014</NoWarn>
+		 </Compile>
+		 <!-- Falls WinUI weitere .g.cs-Dateien erzeugt -->
+		 <Compile Update="obj\**\*.g.cs">
+				<NoWarn>SYSLIB0050;SYSLIB0039;SYSLIB0014</NoWarn>
+		 </Compile>
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		 <!-- Release: WinUI-Warnungen ausblenden -->
+		 <NoWarn>$(NoWarn);SYSLIB0050;SYSLIB0039;SYSLIB0014</NoWarn>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		 <Compile Update="obj\**\*.g.cs">
+				<NoWarn>SYSLIB0050;SYSLIB0039;SYSLIB0014</NoWarn>
+		 </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="Strings\**\*.resw">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -50,7 +117,6 @@
 
 	<!-- Publish Properties -->
 	<PropertyGroup>
-		<PublishAot>False</PublishAot>
 		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
 		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
 		<PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
@@ -64,39 +130,136 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-	<None Update="T4Templates\NavigationPageMappings.tt">
-		<Generator>TextTemplatingFileGenerator</Generator>
-		<LastGenOutput>NavigationPageMappings.cs</LastGenOutput>
-	</None>
-	<Compile Update="T4Templates\NavigationPageMappings.cs">
-		<DesignTime>True</DesignTime>
-		<AutoGen>True</AutoGen>
-		<DependentUpon>NavigationPageMappings.tt</DependentUpon>
+	<Page Update="AtisDesignsystem\Controls\ComboBox.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Converters\Converters.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Foundations\Spacing.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Icons\AtisIcons.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Resources.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="AtisDesignsystem\Themes\AtisTypography.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Themes\AtisColors.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Themes\AtisSpacing.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\Themes\AtisElevation.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\UserControls\AtisDetailHeader.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="AtisDesignsystem\UserControls\AtisPageLayout.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Compile Update="Views\UserControls\DataGridRowControl.xaml.cs">
+		<SubType>Code</SubType>
 	</Compile>
-	<None Update="T4Templates\BreadcrumbPageMappings.tt">
-		<Generator>TextTemplatingFileGenerator</Generator>
-		<LastGenOutput>BreadcrumbPageMappings.cs</LastGenOutput>
-	</None>
+
+<Page Update="Views\ContentDialogs\AtisDeleteDialog.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="Views\ContentDialogs\AtisSaveChangesDialog.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="Views\UserControls\AtisHeaderBar.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Themes\Colors\Colors.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="Themes\Controls\Controls.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="Themes\Styles\AtisTheme.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="Themes\Styles\PageLayout.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="Views\UserControls\DataGridRowControl.xaml">
+		<SubType>Designer</SubType>
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\UserControls\AtisDataGrid.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+<!---->		<Page Update="Themes\AppTheme.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Colors\DataGridColors.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\BorderBase.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\TabViews.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\ListGridViews.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\InfoBars.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\NavigationViews.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\TextBoxes.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Typography.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Theme.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Controls\Buttons.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Brushes.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Colors.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Border.xaml">
+			<SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\ATISTheme.xaml">
+			<SubType>Designer</SubType>
+		</Page>
 	<Page Update="Views\Report\Pdf\TblMiscellaneous\ReportMiscellaneoussesWindow.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\Pdf\TblFoods\ReportFoodsWindow.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Search\SearchItemTemplateTblFoodControl.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Main\MiscellaneousPage.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Main\DiseasePage.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Main\FoodPage.xaml">
-	  <Generator>MSBuild:Compile</Generator>
+		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Main\SplashWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
@@ -106,6 +269,9 @@
 	</Page>
 	<Page Update="Views\Settings\GitUpdateSettingPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="Views\UserControls\FluentTabView.xaml">
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="Views\User\UserAreaPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
@@ -524,11 +690,6 @@
 	<Page Update="Views\Search\SearchQuickPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Compile Update="T4Templates\BreadcrumbPageMappings.cs">
-		<DesignTime>True</DesignTime>
-		<AutoGen>True</AutoGen>
-		<DependentUpon>BreadcrumbPageMappings.tt</DependentUpon>
-	</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -537,14 +698,16 @@
 	</None>
 	</ItemGroup>
 
+
 	<ItemGroup>
 		<Content Remove="Assets\flagge_D.gif" />
 		<Content Remove="Assets\flagge_FR.jpg" />
 		<Content Remove="Assets\flagge_PT.png" />
 		<Content Remove="Assets\flagge_SP.png" />
 		<Content Remove="Assets\flagge_USA.jpg" />
+		<Content Remove="Assets\Fluent\country.png" />
+		<Content Remove="Assets\Fluent\folder.png" />
 		<Content Remove="Assets\Fluent\icons8-first-flag-of-the-usa-96.png" />
-		<Content Remove="Assets\NavViewMenu\AppDataEmpty.json" />
 		<Content Remove="Assets\Store\SplashScreen.png" />
 	</ItemGroup>
 
@@ -561,6 +724,8 @@
 		<None Remove="Assets\Mexico.png" />
 		<None Remove="Assets\splash.jpg" />
 		<None Remove="Assets\Usa.png" />
+		<None Remove="AtisDesignsystem\Resources.xaml" />
+		<None Remove="AtisDesignsystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
@@ -603,6 +768,7 @@
 		<None Remove="Views\Main\Disease\DiseasePdf\ReportDiseasesWindow.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
 		<None Remove="Views\Main\Food\FoodPdf\ReportFoodsWindow.xaml" />
+		<None Remove="Views\Main\HomePage.xaml" />
 		<None Remove="Views\Main\MiscellaneousPage.xaml" />
 		<None Remove="Views\Main\Miscellaneous\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml" />
 		<None Remove="Views\Main\SpeciesPage.xaml" />
@@ -736,6 +902,7 @@
 		<None Remove="Views\Search\SearchQuickPage.xaml" />
 		<None Remove="Views\Settings\GitUpdateSettingPage.xaml" />
 		<None Remove="Views\Settings\SqlConnectionSettingPage.xaml" />
+		<None Remove="Views\UserControls\AtisDataGrid.xaml" />
 		<None Remove="Views\UserControls\BreadcrumbBarUserControl.xaml" />
 		<None Remove="Views\UserControls\LogInControl.xaml" />
 		<None Remove="Views\UserControls\PasswordChangeControl.xaml" />
@@ -746,8 +913,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	<Folder Include="AtisDesignsystem\Layout\" />
+	<Folder Include="AtisDesignsystem\Templates\" />
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\sp-SP\" />
+	<Folder Include="Themes\Templates\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
 
@@ -763,33 +933,6 @@
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 	<ProjectCapability Include="Msix" />
 	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-		<PackageReference Include="log4net" Version="3.2.0" />
-		<PackageReference Include="MailKit" Version="4.14.1" />
-		<PackageReference Include="Mapsui.WinUI" Version="5.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.11" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.251014001" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
-		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2025.12.0" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
-		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
-		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
-		<PackageReference Include="WinUICommunity.LandingPages" Version="7.1.0" />
-		<PackageReference Include="WinUIEx" Version="2.7.0" />
-	</ItemGroup>
-	<PropertyGroup Label="Globals">
-		<WebView2EnableCsWinRTProjection>False</WebView2EnableCsWinRTProjection>
-	</PropertyGroup>
 
 	<!-- 
 	Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution 
@@ -800,16 +943,6 @@
 	<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
 
-<Target Name="TransformAllT4Templates" BeforeTargets="BeforeBuild">
-	<ItemGroup>
-	<!-- This picks up all T4 templates in the project -->
-	<T4Template Include="**\*.tt" />
-	</ItemGroup>
-
-	<!-- Check if TextTransform.exe exists before running -->
-	<Exec Command="if exist &quot;$(DevEnvDir)TextTransform.exe&quot; &quot;$(DevEnvDir)TextTransform.exe&quot; &quot;%(T4Template.FullPath)&quot;" Condition="Exists('$(DevEnvDir)TextTransform.exe')" />
-</Target>
-
 <ItemGroup>
 	<PRIResource Remove="Strings\de-DE\ManifestResources.resw" />
 </ItemGroup>
@@ -818,5 +951,11 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Main\HomePage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 </Project>

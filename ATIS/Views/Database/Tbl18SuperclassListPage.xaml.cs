@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl18SuperclassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl18SuperclassViewModel ViewModel { get; }
+    public Tbl18SuperclassViewModel ViewModel { get; set; }
     private Tbl18Superclass SingleSuperclass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl21Class SingleClass { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
     public Tbl18SuperclassListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl18SuperclassViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Superclass Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl18SuperclassListPage : Page
             {
                 ViewModel.Tbl18SuperclassesList ??= [];
                 ViewModel.Tbl18SuperclassesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl18Superclasses
+                ? [.. AppData.Data.Tbl18Superclasses
                 .Where(a => a.SuperclassId == id)]
-                : [.. Context.Tbl18Superclasses
+                : [.. AppData.Data.Tbl18Superclasses
                 .Where(a => _search != null && a.SuperclassName.StartsWith(_search))
                 .OrderBy(a => a.SuperclassName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.SuperclassId == ViewModel.SuperclassSelected.SuperclassId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.SuperclassId == ViewModel.SuperclassSelected.SuperclassId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl21ClassesList ??= [];
-                ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+                ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
             .Where(com => com.SuperclassId == ViewModel.SuperclassSelected.SuperclassId)];
             });
             ViewModel.ClassDataSetCount = ViewModel.Tbl21ClassesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         }
         else
         {
-            SingleSuperclass = App.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
+            SingleSuperclass = AppData.Data.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
         }
 
         return Task.CompletedTask;
@@ -347,7 +356,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SuperclassSelected = ViewModel.Tbl18SuperclassesList[iNdx];
-            SingleSuperclass = App.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
+            SingleSuperclass = AppData.Data.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
             SuperclassSingles();
         }
         else
@@ -397,7 +406,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSuperclass = App.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
+            SingleSuperclass = AppData.Data.SingleSuperclass(ViewModel.SuperclassSelected.SuperclassId);
             SuperclassSingles();
         }
 
@@ -506,7 +515,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl18SuperclassesList ??= [];
-            ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+            ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
                 .Where(a => a.SuperclassName == ViewModel.SuperclassSelected.SuperclassName &&
                         a.SubphylumId == ViewModel.SuperclassSelected.SubphylumId)];
         });
@@ -530,9 +539,9 @@ public sealed partial class Tbl18SuperclassListPage : Page
             if (SuperclassSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl18SuperclassesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl18Superclasses
+                    ? [.. AppData.Data.Tbl18Superclasses
                     .Where(a => a.SuperclassId == id)]
-                    : [.. Context.Tbl18Superclasses
+                    : [.. AppData.Data.Tbl18Superclasses
                     .Where(a => _search != null && a.SuperclassName.StartsWith(_search))
                     .OrderBy(a => a.SuperclassName)];
             }
@@ -542,7 +551,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
 
         if (ViewModel.Tbl18SuperclassesList.Count == 0)
         {
-            ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+            ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
                 .Where(a => a.SuperclassId == viewModelSuperclassSelected.SuperclassId)];
             SuperclassDataGrid.ItemsSource = ViewModel.Tbl18SuperclassesList;
             await Refresh();
@@ -648,7 +657,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -683,7 +692,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperclassSelected.SuperclassId);
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperclassSelected.SuperclassId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -786,7 +795,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SuperclassId == ViewModel.ReferenceSelected.SuperclassId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -810,14 +819,14 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SuperclassId == viewModelReferenceSelected.SuperclassId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SuperclassId == viewModelReferenceSelected.SuperclassId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -904,7 +913,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SuperclassSelected.SuperclassId);
             ReferenceExpertSingles();
         }
@@ -941,7 +950,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SuperclassSelected.SuperclassId);
 
             ReferenceExpertSingles();
@@ -1011,7 +1020,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.SuperclassSelected.SuperclassId);
             ReferenceSourceSingles();
         }
@@ -1048,7 +1057,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.SuperclassSelected.SuperclassId);
 
             ReferenceSourceSingles();
@@ -1120,7 +1129,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.SuperclassSelected.SuperclassId);
             ReferenceAuthorSingles();
         }
@@ -1157,7 +1166,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperclass(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.SuperclassSelected.SuperclassId);
 
             ReferenceAuthorSingles();
@@ -1233,7 +1242,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
+            SingleComment = AppData.Data.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
         }
         return Task.CompletedTask;
     }
@@ -1260,7 +1269,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
+            SingleComment = AppData.Data.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
             CommentSingles();
         }
         else
@@ -1302,7 +1311,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
+                SingleComment = AppData.Data.SingleCommentSuperclass(ViewModel.CommentSelected.CommentId, ViewModel.SuperclassSelected.SuperclassId);
                 CommentSingles();
             }
         });
@@ -1406,7 +1415,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SuperclassId == ViewModel.CommentSelected.SuperclassId)];
@@ -1428,14 +1437,14 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SuperclassId == viewModelCommentSelected.SuperclassId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SuperclassId == viewModelCommentSelected.SuperclassId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1492,7 +1501,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         }
         else
         {
-            SingleClass = App.SingleClassSuperclass(ViewModel.ClassSelected.ClassId,
+            SingleClass = AppData.Data.SingleClassSuperclass(ViewModel.ClassSelected.ClassId,
                     ViewModel.SuperclassSelected.SuperclassId);
         }
 
@@ -1521,7 +1530,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         {
             ViewModel.ClassSelected = ViewModel.Tbl21ClassesList[iNdx];
 
-            SingleClass = App.SingleClassSuperclass(ViewModel.ClassSelected.ClassId, ViewModel.SuperclassSelected.SuperclassId);
+            SingleClass = AppData.Data.SingleClassSuperclass(ViewModel.ClassSelected.ClassId, ViewModel.SuperclassSelected.SuperclassId);
             ClassSingles();
         }
         else
@@ -1570,7 +1579,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
             }
             else
             {
-                SingleClass = App.SingleClassSuperclass(ViewModel.ClassSelected.ClassId, ViewModel.SuperclassSelected.SuperclassId);
+                SingleClass = AppData.Data.SingleClassSuperclass(ViewModel.ClassSelected.ClassId, ViewModel.SuperclassSelected.SuperclassId);
                 ClassSingles();
             }
         });
@@ -1630,7 +1639,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl21ClassesList ??= [];
-            ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+            ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
             .Where(a => a.ClassName == ViewModel.ClassSelected.ClassName &&
                         a.SuperclassId == ViewModel.ClassSelected.SuperclassId)];
         });
@@ -1651,14 +1660,14 @@ public sealed partial class Tbl18SuperclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl21ClassesList ??= [];
-            ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+            ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
                 .Where(com => com.SuperclassId == viewModelClassSelected.SuperclassId)];
         });
         ViewModel.RefreshClassItems();
 
         if (ViewModel.Tbl21ClassesList.Count == 0)
         {
-            ViewModel.Tbl21ClassesList = [.. Context.Tbl21Classes
+            ViewModel.Tbl21ClassesList = [.. AppData.Data.Tbl21Classes
                 .Where(com => com.SuperclassId == viewModelClassSelected.SuperclassId)];
             ClassDataGrid.ItemsSource = ViewModel.Tbl21ClassesList;
             await Refresh();
@@ -1737,16 +1746,16 @@ public sealed partial class Tbl18SuperclassListPage : Page
                 if (ViewModel.Tbl18SuperclassesList.Count == 0)
                 {
                     ViewModel.Tbl18SuperclassesList ??= [];
-                    ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+                    ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
                             .Where(a => a.SuperclassId == ViewModel.SuperclassSelected.SuperclassId)];
                 }
                 else
                 {
                     ViewModel.Tbl18SuperclassesList ??= [];
                     ViewModel.Tbl18SuperclassesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl18Superclasses
+                        ? [.. AppData.Data.Tbl18Superclasses
                            .Where(a => a.SuperclassId == id)]
-                       : [.. Context.Tbl18Superclasses
+                       : [.. AppData.Data.Tbl18Superclasses
                            .Where(a => _search != null && a.SuperclassName.StartsWith(_search))
                          .OrderBy(a => a.SuperclassName)];
                 }

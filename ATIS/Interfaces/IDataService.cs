@@ -5,6 +5,199 @@ namespace ATIS.Interfaces;
 
 public interface IDataService
 {
+
+    #region für provisorium
+
+    IQueryable<Tbl03Regnum> Tbl03Regnums { get; }
+    IQueryable<Tbl06Phylum> Tbl06Phylums { get; }
+    IQueryable<Tbl12Subphylum> Tbl12Subphylums { get; }
+    IQueryable<Tbl18Superclass> Tbl18Superclasses { get; }
+    IQueryable<Tbl21Class> Tbl21Classes { get; }
+    IQueryable<Tbl24Subclass> Tbl24Subclasses { get; }
+    IQueryable<Tbl27Infraclass> Tbl27Infraclasses { get; }
+    IQueryable<Tbl30Legio> Tbl30Legios { get; }
+    IQueryable<Tbl33Ordo> Tbl33Ordos { get; }
+    IQueryable<Tbl36Subordo> Tbl36Subordos { get; }
+    IQueryable<Tbl39Infraordo> Tbl39Infraordos { get; }
+    IQueryable<Tbl42Superfamily> Tbl42Superfamilies { get; }
+    IQueryable<Tbl45Family> Tbl45Families { get; }
+    IQueryable<Tbl48Subfamily> Tbl48Subfamilies { get; }
+    IQueryable<Tbl51Infrafamily> Tbl51Infrafamilies { get; }
+    IQueryable<Tbl54Supertribus> Tbl54Supertribusses { get; }
+    IQueryable<Tbl57Tribus> Tbl57Tribusses { get; }
+    IQueryable<Tbl60Subtribus> Tbl60Subtribusses { get; }
+    IQueryable<Tbl63Infratribus> Tbl63Infratribusses { get; }
+    IQueryable<Tbl66Genus> Tbl66Genusses { get; }
+    IQueryable<Tbl68Speciesgroup> Tbl68Speciesgroups { get; }
+    IQueryable<Tbl75Species> Tbl75Speciesses { get; }
+    IQueryable<Tbl78Name> Tbl78Names { get; }
+    IQueryable<Tbl81Image> Tbl81Images { get; }
+    IQueryable<Tbl84Synonym> Tbl84Synonyms { get; }
+    IQueryable<Tbl87Geographic> Tbl87Geographics { get; }
+
+
+
+
+    IQueryable<Tbl90Reference> Tbl90References { get; }
+    IQueryable<Tbl90RefAuthor> Tbl90RefAuthors { get; }
+    IQueryable<Tbl90RefExpert> Tbl90RefExperts { get; }
+    IQueryable<Tbl90RefSource> Tbl90RefSources { get; }
+    IQueryable<Tbl93Comment> Tbl93Comments { get; }
+
+    IQueryable<TblCountry> TblCountries { get; }
+    IQueryable<TblDisease> TblDiseases { get; }
+    IQueryable<TblFood> TblFoods { get; }
+    IQueryable<TblMiscellaneous> TblMiscellaneousses { get; }
+    IQueryable<TblUserProfile> TblUserProfiles { get; }
+
+    #endregion für provisorium
+
+    #region Von App.cs verschoben
+
+    TblFood? SingleFood(int id);
+    TblDisease? SingleDisease(int id);
+    TblMiscellaneous? SingleMiscellaneous(int id);
+    //-----------------------------
+    Tbl78Name? SingleName(int id);
+    Tbl81Image? SingleImage(int id);
+    Tbl84Synonym? SingleSynonym(int id);
+    Tbl87Geographic? SingleGeographic(int id);
+    //-------------------------------------------------------------------------------
+    TblCountry? SingleCountry(int id);
+    TblUserProfile? SingleUserProfile(int id);
+    //--------------------------------------------------------------------
+    Tbl90RefAuthor? SingleRefAuthor(int id);
+    Tbl90RefExpert? SingleRefExpert(int id);
+    Tbl90RefSource? SingleRefSource(int id);
+    Tbl90Reference? SingleReference(int id);
+    Tbl93Comment? SingleComment(int id);
+    //--------------------------------------------------------------------
+    Tbl81Image? SingleImageFood(int imageId, int? foodId);
+    Tbl81Image? SingleImageDisease(int imageId, int? diseaseId);
+    Tbl81Image? SingleImageMiscellaneous(int imageId, int? miscellaneousId);
+    //------------------------------------------------------------------
+    Tbl75Species? SingleSpecies(int id);
+    Tbl90Reference? SingleReferenceSpecies(int referenceid, int? speciesId);
+    Tbl93Comment? SingleCommentSpecies(int commentid, int? speciesid);
+    Tbl78Name? SingleNameSpecies(int nameId, int? speciesId);
+    Tbl81Image? SingleImageSpecies(int imageId, int? speciesId);
+    Tbl84Synonym? SingleSynonymSpecies(int synonymId, int? speciesId);
+    Tbl87Geographic? SingleGeographicSpecies(int geographicId, int? speciesId);
+    Tbl75Species? SingleSpeciesGenus(int speciesid, int? genusid);
+    Tbl78Name? SingleNameSpecies(int nameid, int speciesid);
+
+    //------------------------------------------------------------------
+    Tbl68Speciesgroup? SingleSpeciesgroup(int id);
+    Tbl75Species? SingleSpeciesSpeciesgroup(int speciesId, int? speciesgroupId);
+    //------------------------------------------------------------------
+
+    Tbl66Genus? SingleGenus(int id);
+    Tbl90Reference? SingleReferenceGenus(int referenceid, int? genusId);
+    Tbl93Comment? SingleCommentGenus(int commentid, int? genusid);
+    //---------------------------------------------------
+    Tbl63Infratribus? SingleInfratribus(int id);
+    Tbl90Reference? SingleReferenceInfratribus(int referenceid, int? infratribusId);
+    Tbl93Comment? SingleCommentInfratribus(int commentid, int? infratribusid);
+
+    Tbl66Genus? SingleGenusInfratribus(int genusId, int? infratribusId);
+    //------------------------------------------------------------------
+
+    Tbl60Subtribus? SingleSubtribus(int id);
+    Tbl90Reference? SingleReferenceSubtribus(int referenceid, int? subtribusId);
+    Tbl93Comment? SingleCommentSubtribus(int commentid, int? subtribusid);
+
+    Tbl63Infratribus? SingleInfratribusSubtribus(int infratribusId, int? subtribusId);
+    //---------------------------------------------------
+    Tbl57Tribus? SingleTribus(int id);
+    Tbl90Reference? SingleReferenceTribus(int referenceid, int? tribusId);
+    Tbl93Comment? SingleCommentTribus(int commentid, int? tribusid);
+    Tbl60Subtribus? SingleSubtribusTribus(int subtribusId, int? tribusId);
+    //------------------------------------------------------------------
+    Tbl54Supertribus? SingleSupertribus(int id);
+    Tbl90Reference? SingleReferenceSupertribus(int referenceid, int? supertribusId);
+    Tbl93Comment? SingleCommentSupertribus(int commentid, int? supertribusid);
+    Tbl57Tribus? SingleTribusSupertribus(int tribusId, int? supertribusId);
+    //------------------------------------------------------------------
+    Tbl51Infrafamily? SingleInfrafamily(int id);
+    Tbl90Reference? SingleReferenceInfrafamily(int referenceid, int? infrafamilyId);
+    Tbl93Comment? SingleCommentInfrafamily(int commentid, int? infrafamilyid);
+    Tbl54Supertribus? SingleSupertribusInfrafamily(int supertribusId, int? infrafamilyId);
+    //------------------------------------------------------------------
+    Tbl48Subfamily? SingleSubfamily(int id);
+    Tbl90Reference? SingleReferenceSubfamily(int referenceid, int? subfamilyId);
+    Tbl93Comment? SingleCommentSubfamily(int commentid, int? subfamilyid);
+    Tbl51Infrafamily? SingleInfrafamilySubfamily(int infrafamilyId, int? subfamilyId);
+    //------------------------------------------------------------------
+    Tbl45Family? SingleFamily(int id);
+    Tbl90Reference? SingleReferenceFamily(int referenceid, int? familyId);
+    Tbl93Comment? SingleCommentFamily(int commentid, int? familyid);
+    Tbl48Subfamily? SingleSubfamilyFamily(int subfamilyId, int? familyId);
+    ////------------------------------------------------------------------
+    Tbl42Superfamily? SingleSuperfamily(int id);
+    Tbl90Reference? SingleReferenceSuperfamily(int referenceid, int? superfamilyId);
+    Tbl93Comment? SingleCommentSuperfamily(int commentid, int? superfamilyid);
+    Tbl45Family? SingleFamilySuperfamily(int familyId, int? superfamilyId);
+    //------------------------------------------------------------------
+    Tbl39Infraordo? SingleInfraordo(int id);
+    Tbl90Reference? SingleReferenceInfraordo(int referenceid, int? infraordoId);
+    Tbl93Comment? SingleCommentInfraordo(int commentid, int? infraordoid);
+    Tbl42Superfamily? SingleSuperfamilyInfraordo(int superfamilyId, int? infraordoId);
+    //------------------------------------------------------------------
+    Tbl36Subordo? SingleSubordo(int id);
+    Tbl90Reference? SingleReferenceSubordo(int referenceid, int? subordoId);
+    Tbl93Comment? SingleCommentSubordo(int commentid, int? subordoid);
+    Tbl39Infraordo? SingleInfraordoSubordo(int infraordoId, int? subordoId);
+    //}
+    //------------------------------------------------------------------
+    Tbl33Ordo? SingleOrdo(int id);
+    Tbl90Reference? SingleReferenceOrdo(int referenceid, int? ordoId);
+    Tbl93Comment? SingleCommentOrdo(int commentid, int? ordoid);
+    Tbl36Subordo? SingleSubordoOrdo(int subordoId, int? ordoId);
+    //------------------------------------------------------------------
+    Tbl30Legio? SingleLegio(int id);
+    Tbl90Reference? SingleReferenceLegio(int referenceid, int? legioId);
+    Tbl93Comment? SingleCommentLegio(int commentid, int? legioid);
+    Tbl33Ordo? SingleOrdoLegio(int ordoId, int? legioId);
+    //------------------------------------------------------------------
+    Tbl27Infraclass? SingleInfraclass(int id);
+    Tbl90Reference? SingleReferenceInfraclass(int referenceid, int? infraclassId);
+    Tbl93Comment? SingleCommentInfraclass(int commentid, int? infraclassid);
+    Tbl30Legio? SingleLegioInfraclass(int legioId, int? infraclassId);
+    //------------------------------------------------------------------
+    Tbl24Subclass? SingleSubclass(int id);
+    Tbl90Reference? SingleReferenceSubclass(int referenceid, int? subclassId);
+    Tbl93Comment? SingleCommentSubclass(int commentid, int? subclassid);
+    Tbl27Infraclass? SingleInfraclassSubclass(int infraclassId, int? subclassId);
+    //------------------------------------------------------------------
+    Tbl21Class? SingleClass(int id);
+    Tbl90Reference? SingleReferenceClass(int referenceid, int? classId);
+    Tbl93Comment? SingleCommentClass(int commentid, int? classid);
+    Tbl24Subclass? SingleSubclassClass(int subclassId, int? classId);
+    //------------------------------------------------------------------
+    Tbl18Superclass? SingleSuperclass(int id);
+    Tbl90Reference? SingleReferenceSuperclass(int referenceid, int? superclassId);
+    Tbl93Comment? SingleCommentSuperclass(int commentid, int? superclassid);
+    Tbl21Class? SingleClassSuperclass(int classeId, int? superclassId);
+    //------------------------------------------------------------------
+    Tbl12Subphylum? SingleSubphylum(int id);
+    Tbl90Reference? SingleReferenceSubphylum(int referenceid, int? subphylumId);
+    Tbl93Comment? SingleCommentSubphylum(int commentid, int? subphylumid);
+    Tbl18Superclass? SingleSuperclassSubphylum(int superclassId, int? subphylumId);
+    //------------------------------------------------------------------
+    Tbl06Phylum? SinglePhylum(int id);
+    Tbl90Reference? SingleReferencePhylum(int referenceid, int? phylumId);
+    Tbl93Comment? SingleCommentPhylum(int commentid, int? phylumid);
+    Tbl12Subphylum? SingleSubphylumPhylum(int subphylumId, int? phylumId);
+    //------------------------------------------------------------------
+    Tbl03Regnum? SingleRegnum(int id);
+    Tbl90Reference? SingleReferenceRegnum(int referenceid, int? regnumId);
+    Tbl93Comment? SingleCommentRegnum(int commentid, int? regnumid);
+    Tbl06Phylum? SinglePhylumRegnum(int phylumId, int? regnumId);
+
+
+
+    #endregion Von App.cs verschoben
+
     #region CRUD
 
     #region Regnum
@@ -398,12 +591,17 @@ public interface IDataService
     #endregion Comment
 
     #region Country
+    Task<List<TblCountry>> GetAllCountriesAsync();
+    Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string query);
+    //Task<TblCountry> UpsertCountryAsync(TblCountry entity);
+    Task DeleteCountryAsync(int? countryId);
 
     ObservableCollection<TblCountry> GetCountryAsync();
     ObservableCollection<TblCountry> GetCountryAsync(int countryid);
     Task<ObservableCollection<TblCountry>> GetCountryAsync(string search);
+
     Task<TblCountry> UpsertCountryAsync(TblCountry country);
-    Task DeleteCountryAsync(int countryid);
+    //Task DeleteCountryAsync(int countryid);
 
     #endregion Country
 
@@ -479,7 +677,12 @@ public interface IDataService
     //ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
     ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText);
     ObservableCollection<Tbl84Synonym> GetTbl84SynonymsCollectionOrderBySynonymNameFromFilterText(string filterText);
+
+    
     ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText);
+    Task<List<TblDisease>> GetDiseasesByNameOrIdAsync(string query);
+    Task<List<TblFood>> GetFoodsByNameOrIdAsync(string query);
+    Task<List<TblMiscellaneous>> GetMiscellaneoussesByNameOrIdAsync(string query);
     ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText);
     ObservableCollection<TblMiscellaneous> GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(string filterText);
 
@@ -585,7 +788,7 @@ public interface IDataService
     //direct children
     ObservableCollection<Tbl21Class> CollClassesBySuperclassIdAndHash(int id);
     //Function
- //   int SubdivisionIdFromSuperclassesCollectionSelect(int id);
+    //   int SubdivisionIdFromSuperclassesCollectionSelect(int id);
     int SubphylumIdFromSuperclassesCollectionSelect(int id);
     //ForeignKey
     ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumIdAndHash(int id);
@@ -922,7 +1125,7 @@ public interface IDataService
     #region Disease
 
     TblDisease GetDiseaseSingleByDiseaseId(int id);
-    
+
     ObservableCollection<TblDisease> CollDiseasesByDiseaseId(int id);
 
     #endregion Disease

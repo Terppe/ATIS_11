@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,9 +21,9 @@ public sealed partial class Tbl90RefExpertListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl90RefExpertViewModel ViewModel { get; }
+    public Tbl90RefExpertViewModel ViewModel { get; set; }
     private Tbl90RefExpert SingleRefExpert { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -31,10 +32,16 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
     public Tbl90RefExpertListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
+
             ViewModel = App.GetService<Tbl90RefExpertViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -43,6 +50,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [RefExpert Methods]
@@ -82,9 +90,9 @@ public sealed partial class Tbl90RefExpertListPage : Page
             {
                 ViewModel.Tbl90RefExpertsList ??= [];
                 ViewModel.Tbl90RefExpertsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90RefExperts
+                ? [.. AppData.Data.Tbl90RefExperts
                 .Where(a => a.RefExpertId == id)]
-                : [.. Context.Tbl90RefExperts
+                : [.. AppData.Data.Tbl90RefExperts
                 .Where(a => _search != null && a.RefExpertName.StartsWith(_search))
                 .OrderBy(a => a.RefExpertName)];
 
@@ -226,7 +234,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
         }
         else
         {
-            SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
+            SingleRefExpert = AppData.Data.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
         }
 
         return Task.CompletedTask;
@@ -253,7 +261,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.RefExpertSelected = ViewModel.Tbl90RefExpertsList[iNdx];
-            SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
+            SingleRefExpert = AppData.Data.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
             RefExpertSingles();
         }
         else
@@ -298,7 +306,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleRefExpert = App.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
+            SingleRefExpert = AppData.Data.SingleRefExpert(ViewModel.RefExpertSelected.RefExpertId);
             RefExpertSingles();
         }
 
@@ -407,7 +415,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90RefExpertsList ??= [];
-            ViewModel.Tbl90RefExpertsList = [.. Context.Tbl90RefExperts
+            ViewModel.Tbl90RefExpertsList = [.. AppData.Data.Tbl90RefExperts
             .Where(a => a.RefExpertName == ViewModel.RefExpertSelected.RefExpertName &&
                         a.Info == ViewModel.RefExpertSelected.Info &&
                         a.Notes == ViewModel.RefExpertSelected.Notes)];
@@ -432,9 +440,9 @@ public sealed partial class Tbl90RefExpertListPage : Page
             if (RefExpertSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl90RefExpertsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl90RefExperts
+                    ? [.. AppData.Data.Tbl90RefExperts
                     .Where(a => a.RefExpertId == id)]
-                    : [.. Context.Tbl90RefExperts
+                    : [.. AppData.Data.Tbl90RefExperts
                     .Where(a => _search != null && a.RefExpertName.StartsWith(_search))
                     .OrderBy(a => a.RefExpertName)];
             }
@@ -444,7 +452,7 @@ public sealed partial class Tbl90RefExpertListPage : Page
 
         if (ViewModel.Tbl90RefExpertsList.Count == 0)
         {
-            ViewModel.Tbl90RefExpertsList = [.. Context.Tbl90RefExperts
+            ViewModel.Tbl90RefExpertsList = [.. AppData.Data.Tbl90RefExperts
                 .Where(a => a.RefExpertId == viewModelRefExpertSelected.RefExpertId)];
             RefExpertDataGrid.ItemsSource = ViewModel.Tbl90RefExpertsList;
             await Refresh();
@@ -521,9 +529,9 @@ public sealed partial class Tbl90RefExpertListPage : Page
             {
                 ViewModel.Tbl90RefExpertsList ??= [];
                 ViewModel.Tbl90RefExpertsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90RefExperts
+                ? [.. AppData.Data.Tbl90RefExperts
                 .Where(a => a.RefExpertId == id)]
-                : [.. Context.Tbl90RefExperts
+                : [.. AppData.Data.Tbl90RefExperts
                 .Where(a => _search != null && a.RefExpertName.StartsWith(_search))
                 .OrderBy(a => a.RefExpertName)];
             });

@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl54SupertribusListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl54SupertribusViewModel ViewModel { get; }
+    public Tbl54SupertribusViewModel ViewModel { get; set; }
     private Tbl54Supertribus SingleSupertribus { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl57Tribus SingleTribus { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl54SupertribusListPage : Page
 
     public Tbl54SupertribusListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl54SupertribusViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Supertribus Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl54SupertribusListPage : Page
             {
                 ViewModel.Tbl54SupertribussesList ??= [];
                 ViewModel.Tbl54SupertribussesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl54Supertribusses
+                ? [.. AppData.Data.Tbl54Supertribusses
                 .Where(a => a.SupertribusId == id)]
-                : [.. Context.Tbl54Supertribusses
+                : [.. AppData.Data.Tbl54Supertribusses
                 .Where(a => _search != null && a.SupertribusName.StartsWith(_search))
                 .OrderBy(a => a.SupertribusName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.SupertribusId == ViewModel.SupertribusSelected.SupertribusId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.SupertribusId == ViewModel.SupertribusSelected.SupertribusId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl57TribussesList ??= [];
-                ViewModel.Tbl57TribussesList = [.. Context.Tbl57Tribusses
+                ViewModel.Tbl57TribussesList = [.. AppData.Data.Tbl57Tribusses
             .Where(com => com.SupertribusId == ViewModel.SupertribusSelected.SupertribusId)];
             });
             ViewModel.TribusDataSetCount = ViewModel.Tbl57TribussesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         }
         else
         {
-            SingleSupertribus = App.SingleSupertribus(ViewModel.SupertribusSelected.SupertribusId);
+            SingleSupertribus = AppData.Data.SingleSupertribus(ViewModel.SupertribusSelected.SupertribusId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SupertribusSelected = ViewModel.Tbl54SupertribussesList[iNdx];
-            SingleSupertribus = App.SingleSupertribus(ViewModel.SupertribusSelected.SupertribusId);
+            SingleSupertribus = AppData.Data.SingleSupertribus(ViewModel.SupertribusSelected.SupertribusId);
             SupertribusSingles();
         }
         else
@@ -400,7 +409,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSupertribus = App.SingleSupertribus(ViewModel.SupertribusSelected.SupertribusId);
+            SingleSupertribus = AppData.Data.SingleSupertribus(ViewModel.SupertribusSelected.SupertribusId);
             SupertribusSingles();
         }
 
@@ -509,7 +518,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl54SupertribussesList ??= [];
-            ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+            ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
                 .Where(a => a.SupertribusName == ViewModel.SupertribusSelected.SupertribusName &&
                         a.InfrafamilyId == ViewModel.SupertribusSelected.InfrafamilyId)];
         });
@@ -533,9 +542,9 @@ public sealed partial class Tbl54SupertribusListPage : Page
             if (SupertribusSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl54SupertribussesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl54Supertribusses
+                    ? [.. AppData.Data.Tbl54Supertribusses
                     .Where(a => a.SupertribusId == id)]
-                    : [.. Context.Tbl54Supertribusses
+                    : [.. AppData.Data.Tbl54Supertribusses
                     .Where(a => _search != null && a.SupertribusName.StartsWith(_search))
                     .OrderBy(a => a.SupertribusName)];
             }
@@ -545,7 +554,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
 
         if (ViewModel.Tbl54SupertribussesList.Count == 0)
         {
-            ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+            ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
                 .Where(a => a.SupertribusId == viewModelSupertribusSelected.SupertribusId)];
             SupertribusDataGrid.ItemsSource = ViewModel.Tbl54SupertribussesList;
             await Refresh();
@@ -651,7 +660,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +695,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SupertribusSelected.SupertribusId);
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SupertribusSelected.SupertribusId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +798,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SupertribusId == ViewModel.ReferenceSelected.SupertribusId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +822,14 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SupertribusId == viewModelReferenceSelected.SupertribusId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SupertribusId == viewModelReferenceSelected.SupertribusId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +916,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SupertribusSelected.SupertribusId);
             ReferenceExpertSingles();
         }
@@ -944,7 +953,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SupertribusSelected.SupertribusId);
 
             ReferenceExpertSingles();
@@ -1014,7 +1023,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.SupertribusSelected.SupertribusId);
             ReferenceSourceSingles();
         }
@@ -1051,7 +1060,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.SupertribusSelected.SupertribusId);
 
             ReferenceSourceSingles();
@@ -1123,7 +1132,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.SupertribusSelected.SupertribusId);
             ReferenceAuthorSingles();
         }
@@ -1160,7 +1169,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSupertribus(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.SupertribusSelected.SupertribusId);
 
             ReferenceAuthorSingles();
@@ -1236,7 +1245,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentSupertribus(ViewModel.CommentSelected.CommentId, ViewModel.SupertribusSelected.SupertribusId);
+            SingleComment = AppData.Data.SingleCommentSupertribus(ViewModel.CommentSelected.CommentId, ViewModel.SupertribusSelected.SupertribusId);
         }
         return Task.CompletedTask;
     }
@@ -1263,7 +1272,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSupertribus(ViewModel.CommentSelected.CommentId, ViewModel.SupertribusSelected.SupertribusId);
+            SingleComment = AppData.Data.SingleCommentSupertribus(ViewModel.CommentSelected.CommentId, ViewModel.SupertribusSelected.SupertribusId);
             CommentSingles();
         }
         else
@@ -1305,7 +1314,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentSupertribus(ViewModel.CommentSelected.CommentId, ViewModel.SupertribusSelected.SupertribusId);
+                SingleComment = AppData.Data.SingleCommentSupertribus(ViewModel.CommentSelected.CommentId, ViewModel.SupertribusSelected.SupertribusId);
                 CommentSingles();
             }
         });
@@ -1409,7 +1418,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SupertribusId == ViewModel.CommentSelected.SupertribusId)];
@@ -1431,14 +1440,14 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SupertribusId == viewModelCommentSelected.SupertribusId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SupertribusId == viewModelCommentSelected.SupertribusId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1495,7 +1504,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         }
         else
         {
-            SingleTribus = App.SingleTribusSupertribus(ViewModel.TribusSelected.TribusId,
+            SingleTribus = AppData.Data.SingleTribusSupertribus(ViewModel.TribusSelected.TribusId,
                     ViewModel.SupertribusSelected.SupertribusId);
         }
 
@@ -1524,7 +1533,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         {
             ViewModel.TribusSelected = ViewModel.Tbl57TribussesList[iNdx];
 
-            SingleTribus = App.SingleTribusSupertribus(ViewModel.TribusSelected.TribusId, ViewModel.SupertribusSelected.SupertribusId);
+            SingleTribus = AppData.Data.SingleTribusSupertribus(ViewModel.TribusSelected.TribusId, ViewModel.SupertribusSelected.SupertribusId);
             TribusSingles();
         }
         else
@@ -1573,7 +1582,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
             }
             else
             {
-                SingleTribus = App.SingleTribusSupertribus(ViewModel.TribusSelected.TribusId, ViewModel.SupertribusSelected.SupertribusId);
+                SingleTribus = AppData.Data.SingleTribusSupertribus(ViewModel.TribusSelected.TribusId, ViewModel.SupertribusSelected.SupertribusId);
                 TribusSingles();
             }
         });
@@ -1633,7 +1642,7 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl57TribussesList ??= [];
-            ViewModel.Tbl57TribussesList = [.. Context.Tbl57Tribusses
+            ViewModel.Tbl57TribussesList = [.. AppData.Data.Tbl57Tribusses
             .Where(a => a.TribusName == ViewModel.TribusSelected.TribusName &&
                         a.SupertribusId == ViewModel.TribusSelected.SupertribusId)];
         });
@@ -1654,14 +1663,14 @@ public sealed partial class Tbl54SupertribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl57TribussesList ??= [];
-            ViewModel.Tbl57TribussesList = [.. Context.Tbl57Tribusses
+            ViewModel.Tbl57TribussesList = [.. AppData.Data.Tbl57Tribusses
                 .Where(com => com.SupertribusId == viewModelTribusSelected.SupertribusId)];
         });
         ViewModel.RefreshTribusItems();
 
         if (ViewModel.Tbl57TribussesList.Count == 0)
         {
-            ViewModel.Tbl57TribussesList = [.. Context.Tbl57Tribusses
+            ViewModel.Tbl57TribussesList = [.. AppData.Data.Tbl57Tribusses
                 .Where(com => com.SupertribusId == viewModelTribusSelected.SupertribusId)];
             TribusDataGrid.ItemsSource = ViewModel.Tbl57TribussesList;
             await Refresh();
@@ -1740,16 +1749,16 @@ public sealed partial class Tbl54SupertribusListPage : Page
                 if (ViewModel.Tbl54SupertribussesList.Count == 0)
                 {
                     ViewModel.Tbl54SupertribussesList ??= [];
-                    ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+                    ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
                             .Where(a => a.SupertribusId == ViewModel.SupertribusSelected.SupertribusId)];
                 }
                 else
                 {
                     ViewModel.Tbl54SupertribussesList ??= [];
                     ViewModel.Tbl54SupertribussesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl54Supertribusses
+                        ? [.. AppData.Data.Tbl54Supertribusses
                            .Where(a => a.SupertribusId == id)]
-                       : [.. Context.Tbl54Supertribusses
+                       : [.. AppData.Data.Tbl54Supertribusses
                            .Where(a => _search != null && a.SupertribusName.StartsWith(_search))
                          .OrderBy(a => a.SupertribusName)];
                 }

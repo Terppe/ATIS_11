@@ -143,14 +143,6 @@ public partial class AtisDbContext : DbContext
     {
         get; set;
     }
-    //public DbSet<Tbl69FiSpecies> Tbl69FiSpeciesses
-    //{
-    //    get; set;
-    //}
-    //public DbSet<Tbl72PlSpecies> Tbl72PlSpeciesses
-    //{
-    //    get; set;
-    //}
     public DbSet<Tbl75Species> Tbl75Speciesses
     {
         get; set;

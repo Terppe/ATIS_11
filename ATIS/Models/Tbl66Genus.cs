@@ -10,7 +10,7 @@ public class Tbl66Genus
     [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     //  [MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
     // [MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string GenusName { get; set; }
+    public string? GenusName { get; set; }
     [Required]
     public int InfratribusId { get; set; }
     [Required]

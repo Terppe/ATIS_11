@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,10 +21,10 @@ public sealed partial class Tbl84SynonymListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl84SynonymViewModel ViewModel { get; }
+    public Tbl84SynonymViewModel ViewModel { get; set; }
     private Tbl84Synonym SingleSynonym { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -32,10 +33,16 @@ public sealed partial class Tbl84SynonymListPage : Page
 
     public Tbl84SynonymListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl84SynonymViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -86,9 +93,9 @@ public sealed partial class Tbl84SynonymListPage : Page
             {
                 ViewModel.Tbl84SynonymsList ??= [];
                 ViewModel.Tbl84SynonymsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl84Synonyms
+                ? [.. AppData.Data.Tbl84Synonyms
                 .Where(e => e.SynonymId == id)]
-                : [.. Context.Tbl84Synonyms
+                : [.. AppData.Data.Tbl84Synonyms
                 .Where(e => _search != null && e.SynonymName.StartsWith(_search))
                 .OrderBy(a => a.SynonymName)];
             });
@@ -163,7 +170,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
             .Where(com => com.SpeciesId == ViewModel.SynonymSelected.SpeciesId)];
             });
             ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
@@ -264,7 +271,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         }
         else
         {
-            SingleSynonym = App.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
+            SingleSynonym = AppData.Data.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
         }
 
         return Task.CompletedTask;
@@ -291,7 +298,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SynonymSelected = ViewModel.Tbl84SynonymsList[iNdx];
-            SingleSynonym = App.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
+            SingleSynonym = AppData.Data.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
             SynonymSingles();
         }
         else
@@ -338,7 +345,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSynonym = App.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
+            SingleSynonym = AppData.Data.SingleSynonym(ViewModel.SynonymSelected.SynonymId);
             SynonymSingles();
         }
 
@@ -447,7 +454,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl84SynonymsList ??= [];
-            ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
+            ViewModel.Tbl84SynonymsList = [.. AppData.Data.Tbl84Synonyms
             .Where(a => a.SynonymName == ViewModel.SynonymSelected.SynonymName &&
                         a.Author == ViewModel.SynonymSelected.Author &&
                         a.AuthorYear == ViewModel.SynonymSelected.AuthorYear &&
@@ -470,9 +477,9 @@ public sealed partial class Tbl84SynonymListPage : Page
             if (SynonymSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl84SynonymsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl84Synonyms
+                    ? [.. AppData.Data.Tbl84Synonyms
                     .Where(a => a.SynonymId == id)]
-                    : [.. Context.Tbl84Synonyms
+                    : [.. AppData.Data.Tbl84Synonyms
                     .Where(a => _search != null && a.SynonymName.StartsWith(_search))
                     .OrderBy(a => a.SynonymName)];
             }
@@ -482,7 +489,7 @@ public sealed partial class Tbl84SynonymListPage : Page
 
         if (ViewModel.Tbl84SynonymsList.Count == 0)
         {
-            ViewModel.Tbl84SynonymsList = [.. Context.Tbl84Synonyms
+            ViewModel.Tbl84SynonymsList = [.. AppData.Data.Tbl84Synonyms
                 .Where(a => a.SynonymId == viewModelSynonymSelected.SynonymId)];
             SynonymDataGrid.ItemsSource = ViewModel.Tbl84SynonymsList;
             await Refresh();
@@ -533,7 +540,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -561,7 +568,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -647,7 +654,7 @@ public sealed partial class Tbl84SynonymListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+                SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
                 SpeciesSingles();
             }
         });
@@ -706,7 +713,7 @@ public sealed partial class Tbl84SynonymListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -731,14 +738,14 @@ public sealed partial class Tbl84SynonymListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -867,9 +874,9 @@ public sealed partial class Tbl84SynonymListPage : Page
             {
                 ViewModel.Tbl84SynonymsList ??= [];
                 ViewModel.Tbl84SynonymsList = int.TryParse(_search, out var id)
-                 ? [.. Context.Tbl84Synonyms
+                 ? [.. AppData.Data.Tbl84Synonyms
                 .Where(a => a.SynonymId == id)]
-                 : [.. Context.Tbl84Synonyms
+                 : [.. AppData.Data.Tbl84Synonyms
                 .Where(a => _search != null && a.SynonymName.StartsWith(_search))
                 .OrderBy(a => a.SynonymName)];
             });

@@ -7,6 +7,7 @@ using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
 using Windows.Storage.Pickers;
+using ATIS.Infrastructure;
 
 //    Tbl87GeographicViewModel Skriptdatum:  08.07.2025  10:32    
 
@@ -15,9 +16,9 @@ public partial class Tbl87GeographicViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl87Geographic> GeographicItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
@@ -172,11 +173,11 @@ public partial class Tbl87GeographicViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var geographic = await Context.Tbl87Geographics.FirstOrDefaultAsync(b => b.GeographicId == geographicid);
+            var geographic = await AppData.Data.Tbl87Geographics.FirstOrDefaultAsync(b => b.GeographicId == geographicid);
             if (geographic != null)
             {
-                Context.Tbl87Geographics.Remove(geographic);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl87Geographics.Remove(geographic);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

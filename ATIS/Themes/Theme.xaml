@@ -1,0 +1,57 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <!-- LIGHT -->
+        <ResourceDictionary x:Key="Light">
+
+            <SolidColorBrush x:Key="AppBackgroundBrush"
+                             Color="{StaticResource NeutralLayer0Light}" />
+
+            <SolidColorBrush x:Key="AppSurfaceBrush"
+                             Color="{StaticResource NeutralLayer1Light}" />
+
+            <SolidColorBrush x:Key="TextPrimaryBrush"
+                             Color="{StaticResource TextPrimaryLight}" />
+
+            <SolidColorBrush x:Key="TextSecondaryBrush"
+                             Color="{StaticResource TextSecondaryLight}" />
+
+            <SolidColorBrush x:Key="CardBackgroundBrush"
+                             Color="#FFFFFFFF" />
+
+            <SolidColorBrush x:Key="CardBorderBrush"
+                             Color="#FFE5E7EB" />
+
+        </ResourceDictionary>
+
+        <!-- DARK -->
+        <ResourceDictionary x:Key="Dark">
+
+            <SolidColorBrush x:Key="AppBackgroundBrush"
+                             Color="{StaticResource NeutralLayer0Dark}" />
+
+            <SolidColorBrush x:Key="AppSurfaceBrush"
+                             Color="{StaticResource NeutralLayer1Dark}" />
+
+            <SolidColorBrush x:Key="TextPrimaryBrush"
+                             Color="{StaticResource TextPrimaryDark}" />
+
+            <SolidColorBrush x:Key="TextSecondaryBrush"
+                             Color="{StaticResource TextSecondaryDark}" />
+
+            <SolidColorBrush x:Key="CardBackgroundBrush"
+                             Color="#FF262626" />
+
+            <SolidColorBrush x:Key="CardBorderBrush"
+                             Color="#FF3F3F46" />
+
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>

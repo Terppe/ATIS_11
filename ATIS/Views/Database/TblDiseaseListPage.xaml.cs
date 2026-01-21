@@ -8,6 +8,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
+using ATIS.Infrastructure;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -23,9 +24,9 @@ public sealed partial class TblDiseaseListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public TblDiseaseViewModel ViewModel { get; }
+    public TblDiseaseViewModel ViewModel { get; set; }
     private TblDisease SingleDisease { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private Tbl81Image SingleImage { get; set; }
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
@@ -36,10 +37,16 @@ public sealed partial class TblDiseaseListPage : Page
 
     public TblDiseaseListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<TblDiseaseViewModel>();
-            InitializeComponent();
             SimpleLog.Info(" TblDiseaseListPage opended ");
             ButtonsNotVisible();
             ButtonsIconNotVisible();
@@ -49,6 +56,7 @@ public sealed partial class TblDiseaseListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [Disease Methods]
@@ -89,9 +97,9 @@ public sealed partial class TblDiseaseListPage : Page
             {
                 ViewModel.TblDiseasesList ??= [];
                 ViewModel.TblDiseasesList = int.TryParse(_search, out var id)
-                ? [.. Context.TblDiseases
+                ? [.. AppData.Data.TblDiseases
                 .Where(a => a.DiseaseId == id)]
-                : [.. Context.TblDiseases
+                : [.. AppData.Data.TblDiseases
                 .Where(a => _search != null && a.DiseaseName.StartsWith(_search))
                 .OrderBy(a => a.DiseaseName)];
             });
@@ -167,7 +175,7 @@ public sealed partial class TblDiseaseListPage : Page
                 ViewModel.Tbl81ImagesList ??= [];
                 ViewModel.Tbl81ImagesList =
                 [
-                    .. Context.Tbl81Images
+                    .. AppData.Data.Tbl81Images
                         .Where(com => com.DiseaseId == ViewModel.DiseaseSelected.DiseaseId)
                 ];
             });
@@ -266,7 +274,7 @@ public sealed partial class TblDiseaseListPage : Page
         }
         else
         {
-            SingleDisease = App.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
+            SingleDisease = AppData.Data.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
         }
 
         return Task.CompletedTask;
@@ -293,7 +301,7 @@ public sealed partial class TblDiseaseListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.DiseaseSelected = ViewModel.TblDiseasesList[iNdx];
-            SingleDisease = App.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
+            SingleDisease = AppData.Data.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
             DiseaseSingles();
         }
         else
@@ -341,7 +349,7 @@ public sealed partial class TblDiseaseListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleDisease = App.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
+            SingleDisease = AppData.Data.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
             DiseaseSingles();
         }
 
@@ -450,7 +458,7 @@ public sealed partial class TblDiseaseListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.TblDiseasesList ??= [];
-            ViewModel.TblDiseasesList = [.. Context.TblDiseases
+            ViewModel.TblDiseasesList = [.. AppData.Data.TblDiseases
                 .Where(a => a.DiseaseName == ViewModel.DiseaseSelected.DiseaseName)];
         });
         if (ViewModel.IsNewDisease)
@@ -473,9 +481,9 @@ public sealed partial class TblDiseaseListPage : Page
             if (DiseaseSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.TblDiseasesList = int.TryParse(_search, out var id)
-                    ? [.. Context.TblDiseases
+                    ? [.. AppData.Data.TblDiseases
                     .Where(a => a.DiseaseId == id)]
-                    : [.. Context.TblDiseases
+                    : [.. AppData.Data.TblDiseases
                     .Where(a => _search != null && a.DiseaseName.StartsWith(_search))
                     .OrderBy(a => a.DiseaseName)];
             }
@@ -485,7 +493,7 @@ public sealed partial class TblDiseaseListPage : Page
 
         if (ViewModel.TblDiseasesList.Count == 0)
         {
-            ViewModel.TblDiseasesList = [.. Context.TblDiseases
+            ViewModel.TblDiseasesList = [.. AppData.Data.TblDiseases
                 .Where(a => a.DiseaseId == viewModelDiseaseSelected.DiseaseId)];
             DiseaseDataGrid.ItemsSource = ViewModel.TblDiseasesList;
             await Refresh();
@@ -580,7 +588,7 @@ public sealed partial class TblDiseaseListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+            SingleImage = AppData.Data.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
         }
 
         return Task.CompletedTask;
@@ -607,7 +615,7 @@ public sealed partial class TblDiseaseListPage : Page
         {
             ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
 
-            SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+            SingleImage = AppData.Data.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
             ImageSingles();
         }
         else
@@ -651,7 +659,7 @@ public sealed partial class TblDiseaseListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
+                SingleImage = AppData.Data.SingleImageDisease(ViewModel.ImageSelected.ImageId, ViewModel.DiseaseSelected.DiseaseId);
                 ImageSingles();
             }
         });
@@ -752,7 +760,7 @@ public sealed partial class TblDiseaseListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+        ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                 a.DiseaseId == ViewModel.ImageSelected.DiseaseId &&
                 a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
@@ -776,14 +784,14 @@ public sealed partial class TblDiseaseListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.DiseaseId == viewModelImageSelected.DiseaseId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.DiseaseId == viewModelImageSelected.DiseaseId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
@@ -945,16 +953,16 @@ public sealed partial class TblDiseaseListPage : Page
                 if (ViewModel.TblDiseasesList.Count == 0)
                 {
                     ViewModel.TblDiseasesList ??= [];
-                    ViewModel.TblDiseasesList = [.. Context.TblDiseases
+                    ViewModel.TblDiseasesList = [.. AppData.Data.TblDiseases
                             .Where(a => a.DiseaseId == ViewModel.DiseaseSelected.DiseaseId)];
                 }
                 else
                 {
                     ViewModel.TblDiseasesList ??= [];
                     ViewModel.TblDiseasesList = int.TryParse(_search, out var id)
-                        ? [.. Context.TblDiseases
+                        ? [.. AppData.Data.TblDiseases
                            .Where(a => a.DiseaseId == id)]
-                       : [.. Context.TblDiseases
+                       : [.. AppData.Data.TblDiseases
                            .Where(a => _search != null && a.DiseaseName.StartsWith(_search))
                          .OrderBy(a => a.DiseaseName)];
                 }

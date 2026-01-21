@@ -1,26 +1,33 @@
 ﻿using System.Collections.ObjectModel;
 
 namespace ATIS.Views.UserControls;
-public partial class BreadCrumbBarViewModel : ObservableRecipient
+public partial class BreadCrumbBarViewModel : ObservableObject
 {
-    [ObservableProperty]
-    public ObservableCollection<string> breadcrumbBarCollection;
+    //[ObservableProperty]
+    //public ObservableCollection<string> breadcrumbBarCollection;
 
-    public IJsonNavigationViewService JsonNavigationViewService;
-
-    public BreadCrumbBarViewModel(IJsonNavigationViewService jsonNavigationViewService)
+    private ObservableCollection<string> _breadcrumbBarCollection;
+    public ObservableCollection<string> BreadcrumbBarCollection
     {
-        JsonNavigationViewService = jsonNavigationViewService;
-        breadcrumbBarCollection = new ObservableCollection<string>();
+        get => _breadcrumbBarCollection;
+        set => SetProperty(ref _breadcrumbBarCollection, value);
+    }
+
+
+
+
+    public BreadCrumbBarViewModel()
+    {
+        BreadcrumbBarCollection = [];
     }
 
     [RelayCommand]
     private void OnItemClick(BreadcrumbBarItemClickedEventArgs args)
     {
-        int numItemsToGoBack = BreadcrumbBarCollection.Count - args.Index - 1;
-        for (var i = 0; i < numItemsToGoBack; i++)
-        {
-            JsonNavigationViewService.GoBack();
-        }
+        //int numItemsToGoBack = BreadcrumbBarCollection.Count - args.Index - 1;
+        //for (var i = 0; i < numItemsToGoBack; i++)
+        //{
+        //    JsonNavigationViewService.GoBack();
+        //}
     }
 }

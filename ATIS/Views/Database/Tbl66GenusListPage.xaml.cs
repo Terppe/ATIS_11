@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -18,12 +19,12 @@ public sealed partial class Tbl66GenusListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl66GenusViewModel ViewModel { get; }
+    public Tbl66GenusViewModel ViewModel { get; set; }
     private Tbl66Genus SingleGenus { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -32,10 +33,16 @@ public sealed partial class Tbl66GenusListPage : Page
 
     public Tbl66GenusListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl66GenusViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -43,8 +50,8 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
-    }
 
+    }
 
     #endregion [Constructor]   
 
@@ -91,9 +98,9 @@ public sealed partial class Tbl66GenusListPage : Page
             {
                 ViewModel.Tbl66GenussesList ??= [];
                 ViewModel.Tbl66GenussesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl66Genusses
+                ? [.. AppData.Data.Tbl66Genusses
                 .Where(e => e.GenusId == id)]
-                : [.. Context.Tbl66Genusses
+                : [.. AppData.Data.Tbl66Genusses
                 .Where(e => _search != null && e.GenusName.StartsWith(_search))
                 .OrderBy(a => a.GenusName)];
             });
@@ -174,7 +181,7 @@ public sealed partial class Tbl66GenusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.GenusId == ViewModel.GenusSelected.GenusId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -195,7 +202,7 @@ public sealed partial class Tbl66GenusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .AsNoTracking()
             .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
             });
@@ -216,7 +223,7 @@ public sealed partial class Tbl66GenusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
             .AsNoTracking()
             .Where(com => com.GenusId == ViewModel.GenusSelected.GenusId)];
             });
@@ -329,7 +336,7 @@ public sealed partial class Tbl66GenusListPage : Page
         }
         else
         {
-            SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
+            SingleGenus = AppData.Data.SingleGenus(ViewModel.GenusSelected.GenusId);
         }
 
         return Task.CompletedTask;
@@ -356,7 +363,7 @@ public sealed partial class Tbl66GenusListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
-            SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
+            SingleGenus = AppData.Data.SingleGenus(ViewModel.GenusSelected.GenusId);
             GenusSingles();
         }
         else
@@ -408,7 +415,7 @@ public sealed partial class Tbl66GenusListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleGenus = App.SingleGenus(ViewModel.GenusSelected.GenusId);
+            SingleGenus = AppData.Data.SingleGenus(ViewModel.GenusSelected.GenusId);
             GenusSingles();
         }
 
@@ -517,7 +524,7 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl66GenussesList ??= [];
-            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+            ViewModel.Tbl66GenussesList = [.. AppData.Data.Tbl66Genusses
                 .Where(a => a.GenusName == ViewModel.GenusSelected.GenusName &&
                         a.InfratribusId == ViewModel.GenusSelected.InfratribusId)];
         });
@@ -541,9 +548,9 @@ public sealed partial class Tbl66GenusListPage : Page
             if (GenusSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl66GenussesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl66Genusses
+                    ? [.. AppData.Data.Tbl66Genusses
                     .Where(a => a.GenusId == id)]
-                    : [.. Context.Tbl66Genusses
+                    : [.. AppData.Data.Tbl66Genusses
                     .Where(a => _search != null && a.GenusName.StartsWith(_search))
                     .OrderBy(a => a.GenusName)];
             }
@@ -553,7 +560,7 @@ public sealed partial class Tbl66GenusListPage : Page
 
         if (ViewModel.Tbl66GenussesList.Count == 0)
         {
-            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+            ViewModel.Tbl66GenussesList = [.. AppData.Data.Tbl66Genusses
                 .Where(a => a.GenusId == viewModelGenusSelected.GenusId)];
             GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
             await Refresh();
@@ -659,7 +666,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -694,7 +701,7 @@ public sealed partial class Tbl66GenusListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -797,7 +804,7 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.GenusId == ViewModel.ReferenceSelected.GenusId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -821,14 +828,14 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.GenusId == viewModelReferenceSelected.GenusId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.GenusId == viewModelReferenceSelected.GenusId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -925,7 +932,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.GenusSelected.GenusId);
             ReferenceExpertSingles();
         }
@@ -962,7 +969,7 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
 
             ReferenceExpertSingles();
         });
@@ -1042,7 +1049,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.GenusSelected.GenusId);
             ReferenceSourceSingles();
         }
@@ -1079,7 +1086,7 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.GenusSelected.GenusId);
 
             ReferenceSourceSingles();
         });
@@ -1161,7 +1168,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.GenusSelected.GenusId);
             ReferenceAuthorSingles();
         }
@@ -1198,7 +1205,7 @@ public sealed partial class Tbl66GenusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceGenus(ViewModel.ReferenceSelected.ReferenceId,
                 ViewModel.GenusSelected.GenusId);
 
             ReferenceAuthorSingles();
@@ -1287,7 +1294,7 @@ public sealed partial class Tbl66GenusListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
+            SingleComment = AppData.Data.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
         }
         return Task.CompletedTask;
     }
@@ -1314,7 +1321,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
+            SingleComment = AppData.Data.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
             CommentSingles();
         }
         else
@@ -1356,7 +1363,7 @@ public sealed partial class Tbl66GenusListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
+                SingleComment = AppData.Data.SingleCommentGenus(ViewModel.CommentSelected.CommentId, ViewModel.GenusSelected.GenusId);
                 CommentSingles();
             }
         });
@@ -1460,7 +1467,7 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.GenusId == ViewModel.CommentSelected.GenusId)];
@@ -1482,14 +1489,14 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.GenusId == viewModelCommentSelected.GenusId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.GenusId == viewModelCommentSelected.GenusId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1546,7 +1553,7 @@ public sealed partial class Tbl66GenusListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
+            SingleSpecies = AppData.Data.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
         }
 
         return Task.CompletedTask;
@@ -1574,7 +1581,7 @@ public sealed partial class Tbl66GenusListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
+            SingleSpecies = AppData.Data.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
             SpeciesSingles();
         }
         else
@@ -1660,7 +1667,7 @@ public sealed partial class Tbl66GenusListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
+                SingleSpecies = AppData.Data.SingleSpeciesGenus(ViewModel.SpeciesSelected.SpeciesId, ViewModel.GenusSelected.GenusId);
                 SpeciesSingles();
             }
         });
@@ -1720,7 +1727,7 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -1745,14 +1752,14 @@ public sealed partial class Tbl66GenusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -1881,9 +1888,9 @@ public sealed partial class Tbl66GenusListPage : Page
             {
                 ViewModel.Tbl66GenussesList ??= [];
                 ViewModel.Tbl66GenussesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl66Genusses
+                    ? [.. AppData.Data.Tbl66Genusses
                     .Where(a => a.GenusId == id)]
-                    : [.. Context.Tbl66Genusses
+                    : [.. AppData.Data.Tbl66Genusses
                 .Where(a => _search!= null && a.GenusName.StartsWith(_search))
                 .OrderBy(a => a.GenusName)];
             });

@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl06PhylumListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl06PhylumViewModel ViewModel { get; }
+    public Tbl06PhylumViewModel ViewModel { get; set; }
     private Tbl06Phylum SinglePhylum { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl12Subphylum SingleSubphylum { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl06PhylumListPage : Page
 
     public Tbl06PhylumListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl06PhylumViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Phylum Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl06PhylumListPage : Page
             {
                 ViewModel.Tbl06PhylumsList ??= [];
                 ViewModel.Tbl06PhylumsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl06Phylums
+                ? [.. AppData.Data.Tbl06Phylums
                 .Where(a => a.PhylumId == id)]
-                : [.. Context.Tbl06Phylums
+                : [.. AppData.Data.Tbl06Phylums
                 .Where(a => _search != null && a.PhylumName.StartsWith(_search))
                 .OrderBy(a => a.PhylumName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.PhylumId == ViewModel.PhylumSelected.PhylumId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.PhylumId == ViewModel.PhylumSelected.PhylumId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl12SubphylumsList ??= [];
-                ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+                ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
             .Where(com => com.PhylumId == ViewModel.PhylumSelected.PhylumId)];
             });
             ViewModel.SubphylumDataSetCount = ViewModel.Tbl12SubphylumsList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         }
         else
         {
-            SinglePhylum = App.SinglePhylum(ViewModel.PhylumSelected.PhylumId);
+            SinglePhylum = AppData.Data.SinglePhylum(ViewModel.PhylumSelected.PhylumId);
         }
 
         return Task.CompletedTask;
@@ -347,7 +356,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.PhylumSelected = ViewModel.Tbl06PhylumsList[iNdx];
-            SinglePhylum = App.SinglePhylum(ViewModel.PhylumSelected.PhylumId);
+            SinglePhylum = AppData.Data.SinglePhylum(ViewModel.PhylumSelected.PhylumId);
             PhylumSingles();
         }
         else
@@ -399,7 +408,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SinglePhylum = App.SinglePhylum(ViewModel.PhylumSelected.PhylumId);
+            SinglePhylum = AppData.Data.SinglePhylum(ViewModel.PhylumSelected.PhylumId);
             PhylumSingles();
         }
 
@@ -508,7 +517,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl06PhylumsList ??= [];
-            ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+            ViewModel.Tbl06PhylumsList = [.. AppData.Data.Tbl06Phylums
                 .Where(a => a.PhylumName == ViewModel.PhylumSelected.PhylumName &&
                         a.RegnumId == ViewModel.PhylumSelected.RegnumId)];
         });
@@ -532,9 +541,9 @@ public sealed partial class Tbl06PhylumListPage : Page
             if (PhylumSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl06PhylumsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl06Phylums
+                    ? [.. AppData.Data.Tbl06Phylums
                     .Where(a => a.PhylumId == id)]
-                    : [.. Context.Tbl06Phylums
+                    : [.. AppData.Data.Tbl06Phylums
                     .Where(a => _search != null && a.PhylumName.StartsWith(_search))
                     .OrderBy(a => a.PhylumName)];
             }
@@ -544,7 +553,7 @@ public sealed partial class Tbl06PhylumListPage : Page
 
         if (ViewModel.Tbl06PhylumsList.Count == 0)
         {
-            ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+            ViewModel.Tbl06PhylumsList = [.. AppData.Data.Tbl06Phylums
                 .Where(a => a.PhylumId == viewModelPhylumSelected.PhylumId)];
             PhylumDataGrid.ItemsSource = ViewModel.Tbl06PhylumsList;
             await Refresh();
@@ -650,7 +659,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -685,7 +694,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.PhylumSelected.PhylumId);
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.PhylumSelected.PhylumId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -788,7 +797,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.PhylumId == ViewModel.ReferenceSelected.PhylumId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -812,14 +821,14 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.PhylumId == viewModelReferenceSelected.PhylumId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.PhylumId == viewModelReferenceSelected.PhylumId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -906,7 +915,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.PhylumSelected.PhylumId);
             ReferenceExpertSingles();
         }
@@ -943,7 +952,7 @@ public sealed partial class Tbl06PhylumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.PhylumSelected.PhylumId);
 
             ReferenceExpertSingles();
@@ -1013,7 +1022,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.PhylumSelected.PhylumId);
             ReferenceSourceSingles();
         }
@@ -1050,7 +1059,7 @@ public sealed partial class Tbl06PhylumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.PhylumSelected.PhylumId);
 
             ReferenceSourceSingles();
@@ -1122,7 +1131,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.PhylumSelected.PhylumId);
             ReferenceAuthorSingles();
         }
@@ -1159,7 +1168,7 @@ public sealed partial class Tbl06PhylumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferencePhylum(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.PhylumSelected.PhylumId);
 
             ReferenceAuthorSingles();
@@ -1235,7 +1244,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentPhylum(ViewModel.CommentSelected.CommentId, ViewModel.PhylumSelected.PhylumId);
+            SingleComment = AppData.Data.SingleCommentPhylum(ViewModel.CommentSelected.CommentId, ViewModel.PhylumSelected.PhylumId);
         }
         return Task.CompletedTask;
     }
@@ -1262,7 +1271,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentPhylum(ViewModel.CommentSelected.CommentId, ViewModel.PhylumSelected.PhylumId);
+            SingleComment = AppData.Data.SingleCommentPhylum(ViewModel.CommentSelected.CommentId, ViewModel.PhylumSelected.PhylumId);
             CommentSingles();
         }
         else
@@ -1304,7 +1313,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentPhylum(ViewModel.CommentSelected.CommentId, ViewModel.PhylumSelected.PhylumId);
+                SingleComment = AppData.Data.SingleCommentPhylum(ViewModel.CommentSelected.CommentId, ViewModel.PhylumSelected.PhylumId);
                 CommentSingles();
             }
         });
@@ -1408,7 +1417,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.PhylumId == ViewModel.CommentSelected.PhylumId)];
@@ -1430,14 +1439,14 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.PhylumId == viewModelCommentSelected.PhylumId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.PhylumId == viewModelCommentSelected.PhylumId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1494,7 +1503,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         }
         else
         {
-            SingleSubphylum = App.SingleSubphylumPhylum(ViewModel.SubphylumSelected.SubphylumId,
+            SingleSubphylum = AppData.Data.SingleSubphylumPhylum(ViewModel.SubphylumSelected.SubphylumId,
                     ViewModel.PhylumSelected.PhylumId);
         }
 
@@ -1523,7 +1532,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         {
             ViewModel.SubphylumSelected = ViewModel.Tbl12SubphylumsList[iNdx];
 
-            SingleSubphylum = App.SingleSubphylumPhylum(ViewModel.SubphylumSelected.SubphylumId, ViewModel.PhylumSelected.PhylumId);
+            SingleSubphylum = AppData.Data.SingleSubphylumPhylum(ViewModel.SubphylumSelected.SubphylumId, ViewModel.PhylumSelected.PhylumId);
             SubphylumSingles();
         }
         else
@@ -1572,7 +1581,7 @@ public sealed partial class Tbl06PhylumListPage : Page
             }
             else
             {
-                SingleSubphylum = App.SingleSubphylumPhylum(ViewModel.SubphylumSelected.SubphylumId, ViewModel.PhylumSelected.PhylumId);
+                SingleSubphylum = AppData.Data.SingleSubphylumPhylum(ViewModel.SubphylumSelected.SubphylumId, ViewModel.PhylumSelected.PhylumId);
                 SubphylumSingles();
             }
         });
@@ -1632,7 +1641,7 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl12SubphylumsList ??= [];
-            ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+            ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
             .Where(a => a.SubphylumName == ViewModel.SubphylumSelected.SubphylumName &&
                         a.PhylumId == ViewModel.SubphylumSelected.PhylumId)];
         });
@@ -1653,14 +1662,14 @@ public sealed partial class Tbl06PhylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl12SubphylumsList ??= [];
-            ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+            ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
                 .Where(com => com.PhylumId == viewModelSubphylumSelected.PhylumId)];
         });
         ViewModel.RefreshSubphylumItems();
 
         if (ViewModel.Tbl12SubphylumsList.Count == 0)
         {
-            ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+            ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
                 .Where(com => com.PhylumId == viewModelSubphylumSelected.PhylumId)];
             SubphylumDataGrid.ItemsSource = ViewModel.Tbl12SubphylumsList;
             await Refresh();
@@ -1739,16 +1748,16 @@ public sealed partial class Tbl06PhylumListPage : Page
                 if (ViewModel.Tbl06PhylumsList.Count == 0)
                 {
                     ViewModel.Tbl06PhylumsList ??= [];
-                    ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+                    ViewModel.Tbl06PhylumsList = [.. AppData.Data.Tbl06Phylums
                             .Where(a => a.PhylumId == ViewModel.PhylumSelected.PhylumId)];
                 }
                 else
                 {
                     ViewModel.Tbl06PhylumsList ??= [];
                     ViewModel.Tbl06PhylumsList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl06Phylums
+                        ? [.. AppData.Data.Tbl06Phylums
                            .Where(a => a.PhylumId == id)]
-                       : [.. Context.Tbl06Phylums
+                       : [.. AppData.Data.Tbl06Phylums
                            .Where(a => _search != null && a.PhylumName.StartsWith(_search))
                          .OrderBy(a => a.PhylumName)];
                 }

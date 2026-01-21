@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,9 +21,9 @@ public sealed partial class Tbl90ReferenceListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl90ReferenceViewModel ViewModel { get; }
+    public Tbl90ReferenceViewModel ViewModel { get; set; }
     private Tbl90Reference SingleReference { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -31,10 +32,16 @@ public sealed partial class Tbl90ReferenceListPage : Page
 
     public Tbl90ReferenceListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl90ReferenceViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -43,6 +50,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [Reference Methods]
@@ -82,9 +90,9 @@ public sealed partial class Tbl90ReferenceListPage : Page
             {
                 ViewModel.Tbl90ReferencesList ??= [];
                 ViewModel.Tbl90ReferencesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90References
+                ? [.. AppData.Data.Tbl90References
                 .Where(e => e.ReferenceId == id)]
-                : [.. Context.Tbl90References
+                : [.. AppData.Data.Tbl90References
                 .Where(e => e.Info.StartsWith(_search))
                 .OrderBy(a => a.Info)];
 
@@ -222,7 +230,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+            SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
         }
 
         return Task.CompletedTask;
@@ -249,7 +257,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
-            SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+            SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             ReferenceSingles();
         }
         else
@@ -315,7 +323,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+            SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             ReferenceSingles();
         }
 
@@ -424,7 +432,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
                         a.RefAuthorId == ViewModel.ReferenceSelected.RefAuthorId &&
@@ -471,9 +479,9 @@ public sealed partial class Tbl90ReferenceListPage : Page
             if (ReferenceSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl90ReferencesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl90References
+                    ? [.. AppData.Data.Tbl90References
                     .Where(a => a.ReferenceId == id)]
-                    : [.. Context.Tbl90References
+                    : [.. AppData.Data.Tbl90References
                     .Where(a => _search != null && a.Info.StartsWith(_search))
                     .OrderBy(a => a.Info)];
             }
@@ -483,7 +491,7 @@ public sealed partial class Tbl90ReferenceListPage : Page
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.ReferenceId == viewModelReferenceSelected.ReferenceId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -560,9 +568,9 @@ public sealed partial class Tbl90ReferenceListPage : Page
             {
                 ViewModel.Tbl90ReferencesList ??= [];
                 ViewModel.Tbl90ReferencesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90References
+                ? [.. AppData.Data.Tbl90References
                 .Where(a => a.ReferenceId == id)]
-                : [.. Context.Tbl90References
+                : [.. AppData.Data.Tbl90References
                     .Where(a => a.Info.StartsWith(_search))
                     .OrderBy(a => a.Info)];
             });

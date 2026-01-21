@@ -166,7 +166,7 @@
     <value>https://YourPrivacyUrlGoesHere/</value>
   </data>
   <data name="AppBarButtonAdd.Label" xml:space="preserve">
-    <value>+</value>
+    <value>Add</value>
   </data>
   <data name="AppBarButtonCancel.Label" xml:space="preserve">
     <value>Cancel</value>
@@ -190,7 +190,7 @@
     <value>Sync</value>
   </data>
   <data name="AutoSuggestBox_Search.PlaceholderText" xml:space="preserve">
-    <value>Search</value>
+    <value>Search Name or ID</value>
   </data>
   <data name="CheckBox_Difficult1.Content" xml:space="preserve">
     <value>Species for beginners</value>
@@ -744,6 +744,9 @@
   <data name="MenuFlyout_Add_Comment.Text" xml:space="preserve">
     <value>Add Comment</value>
   </data>
+  <data name="MenuFlyout_Add.Text" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="MenuFlyout_Add_Family.Text" xml:space="preserve">
     <value>Add Family</value>
   </data>
@@ -872,6 +875,12 @@
   </data>
   <data name="MenuFlyout_Delete_Class.Text" xml:space="preserve">
     <value>Delete Class</value>
+  </data>
+  <data name="MenuFlyout_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="MenuFlyout_Delete_Country.Text" xml:space="preserve">
+    <value>Delete Country</value>
   </data>
   <data name="MenuFlyout_Delete_Comment.Text" xml:space="preserve">
     <value>Delete Comment</value>
@@ -1004,6 +1013,9 @@
   </data>
   <data name="MenuFlyout_Save_Class.Text" xml:space="preserve">
     <value>Save Class</value>
+  </data>
+  <data name="MenuFlyout_Save.Text" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="MenuFlyout_Save_Comment.Text" xml:space="preserve">
     <value>Save Comment</value>
@@ -2766,6 +2778,9 @@
   <data name="MenuFlyout_Edit_Regnum.Text" xml:space="preserve">
     <value>Edit Regnum</value>
   </data>
+  <data name="MenuFlyout_Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="TextBox_RegnumId.Header" xml:space="preserve">
     <value>Regnum ID</value>
   </data>
@@ -3627,6 +3642,24 @@
   <data name="MenuFlyout_Save_Phylum.Text" xml:space="preserve">
     <value>Save Phylum</value>
   </data>
+  <data name="Button_AppBarAdd.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Button_AppBarSave.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Button_AppBarSync.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Button_AppBarEdit.Content" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Button_AppBarCancel.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Button_AppBarDelete.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="Button_Close.Content" xml:space="preserve">
     <value>Close</value>
   </data>
@@ -3972,7 +4005,7 @@
   <data name="DataGridTextColumn_Longitude.Header" xml:space="preserve">
     <value>Longitude</value>
   </data>
-  <data name="AutoSuggestBox_Search_info_Id.PlaceholderText" xml:space="preserve">
+  <data name="AutoSuggestBox_Search_Info_Id.PlaceholderText" xml:space="preserve">
     <value>Search Info or ID</value>
   </data>
   <data name="TextBlock_Miscellaneous.Text" xml:space="preserve">

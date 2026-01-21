@@ -12,6 +12,7 @@ using WinRT.Interop;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
+using ATIS.Infrastructure;
 
 
 //    Tbl81ImageViewModel Skriptdatum:  25.11.2024  10:32    
@@ -22,9 +23,9 @@ public partial class Tbl81ImageViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
@@ -178,11 +179,11 @@ public partial class Tbl81ImageViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var image = await Context.Tbl81Images.FirstOrDefaultAsync(b => b.ImageId == imageid);
+            var image = await AppData.Data.Tbl81Images.FirstOrDefaultAsync(b => b.ImageId == imageid);
             if (image != null)
             {
-                Context.Tbl81Images.Remove(image);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl81Images.Remove(image);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

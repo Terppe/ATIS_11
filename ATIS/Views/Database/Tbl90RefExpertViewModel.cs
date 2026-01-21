@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl90RefExpertViewModel Skriptdatum:  06.01.2025  10:32    
 
@@ -16,8 +17,8 @@ public partial class Tbl90RefExpertViewModel(IDataService _dataService) : Observ
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
+    private readonly IDataService _data;
     public ObservableCollection<Tbl90RefExpert> RefExpertItems { get; } = [];
 
     #endregion [Private Data Members]           
@@ -134,11 +135,11 @@ public partial class Tbl90RefExpertViewModel(IDataService _dataService) : Observ
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var refExpert = await Context.Tbl90RefExperts.FirstOrDefaultAsync(b => b.RefExpertId == refExpertid);
+            var refExpert = await AppData.Data.Tbl90RefExperts.FirstOrDefaultAsync(b => b.RefExpertId == refExpertid);
             if (refExpert != null)
             {
-                Context.Tbl90RefExperts.Remove(refExpert);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl90RefExperts.Remove(refExpert);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

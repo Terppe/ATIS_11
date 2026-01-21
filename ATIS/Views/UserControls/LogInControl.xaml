@@ -6,7 +6,6 @@
              xmlns:helpers="using:ATIS.Helpers"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:winUiCommunity="using:WinUICommunity"
              Width="400"
              Height="450"
              mc:Ignorable="d">

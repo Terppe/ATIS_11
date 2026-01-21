@@ -1,14 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ATIS", "ATIS\ATIS.csproj", "{757A29FD-1D97-4AE9-A77C-F9FA001D54B6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FAF5345B-8E1A-4311-92D9-D95837F51D14}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70FB7551-08FE-4730-9F45-1FE3A6B3A076}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		settings.xamlstyler = settings.xamlstyler
+		Docs\ToDoList.txt = Docs\ToDoList.txt
 	EndProjectSection
 EndProject
 Global
@@ -26,5 +27,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3248D003-BD04-4AAE-9E72-F7BE1C8A6598}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,104 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+
+<!--Anwendung-->
+<!--<Style TargetType="ListViewItem"
+       BasedOn="{StaticResource UniversalBorderStyle}" />-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  =========================================  -->
+    <!--  Gemeinsamer Style für ListView/GridView  -->
+    <!--  =========================================  -->
+    <Style x:Key="FluentListGridItemBase"
+           TargetType="ListViewItem">
+
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="Margin" Value="0,4" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="GridViewItem">
+
+                    <Grid x:Name="RootGrid"
+                          Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          CornerRadius="{TemplateBinding CornerRadius}">
+
+                        <!--  VISUAL STATES  -->
+                        <VisualStateManager.VisualStateGroups>
+
+                            <VisualStateGroup x:Name="CommonStates">
+
+                                <VisualState x:Name="Normal" />
+
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlHoverBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlPressedBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlPressedBrush}" />
+                                        <Setter Target="RootGrid.BorderBrush" Value="{ThemeResource BrandAccentBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlDisabledBrush}" />
+                                        <Setter Target="RootGrid.BorderBrush" Value="{ThemeResource ControlDisabledBorderBrush}" />
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource TextSecondaryBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter x:Name="ContentPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                    </Grid>
+
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+
+    <!--  =============================  -->
+    <!--  LISTVIEW ITEM STYLE  -->
+    <!--  =============================  -->
+    <Style BasedOn="{StaticResource FluentListGridItemBase}"
+           TargetType="ListViewItem" />
+
+
+    <!--  =============================  -->
+    <!--  GRIDVIEW ITEM STYLE  -->
+    <!--  =============================  -->
+    <!--<Style BasedOn="{StaticResource FluentListGridItemBase}"
+           TargetType="GridViewItem" />-->
+
+</ResourceDictionary>

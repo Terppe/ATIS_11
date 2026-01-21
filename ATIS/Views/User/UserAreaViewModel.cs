@@ -9,7 +9,6 @@ namespace ATIS.Views.User;
 public partial class UserAreaViewModel : ObservableObject
 {
     #region [Private Data Members]
-    public IJsonNavigationViewService JsonNavigationViewService;
     private readonly IDataService _dataService;
     public ObservableCollection<TblUserProfile> UserProfileItems { get; } = [];
     #endregion [Private Data Members]

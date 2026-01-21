@@ -8,6 +8,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
+using ATIS.Infrastructure;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -23,9 +24,10 @@ public sealed partial class TblFoodListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public TblFoodViewModel ViewModel { get; }
+    public TblFoodViewModel ViewModel { get; set; }
+
     private TblFood SingleFood { get; set; }
-    private static readonly AtisDbContext Context = new();
+ //   private static readonly AtisDbContext Context = new();
     private Tbl81Image SingleImage { get; set; }
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
@@ -36,10 +38,15 @@ public sealed partial class TblFoodListPage : Page
 
     public TblFoodListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<TblFoodViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -48,6 +55,7 @@ public sealed partial class TblFoodListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]   
 
     #region [Food Methods]
@@ -88,9 +96,9 @@ public sealed partial class TblFoodListPage : Page
             {
                 ViewModel.TblFoodsList ??= [];
                 ViewModel.TblFoodsList = int.TryParse(_search, out var id)
-                ? [.. Context.TblFoods
+                ? [.. AppData.Data.TblFoods
                 .Where(a => a.FoodId == id)]
-                : [.. Context.TblFoods
+                : [.. AppData.Data.TblFoods
                 .Where(a => _search != null && a.FoodName.StartsWith(_search))
                 .OrderBy(a => a.FoodName)];
             });
@@ -98,29 +106,33 @@ public sealed partial class TblFoodListPage : Page
             ImagesExpander.Visibility = Visibility.Collapsed;
             ImageDetailExpander.Visibility = Visibility.Collapsed;
 
-            ViewModel.FoodDataSetCount = ViewModel.TblFoodsList.Count;
-
-            if (ViewModel.TblFoodsList is { Count: 0 })
+            if (ViewModel.TblFoodsList != null)
             {
-                ViewModel.TblFoodsList?.Clear();
-                ViewModel.Tbl81ImagesList?.Clear();
+                ViewModel.FoodDataSetCount = ViewModel.TblFoodsList.Count;
 
-                AppBarButtonDeleteFood.IsEnabled = false;
-                AppBarButtonSync.IsEnabled = false;
-                AppBarButtonAddImage.IsEnabled = false;
+                if (ViewModel.TblFoodsList is { Count: 0 })
+                {
+                    ViewModel.TblFoodsList?.Clear();
+                    ViewModel.Tbl81ImagesList?.Clear();
 
-                DetailPanelFood.Visibility = Visibility.Visible;
-                FoodDetailExpander.Visibility = Visibility.Collapsed;
-                ImagesExpander.Visibility = Visibility.Collapsed;
+                    AppBarButtonDeleteFood.IsEnabled = false;
+                    AppBarButtonSync.IsEnabled = false;
+                    AppBarButtonAddImage.IsEnabled = false;
 
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                Frame.Navigate(typeof(TblFoodListPage));
+                    DetailPanelFood.Visibility = Visibility.Visible;
+                    FoodDetailExpander.Visibility = Visibility.Collapsed;
+                    ImagesExpander.Visibility = Visibility.Collapsed;
+
+                    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+                    Frame.Navigate(typeof(TblFoodListPage));
+                }
+                else
+                {
+                    FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
+                    ViewModel.FoodSelected = ViewModel.TblFoodsList[0];
+                }
             }
-            else
-            {
-                FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
-                ViewModel.FoodSelected = ViewModel.TblFoodsList[0];
-            }
+
             ButtonsVisible();
             ButtonsIconVisible();
             ViewModel.IsLoading = false;
@@ -168,7 +180,7 @@ public sealed partial class TblFoodListPage : Page
                 ViewModel.Tbl81ImagesList ??= [];
                 ViewModel.Tbl81ImagesList =
                 [
-                    .. Context.Tbl81Images
+                    .. AppData.Data.Tbl81Images
                         .Where(com => com.FoodId == ViewModel.FoodSelected.FoodId)
                 ];
             });
@@ -268,7 +280,7 @@ public sealed partial class TblFoodListPage : Page
         }
         else
         {
-            SingleFood = App.SingleFood(ViewModel.FoodSelected.FoodId);
+            SingleFood = AppData.Data.SingleFood(ViewModel.FoodSelected.FoodId);
         }
 
         return Task.CompletedTask;
@@ -295,7 +307,7 @@ public sealed partial class TblFoodListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.FoodSelected = ViewModel.TblFoodsList[iNdx];
-            SingleFood = App.SingleFood(ViewModel.FoodSelected.FoodId);
+            SingleFood = AppData.Data.SingleFood(ViewModel.FoodSelected.FoodId);
             FoodSingles();
         }
         else
@@ -341,7 +353,7 @@ public sealed partial class TblFoodListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleFood = App.SingleFood(ViewModel.FoodSelected.FoodId);
+            SingleFood = AppData.Data.SingleFood(ViewModel.FoodSelected.FoodId);
             FoodSingles();
         }
 
@@ -450,7 +462,7 @@ public sealed partial class TblFoodListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.TblFoodsList ??= [];
-            ViewModel.TblFoodsList = [.. Context.TblFoods
+            ViewModel.TblFoodsList = [.. AppData.Data.TblFoods
                 .Where(a => a.FoodName == ViewModel.FoodSelected.FoodName)];
         });
         if (ViewModel.IsNewFood)
@@ -473,9 +485,9 @@ public sealed partial class TblFoodListPage : Page
             if (FoodSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.TblFoodsList = int.TryParse(_search, out var id)
-                    ? [.. Context.TblFoods
+                    ? [.. AppData.Data.TblFoods
                     .Where(a => a.FoodId == id)]
-                    : [.. Context.TblFoods
+                    : [.. AppData.Data.TblFoods
                     .Where(a => _search != null && a.FoodName.StartsWith(_search))
                     .OrderBy(a => a.FoodName)];
             }
@@ -485,7 +497,7 @@ public sealed partial class TblFoodListPage : Page
 
         if (ViewModel.TblFoodsList.Count == 0)
         {
-            ViewModel.TblFoodsList = [.. Context.TblFoods
+            ViewModel.TblFoodsList = [.. AppData.Data.TblFoods
                 .Where(a => a.FoodId == viewModelFoodSelected.FoodId)];
             FoodDataGrid.ItemsSource = ViewModel.TblFoodsList;
             await Refresh();
@@ -580,7 +592,7 @@ public sealed partial class TblFoodListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+            SingleImage = AppData.Data.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
         }
 
         return Task.CompletedTask;
@@ -607,7 +619,7 @@ public sealed partial class TblFoodListPage : Page
         {
             ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
 
-            SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+            SingleImage = AppData.Data.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
             ImageSingles();
         }
         else
@@ -651,7 +663,7 @@ public sealed partial class TblFoodListPage : Page
             }
             else
             {
-                SingleImage = App.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
+                SingleImage = AppData.Data.SingleImageFood(ViewModel.ImageSelected.ImageId, ViewModel.FoodSelected.FoodId);
                 ImageSingles();
             }
         });
@@ -756,7 +768,7 @@ public sealed partial class TblFoodListPage : Page
     private async Task<bool> BeforeSaveImage()
     {
         ViewModel.Tbl81ImagesList ??= [];
-        ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+        ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
             .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                         a.FoodId == ViewModel.ImageSelected.FoodId &&
                         a.ImageMimeType == ViewModel.ImageSelected.ImageMimeType &&
@@ -779,14 +791,14 @@ public sealed partial class TblFoodListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.FoodId == viewModelImageSelected.FoodId)];
         });
         ViewModel.RefreshImageItems();
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(com => com.FoodId == viewModelImageSelected.FoodId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
@@ -948,16 +960,16 @@ public sealed partial class TblFoodListPage : Page
                 if (ViewModel.TblFoodsList.Count == 0)
                 {
                     ViewModel.TblFoodsList ??= [];
-                    ViewModel.TblFoodsList = [.. Context.TblFoods
+                    ViewModel.TblFoodsList = [.. AppData.Data.TblFoods
                             .Where(a => a.FoodId == ViewModel.FoodSelected.FoodId)];
                 }
                 else
                 {
                     ViewModel.TblFoodsList ??= [];
                     ViewModel.TblFoodsList = int.TryParse(_search, out var id)
-                        ? [.. Context.TblFoods
+                        ? [.. AppData.Data.TblFoods
                            .Where(a => a.FoodId == id)]
-                       : [.. Context.TblFoods
+                       : [.. AppData.Data.TblFoods
                            .Where(a => _search != null && a.FoodName.StartsWith(_search))
                          .OrderBy(a => a.FoodName)];
                 }

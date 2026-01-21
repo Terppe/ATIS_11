@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl63InfratribusViewModel Skriptdatum:  30.12.2024  10:32    
 
@@ -16,9 +17,9 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl63Infratribus> InfratribusItems { get; } = [];
 
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
@@ -182,7 +183,7 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
         {
             var arrSpecies = new List<Tbl75Species>();
             var arrGenus = new List<Tbl66Genus>();
-            var infratribus = await Context.Tbl63Infratribusses.FirstOrDefaultAsync(b => b.InfratribusId == infratribusid);
+            var infratribus = await AppData.Data.Tbl63Infratribusses.FirstOrDefaultAsync(b => b.InfratribusId == infratribusid);
             if (infratribus != null)
             {
                 //SaveToArray
@@ -195,8 +196,8 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesByInfratribusId(infratribusid);
                 await RemoveExtras.RemoveCommentsByInfratribusId(infratribusid);
-                Context.Tbl63Infratribusses.Remove(infratribus);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl63Infratribusses.Remove(infratribus);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -353,10 +354,10 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -480,10 +481,10 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

@@ -3,23 +3,68 @@
 namespace ATIS.Views.Settings;
 public partial class AppUpdateSettingViewModel : ObservableObject
 {
-    [ObservableProperty]
-    public string currentVersion;
+    //[ObservableProperty]
+    //public string currentVersion;
 
-    [ObservableProperty]
-    public string lastUpdateCheck;
+    private string _currentVersion;
+    public string CurrentVersion
+    {
+        get => _currentVersion;
+        set => SetProperty(ref _currentVersion, value);
+    }
 
-    [ObservableProperty]
-    public bool isUpdateAvailable;
+    //[ObservableProperty]
+    //public string lastUpdateCheck;
 
-    [ObservableProperty]
-    public bool isLoading;
+    private string _lastUpdateCheck;
+    public string LastUpdateCheck
+    {
+        get => _lastUpdateCheck;
+        set => SetProperty(ref _lastUpdateCheck, value);
+    }
 
-    [ObservableProperty]
-    public bool isCheckButtonEnabled = true;
+    //[ObservableProperty]
+    //public bool isUpdateAvailable;
 
-    [ObservableProperty]
-    public string loadingStatus = "Status";
+    private bool _isUpdateAvailable;
+    public bool IsUpdateAvailable
+    {
+        get => _isUpdateAvailable;
+        set => SetProperty(ref _isUpdateAvailable, value);
+    }
+
+    //[ObservableProperty]
+    //public bool isLoading;
+
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
+    }
+
+    //[ObservableProperty]
+    //public bool isCheckButtonEnabled = true;
+
+    private bool _isCheckButtonEnabled;
+    public bool IsCheckButtonEnabled
+    {
+        get => _isCheckButtonEnabled;
+        set => SetProperty(ref _isCheckButtonEnabled, value);
+    }
+
+
+
+
+    //[ObservableProperty]
+    //public string loadingStatus = "Status";
+
+    private string _loadingStatus;
+    public string LoadingStatus
+    {
+        get => _loadingStatus;
+        set => SetProperty(ref _loadingStatus, value);
+    }
 
     private string ChangeLog = string.Empty;
 

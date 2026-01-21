@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl36SubordoViewModel Skriptdatum:  15.06.2024  10:32    
 
@@ -16,9 +17,9 @@ public partial class Tbl36SubordoViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl36Subordo> SubordoItems { get; } = [];
 
     public ObservableCollection<Tbl39Infraordo> InfraordoItems { get; } = [];
@@ -188,7 +189,7 @@ public partial class Tbl36SubordoViewModel : ObservableObject
             var arrFamily = new List<Tbl45Family>();
             var arrSuperfamily = new List<Tbl42Superfamily>();
             var arrInfraordo = new List<Tbl39Infraordo>();
-            var subordo = await Context.Tbl36Subordos.FirstOrDefaultAsync(b => b.SubordoId == subordoid);
+            var subordo = await AppData.Data.Tbl36Subordos.FirstOrDefaultAsync(b => b.SubordoId == subordoid);
             if (subordo != null)
             {
                 //SaveToArray
@@ -221,8 +222,8 @@ public partial class Tbl36SubordoViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesBySubordoId(subordoid);
                 await RemoveExtras.RemoveCommentsBySubordoId(subordoid);
-                Context.Tbl36Subordos.Remove(subordo);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl36Subordos.Remove(subordo);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -378,10 +379,10 @@ public partial class Tbl36SubordoViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -505,10 +506,10 @@ public partial class Tbl36SubordoViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

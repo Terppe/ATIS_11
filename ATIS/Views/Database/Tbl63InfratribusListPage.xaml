@@ -8,6 +8,7 @@
       xmlns:helpers="using:ATIS.Helpers"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:components="using:ATIS.AtisDesignsystem.UserControls"
       xmlns:models="using:ATIS.Models"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:winUiCommunity="using:WinUICommunity"
@@ -15,6 +16,23 @@
       mc:Ignorable="d">
 
     <!--  InfratribusListPage.xaml  Skriptdatum: 30.12.2024  10:32  -->
+
+    <!--<components.Header>
+        <local:InfratribusHeader />
+    </components.Header>
+    <components.AppBar>
+        <local:InfratribusAppBar />
+    </components.AppBar>
+    <componentscomponents.ListContent>
+        <local:InfratribusDataGrid />
+    </componentscomponents.ListContent>
+    <components.DetailContent>
+        <StackPanel Spacing="16">
+            <local:InfratribusDetailSection1 />
+            <local:InfratribusDetailSection2 />
+            <local:InfratribusDetailSection3 />
+        </StackPanel>
+    </components.DetailContent>-->
 
     <Page.Resources>
         <MenuFlyout x:Key="InfratribusDataContextMenu">

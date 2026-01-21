@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -19,7 +20,7 @@ public sealed partial class UserAreaPage : Page
     #region [Private Data Members]
 
     public UserAreaViewModel ViewModel { get; set; }
-    private static readonly AtisDbContext Context = new();
+  //  private static readonly AtisDbContext Context = new();
     public string _search;
     private readonly string _name;
 
@@ -29,6 +30,7 @@ public sealed partial class UserAreaPage : Page
 
     public UserAreaPage()
     {
+
         var customPrincipal = (CustomPrincipal)Thread.CurrentPrincipal;
         if (customPrincipal == null)
         {
@@ -45,14 +47,21 @@ public sealed partial class UserAreaPage : Page
 
         if (role == "Administrator" || role == "User" && _name == customPrincipal.Identity.Email)
         {
-            ViewModel = App.GetService<UserAreaViewModel>();
             InitializeComponent();
-            GetUserProfilesByName();
+            Loaded += OnLoaded;
+
         }
         else
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync(_name).ConfigureAwait(false);
         }
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        ViewModel = App.GetService<UserAreaViewModel>();
+        GetUserProfilesByName();
+
     }
 
     #endregion [Constructor]
@@ -93,7 +102,7 @@ public sealed partial class UserAreaPage : Page
             //        .Where(e => e.Email.StartsWith(_search))
             //        .OrderBy(a => a.Email));
 
-            ViewModel.TblUserProfilesList = new ObservableCollection<TblUserProfile>(Context.TblUserProfiles
+            ViewModel.TblUserProfilesList = new ObservableCollection<TblUserProfile>(AppData.Data.TblUserProfiles
                 .Where(e => e.Email == _name));
 
             //   UserProfileDetailExpander.Visibility = Visibility.Collapsed;
@@ -156,7 +165,7 @@ public sealed partial class UserAreaPage : Page
         TblUserProfile result = null;
         try
         {
-            var current = await Context.TblUserProfiles.FirstOrDefaultAsync(a => a.UserProfileId == userprofile.UserProfileId);
+            var current = await AppData.Data.TblUserProfiles.FirstOrDefaultAsync(a => a.UserProfileId == userprofile.UserProfileId);
             if (null == current)
             {
                 userprofile.CountId = RandomHelper.Randomnumber();
@@ -164,15 +173,15 @@ public sealed partial class UserAreaPage : Page
                 userprofile.WriterDate = DateTime.Now;
                 userprofile.Updater = Environment.UserName;
                 userprofile.UpdaterDate = DateTime.Now;
-                Context.TblUserProfiles.Add(userprofile);
+                //AppData.Data.TblUserProfiles.Add(userprofile);
             }
             else
             {
                 userprofile.Updater = Environment.UserName;
                 userprofile.UpdaterDate = DateTime.Now;
-                Context.Entry(current).CurrentValues.SetValues(userprofile);
+                //AppData.Data.Entry(current).CurrentValues.SetValues(userprofile);
             }
-            await Context.SaveChangesAsync();
+            //await AppData.Data.SaveChangesAsync();
 
             result = userprofile;
         }

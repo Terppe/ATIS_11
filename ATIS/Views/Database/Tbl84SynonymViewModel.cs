@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl84SynonymViewModel Skriptdatum:  25.01.2025  10:32    
 
@@ -15,9 +16,9 @@ public partial class Tbl84SynonymViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl84Synonym> SynonymItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
@@ -164,11 +165,11 @@ public partial class Tbl84SynonymViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var synonym = await Context.Tbl84Synonyms.FirstOrDefaultAsync(b => b.SynonymId == synonymid);
+            var synonym = await AppData.Data.Tbl84Synonyms.FirstOrDefaultAsync(b => b.SynonymId == synonymid);
             if (synonym != null)
             {
-                Context.Tbl84Synonyms.Remove(synonym);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl84Synonyms.Remove(synonym);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

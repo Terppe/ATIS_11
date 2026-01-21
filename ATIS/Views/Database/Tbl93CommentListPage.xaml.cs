@@ -1,5 +1,6 @@
 ﻿
 using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -21,9 +22,10 @@ public sealed partial class Tbl93CommentListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl93CommentViewModel ViewModel { get; }
+    public Tbl93CommentViewModel ViewModel { get; set; }
+
     private Tbl93Comment SingleComment { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -32,10 +34,15 @@ public sealed partial class Tbl93CommentListPage : Page
 
     public Tbl93CommentListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl93CommentViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -44,6 +51,7 @@ public sealed partial class Tbl93CommentListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [Comment Methods]
@@ -83,9 +91,9 @@ public sealed partial class Tbl93CommentListPage : Page
             {
                 ViewModel.Tbl93CommentsList ??= [];
                 ViewModel.Tbl93CommentsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl93Comments
+                ? [.. AppData.Data.Tbl93Comments
                 .Where(e => e.CommentId == id)]
-                : [.. Context.Tbl93Comments
+                : [.. AppData.Data.Tbl93Comments
                 .Where(e => e.Info.StartsWith(_search))
                 .OrderBy(a => a.Info)];
 
@@ -223,7 +231,7 @@ public sealed partial class Tbl93CommentListPage : Page
         }
         else
         {
-            SingleComment = App.SingleComment(ViewModel.CommentSelected.CommentId);
+            SingleComment = AppData.Data.SingleComment(ViewModel.CommentSelected.CommentId);
         }
 
         return Task.CompletedTask;
@@ -250,7 +258,7 @@ public sealed partial class Tbl93CommentListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
-            SingleComment = App.SingleComment(ViewModel.CommentSelected.CommentId);
+            SingleComment = AppData.Data.SingleComment(ViewModel.CommentSelected.CommentId);
             CommentSingles();
         }
         else
@@ -316,7 +324,7 @@ public sealed partial class Tbl93CommentListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleComment = App.SingleComment(ViewModel.CommentSelected.CommentId);
+            SingleComment = AppData.Data.SingleComment(ViewModel.CommentSelected.CommentId);
             CommentSingles();
         }
 
@@ -425,7 +433,7 @@ public sealed partial class Tbl93CommentListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.RegnumId == ViewModel.CommentSelected.RegnumId &&
                         a.PhylumId == ViewModel.CommentSelected.PhylumId &&
@@ -469,9 +477,9 @@ public sealed partial class Tbl93CommentListPage : Page
             if (CommentSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl93CommentsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl93Comments
+                    ? [.. AppData.Data.Tbl93Comments
                     .Where(a => a.CommentId == id)]
-                    : [.. Context.Tbl93Comments
+                    : [.. AppData.Data.Tbl93Comments
                     .Where(a => _search != null && a.Info.StartsWith(_search))
                     .OrderBy(a => a.Info)];
             }
@@ -481,7 +489,7 @@ public sealed partial class Tbl93CommentListPage : Page
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(a => a.CommentId == viewModelCommentSelected.CommentId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -557,9 +565,9 @@ public sealed partial class Tbl93CommentListPage : Page
             {
                 ViewModel.Tbl93CommentsList ??= [];
                 ViewModel.Tbl93CommentsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl93Comments
+                ? [.. AppData.Data.Tbl93Comments
                 .Where(a => a.CommentId == id)]
-                : [.. Context.Tbl93Comments
+                : [.. AppData.Data.Tbl93Comments
                     .Where(a => a.Info.StartsWith(_search))
                     .OrderBy(a => a.Info)];
             });

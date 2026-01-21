@@ -1,4 +1,6 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
+using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,13 +22,14 @@ public sealed partial class Tbl24SubclassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl24SubclassViewModel ViewModel { get; }
+    public Tbl24SubclassViewModel ViewModel { get; set; }
     private Tbl24Subclass SingleSubclass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl27Infraclass SingleInfraclass { get; set; }
-    private static readonly AtisDbContext Context = new();
+ //   private static readonly AtisDbContext Context = new();
     private string _search;
+    private readonly IDataService _dataService;
 
     #endregion [Private Data Members]   
 
@@ -34,18 +37,27 @@ public sealed partial class Tbl24SubclassListPage : Page
 
     public Tbl24SubclassListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl24SubclassViewModel>();
             InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
+
         }
         else
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]   
 
     #region [Subclass Methods]
@@ -90,9 +102,9 @@ public sealed partial class Tbl24SubclassListPage : Page
             {
                 ViewModel.Tbl24SubclassesList ??= [];
                 ViewModel.Tbl24SubclassesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl24Subclasses
+                ? [.. AppData.Data.Tbl24Subclasses
                 .Where(a => a.SubclassId == id)]
-                : [.. Context.Tbl24Subclasses
+                : [.. AppData.Data.Tbl24Subclasses
                 .Where(a => _search != null && a.SubclassName.StartsWith(_search))
                 .OrderBy(a => a.SubclassName)];
             });
@@ -179,7 +191,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.SubclassId == ViewModel.SubclassSelected.SubclassId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +212,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.SubclassId == ViewModel.SubclassSelected.SubclassId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +232,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl27InfraclassesList ??= [];
-                ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+                ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
             .Where(com => com.SubclassId == ViewModel.SubclassSelected.SubclassId)];
             });
             ViewModel.InfraclassDataSetCount = ViewModel.Tbl27InfraclassesList.Count;
@@ -321,7 +333,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         }
         else
         {
-            SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
+            SingleSubclass = AppData.Data.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +360,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SubclassSelected = ViewModel.Tbl24SubclassesList[iNdx];
-            SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
+            SingleSubclass = _dataService.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
             SubclassSingles();
         }
         else
@@ -400,7 +412,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSubclass = App.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
+            SingleSubclass = _dataService.SingleSubclass(ViewModel.SubclassSelected.SubclassId);
             SubclassSingles();
         }
 
@@ -509,7 +521,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl24SubclassesList ??= [];
-            ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+            ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
                 .Where(a => a.SubclassName == ViewModel.SubclassSelected.SubclassName &&
                         a.ClassId == ViewModel.SubclassSelected.ClassId)];
         });
@@ -533,9 +545,9 @@ public sealed partial class Tbl24SubclassListPage : Page
             if (SubclassSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl24SubclassesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl24Subclasses
+                    ? [.. AppData.Data.Tbl24Subclasses
                     .Where(a => a.SubclassId == id)]
-                    : [.. Context.Tbl24Subclasses
+                    : [.. AppData.Data.Tbl24Subclasses
                     .Where(a => _search != null && a.SubclassName.StartsWith(_search))
                     .OrderBy(a => a.SubclassName)];
             }
@@ -545,7 +557,7 @@ public sealed partial class Tbl24SubclassListPage : Page
 
         if (ViewModel.Tbl24SubclassesList.Count == 0)
         {
-            ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+            ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
                 .Where(a => a.SubclassId == viewModelSubclassSelected.SubclassId)];
             SubclassDataGrid.ItemsSource = ViewModel.Tbl24SubclassesList;
             await Refresh();
@@ -651,7 +663,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +698,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubclassSelected.SubclassId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +801,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SubclassId == ViewModel.ReferenceSelected.SubclassId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +825,14 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SubclassId == viewModelReferenceSelected.SubclassId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SubclassId == viewModelReferenceSelected.SubclassId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +919,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SubclassSelected.SubclassId);
             ReferenceExpertSingles();
         }
@@ -944,7 +956,7 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SubclassSelected.SubclassId);
 
             ReferenceExpertSingles();
@@ -1014,7 +1026,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.SubclassSelected.SubclassId);
             ReferenceSourceSingles();
         }
@@ -1051,7 +1063,7 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.SubclassSelected.SubclassId);
 
             ReferenceSourceSingles();
@@ -1123,7 +1135,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.SubclassSelected.SubclassId);
             ReferenceAuthorSingles();
         }
@@ -1160,7 +1172,7 @@ public sealed partial class Tbl24SubclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubclass(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.SubclassSelected.SubclassId);
 
             ReferenceAuthorSingles();
@@ -1236,7 +1248,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
+            SingleComment = AppData.Data.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
         }
         return Task.CompletedTask;
     }
@@ -1263,7 +1275,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
+            SingleComment = AppData.Data.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
             CommentSingles();
         }
         else
@@ -1305,7 +1317,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
+                SingleComment = AppData.Data.SingleCommentSubclass(ViewModel.CommentSelected.CommentId, ViewModel.SubclassSelected.SubclassId);
                 CommentSingles();
             }
         });
@@ -1409,7 +1421,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SubclassId == ViewModel.CommentSelected.SubclassId)];
@@ -1431,14 +1443,14 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SubclassId == viewModelCommentSelected.SubclassId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SubclassId == viewModelCommentSelected.SubclassId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1495,7 +1507,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         }
         else
         {
-            SingleInfraclass = App.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId,
+            SingleInfraclass = AppData.Data.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId,
                     ViewModel.SubclassSelected.SubclassId);
         }
 
@@ -1524,7 +1536,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         {
             ViewModel.InfraclassSelected = ViewModel.Tbl27InfraclassesList[iNdx];
 
-            SingleInfraclass = App.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);
+            SingleInfraclass = AppData.Data.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);
             InfraclassSingles();
         }
         else
@@ -1573,7 +1585,7 @@ public sealed partial class Tbl24SubclassListPage : Page
             }
             else
             {
-                SingleInfraclass = App.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);
+                SingleInfraclass = AppData.Data.SingleInfraclassSubclass(ViewModel.InfraclassSelected.InfraclassId, ViewModel.SubclassSelected.SubclassId);
                 InfraclassSingles();
             }
         });
@@ -1633,7 +1645,7 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl27InfraclassesList ??= [];
-            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+            ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
             .Where(a => a.InfraclassName == ViewModel.InfraclassSelected.InfraclassName &&
                         a.SubclassId == ViewModel.InfraclassSelected.SubclassId)];
         });
@@ -1654,14 +1666,14 @@ public sealed partial class Tbl24SubclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl27InfraclassesList ??= [];
-            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+            ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
                 .Where(com => com.SubclassId == viewModelInfraclassSelected.SubclassId)];
         });
         ViewModel.RefreshInfraclassItems();
 
         if (ViewModel.Tbl27InfraclassesList.Count == 0)
         {
-            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+            ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
                 .Where(com => com.SubclassId == viewModelInfraclassSelected.SubclassId)];
             InfraclassDataGrid.ItemsSource = ViewModel.Tbl27InfraclassesList;
             await Refresh();
@@ -1740,16 +1752,16 @@ public sealed partial class Tbl24SubclassListPage : Page
                 if (ViewModel.Tbl24SubclassesList.Count == 0)
                 {
                     ViewModel.Tbl24SubclassesList ??= [];
-                    ViewModel.Tbl24SubclassesList = [.. Context.Tbl24Subclasses
+                    ViewModel.Tbl24SubclassesList = [.. AppData.Data.Tbl24Subclasses
                             .Where(a => a.SubclassId == ViewModel.SubclassSelected.SubclassId)];
                 }
                 else
                 {
                     ViewModel.Tbl24SubclassesList ??= [];
                     ViewModel.Tbl24SubclassesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl24Subclasses
+                        ? [.. AppData.Data.Tbl24Subclasses
                            .Where(a => a.SubclassId == id)]
-                       : [.. Context.Tbl24Subclasses
+                       : [.. AppData.Data.Tbl24Subclasses
                            .Where(a => _search != null && a.SubclassName.StartsWith(_search))
                          .OrderBy(a => a.SubclassName)];
                 }

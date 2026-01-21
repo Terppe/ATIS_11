@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl36SubordoListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl36SubordoViewModel ViewModel { get; }
+    public Tbl36SubordoViewModel ViewModel { get; set; }
     private Tbl36Subordo SingleSubordo { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl39Infraordo SingleInfraordo { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl36SubordoListPage : Page
 
     public Tbl36SubordoListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl36SubordoViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Subordo Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl36SubordoListPage : Page
             {
                 ViewModel.Tbl36SubordosList ??= [];
                 ViewModel.Tbl36SubordosList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl36Subordos
+                ? [.. AppData.Data.Tbl36Subordos
                 .Where(a => a.SubordoId == id)]
-                : [.. Context.Tbl36Subordos
+                : [.. AppData.Data.Tbl36Subordos
                 .Where(a => _search != null && a.SubordoName.StartsWith(_search))
                 .OrderBy(a => a.SubordoName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.SubordoId == ViewModel.SubordoSelected.SubordoId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.SubordoId == ViewModel.SubordoSelected.SubordoId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl39InfraordosList ??= [];
-                ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
+                ViewModel.Tbl39InfraordosList = [.. AppData.Data.Tbl39Infraordos
             .Where(com => com.SubordoId == ViewModel.SubordoSelected.SubordoId)];
             });
             ViewModel.InfraordoDataSetCount = ViewModel.Tbl39InfraordosList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         }
         else
         {
-            SingleSubordo = App.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
+            SingleSubordo = AppData.Data.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SubordoSelected = ViewModel.Tbl36SubordosList[iNdx];
-            SingleSubordo = App.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
+            SingleSubordo = AppData.Data.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
             SubordoSingles();
         }
         else
@@ -398,7 +407,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSubordo = App.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
+            SingleSubordo = AppData.Data.SingleSubordo(ViewModel.SubordoSelected.SubordoId);
             SubordoSingles();
         }
 
@@ -507,7 +516,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl36SubordosList ??= [];
-            ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+            ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
                 .Where(a => a.SubordoName == ViewModel.SubordoSelected.SubordoName &&
                         a.OrdoId == ViewModel.SubordoSelected.OrdoId)];
         });
@@ -531,9 +540,9 @@ public sealed partial class Tbl36SubordoListPage : Page
             if (SubordoSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl36SubordosList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl36Subordos
+                    ? [.. AppData.Data.Tbl36Subordos
                     .Where(a => a.SubordoId == id)]
-                    : [.. Context.Tbl36Subordos
+                    : [.. AppData.Data.Tbl36Subordos
                     .Where(a => _search != null && a.SubordoName.StartsWith(_search))
                     .OrderBy(a => a.SubordoName)];
             }
@@ -543,7 +552,7 @@ public sealed partial class Tbl36SubordoListPage : Page
 
         if (ViewModel.Tbl36SubordosList.Count == 0)
         {
-            ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+            ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
                 .Where(a => a.SubordoId == viewModelSubordoSelected.SubordoId)];
             SubordoDataGrid.ItemsSource = ViewModel.Tbl36SubordosList;
             await Refresh();
@@ -649,7 +658,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -684,7 +693,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubordoSelected.SubordoId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -787,7 +796,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SubordoId == ViewModel.ReferenceSelected.SubordoId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -811,14 +820,14 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SubordoId == viewModelReferenceSelected.SubordoId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SubordoId == viewModelReferenceSelected.SubordoId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -905,7 +914,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SubordoSelected.SubordoId);
             ReferenceExpertSingles();
         }
@@ -942,7 +951,7 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SubordoSelected.SubordoId);
 
             ReferenceExpertSingles();
@@ -1012,7 +1021,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.SubordoSelected.SubordoId);
             ReferenceSourceSingles();
         }
@@ -1049,7 +1058,7 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.SubordoSelected.SubordoId);
 
             ReferenceSourceSingles();
@@ -1121,7 +1130,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.SubordoSelected.SubordoId);
             ReferenceAuthorSingles();
         }
@@ -1158,7 +1167,7 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubordo(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.SubordoSelected.SubordoId);
 
             ReferenceAuthorSingles();
@@ -1234,7 +1243,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
+            SingleComment = AppData.Data.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
         }
         return Task.CompletedTask;
     }
@@ -1261,7 +1270,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
+            SingleComment = AppData.Data.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
             CommentSingles();
         }
         else
@@ -1303,7 +1312,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
+                SingleComment = AppData.Data.SingleCommentSubordo(ViewModel.CommentSelected.CommentId, ViewModel.SubordoSelected.SubordoId);
                 CommentSingles();
             }
         });
@@ -1407,7 +1416,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SubordoId == ViewModel.CommentSelected.SubordoId)];
@@ -1429,14 +1438,14 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SubordoId == viewModelCommentSelected.SubordoId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SubordoId == viewModelCommentSelected.SubordoId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1493,7 +1502,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         }
         else
         {
-            SingleInfraordo = App.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId,
+            SingleInfraordo = AppData.Data.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId,
                     ViewModel.SubordoSelected.SubordoId);
         }
 
@@ -1522,7 +1531,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         {
             ViewModel.InfraordoSelected = ViewModel.Tbl39InfraordosList[iNdx];
 
-            SingleInfraordo = App.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId, ViewModel.SubordoSelected.SubordoId);
+            SingleInfraordo = AppData.Data.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId, ViewModel.SubordoSelected.SubordoId);
             InfraordoSingles();
         }
         else
@@ -1571,7 +1580,7 @@ public sealed partial class Tbl36SubordoListPage : Page
             }
             else
             {
-                SingleInfraordo = App.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId, ViewModel.SubordoSelected.SubordoId);
+                SingleInfraordo = AppData.Data.SingleInfraordoSubordo(ViewModel.InfraordoSelected.InfraordoId, ViewModel.SubordoSelected.SubordoId);
                 InfraordoSingles();
             }
         });
@@ -1631,7 +1640,7 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl39InfraordosList ??= [];
-            ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
+            ViewModel.Tbl39InfraordosList = [.. AppData.Data.Tbl39Infraordos
             .Where(a => a.InfraordoName == ViewModel.InfraordoSelected.InfraordoName &&
                         a.SubordoId == ViewModel.InfraordoSelected.SubordoId)];
         });
@@ -1652,14 +1661,14 @@ public sealed partial class Tbl36SubordoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl39InfraordosList ??= [];
-            ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
+            ViewModel.Tbl39InfraordosList = [.. AppData.Data.Tbl39Infraordos
                 .Where(com => com.SubordoId == viewModelInfraordoSelected.SubordoId)];
         });
         ViewModel.RefreshInfraordoItems();
 
         if (ViewModel.Tbl39InfraordosList.Count == 0)
         {
-            ViewModel.Tbl39InfraordosList = [.. Context.Tbl39Infraordos
+            ViewModel.Tbl39InfraordosList = [.. AppData.Data.Tbl39Infraordos
                 .Where(com => com.SubordoId == viewModelInfraordoSelected.SubordoId)];
             InfraordoDataGrid.ItemsSource = ViewModel.Tbl39InfraordosList;
             await Refresh();
@@ -1738,16 +1747,16 @@ public sealed partial class Tbl36SubordoListPage : Page
                 if (ViewModel.Tbl36SubordosList.Count == 0)
                 {
                     ViewModel.Tbl36SubordosList ??= [];
-                    ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+                    ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
                             .Where(a => a.SubordoId == ViewModel.SubordoSelected.SubordoId)];
                 }
                 else
                 {
                     ViewModel.Tbl36SubordosList ??= [];
                     ViewModel.Tbl36SubordosList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl36Subordos
+                        ? [.. AppData.Data.Tbl36Subordos
                            .Where(a => a.SubordoId == id)]
-                       : [.. Context.Tbl36Subordos
+                       : [.. AppData.Data.Tbl36Subordos
                            .Where(a => _search != null && a.SubordoName.StartsWith(_search))
                          .OrderBy(a => a.SubordoName)];
                 }

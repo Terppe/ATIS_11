@@ -1,9 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Media.Animation;
 
 namespace ATIS.Views.Settings;
-public partial class GeneralSettingViewModel(IJsonNavigationViewService jsonNavigationViewService) : ObservableObject
+public partial class GeneralSettingViewModel() : ObservableObject
 {
-    public readonly IJsonNavigationViewService JsonNavigationViewService = jsonNavigationViewService;
 
     [RelayCommand]
     private void GoToGeneralSettingPage(object sender)
@@ -19,7 +18,7 @@ public partial class GeneralSettingViewModel(IJsonNavigationViewService jsonNavi
                 {
                     Effect = SlideNavigationTransitionEffect.FromRight
                 };
-                JsonNavigationViewService.NavigateTo(pageType, item.Header, false, entranceNavigation);
+                //JsonNavigationViewService.NavigateTo(pageType, item.Header, false, entranceNavigation);
             }
         }
     }

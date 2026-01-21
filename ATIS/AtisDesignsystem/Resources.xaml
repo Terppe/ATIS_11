@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="ms-appx:///Themes/Border.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/ThemeResources.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Button.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Controls/Buttons.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/TextBlock.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/TextBox.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Fonts.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Converters.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Thickness.xaml" />
+
+
+        <!-- Foundations -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Foundations/Colors.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Foundations/Typography.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Foundations/Spacing.xaml" />
+
+        <!-- Converters (müssen VOR Controls geladen werden!) -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Converters/Converters.xaml" />
+
+        <!-- Controls -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/Controls.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/TextBlock.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/TextBox.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/Buttons.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/DataGrid.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/CheckBox.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Controls/ComboBox.xaml" />
+        <!-- Components -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/UserControls/AtisCard.xaml" />
+
+        <!-- Layout -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Layout/PageLayout.xaml" />
+
+        <!-- Icons -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Icons/AtisIcons.xaml" />
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Themes/Generic.xaml" />
+
+        <!-- Themes (immer zuletzt!) -->
+        <ResourceDictionary Source="ms-appx:///AtisDesignsystem/Themes/AtisTheme.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>
+
+
+

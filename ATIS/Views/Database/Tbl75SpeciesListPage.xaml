@@ -7,6 +7,7 @@
       xmlns:helpers="using:ATIS.Helpers"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:components="using:ATIS.AtisDesignsystem.UserControls"
       xmlns:models="using:ATIS.Models"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:winUi="using:Mapsui.UI.WinUI"
@@ -15,6 +16,27 @@
       mc:Ignorable="d">
 
     <!--  SpeciesListPage.xaml  Skriptdatum: 20.10.2025  10:32  -->
+
+    <!--<components.Header>
+        <local:ISpeciesHeader />
+    </components.Header>
+    <components.AppBar>
+        <local:SpeciesAppBar />
+    </components.AppBar>
+    <componentscomponents.ListContent>
+        <local:SpeciesDataGrid />
+    </componentscomponents.ListContent>
+    <components.DetailContent>
+        <StackPanel Spacing="16">
+            <local:SpeciesDetailSection1 />
+            <local:SpeciesDetailSection2 />
+            <local:SpeciesDetailSection3 />
+            <local:SpeciesDetailSection4 />
+            <local:SpeciesDetailSection5 />
+            <local:SpeciesDetailSection6 />
+            <local:SpeciesDetailSection7 />
+        </StackPanel>
+    </components.DetailContent>-->
 
     <Page.Resources>
         <conv:DoubleToStringConverter x:Key="DoubleToStringConverter" />

@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl27InfraclassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl27InfraclassViewModel ViewModel { get; }
+    public Tbl27InfraclassViewModel ViewModel { get; set; }
     private Tbl27Infraclass SingleInfraclass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl30Legio SingleLegio { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
 
     public Tbl27InfraclassListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl27InfraclassViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Infraclass Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl27InfraclassListPage : Page
             {
                 ViewModel.Tbl27InfraclassesList ??= [];
                 ViewModel.Tbl27InfraclassesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl27Infraclasses
+                ? [.. AppData.Data.Tbl27Infraclasses
                 .Where(a => a.InfraclassId == id)]
-                : [.. Context.Tbl27Infraclasses
+                : [.. AppData.Data.Tbl27Infraclasses
                 .Where(a => _search != null && a.InfraclassName.StartsWith(_search))
                 .OrderBy(a => a.InfraclassName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.InfraclassId == ViewModel.InfraclassSelected.InfraclassId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.InfraclassId == ViewModel.InfraclassSelected.InfraclassId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl30LegiosList ??= [];
-                ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+                ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
             .Where(com => com.InfraclassId == ViewModel.InfraclassSelected.InfraclassId)];
             });
             ViewModel.LegioDataSetCount = ViewModel.Tbl30LegiosList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         }
         else
         {
-            SingleInfraclass = App.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
+            SingleInfraclass = AppData.Data.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
         }
 
         return Task.CompletedTask;
@@ -347,7 +356,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.InfraclassSelected = ViewModel.Tbl27InfraclassesList[iNdx];
-            SingleInfraclass = App.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
+            SingleInfraclass = AppData.Data.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
             InfraclassSingles();
         }
         else
@@ -399,7 +408,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleInfraclass = App.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
+            SingleInfraclass = AppData.Data.SingleInfraclass(ViewModel.InfraclassSelected.InfraclassId);
             InfraclassSingles();
         }
 
@@ -508,7 +517,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl27InfraclassesList ??= [];
-            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+            ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
                 .Where(a => a.InfraclassName == ViewModel.InfraclassSelected.InfraclassName &&
                         a.SubclassId == ViewModel.InfraclassSelected.SubclassId)];
         });
@@ -532,9 +541,9 @@ public sealed partial class Tbl27InfraclassListPage : Page
             if (InfraclassSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl27InfraclassesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl27Infraclasses
+                    ? [.. AppData.Data.Tbl27Infraclasses
                     .Where(a => a.InfraclassId == id)]
-                    : [.. Context.Tbl27Infraclasses
+                    : [.. AppData.Data.Tbl27Infraclasses
                     .Where(a => _search != null && a.InfraclassName.StartsWith(_search))
                     .OrderBy(a => a.InfraclassName)];
             }
@@ -544,7 +553,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
 
         if (ViewModel.Tbl27InfraclassesList.Count == 0)
         {
-            ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+            ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
                 .Where(a => a.InfraclassId == viewModelInfraclassSelected.InfraclassId)];
             InfraclassDataGrid.ItemsSource = ViewModel.Tbl27InfraclassesList;
             await Refresh();
@@ -650,7 +659,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -685,7 +694,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraclassSelected.InfraclassId);
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfraclassSelected.InfraclassId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -788,7 +797,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.InfraclassId == ViewModel.ReferenceSelected.InfraclassId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -812,14 +821,14 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.InfraclassId == viewModelReferenceSelected.InfraclassId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.InfraclassId == viewModelReferenceSelected.InfraclassId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -906,7 +915,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.InfraclassSelected.InfraclassId);
             ReferenceExpertSingles();
         }
@@ -943,7 +952,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.InfraclassSelected.InfraclassId);
 
             ReferenceExpertSingles();
@@ -1013,7 +1022,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.InfraclassSelected.InfraclassId);
             ReferenceSourceSingles();
         }
@@ -1050,7 +1059,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.InfraclassSelected.InfraclassId);
 
             ReferenceSourceSingles();
@@ -1122,7 +1131,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.InfraclassSelected.InfraclassId);
             ReferenceAuthorSingles();
         }
@@ -1159,7 +1168,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfraclass(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.InfraclassSelected.InfraclassId);
 
             ReferenceAuthorSingles();
@@ -1235,7 +1244,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
+            SingleComment = AppData.Data.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
         }
         return Task.CompletedTask;
     }
@@ -1262,7 +1271,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
+            SingleComment = AppData.Data.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
             CommentSingles();
         }
         else
@@ -1304,7 +1313,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
+                SingleComment = AppData.Data.SingleCommentInfraclass(ViewModel.CommentSelected.CommentId, ViewModel.InfraclassSelected.InfraclassId);
                 CommentSingles();
             }
         });
@@ -1408,7 +1417,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.InfraclassId == ViewModel.CommentSelected.InfraclassId)];
@@ -1430,14 +1439,14 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.InfraclassId == viewModelCommentSelected.InfraclassId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.InfraclassId == viewModelCommentSelected.InfraclassId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1494,7 +1503,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         }
         else
         {
-            SingleLegio = App.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId,
+            SingleLegio = AppData.Data.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId,
                     ViewModel.InfraclassSelected.InfraclassId);
         }
 
@@ -1523,7 +1532,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         {
             ViewModel.LegioSelected = ViewModel.Tbl30LegiosList[iNdx];
 
-            SingleLegio = App.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId, ViewModel.InfraclassSelected.InfraclassId);
+            SingleLegio = AppData.Data.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId, ViewModel.InfraclassSelected.InfraclassId);
             LegioSingles();
         }
         else
@@ -1572,7 +1581,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
             }
             else
             {
-                SingleLegio = App.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId, ViewModel.InfraclassSelected.InfraclassId);
+                SingleLegio = AppData.Data.SingleLegioInfraclass(ViewModel.LegioSelected.LegioId, ViewModel.InfraclassSelected.InfraclassId);
                 LegioSingles();
             }
         });
@@ -1632,7 +1641,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl30LegiosList ??= [];
-            ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+            ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
             .Where(a => a.LegioName == ViewModel.LegioSelected.LegioName &&
                         a.InfraclassId == ViewModel.LegioSelected.InfraclassId)];
         });
@@ -1653,14 +1662,14 @@ public sealed partial class Tbl27InfraclassListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl30LegiosList ??= [];
-            ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+            ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
                 .Where(com => com.InfraclassId == viewModelLegioSelected.InfraclassId)];
         });
         ViewModel.RefreshLegioItems();
 
         if (ViewModel.Tbl30LegiosList.Count == 0)
         {
-            ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+            ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
                 .Where(com => com.InfraclassId == viewModelLegioSelected.InfraclassId)];
             LegioDataGrid.ItemsSource = ViewModel.Tbl30LegiosList;
             await Refresh();
@@ -1739,16 +1748,16 @@ public sealed partial class Tbl27InfraclassListPage : Page
                 if (ViewModel.Tbl27InfraclassesList.Count == 0)
                 {
                     ViewModel.Tbl27InfraclassesList ??= [];
-                    ViewModel.Tbl27InfraclassesList = [.. Context.Tbl27Infraclasses
+                    ViewModel.Tbl27InfraclassesList = [.. AppData.Data.Tbl27Infraclasses
                             .Where(a => a.InfraclassId == ViewModel.InfraclassSelected.InfraclassId)];
                 }
                 else
                 {
                     ViewModel.Tbl27InfraclassesList ??= [];
                     ViewModel.Tbl27InfraclassesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl27Infraclasses
+                        ? [.. AppData.Data.Tbl27Infraclasses
                            .Where(a => a.InfraclassId == id)]
-                       : [.. Context.Tbl27Infraclasses
+                       : [.. AppData.Data.Tbl27Infraclasses
                            .Where(a => _search != null && a.InfraclassName.StartsWith(_search))
                          .OrderBy(a => a.InfraclassName)];
                 }

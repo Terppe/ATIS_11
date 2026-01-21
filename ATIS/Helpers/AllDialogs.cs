@@ -161,7 +161,7 @@ public class AllDialogs
             StringsRes.DatabaseNotExistSQLServerExist + " " + database, "OK");
     }
 
-    public static async Task ErrorMessageDialogAsync(string message)
+    public static async Task ErrorMessageDialogAsync(string? message)
     {
         await App.MainRoot.MessageDialogAsync(
             StringsRes.Warning,

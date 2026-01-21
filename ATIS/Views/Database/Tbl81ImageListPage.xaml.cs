@@ -8,6 +8,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
+using ATIS.Infrastructure;
 using WinRT.Interop;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -23,10 +24,10 @@ public sealed partial class Tbl81ImageListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl81ImageViewModel ViewModel { get; }
+    public Tbl81ImageViewModel ViewModel { get; set; }
     private Tbl81Image SingleImage { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
     private readonly FileOpenPicker _filePicker = new();
 
@@ -36,10 +37,16 @@ public sealed partial class Tbl81ImageListPage : Page
 
     public Tbl81ImageListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl81ImageViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -96,9 +103,9 @@ public sealed partial class Tbl81ImageListPage : Page
 
                 ViewModel.Tbl81ImagesList ??= [];
                 ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)         //Info and Id
-                ? [.. Context.Tbl81Images
+                ? [.. AppData.Data.Tbl81Images
                 .Where(e => e.ImageId == id)]
-                : [.. Context.Tbl81Images
+                : [.. AppData.Data.Tbl81Images
                 .Where(e => e.Info.StartsWith(_search))
                 .OrderBy(a => a.Info)];
             });
@@ -173,7 +180,7 @@ public sealed partial class Tbl81ImageListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
             .Where(com => com.SpeciesId == ViewModel.ImageSelected.SpeciesId)];
             });
             ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
@@ -272,7 +279,7 @@ public sealed partial class Tbl81ImageListPage : Page
         }
         else
         {
-            SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
+            SingleImage = AppData.Data.SingleImage(ViewModel.ImageSelected.ImageId);
         }
 
         return Task.CompletedTask;
@@ -299,7 +306,7 @@ public sealed partial class Tbl81ImageListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.ImageSelected = ViewModel.Tbl81ImagesList[iNdx];
-            SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
+            SingleImage = AppData.Data.SingleImage(ViewModel.ImageSelected.ImageId);
             ImageSingles();
         }
         else
@@ -348,7 +355,7 @@ public sealed partial class Tbl81ImageListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleImage = App.SingleImage(ViewModel.ImageSelected.ImageId);
+            SingleImage = AppData.Data.SingleImage(ViewModel.ImageSelected.ImageId);
             ImageSingles();
         }
 
@@ -457,7 +464,7 @@ public sealed partial class Tbl81ImageListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl81ImagesList ??= [];
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(a => a.Info == ViewModel.ImageSelected.Info &&
                             a.SpeciesId == ViewModel.ImageSelected.SpeciesId)];
         });
@@ -478,9 +485,9 @@ public sealed partial class Tbl81ImageListPage : Page
             if (ImageSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl81Images
+                    ? [.. AppData.Data.Tbl81Images
                     .Where(a => a.ImageId == id)]
-                    : [.. Context.Tbl81Images
+                    : [.. AppData.Data.Tbl81Images
                     .Where(a => _search != null && a.Info.StartsWith(_search))
                     .OrderBy(a => a.Info)];
             }
@@ -490,7 +497,7 @@ public sealed partial class Tbl81ImageListPage : Page
 
         if (ViewModel.Tbl81ImagesList.Count == 0)
         {
-            ViewModel.Tbl81ImagesList = [.. Context.Tbl81Images
+            ViewModel.Tbl81ImagesList = [.. AppData.Data.Tbl81Images
                 .Where(a => a.ImageId == viewModelImageSelected.ImageId)];
             ImageDataGrid.ItemsSource = ViewModel.Tbl81ImagesList;
             await Refresh();
@@ -623,7 +630,7 @@ public sealed partial class Tbl81ImageListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -651,7 +658,7 @@ public sealed partial class Tbl81ImageListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -737,7 +744,7 @@ public sealed partial class Tbl81ImageListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+                SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
                 SpeciesSingles();
             }
         });
@@ -795,7 +802,7 @@ public sealed partial class Tbl81ImageListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -820,14 +827,14 @@ public sealed partial class Tbl81ImageListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -956,9 +963,9 @@ public sealed partial class Tbl81ImageListPage : Page
             {
                 ViewModel.Tbl81ImagesList ??= [];
                 ViewModel.Tbl81ImagesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl81Images
+                ? [.. AppData.Data.Tbl81Images
                 .Where(a => a.ImageId == id)]
-                : [.. Context.Tbl81Images
+                : [.. AppData.Data.Tbl81Images
                 .Where(a => a.Info.StartsWith(_search))
                 .OrderBy(a => a.Info)];
             });

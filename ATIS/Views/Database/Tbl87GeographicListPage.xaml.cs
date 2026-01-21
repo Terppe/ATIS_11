@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,11 +21,11 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl87GeographicViewModel ViewModel { get; }
+    public Tbl87GeographicViewModel ViewModel { get; set; }
     private Tbl87Geographic SingleGeographic { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     public TblCountry SingleCountry { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     private double centerOf1LongX;
@@ -37,10 +38,16 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
     public Tbl87GeographicListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl87GeographicViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -52,6 +59,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         //string command = "/C notepad.exe";
         //Process.Start("cmd.exe", command);
     }
+
     #endregion [Constructor]         
 
     #region [Geographic Methods]
@@ -99,9 +107,9 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
                 ViewModel.Tbl87GeographicsList ??= [];
                 ViewModel.Tbl87GeographicsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl87Geographics
+                ? [.. AppData.Data.Tbl87Geographics
                 .Where(e => e.GeographicId == id)]
-                : [.. Context.Tbl87Geographics
+                : [.. AppData.Data.Tbl87Geographics
                 .Where(e => e.Info.StartsWith(_search))
                 .OrderBy(a => a.Info)];
             });
@@ -176,7 +184,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
             .Where(com => com.SpeciesId == ViewModel.GeographicSelected.SpeciesId)];
             });
             ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
@@ -268,7 +276,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         }
         else
         {
-            SingleGeographic = App.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
+            SingleGeographic = AppData.Data.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
 
             centerOf1LongX = Convert.ToDouble(Longitude1Geographic.Text);
             centerOf1LatiY = Convert.ToDouble(Latitude1Geographic.Text);
@@ -301,7 +309,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         if (iNdx is not -1)
         {
             ViewModel.GeographicSelected = ViewModel.Tbl87GeographicsList[iNdx];
-            SingleGeographic = App.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
+            SingleGeographic = AppData.Data.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
             GeographicSingles();
         }
         else
@@ -361,7 +369,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             {
                 return Task.CompletedTask;
             }
-            SingleGeographic = App.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
+            SingleGeographic = AppData.Data.SingleGeographic(ViewModel.GeographicSelected.GeographicId);
             GeographicSingles();
         }
 
@@ -467,7 +475,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
     private async Task<bool> BeforeSaveGeographic()
     {
         ViewModel.Tbl87GeographicsList ??= [];
-        ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
+        ViewModel.Tbl87GeographicsList = [.. AppData.Data.Tbl87Geographics
             .Where(a => a.Info == ViewModel.GeographicSelected.Info &&
                         a.Address == ViewModel.GeographicSelected.Address &&
                         a.Continent == ViewModel.GeographicSelected.Continent &&
@@ -481,13 +489,13 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             if (ViewModel.GeographicSelected.Country == null)
             {
                 ViewModel.TblCountriesList ??= [];
-                ViewModel.TblCountriesList = [.. Context.TblCountries
+                ViewModel.TblCountriesList = [.. AppData.Data.TblCountries
                     .Where(e => e.Name == ViewModel.GeographicSelected.Continent)];
             }
             else
             {
                 ViewModel.TblCountriesList ??= [];
-                ViewModel.TblCountriesList = [.. Context.TblCountries
+                ViewModel.TblCountriesList = [.. AppData.Data.TblCountries
                     .Where(e => e.Name == ViewModel.GeographicSelected.Country)];
             }
         });
@@ -514,9 +522,9 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             if (GeographicSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl87GeographicsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl87Geographics
+                    ? [.. AppData.Data.Tbl87Geographics
                     .Where(a => a.GeographicId == id)]
-                    : [.. Context.Tbl87Geographics
+                    : [.. AppData.Data.Tbl87Geographics
                     .Where(a => _search != null && a.Info.StartsWith(_search))
                     .OrderBy(a => a.Info)];
             }
@@ -526,7 +534,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
 
         if (ViewModel.Tbl87GeographicsList.Count == 0)
         {
-            ViewModel.Tbl87GeographicsList = [.. Context.Tbl87Geographics
+            ViewModel.Tbl87GeographicsList = [.. AppData.Data.Tbl87Geographics
                 .Where(a => a.GeographicId == viewModelGeographicSelected.GeographicId)];
             GeographicDataGrid.ItemsSource = ViewModel.Tbl87GeographicsList;
             await Refresh();
@@ -577,7 +585,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -605,7 +613,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -691,7 +699,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             }
             else
             {
-                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+                SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
                 SpeciesSingles();
             }
         });
@@ -750,7 +758,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -775,14 +783,14 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -911,9 +919,9 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
             {
                 ViewModel.Tbl87GeographicsList ??= [];
                 ViewModel.Tbl87GeographicsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl87Geographics
+                ? [.. AppData.Data.Tbl87Geographics
                 .Where(a => a.GeographicId == id)]
-                : [.. Context.Tbl87Geographics
+                : [.. AppData.Data.Tbl87Geographics
                 .Where(a => a.Info.StartsWith(_search))
                 .OrderBy(a => a.Info)];
             });

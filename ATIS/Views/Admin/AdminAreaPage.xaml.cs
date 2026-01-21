@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,8 +21,8 @@ public sealed partial class AdminAreaPage : Page
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public AdminAreaViewModel ViewModel { get; }
-    private static readonly AtisDbContext Context = new();
+    public AdminAreaViewModel ViewModel { get; set; }
+    //private static readonly AtisDbContext Context = new();
     private string _search;
     #endregion [Private Data Members]
 
@@ -45,14 +46,21 @@ public sealed partial class AdminAreaPage : Page
 
         if (role == "Administrator")
         {
-            ViewModel = App.GetService<AdminAreaViewModel>();
             InitializeComponent();
+            Loaded += OnLoaded;
+
         }
         else
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync(name).ConfigureAwait(false);
         }
     }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        ViewModel = App.GetService<AdminAreaViewModel>();
+    }
+
     #endregion [Constructor]
 
     #region [UserProfile Methods]
@@ -90,9 +98,9 @@ public sealed partial class AdminAreaPage : Page
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                    ? [.. Context.TblUserProfiles
+                    ? [.. AppData.Data.TblUserProfiles
                         .Where(a => a.UserProfileId == id)]
-                    : [.. Context.TblUserProfiles
+                    : [.. AppData.Data.TblUserProfiles
                         .Where(a => _search != null && a.Email.StartsWith(_search))
                         .OrderBy(a => a.Email)];
             });
@@ -298,7 +306,7 @@ public sealed partial class AdminAreaPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.TblUserProfilesList ??= [];
-            ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
+            ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
                 .Where(a => a.Email == ViewModel.UserProfileSelected.Email)];
         });
         if (ViewModel.IsNewUserProfile)
@@ -320,7 +328,7 @@ public sealed partial class AdminAreaPage : Page
             await _dispatcherQueue.EnqueueAsync(async () =>
             {
                 ViewModel.TblUserProfilesList ??= [];
-                ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
+                ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
                     .Where(a => a.UserProfileId == ViewModel.UserProfileSelected.UserProfileId)];
 
                 if (ViewModel.TblUserProfilesList.Count == 0)
@@ -698,9 +706,9 @@ public sealed partial class AdminAreaPage : Page
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                    ? [.. Context.TblUserProfiles
+                    ? [.. AppData.Data.TblUserProfiles
                             .Where(a => a.UserProfileId == id)]
-                    : [.. Context.TblUserProfiles
+                    : [.. AppData.Data.TblUserProfiles
                             .Where(a => a.Email.StartsWith(_search))
                             .OrderBy(a => a.Email)];
             });

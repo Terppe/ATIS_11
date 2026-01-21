@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl42SuperfamilyViewModel ViewModel { get; }
+    public Tbl42SuperfamilyViewModel ViewModel { get; set; }
     private Tbl42Superfamily SingleSuperfamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl45Family SingleFamily { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
 
     public Tbl42SuperfamilyListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl42SuperfamilyViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Superfamily Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             {
                 ViewModel.Tbl42SuperfamiliesList ??= [];
                 ViewModel.Tbl42SuperfamiliesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl42Superfamilies
+                ? [.. AppData.Data.Tbl42Superfamilies
                 .Where(a => a.SuperfamilyId == id)]
-                : [.. Context.Tbl42Superfamilies
+                : [.. AppData.Data.Tbl42Superfamilies
                 .Where(a => _search != null && a.SuperfamilyName.StartsWith(_search))
                 .OrderBy(a => a.SuperfamilyName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.SuperfamilyId == ViewModel.SuperfamilySelected.SuperfamilyId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.SuperfamilyId == ViewModel.SuperfamilySelected.SuperfamilyId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl45FamiliesList ??= [];
-                ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+                ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
             .Where(com => com.SuperfamilyId == ViewModel.SuperfamilySelected.SuperfamilyId)];
             });
             ViewModel.FamilyDataSetCount = ViewModel.Tbl45FamiliesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         }
         else
         {
-            SingleSuperfamily = App.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleSuperfamily = AppData.Data.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SuperfamilySelected = ViewModel.Tbl42SuperfamiliesList[iNdx];
-            SingleSuperfamily = App.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleSuperfamily = AppData.Data.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
             SuperfamilySingles();
         }
         else
@@ -400,7 +409,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSuperfamily = App.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleSuperfamily = AppData.Data.SingleSuperfamily(ViewModel.SuperfamilySelected.SuperfamilyId);
             SuperfamilySingles();
         }
 
@@ -509,7 +518,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl42SuperfamiliesList ??= [];
-            ViewModel.Tbl42SuperfamiliesList = [.. Context.Tbl42Superfamilies
+            ViewModel.Tbl42SuperfamiliesList = [.. AppData.Data.Tbl42Superfamilies
                 .Where(a => a.SuperfamilyName == ViewModel.SuperfamilySelected.SuperfamilyName &&
                         a.InfraordoId == ViewModel.SuperfamilySelected.InfraordoId)];
         });
@@ -533,9 +542,9 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             if (SuperfamilySearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl42SuperfamiliesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl42Superfamilies
+                    ? [.. AppData.Data.Tbl42Superfamilies
                     .Where(a => a.SuperfamilyId == id)]
-                    : [.. Context.Tbl42Superfamilies
+                    : [.. AppData.Data.Tbl42Superfamilies
                     .Where(a => _search != null && a.SuperfamilyName.StartsWith(_search))
                     .OrderBy(a => a.SuperfamilyName)];
             }
@@ -545,7 +554,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
 
         if (ViewModel.Tbl42SuperfamiliesList.Count == 0)
         {
-            ViewModel.Tbl42SuperfamiliesList = [.. Context.Tbl42Superfamilies
+            ViewModel.Tbl42SuperfamiliesList = [.. AppData.Data.Tbl42Superfamilies
                 .Where(a => a.SuperfamilyId == viewModelSuperfamilySelected.SuperfamilyId)];
             SuperfamilyDataGrid.ItemsSource = ViewModel.Tbl42SuperfamiliesList;
             await Refresh();
@@ -651,7 +660,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +695,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SuperfamilySelected.SuperfamilyId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +798,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SuperfamilyId == ViewModel.ReferenceSelected.SuperfamilyId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +822,14 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SuperfamilyId == viewModelReferenceSelected.SuperfamilyId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SuperfamilyId == viewModelReferenceSelected.SuperfamilyId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +916,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SuperfamilySelected.SuperfamilyId);
             ReferenceExpertSingles();
         }
@@ -944,7 +953,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SuperfamilySelected.SuperfamilyId);
 
             ReferenceExpertSingles();
@@ -1014,7 +1023,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.SuperfamilySelected.SuperfamilyId);
             ReferenceSourceSingles();
         }
@@ -1051,7 +1060,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.SuperfamilySelected.SuperfamilyId);
 
             ReferenceSourceSingles();
@@ -1123,7 +1132,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.SuperfamilySelected.SuperfamilyId);
             ReferenceAuthorSingles();
         }
@@ -1160,7 +1169,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSuperfamily(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.SuperfamilySelected.SuperfamilyId);
 
             ReferenceAuthorSingles();
@@ -1236,7 +1245,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleComment = AppData.Data.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
         }
         return Task.CompletedTask;
     }
@@ -1263,7 +1272,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleComment = AppData.Data.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
             CommentSingles();
         }
         else
@@ -1305,7 +1314,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
+                SingleComment = AppData.Data.SingleCommentSuperfamily(ViewModel.CommentSelected.CommentId, ViewModel.SuperfamilySelected.SuperfamilyId);
                 CommentSingles();
             }
         });
@@ -1409,7 +1418,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SuperfamilyId == ViewModel.CommentSelected.SuperfamilyId)];
@@ -1431,14 +1440,14 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SuperfamilyId == viewModelCommentSelected.SuperfamilyId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SuperfamilyId == viewModelCommentSelected.SuperfamilyId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1495,7 +1504,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         }
         else
         {
-            SingleFamily = App.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId,
+            SingleFamily = AppData.Data.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId,
                     ViewModel.SuperfamilySelected.SuperfamilyId);
         }
 
@@ -1524,7 +1533,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         {
             ViewModel.FamilySelected = ViewModel.Tbl45FamiliesList[iNdx];
 
-            SingleFamily = App.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId, ViewModel.SuperfamilySelected.SuperfamilyId);
+            SingleFamily = AppData.Data.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId, ViewModel.SuperfamilySelected.SuperfamilyId);
             FamilySingles();
         }
         else
@@ -1573,7 +1582,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
             }
             else
             {
-                SingleFamily = App.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId, ViewModel.SuperfamilySelected.SuperfamilyId);
+                SingleFamily = AppData.Data.SingleFamilySuperfamily(ViewModel.FamilySelected.FamilyId, ViewModel.SuperfamilySelected.SuperfamilyId);
                 FamilySingles();
             }
         });
@@ -1633,7 +1642,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl45FamiliesList ??= [];
-            ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+            ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
             .Where(a => a.FamilyName == ViewModel.FamilySelected.FamilyName &&
                         a.SuperfamilyId == ViewModel.FamilySelected.SuperfamilyId)];
         });
@@ -1654,14 +1663,14 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl45FamiliesList ??= [];
-            ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+            ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
                 .Where(com => com.SuperfamilyId == viewModelFamilySelected.SuperfamilyId)];
         });
         ViewModel.RefreshFamilyItems();
 
         if (ViewModel.Tbl45FamiliesList.Count == 0)
         {
-            ViewModel.Tbl45FamiliesList = [.. Context.Tbl45Families
+            ViewModel.Tbl45FamiliesList = [.. AppData.Data.Tbl45Families
                 .Where(com => com.SuperfamilyId == viewModelFamilySelected.SuperfamilyId)];
             FamilyDataGrid.ItemsSource = ViewModel.Tbl45FamiliesList;
             await Refresh();
@@ -1740,16 +1749,16 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
                 if (ViewModel.Tbl42SuperfamiliesList.Count == 0)
                 {
                     ViewModel.Tbl42SuperfamiliesList ??= [];
-                    ViewModel.Tbl42SuperfamiliesList = [.. Context.Tbl42Superfamilies
+                    ViewModel.Tbl42SuperfamiliesList = [.. AppData.Data.Tbl42Superfamilies
                             .Where(a => a.SuperfamilyId == ViewModel.SuperfamilySelected.SuperfamilyId)];
                 }
                 else
                 {
                     ViewModel.Tbl42SuperfamiliesList ??= [];
                     ViewModel.Tbl42SuperfamiliesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl42Superfamilies
+                        ? [.. AppData.Data.Tbl42Superfamilies
                            .Where(a => a.SuperfamilyId == id)]
-                       : [.. Context.Tbl42Superfamilies
+                       : [.. AppData.Data.Tbl42Superfamilies
                            .Where(a => _search != null && a.SuperfamilyName.StartsWith(_search))
                          .OrderBy(a => a.SuperfamilyName)];
                 }

@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl90RefSourceViewModel Skriptdatum:   06.01.2025  10:32    
 
@@ -16,8 +17,8 @@ public partial class Tbl90RefSourceViewModel(IDataService _dataService) : Observ
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
+    private readonly IDataService _data;
     public ObservableCollection<Tbl90RefSource> RefSourceItems { get; } = [];
 
     #endregion [Private Data Members]           
@@ -133,11 +134,11 @@ public partial class Tbl90RefSourceViewModel(IDataService _dataService) : Observ
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var refSource = await Context.Tbl90RefSources.FirstOrDefaultAsync(b => b.RefSourceId == refSourceid);
+            var refSource = await AppData.Data.Tbl90RefSources.FirstOrDefaultAsync(b => b.RefSourceId == refSourceid);
             if (refSource != null)
             {
-                Context.Tbl90RefSources.Remove(refSource);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl90RefSources.Remove(refSource);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

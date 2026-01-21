@@ -8,7 +8,6 @@ namespace ATIS.Views.Main;
 public class SpeciesViewModel : ObservableObject
 {
     #region [Private Data Members]
-    public IJsonNavigationViewService JsonNavigationViewService;
     private readonly IDataService _dataService;
     private readonly AtisDbContext _context = new();
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];

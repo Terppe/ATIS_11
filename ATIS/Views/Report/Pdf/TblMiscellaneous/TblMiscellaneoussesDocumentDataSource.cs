@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 
@@ -15,7 +16,7 @@ public abstract class TblMiscellaneoussesDocumentDataSource : ObservableObject
     {
         #region [Private Data Members]
 
-        var dataService = new DataService();
+        var dataService = App.GetService<IDataService>();
 
         #endregion [Private Data Members]
 

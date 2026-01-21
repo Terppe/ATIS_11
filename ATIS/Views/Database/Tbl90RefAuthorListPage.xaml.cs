@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,9 +21,9 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl90RefAuthorViewModel ViewModel { get; }
+    public Tbl90RefAuthorViewModel ViewModel { get; set; }
     private Tbl90RefAuthor SingleRefAuthor { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -31,10 +32,16 @@ public sealed partial class Tbl90RefAuthorListPage : Page
 
     public Tbl90RefAuthorListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl90RefAuthorViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -43,6 +50,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]         
 
     #region [RefAuthor Methods]
@@ -82,9 +90,9 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             {
                 ViewModel.Tbl90RefAuthorsList ??= [];
                 ViewModel.Tbl90RefAuthorsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90RefAuthors
+                ? [.. AppData.Data.Tbl90RefAuthors
                 .Where(a => a.RefAuthorId == id)]
-                : [.. Context.Tbl90RefAuthors
+                : [.. AppData.Data.Tbl90RefAuthors
                 .Where(a => _search != null && a.RefAuthorName.StartsWith(_search))
                 .OrderBy(a => a.RefAuthorName)];
             });
@@ -226,7 +234,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         }
         else
         {
-            SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
+            SingleRefAuthor = AppData.Data.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
         }
 
         return Task.CompletedTask;
@@ -253,7 +261,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.RefAuthorSelected = ViewModel.Tbl90RefAuthorsList[iNdx];
-            SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
+            SingleRefAuthor = AppData.Data.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
             RefAuthorSingles();
         }
         else
@@ -305,7 +313,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleRefAuthor = App.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
+            SingleRefAuthor = AppData.Data.SingleRefAuthor(ViewModel.RefAuthorSelected.RefAuthorId);
             RefAuthorSingles();
         }
 
@@ -414,7 +422,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90RefAuthorsList ??= [];
-            ViewModel.Tbl90RefAuthorsList = [.. Context.Tbl90RefAuthors
+            ViewModel.Tbl90RefAuthorsList = [.. AppData.Data.Tbl90RefAuthors
             .Where(a => a.RefAuthorName == ViewModel.RefAuthorSelected.RefAuthorName &&
                         a.ArticelTitle == ViewModel.RefAuthorSelected.ArticelTitle &&
                         a.BookName == ViewModel.RefAuthorSelected.BookName &&
@@ -444,9 +452,9 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             if (RefAuthorSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl90RefAuthorsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl90RefAuthors
+                    ? [.. AppData.Data.Tbl90RefAuthors
                     .Where(a => a.RefAuthorId == id)]
-                    : [.. Context.Tbl90RefAuthors
+                    : [.. AppData.Data.Tbl90RefAuthors
                     .Where(a => _search != null && a.RefAuthorName.StartsWith(_search))
                     .OrderBy(a => a.RefAuthorName)];
             }
@@ -456,7 +464,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
 
         if (ViewModel.Tbl90RefAuthorsList.Count == 0)
         {
-            ViewModel.Tbl90RefAuthorsList = [.. Context.Tbl90RefAuthors
+            ViewModel.Tbl90RefAuthorsList = [.. AppData.Data.Tbl90RefAuthors
                 .Where(a => a.RefAuthorId == viewModelRefAuthorSelected.RefAuthorId)];
             RefAuthorDataGrid.ItemsSource = ViewModel.Tbl90RefAuthorsList;
             await Refresh();
@@ -532,9 +540,9 @@ public sealed partial class Tbl90RefAuthorListPage : Page
             {
                 ViewModel.Tbl90RefAuthorsList ??= [];
                 ViewModel.Tbl90RefAuthorsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl90RefAuthors
+                ? [.. AppData.Data.Tbl90RefAuthors
                 .Where(a => a.RefAuthorId == id)]
-                : [.. Context.Tbl90RefAuthors
+                : [.. AppData.Data.Tbl90RefAuthors
                 .Where(a => _search != null && a.RefAuthorName.StartsWith(_search))
                 .OrderBy(a => a.RefAuthorName)];
             });

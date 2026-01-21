@@ -11,18 +11,25 @@ namespace ATIS.Views.Main;
 /// </summary>
 public sealed partial class DatabasePage : Page
 {
-    public DatabaseViewModel ViewModel { get; }
+    public DatabaseViewModel ViewModel { get; set; }
 
     public DatabasePage()
+    {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<DatabaseViewModel>();
-            InitializeComponent();
         }
         else
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
 }

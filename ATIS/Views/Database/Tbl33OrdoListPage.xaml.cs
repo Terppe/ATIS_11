@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl33OrdoListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl33OrdoViewModel ViewModel { get; }
+    public Tbl33OrdoViewModel ViewModel { get; set; }
     private Tbl33Ordo SingleOrdo { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl36Subordo SingleSubordo { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl33OrdoListPage : Page
 
     public Tbl33OrdoListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl33OrdoViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Ordo Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl33OrdoListPage : Page
             {
                 ViewModel.Tbl33OrdosList ??= [];
                 ViewModel.Tbl33OrdosList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl33Ordos
+                ? [.. AppData.Data.Tbl33Ordos
                 .Where(a => a.OrdoId == id)]
-                : [.. Context.Tbl33Ordos
+                : [.. AppData.Data.Tbl33Ordos
                 .Where(a => _search != null && a.OrdoName.StartsWith(_search))
                 .OrderBy(a => a.OrdoName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.OrdoId == ViewModel.OrdoSelected.OrdoId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.OrdoId == ViewModel.OrdoSelected.OrdoId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl36SubordosList ??= [];
-                ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+                ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
             .Where(com => com.OrdoId == ViewModel.OrdoSelected.OrdoId)];
             });
             ViewModel.SubordoDataSetCount = ViewModel.Tbl36SubordosList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         }
         else
         {
-            SingleOrdo = App.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
+            SingleOrdo = AppData.Data.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.OrdoSelected = ViewModel.Tbl33OrdosList[iNdx];
-            SingleOrdo = App.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
+            SingleOrdo = AppData.Data.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
             OrdoSingles();
         }
         else
@@ -400,7 +409,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleOrdo = App.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
+            SingleOrdo = AppData.Data.SingleOrdo(ViewModel.OrdoSelected.OrdoId);
             OrdoSingles();
         }
 
@@ -509,7 +518,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl33OrdosList ??= [];
-            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+            ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
                 .Where(a => a.OrdoName == ViewModel.OrdoSelected.OrdoName &&
                         a.LegioId == ViewModel.OrdoSelected.LegioId)];
         });
@@ -533,9 +542,9 @@ public sealed partial class Tbl33OrdoListPage : Page
             if (OrdoSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl33OrdosList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl33Ordos
+                    ? [.. AppData.Data.Tbl33Ordos
                     .Where(a => a.OrdoId == id)]
-                    : [.. Context.Tbl33Ordos
+                    : [.. AppData.Data.Tbl33Ordos
                     .Where(a => _search != null && a.OrdoName.StartsWith(_search))
                     .OrderBy(a => a.OrdoName)];
             }
@@ -545,7 +554,7 @@ public sealed partial class Tbl33OrdoListPage : Page
 
         if (ViewModel.Tbl33OrdosList.Count == 0)
         {
-            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+            ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
                 .Where(a => a.OrdoId == viewModelOrdoSelected.OrdoId)];
             OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
             await Refresh();
@@ -651,7 +660,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +695,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.OrdoSelected.OrdoId);
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId, ViewModel.OrdoSelected.OrdoId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +798,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.OrdoId == ViewModel.ReferenceSelected.OrdoId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +822,14 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.OrdoId == viewModelReferenceSelected.OrdoId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.OrdoId == viewModelReferenceSelected.OrdoId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +916,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.OrdoSelected.OrdoId);
             ReferenceExpertSingles();
         }
@@ -944,7 +953,7 @@ public sealed partial class Tbl33OrdoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.OrdoSelected.OrdoId);
 
             ReferenceExpertSingles();
@@ -1014,7 +1023,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.OrdoSelected.OrdoId);
             ReferenceSourceSingles();
         }
@@ -1051,7 +1060,7 @@ public sealed partial class Tbl33OrdoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.OrdoSelected.OrdoId);
 
             ReferenceSourceSingles();
@@ -1123,7 +1132,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.OrdoSelected.OrdoId);
             ReferenceAuthorSingles();
         }
@@ -1160,7 +1169,7 @@ public sealed partial class Tbl33OrdoListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceOrdo(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.OrdoSelected.OrdoId);
 
             ReferenceAuthorSingles();
@@ -1236,7 +1245,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentOrdo(ViewModel.CommentSelected.CommentId, ViewModel.OrdoSelected.OrdoId);
+            SingleComment = AppData.Data.SingleCommentOrdo(ViewModel.CommentSelected.CommentId, ViewModel.OrdoSelected.OrdoId);
         }
         return Task.CompletedTask;
     }
@@ -1263,7 +1272,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentOrdo(ViewModel.CommentSelected.CommentId, ViewModel.OrdoSelected.OrdoId);
+            SingleComment = AppData.Data.SingleCommentOrdo(ViewModel.CommentSelected.CommentId, ViewModel.OrdoSelected.OrdoId);
             CommentSingles();
         }
         else
@@ -1305,7 +1314,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentOrdo(ViewModel.CommentSelected.CommentId, ViewModel.OrdoSelected.OrdoId);
+                SingleComment = AppData.Data.SingleCommentOrdo(ViewModel.CommentSelected.CommentId, ViewModel.OrdoSelected.OrdoId);
                 CommentSingles();
             }
         });
@@ -1409,7 +1418,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.OrdoId == ViewModel.CommentSelected.OrdoId)];
@@ -1431,14 +1440,14 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.OrdoId == viewModelCommentSelected.OrdoId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.OrdoId == viewModelCommentSelected.OrdoId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1495,7 +1504,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         }
         else
         {
-            SingleSubordo = App.SingleSubordoOrdo(ViewModel.SubordoSelected.SubordoId,
+            SingleSubordo = AppData.Data.SingleSubordoOrdo(ViewModel.SubordoSelected.SubordoId,
                     ViewModel.OrdoSelected.OrdoId);
         }
 
@@ -1524,7 +1533,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         {
             ViewModel.SubordoSelected = ViewModel.Tbl36SubordosList[iNdx];
 
-            SingleSubordo = App.SingleSubordoOrdo(ViewModel.SubordoSelected.SubordoId, ViewModel.OrdoSelected.OrdoId);
+            SingleSubordo = AppData.Data.SingleSubordoOrdo(ViewModel.SubordoSelected.SubordoId, ViewModel.OrdoSelected.OrdoId);
             SubordoSingles();
         }
         else
@@ -1573,7 +1582,7 @@ public sealed partial class Tbl33OrdoListPage : Page
             }
             else
             {
-                SingleSubordo = App.SingleSubordoOrdo(ViewModel.SubordoSelected.SubordoId, ViewModel.OrdoSelected.OrdoId);
+                SingleSubordo = AppData.Data.SingleSubordoOrdo(ViewModel.SubordoSelected.SubordoId, ViewModel.OrdoSelected.OrdoId);
                 SubordoSingles();
             }
         });
@@ -1633,7 +1642,7 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl36SubordosList ??= [];
-            ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+            ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
             .Where(a => a.SubordoName == ViewModel.SubordoSelected.SubordoName &&
                         a.OrdoId == ViewModel.SubordoSelected.OrdoId)];
         });
@@ -1654,14 +1663,14 @@ public sealed partial class Tbl33OrdoListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl36SubordosList ??= [];
-            ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+            ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
                 .Where(com => com.OrdoId == viewModelSubordoSelected.OrdoId)];
         });
         ViewModel.RefreshSubordoItems();
 
         if (ViewModel.Tbl36SubordosList.Count == 0)
         {
-            ViewModel.Tbl36SubordosList = [.. Context.Tbl36Subordos
+            ViewModel.Tbl36SubordosList = [.. AppData.Data.Tbl36Subordos
                 .Where(com => com.OrdoId == viewModelSubordoSelected.OrdoId)];
             SubordoDataGrid.ItemsSource = ViewModel.Tbl36SubordosList;
             await Refresh();
@@ -1740,16 +1749,16 @@ public sealed partial class Tbl33OrdoListPage : Page
                 if (ViewModel.Tbl33OrdosList.Count == 0)
                 {
                     ViewModel.Tbl33OrdosList ??= [];
-                    ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+                    ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
                             .Where(a => a.OrdoId == ViewModel.OrdoSelected.OrdoId)];
                 }
                 else
                 {
                     ViewModel.Tbl33OrdosList ??= [];
                     ViewModel.Tbl33OrdosList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl33Ordos
+                        ? [.. AppData.Data.Tbl33Ordos
                            .Where(a => a.OrdoId == id)]
-                       : [.. Context.Tbl33Ordos
+                       : [.. AppData.Data.Tbl33Ordos
                            .Where(a => _search != null && a.OrdoName.StartsWith(_search))
                          .OrderBy(a => a.OrdoName)];
                 }

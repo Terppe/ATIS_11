@@ -37,13 +37,20 @@ public sealed partial class BreadcrumbBarUserControl : UserControl
     public static readonly DependencyProperty SingleItemProperty =
         DependencyProperty.Register("SingleItem", typeof(string), typeof(BreadcrumbBarUserControl), new PropertyMetadata(default(string)));
 
-    public BreadCrumbBarViewModel ViewModel { get; }
+    public BreadCrumbBarViewModel ViewModel { get; set; }
 
     public BreadcrumbBarUserControl()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         ViewModel = App.GetService<BreadCrumbBarViewModel>();
-        this.InitializeComponent();
         Loaded += BreadcrumbBarUserControl_Loaded;
+
     }
 
     private void BreadcrumbBarUserControl_Loaded(object sender, RoutedEventArgs e)

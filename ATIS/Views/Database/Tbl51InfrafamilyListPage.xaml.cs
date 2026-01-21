@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl51InfrafamilyViewModel ViewModel { get; }
+    public Tbl51InfrafamilyViewModel ViewModel { get; set; }
     private Tbl51Infrafamily SingleInfrafamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl54Supertribus SingleSupertribus { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
 
     public Tbl51InfrafamilyListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl51InfrafamilyViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Infrafamily Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             {
                 ViewModel.Tbl51InfrafamiliesList ??= [];
                 ViewModel.Tbl51InfrafamiliesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl51Infrafamilies
+                ? [.. AppData.Data.Tbl51Infrafamilies
                 .Where(a => a.InfrafamilyId == id)]
-                : [.. Context.Tbl51Infrafamilies
+                : [.. AppData.Data.Tbl51Infrafamilies
                 .Where(a => _search != null && a.InfrafamilyName.StartsWith(_search))
                 .OrderBy(a => a.InfrafamilyName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.InfrafamilyId == ViewModel.InfrafamilySelected.InfrafamilyId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.InfrafamilyId == ViewModel.InfrafamilySelected.InfrafamilyId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl54SupertribussesList ??= [];
-                ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+                ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
             .Where(com => com.InfrafamilyId == ViewModel.InfrafamilySelected.InfrafamilyId)];
             });
             ViewModel.SupertribusDataSetCount = ViewModel.Tbl54SupertribussesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         }
         else
         {
-            SingleInfrafamily = App.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleInfrafamily = AppData.Data.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.InfrafamilySelected = ViewModel.Tbl51InfrafamiliesList[iNdx];
-            SingleInfrafamily = App.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleInfrafamily = AppData.Data.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
             InfrafamilySingles();
         }
         else
@@ -400,7 +409,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleInfrafamily = App.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleInfrafamily = AppData.Data.SingleInfrafamily(ViewModel.InfrafamilySelected.InfrafamilyId);
             InfrafamilySingles();
         }
 
@@ -509,7 +518,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl51InfrafamiliesList ??= [];
-            ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
+            ViewModel.Tbl51InfrafamiliesList = [.. AppData.Data.Tbl51Infrafamilies
                 .Where(a => a.InfrafamilyName == ViewModel.InfrafamilySelected.InfrafamilyName &&
                         a.SubfamilyId == ViewModel.InfrafamilySelected.SubfamilyId)];
         });
@@ -533,9 +542,9 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             if (InfrafamilySearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl51InfrafamiliesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl51Infrafamilies
+                    ? [.. AppData.Data.Tbl51Infrafamilies
                     .Where(a => a.InfrafamilyId == id)]
-                    : [.. Context.Tbl51Infrafamilies
+                    : [.. AppData.Data.Tbl51Infrafamilies
                     .Where(a => _search != null && a.InfrafamilyName.StartsWith(_search))
                     .OrderBy(a => a.InfrafamilyName)];
             }
@@ -545,7 +554,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
 
         if (ViewModel.Tbl51InfrafamiliesList.Count == 0)
         {
-            ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
+            ViewModel.Tbl51InfrafamiliesList = [.. AppData.Data.Tbl51Infrafamilies
                 .Where(a => a.InfrafamilyId == viewModelInfrafamilySelected.InfrafamilyId)];
             InfrafamilyDataGrid.ItemsSource = ViewModel.Tbl51InfrafamiliesList;
             await Refresh();
@@ -651,7 +660,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +695,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfrafamilySelected.InfrafamilyId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +798,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.InfrafamilyId == ViewModel.ReferenceSelected.InfrafamilyId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +822,14 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.InfrafamilyId == viewModelReferenceSelected.InfrafamilyId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.InfrafamilyId == viewModelReferenceSelected.InfrafamilyId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +916,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.InfrafamilySelected.InfrafamilyId);
             ReferenceExpertSingles();
         }
@@ -944,7 +953,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.InfrafamilySelected.InfrafamilyId);
 
             ReferenceExpertSingles();
@@ -1014,7 +1023,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.InfrafamilySelected.InfrafamilyId);
             ReferenceSourceSingles();
         }
@@ -1051,7 +1060,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.InfrafamilySelected.InfrafamilyId);
 
             ReferenceSourceSingles();
@@ -1123,7 +1132,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.InfrafamilySelected.InfrafamilyId);
             ReferenceAuthorSingles();
         }
@@ -1160,7 +1169,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfrafamily(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.InfrafamilySelected.InfrafamilyId);
 
             ReferenceAuthorSingles();
@@ -1236,7 +1245,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleComment = AppData.Data.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
         }
         return Task.CompletedTask;
     }
@@ -1263,7 +1272,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleComment = AppData.Data.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
             CommentSingles();
         }
         else
@@ -1305,7 +1314,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
+                SingleComment = AppData.Data.SingleCommentInfrafamily(ViewModel.CommentSelected.CommentId, ViewModel.InfrafamilySelected.InfrafamilyId);
                 CommentSingles();
             }
         });
@@ -1409,7 +1418,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.InfrafamilyId == ViewModel.CommentSelected.InfrafamilyId)];
@@ -1431,14 +1440,14 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.InfrafamilyId == viewModelCommentSelected.InfrafamilyId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.InfrafamilyId == viewModelCommentSelected.InfrafamilyId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1495,7 +1504,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         }
         else
         {
-            SingleSupertribus = App.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId,
+            SingleSupertribus = AppData.Data.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId,
                     ViewModel.InfrafamilySelected.InfrafamilyId);
         }
 
@@ -1524,7 +1533,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         {
             ViewModel.SupertribusSelected = ViewModel.Tbl54SupertribussesList[iNdx];
 
-            SingleSupertribus = App.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId, ViewModel.InfrafamilySelected.InfrafamilyId);
+            SingleSupertribus = AppData.Data.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId, ViewModel.InfrafamilySelected.InfrafamilyId);
             SupertribusSingles();
         }
         else
@@ -1573,7 +1582,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
             }
             else
             {
-                SingleSupertribus = App.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId, ViewModel.InfrafamilySelected.InfrafamilyId);
+                SingleSupertribus = AppData.Data.SingleSupertribusInfrafamily(ViewModel.SupertribusSelected.SupertribusId, ViewModel.InfrafamilySelected.InfrafamilyId);
                 SupertribusSingles();
             }
         });
@@ -1633,7 +1642,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl54SupertribussesList ??= [];
-            ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+            ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
             .Where(a => a.SupertribusName == ViewModel.SupertribusSelected.SupertribusName &&
                         a.InfrafamilyId == ViewModel.SupertribusSelected.InfrafamilyId)];
         });
@@ -1654,14 +1663,14 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl54SupertribussesList ??= [];
-            ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+            ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
                 .Where(com => com.InfrafamilyId == viewModelSupertribusSelected.InfrafamilyId)];
         });
         ViewModel.RefreshSupertribusItems();
 
         if (ViewModel.Tbl54SupertribussesList.Count == 0)
         {
-            ViewModel.Tbl54SupertribussesList = [.. Context.Tbl54Supertribusses
+            ViewModel.Tbl54SupertribussesList = [.. AppData.Data.Tbl54Supertribusses
                 .Where(com => com.InfrafamilyId == viewModelSupertribusSelected.InfrafamilyId)];
             SupertribusDataGrid.ItemsSource = ViewModel.Tbl54SupertribussesList;
             await Refresh();
@@ -1740,16 +1749,16 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
                 if (ViewModel.Tbl51InfrafamiliesList.Count == 0)
                 {
                     ViewModel.Tbl51InfrafamiliesList ??= [];
-                    ViewModel.Tbl51InfrafamiliesList = [.. Context.Tbl51Infrafamilies
+                    ViewModel.Tbl51InfrafamiliesList = [.. AppData.Data.Tbl51Infrafamilies
                             .Where(a => a.InfrafamilyId == ViewModel.InfrafamilySelected.InfrafamilyId)];
                 }
                 else
                 {
                     ViewModel.Tbl51InfrafamiliesList ??= [];
                     ViewModel.Tbl51InfrafamiliesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl51Infrafamilies
+                        ? [.. AppData.Data.Tbl51Infrafamilies
                            .Where(a => a.InfrafamilyId == id)]
-                       : [.. Context.Tbl51Infrafamilies
+                       : [.. AppData.Data.Tbl51Infrafamilies
                            .Where(a => _search != null && a.InfrafamilyName.StartsWith(_search))
                          .OrderBy(a => a.InfrafamilyName)];
                 }

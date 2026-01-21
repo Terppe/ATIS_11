@@ -9,19 +9,26 @@ namespace ATIS.Views.Main;
 /// </summary>
 public sealed partial class SpeciesPage : Page
 {
-    public SpeciesViewModel ViewModel { get; }
+    public SpeciesViewModel ViewModel { get; set; }
 
     public SpeciesPage()
+    {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         //var permis = new Permission();
         //if (permis.RolePermission())
         {
             ViewModel = App.GetService<SpeciesViewModel>();
-            InitializeComponent();
         }
         //else
         //{
         //    _allDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         //}
+
     }
 }

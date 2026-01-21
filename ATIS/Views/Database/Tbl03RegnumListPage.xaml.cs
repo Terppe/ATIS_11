@@ -1,5 +1,6 @@
 ﻿
 using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -22,13 +23,13 @@ public sealed partial class Tbl03RegnumListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl03RegnumViewModel ViewModel { get; }
+    public Tbl03RegnumViewModel ViewModel { get; set; }
     private Tbl03Regnum SingleRegnum { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl06Phylum SinglePhylum { get; set; }
     private Tbl09Division SingleDivision { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -37,10 +38,16 @@ public sealed partial class Tbl03RegnumListPage : Page
 
     public Tbl03RegnumListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl03RegnumViewModel>();
-            InitializeComponent();
+            ViewModel ??= App.GetService<Tbl03RegnumViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -48,7 +55,9 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Regnum Methods]
@@ -93,9 +102,9 @@ public sealed partial class Tbl03RegnumListPage : Page
             {
                 ViewModel.Tbl03RegnumsList ??= [];
                 ViewModel.Tbl03RegnumsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl03Regnums
+                ? [.. AppData.Data.Tbl03Regnums
                 .Where(a => a.RegnumId == id)]
-                : [.. Context.Tbl03Regnums
+                : [.. AppData.Data.Tbl03Regnums
                 .Where(a => _search != null && a.RegnumName.StartsWith(_search))
                 .OrderBy(a => a.RegnumName)
                 .ThenBy(a => a.Subregnum)];
@@ -183,7 +192,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.RegnumId == ViewModel.RegnumSelected.RegnumId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -204,7 +213,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .AsNoTracking()
             .Where(com => com.RegnumId == ViewModel.RegnumSelected.RegnumId)];
             });
@@ -225,7 +234,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl06PhylumsList ??= [];
-                ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+                ViewModel.Tbl06PhylumsList = [.. AppData.Data.Tbl06Phylums
             .AsNoTracking()
             .Where(x => x.RegnumId == ViewModel.RegnumSelected.RegnumId)];
             });
@@ -331,7 +340,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         }
         else
         {
-            SingleRegnum = App.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
+            SingleRegnum = AppData.Data.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
         }
 
         return Task.CompletedTask;
@@ -357,7 +366,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.RegnumSelected = ViewModel.Tbl03RegnumsList[iNdx];
-            SingleRegnum = App.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
+            SingleRegnum = AppData.Data.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
             RegnumSingles();
         }
         else
@@ -407,7 +416,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleRegnum = App.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
+            SingleRegnum = AppData.Data.SingleRegnum(ViewModel.RegnumSelected.RegnumId);
             RegnumSingles();
         }
 
@@ -516,7 +525,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl03RegnumsList ??= [];
-            ViewModel.Tbl03RegnumsList = [.. Context.Tbl03Regnums
+            ViewModel.Tbl03RegnumsList = [.. AppData.Data.Tbl03Regnums
                 .Where(a => a.RegnumName == ViewModel.RegnumSelected.RegnumName &&
                         a.Subregnum == ViewModel.RegnumSelected.Subregnum)];
         });
@@ -540,9 +549,9 @@ public sealed partial class Tbl03RegnumListPage : Page
             if (RegnumSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl03RegnumsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl03Regnums
+                    ? [.. AppData.Data.Tbl03Regnums
                     .Where(a => a.RegnumId == id)]
-                    : [.. Context.Tbl03Regnums
+                    : [.. AppData.Data.Tbl03Regnums
                     .Where(a => _search != null && a.RegnumName.StartsWith(_search))
                     .OrderBy(a => a.RegnumName)];
             }
@@ -552,7 +561,7 @@ public sealed partial class Tbl03RegnumListPage : Page
 
         if (ViewModel.Tbl03RegnumsList.Count == 0)
         {
-            ViewModel.Tbl03RegnumsList = [.. Context.Tbl03Regnums
+            ViewModel.Tbl03RegnumsList = [.. AppData.Data.Tbl03Regnums
                 .Where(a => a.RegnumId == viewModelRegnumSelected.RegnumId)];
             RegnumDataGrid.ItemsSource = ViewModel.Tbl03RegnumsList;
             await Refresh();
@@ -660,7 +669,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -695,7 +704,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.RegnumSelected.RegnumId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -798,7 +807,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.RegnumId == ViewModel.ReferenceSelected.RegnumId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -822,14 +831,14 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.RegnumId == viewModelReferenceSelected.RegnumId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.RegnumId == viewModelReferenceSelected.RegnumId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -916,7 +925,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.RegnumSelected.RegnumId);
             ReferenceExpertSingles();
         }
@@ -953,7 +962,7 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.RegnumSelected.RegnumId);
 
             ReferenceExpertSingles();
@@ -1023,7 +1032,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.RegnumSelected.RegnumId);
             ReferenceSourceSingles();
         }
@@ -1060,7 +1069,7 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.RegnumSelected.RegnumId);
 
             ReferenceSourceSingles();
@@ -1132,7 +1141,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.RegnumSelected.RegnumId);
             ReferenceAuthorSingles();
         }
@@ -1169,7 +1178,7 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceRegnum(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.RegnumSelected.RegnumId);
 
             ReferenceAuthorSingles();
@@ -1245,7 +1254,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
+            SingleComment = AppData.Data.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
         }
         return Task.CompletedTask;
     }
@@ -1272,7 +1281,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
+            SingleComment = AppData.Data.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
             CommentSingles();
         }
         else
@@ -1314,7 +1323,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
+                SingleComment = AppData.Data.SingleCommentRegnum(ViewModel.CommentSelected.CommentId, ViewModel.RegnumSelected.RegnumId);
                 CommentSingles();
             }
         });
@@ -1418,7 +1427,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.RegnumId == ViewModel.CommentSelected.RegnumId)];
@@ -1440,14 +1449,14 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.RegnumId == viewModelCommentSelected.RegnumId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.RegnumId == viewModelCommentSelected.RegnumId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1505,7 +1514,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         }
         else
         {
-            SinglePhylum = App.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId,
+            SinglePhylum = AppData.Data.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId,
                     ViewModel.RegnumSelected.RegnumId);
         }
 
@@ -1534,7 +1543,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         {
             ViewModel.PhylumSelected = ViewModel.Tbl06PhylumsList[iNdx];
 
-            SinglePhylum = App.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId, ViewModel.RegnumSelected.RegnumId);
+            SinglePhylum = AppData.Data.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId, ViewModel.RegnumSelected.RegnumId);
             PhylumSingles();
         }
         else
@@ -1583,7 +1592,7 @@ public sealed partial class Tbl03RegnumListPage : Page
             }
             else
             {
-                SinglePhylum = App.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId, ViewModel.RegnumSelected.RegnumId);
+                SinglePhylum = AppData.Data.SinglePhylumRegnum(ViewModel.PhylumSelected.PhylumId, ViewModel.RegnumSelected.RegnumId);
                 PhylumSingles();
             }
         });
@@ -1642,7 +1651,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl06PhylumsList ??= [];
-            ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+            ViewModel.Tbl06PhylumsList = [.. AppData.Data.Tbl06Phylums
             .Where(a => a.PhylumName == ViewModel.PhylumSelected.PhylumName &&
                         a.RegnumId == ViewModel.PhylumSelected.RegnumId)];
         });
@@ -1663,7 +1672,7 @@ public sealed partial class Tbl03RegnumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl06PhylumsList ??= [];
-            ViewModel.Tbl06PhylumsList = [.. Context.Tbl06Phylums
+            ViewModel.Tbl06PhylumsList = [.. AppData.Data.Tbl06Phylums
                 .Where(com => com.RegnumId == viewModelPhylumSelected.RegnumId)];
         });
         ViewModel.RefreshPhylumItems();
@@ -1745,16 +1754,16 @@ public sealed partial class Tbl03RegnumListPage : Page
                 if (ViewModel.Tbl03RegnumsList.Count == 0)
                 {
                     ViewModel.Tbl03RegnumsList ??= [];
-                    ViewModel.Tbl03RegnumsList = [.. Context.Tbl03Regnums
+                    ViewModel.Tbl03RegnumsList = [.. AppData.Data.Tbl03Regnums
                             .Where(a => a.RegnumId == ViewModel.RegnumSelected.RegnumId)];
                 }
                 else
                 {
                     ViewModel.Tbl03RegnumsList ??= [];
                     ViewModel.Tbl03RegnumsList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl03Regnums
+                        ? [.. AppData.Data.Tbl03Regnums
                            .Where(a => a.RegnumId == id)]
-                       : [.. Context.Tbl03Regnums
+                       : [.. AppData.Data.Tbl03Regnums
                            .Where(a => _search != null && a.RegnumName.StartsWith(_search))
                          .OrderBy(a => a.RegnumName)
                 .ThenBy(a => a.Subregnum)];

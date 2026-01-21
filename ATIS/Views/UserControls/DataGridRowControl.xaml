@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.UserControls.DataGridRowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid>
+        <Grid x:Name="RowGrid"
+              Background="Transparent"
+              ColumnSpacing="0"
+              RowSpacing="0" />
+    </Grid>
+</UserControl>

@@ -3,237 +3,382 @@ using System.Windows.Input;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
-using Windows.Storage.Pickers;
-using Windows.System;
-
-//    DiseaseViewModel Skriptdatum:  09.09.2025  10:32    
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 
 namespace ATIS.Views.Main.Disease;
-public partial class DiseaseViewModel(IDataService dataService) : ObservableObject
+
+public partial class DiseaseViewModel : ObservableObject
 {
-    #region [Private Data Members]
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
-    private readonly IDataService _dataService = dataService;
-    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
-    public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
-    public string Search;
-    private int _plantId;
-    private int _animalId;
+    private readonly IDataService _dataService;
 
-    private readonly FileOpenPicker _filePicker = new();
-
-    private readonly List<Data> _fileStreamList = [];
-    public struct Data
+    // =========================================================
+    // Constructor
+    // =========================================================
+    public DiseaseViewModel(IDataService dataService)
     {
-        public int ImageCountId;
-        public byte[] ImageFileStream;
-    };
-    #endregion [Private Data Members]              
+        _dataService = dataService;
 
-    //    Part 1    
-
-    #region [Methods Disease]
-
-    public ICommand SearchRunCommand => new WinUICommunity.RelayCommand(execute: delegate { SearchRun(FilterText); });
-
-    public void SearchRun(string filterText)
-    {
-        DiseasesCollection?.Clear();
-
-        if (string.IsNullOrEmpty(filterText))
-        {
-            AllDialogs.NoDatasetFoundWarnMessageDialog();
-            return;
-        }
-
-        IsLoading = true;
-        DiseasesCollection = _dataService.GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(filterText);
-
-        DataSetCount = DiseasesCollection.Count;
-        RefreshDiseaseItems();
-        //   IsLoading = false;
+        SearchCommand = new AsyncRelayCommand<string>(SearchAsync);
+        PdfDiseaseCommand = new RelayCommand(ExecutePdfDisease, CanExecutePdfDisease);
+        EditDiseaseCommand = new RelayCommand(ExecuteEditDisease, CanExecuteEditDisease);
+        DeleteDiseaseCommand = new RelayCommand(ExecuteDeleteDisease, CanExecuteDeleteDisease);
     }
 
-    #region Report Search
+    // =========================================================
+    // Collections
+    // =========================================================
+    public ObservableCollection<TblDisease> Diseases { get; } = [];
 
-    //public void ReportSearchAll(int id, string tab)
-    //{
-    //    FoodsCollection?.Clear();
-    //    GetTblFoodsById(id);
-
-    //}
-
-    #endregion Report Search
-
-    #endregion [Methods Disease ]  
-
-    //    Part 2    
-
-    #region All Properties
-
-    #region [Propertys]
-    //------------IsModified--------------------------------------
-    public bool IsModifiedDisease { get; set; }
-    //------------Load--------------------------------------
-    private bool IsLoaded => DiseaseItems != null;
-    public bool IsNotLoaded => !IsLoaded;
-
-    private bool _isLoading;
+    // =========================================================
+    // Loading Indicator
+    // =========================================================
+    private bool isLoading;
     public bool IsLoading
     {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
-    }
-    private int _dataSetCount;
-    public int DataSetCount
-    {
-        get => _dataSetCount;
-        set
-        {
-            _dataSetCount = value; OnPropertyChanged();
-        }
-    }
-    private int _imageDataSetCount;
-    public int ImageDataSetCount
-    {
-        get => _imageDataSetCount;
-        set
-        {
-            _imageDataSetCount = value; OnPropertyChanged();
-        }
+        get => isLoading;
+        set => SetProperty(ref isLoading, value);
     }
 
-    public string FilterText { get; private set; }
-
-    #endregion [Propertys]
-
-    #region Selected Properties
-
-    private TblDisease _diseaseSelected;
-
-    public TblDisease DiseaseSelected
-    {
-        get => _diseaseSelected;
-        set => SetProperty(ref _diseaseSelected, value);
-    }
-
-    private Tbl81Image _imageSelected;
-
-    public Tbl81Image ImageSelected
-    {
-        get => _imageSelected;
-        set => SetProperty(ref _imageSelected, value);
-    }
-
-    #endregion Selected Properties     
-
-    #region Public Properties  
-
+    // =========================================================
+    // Dataset Count
+    // =========================================================
     private int _diseaseDataSetCount;
     public int DiseaseDataSetCount
     {
         get => _diseaseDataSetCount;
-        set
-        {
-            _diseaseDataSetCount = value; OnPropertyChanged();
-        }
+        set => SetProperty(ref _diseaseDataSetCount, value);
     }
+    public string DiseaseDataSetCountText =>
+        $"{DiseaseDataSetCount} Datensätze gefunden";
 
-    private string _searchDiseaseName = "";
+    // =========================================================
+    // Search Placeholder (optional, falls Localizer nicht genutzt)
+    // =========================================================
+    public string SearchPlaceholder => "Suche nach Krankheiten…";
 
-    public string SearchDiseaseName
+    // =========================================================
+    // Search Logic
+    // =========================================================
+    public ICommand SearchCommand { get; }
+
+    public async Task SearchAsync(string query)
     {
-        get => _searchDiseaseName;
-        set
+        try
         {
-            _searchDiseaseName = value; OnPropertyChanged();
-        }
-    }
+            IsLoading = true;
+            Diseases.Clear();
 
-    private ObservableCollection<TblDisease> _tblDiseasesList;
-
-    public ObservableCollection<TblDisease> TblDiseasesList
-    {
-        get => _tblDiseasesList;
-        set
-        {
-            _tblDiseasesList = value; OnPropertyChanged();
-        }
-    }
-    private ObservableCollection<Tbl81Image> _tbl81ImagesList;
-
-    public ObservableCollection<Tbl81Image> Tbl81ImagesList
-    {
-        get => _tbl81ImagesList;
-        set
-        {
-            _tbl81ImagesList = value; OnPropertyChanged();
-        }
-    }
-
-
-    #endregion Public Properties
-
-    #region Refresh Methods
-
-    public void RefreshDiseaseItems()
-    {
-        DiseaseItems.Clear();
-        if (TblDiseasesList != null)
-        {
-            foreach (var item in TblDiseasesList)
+            if (string.IsNullOrWhiteSpace(query))
             {
-                DiseaseItems.Add(item);
-            }
-
-            if (TblDiseasesList.Count == 0)
-            {
+                DiseaseDataSetCount = 0;
+                OnPropertyChanged(nameof(DiseaseDataSetCountText));
+                AllDialogs.NoDatasetFoundWarnMessageDialog();
                 return;
             }
 
-            if (DiseaseSelected == null && TblDiseasesList.Count != 0)
-            {
-                DiseaseSelected = DiseaseItems.FirstOrDefault()!;
-            }
+            var result = await _dataService.GetDiseasesByNameOrIdAsync(query);
+
+            foreach (var item in result)
+                Diseases.Add(item);
+
+            DiseaseDataSetCount = Diseases.Count;
+            OnPropertyChanged(nameof(DiseaseDataSetCountText));
+
+            DiseaseSelected = Diseases.FirstOrDefault();
+
+            if (Diseases.Count == 0)
+                AllDialogs.NoDatasetFoundWarnMessageDialog();
         }
-    }
-    public void RefreshImageItems()
-    {
-        ImageItems.Clear();
-        if (Tbl81ImagesList != null)
+        finally
         {
-            foreach (var item in Tbl81ImagesList)
-            {
-                ImageItems.Add(item);
-            }
+            IsLoading = false;
+        }
+    }
 
-            if (Tbl81ImagesList.Count == 0)
-            {
-                return;
-            }
+    public void UpdateSuggestions(string text)
+    {
+        // optional: Suggestion-Logik
+    }
 
-            if (ImageSelected == null && Tbl81ImagesList.Count != 0)
+    // =========================================================
+    // Selected Item
+    // =========================================================
+    private TblDisease _diseaseSelected;
+    public TblDisease DiseaseSelected
+    {
+        get => _diseaseSelected;
+        set
+        {
+            if (SetProperty(ref _diseaseSelected, value))
             {
-                ImageSelected = ImageItems.FirstOrDefault()!;
+                (PdfDiseaseCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (EditDiseaseCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (DeleteDiseaseCommand as RelayCommand)?.NotifyCanExecuteChanged();
             }
         }
     }
 
-    #endregion Refresh Methods
+    // =========================================================
+    // Commands (PDF, Edit, Delete)
+    // =========================================================
+    public ICommand PdfDiseaseCommand { get; }
+    public ICommand EditDiseaseCommand { get; }
+    public ICommand DeleteDiseaseCommand { get; }
 
-    #region Collection
-
-    public ObservableCollection<TblDisease> DiseasesCollection
+    private bool CanExecutePdfDisease() => DiseaseSelected?.DiseaseId > 0;
+    private void ExecutePdfDisease()
     {
-        get; set;
-    } = null!;
+        // später: PDF-Service
+    }
 
+    private bool CanExecuteEditDisease() => DiseaseSelected != null;
+    private void ExecuteEditDisease()
+    {
+        // später: Edit-Service
+    }
 
-    #endregion Collection
-
-    #endregion All Properties
-
+    private bool CanExecuteDeleteDisease() => DiseaseSelected != null;
+    private void ExecuteDeleteDisease()
+    {
+        // später: Delete-Service
+    }
 }
+
+//using System.Collections.ObjectModel;
+//using System.Windows.Input;
+//using ATIS.Helpers;
+//using ATIS.Interfaces;
+//using ATIS.Models;
+//using ATIS.Services;
+//using Windows.Storage.Pickers;
+//using Windows.System;
+
+////    DiseaseViewModel Skriptdatum:  09.09.2025  10:32    
+
+//namespace ATIS.Views.Main.Disease;
+//public partial class DiseaseViewModel(IDataService dataService) : ObservableObject
+//{
+//    #region [Private Data Members]
+//    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+//    private static readonly AtisDbContext Context = new();
+//    private readonly IDataService _dataService = dataService;
+//    public ObservableCollection<TblDisease> DiseaseItems { get; } = [];
+//    public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
+//    public string Search;
+
+//    private readonly FileOpenPicker _filePicker = new();
+
+//    private readonly List<Data> _fileStreamList = [];
+//    public struct Data
+//    {
+//        public int ImageCountId;
+//        public byte[] ImageFileStream;
+//    };
+//    #endregion [Private Data Members]              
+
+//    //    Part 1    
+
+//    #region [Methods Disease]
+
+//    public ICommand SearchRunCommand => new WinUICommunity.RelayCommand(execute: delegate { SearchRun(FilterText); });
+
+//    public void SearchRun(string filterText)
+//    {
+//        DiseasesCollection?.Clear();
+
+//        if (string.IsNullOrEmpty(filterText))
+//        {
+//            AllDialogs.NoDatasetFoundWarnMessageDialog();
+//            return;
+//        }
+
+//        IsLoading = true;
+//        DiseasesCollection = _dataService.GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(filterText);
+
+//        DataSetCount = DiseasesCollection.Count;
+//        RefreshDiseaseItems();
+//        //   IsLoading = false;
+//    }
+
+//    #region Report Search
+
+//    //public void ReportSearchAll(int id, string tab)
+//    //{
+//    //    FoodsCollection?.Clear();
+//    //    GetTblFoodsById(id);
+
+//    //}
+
+//    #endregion Report Search
+
+//    #endregion [Methods Disease ]  
+
+//    //    Part 2    
+
+//    #region All Properties
+
+//    #region [Propertys]
+//    //------------IsModified--------------------------------------
+//    public bool IsModifiedDisease { get; set; }
+//    //------------Load--------------------------------------
+//    private bool IsLoaded => DiseaseItems != null;
+//    public bool IsNotLoaded => !IsLoaded;
+
+//    private bool _isLoading;
+//    public bool IsLoading
+//    {
+//        get => _isLoading;
+//        set => SetProperty(ref _isLoading, value);
+//    }
+//    private int _dataSetCount;
+//    public int DataSetCount
+//    {
+//        get => _dataSetCount;
+//        set
+//        {
+//            _dataSetCount = value; OnPropertyChanged();
+//        }
+//    }
+//    private int _imageDataSetCount;
+//    public int ImageDataSetCount
+//    {
+//        get => _imageDataSetCount;
+//        set
+//        {
+//            _imageDataSetCount = value; OnPropertyChanged();
+//        }
+//    }
+
+//    public string FilterText { get; private set; }
+
+//    #endregion [Propertys]
+
+//    #region Selected Properties
+
+//    private TblDisease _diseaseSelected;
+
+//    public TblDisease DiseaseSelected
+//    {
+//        get => _diseaseSelected;
+//        set => SetProperty(ref _diseaseSelected, value);
+//    }
+
+//    private Tbl81Image _imageSelected;
+
+//    public Tbl81Image ImageSelected
+//    {
+//        get => _imageSelected;
+//        set => SetProperty(ref _imageSelected, value);
+//    }
+
+//    #endregion Selected Properties     
+
+//    #region Public Properties  
+
+//    private int _diseaseDataSetCount;
+//    public int DiseaseDataSetCount
+//    {
+//        get => _diseaseDataSetCount;
+//        set
+//        {
+//            _diseaseDataSetCount = value; OnPropertyChanged();
+//        }
+//    }
+
+//    private string _searchDiseaseName = "";
+
+//    public string SearchDiseaseName
+//    {
+//        get => _searchDiseaseName;
+//        set
+//        {
+//            _searchDiseaseName = value; OnPropertyChanged();
+//        }
+//    }
+
+//    private ObservableCollection<TblDisease> _tblDiseasesList;
+
+//    public ObservableCollection<TblDisease> TblDiseasesList
+//    {
+//        get => _tblDiseasesList;
+//        set
+//        {
+//            _tblDiseasesList = value; OnPropertyChanged();
+//        }
+//    }
+//    private ObservableCollection<Tbl81Image> _tbl81ImagesList;
+
+//    public ObservableCollection<Tbl81Image> Tbl81ImagesList
+//    {
+//        get => _tbl81ImagesList;
+//        set
+//        {
+//            _tbl81ImagesList = value; OnPropertyChanged();
+//        }
+//    }
+
+
+//    #endregion Public Properties
+
+//    #region Refresh Methods
+
+//    public void RefreshDiseaseItems()
+//    {
+//        DiseaseItems.Clear();
+//        if (TblDiseasesList != null)
+//        {
+//            foreach (var item in TblDiseasesList)
+//            {
+//                DiseaseItems.Add(item);
+//            }
+
+//            if (TblDiseasesList.Count == 0)
+//            {
+//                return;
+//            }
+
+//            if (DiseaseSelected == null && TblDiseasesList.Count != 0)
+//            {
+//                DiseaseSelected = DiseaseItems.FirstOrDefault()!;
+//            }
+//        }
+//    }
+//    public void RefreshImageItems()
+//    {
+//        ImageItems.Clear();
+//        if (Tbl81ImagesList != null)
+//        {
+//            foreach (var item in Tbl81ImagesList)
+//            {
+//                ImageItems.Add(item);
+//            }
+
+//            if (Tbl81ImagesList.Count == 0)
+//            {
+//                return;
+//            }
+
+//            if (ImageSelected == null && Tbl81ImagesList.Count != 0)
+//            {
+//                ImageSelected = ImageItems.FirstOrDefault()!;
+//            }
+//        }
+//    }
+
+//    #endregion Refresh Methods
+
+//    #region Collection
+
+//    public ObservableCollection<TblDisease> DiseasesCollection
+//    {
+//        get; set;
+//    } = null!;
+
+
+//    #endregion Collection
+
+//    #endregion All Properties
+
+//}

@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl78NameViewModel Skriptdatum:  02.01.2025  10:32    
 
@@ -15,9 +16,9 @@ public partial class Tbl78NameViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl78Name> NameItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
@@ -162,11 +163,11 @@ public partial class Tbl78NameViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var name = await Context.Tbl78Names.FirstOrDefaultAsync(b => b.NameId == nameid);
+            var name = await AppData.Data.Tbl78Names.FirstOrDefaultAsync(b => b.NameId == nameid);
             if (name != null)
             {
-                Context.Tbl78Names.Remove(name);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl78Names.Remove(name);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

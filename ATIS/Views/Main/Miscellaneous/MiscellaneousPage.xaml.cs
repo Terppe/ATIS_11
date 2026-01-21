@@ -1,123 +1,61 @@
 ﻿using System.Windows.Input;
 using ATIS.Helpers;
 using ATIS.Models;
-using ATIS.Services;
-using ATIS.Strings;
 using ATIS.Views.Report.Pdf.TblMiscellaneous;
-using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Dispatching;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace ATIS.Views.Main.Miscellaneous;
 
-namespace ATIS.Views.Main;
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class MiscellaneousPage : Page
 {
-    #region [Private Data Members]
-
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Miscellaneous.MiscellaneousViewModel ViewModel { get; }
-    private static readonly AtisDbContext Context = new();
-    private string _search;
-
-    #endregion [Private Data Members]   
-
-    #region [Constructor]
+    public MiscellaneousViewModel ViewModel { get; set; }
 
     public MiscellaneousPage()
     {
-        ViewModel = App.GetService<Miscellaneous.MiscellaneousViewModel>();
         InitializeComponent();
-        SimpleLog.Info(" MiscellaneousPage opended ");
+        Loaded += OnLoaded;
+
     }
-    #endregion [Constructor]         
 
-    #region [Disease Methods]
-
-    private async void GetMiscellaneoussesByNameOrId(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            _search = args.QueryText;
+        ViewModel = App.GetService<MiscellaneousViewModel>();   // wichtig: vor InitializeComponent
 
-            ViewModel.IsLoading = true;
+        SimpleLog.Info("MiscellaneousPage opened");
 
-            ViewModel.TblMiscellaneoussesList?.Clear();
-
-            ViewModel.MiscellaneousItems.Clear();
-
-            const int milliseconds = 1500;
-            await Task.Delay(milliseconds);
-
-            if (string.IsNullOrEmpty(_search))
-            {
-                ViewModel.TblMiscellaneoussesList?.Clear();
-
-                MiscellaneousDataGrid.ItemsSource = ViewModel.TblMiscellaneoussesList;
-                //     ListViewMiscellaneous.ItemsSource = ViewModel.TblMiscellaneoussList;
-                ViewModel.IsLoading = false;
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
-
-            //if _search = "" und count = 0 you see the whole Tab thousands of datasets
-            //change to % for all Datasets in 20 Parts of sets
-
-            await _dispatcherQueue.EnqueueAsync(() =>
-            {
-                ViewModel.TblMiscellaneoussesList ??= [];
-                ViewModel.TblMiscellaneoussesList = int.TryParse(_search, out var id)
-                ? [.. Context.TblMiscellaneousses
-                .Where(e => e.MiscellaneousId == id)]
-                : [.. Context.TblMiscellaneousses
-                .Where(e => e.MiscellaneousName.StartsWith(_search))
-                .OrderBy(a => a.MiscellaneousName)];
-
-            });
-
-            ViewModel.MiscellaneousDataSetCount = ViewModel.TblMiscellaneoussesList.Count;
-
-            if (ViewModel.TblMiscellaneoussesList is { Count: 0 })
-            {
-                ViewModel.TblMiscellaneoussesList?.Clear();
-
-                //    AppBarButtonSync.IsEnabled = false;
-
-
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                Frame.Navigate(typeof(MiscellaneousPage));
-            }
-            else
-            {
-                MiscellaneousDataGrid.ItemsSource = ViewModel.TblMiscellaneoussesList;
-                //       ListViewMiscellaneous.ItemsSource = ViewModel.TblMiscellaneoussList;
-                ViewModel.MiscellaneousSelected = ViewModel.TblMiscellaneoussesList[0];
-            }
-            ViewModel.IsLoading = false;
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
     }
 
-    private void MiscellaneousSearchBox_OnLoaded(object sender, RoutedEventArgs e)
+    // =========================================================
+    // Search
+    // =========================================================
+
+    private async void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        MiscellaneousSearchBox.Visibility = Visibility.Visible;
-        MiscellaneousSearchBox.Focus(FocusState.Programmatic);
-        MiscellaneousSearchBox.PlaceholderText = StringsRes.SearchNameOrId;
+        await ViewModel.SearchAsync(args.QueryText);
     }
+
+    private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        ViewModel.UpdateSuggestions(sender.Text);
+    }
+
+    private void SearchBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        SearchBox.Focus(FocusState.Programmatic);
+    }
+
+    // =========================================================
+    // Sorting
+    // =========================================================
 
     private void MiscellaneousDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
-        (sender as DataGrid).Sort(e.Column, ViewModel.TblMiscellaneoussesList.Sort);
+        (sender as DataGrid)?.Sort(e.Column, ViewModel.Miscellaneousses.Sort);
     }
 
+    // =========================================================
+    // PDF / Selection
+    // =========================================================
 
     private void MiscellaneousSelect_Click(object sender, RoutedEventArgs e)
     {
@@ -138,7 +76,178 @@ public sealed partial class MiscellaneousPage : Page
         var reportMiscellaneoussesWindow = new ReportMiscellaneoussesWindow(ViewModel.MiscellaneousSelected.MiscellaneousId);
         reportMiscellaneoussesWindow.GeneratePdfMiscellaneous(ViewModel.MiscellaneousSelected.MiscellaneousId);
     });
-
-
-    #endregion [Disease Methods]                    
 }
+
+
+
+//using System.Windows.Input;
+//using ATIS.Helpers;
+//using ATIS.Models;
+//using ATIS.Services;
+//using ATIS.Strings;
+//using ATIS.Views.Report.Pdf.TblDisease;
+//using CommunityToolkit.WinUI;
+//using CommunityToolkit.WinUI.UI.Controls;
+//using Microsoft.UI.Dispatching;
+
+//// To learn more about WinUI, the WinUI project structure,
+//// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+//namespace ATIS.Views.Main.Disease;
+///// <summary>
+///// An empty page that can be used on its own or navigated to within a Frame.
+///// </summary>
+//public sealed partial class DiseasePage : Page
+//{
+//    #region [Private Data Members]
+
+//    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+//    public DiseaseViewModel ViewModel { get; }
+//    private static readonly AtisDbContext Context = new();
+//    private string _search;
+
+//    #endregion [Private Data Members]   
+
+//    #region [Constructor]
+
+//    public DiseasePage()
+//    {
+//        ViewModel = App.GetService<DiseaseViewModel>();
+//        InitializeComponent();
+//        SimpleLog.Info(" DiseasePage opended ");
+//    }
+//    #endregion [Constructor]         
+
+//    #region [Disease Methods]
+
+//    private async void GetDiseasesByNameOrId(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+//    {
+//        try
+//        {
+//            _search = args.QueryText;
+
+//            ViewModel.IsLoading = true;
+
+//            ViewModel.TblDiseasesList?.Clear();
+
+//            ViewModel.DiseaseItems.Clear();
+
+//            const int milliseconds = 1500;
+//            await Task.Delay(milliseconds);
+
+//            if (string.IsNullOrEmpty(_search))
+//            {
+//                ViewModel.TblDiseasesList?.Clear();
+
+//                DiseaseDataGrid.ItemsSource = ViewModel.TblDiseasesList;
+//           //     ListViewDisease.ItemsSource = ViewModel.TblDiseasesList;
+//                ViewModel.IsLoading = false;
+//                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+//                return;
+//            }
+
+//            //if _search = "" und count = 0 you see the whole Tab thousands of datasets
+//            //change to % for all Datasets in 20 Parts of sets
+
+//            await _dispatcherQueue.EnqueueAsync(() =>
+//            {
+//                ViewModel.TblDiseasesList ??= [];
+//                ViewModel.TblDiseasesList = int.TryParse(_search, out var id)
+//                ? [.. Context.TblDiseases
+//                .Where(e => e.DiseaseId == id)]
+//                : [.. Context.TblDiseases
+//                .Where(e => e.DiseaseName.StartsWith(_search))
+//                .OrderBy(a => a.DiseaseName)];
+
+//            });
+
+//            ViewModel.DiseaseDataSetCount = ViewModel.TblDiseasesList.Count;
+
+//            if (ViewModel.TblDiseasesList is { Count: 0 })
+//            {
+//                ViewModel.TblDiseasesList?.Clear();
+
+//            //    AppBarButtonSync.IsEnabled = false;
+
+
+//                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+//                Frame.Navigate(typeof(DiseasePage));
+//            }
+//            else
+//            {
+//                DiseaseDataGrid.ItemsSource = ViewModel.TblDiseasesList;
+//         //       ListViewDisease.ItemsSource = ViewModel.TblDiseasesList;
+//                ViewModel.DiseaseSelected = ViewModel.TblDiseasesList[0];
+//            }
+//            ViewModel.IsLoading = false;
+//        }
+//        catch (Exception xe)
+//        {
+//            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+//            SimpleLog.Log(xe);
+//        }
+//    }
+
+//    private void DiseaseSearchBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        DiseaseSearchBox.Visibility = Visibility.Visible;
+//        DiseaseSearchBox.Focus(FocusState.Programmatic);
+//        DiseaseSearchBox.PlaceholderText = StringsRes.SearchNameOrId;
+//    }
+
+//    private void DiseaseDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+//    {
+//        (sender as DataGrid).Sort(e.Column, ViewModel.TblDiseasesList.Sort);
+//    }
+
+
+//    private async void ViewDiseaseHyperlinkButton_Click(object sender, RoutedEventArgs e)
+//    {
+//        try
+//        {
+//            await ViewDiseaseHyperlink();
+//        }
+//        catch (Exception xe)
+//        {
+//            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+//            SimpleLog.Log(xe);
+//        }
+//    }
+
+//    private Task ViewDiseaseHyperlink()
+//    {
+//        if (DiseaseDataGrid.SelectedIndex == -1)
+//        {
+//            _ = AllDialogs.NoColumnSelectedWarnMessageDialogAsync();
+//        }
+//        else
+//        {
+//  //          SingleDisease = App.SingleDisease(ViewModel.DiseaseSelected.DiseaseId);
+//        }
+//        return Task.CompletedTask;
+//    }
+
+//    private void DiseaseSelect_Click(object sender, RoutedEventArgs e)
+//    {
+//        if (ViewModel.DiseaseSelected.DiseaseId == 0)
+//        {
+//            _ = AllDialogs.NoDatasetSelectedWarnMessageDialogAsync();
+//            return;
+//        }
+
+//        var window = new ReportDiseasesWindow(ViewModel.DiseaseSelected.DiseaseId)
+//        {
+//            IsAlwaysOnTop = true
+//        };
+//        window.Activate();
+//    }
+//    public ICommand PdfDiseaseCommand => new WinUICommunity.RelayCommand(execute: delegate
+//    {
+//        var reportDiseasesWindow = new ReportDiseasesWindow(ViewModel.DiseaseSelected.DiseaseId);
+//        reportDiseasesWindow.GeneratePdfDisease(ViewModel.DiseaseSelected.DiseaseId);
+//    });
+
+
+//    #endregion [Disease Methods]                    
+
+//}

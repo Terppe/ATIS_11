@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl68SpeciesgroupViewModel Skriptdatum:  15.12.2025  10:32    
 
@@ -15,10 +16,10 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
 
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = [];
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
 
@@ -161,12 +162,12 @@ public partial class Tbl68SpeciesgroupViewModel : ObservableObject
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
             var speciesgroup =
-                await Context.Tbl68Speciesgroups.FirstOrDefaultAsync(b => b.SpeciesgroupId == speciesgroupid);
+                await AppData.Data.Tbl68Speciesgroups.FirstOrDefaultAsync(b => b.SpeciesgroupId == speciesgroupid);
             if (speciesgroup != null)
             {
 
-                Context.Tbl68Speciesgroups.Remove(speciesgroup);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl68Speciesgroups.Remove(speciesgroup);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

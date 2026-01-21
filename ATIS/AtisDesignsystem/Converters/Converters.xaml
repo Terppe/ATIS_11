@@ -1,0 +1,77 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="using:ATIS.Helpers.Converters">
+
+    <!--  =========================================================  -->
+    <!--  BOOLEAN CONVERTERS  -->
+    <!--  =========================================================  -->
+
+    <!--  bool → Visibility.Visible/Collapsed  -->
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+    <!--  bool → !bool  -->
+    <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
+
+    <!--  bool → Visibility.Collapsed/Visible (invertiert)  -->
+    <converters:InvertBoolToCollapsedConverter x:Key="InvertBoolToCollapsedConverter" />
+
+    <!--  object == null → false / object != null → true  -->
+    <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
+
+    <!--  object == null → true / object != null → false  -->
+    <converters:NullToBoolConverter x:Key="NullToFalseConverter"
+                                    Invert="True" />
+
+    <!--  object == null → Visibility.Collapsed  -->
+    <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+
+    <!--  object != null → Visibility.Collapsed  -->
+    <converters:NotNullToCollapsedConverter x:Key="NotNullToCollapsedConverter" />
+
+    <!--  object != null → true  -->
+    <converters:NotNullToBoolConverter x:Key="NotNullToBoolConverter" />
+
+    <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+
+    <!--  =========================================================  -->
+    <!--  STRING CONVERTERS  -->
+    <!--  =========================================================  -->
+
+    <!--  string.IsNullOrEmpty → Visibility.Collapsed/Visible  -->
+    <converters:StringNullOrEmptyToVisibilityConverter x:Key="StringNullOrEmptyToVisibilityConverter" />
+
+
+    <!--  =========================================================  -->
+    <!--  NUMERIC CONVERTERS  -->
+    <!--  =========================================================  -->
+
+    <!--  double ↔ string  -->
+    <converters:DoubleConverter x:Key="DoubleConverter" />
+
+
+    <!--  =========================================================  -->
+    <!--  ENUM CONVERTERS  -->
+    <!--  =========================================================  -->
+
+    <!--  enum ↔ bool (für RadioButtons)  -->
+    <converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+
+    <!--  enum → Visibility.Visible/Collapsed  -->
+    <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverter" />
+
+    <!--  enum → string  -->
+    <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
+
+    <!--  =========================================================  -->
+    <!--  RowIndexDatagrid  -->
+    <!--  =========================================================  -->
+
+    <converters:RowIndexToBackgroundConverter x:Key="RowIndexToBackgroundConverter" />
+    <!--  wird wohl nicht mehr benötigt  -->
+
+    <converters:BoolToRowBackgroundConverter x:Key="BoolToRowBackgroundConverter" />
+
+</ResourceDictionary>

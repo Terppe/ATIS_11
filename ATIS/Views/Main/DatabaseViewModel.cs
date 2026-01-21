@@ -6,7 +6,6 @@ namespace ATIS.Views.Main;
 public partial class DatabaseViewModel : ObservableObject //, INavigationAware
 {
     #region [Private Data Members]
-    public IJsonNavigationViewService JsonNavigationViewService;
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
@@ -48,16 +47,7 @@ public partial class DatabaseViewModel : ObservableObject //, INavigationAware
         _dataService = dataService;
     }
 
-    private DatabaseViewModel(IDataService dataService, IJsonNavigationViewService jsonNavigationViewService)
-    {
-        JsonNavigationViewService = jsonNavigationViewService;
-        _dataService = dataService;
-    }
 
-    public static DatabaseViewModel CreateInstance(IDataService dataService, IJsonNavigationViewService jsonNavigationViewService)
-    {
-        return new DatabaseViewModel(dataService, jsonNavigationViewService);
-    }
 
     #endregion [Constructor]
 

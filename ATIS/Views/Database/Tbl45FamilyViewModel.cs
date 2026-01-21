@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl45FamilyViewModel Skriptdatum:  18.10.2025  10:32    
 
@@ -16,10 +17,10 @@ public partial class Tbl45FamilyViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
 
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl45Family> FamilyItems { get; } = [];
     public ObservableCollection<Tbl48Subfamily> SubfamilyItems { get; } = [];
     public ObservableCollection<Tbl42Superfamily> SuperfamilyItems { get; } = [];
@@ -185,7 +186,7 @@ public partial class Tbl45FamilyViewModel : ObservableObject
             var arrSupertribus = new List<Tbl54Supertribus>();
             var arrInfrafamily = new List<Tbl51Infrafamily>();
             var arrSubfamily = new List<Tbl48Subfamily>();
-            var family = await Context.Tbl45Families.FirstOrDefaultAsync(b => b.FamilyId == familyid);
+            var family = await AppData.Data.Tbl45Families.FirstOrDefaultAsync(b => b.FamilyId == familyid);
             if (family != null)
             {
                 //SaveToArray
@@ -211,8 +212,8 @@ public partial class Tbl45FamilyViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesByFamilyId(familyid);
                 await RemoveExtras.RemoveCommentsByFamilyId(familyid);
-                Context.Tbl45Families.Remove(family);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl45Families.Remove(family);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -364,10 +365,10 @@ public partial class Tbl45FamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -489,10 +490,10 @@ public partial class Tbl45FamilyViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

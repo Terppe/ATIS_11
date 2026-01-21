@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl75SpeciesViewModel Skriptdatum:  20.10.2025  10:32    
 
@@ -19,10 +20,9 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
-
+    private readonly IDataService _data;
     public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
     public ObservableCollection<Tbl68Speciesgroup> SpeciesgroupItems { get; } = [];
     public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
@@ -36,7 +36,6 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    private int _plantId;
     private readonly FileOpenPicker _filePicker = new();
     public Tbl75Species SingleSpecies { get; set; }
 
@@ -100,7 +99,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             var genusId = Tbl66GenussesAllList.First().GenusId;
 
             Tbl68SpeciesgroupsAllList ??= [];
-            Tbl68SpeciesgroupsAllList = [.. Context.Tbl68Speciesgroups
+            Tbl68SpeciesgroupsAllList = [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => a.SpeciesgroupName == "NotClear")];
 
             var speciesgroupId = Tbl68SpeciesgroupsAllList.First().SpeciesgroupId;
@@ -210,7 +209,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var species = await Context.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
+            var species = await AppData.Data.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
             if (species != null)
             {
                 await RemoveExtras.RemoveReferencesBySpeciesId(speciesid);
@@ -220,8 +219,8 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
                 await RemoveExtras.RemoveSynonymsBySpeciesId(speciesid);
                 await RemoveExtras.RemoveGeographicsBySpeciesId(speciesid);
 
-                Context.Tbl75Speciesses.Remove(species);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl75Speciesses.Remove(species);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }
@@ -376,10 +375,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -503,10 +502,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -622,10 +621,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
     public static async Task DeleteName(int nameid)
     {
-        var name = await Context.Tbl78Names.FirstOrDefaultAsync(co => co.NameId == nameid);
+        var name = await AppData.Data.Tbl78Names.FirstOrDefaultAsync(co => co.NameId == nameid);
 
-        Context.Tbl78Names.Remove(name);
-        await Context.SaveChangesAsync();
+        //AppData.Data.Tbl78Names.Remove(name);
+        //await AppData.Data.SaveChangesAsync();
     }
 
     #endregion [Methods Name]  
@@ -734,10 +733,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
 
     public static async Task DeleteImage(int imageid)
     {
-        var image = await Context.Tbl81Images.FirstOrDefaultAsync(co => co.ImageId == imageid);
+        var image = await AppData.Data.Tbl81Images.FirstOrDefaultAsync(co => co.ImageId == imageid);
 
-        Context.Tbl81Images.Remove(image);
-        await Context.SaveChangesAsync();
+        //AppData.Data.Tbl81Images.Remove(image);
+        //await AppData.Data.SaveChangesAsync();
     }
 
     private static byte[] LoadImageData(string filePath)
@@ -853,10 +852,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     }
     public static async Task DeleteSynonym(int synonymid)
     {
-        var synonym = await Context.Tbl84Synonyms.FirstOrDefaultAsync(co => co.SynonymId == synonymid);
+        var synonym = await AppData.Data.Tbl84Synonyms.FirstOrDefaultAsync(co => co.SynonymId == synonymid);
 
-        Context.Tbl84Synonyms.Remove(synonym);
-        await Context.SaveChangesAsync();
+        //AppData.Data.Tbl84Synonyms.Remove(synonym);
+        //await AppData.Data.SaveChangesAsync();
     }
     #endregion [Methods Synonym]
 
@@ -961,10 +960,10 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
     }
     public static async Task DeleteGeographic(int geographicid)
     {
-        var geographic = await Context.Tbl87Geographics.FirstOrDefaultAsync(co => co.GeographicId == geographicid);
+        var geographic = await AppData.Data.Tbl87Geographics.FirstOrDefaultAsync(co => co.GeographicId == geographicid);
 
-        Context.Tbl87Geographics.Remove(geographic);
-        await Context.SaveChangesAsync();
+        //AppData.Data.Tbl87Geographics.Remove(geographic);
+        //await AppData.Data.SaveChangesAsync();
     }
     #endregion [Methods Geographic]  
 

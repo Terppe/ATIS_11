@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,10 +21,10 @@ public sealed partial class Tbl78NameListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl78NameViewModel ViewModel { get; }
+    public Tbl78NameViewModel ViewModel { get; set; }
     private Tbl78Name SingleName { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -32,10 +33,15 @@ public sealed partial class Tbl78NameListPage : Page
 
     public Tbl78NameListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl78NameViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -86,9 +92,9 @@ public sealed partial class Tbl78NameListPage : Page
             {
                 ViewModel.Tbl78NamesList ??= [];
                 ViewModel.Tbl78NamesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl78Names
+                ? [.. AppData.Data.Tbl78Names
                 .Where(a => a.NameId == id)]
-                : [.. Context.Tbl78Names
+                : [.. AppData.Data.Tbl78Names
                 .Where(a => _search != null && a.NameName.StartsWith(_search))
                 .OrderBy(a => a.NameName)];
             });
@@ -162,7 +168,7 @@ public sealed partial class Tbl78NameListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
             .Where(com => com.SpeciesId == ViewModel.NameSelected.SpeciesId)];
             });
             ViewModel.SpeciesDataSetCount = ViewModel.Tbl75SpeciessesList.Count;
@@ -262,7 +268,7 @@ public sealed partial class Tbl78NameListPage : Page
         }
         else
         {
-            SingleName = App.SingleName(ViewModel.NameSelected.NameId);
+            SingleName = AppData.Data.SingleName(ViewModel.NameSelected.NameId);
         }
 
         return Task.CompletedTask;
@@ -289,7 +295,7 @@ public sealed partial class Tbl78NameListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.NameSelected = ViewModel.Tbl78NamesList[iNdx];
-            SingleName = App.SingleName(ViewModel.NameSelected.NameId);
+            SingleName = AppData.Data.SingleName(ViewModel.NameSelected.NameId);
             NameSingles();
         }
         else
@@ -335,7 +341,7 @@ public sealed partial class Tbl78NameListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleName = App.SingleName(ViewModel.NameSelected.NameId);
+            SingleName = AppData.Data.SingleName(ViewModel.NameSelected.NameId);
             NameSingles();
         }
 
@@ -444,7 +450,7 @@ public sealed partial class Tbl78NameListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl78NamesList ??= [];
-            ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+            ViewModel.Tbl78NamesList = [.. AppData.Data.Tbl78Names
             .Where(a => a.NameName == ViewModel.NameSelected.NameName &&
                         a.Language == ViewModel.NameSelected.Language &&
                         a.SpeciesId == ViewModel.NameSelected.SpeciesId)];
@@ -466,9 +472,9 @@ public sealed partial class Tbl78NameListPage : Page
             if (NameSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl78NamesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl78Names
+                    ? [.. AppData.Data.Tbl78Names
                     .Where(a => a.NameId == id)]
-                    : [.. Context.Tbl78Names
+                    : [.. AppData.Data.Tbl78Names
                     .Where(a => _search != null && a.NameName.StartsWith(_search))
                     .OrderBy(a => a.NameName)
                     .ThenBy(a => a.Language)];
@@ -479,7 +485,7 @@ public sealed partial class Tbl78NameListPage : Page
 
         if (ViewModel.Tbl78NamesList.Count == 0)
         {
-            ViewModel.Tbl78NamesList = [.. Context.Tbl78Names
+            ViewModel.Tbl78NamesList = [.. AppData.Data.Tbl78Names
                 .Where(a => a.NameId == viewModelNameSelected.NameId)];
             NameDataGrid.ItemsSource = ViewModel.Tbl78NamesList;
             await Refresh();
@@ -530,7 +536,7 @@ public sealed partial class Tbl78NameListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
         }
 
         return Task.CompletedTask;
@@ -558,7 +564,7 @@ public sealed partial class Tbl78NameListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+            SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
             SpeciesSingles();
         }
         else
@@ -645,7 +651,7 @@ public sealed partial class Tbl78NameListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
+                SingleSpecies = AppData.Data.SingleSpecies(ViewModel.SpeciesSelected.SpeciesId);
                 SpeciesSingles();
             }
         });
@@ -704,7 +710,7 @@ public sealed partial class Tbl78NameListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -729,14 +735,14 @@ public sealed partial class Tbl78NameListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -865,9 +871,9 @@ public sealed partial class Tbl78NameListPage : Page
             {
                 ViewModel.Tbl78NamesList ??= [];
                 ViewModel.Tbl78NamesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl78Names
+                ? [.. AppData.Data.Tbl78Names
                 .Where(a => a.NameId == id)]
-                : [.. Context.Tbl78Names
+                : [.. AppData.Data.Tbl78Names
                 .Where(a => _search != null && a.NameName.StartsWith(_search))
                 .OrderBy(a => a.NameName)];
             });

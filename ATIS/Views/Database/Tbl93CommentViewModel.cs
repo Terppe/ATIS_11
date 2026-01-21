@@ -6,6 +6,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl93CommentViewModel Skriptdatum:  06.01.2025  10:32    
 
@@ -16,9 +17,9 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
 
     #endregion [Private Data Members]           
@@ -210,11 +211,11 @@ public partial class Tbl93CommentViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(b => b.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(b => b.CommentId == commentid);
             if (comment != null)
             {
-                Context.Tbl93Comments.Remove(comment);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl93Comments.Remove(comment);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 
@@ -14,7 +15,7 @@ public abstract class TblFoodsDocumentDataSource : ObservableObject
     {
         #region [Private Data Members]
 
-        var dataService = new DataService();
+        var dataService = App.GetService<IDataService>();
 
         #endregion [Private Data Members]
 
@@ -24,7 +25,7 @@ public abstract class TblFoodsDocumentDataSource : ObservableObject
 
         //Children
         PhylumsCollection = dataService.CollPhylumsByRegnumIdAndHash(regnumId);
-        DivisionsCollection = dataService.CollDivisionsByRegnumIdAndHash(regnumId);
+    //    DivisionsCollection = dataService.CollDivisionsByRegnumIdAndHash(regnumId);
 
         //-----------------------------------------------------------------------------
         ExpertsCollection = dataService.CollExpertsByRegnumId(regnumId);

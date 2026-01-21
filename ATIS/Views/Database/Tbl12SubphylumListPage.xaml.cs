@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl12SubphylumListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl12SubphylumViewModel ViewModel { get; }
+    public Tbl12SubphylumViewModel ViewModel { get; set; }
     private Tbl12Subphylum SingleSubphylum { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl18Superclass SingleSuperclass { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
 
     public Tbl12SubphylumListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl12SubphylumViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Subphylum Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl12SubphylumListPage : Page
             {
                 ViewModel.Tbl12SubphylumsList ??= [];
                 ViewModel.Tbl12SubphylumsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl12Subphylums
+                ? [.. AppData.Data.Tbl12Subphylums
                 .Where(a => a.SubphylumId == id)]
-                : [.. Context.Tbl12Subphylums
+                : [.. AppData.Data.Tbl12Subphylums
                 .Where(a => _search != null && a.SubphylumName.StartsWith(_search))
                 .OrderBy(a => a.SubphylumName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.SubphylumId == ViewModel.SubphylumSelected.SubphylumId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.SubphylumId == ViewModel.SubphylumSelected.SubphylumId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl18SuperclassesList ??= [];
-                ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+                ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
             .Where(com => com.SubphylumId == ViewModel.SubphylumSelected.SubphylumId)];
             });
             ViewModel.SuperclassDataSetCount = ViewModel.Tbl18SuperclassesList.Count;
@@ -322,7 +331,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         }
         else
         {
-            SingleSubphylum = App.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
+            SingleSubphylum = AppData.Data.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SubphylumSelected = ViewModel.Tbl12SubphylumsList[iNdx];
-            SingleSubphylum = App.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
+            SingleSubphylum = AppData.Data.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
             SubphylumSingles();
         }
         else
@@ -398,7 +407,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSubphylum = App.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
+            SingleSubphylum = AppData.Data.SingleSubphylum(ViewModel.SubphylumSelected.SubphylumId);
             SubphylumSingles();
         }
 
@@ -507,7 +516,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl12SubphylumsList ??= [];
-            ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+            ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
                 .Where(a => a.SubphylumName == ViewModel.SubphylumSelected.SubphylumName &&
                         a.PhylumId == ViewModel.SubphylumSelected.PhylumId)];
         });
@@ -531,9 +540,9 @@ public sealed partial class Tbl12SubphylumListPage : Page
             if (SubphylumSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl12SubphylumsList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl12Subphylums
+                    ? [.. AppData.Data.Tbl12Subphylums
                     .Where(a => a.SubphylumId == id)]
-                    : [.. Context.Tbl12Subphylums
+                    : [.. AppData.Data.Tbl12Subphylums
                     .Where(a => _search != null && a.SubphylumName.StartsWith(_search))
                     .OrderBy(a => a.SubphylumName)];
             }
@@ -543,7 +552,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
 
         if (ViewModel.Tbl12SubphylumsList.Count == 0)
         {
-            ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+            ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
                 .Where(a => a.SubphylumId == viewModelSubphylumSelected.SubphylumId)];
             SubphylumDataGrid.ItemsSource = ViewModel.Tbl12SubphylumsList;
             await Refresh();
@@ -649,7 +658,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -684,7 +693,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubphylumSelected.SubphylumId);
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId, ViewModel.SubphylumSelected.SubphylumId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -787,7 +796,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.SubphylumId == ViewModel.ReferenceSelected.SubphylumId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -811,14 +820,14 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.SubphylumId == viewModelReferenceSelected.SubphylumId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.SubphylumId == viewModelReferenceSelected.SubphylumId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -905,7 +914,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SubphylumSelected.SubphylumId);
             ReferenceExpertSingles();
         }
@@ -942,7 +951,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.SubphylumSelected.SubphylumId);
 
             ReferenceExpertSingles();
@@ -1012,7 +1021,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.SubphylumSelected.SubphylumId);
             ReferenceSourceSingles();
         }
@@ -1049,7 +1058,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.SubphylumSelected.SubphylumId);
 
             ReferenceSourceSingles();
@@ -1121,7 +1130,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.SubphylumSelected.SubphylumId);
             ReferenceAuthorSingles();
         }
@@ -1158,7 +1167,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceSubphylum(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.SubphylumSelected.SubphylumId);
 
             ReferenceAuthorSingles();
@@ -1234,7 +1243,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
+            SingleComment = AppData.Data.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
         }
         return Task.CompletedTask;
     }
@@ -1261,7 +1270,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
+            SingleComment = AppData.Data.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
             CommentSingles();
         }
         else
@@ -1303,7 +1312,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
+                SingleComment = AppData.Data.SingleCommentSubphylum(ViewModel.CommentSelected.CommentId, ViewModel.SubphylumSelected.SubphylumId);
                 CommentSingles();
             }
         });
@@ -1407,7 +1416,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.SubphylumId == ViewModel.CommentSelected.SubphylumId)];
@@ -1429,14 +1438,14 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SubphylumId == viewModelCommentSelected.SubphylumId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.SubphylumId == viewModelCommentSelected.SubphylumId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1493,7 +1502,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         }
         else
         {
-            SingleSuperclass = App.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId,
+            SingleSuperclass = AppData.Data.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId,
                     ViewModel.SubphylumSelected.SubphylumId);
         }
 
@@ -1522,7 +1531,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         {
             ViewModel.SuperclassSelected = ViewModel.Tbl18SuperclassesList[iNdx];
 
-            SingleSuperclass = App.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId, ViewModel.SubphylumSelected.SubphylumId);
+            SingleSuperclass = AppData.Data.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId, ViewModel.SubphylumSelected.SubphylumId);
             SuperclassSingles();
         }
         else
@@ -1571,7 +1580,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
             }
             else
             {
-                SingleSuperclass = App.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId, ViewModel.SubphylumSelected.SubphylumId);
+                SingleSuperclass = AppData.Data.SingleSuperclassSubphylum(ViewModel.SuperclassSelected.SuperclassId, ViewModel.SubphylumSelected.SubphylumId);
                 SuperclassSingles();
             }
         });
@@ -1631,7 +1640,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl18SuperclassesList ??= [];
-            ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+            ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
             .Where(a => a.SuperclassName == ViewModel.SuperclassSelected.SuperclassName &&
                         a.SubphylumId == ViewModel.SuperclassSelected.SubphylumId)];
         });
@@ -1652,14 +1661,14 @@ public sealed partial class Tbl12SubphylumListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl18SuperclassesList ??= [];
-            ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+            ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
                 .Where(com => com.SubphylumId == viewModelSuperclassSelected.SubphylumId)];
         });
         ViewModel.RefreshSuperclassItems();
 
         if (ViewModel.Tbl18SuperclassesList.Count == 0)
         {
-            ViewModel.Tbl18SuperclassesList = [.. Context.Tbl18Superclasses
+            ViewModel.Tbl18SuperclassesList = [.. AppData.Data.Tbl18Superclasses
                 .Where(com => com.SubphylumId == viewModelSuperclassSelected.SubphylumId)];
             SuperclassDataGrid.ItemsSource = ViewModel.Tbl18SuperclassesList;
             await Refresh();
@@ -1738,16 +1747,16 @@ public sealed partial class Tbl12SubphylumListPage : Page
                 if (ViewModel.Tbl12SubphylumsList.Count == 0)
                 {
                     ViewModel.Tbl12SubphylumsList ??= [];
-                    ViewModel.Tbl12SubphylumsList = [.. Context.Tbl12Subphylums
+                    ViewModel.Tbl12SubphylumsList = [.. AppData.Data.Tbl12Subphylums
                             .Where(a => a.SubphylumId == ViewModel.SubphylumSelected.SubphylumId)];
                 }
                 else
                 {
                     ViewModel.Tbl12SubphylumsList ??= [];
                     ViewModel.Tbl12SubphylumsList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl12Subphylums
+                        ? [.. AppData.Data.Tbl12Subphylums
                            .Where(a => a.SubphylumId == id)]
-                       : [.. Context.Tbl12Subphylums
+                       : [.. AppData.Data.Tbl12Subphylums
                            .Where(a => _search != null && a.SubphylumName.StartsWith(_search))
                          .OrderBy(a => a.SubphylumName)];
                 }

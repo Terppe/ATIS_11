@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl63InfratribusListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl63InfratribusViewModel ViewModel { get; }
+    public Tbl63InfratribusViewModel ViewModel { get; set; }
     private Tbl63Infratribus SingleInfratribus { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl66Genus SingleGenus { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl63InfratribusListPage : Page
 
     public Tbl63InfratribusListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl63InfratribusViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Infratribus Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl63InfratribusListPage : Page
             {
                 ViewModel.Tbl63InfratribussesList ??= [];
                 ViewModel.Tbl63InfratribussesList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl63Infratribusses
+                ? [.. AppData.Data.Tbl63Infratribusses
                 .Where(a => a.InfratribusId == id)]
-                : [.. Context.Tbl63Infratribusses
+                : [.. AppData.Data.Tbl63Infratribusses
                 .Where(a => _search != null && a.InfratribusName.StartsWith(_search))
                 .OrderBy(a => a.InfratribusName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl66GenussesList ??= [];
-                ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+                ViewModel.Tbl66GenussesList = [.. AppData.Data.Tbl66Genusses
             .Where(com => com.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
             });
             ViewModel.GenusDataSetCount = ViewModel.Tbl66GenussesList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         }
         else
         {
-            SingleInfratribus = App.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
+            SingleInfratribus = AppData.Data.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
         }
 
         return Task.CompletedTask;
@@ -348,7 +357,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.InfratribusSelected = ViewModel.Tbl63InfratribussesList[iNdx];
-            SingleInfratribus = App.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
+            SingleInfratribus = AppData.Data.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
             InfratribusSingles();
         }
         else
@@ -400,7 +409,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleInfratribus = App.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
+            SingleInfratribus = AppData.Data.SingleInfratribus(ViewModel.InfratribusSelected.InfratribusId);
             InfratribusSingles();
         }
 
@@ -509,7 +518,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl63InfratribussesList ??= [];
-            ViewModel.Tbl63InfratribussesList = [.. Context.Tbl63Infratribusses
+            ViewModel.Tbl63InfratribussesList = [.. AppData.Data.Tbl63Infratribusses
                 .Where(a => a.InfratribusName == ViewModel.InfratribusSelected.InfratribusName &&
                         a.SubtribusId == ViewModel.InfratribusSelected.SubtribusId)];
         });
@@ -533,9 +542,9 @@ public sealed partial class Tbl63InfratribusListPage : Page
             if (InfratribusSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl63InfratribussesList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl63Infratribusses
+                    ? [.. AppData.Data.Tbl63Infratribusses
                     .Where(a => a.InfratribusId == id)]
-                    : [.. Context.Tbl63Infratribusses
+                    : [.. AppData.Data.Tbl63Infratribusses
                     .Where(a => _search != null && a.InfratribusName.StartsWith(_search))
                     .OrderBy(a => a.InfratribusName)];
             }
@@ -545,7 +554,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
 
         if (ViewModel.Tbl63InfratribussesList.Count == 0)
         {
-            ViewModel.Tbl63InfratribussesList = [.. Context.Tbl63Infratribusses
+            ViewModel.Tbl63InfratribussesList = [.. AppData.Data.Tbl63Infratribusses
                 .Where(a => a.InfratribusId == viewModelInfratribusSelected.InfratribusId)];
             InfratribusDataGrid.ItemsSource = ViewModel.Tbl63InfratribussesList;
             await Refresh();
@@ -651,7 +660,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -686,7 +695,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId, ViewModel.InfratribusSelected.InfratribusId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -789,7 +798,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.InfratribusId == ViewModel.ReferenceSelected.InfratribusId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -813,14 +822,14 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.InfratribusId == viewModelReferenceSelected.InfratribusId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.InfratribusId == viewModelReferenceSelected.InfratribusId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -907,7 +916,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.InfratribusSelected.InfratribusId);
             ReferenceExpertSingles();
         }
@@ -946,7 +955,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.InfratribusSelected.InfratribusId);
 
             ReferenceExpertSingles();
@@ -1018,7 +1027,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.InfratribusSelected.InfratribusId);
             ReferenceSourceSingles();
         }
@@ -1057,7 +1066,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.InfratribusSelected.InfratribusId);
 
             ReferenceSourceSingles();
@@ -1129,7 +1138,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.InfratribusSelected.InfratribusId);
             ReferenceAuthorSingles();
         }
@@ -1168,7 +1177,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceInfratribus(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.InfratribusSelected.InfratribusId);
 
             ReferenceAuthorSingles();
@@ -1244,7 +1253,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleComment = AppData.Data.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
         }
         return Task.CompletedTask;
     }
@@ -1271,7 +1280,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleComment = AppData.Data.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
             CommentSingles();
         }
         else
@@ -1313,7 +1322,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
+                SingleComment = AppData.Data.SingleCommentInfratribus(ViewModel.CommentSelected.CommentId, ViewModel.InfratribusSelected.InfratribusId);
                 CommentSingles();
             }
         });
@@ -1417,7 +1426,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.InfratribusId == ViewModel.CommentSelected.InfratribusId)];
@@ -1439,14 +1448,14 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.InfratribusId == viewModelCommentSelected.InfratribusId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.InfratribusId == viewModelCommentSelected.InfratribusId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1503,7 +1512,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         }
         else
         {
-            SingleGenus = App.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId,
+            SingleGenus = AppData.Data.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId,
                     ViewModel.InfratribusSelected.InfratribusId);
         }
 
@@ -1532,7 +1541,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         {
             ViewModel.GenusSelected = ViewModel.Tbl66GenussesList[iNdx];
 
-            SingleGenus = App.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId, ViewModel.InfratribusSelected.InfratribusId);
+            SingleGenus = AppData.Data.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId, ViewModel.InfratribusSelected.InfratribusId);
             GenusSingles();
         }
         else
@@ -1582,7 +1591,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
             }
             else
             {
-                SingleGenus = App.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId, ViewModel.InfratribusSelected.InfratribusId);
+                SingleGenus = AppData.Data.SingleGenusInfratribus(ViewModel.GenusSelected.GenusId, ViewModel.InfratribusSelected.InfratribusId);
                 GenusSingles();
             }
         });
@@ -1642,7 +1651,7 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl66GenussesList ??= [];
-            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+            ViewModel.Tbl66GenussesList = [.. AppData.Data.Tbl66Genusses
             .Where(a => a.GenusName == ViewModel.GenusSelected.GenusName &&
                         a.InfratribusId == ViewModel.GenusSelected.InfratribusId)];
         });
@@ -1663,14 +1672,14 @@ public sealed partial class Tbl63InfratribusListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl66GenussesList ??= [];
-            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+            ViewModel.Tbl66GenussesList = [.. AppData.Data.Tbl66Genusses
                 .Where(com => com.InfratribusId == viewModelGenusSelected.InfratribusId)];
         });
         ViewModel.RefreshGenusItems();
 
         if (ViewModel.Tbl66GenussesList.Count == 0)
         {
-            ViewModel.Tbl66GenussesList = [.. Context.Tbl66Genusses
+            ViewModel.Tbl66GenussesList = [.. AppData.Data.Tbl66Genusses
                 .Where(com => com.InfratribusId == viewModelGenusSelected.InfratribusId)];
             GenusDataGrid.ItemsSource = ViewModel.Tbl66GenussesList;
             await Refresh();
@@ -1749,16 +1758,16 @@ public sealed partial class Tbl63InfratribusListPage : Page
                 if (ViewModel.Tbl63InfratribussesList.Count == 0)
                 {
                     ViewModel.Tbl63InfratribussesList ??= [];
-                    ViewModel.Tbl63InfratribussesList = [.. Context.Tbl63Infratribusses
+                    ViewModel.Tbl63InfratribussesList = [.. AppData.Data.Tbl63Infratribusses
                             .Where(a => a.InfratribusId == ViewModel.InfratribusSelected.InfratribusId)];
                 }
                 else
                 {
                     ViewModel.Tbl63InfratribussesList ??= [];
                     ViewModel.Tbl63InfratribussesList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl63Infratribusses
+                        ? [.. AppData.Data.Tbl63Infratribusses
                            .Where(a => a.InfratribusId == id)]
-                       : [.. Context.Tbl63Infratribusses
+                       : [.. AppData.Data.Tbl63Infratribusses
                            .Where(a => _search != null && a.InfratribusName.StartsWith(_search))
                          .OrderBy(a => a.InfratribusName)];
                 }

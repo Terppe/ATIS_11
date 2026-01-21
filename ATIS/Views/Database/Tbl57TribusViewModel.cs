@@ -7,6 +7,7 @@ using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
 using Windows.System;
+using ATIS.Infrastructure;
 
 //    Tbl57TribusViewModel Skriptdatum:  22.01.2025  10:32    
 
@@ -17,9 +18,9 @@ public partial class Tbl57TribusViewModel : ObservableObject
 
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
+    private readonly IDataService _data;
     public ObservableCollection<Tbl57Tribus> TribusItems { get; } = [];
 
     public ObservableCollection<Tbl60Subtribus> SubtribusItems { get; } = [];
@@ -184,7 +185,7 @@ public partial class Tbl57TribusViewModel : ObservableObject
             var arrGenus = new List<Tbl66Genus>();
             var arrInfratribus = new List<Tbl63Infratribus>();
             var arrSubtribus = new List<Tbl60Subtribus>();
-            var tribus = await Context.Tbl57Tribusses.FirstOrDefaultAsync(b => b.TribusId == tribusid);
+            var tribus = await AppData.Data.Tbl57Tribusses.FirstOrDefaultAsync(b => b.TribusId == tribusid);
             if (tribus != null)
             {
                 //SaveToArray
@@ -201,8 +202,8 @@ public partial class Tbl57TribusViewModel : ObservableObject
 
                 await RemoveExtras.RemoveReferencesByTribusId(tribusid);
                 await RemoveExtras.RemoveCommentsByTribusId(tribusid);
-                Context.Tbl57Tribusses.Remove(tribus);
-                await Context.SaveChangesAsync();
+                //AppData.Data.Tbl57Tribusses.Remove(tribus);
+                //await AppData.Data.SaveChangesAsync();
             }
         });
 
@@ -359,10 +360,10 @@ public partial class Tbl57TribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var reference = await Context.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(re => re.ReferenceId == referenceid);
 
-            Context.Tbl90References.Remove(reference);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl90References.Remove(reference);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 
@@ -486,10 +487,10 @@ public partial class Tbl57TribusViewModel : ObservableObject
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await Context.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
+            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(co => co.CommentId == commentid);
 
-            Context.Tbl93Comments.Remove(comment);
-            await Context.SaveChangesAsync();
+            //AppData.Data.Tbl93Comments.Remove(comment);
+            //await AppData.Data.SaveChangesAsync();
         });
     }
 

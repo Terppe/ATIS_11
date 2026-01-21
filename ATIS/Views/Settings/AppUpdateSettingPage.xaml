@@ -6,7 +6,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:system="using:System"
       xmlns:wuc="using:WinUICommunity"
-      wuc:BreadcrumbNavigator.IsHeaderVisible="True"
       mc:Ignorable="d">
     <Page.Resources>
         <!--<system:Double x:Key="SettingActionControlMinWidth" />-->

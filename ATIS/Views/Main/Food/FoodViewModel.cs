@@ -1,201 +1,149 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Windows.Storage.Pickers;
-using Windows.System;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
-
-//    FoodViewModel Skriptdatum:  09.09.2025  10:32    
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 
 namespace ATIS.Views.Main.Food;
 
-public partial class FoodViewModel(IDataService dataService) : ObservableObject
+public partial class FoodViewModel : ObservableObject
 {
-    #region [Private Data Members]
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public IJsonNavigationViewService JsonNavigationViewService;
-    private static readonly AtisDbContext Context = new();
-    private readonly IDataService _dataService = dataService;
-    public ObservableCollection<TblFood> FoodItems { get; } = [];
-    public ObservableCollection<Tbl81Image> ImageItems { get; } = [];
-    public string Search;
-    private int _plantId;
-    private int _animalId;
+    private readonly IDataService _dataService;
 
-    private readonly FileOpenPicker _filePicker = new();
-
-    private readonly List<Data> _fileStreamList = [];
-    public struct Data
+    // =========================================================
+    // Constructor
+    // =========================================================
+    public FoodViewModel(IDataService dataService)
     {
-        public int ImageCountId;
-        public byte[] ImageFileStream;
-    };
-    #endregion [Private Data Members]              
+        _dataService = dataService;
 
-    //    Part 1    
-
-    #region [Methods Food]
-
-    public ICommand SearchRunCommand => new WinUICommunity.RelayCommand(execute: delegate { SearchRun(FilterText); });
-
-    public void SearchRun(string filterText)
-    {
-        FoodsCollection?.Clear();
-
-        if (string.IsNullOrEmpty(filterText))
-        {
-            AllDialogs.NoDatasetFoundWarnMessageDialog();
-            return;
-        }
-
-        IsLoading = true;
-        FoodsCollection = _dataService.GetTblFoodsCollectionOrderByFoodNameFromFilterText(filterText);
-
-        DataSetCount = FoodsCollection.Count;
-        RefreshFoodItems();
-        //   IsLoading = false;
+        SearchCommand = new AsyncRelayCommand<string>(SearchAsync);
+        PdfFoodCommand = new RelayCommand(ExecutePdfFood, CanExecutePdfFood);
+        EditFoodCommand = new RelayCommand(ExecuteEditFood, CanExecuteEditFood);
+        DeleteFoodCommand = new RelayCommand(ExecuteDeleteFood, CanExecuteDeleteFood);
     }
 
-    #region Report Search
+    // =========================================================
+    // Collections
+    // =========================================================
+    public ObservableCollection<TblFood> Foods { get; } = [];
 
-    //public void ReportSearchAll(int id, string tab)
-    //{
-    //    FoodsCollection?.Clear();
-    //    GetTblFoodsById(id);
-
-    //}
-
-    #endregion Report Search
-
-    #endregion [Methods Disease ]  
-
-    //    Part 2    
-
-    #region All Properties
-
-    #region [Propertys]
-    //------------IsModified--------------------------------------
-    public bool IsModifiedFood { get; set; }
-    //------------Load--------------------------------------
-    private bool IsLoaded => FoodItems != null;
-    public bool IsNotLoaded => !IsLoaded;
-
-    private bool _isLoading;
+    // =========================================================
+    // Loading Indicator
+    // =========================================================
+    private bool isLoading;
     public bool IsLoading
     {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
+        get => isLoading;
+        set => SetProperty(ref isLoading, value);
     }
 
-    #endregion [Propertys]
-
-    #region Selected Properties
-
-    private TblFood _foodSelected;
-
-    public TblFood FoodSelected
-    {
-        get => _foodSelected;
-        set => SetProperty(ref _foodSelected, value);
-    }
-
-
-    #endregion Selected Properties     
-
-    #region Public Properties  
-
+    // =========================================================
+    // Dataset Count
+    // =========================================================
     private int _foodDataSetCount;
     public int FoodDataSetCount
     {
         get => _foodDataSetCount;
-        set
-        {
-            _foodDataSetCount = value; OnPropertyChanged();
-        }
+        set => SetProperty(ref _foodDataSetCount, value);
     }
+    public string FoodDataSetCountText =>
+        $"{FoodDataSetCount} Datensätze gefunden";
 
-    private string _searchFoodName = "";
+    // =========================================================
+    // Search Placeholder (für Localizer optional)
+    // =========================================================
+    public string SearchPlaceholder => "Suche nach Lebensmitteln…";
 
-    public string SearchFoodName
+    // =========================================================
+    // Search Logic
+    // =========================================================
+    public ICommand SearchCommand { get; }
+
+    public async Task SearchAsync(string? query)
     {
-        get => _searchFoodName;
-        set
+        try
         {
-            _searchFoodName = value; OnPropertyChanged();
-        }
-    }
+            IsLoading = true;
+            Foods.Clear();
 
-    private ObservableCollection<TblFood> _tblFoodsList;
-
-    public ObservableCollection<TblFood> TblFoodsList
-    {
-        get => _tblFoodsList;
-        set
-        {
-            _tblFoodsList = value; OnPropertyChanged();
-        }
-    }
-    private int _dataSetCount;
-    public int DataSetCount
-    {
-        get => _dataSetCount;
-        set
-        {
-            _dataSetCount = value; OnPropertyChanged();
-        }
-    }
-    private int _imageDataSetCount;
-    public int ImageDataSetCount
-    {
-        get => _imageDataSetCount;
-        set
-        {
-            _imageDataSetCount = value; OnPropertyChanged();
-        }
-    }
-
-    public string FilterText { get; private set; }
-
-    #endregion Public Properties
-
-    #region Refresh Methods
-
-    public void RefreshFoodItems()
-    {
-        FoodItems.Clear();
-        if (TblFoodsList != null)
-        {
-            foreach (var item in TblFoodsList)
+            if (string.IsNullOrWhiteSpace(query))
             {
-                FoodItems.Add(item);
-            }
-
-            if (TblFoodsList.Count == 0)
-            {
+                FoodDataSetCount = 0;
+                OnPropertyChanged(nameof(FoodDataSetCountText));
+                AllDialogs.NoDatasetFoundWarnMessageDialog();
                 return;
             }
 
-            if (FoodSelected == null && TblFoodsList.Count != 0)
+            var result = await _dataService.GetFoodsByNameOrIdAsync(query);
+
+            foreach (var item in result)
+                Foods.Add(item);
+
+            FoodDataSetCount = Foods.Count;
+            OnPropertyChanged(nameof(FoodDataSetCountText));
+
+            FoodSelected = Foods.FirstOrDefault();
+
+            if (Foods.Count == 0)
+                AllDialogs.NoDatasetFoundWarnMessageDialog();
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    public void UpdateSuggestions(string text)
+    {
+        // später: Suggestion-Logik
+    }
+
+    // =========================================================
+    // Selected Item
+    // =========================================================
+    private TblFood _foodSelected;
+    public TblFood FoodSelected
+    {
+        get => _foodSelected;
+        set
+        {
+            if (SetProperty(ref _foodSelected, value))
             {
-                FoodSelected = FoodItems.FirstOrDefault()!;
+                (PdfFoodCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (EditFoodCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (DeleteFoodCommand as RelayCommand)?.NotifyCanExecuteChanged();
             }
         }
     }
 
-    #endregion Refresh Methods
+    // =========================================================
+    // Commands (PDF, Edit, Delete)
+    // =========================================================
+    public ICommand PdfFoodCommand { get; }
+    public ICommand EditFoodCommand { get; }
+    public ICommand DeleteFoodCommand { get; }
 
-    #region Collection
-
-    public ObservableCollection<TblFood> FoodsCollection
+    private bool CanExecutePdfFood() => FoodSelected?.FoodId > 0;
+    private void ExecutePdfFood()
     {
-        get; set;
-    } = null!;
+        // später: PDF-Service
+    }
 
+    private bool CanExecuteEditFood() => FoodSelected != null;
+    private void ExecuteEditFood()
+    {
+        // später: Edit-Service
+    }
 
-    #endregion Collection
-
-    #endregion All Properties
-
+    private bool CanExecuteDeleteFood() => FoodSelected != null;
+    private void ExecuteDeleteFood()
+    {
+        // später: Delete-Service
+    }
 }
+
+

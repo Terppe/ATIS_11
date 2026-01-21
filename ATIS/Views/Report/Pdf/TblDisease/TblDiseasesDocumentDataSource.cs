@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using ATIS.Interfaces;
 using ATIS.Services;
 
 namespace ATIS.Views.Report.Pdf.TblDisease;
@@ -14,7 +15,7 @@ public abstract class TblDiseasesDocumentDataSource : ObservableObject
     {
         #region [Private Data Members]
 
-        var dataService = new DataService();
+        var dataService = App.GetService<IDataService>();
 
         #endregion [Private Data Members]
 

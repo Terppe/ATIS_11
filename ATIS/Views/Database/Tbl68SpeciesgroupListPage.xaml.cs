@@ -1,5 +1,6 @@
 ﻿
 using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -22,10 +23,10 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl68SpeciesgroupViewModel ViewModel { get; }
+    public Tbl68SpeciesgroupViewModel ViewModel { get; set; }
     private Tbl68Speciesgroup SingleSpeciesgroup { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
     public Tbl68SpeciesgroupListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl68SpeciesgroupViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -46,6 +53,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
     }
+
     #endregion [Constructor]   
 
     #region [Speciesgroup Methods]
@@ -86,9 +94,9 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             {
                 ViewModel.Tbl68SpeciesgroupsList ??= [];
                 ViewModel.Tbl68SpeciesgroupsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl68Speciesgroups
+                ? [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => a.SpeciesgroupId == id)]
-                : [.. Context.Tbl68Speciesgroups
+                : [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => _search != null && a.SpeciesgroupName.StartsWith(_search))
                 .OrderBy(a => a.SpeciesgroupName)
                 .ThenBy(a => a.Subspeciesgroup)];
@@ -163,7 +171,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl75SpeciessesList ??= [];
-                ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+                ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
             .AsNoTracking()
             .Where(com => com.SpeciesgroupId == ViewModel.SpeciesgroupSelected.SpeciesgroupId)];
             });
@@ -260,7 +268,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         }
         else
         {
-            SingleSpeciesgroup = App.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
+            SingleSpeciesgroup = AppData.Data.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
         }
 
         return Task.CompletedTask;
@@ -287,7 +295,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.SpeciesgroupSelected = ViewModel.Tbl68SpeciesgroupsList[iNdx];
-            SingleSpeciesgroup = App.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
+            SingleSpeciesgroup = AppData.Data.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
             SpeciesgroupSingles();
         }
         else
@@ -339,7 +347,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleSpeciesgroup = App.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
+            SingleSpeciesgroup = AppData.Data.SingleSpeciesgroup(ViewModel.SpeciesgroupSelected.SpeciesgroupId);
             SpeciesgroupSingles();
         }
 
@@ -448,7 +456,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl68SpeciesgroupsList ??= [];
-            ViewModel.Tbl68SpeciesgroupsList = [.. Context.Tbl68Speciesgroups
+            ViewModel.Tbl68SpeciesgroupsList = [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => a.SpeciesgroupName == ViewModel.SpeciesgroupSelected.SpeciesgroupName &&
                         a.Subspeciesgroup == ViewModel.SpeciesgroupSelected.Subspeciesgroup)];
         });
@@ -470,9 +478,9 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         {
             ViewModel.Tbl68SpeciesgroupsList ??= [];
             ViewModel.Tbl68SpeciesgroupsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl68Speciesgroups
+                ? [.. AppData.Data.Tbl68Speciesgroups
                     .Where(a => a.SpeciesgroupId == id)]
-                : [.. Context.Tbl68Speciesgroups
+                : [.. AppData.Data.Tbl68Speciesgroups
                     .Where(a => _search != null && a.SpeciesgroupName.StartsWith(_search))
                     .OrderBy(a => a.SpeciesgroupName)
                     .ThenBy(a => a.Subspeciesgroup)];
@@ -482,7 +490,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
 
         if (ViewModel.Tbl68SpeciesgroupsList.Count == 0)
         {
-            ViewModel.Tbl68SpeciesgroupsList = [.. Context.Tbl68Speciesgroups
+            ViewModel.Tbl68SpeciesgroupsList = [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => a.SpeciesgroupId == viewModelSpeciesgroupSelected.SpeciesgroupId)];
             SpeciesgroupDataGrid.ItemsSource = ViewModel.Tbl68SpeciesgroupsList;
             await Refresh();
@@ -545,7 +553,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         }
         else
         {
-            SingleSpecies = App.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.SpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);
+            SingleSpecies = AppData.Data.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.SpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);
         }
 
         return Task.CompletedTask;
@@ -573,7 +581,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         {
             ViewModel.SpeciesSelected = ViewModel.Tbl75SpeciessesList[iNdx];
 
-            SingleSpecies = App.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.SpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);
+            SingleSpecies = AppData.Data.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.SpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);
             SpeciesSingles();
         }
         else
@@ -659,7 +667,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             }
             else
             {
-                SingleSpecies = App.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.SpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);
+                SingleSpecies = AppData.Data.SingleSpeciesSpeciesgroup(ViewModel.SpeciesSelected.SpeciesId, ViewModel.SpeciesgroupSelected.SpeciesgroupId);
                 SpeciesSingles();
             }
         });
@@ -718,7 +726,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(a => a.SpeciesName == ViewModel.SpeciesSelected.SpeciesName &&
                         a.Subspecies == ViewModel.SpeciesSelected.Subspecies &&
                         a.Divers == ViewModel.SpeciesSelected.Divers &&
@@ -743,14 +751,14 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl75SpeciessesList ??= [];
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
         });
         ViewModel.RefreshSpeciesItems();
 
         if (ViewModel.Tbl75SpeciessesList.Count == 0)
         {
-            ViewModel.Tbl75SpeciessesList = [.. Context.Tbl75Speciesses
+            ViewModel.Tbl75SpeciessesList = [.. AppData.Data.Tbl75Speciesses
                 .Where(com => com.SpeciesId == viewModelSpeciesSelected.SpeciesId)];
             SpeciesDataGrid.ItemsSource = ViewModel.Tbl75SpeciessesList;
             await Refresh();
@@ -878,9 +886,9 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
             {
                 ViewModel.Tbl68SpeciesgroupsList ??= [];
                 ViewModel.Tbl68SpeciesgroupsList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl68Speciesgroups
+                ? [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => a.SpeciesgroupId == id)]
-                : [.. Context.Tbl68Speciesgroups
+                : [.. AppData.Data.Tbl68Speciesgroups
                 .Where(a => _search!= null && a.SpeciesgroupName.StartsWith(_search))
                     .OrderBy(a => a.SpeciesgroupName)
                     .ThenBy(a => a.Subspeciesgroup)];

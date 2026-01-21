@@ -1,4 +1,5 @@
-﻿using ATIS.Models;
+﻿using ATIS.Infrastructure;
+using ATIS.Models;
 using ATIS.Services;
 using Mapsui;
 using Mapsui.Extensions;
@@ -15,7 +16,7 @@ public interface Maps
     //private Tbl87Geographic SingleGeographic { get; set; }
     //private Tbl69FiSpecies SingleSpecies { get; set; }
     protected TblCountry SingleCountry { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     //private string _search;
 
     ////  private readonly int _count = 0;
@@ -56,11 +57,11 @@ public interface Maps
         }
         {
             //aus TblCountriesList Daten
-            SingleCountry = Context.TblCountries.FirstOrDefault(x => x.Name == graphSelect.Country);
+            SingleCountry = AppData.Data.TblCountries.FirstOrDefault(x => x.Name == graphSelect.Country);
 
             if (SingleCountry == null)
             {
-                SingleCountry = Context.TblCountries.FirstOrDefault(x => x.Name == graphSelect.Continent);
+                SingleCountry = AppData.Data.TblCountries.FirstOrDefault(x => x.Name == graphSelect.Continent);
                 if (SingleCountry != null)
                 {
                     centerOf1LongX = SingleCountry.Longitude;

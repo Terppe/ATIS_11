@@ -1,4 +1,5 @@
 ﻿using ATIS.Helpers;
+using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
@@ -20,12 +21,12 @@ public sealed partial class Tbl30LegioListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl30LegioViewModel ViewModel { get; }
+    public Tbl30LegioViewModel ViewModel { get; set; }
     private Tbl30Legio SingleLegio { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
     private Tbl33Ordo SingleOrdo { get; set; }
-    private static readonly AtisDbContext Context = new();
+    //private static readonly AtisDbContext Context = new();
     private string _search;
 
     #endregion [Private Data Members]   
@@ -34,10 +35,16 @@ public sealed partial class Tbl30LegioListPage : Page
 
     public Tbl30LegioListPage()
     {
+        InitializeComponent();
+        Loaded += OnLoaded;
+
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
         if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl30LegioViewModel>();
-            InitializeComponent();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
@@ -45,7 +52,9 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
         }
+
     }
+
     #endregion [Constructor]   
 
     #region [Legio Methods]
@@ -90,9 +99,9 @@ public sealed partial class Tbl30LegioListPage : Page
             {
                 ViewModel.Tbl30LegiosList ??= [];
                 ViewModel.Tbl30LegiosList = int.TryParse(_search, out var id)
-                ? [.. Context.Tbl30Legios
+                ? [.. AppData.Data.Tbl30Legios
                 .Where(a => a.LegioId == id)]
-                : [.. Context.Tbl30Legios
+                : [.. AppData.Data.Tbl30Legios
                 .Where(a => _search != null && a.LegioName.StartsWith(_search))
                 .OrderBy(a => a.LegioName)];
             });
@@ -179,7 +188,7 @@ public sealed partial class Tbl30LegioListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl90ReferencesList ??= [];
-                ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+                ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
             .Where(refe => refe.LegioId == ViewModel.LegioSelected.LegioId)];
             });
             ViewModel.ReferenceDataSetCount = ViewModel.Tbl90ReferencesList.Count;
@@ -200,7 +209,7 @@ public sealed partial class Tbl30LegioListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl93CommentsList ??= [];
-                ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+                ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(com => com.LegioId == ViewModel.LegioSelected.LegioId)];
             });
             ViewModel.CommentDataSetCount = ViewModel.Tbl93CommentsList.Count;
@@ -220,7 +229,7 @@ public sealed partial class Tbl30LegioListPage : Page
             await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.Tbl33OrdosList ??= [];
-                ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+                ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
             .Where(com => com.LegioId == ViewModel.LegioSelected.LegioId)];
             });
             ViewModel.OrdoDataSetCount = ViewModel.Tbl33OrdosList.Count;
@@ -321,7 +330,7 @@ public sealed partial class Tbl30LegioListPage : Page
         }
         else
         {
-            SingleLegio = App.SingleLegio(ViewModel.LegioSelected.LegioId);
+            SingleLegio = AppData.Data.SingleLegio(ViewModel.LegioSelected.LegioId);
         }
 
         return Task.CompletedTask;
@@ -347,7 +356,7 @@ public sealed partial class Tbl30LegioListPage : Page
         if (iNdx is not -1)
         {
             ViewModel.LegioSelected = ViewModel.Tbl30LegiosList[iNdx];
-            SingleLegio = App.SingleLegio(ViewModel.LegioSelected.LegioId);
+            SingleLegio = AppData.Data.SingleLegio(ViewModel.LegioSelected.LegioId);
             LegioSingles();
         }
         else
@@ -397,7 +406,7 @@ public sealed partial class Tbl30LegioListPage : Page
             {
                 return Task.CompletedTask;
             }
-            SingleLegio = App.SingleLegio(ViewModel.LegioSelected.LegioId);
+            SingleLegio = AppData.Data.SingleLegio(ViewModel.LegioSelected.LegioId);
             LegioSingles();
         }
 
@@ -506,7 +515,7 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl30LegiosList ??= [];
-            ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+            ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
                 .Where(a => a.LegioName == ViewModel.LegioSelected.LegioName &&
                         a.InfraclassId == ViewModel.LegioSelected.InfraclassId)];
         });
@@ -530,9 +539,9 @@ public sealed partial class Tbl30LegioListPage : Page
             if (LegioSearchBox.Text != "") //not empty searchbox id or name
             {
                 ViewModel.Tbl30LegiosList = int.TryParse(_search, out var id)
-                    ? [.. Context.Tbl30Legios
+                    ? [.. AppData.Data.Tbl30Legios
                     .Where(a => a.LegioId == id)]
-                    : [.. Context.Tbl30Legios
+                    : [.. AppData.Data.Tbl30Legios
                     .Where(a => _search != null && a.LegioName.StartsWith(_search))
                     .OrderBy(a => a.LegioName)];
             }
@@ -542,7 +551,7 @@ public sealed partial class Tbl30LegioListPage : Page
 
         if (ViewModel.Tbl30LegiosList.Count == 0)
         {
-            ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+            ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
                 .Where(a => a.LegioId == viewModelLegioSelected.LegioId)];
             LegioDataGrid.ItemsSource = ViewModel.Tbl30LegiosList;
             await Refresh();
@@ -648,7 +657,7 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             if (ViewModel.ReferenceSelected != null)
             {
-                SingleReference = App.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
+                SingleReference = AppData.Data.SingleReference(ViewModel.ReferenceSelected.ReferenceId);
             }
         }
 
@@ -683,7 +692,7 @@ public sealed partial class Tbl30LegioListPage : Page
         }
         else
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId, ViewModel.LegioSelected.LegioId);
             ReferenceSingles();
         }
         return Task.CompletedTask;
@@ -786,7 +795,7 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(a => a.Info == ViewModel.ReferenceSelected.Info &&
                         a.LegioId == ViewModel.ReferenceSelected.LegioId &&
                         a.RefExpertId == ViewModel.ReferenceSelected.RefExpertId &&
@@ -810,14 +819,14 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl90ReferencesList ??= [];
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(refe => refe.LegioId == viewModelReferenceSelected.LegioId)];
         });
         ViewModel.RefreshReferenceItems();
 
         if (ViewModel.Tbl90ReferencesList.Count == 0)
         {
-            ViewModel.Tbl90ReferencesList = [.. Context.Tbl90References
+            ViewModel.Tbl90ReferencesList = [.. AppData.Data.Tbl90References
                 .Where(com => com.LegioId == viewModelReferenceSelected.LegioId)];
             ReferenceDataGrid.ItemsSource = ViewModel.Tbl90ReferencesList;
             await Refresh();
@@ -904,7 +913,7 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.LegioSelected.LegioId);
             ReferenceExpertSingles();
         }
@@ -941,7 +950,7 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
                                   ViewModel.LegioSelected.LegioId);
 
             ReferenceExpertSingles();
@@ -1011,7 +1020,7 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
                                    ViewModel.LegioSelected.LegioId);
             ReferenceSourceSingles();
         }
@@ -1048,7 +1057,7 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
                            ViewModel.LegioSelected.LegioId);
 
             ReferenceSourceSingles();
@@ -1120,7 +1129,7 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             ViewModel.ReferenceSelected = ViewModel.Tbl90ReferencesList[iNdx];
 
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
                             ViewModel.LegioSelected.LegioId);
             ReferenceAuthorSingles();
         }
@@ -1157,7 +1166,7 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            SingleReference = App.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
+            SingleReference = AppData.Data.SingleReferenceLegio(ViewModel.ReferenceSelected.ReferenceId,
                     ViewModel.LegioSelected.LegioId);
 
             ReferenceAuthorSingles();
@@ -1233,7 +1242,7 @@ public sealed partial class Tbl30LegioListPage : Page
         }
         else
         {
-            SingleComment = App.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
+            SingleComment = AppData.Data.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
         }
         return Task.CompletedTask;
     }
@@ -1260,7 +1269,7 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             ViewModel.CommentSelected = ViewModel.Tbl93CommentsList[iNdx];
 
-            SingleComment = App.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
+            SingleComment = AppData.Data.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
             CommentSingles();
         }
         else
@@ -1302,7 +1311,7 @@ public sealed partial class Tbl30LegioListPage : Page
             }
             else
             {
-                SingleComment = App.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
+                SingleComment = AppData.Data.SingleCommentLegio(ViewModel.CommentSelected.CommentId, ViewModel.LegioSelected.LegioId);
                 CommentSingles();
             }
         });
@@ -1406,7 +1415,7 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
             .Where(a => a.Info == ViewModel.CommentSelected.Info &&
                         a.Memo == ViewModel.CommentSelected.Memo &&
                         a.LegioId == ViewModel.CommentSelected.LegioId)];
@@ -1428,14 +1437,14 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl93CommentsList ??= [];
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.LegioId == viewModelCommentSelected.LegioId)];
         });
         ViewModel.RefreshCommentItems();
 
         if (ViewModel.Tbl93CommentsList.Count == 0)
         {
-            ViewModel.Tbl93CommentsList = [.. Context.Tbl93Comments
+            ViewModel.Tbl93CommentsList = [.. AppData.Data.Tbl93Comments
                 .Where(com => com.LegioId == viewModelCommentSelected.LegioId)];
             CommentDataGrid.ItemsSource = ViewModel.Tbl93CommentsList;
             await Refresh();
@@ -1492,7 +1501,7 @@ public sealed partial class Tbl30LegioListPage : Page
         }
         else
         {
-            SingleOrdo = App.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId,
+            SingleOrdo = AppData.Data.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId,
                     ViewModel.LegioSelected.LegioId);
         }
 
@@ -1521,7 +1530,7 @@ public sealed partial class Tbl30LegioListPage : Page
         {
             ViewModel.OrdoSelected = ViewModel.Tbl33OrdosList[iNdx];
 
-            SingleOrdo = App.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId, ViewModel.LegioSelected.LegioId);
+            SingleOrdo = AppData.Data.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId, ViewModel.LegioSelected.LegioId);
             OrdoSingles();
         }
         else
@@ -1570,7 +1579,7 @@ public sealed partial class Tbl30LegioListPage : Page
             }
             else
             {
-                SingleOrdo = App.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId, ViewModel.LegioSelected.LegioId);
+                SingleOrdo = AppData.Data.SingleOrdoLegio(ViewModel.OrdoSelected.OrdoId, ViewModel.LegioSelected.LegioId);
                 OrdoSingles();
             }
         });
@@ -1630,7 +1639,7 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl33OrdosList ??= [];
-            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+            ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
             .Where(a => a.OrdoName == ViewModel.OrdoSelected.OrdoName &&
                         a.LegioId == ViewModel.OrdoSelected.LegioId)];
         });
@@ -1651,14 +1660,14 @@ public sealed partial class Tbl30LegioListPage : Page
         await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.Tbl33OrdosList ??= [];
-            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+            ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
                 .Where(com => com.LegioId == viewModelOrdoSelected.LegioId)];
         });
         ViewModel.RefreshOrdoItems();
 
         if (ViewModel.Tbl33OrdosList.Count == 0)
         {
-            ViewModel.Tbl33OrdosList = [.. Context.Tbl33Ordos
+            ViewModel.Tbl33OrdosList = [.. AppData.Data.Tbl33Ordos
                 .Where(com => com.LegioId == viewModelOrdoSelected.LegioId)];
             OrdoDataGrid.ItemsSource = ViewModel.Tbl33OrdosList;
             await Refresh();
@@ -1737,16 +1746,16 @@ public sealed partial class Tbl30LegioListPage : Page
                 if (ViewModel.Tbl30LegiosList.Count == 0)
                 {
                     ViewModel.Tbl30LegiosList ??= [];
-                    ViewModel.Tbl30LegiosList = [.. Context.Tbl30Legios
+                    ViewModel.Tbl30LegiosList = [.. AppData.Data.Tbl30Legios
                             .Where(a => a.LegioId == ViewModel.LegioSelected.LegioId)];
                 }
                 else
                 {
                     ViewModel.Tbl30LegiosList ??= [];
                     ViewModel.Tbl30LegiosList = int.TryParse(_search, out var id)
-                        ? [.. Context.Tbl30Legios
+                        ? [.. AppData.Data.Tbl30Legios
                            .Where(a => a.LegioId == id)]
-                       : [.. Context.Tbl30Legios
+                       : [.. AppData.Data.Tbl30Legios
                            .Where(a => _search != null && a.LegioName.StartsWith(_search))
                          .OrderBy(a => a.LegioName)];
                 }
