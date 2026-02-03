@@ -3,8 +3,6 @@ using System.Windows.Input;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 
 namespace ATIS.Views.Main.Food;

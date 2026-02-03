@@ -2,280 +2,333 @@
 <Page x:Class="ATIS.Views.Database.TblCountryListPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:atis="using:ATIS.DesignSystem.Components"
+      xmlns:behaviors="using:ATIS.DesignSystem.Behaviors"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-      xmlns:userControls="using:ATIS.AtisDesignsystem.UserControls"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       mc:Ignorable="d">
 
-    <userControls:AtisPageLayout>
+    <interactivity:Interaction.Behaviors>
+        <behaviors:AtisBindingCommitBehavior Command="{Binding SaveCountryCommand}" />
+    </interactivity:Interaction.Behaviors>
 
-        <!--  HEADER LINKS  -->
-        <userControls:AtisPageLayout.Header>
+    <Grid x:Name="RootGrid">
 
-            <StackPanel Margin="8,8,0,0"
-                        Orientation="Horizontal"
-                        Spacing="12">
-                <TextBlock loca:Uids.Uid="TextBlock_Countries"
-                           Style="{StaticResource PageTitleTextStyle}" />
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <atis:AtisPageLayout>
 
-                <TextBlock Margin="0,12,0,0"
-                           loca:Uids.Uid="TextBlock_DataSetCount"
-                           Style="{StaticResource PageSubtitleTextStyle}" />
+                <!--  HEADER LINKS  -->
+                <atis:AtisPageLayout.Header>
 
-                <TextBlock Margin="0,12,0,0"
-                           Style="{StaticResource PageSubtitleTextStyle}"
-                           Text="{Binding CountryDataSetCount, Mode=OneWay}" />
-            </StackPanel>
-        </userControls:AtisPageLayout.Header>
+                    <StackPanel Margin="8,0,0,8"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Margin="0,4,0,0"
+                                   loca:Uids.Uid="TextBlock_Countries"
+                                   Style="{StaticResource AtisPageTitleTextStyle}" />
 
-        <!--  APPBAR RECHTS  -->
-        <userControls:AtisPageLayout.AppBar>
-            <Grid ColumnSpacing="12">
+                        <TextBlock Margin="0,16,0,0"
+                                   loca:Uids.Uid="TextBlock_DataSetCount"
+                                   Style="{StaticResource AtisBodyTextStyle}" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <!--  LEFT: Buttons  -->
-                <StackPanel Grid.Column="0"
-                            Margin="0,16,0,0"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal"
-                            Spacing="8">
-
-                    <AppBarButton loca:Uids.Uid="Button_AppBarAdd"
-                                  Command="{Binding AddCountryCommand}"
-                                  Style="{StaticResource AtisAppBarButtonPrimary}"
-                                  Tag="&#xE710;" />
-
-                    <AppBarButton loca:Uids.Uid="Button_AppBarSave"
-                                  Command="{Binding SaveCountryCommand}"
-                                  IsEnabled="{Binding IsInEditCountry, Mode=OneWay}"
-                                  Style="{StaticResource AtisAppBarButtonSecondary}"
-                                  Tag="&#xE74E;" />
-
-                    <AppBarButton loca:Uids.Uid="Button_AppBarDelete"
-                                  Command="{Binding DeleteCountryCommand}"
-                                  IsEnabled="{Binding CanEditCountry, Mode=OneWay}"
-                                  Style="{StaticResource AtisAppBarButtonSecondary}"
-                                  Tag="&#xE74D;" />
-
-                    <AppBarButton loca:Uids.Uid="Button_AppBarSync"
-                                  Command="{Binding LoadCommand}"
-                                  IsEnabled="{Binding CanEditCountry, Mode=OneWay}"
-                                  Style="{StaticResource AtisAppBarButtonSecondary}"
-                                  Tag="&#xE72C;" />
-                </StackPanel>
-
-                <!--  RIGHT: SearchBox  -->
-                <AutoSuggestBox x:Name="SearchBox"
-                                Grid.Column="1"
-                                Width="260"
-                                Height="32"
-                                Margin="10,16,18,0"
-                                VerticalAlignment="Center"
-                                loca:Uids.Uid="AutoSuggestBox_Search"
-                                Loaded="SearchBox_OnLoaded"
-                                QueryIcon="Find"
-                                QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                                Text="{Binding SearchText, Mode=TwoWay}" />
-            </Grid>
-        </userControls:AtisPageLayout.AppBar>
-
-        <!--  ⭐ LIST CONTENT  -->
-        <userControls:AtisPageLayout.ListContent>
-            <Border Style="{StaticResource AtisCard}">
-                <toolkit:DataGrid x:Name="CountryDataGrid"
-                                  MinHeight="330"
-                                  MaxHeight="330"
-                                  AreRowDetailsFrozen="True"
-                                  AutoGenerateColumns="False"
-                                  GridLinesVisibility="None"
-                                  ItemsSource="{Binding Countries}"
-                                  SelectedItem="{Binding CountrySelected, Mode=TwoWay}"
-                                  Style="{StaticResource AtisDataGridStyle}">
-
-                    <!--  ContextFlyout  -->
-                    <toolkit:DataGrid.ContextFlyout>
-                        <MenuFlyout>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add"
-                                            Command="{Binding AddCountryCommand}"
-                                            Icon="Add" />
-
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Edit"
-                                            Command="{Binding StartEditCountryCommand}"
-                                            Icon="Edit" />
-
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save"
-                                            Command="{Binding SaveCountryCommand}"
-                                            Icon="Save"
-                                            IsEnabled="{Binding CountrySelected, Converter={StaticResource NullToBoolConverter}}" />
-
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete"
-                                            Command="{Binding DeleteCountryCommand}"
-                                            Icon="Delete" />
-
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
-                                            Command="{Binding RefreshCountryCommand}"
-                                            Icon="Refresh" />
-
-                        </MenuFlyout>
-                    </toolkit:DataGrid.ContextFlyout>
-
-                    <!--  Columns  -->
-                    <toolkit:DataGrid.RowStyle>
-                        <Style TargetType="toolkit:DataGridRow">
-                            <Setter Property="Background" Value="{Binding IsAlternate, Converter={StaticResource BoolToRowBackgroundConverter}}" />
-                        </Style>
-                    </toolkit:DataGrid.RowStyle>
-
-                    <!--  Columns  -->
-                    <toolkit:DataGrid.Columns>
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTemplateColumn_CountryId"
-                                                    Binding="{Binding CountryId}"
-                                                    IsReadOnly="True"
-                                                    Tag="CountryId" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_CountryName"
-                                                    Binding="{Binding Name}"
-                                                    Tag="Name" />
-                        <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Regex"
-                                                    Binding="{Binding Regex}"
-                                                    Tag="Regex" />
-                    </toolkit:DataGrid.Columns>
-
-                </toolkit:DataGrid>
-            </Border>
-        </userControls:AtisPageLayout.ListContent>
-
-        <!--  ⭐ DETAIL CONTENT  -->
-        <userControls:AtisPageLayout.DetailContent>
-
-            <Border Style="{StaticResource AtisCard}"
-                    Visibility="{Binding CountrySelected, Converter={StaticResource NullToVisibilityConverter}}">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Spacing="12">
-
-                        <!--  Detail CommandBar  -->
-                        <userControls:AtisDetailHeader IsEnabled="True">
-                            <userControls:AtisDetailHeader.LeftContent>
-
-                                <TextBlock loca:Uids.Uid="TextBlock_Country"
-                                           Style="{StaticResource AtisPageSectionTitleTextStyle}" />
-
-                            </userControls:AtisDetailHeader.LeftContent>
-
-                            <userControls:AtisDetailHeader.RightContent>
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="8">
-                                    <AppBarButton loca:Uids.Uid="Button_AppBarSave"
-                                                  Command="{Binding SaveCountryCommand}"
-                                                  Style="{StaticResource AtisAppBarButtonSecondary}"
-                                                  Tag="&#xE74E;"
-                                                  Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                    <AppBarButton loca:Uids.Uid="Button_AppBarCancel"
-                                                  Command="{Binding CancelEditCountryCommand}"
-                                                  Style="{StaticResource AtisAppBarButtonSecondary}"
-                                                  Tag="&#xE8BB;"
-                                                  Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                    <AppBarButton loca:Uids.Uid="Button_AppBarEdit"
-                                                  Command="{Binding StartEditCountryCommand}"
-                                                  IsEnabled="{Binding CanEditCountry}"
-                                                  Style="{StaticResource AtisAppBarButtonSecondary}"
-                                                  Tag="&#xE70F;" />
-
-                                    <!--<AppBarButton loca:Uids.Uid="Button_AppBarEdit"
-                                    Command="{Binding StartEditCountryCommand}"
-                                    IsEnabled="{Binding CanEditCountry}"
-                                    Style="{StaticResource AtisAppBarButtonSecondary}"
-                                    Tag="&#xE70F;" />-->
-                                </StackPanel>
-                            </userControls:AtisDetailHeader.RightContent>
-                        </userControls:AtisDetailHeader>
-
-                        <!--  Detail Fields  -->
-                        <Grid RowSpacing="12">
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-
-                            <!--  Row 0  -->
-                            <Grid Grid.Row="0"
-                                  ColumnSpacing="12">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="110" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox x:Name="CountryId"
-                                         loca:Uids.Uid="TextBox_CountryId"
-                                         IsReadOnly="True"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding CountrySelected.CountryId, Mode=TwoWay}" />
-
-                                <TextBox x:Name="CountryName"
-                                         Grid.Column="1"
-                                         loca:Uids.Uid="TextBox_CountryName"
-                                         Loaded="CountryName_Loaded"
-                                         IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding CountrySelected.Name, Mode=TwoWay}" />
-                            </Grid>
-
-
-                            <!--  Row 1  -->
-                            <TextBox Grid.Row="1"
-                                     loca:Uids.Uid="TextBox_Regex"
-                                     Header="Regex"
-                                     IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                     Style="{StaticResource AtisTextBox}"
-                                     Text="{Binding CountrySelected.Regex, Mode=TwoWay}" />
-
-
-                            <!--  Row 2  -->
-                            <Grid Grid.Row="2"
-                                  ColumnSpacing="12">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="250" />
-                                    <ColumnDefinition Width="200" />
-                                    <ColumnDefinition Width="200" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox loca:Uids.Uid="TextBox_ZoomLevel"
-                                         IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding CountrySelected.ZoomLevel, Mode=TwoWay}" />
-
-                                <TextBox Grid.Column="1"
-                                         loca:Uids.Uid="TextBox_Latitude1"
-                                         IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding CountrySelected.Latitude, Mode=TwoWay}" />
-
-                                <TextBox Grid.Column="2"
-                                         loca:Uids.Uid="TextBox_Longitude1"
-                                         IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding CountrySelected.Longitude, Mode=TwoWay}" />
-                            </Grid>
-
-                        </Grid>
-
+                        <TextBlock Margin="0,16,0,0"
+                                   Style="{StaticResource AtisBodyTextStyle}"
+                                   Text="{Binding CountryDataSetCount, Mode=OneWay}" />
                     </StackPanel>
+                </atis:AtisPageLayout.Header>
 
-                </ScrollViewer>
+                <!--  APPBAR RECHTS  -->
+                <atis:AtisPageLayout.AppBar>
+                    <Grid ColumnSpacing="8">
 
-            </Border>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-        </userControls:AtisPageLayout.DetailContent>
+                        <!--  LEFT: Buttons  -->
+                        <StackPanel Grid.Column="0"
+                                    Margin="8"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
 
-    </userControls:AtisPageLayout>
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding AddCountryCommand}"
+                                    Style="{StaticResource AtisPrimaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE710;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Add" />
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding SaveCountryCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE74E;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Save" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding DeleteCountryCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE74D;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Delete" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding RefreshCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE72C;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Sync" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+
+                        <!--  RIGHT: SearchBox  -->
+                        <AutoSuggestBox x:Name="SearchBox"
+                                        Grid.Column="1"
+                                        Width="260"
+                                        Height="32"
+                                        Margin="10,0,18,0"
+                                        VerticalAlignment="Center"
+                                        loca:Uids.Uid="AutoSuggestBox_Search"
+                                        Loaded="SearchBox_OnLoaded"
+                                        QueryIcon="Find"
+                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                        Text="{Binding SearchText, Mode=TwoWay}" />
+                    </Grid>
+                </atis:AtisPageLayout.AppBar>
+
+                <!--  ⭐ LIST CONTENT  -->
+                <atis:AtisPageLayout.ListContent>
+                    <Border Style="{StaticResource AtisCard}">
+                        <Grid>
+                            <toolkit:DataGrid x:Name="CountryDataGrid"
+                                              Height="Auto"
+                                              MinHeight="230"
+                                              MaxHeight="300"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Top"
+                                              AlternatingRowBackground="{ThemeResource AtisGridRowAlternateBackground}"
+                                              AreRowDetailsFrozen="True"
+                                              CanUserSortColumns="True"
+                                              GridLinesVisibility="Vertical"
+                                              ItemsSource="{Binding Countries}"
+                                              RowBackground="{ThemeResource AtisGridRowBackground}"
+                                              SelectedItem="{Binding CountrySelected, Mode=TwoWay}"
+                                              Sorting="CountryDataGrid_Sorting"
+                                              Style="{StaticResource AtisDataGridStyle}">
+
+
+                                <!--  ContextFlyout  -->
+                                <toolkit:DataGrid.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add"
+                                                        Command="{Binding AddCountryCommand}"
+                                                        Icon="Add"
+                                                        Style="{StaticResource AtisPrimaryMenuFlyoutItem}" />
+
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Edit"
+                                                        Command="{Binding StartEditCountryCommand}"
+                                                        Icon="Edit" />
+
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save"
+                                                        Command="{Binding SaveCountryCommand}"
+                                                        Icon="Save"
+                                                        IsEnabled="{Binding CountrySelected, Converter={StaticResource NullToBoolConverter}}" />
+
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete"
+                                                        Command="{Binding DeleteCountryCommand}"
+                                                        Icon="Delete" />
+
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
+                                                        Command="{Binding RefreshCommand}"
+                                                        Icon="Refresh" />
+
+                                    </MenuFlyout>
+                                </toolkit:DataGrid.ContextFlyout>
+
+                                <!--  Columns  -->
+                                <toolkit:DataGrid.RowStyle>
+                                    <Style TargetType="toolkit:DataGridRow">
+                                        <Setter Property="Background" Value="{Binding IsAlternate, Converter={StaticResource BoolToRowBackgroundConverter}}" />
+                                    </Style>
+                                </toolkit:DataGrid.RowStyle>
+
+                                <!--  Columns  -->
+                                <toolkit:DataGrid.Columns>
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTemplateColumn_CountryId"
+                                                                Binding="{Binding CountryId}"
+                                                                CanUserSort="True"
+                                                                IsReadOnly="True"
+                                                                Tag="CountryId" />
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_CountryName"
+                                                                Binding="{Binding Name}"
+                                                                CanUserSort="True"
+                                                                Tag="Name" />
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Regex"
+                                                                Binding="{Binding Regex}"
+                                                                CanUserSort="True"
+                                                                Tag="Regex" />
+                                </toolkit:DataGrid.Columns>
+
+                            </toolkit:DataGrid>
+                        </Grid>
+                    </Border>
+                </atis:AtisPageLayout.ListContent>
+
+                <!--  ⭐ DETAIL CONTENT  -->
+                <atis:AtisPageLayout.DetailContent>
+                    <Border Style="{StaticResource AtisCard}"
+                            Visibility="{Binding CountrySelected, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Spacing="8">
+
+                            <!--  Detail CommandBar  -->
+                            <atis:AtisDetailHeader IsEnabled="True">
+                                <atis:AtisDetailHeader.LeftContent>
+
+                                    <TextBlock loca:Uids.Uid="TextBlock_Country"
+                                               Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                                </atis:AtisDetailHeader.LeftContent>
+
+                                <atis:AtisDetailHeader.RightContent>
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="8">
+                                        <Button Margin="5,0,5,0"
+                                                Command="{Binding SaveCountryCommand}"
+                                                Style="{StaticResource AtisSecondaryButton}"
+                                                Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="6">
+                                                <FontIcon Glyph="&#xE74E;" />
+                                                <TextBlock loca:Uids.Uid="TextBlock_Save" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Margin="5,0,5,0"
+                                                Command="{Binding CancelEditCountryCommand}"
+                                                Style="{StaticResource AtisSecondaryButton}"
+                                                Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="6">
+                                                <FontIcon Glyph="&#xE8BB;" />
+                                                <TextBlock loca:Uids.Uid="TextBlock_Cancel" />
+                                            </StackPanel>
+                                        </Button>
+
+                                        <ToggleButton Margin="5,0,5,0"
+                                                      IsChecked="{Binding IsInEditCountry, Mode=TwoWay}"
+                                                      IsEnabled="{Binding CanEditCountry}"
+                                                      Style="{StaticResource AtisSecondaryToggleButton}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="6">
+                                                <FontIcon Glyph="&#xE70F;" />
+                                                <TextBlock loca:Uids.Uid="TextBlock_Edit" />
+                                            </StackPanel>
+                                        </ToggleButton>
+
+                                    </StackPanel>
+                                </atis:AtisDetailHeader.RightContent>
+                            </atis:AtisDetailHeader>
+
+                            <!--  Detail Fields  -->
+                            <Grid RowSpacing="12">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+
+                                <!--  Row 0  -->
+                                <Grid Grid.Row="0"
+                                      ColumnSpacing="12"
+                                      RowSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="CountryName"
+                                             Width="Auto"
+                                             MinWidth="{Binding MaxLength, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource DbLengthToWidthConverter}, ConverterParameter=Min}"
+                                             MaxWidth="{Binding MaxLength, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource DbLengthToWidthConverter}}"
+                                             loca:Uids.Uid="TextBox_CountryName"
+                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                             MaxLength="100"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding CountrySelected.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                                <TextBox Grid.Row="1"
+                                         Width="Auto"
+                                         MinWidth="{Binding MaxLength, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource DbLengthToWidthConverter}, ConverterParameter=Min}"
+                                         MaxWidth="{Binding MaxLength, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource DbLengthToWidthConverter}}"
+                                         loca:Uids.Uid="TextBox_Regex"
+                                         IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                         MaxLength="200"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding CountrySelected.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <!--  Row 2  -->
+                                <Grid Grid.Row="2"
+                                      ColumnSpacing="12"
+                                      RowSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox x:Name="ZoomLevel"
+                                             Grid.Column="0"
+                                             MinWidth="200"
+                                             loca:Uids.Uid="TextBox_ZoomLevel"
+                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding CountrySelected.ZoomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBox x:Name="Latitude"
+                                             Grid.Column="1"
+                                             MinWidth="200"
+                                             loca:Uids.Uid="TextBox_Latitude"
+                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding CountrySelected.Latitude, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <TextBox x:Name="Longitude"
+                                             Grid.Column="2"
+                                             MinWidth="200"
+                                             loca:Uids.Uid="TextBox_Longitude"
+                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding CountrySelected.Longitude, Converter={StaticResource ResourceKey=DoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+
+                            </Grid>
+
+                        </StackPanel>
+                    </Border>
+
+                </atis:AtisPageLayout.DetailContent>
+
+            </atis:AtisPageLayout>
+        </ScrollViewer>
+
+        <!--  2. 🔥 Modernes Lade Overlay  -->
+        <atis:LoadingOverlayControl Grid.RowSpan="1"
+                                    IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+    </Grid>
 </Page>

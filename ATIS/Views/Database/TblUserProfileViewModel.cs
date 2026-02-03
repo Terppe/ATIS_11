@@ -34,7 +34,8 @@ public partial class TblUserProfileViewModel : ObservableObject
     private void GetAllCollections()
     {
         TblCountriesAllList ??= [];
-        TblCountriesAllList = [.. _dataService.GetCountryAsync()];
+        // Fix: Await the Task and use the result for the collection
+        TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
     }
 
     #endregion [Constructor]

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -3531,21 +3532,19 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-    public async Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string query)
+    public async Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query)
     {
         if (string.IsNullOrWhiteSpace(query))
             return [];
 
         var isId = int.TryParse(query, out int idValue);
 
-        using var context = new AtisDbContext();
-        var queryable = _context.TblCountries.AsQueryable();
+        var queryable = _context.TblCountries.AsNoTracking();
 
         if (isId)
         {
             return await queryable
                 .Where(f => f.CountryId == idValue)
-                .Distinct()
                 .OrderBy(a => a.Name)
                 .ToListAsync();
         }
@@ -3553,84 +3552,71 @@ public partial class DataService : ObservableObject, IDataService
         {
             return await queryable
                 .Where(f => EF.Functions.Like(f.Name, $"{query}%"))
-                .Distinct()
+                .OrderBy(a => a.Name)
+                .ToListAsync();
+        }
+    }
+    public async Task<List<TblCountry>> GetCountriesByNameAsync(string? query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+            return [];
+
+        var queryable = _context.TblCountries.AsNoTracking();
+        {
+            return await queryable
+                .Where(f => EF.Functions.Like(f.Name, $"{query}%"))
                 .OrderBy(a => a.Name)
                 .ToListAsync();
         }
     }
 
-    public ObservableCollection<TblCountry> GetCountryAsync()
+    public async Task<List<TblCountry>> GetCountryAsync()
     {
-        var collection = new ObservableCollection<TblCountry>(_context.TblCountries
+        return await _context.TblCountries
             .AsNoTracking()
-            .OrderBy(a => a.Name));
-        return collection;
+            .OrderBy(a => a.Name)
+            .ToListAsync();
     }
-
-    public ObservableCollection<TblCountry> GetCountryAsync(int countryid)
+    public async Task<List<TblCountry>> GetCountryAsync(int countryid)
     {
-        var collection = new ObservableCollection<TblCountry>(_context.TblCountries
-        .AsNoTracking()
+        return await _context.TblCountries
+            .AsNoTracking()
             .Where(e => e.CountryId == countryid)
             .OrderBy(k => k.Name)
-        );
-
-        return collection;
+            .ToListAsync();
     }
 
-    public async Task<ObservableCollection<TblCountry>> GetCountryAsync(string search)
+    public async Task<TblCountry?> GetCountryByIdAsync(int? countryid)
     {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<TblCountry>(_context.TblCountries
-                .Where(e => e.CountryId == id))
-            : new ObservableCollection<TblCountry>(_context.TblCountries
-                .Where(e => e.Name.StartsWith(search))
-                .OrderBy(a => a.Name));
-
-        await Task.CompletedTask;
-        return collection;
+        return await _context.TblCountries
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.CountryId == countryid);
     }
 
     public async Task<TblCountry> UpsertCountryAsync(TblCountry country)
     {
         if (country.CountryId == 0)
         {
-            _context.TblCountries.Add(country);
+            await _context.TblCountries.AddAsync(country);
         }
         else
         {
-            var current = await _context.TblCountries
-                .FirstOrDefaultAsync(c => c.CountryId == country.CountryId);
-
-            if (current == null)
-                throw new InvalidOperationException("Country not found.");
-
-            _context.Entry(current).CurrentValues.SetValues(country);
+            _context.TblCountries.Update(country);
         }
 
         await _context.SaveChangesAsync();
-        return country; // enthält jetzt die neue ID
+        return country;
     }
-
-    //public async Task<TblCountry> UpsertCountryAsync(TblCountry country)
-    //{
-    //    var current = await _context.TblCountries.FirstOrDefaultAsync(b => b.CountryId == country.CountryId);
-    //    if (null == current)
-    //    {
-    //        _context.TblCountries.Add(country);
-    //    }
-    //    else
-    //    {
-    //        _context.Entry(current).CurrentValues.SetValues(country);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return country;
-    //}
 
     public async Task DeleteCountryAsync(int? countryid)
     {
-        var country = await _context.TblCountries.FirstOrDefaultAsync(c => c.CountryId == countryid);
-        if (null != country)
+        if (countryid is null)
+            return;
+
+        var country = await _context.TblCountries
+            .FirstOrDefaultAsync(c => c.CountryId == countryid);
+
+        if (country != null)
         {
             _context.TblCountries.Remove(country);
             await _context.SaveChangesAsync();

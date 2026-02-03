@@ -71,7 +71,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
 
         TblCountriesAllList ??= [];
-        TblCountriesAllList = [.. _dataService.GetCountryAsync()];
+        TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
 
         //  Languages = new List<Language>();
         //GetValueLanguage();

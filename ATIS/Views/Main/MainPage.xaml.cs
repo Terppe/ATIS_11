@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Globalization;
 using System.Net.Sockets;
-using System.Threading;
 using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
@@ -27,136 +25,156 @@ namespace ATIS.Views.Main;
 public sealed partial class MainPage : Page
 {
     public MainViewModel ViewModel { get; set; }
+    private string _currentPageTag { get; set; }
 
     public MainPage()
     {
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
+        //DataContext = ViewModel;
+        System.Diagnostics.Debug.WriteLine($"DataContext ({this.GetType().Name}): {this.DataContext?.GetType().Name}");
 
-                NavFrame.Navigate(typeof(HomePage)); // ← garantiert sofort sichtbar
+        NavFrame.Navigate(typeof(HomePage)); // ← garantiert sofort sichtbar
+
+        _currentPageTag = "ATIS.Views.Main.HomePage";
+
+        NavView.SelectedItem = NavView.MenuItems
+            .OfType<NavigationViewItem>()
+            .First(i => (string)i.Tag == _currentPageTag);
+
+        // Cursor im NavigationView setzen
+        var homeItem = NavView.MenuItems
+            .OfType<NavigationViewItem>()
+            .FirstOrDefault(i => (string)i.Tag == "ATIS.Views.Main.HomePage");
+        if (homeItem != null)
+            NavView.SelectedItem = homeItem;
+
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private async void OnLoaded(object sender, RoutedEventArgs e)
     {
+
         ViewModel = App.GetService<MainViewModel>();
+        System.Diagnostics.Debug.WriteLine($"DataContext: {this.DataContext}");
 
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
 
-        //Check Server and Database
-        CheckSql_Db();
+        ////Check Server and Database
+        //CheckSql_Db();
 
-        CloseApp();
-        // Write info message to log
-        SimpleLog.Info("MainWindow logging started.");
+        //CloseApp();
+        //// Write info message to log
+        //SimpleLog.Info("MainWindow logging started.");
+
+        //ViewModel.IsLoading = false;
+        // Call ViewModel initialization
+        await ViewModel.InitAsync();
     }
 
-    private void CheckSql_Db()
-    {
-        if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
-                Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
-        {
-            TbDataBase.Text = StringsRes.SqlServerNotRunning;
-        }
-        else
-        {
-            if (!CheckDatabaseExist(ConfigurationManager.AppSettings.Get("ServerName")))
-            {
-                TbDataBase.Text = StringsRes.DatabaseNotFound;
-                ;
-            }
-        }
+  //  private void CheckSql_Db()
+    //{
+    //    if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
+    //            Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
+    //    {
+    //        TbDataBase.Text = StringsRes.SqlServerNotRunning;
+    //    }
+    //    else
+    //    {
+    //        if (!CheckDatabaseExist(ConfigurationManager.AppSettings.Get("ServerName")))
+    //        {
+    //            TbDataBase.Text = StringsRes.DatabaseNotFound;
+    //            ;
+    //        }
+    //    }
 
-    }
+    //}
 
     //------------------------Check Server and Database-------------------------------
-    private static bool CheckForServer(string address, int port)
-    {
-        var timeout = 500;
-        if (ConfigurationManager.AppSettings.Get("RemoteTestTimeout") != null)
-        {
-            timeout = int.Parse(ConfigurationManager.AppSettings.Get("RemoteTestTimeout") ?? string.Empty);
-        }
+    //private static bool CheckForServer(string address, int port)
+    //{
+    //    var timeout = 500;
+    //    if (ConfigurationManager.AppSettings.Get("RemoteTestTimeout") != null)
+    //    {
+    //        timeout = int.Parse(ConfigurationManager.AppSettings.Get("RemoteTestTimeout") ?? string.Empty);
+    //    }
 
-        try
-        {
-            var result = false;
-            using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            if (address != null)
-            {
-                var asyncResult = socket.BeginConnect(address, port, null, null);
-                result = asyncResult.AsyncWaitHandle.WaitOne(timeout, true);
-            }
+    //    try
+    //    {
+    //        var result = false;
+    //        using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+    //        if (address != null)
+    //        {
+    //            var asyncResult = socket.BeginConnect(address, port, null, null);
+    //            result = asyncResult.AsyncWaitHandle.WaitOne(timeout, true);
+    //        }
 
-            socket.Close();
+    //        socket.Close();
 
-            return result;
-        }
-        catch (SqlException e)
-        {
-            _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
+    //        return result;
+    //    }
+    //    catch (SqlException e)
+    //    {
+    //        _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
 
-            _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
-            //MessageBox.Show(CultRes.StringsRes.NoConnectServer, e.Message,
-            //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+    //        _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
+    //        //MessageBox.Show(CultRes.StringsRes.NoConnectServer, e.Message,
+    //        //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
 
-            SimpleLog.Error("Server not connected" + e.Message);
+    //        SimpleLog.Error("Server not connected" + e.Message);
 
-            return false;
-        }
-    }
+    //        return false;
+    //    }
+    //}
 
-    /// <summary>
-    ///Check if database exist or SQLServer not running
-    /// </summary>
-    /// <returns></returns>
-    private bool CheckDatabaseExist(string db)
-    {
-        var ret = false;
+    //Check if database exist or SQLServer not running
+    //private bool CheckDatabaseExist(string db)
+    //{
+    //    var ret = false;
 
-        try
-        {
-            using var context = new AtisDbContext();
-            var dbExists = context.Database.CanConnect();
+    //    try
+    //    {
+    //        using var context = new AtisDbContext();
+    //        var dbExists = context.Database.CanConnect();
 
-            if (!dbExists)
-            {
-                // MessageBox.Show(CultRes.StringsRes.NoConnectServer + " " + db, $"CultRes.StringsRes.NoConnectServer: {db}");
-                if (db != null)
-                {
-                    _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
-                }
+    //        if (!dbExists)
+    //        {
+    //            // MessageBox.Show(CultRes.StringsRes.NoConnectServer + " " + db, $"CultRes.StringsRes.NoConnectServer: {db}");
+    //            if (db != null)
+    //            {
+    //                _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
+    //            }
 
-                //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
-                //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-                if (true)
-                {
-                    ret = false;
-                }
+    //            //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
+    //            //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+    //            if (true)
+    //            {
+    //                ret = false;
+    //            }
 
-                SimpleLog.Error("Database does not exist - SQL - Server ok");
-            }
-            else
-            {
-                TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
-                ret = true;
-            }
-        }
-        catch (SqlException e)
-        {
-            _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
+    //            SimpleLog.Error("Database does not exist - SQL - Server ok");
+    //        }
+    //        else
+    //        {
+    //            TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
+    //            ret = true;
+    //        }
+    //    }
+    //    catch (SqlException e)
+    //    {
+    //        _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
 
-            _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
-            //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,
-            //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+    //        _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
+    //        //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,
+    //        //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
 
-            SimpleLog.Error($"Server not connected: {db}");
-            ret = false;
-        }
+    //        SimpleLog.Error($"Server not connected: {db}");
+    //        ret = false;
+    //    }
 
-        return ret;
-    }
+    //    return ret;
+    //}
     //--------------------------------------------------------------------
 
     private void CloseApp()
@@ -205,6 +223,7 @@ public sealed partial class MainPage : Page
         };
 
     }
+
     //--------------------------------------------------------------------
     private void AppTitleBar_OnBackRequested(TitleBar sender, object args)
     {
@@ -237,7 +256,6 @@ public sealed partial class MainPage : Page
 
         App.SearchQuickString = args.QueryText;
 
-
         NavFrame.Navigate(typeof(SearchQuickPage));
     }
 
@@ -256,7 +274,6 @@ public sealed partial class MainPage : Page
         SearchSearchBox.Focus(FocusState.Programmatic);
         SearchSearchBox.PlaceholderText = StringsRes.SearchName;
     }
-
 
     private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
     {
@@ -295,38 +312,61 @@ public sealed partial class MainPage : Page
             }
         }
     }
-    //--------------------------------------------------------------------
-    private void MenuFlyoutGermanItem_Click(object sender, RoutedEventArgs e)
-    {
-        ReloadLanguage("de-DE");
-    }
-    private void MenuFlyoutUsaItem_Click(object sender, RoutedEventArgs e)
-    {
-        ReloadLanguage("en-US");
-    }
-    private void MenuFlyoutFrenchItem_Click(object sender, RoutedEventArgs e)
-    {
-        ReloadLanguage("fr-FR");
-    }
 
-    private void MenuFlyoutSpainItem_Click(object sender, RoutedEventArgs e)
-    {
-        ReloadLanguage("sp-SP");
-    }
     //--------------------------------------------------------------------
-    //  App.SetCulture(languageOverride);
+    private void MenuFlyoutLanguage_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuFlyoutItem item && item.Tag is string languageCode)
+        {
+            ReloadLanguage(languageCode);
+        }
+    }
 
     private void ReloadLanguage(string languageOverride)
     {
+        // 1. Globale Culture setzen
         Thread.CurrentThread.CurrentCulture = new CultureInfo(languageOverride);
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageOverride);
 
+        // 2. Dein Localizer
         Localizer.Get().SetLanguage(languageOverride);
-
         App.Cult = languageOverride;
 
+        // 3. UI neu laden / Texte aktualisieren
         ChangeLanguageLoginReset();
     }
+
+    //private void MenuFlyoutGermanItem_Click(object sender, RoutedEventArgs e)
+    //{
+    //    ReloadLanguage("de-DE");
+    //}
+    //private void MenuFlyoutUsaItem_Click(object sender, RoutedEventArgs e)
+    //{
+    //    ReloadLanguage("en-US");
+    //}
+    //private void MenuFlyoutFrenchItem_Click(object sender, RoutedEventArgs e)
+    //{
+    //    ReloadLanguage("fr-FR");
+    //}
+
+    //private void MenuFlyoutSpainItem_Click(object sender, RoutedEventArgs e)
+    //{
+    //    ReloadLanguage("sp-SP");
+    //}
+    ////--------------------------------------------------------------------
+    ////  App.SetCulture(languageOverride);
+
+    //private void ReloadLanguage(string languageOverride)
+    //{
+    //    Thread.CurrentThread.CurrentCulture = new CultureInfo(languageOverride);
+    //    Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageOverride);
+
+    //    Localizer.Get().SetLanguage(languageOverride);
+
+    //    App.Cult = languageOverride;
+
+    //    ChangeLanguageLoginReset();
+    //}
 
     private void ChangeLanguageLoginReset()
     {
@@ -674,14 +714,17 @@ public sealed partial class MainPage : Page
         {
             NavFrame.Navigate(typeof(TblUserProfileListPage));
         }
+
         if ((string)args.ChosenSuggestion == (string)NavDiseases1.Content)
         {
             NavFrame.Navigate(typeof(TblDiseaseListPage));
         }
+
         if ((string)args.ChosenSuggestion == (string)NavFoods1.Content)
         {
             NavFrame.Navigate(typeof(TblFoodListPage));
         }
+
         if ((string)args.ChosenSuggestion == (string)NavMiscellaneousses1.Content)
         {
             NavFrame.Navigate(typeof(TblMiscellaneousListPage));
@@ -702,26 +745,35 @@ public sealed partial class MainPage : Page
 
     private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Disease.DiseasePage")
+
+        if (args.InvokedItemContainer != null &&
+            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Disease.DiseasePage")
         {
             NavFrame.Navigate(typeof(DiseasePage), null, args.RecommendedNavigationTransitionInfo);
             return;
         }
-        if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Food.FoodPage")
+
+        if (args.InvokedItemContainer != null &&
+            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Food.FoodPage")
         {
             NavFrame.Navigate(typeof(Food.FoodPage), null, args.RecommendedNavigationTransitionInfo);
             return;
         }
-        if (args.InvokedItemContainer != null && (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
+
+        if (args.InvokedItemContainer != null &&
+            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
         {
             NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage), null, args.RecommendedNavigationTransitionInfo);
             return;
         }
+
         if (args.IsSettingsInvoked)
         {
             NavFrame.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);
+            return;
         }
-        else if (args.InvokedItemContainer != null && args.InvokedItemContainer.Tag != null)
+
+        if (args.InvokedItemContainer != null && args.InvokedItemContainer.Tag != null)
         {
             var newPage = Type.GetType(args.InvokedItemContainer.Tag.ToString()!);
             NavFrame.Navigate(
@@ -737,41 +789,82 @@ public sealed partial class MainPage : Page
         NavFrame.Navigate(typeof(HomePage));
     }
 
-    private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    private async void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         var nvi = args.SelectedItemContainer as NavigationViewItem;
-        if (nvi != null)
+        if (nvi == null) return;
+
+        var tag = (string)nvi.Tag;
+        if (tag == null) return;
+
+
+        // 1. Seiten ohne Permission-Prüfung
+        if (tag == "ATIS.Views.Search.SearchQuickPage")
         {
-            var tag = (string)nvi.Tag;
-            if (tag != null)
-            {
-                if (tag == "ATIS.Views.Main.Disease.DiseasePage")
-                {
-                    NavFrame.Navigate(typeof(Disease.DiseasePage));
-                    return;
-                }
-                if (tag == "ATIS.Views.Main.Food.FoodPage")
-                {
-                    NavFrame.Navigate(typeof(Food.FoodPage));
-                    return;
-                }
-                if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
-                {
-                    NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage));
-                    return;
-                }
-                if (tag == "Settings")
-                {
-                    NavFrame.Navigate(typeof(SettingsPage));
-                }
-                else
-                {
-                    var type = Type.GetType(tag);
-                    NavFrame.Navigate(type);
-                }
-            }
+            NavFrame.Navigate(typeof(SearchQuickPage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
         }
+
+        if (tag == "ATIS.Views.Main.HomePage")
+        {
+            NavFrame.Navigate(typeof(HomePage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
+        }
+
+        // ⬅️ Während der Entwicklung, da keine Berechtigung!
+        if (tag == "ATIS.Views.Database.TblCountryListPage")
+        {
+            NavFrame.Navigate(typeof(TblCountryListPage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
+        }
+
+        if (tag == "ATIS.Views.Main.Disease.DiseasePage")
+        {
+            NavFrame.Navigate(typeof(Disease.DiseasePage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
+        }
+
+        if (tag == "ATIS.Views.Main.Food.FoodPage")
+        {
+            NavFrame.Navigate(typeof(Food.FoodPage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
+        }
+
+        if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
+        {
+            NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
+        }
+
+        if (tag == "Settings")
+        {
+            NavFrame.Navigate(typeof(SettingsPage));
+            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+            return;
+        }
+
+        // 2.🔥 PermissionHelper einsetzen
+        if (!await PermissionHelper.CheckOrGoBackAsync(NavView, NavFrame, tag))
+            return;
+
+
+        // 3. Permission OK → Page laden
+        var type = Type.GetType(tag);
+        NavFrame.Navigate(type);
+
+        // 4. Und jetzt WICHTIG:
+        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
     }
+
+
+
+
 
     private void ControlsSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
@@ -828,4 +921,5 @@ public sealed partial class MainPage : Page
 
         return resultList;
     }
+
 }

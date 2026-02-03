@@ -745,7 +745,7 @@
     <value>Hinzufügen Kommentar</value>
   </data>
   <data name="MenuFlyout_Add.Text" xml:space="preserve">
-    <value>Hinzufügen</value>
+    <value>Neu</value>
   </data>
   <data name="MenuFlyout_Add_Family.Text" xml:space="preserve">
     <value>Hinzufügen Familie</value>
@@ -1015,7 +1015,7 @@
     <value>Sichern Klasse</value>
   </data>
   <data name="MenuFlyout_Save.Text" xml:space="preserve">
-    <value>Sichern</value>
+    <value>Speichern</value>
   </data>
   <data name="MenuFlyout_Save_Comment.Text" xml:space="preserve">
     <value>Sichern Kommentar</value>
@@ -1605,6 +1605,21 @@
   <data name="TextBlock_Address.Text" xml:space="preserve">
     <value>Addresse</value>
   </data>
+  <data name="TextBlock_Add.Text" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="TextBlock_Delete.Text" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="TextBlock_Save.Text" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="TextBlock_Sync.Text" xml:space="preserve">
+    <value>Actualisieren</value>
+  </data>
+  <data name="TextBlock_Edit.Text" xml:space="preserve">
+    <value>Ändern</value>
+  </data>
   <data name="TextBlock_ArticelTitle.Text" xml:space="preserve">
     <value>Artikel/Absatz Titel</value>
   </data>
@@ -1628,6 +1643,9 @@
   </data>
   <data name="TextBlock_CarboHardness.Text" xml:space="preserve">
     <value>Karbonathärte</value>
+  </data>
+  <data name="TextBlock_Cancel.Text" xml:space="preserve">
+    <value>Abbruch</value>
   </data>
   <data name="TextBlock_Class.Text" xml:space="preserve">
     <value>Infraklasse Unterklasse Klasse Überklasse</value>
@@ -2491,31 +2509,37 @@
     <value>Nachname</value>
   </data>
   <data name="TextBox_Latitude1.Header" xml:space="preserve">
-    <value>Latitude 1</value>
+    <value>Breitengrad 1</value>
+  </data>
+  <data name="TextBox_Latitude.Header" xml:space="preserve">
+    <value>Breitengrad</value>
   </data>
   <data name="TextBox_Latitude2.Header" xml:space="preserve">
-    <value>Latitude 2</value>
+    <value>Breitengrad 2</value>
   </data>
   <data name="TextBox_Latitude3.Header" xml:space="preserve">
-    <value>Latitude 3</value>
+    <value>Breitengrad 3</value>
   </data>
   <data name="TextBox_Latitude4.Header" xml:space="preserve">
-    <value>Latitude 4</value>
+    <value>Breitengrad 4</value>
   </data>
   <data name="TextBox_LegioName.Header" xml:space="preserve">
     <value>Überordnung Name</value>
   </data>
   <data name="TextBox_Longitude1.Header" xml:space="preserve">
-    <value>Longitude 1</value>
+    <value>Längengrad 1</value>
+  </data>
+  <data name="TextBox_Longitude.Header" xml:space="preserve">
+    <value>Längengrad</value>
   </data>
   <data name="TextBox_Longitude2.Header" xml:space="preserve">
-    <value>Longitude 2</value>
+    <value>Längengrad 2</value>
   </data>
   <data name="TextBox_Longitude3.Header" xml:space="preserve">
-    <value>Longitude 3</value>
+    <value>Längengrad 3</value>
   </data>
   <data name="TextBox_Longitude4.Header" xml:space="preserve">
-    <value>Longitude 4</value>
+    <value>Längengrad 4</value>
   </data>
   <data name="TextBox_Memo.Header" xml:space="preserve">
     <value>Memo</value>
@@ -2750,6 +2774,39 @@
   </data>
   <data name="TextBox_ZoomLevel.Header" xml:space="preserve">
     <value>ZoomLevel</value>
+  </data>
+  <data name="NumberBox_ZoomLevel.Header" xml:space="preserve">
+    <value>ZoomLevel</value>
+  </data>
+  <data name="NumberBox_Latitude1.Header" xml:space="preserve">
+    <value>Latitude 1</value>
+  </data>
+  <data name="NumberBox_Latitude.Header" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="NumberBox_Longitude.Header" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="NumberBox_Longitude1.Header" xml:space="preserve">
+    <value>Longitude 1</value>
+  </data>
+  <data name="NumberBox_Longitude2.Header" xml:space="preserve">
+    <value>Longitude 2</value>
+  </data>
+  <data name="NumberBox_Longitude3.Header" xml:space="preserve">
+    <value>Longitude 3</value>
+  </data>
+  <data name="NumberBox_Longitude4.Header" xml:space="preserve">
+    <value>Longitude 4</value>
+  </data>
+  <data name="NumberBox_Latitude2.Header" xml:space="preserve">
+    <value>Latitude 2</value>
+  </data>
+  <data name="NumberBox_Latitude3.Header" xml:space="preserve">
+    <value>Latitude 3</value>
+  </data>
+  <data name="NumberBox_Latitude4.Header" xml:space="preserve">
+    <value>Latitude 4</value>
   </data>
   <data name="MenuFlyout_Add_Regnum.Text" xml:space="preserve">
     <value>Hinzufügen Reich</value>
@@ -3063,7 +3120,7 @@
   <data name="en-US.Text" xml:space="preserve">
     <value>Englisch</value>
   </data>
-  <data name="sp-SP.Text" xml:space="preserve">
+  <data name="es-ES.Text" xml:space="preserve">
     <value>Spanisch</value>
   </data>
   <data name="ja" xml:space="preserve">
@@ -3118,7 +3175,7 @@
     <value>Suchen</value>
   </data>
   <data name="MenuFlyout_Refresh.Text" xml:space="preserve">
-    <value>Actualisieren</value>
+    <value>Aktualisieren</value>
   </data>
   <data name="AppBarButtonAddComment.Label" xml:space="preserve">
     <value>Kommentar</value>

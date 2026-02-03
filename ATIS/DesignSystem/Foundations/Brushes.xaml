@@ -1,0 +1,62 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  =========================================================  -->
+    <!--  1) Window Caption Brushes (global, nicht theme-abhängig)  -->
+    <!--  =========================================================  -->
+    <SolidColorBrush x:Key="WindowCaptionBackground">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Transparent</SolidColorBrush>
+    <SolidColorBrush x:Key="WindowCaptionForeground">Black</SolidColorBrush>
+
+
+    <!--  =========================================================  -->
+    <!--  2) Global Neutral Brushes (nicht theme-abhängig)  -->
+    <!--  =========================================================  -->
+    <!--  Für Divider, Linien, Rahmen, neutrale UI-Elemente  -->
+    <SolidColorBrush x:Key="AtisDividerBrush"
+                     Color="#1F000000" />
+    <SolidColorBrush x:Key="AtisFocusBorderBrush"
+                     Color="#007ACC" />
+
+
+    <!--  =========================================================  -->
+    <!--  3) Shadow Brushes (Elevation, global)  -->
+    <!--  =========================================================  -->
+    <SolidColorBrush x:Key="AtisShadowLowBrush"
+                     Color="#33000000" />
+    <SolidColorBrush x:Key="AtisShadowMediumBrush"
+                     Color="#44000000" />
+    <SolidColorBrush x:Key="AtisShadowHighBrush"
+                     Color="#55000000" />
+
+
+    <!--  =========================================================  -->
+    <!--  4) Disabled / Subtle Brushes  -->
+    <!--  =========================================================  -->
+    <SolidColorBrush x:Key="AtisDisabledForegroundBrush"
+                     Color="#88000000" />
+    <SolidColorBrush x:Key="AtisDisabledBackgroundBrush"
+                     Color="#11000000" />
+
+
+    <!--  =========================================================  -->
+    <!--  5) Icon Brushes (global)  -->
+    <!--  =========================================================  -->
+    <SolidColorBrush x:Key="AtisIconBrush"
+                     Color="#99000000" />
+    <SolidColorBrush x:Key="AtisIconDisabledBrush"
+                     Color="#55000000" />
+
+    <Color x:Key="AtisDataGridAlternateRowBackgroundColor">#F5F5F5</Color>
+
+    <SolidColorBrush x:Key="AtisPrimaryBackgroundBrush"
+                     Color="#0078D4" />
+    <!--  dein Blau  -->
+
+    <SolidColorBrush x:Key="AtisPrimaryForegroundBrush"
+                     Color="White" />
+
+</ResourceDictionary>

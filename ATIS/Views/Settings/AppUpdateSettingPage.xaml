@@ -34,7 +34,7 @@
                             Command="{x:Bind ViewModel.CheckForUpdateCommand}"
                             Content="Check for New Version"
                             IsEnabled="{x:Bind ViewModel.IsCheckButtonEnabled, Mode=OneWay}"
-                            Style="{ThemeResource AccentButtonStyle}" />
+                            Style="{ThemeResource AtisButtonPrimary}" />
                 </StackPanel>
             </wuc:SettingsCard>
 

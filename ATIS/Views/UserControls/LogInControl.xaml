@@ -112,7 +112,7 @@
                         Content="Log in"
                         IsEnabled="False"
                         LostFocus="BtnLogin_OnLostFocus"
-                        Style="{StaticResource CrudButtonStyle}" />
+                        Style="{StaticResource AtisButtonPrimary}" />
                 <!--<Button
                 Margin="20,0,0,0"
                 HorizontalAlignment="Center"
@@ -124,13 +124,13 @@
                 Margin="20,0,0,0"
                 Click="BtnCancel_Click"
                 Content="Cancel"
-                Style="{StaticResource CrudButtonStyle}" />-->
+                Style="{StaticResource AtisButtonPrimary}" />-->
                 <Button Margin="20,0,0,0"
                         Command="{x:Bind ViewModel.RegisterCommand}"
                         CommandParameter="{Binding ElementName=PasswordBox}"
                         Content="Register"
                         IsEnabled="True"
-                        Style="{StaticResource CrudButtonStyle}"
+                        Style="{StaticResource AtisButtonPrimary}"
                         Visibility="Visible" />
             </StackPanel>
             <!--<StackPanel

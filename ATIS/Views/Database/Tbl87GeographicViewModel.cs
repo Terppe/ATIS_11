@@ -50,7 +50,8 @@ public partial class Tbl87GeographicViewModel : ObservableObject
         Tbl75SpeciessesAllList ??= [];
         Tbl75SpeciessesAllList = [.. _dataService.GetSpeciesAsync()];
         TblCountriesAllList ??= [];
-        TblCountriesAllList = [.. _dataService.GetCountryAsync()];
+        // Fix: Await the Task and use the result for the collection
+        TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
     }
     public Tbl87GeographicViewModel()
     {
@@ -559,5 +560,4 @@ public partial class Tbl87GeographicViewModel : ObservableObject
     #endregion Refresh Methods
 
     #endregion All Properties     
-
 }

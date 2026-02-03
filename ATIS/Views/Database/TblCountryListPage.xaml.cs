@@ -1,11 +1,12 @@
-﻿
+﻿using System.Diagnostics;
 using ATIS.Views.ContentDialogs;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace ATIS.Views.Database;
 
 public sealed partial class TblCountryListPage : Page
 {
-    public TblCountryViewModel ViewModel { get; set; }
+    public TblCountryViewModel ViewModel { get; }
     public TblCountryListPage CommandProxy { get; set; }
 
     public TblCountryListPage()
@@ -13,8 +14,17 @@ public sealed partial class TblCountryListPage : Page
         try
         {
             InitializeComponent();
-            Loaded += OnLoaded;
+            ViewModel = App.GetService<TblCountryViewModel>();
+            Debug.WriteLine($"Page-Konstruktor, ViewModel-Instanz: {ViewModel.GetHashCode()}");
+            this.DataContext = ViewModel;
+            CommandProxy = this;
 
+            ViewModel.RequestDeleteDialog = ShowDeleteDialogAsync;
+            ViewModel.RequestSaveDialog = ShowSaveDialogAsync;
+
+            ViewModel.RequestFocusName += FocusCountryName;
+            Debug.WriteLine($"PAGE VM: {ViewModel.GetHashCode()}");
+            Debug.WriteLine($"Page DC: {this.DataContext?.GetType().Name} / IsLoading: {ViewModel?.IsLoading}");
         }
         catch (Exception ex)
         {
@@ -25,18 +35,13 @@ public sealed partial class TblCountryListPage : Page
         }
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
-        ViewModel = App.GetService<TblCountryViewModel>();
-        DataContext = ViewModel;
-        CommandProxy = this;
-        Loaded += async (_, __) =>
-        {
-            await ViewModel.LoadAsync();
-        };
-        ViewModel.RequestDeleteDialog = ShowDeleteDialogAsync;
-        ViewModel.RequestSaveDialog = ShowSaveDialogAsync;
+        base.OnNavigatedTo(e);
+
+        await ViewModel.LoadAsync();
     }
+
     // =========================================================
     // Search
     // =========================================================
@@ -50,15 +55,6 @@ public sealed partial class TblCountryListPage : Page
     private void SearchBox_OnLoaded(object sender, RoutedEventArgs e)
     {
         SearchBox.Focus(FocusState.Programmatic);
-    }
-    private void CountryDataGrid_GotFocus(object sender, RoutedEventArgs e)
-    {
- //       ViewModel.DataGridHasFocus = true;
-    }
-
-    private void CountryDataGrid_LostFocus(object sender, RoutedEventArgs e)
-    {
-  //      ViewModel.DataGridHasFocus = false;
     }
     private async Task<bool> ShowDeleteDialogAsync()
     {
@@ -80,12 +76,36 @@ public sealed partial class TblCountryListPage : Page
 
         return await dialog.ShowAsync();
     }
-    private void CountryName_Loaded(object sender, RoutedEventArgs e)
-    {
-        var vm = DataContext as TblCountryViewModel;
+    //private void CountryName_Loaded(object sender, RoutedEventArgs e)
+    //{
+    //    var vm = DataContext as TblCountryViewModel;
 
-        if (vm?.CountrySelected?.CountryId == 0)
+    //    if (vm?.CountrySelected?.CountryId == 0)
+    //    {
+    //        // Fokus erst setzen, wenn UI bereit ist
+    //        DispatcherQueue.TryEnqueue(() =>
+    //        {
+    //            CountryName.Focus(FocusState.Programmatic);
+    //        });
+    //    }
+    //}
+    private void FocusCountryName()
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
             CountryName.Focus(FocusState.Programmatic);
+        });
     }
+    //private void CountryDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    //{
+    //    (sender as DataGrid).Sort(e.Column, ViewModel.Sort);
+    //}
+
+    private void CountryDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    {
+        (sender as DataGrid)!.Sort(e.Column, ViewModel.Sort);
+    }
+
 }
+
 

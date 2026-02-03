@@ -1,10 +1,7 @@
 ﻿using System.Configuration;
 using System.Diagnostics;
 using System.Globalization;
-using System.Net.Sockets;
 using System.Reflection;
-using ATIS.AtisDesignsystem.Controls;
-using ATIS.Helpers;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -45,7 +42,8 @@ public partial class App : Application
     public string AppVersion { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
     public string AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
     public string Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
-    public static string Cult { get; set; }
+
+    public static string Cult = "";
 
     private SplashWindow splash;
     // ---------------------------------------------------------
@@ -101,6 +99,10 @@ public partial class App : Application
 
 
         UIContext.Root = (MainWindow.Content as FrameworkElement)?.XamlRoot;
+
+        var customPrincipal = new CustomPrincipal();
+        AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
+
 
     }
 
@@ -166,7 +168,8 @@ public partial class App : Application
         services.AddTransient<Tbl90RefExpertViewModel>();
         services.AddTransient<Tbl90RefSourceViewModel>();
         services.AddTransient<Tbl93CommentViewModel>();
-        services.AddTransient<TblCountryViewModel>();
+ //       services.AddTransient<TblCountryViewModel>();
+        services.AddSingleton<TblCountryViewModel>();
         services.AddTransient<TblUserProfileViewModel>();
         services.AddTransient<FoodViewModel>();
         services.AddTransient<TblFoodViewModel>();

@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <!--  =========================================================  -->
+        <!--  LIGHT MODE  -->
+        <!--  =========================================================  -->
+        <ResourceDictionary x:Key="Light">
+
+            <!--  TOGGLEBUTTON  -->
+            <SolidColorBrush x:Key="AtisToggleBackgroundBrush"
+                             Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisToggleForegroundBrush"
+                             Color="#111827" />
+            <SolidColorBrush x:Key="AtisToggleBorderBrush"
+                             Color="#D1D5DB" />
+            <SolidColorBrush x:Key="AtisToggleHoverBackgroundBrush"
+                             Color="#F3F4F6" />
+            <SolidColorBrush x:Key="AtisTogglePressedBackgroundBrush"
+                             Color="#E5E7EB" />
+            <SolidColorBrush x:Key="AtisToggleCheckedBackgroundBrush"
+                             Color="#2563EB" />
+            <SolidColorBrush x:Key="AtisToggleCheckedForegroundBrush"
+                             Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisToggleDisabledBackgroundBrush"
+                             Color="#F3F4F6" />
+            <SolidColorBrush x:Key="AtisToggleDisabledForegroundBrush"
+                             Color="#9CA3AF" />
+
+
+        </ResourceDictionary>
+
+        <!--  =========================================================  -->
+        <!--  DARK MODE  -->
+        <!--  =========================================================  -->
+        <ResourceDictionary x:Key="Dark">
+
+
+            <!--  TOGGLEBUTTON  -->
+            <SolidColorBrush x:Key="AtisToggleBackgroundBrush"
+                             Color="#1F2937" />
+            <SolidColorBrush x:Key="AtisToggleForegroundBrush"
+                             Color="#F9FAFB" />
+            <SolidColorBrush x:Key="AtisToggleBorderBrush"
+                             Color="#4B5563" />
+            <SolidColorBrush x:Key="AtisToggleHoverBackgroundBrush"
+                             Color="#374151" />
+            <SolidColorBrush x:Key="AtisTogglePressedBackgroundBrush"
+                             Color="#4B5563" />
+            <SolidColorBrush x:Key="AtisToggleCheckedBackgroundBrush"
+                             Color="#3B82F6" />
+            <SolidColorBrush x:Key="AtisToggleCheckedForegroundBrush"
+                             Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisToggleDisabledBackgroundBrush"
+                             Color="#111827" />
+            <SolidColorBrush x:Key="AtisToggleDisabledForegroundBrush"
+                             Color="#6B7280" />
+
+
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>
+
+
+

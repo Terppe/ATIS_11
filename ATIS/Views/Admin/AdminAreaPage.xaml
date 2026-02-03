@@ -654,7 +654,7 @@
                                 Click="BtnEncrypt_OnClick"
                                 Content="Berechnen"
                                 IsEnabled="True"
-                                Style="{StaticResource CrudButtonStyle}" />
+                                Style="{StaticResource AtisButtonPrimary}" />
                         <TextBlock Grid.Row="3"
                                    Grid.Column="0"
                                    Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
@@ -674,7 +674,7 @@
                                 Click="BtnSave_OnClick"
                                 Content="Save"
                                 IsEnabled="True"
-                                Style="{StaticResource CrudButtonStyle}" />
+                                Style="{StaticResource AtisButtonPrimary}" />
 
                     </Grid>
 

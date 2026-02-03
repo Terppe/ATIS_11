@@ -1,0 +1,77 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <!--  =========================================================  -->
+        <!--  LIGHT MODE  -->
+        <!--  =========================================================  -->
+        <ResourceDictionary x:Key="Light">
+
+            <!--  TEXT  -->
+            <SolidColorBrush x:Key="AtisTextForegroundBrush"
+                             Color="#111827" />
+            <SolidColorBrush x:Key="AtisTextCaptionBrush"
+                             Color="#6B7280" />
+            <SolidColorBrush x:Key="TextFillColorPrimaryBrush"
+                             Color="#111827" />
+            <SolidColorBrush x:Key="TextFillColorSecondaryBrush"
+                             Color="#6B7280" />
+
+            <!--  INPUTS: TEXTBOX / COMBOBOX  -->
+            <SolidColorBrush x:Key="AtisTextBoxBackgroundBrush"
+                             Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisTextBoxForegroundBrush"
+                             Color="#111827" />
+            <SolidColorBrush x:Key="AtisTextBoxBorderBrush"
+                             Color="#D1D5DB" />
+            <SolidColorBrush x:Key="AtisTextBoxHoverBorderBrush"
+                             Color="#9CA3AF" />
+            <SolidColorBrush x:Key="AtisTextBoxDisabledBackgroundBrush"
+                             Color="#F3F4F6" />
+            <SolidColorBrush x:Key="AtisTextBoxDisabledBorderBrush"
+                             Color="#E5E7EB" />
+            <SolidColorBrush x:Key="AtisTextBoxDisabledForegroundBrush"
+                             Color="#9CA3AF" />
+
+
+
+        </ResourceDictionary>
+
+        <!--  =========================================================  -->
+        <!--  DARK MODE  -->
+        <!--  =========================================================  -->
+        <ResourceDictionary x:Key="Dark">
+
+
+            <!--  TEXT  -->
+            <SolidColorBrush x:Key="AtisTextForegroundBrush"
+                             Color="#F9FAFB" />
+            <SolidColorBrush x:Key="AtisTextCaptionBrush"
+                             Color="#9CA3AF" />
+            <SolidColorBrush x:Key="TextFillColorPrimaryBrush"
+                             Color="#E6E6E6" />
+            <SolidColorBrush x:Key="TextFillColorSecondaryBrush"
+                             Color="#9CA3AF" />
+
+            <!--  INPUTS: TEXTBOX / COMBOBOX  -->
+            <SolidColorBrush x:Key="AtisTextBoxBackgroundBrush"
+                             Color="#1F2937" />
+            <SolidColorBrush x:Key="AtisTextBoxForegroundBrush"
+                             Color="#F9FAFB" />
+            <SolidColorBrush x:Key="AtisTextBoxBorderBrush"
+                             Color="#4B5563" />
+            <SolidColorBrush x:Key="AtisTextBoxHoverBorderBrush"
+                             Color="#6B7280" />
+            <SolidColorBrush x:Key="AtisTextBoxDisabledBackgroundBrush"
+                             Color="#111827" />
+            <SolidColorBrush x:Key="AtisTextBoxDisabledBorderBrush"
+                             Color="#374151" />
+            <SolidColorBrush x:Key="AtisTextBoxDisabledForegroundBrush"
+                             Color="#6B7280" />
+
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>

@@ -422,12 +422,12 @@
                 <Button Margin="50,5,10,5"
                         loca:Uids.Uid="Button_PrintPdf"
                         Click="PdfInfratribusCommand"
-                        Style="{StaticResource CrudButtonStyle}" />
+                        Style="{StaticResource AtisButtonPrimary}" />
                 <Button Margin="50,5,10,5"
                         HorizontalAlignment="Right"
                         loca:Uids.Uid="Button_Close_Window"
                         Click="OnCloseClick"
-                        Style="{StaticResource CrudButtonStyle}" />
+                        Style="{StaticResource AtisButtonPrimary}" />
             </StackPanel>
             <ScrollViewer Grid.Row="1"
                           Padding="{StaticResource SmallDetailPageMargin}"

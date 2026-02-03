@@ -33,7 +33,7 @@
     </Page.Resources>
 
 
-    <Grid Padding="{StaticResource PagePadding}">
+    <Grid Padding="{StaticResource AtisPagePadding}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -41,7 +41,7 @@
 
         <!--  HEADER + SEARCH  -->
         <Grid Grid.Row="0"
-              ColumnSpacing="{StaticResource SpacingL}">
+              ColumnSpacing="{StaticResource AtisSpacingL}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -50,16 +50,16 @@
             <!--  LEFT: Title + Dataset  -->
             <StackPanel VerticalAlignment="Center"
                         Orientation="Horizontal"
-                        Spacing="{StaticResource SpacingS}">
+                        Spacing="{StaticResource AtisSpacingS}">
                 <TextBlock loca:Uids.Uid="TextBlock_Miscellaneousses"
-                           Style="{StaticResource PageTitleTextStyle}" />
+                           Style="{StaticResource AtisTextTitle}" />
 
                 <TextBlock Margin="0,12,0,0"
                            loca:Uids.Uid="TextBlock_DataSetCount"
-                           Style="{StaticResource PageSubtitleTextStyle}" />
+                           Style="{StaticResource AtisTextSubtitle}" />
 
                 <TextBlock Margin="0,12,0,0"
-                           Style="{StaticResource PageSubtitleTextStyle}"
+                           Style="{StaticResource AtisTextSubtitle}"
                            Text="{x:Bind ViewModel.MiscellaneousDataSetCount, Mode=OneWay}" />
             </StackPanel>
 

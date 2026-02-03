@@ -592,16 +592,13 @@ public interface IDataService
 
     #region Country
     Task<List<TblCountry>> GetAllCountriesAsync();
-    Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string query);
-    //Task<TblCountry> UpsertCountryAsync(TblCountry entity);
-    Task DeleteCountryAsync(int? countryId);
-
-    ObservableCollection<TblCountry> GetCountryAsync();
-    ObservableCollection<TblCountry> GetCountryAsync(int countryid);
-    Task<ObservableCollection<TblCountry>> GetCountryAsync(string search);
-
+    Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query);
+    Task<List<TblCountry>> GetCountriesByNameAsync(string? query);
+    Task<List<TblCountry>> GetCountryAsync();
+    Task<List<TblCountry>> GetCountryAsync(int countryid);
+    Task<TblCountry?> GetCountryByIdAsync(int? countryid);
     Task<TblCountry> UpsertCountryAsync(TblCountry country);
-    //Task DeleteCountryAsync(int countryid);
+    Task DeleteCountryAsync(int? countryId);
 
     #endregion Country
 

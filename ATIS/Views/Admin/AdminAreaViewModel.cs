@@ -31,7 +31,7 @@ public partial class AdminAreaViewModel : ObservableObject
     private void GetAllCollections()
     {
         TblCountriesAllList ??= [];
-        TblCountriesAllList = [.. _dataService.GetCountryAsync()];
+        TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
     }
 
     public AdminAreaViewModel()

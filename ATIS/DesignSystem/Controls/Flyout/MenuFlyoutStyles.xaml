@@ -1,0 +1,22 @@
+﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
+<!--  Licensed under the MIT License.  -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="DefaultMenuFlyoutItemStyle"
+           TargetType="MenuFlyoutItem" />
+
+    <Style x:Key="AtisPrimaryMenuFlyoutItem"
+           BasedOn="{StaticResource DefaultMenuFlyoutItemStyle}"
+           TargetType="MenuFlyoutItem">
+        <Setter Property="Foreground" Value="{ThemeResource AtisPrimaryForegroundBrush}" />
+        <Setter Property="Icon" Value="{ThemeResource AtisPrimaryForegroundBrush}" />
+        <Setter Property="Background" Value="{ThemeResource AtisPrimaryBackgroundBrush}" />
+    </Style>
+
+</ResourceDictionary>
+
+
+
+

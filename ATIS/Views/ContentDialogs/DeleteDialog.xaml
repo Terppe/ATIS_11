@@ -10,12 +10,8 @@
                CloseButtonClick="ContentDialog_CloseButtonClick"
                PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
                SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
-               SecondaryButtonStyle="{StaticResource AccentButtonStyle}"
+               SecondaryButtonStyle="{StaticResource AtisButtonPrimary}"
                mc:Ignorable="d">
-    <ContentDialog.Resources>
-        <Style BasedOn="{StaticResource DefaultContentDialogStyle}"
-               TargetType="contentDialogs:DeleteDialog" />
-    </ContentDialog.Resources>
 </ContentDialog>
 
 <!--  Content="Would you like to delete your dataset?"  -->

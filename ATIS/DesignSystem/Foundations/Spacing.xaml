@@ -1,0 +1,31 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ========================================================= -->
+    <!-- 1) Padding Tokens                                         -->
+    <!-- ========================================================= -->
+    <Thickness x:Key="AtisPaddingXS">4</Thickness>
+    <Thickness x:Key="AtisPaddingS">8</Thickness>
+    <Thickness x:Key="AtisPaddingM">12</Thickness>
+    <Thickness x:Key="AtisPaddingL">16</Thickness>
+    <Thickness x:Key="AtisPaddingXL">24</Thickness>
+
+    <!-- Einheitliches Padding für Eingabefelder -->
+    <Thickness x:Key="AtisTextControlPadding">6,2</Thickness>
+
+    <!-- ========================================================= -->
+    <!-- 2) Page / Layout Padding                                  -->
+    <!-- ========================================================= -->
+    <Thickness x:Key="AtisPagePadding">24,24,24,24</Thickness>
+
+    <!-- ========================================================= -->
+    <!-- 3) Margin Tokens (optional, aber sinnvoll)                -->
+    <!-- ========================================================= -->
+    <Thickness x:Key="AtisMarginXS">4</Thickness>
+    <Thickness x:Key="AtisMarginS">8</Thickness>
+    <Thickness x:Key="AtisMarginM">12</Thickness>
+    <Thickness x:Key="AtisMarginL">16</Thickness>
+    <Thickness x:Key="AtisMarginXL">24</Thickness>
+
+</ResourceDictionary>

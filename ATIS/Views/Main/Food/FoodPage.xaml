@@ -8,7 +8,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d">
 
-    <Grid Padding="{StaticResource PagePadding}">
+    <Grid Padding="{StaticResource AtisPagePadding}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -16,7 +16,7 @@
 
         <!--  HEADER + SEARCH  -->
         <Grid Grid.Row="0"
-              ColumnSpacing="{StaticResource SpacingL}">
+              ColumnSpacing="{StaticResource AtisSpacingL}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -25,16 +25,16 @@
             <!--  LEFT: Title + Dataset  -->
             <StackPanel VerticalAlignment="Center"
                         Orientation="Horizontal"
-                        Spacing="{StaticResource SpacingS}">
+                        Spacing="{StaticResource AtisSpacingS}">
                 <TextBlock loca:Uids.Uid="TextBlock_Foods"
-                           Style="{StaticResource PageTitleTextStyle}" />
+                           Style="{StaticResource AtisTextTitle}" />
 
                 <TextBlock Margin="0,12,0,0"
                            loca:Uids.Uid="TextBlock_DataSetCount"
-                           Style="{StaticResource PageSubtitleTextStyle}" />
+                           Style="{StaticResource AtisTextSubtitle}" />
 
                 <TextBlock Margin="0,12,0,0"
-                           Style="{StaticResource PageSubtitleTextStyle}"
+                           Style="{StaticResource AtisTextSubtitle}"
                            Text="{x:Bind ViewModel.FoodDataSetCount, Mode=OneWay}" />
             </StackPanel>
 
@@ -56,9 +56,7 @@
 
 
         <!--  CONTENT  -->
-        <Border xmlns:winui="using:Microsoft.UI.Xaml"
-                Grid.Row="1"
-                winui:UIElement.Translation="0,0,16"
+        <Border Grid.Row="1"
                 Style="{StaticResource AtisCard}">
             <controls:DataGrid AutoGenerateColumns="False"
                                ItemsSource="{x:Bind ViewModel.Foods}"

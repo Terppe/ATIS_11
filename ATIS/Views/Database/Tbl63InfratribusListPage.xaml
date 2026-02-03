@@ -8,7 +8,7 @@
       xmlns:helpers="using:ATIS.Helpers"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:components="using:ATIS.AtisDesignsystem.UserControls"
+      xmlns:components="using:ATIS.DesignSystem.UserControls"
       xmlns:models="using:ATIS.Models"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:winUiCommunity="using:WinUICommunity"

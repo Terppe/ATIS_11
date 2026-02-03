@@ -49,17 +49,17 @@
 		<PackageReference Include="log4net" Version="3.2.0" />
 		<PackageReference Include="MailKit" Version="4.14.1" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
-		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7463" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260101001" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2025.12.1" />
+		<PackageReference Include="QuestPDF" Version="2025.12.3" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -130,42 +130,54 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-	<Page Update="AtisDesignsystem\Controls\ComboBox.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="AtisDesignsystem\Converters\Converters.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="AtisDesignsystem\Foundations\Spacing.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="AtisDesignsystem\Icons\AtisIcons.xaml">
+	<Page Update="DesignSystem\Controls\ContentDialog\ContentDialogStyles.xaml">
 	  <SubType>Designer</SubType>
 	</Page>
-	<Page Update="AtisDesignsystem\Resources.xaml">
+	<Page Update="DesignSystem\Controls\ContentDialog\ContentDialogBrushes.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\Flyout\MenuFlyoutStyles.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\ToggleButton.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\NumberBox.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\ComboBox.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Converters\Converters.xaml">
+		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Foundations\Spacing.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Icons\AtisIcons.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\AtisResources.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="AtisDesignsystem\Themes\AtisTypography.xaml">
+	<Page Update="DesignSystem\Themes\AtisDesignTokens.xaml">
 	  <SubType>Designer</SubType>
 	</Page>
-	<Page Update="AtisDesignsystem\Themes\AtisColors.xaml">
+	<Page Update="DesignSystem\Themes\AtisElevation.xaml">
 	  <SubType>Designer</SubType>
 	</Page>
-	<Page Update="AtisDesignsystem\Themes\AtisSpacing.xaml">
-	  <SubType>Designer</SubType>
-	</Page>
-	<Page Update="AtisDesignsystem\Themes\AtisElevation.xaml">
-	  <SubType>Designer</SubType>
-	</Page>
-	<Page Update="AtisDesignsystem\UserControls\AtisDetailHeader.xaml">
+	<Page Update="DesignSystem\UserControls\AtisDetailHeader.xaml">
 		<SubType>Designer</SubType>
 	</Page>
-	<Page Update="AtisDesignsystem\UserControls\AtisPageLayout.xaml">
+	<Page Update="DesignSystem\UserControls\AtisPageLayout.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Compile Update="Views\UserControls\DataGridRowControl.xaml.cs">
 		<SubType>Code</SubType>
 	</Compile>
+	<Page Update="DesignSystem\Controls\DataGrid\DataGridStyles.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
 
 <Page Update="Views\ContentDialogs\AtisDeleteDialog.xaml">
 		<SubType>Designer</SubType>
@@ -225,13 +237,7 @@
 		<Page Update="Themes\Theme.xaml">
 			<SubType>Designer</SubType>
 		</Page>
-		<Page Update="Themes\Controls\Buttons.xaml">
-			<SubType>Designer</SubType>
-		</Page>
 		<Page Update="Themes\Brushes.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Colors.xaml">
 			<SubType>Designer</SubType>
 		</Page>
 		<Page Update="Themes\Border.xaml">
@@ -724,8 +730,11 @@
 		<None Remove="Assets\Mexico.png" />
 		<None Remove="Assets\splash.jpg" />
 		<None Remove="Assets\Usa.png" />
-		<None Remove="AtisDesignsystem\Resources.xaml" />
-		<None Remove="AtisDesignsystem\UserControls\AtisPageLayout.xaml" />
+		<None Remove="DesignSystem\Components\AtisCard.xaml" />
+		<None Remove="DesignSystem\Components\AtisDetailHeader.xaml" />
+		<None Remove="DesignSystem\Components\AtisPageLayout.xaml" />
+		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
+		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
@@ -913,10 +922,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	<Folder Include="AtisDesignsystem\Layout\" />
-	<Folder Include="AtisDesignsystem\Templates\" />
+	<Folder Include="DesignSystem\Layout\" />
 	<Folder Include="Strings\fr-FR\" />
-	<Folder Include="Strings\sp-SP\" />
+	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
@@ -951,6 +959,24 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Components\LoadingOverlayControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Components\AtisCard.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+  <Page Update="DesignSystem\Components\AtisDetailHeader.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+  <Page Update="DesignSystem\Components\AtisPageLayout.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

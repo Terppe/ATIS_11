@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <!--  7) Generic (immer zuletzt) // Überflüssig ? -->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Themes/Generic.xaml" />
+
+        <!--  1) Converters – immer ganz oben  -->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Converters/Converters.xaml" />
+
+        <!--  2) Foundations  -->
+        <!--  2) Foundations (korrekte Reihenfolge!) -->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Colors.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Brushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/DesignTokens.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Spacing.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Elevation.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Typography.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/ThemeBrushes.xaml" />
+
+        <!--  3) Controls  -->
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/Button/Button.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/Button/ButtonBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/Button/ButtonStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/CheckBox/CheckBox.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/CheckBox/CheckBoxBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/CheckBox/CheckBoxStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ComboBox/ComboBox.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ComboBox/ComboBoxBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ComboBox/ComboBoxStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ContentDialog/ContentDialog.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ContentDialog/ContentDialogBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ContentDialog/ContentDialogStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DataGrid/DataGrid.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DataGrid/DataGridBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DataGrid/DataGridStyles.xaml" />
+
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/Flyout/MenuFlyoutStyles.xaml" />
+
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/NumberBox/NumberBox.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/NumberBox/NumberBoxBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/NumberBox/NumberBoxStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBlock/TextBlock.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBlock/TextBlockBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBlock/TextBlockStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/TextBox.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/TextBoxBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/TextBoxStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButton.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButtonBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButtonStyles.xaml" />
+
+        <!--  4) Components  -->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Components/AtisCard.xaml" />
+
+        <!--  5) Layout  -->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Layout/PageLayout.xaml" />
+
+        <!--  6) Icons  -->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Icons/AtisIcons.xaml" />
+
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

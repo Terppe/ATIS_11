@@ -42,16 +42,16 @@ public sealed partial class Tbl63InfratribusListPage : Page
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (Permission.RolePermission())
+        //if (Permission.RolePermission())
         {
             ViewModel = App.GetService<Tbl63InfratribusViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }
-        else
-        {
-            AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
-        }
+        //else
+        //{
+        //    AllDialogs.WarningNoPermissionMessageDialogAsync("").ConfigureAwait(false);   //no permission
+        //}
 
     }
 

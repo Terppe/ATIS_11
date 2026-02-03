@@ -79,7 +79,7 @@
             <!--<Expander Header="Open" MinWidth="200"></Expander>-->
             <Button MinWidth="200"
                     Content="Open"
-                    Style="{StaticResource AccentButtonStyle}">
+                    Style="{StaticResource AtisButtonPrimary}">
                 <Button.Flyout>
                     <Flyout Opened="ConnectionFlyout_Opened">
                         <Grid>
@@ -102,13 +102,13 @@
                                     Margin="0,6,6,0"
                                     Click="ConnectionButton_Click"
                                     Content="Test"
-                                    Style="{StaticResource AccentButtonStyle}" />
+                                    Style="{StaticResource AtisButtonPrimary}" />
                             <Button Grid.Row="2"
                                     Grid.Column="0"
                                     Margin="0,6,6,0"
                                     Click="SaveButton_Click"
                                     Content="Save"
-                                    Style="{StaticResource AccentButtonStyle}" />
+                                    Style="{StaticResource AtisButtonPrimary}" />
                             <FontIcon x:Name="RedIcon"
                                       Grid.Row="1"
                                       Grid.Column="1"

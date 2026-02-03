@@ -14,6 +14,10 @@ public partial class TblCountryViewModel : ObservableObject
 
     private readonly IDataService _dataService;
     private TblCountry? _backupCountry;
+    public event Action? RequestFocusName;
+    //public ObservableCollection<TblCountry> Countries { get; }
+    //    = new ObservableCollection<TblCountry>();
+
 
     // =========================================================
     #endregion [Private Data Members]
@@ -26,20 +30,28 @@ public partial class TblCountryViewModel : ObservableObject
 
     public TblCountryViewModel(IDataService dataService)
     {
+        Debug.WriteLine($"CTOR: _isLoading (privat) = {_isLoading}");
+        Debug.WriteLine($"CTOR: IsLoading (public) = {IsLoading}");
+
         _dataService = dataService;
 
-        Countries = new ObservableCollection<TblCountry>();
-
-
+        Countries.CollectionChanged += (s, e) =>
+        {
+            //Debug.WriteLine($"[Countries] Action={e.Action}, Count={Countries.Count}");
+            //Debug.WriteLine(Environment.StackTrace);
+            Debug.WriteLine($"[CountryPageVM] IsLoading Default: {IsLoading}");
+        };
         LoadCommand = new AsyncRelayCommand(LoadAsync);
         SearchCommand = new AsyncRelayCommand<string>(LoadSearchAsync);
         AddCountryCommand = new RelayCommand(AddCountry);
-        RefreshCountryCommand = new AsyncRelayCommand(RefreshAsync);
+        RefreshCommand = new AsyncRelayCommand(RefreshAsync, () => CanRefresh);
         SaveCountryCommand = new AsyncRelayCommand(SaveCountryAsync, CanSaveCountry);
         DeleteCountryCommand = new AsyncRelayCommand(DeleteCountryAsync, CanDeleteCountry);
         CancelEditCountryCommand = new RelayCommand(CancelEdit, () => IsInEditCountry);
         OpenCountryCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<TblCountry>(OpenCountry);
         StartEditCountryCommand = new RelayCommand(StartEditCountry);
+
+
     }
 
     // =========================================================
@@ -50,14 +62,13 @@ public partial class TblCountryViewModel : ObservableObject
     // =========================================================
     #region [Methods Country]
     // =========================================================
-
     // ------------------ Load all countries --------------------
     //   private bool _isInitialized;
 
     public async Task LoadAsync()
     {
         Countries.Clear();
-        CountrySelected = null;
+//        CountrySelected = null;
         CountryDataSetCount = 0;
     }
 
@@ -72,6 +83,7 @@ public partial class TblCountryViewModel : ObservableObject
             {
                 var list = await _dataService.GetCountriesByNameOrIdAsync(search);
 
+                Debug.WriteLine($"Search returned {list.Count} items for '{search}'");
                 foreach (var item in list)
                     Countries.Add(item);
 
@@ -79,15 +91,24 @@ public partial class TblCountryViewModel : ObservableObject
             }
             else
             {
+                Debug.WriteLine("Search skipped because search text is empty");
                 CountryDataSetCount = 0;
             }
 
-            // Standard: keine Auswahl
-            CountrySelected = null;
+
+            // ❗ Nur auf null setzen, wenn KEINE Wieder-Auswahl gewünscht ist
+            if (selectId == null)
+            {
+                CountrySelected = null;
+            }
 
             // Nach Speichern: wieder auswählen
             if (selectId != null)
+            {
                 CountrySelected = Countries.FirstOrDefault(c => c.CountryId == selectId);
+                Debug.WriteLine($"Re-select result: {(CountrySelected == null ? "NOT FOUND" : "FOUND")}");
+                OnPropertyChanged(nameof(CountrySelected));   // 🔥 zwingt NumberBox zum Refresh
+            }
 
             OnPropertyChanged(nameof(CountryDataSetCountText));
         }
@@ -99,9 +120,11 @@ public partial class TblCountryViewModel : ObservableObject
 
     public async Task LoadSearchAsync(string? search)
     {
-        Debug.WriteLine($"LoadSearchAsync: {search}");
+        //      Debug.WriteLine($"LoadSearchAsync: {search}");
+        CurrentQuery = search;
 
         IsLoading = true;
+        await Task.Yield();
         try
         {
             Countries.Clear();
@@ -168,15 +191,98 @@ public partial class TblCountryViewModel : ObservableObject
         CountrySelected = newCountry;   // Detailbereich zeigt leeres Formular
         IsInEditCountry = true;         // Editmodus aktiv
         IsNewCountry = true;            // Speichern weiß: INSERT statt UPDATE
+
+        RequestFocusName?.Invoke();
     }
 
     // ------------------ Refresh --------------------
-    public bool CanRefresh => !IsInEditCountry;
+    public bool CanRefresh => !IsInEditCountry && CountrySelected != null;
 
     private async Task RefreshAsync()
     {
-        await LoadSearchAsync(CurrentQuery);
+        Debug.WriteLine("=== REFRESH START ===");
+
+        if (CountrySelected == null)
+            return;
+
+        var id = CountrySelected.CountryId;
+
+        IsLoading = true;
+
+        try
+        {
+            // 1) Liste neu laden (mit Query)
+            var freshList = await _dataService.GetCountriesByNameAsync(CurrentQuery);
+
+            // 2) Countries neu befüllen (kein Replace → DataGrid bleibt stabil)
+            Countries.Clear();
+            foreach (var c in freshList)
+                Countries.Add(c);
+
+            // 3) Selektion wiederherstellen
+            CountrySelected = Countries.FirstOrDefault(c => c.CountryId == id);
+
+            // 4) Count aktualisieren
+            CountryDataSetCount = Countries.Count;
+            OnPropertyChanged(nameof(CountryDataSetCountText));
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
+
+    //private async Task RefreshAsync()
+    //{
+    //    Debug.WriteLine("=== REFRESH START ===");
+
+    //    if (CountrySelected == null)
+    //        return;
+
+    //    var id = CountrySelected.CountryId;
+
+    //    // komplette Liste neu laden
+    //    var freshList = await _dataService.GetCountriesByNameAsync(CurrentQuery);
+
+    //    Countries = new ObservableCollection<TblCountry>(freshList);
+
+    //    // Selektion wiederherstellen
+    //    CountrySelected = Countries.FirstOrDefault(c => c.CountryId == id);
+
+    //    CountryDataSetCount = Countries.Count;
+    //    OnPropertyChanged(nameof(CountryDataSetCountText));
+    //}
+
+    //private async Task RefreshAsync()
+    //{
+    //    Debug.WriteLine("=== REFRESH START ===");
+    //    Debug.WriteLine($"CurrentQuery = '{CurrentQuery}'");
+    //    Debug.WriteLine($"CurrentId = {CountrySelected?.CountryId}");
+
+    //        // Wenn nichts ausgewählt ist → gar nichts tun
+    //        if (CountrySelected == null)
+    //            return;
+
+    //        var id = CountrySelected.CountryId;
+
+    //        // Frische Version aus der DB holen
+    //        var fresh = await _dataService.GetCountryByIdAsync(id);
+    //        if (fresh == null)
+    //            return; // optional: oder Auswahl löschen
+
+    //        // Den Eintrag in der bestehenden Liste ersetzen
+    //        var index = Countries.IndexOf(CountrySelected);
+    //        if (index >= 0)
+    //        {
+    //            Countries[index] = fresh;
+    //            CountrySelected = fresh;
+    //        }
+
+    //        CountryDataSetCount = Countries.Count;
+    //        OnPropertyChanged(nameof(CountryDataSetCountText));
+
+
+    //}
 
     // ------------------ Edit --------------------
     public bool CanEditCountry => CountrySelected != null && !IsInEditCountry;
@@ -187,46 +293,81 @@ public partial class TblCountryViewModel : ObservableObject
         if (CountrySelected == null)
             return;
 
+        // Backup für Cancel
         _backupCountry = CountrySelected.Clone();
 
         IsInEditCountry = true;
         IsNewCountry = false;
         IsDetailVisible = true;
+
+        // Commands aktualisieren
+        (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
 
     // ------------------ Save --------------------
     public Func<Task<ContentDialogResult>>? RequestSaveDialog { get; set; }
     private bool CanSaveCountry()
     {
-        return IsInEditCountry;
+        return IsInEditCountry && CountrySelected != null;
     }
     private async Task SaveCountryAsync()
     {
         if (CountrySelected == null)
             return;
 
+        Debug.WriteLine("=== SAVE START ===");
+        Debug.WriteLine($"CountryId: {CountrySelected.CountryId}");
+        Debug.WriteLine($"Name: {CountrySelected.Name}");
+        Debug.WriteLine($"Latitude: {CountrySelected.Latitude}");
+        Debug.WriteLine($"Longitude: {CountrySelected.Longitude}");
+        Debug.WriteLine($"ZoomLevel: {CountrySelected.ZoomLevel}");
+
+        // 1️⃣ Dialog anzeigen
+        if (RequestSaveDialog != null)
+        {
+            var result = await RequestSaveDialog();
+            if (result != ContentDialogResult.Primary)
+                return;
+        }
+
+        Debug.WriteLine("=== CALLING UPSERT ===");
+
+        // 2️⃣ Speichern
         var saved = await _dataService.UpsertCountryAsync(CountrySelected);
+
+        // Wenn kein SearchText gesetzt ist → direkt nur den neuen Datensatz laden
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            Countries.Clear();
+            Countries.Add(saved);
+            CountrySelected = saved;
+            return;
+        }
+
+        Debug.WriteLine("=== UPSERT RETURNED ===");
+        Debug.WriteLine($"Saved CountryId: {saved.CountryId}");
+
+        // 3️⃣ Liste neu laden und gespeicherten Datensatz wieder auswählen
+        Debug.WriteLine("=== RELOAD LIST ===");
+        Debug.WriteLine($"SearchText: {SearchText}");
+        Debug.WriteLine($"SelectId: {saved.CountryId}");
 
         await LoadSearchInternalAsync(SearchText, saved.CountryId);
 
+        Debug.WriteLine("=== RELOAD DONE ===");
+
         IsInEditCountry = false;
         IsNewCountry = false;
+
+        // 4️⃣ Commands aktualisieren
+        (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
-
-    //private async Task SaveCountryAsync()
-    //{
-    //    if (CountrySelected == null)
-    //        return;
-
-    //    var id = CountrySelected.CountryId;
-
-    //    await _dataService.UpsertCountryAsync(CountrySelected);
-
-    //    // Suche erneut laden und geänderten Datensatz wieder auswählen
-    //    await LoadSearchInternalAsync(SearchText, id);
-
-    //    IsInEditCountry = false;
-    //}
 
     public Func<Task<bool>>? RequestDeleteDialog { get; set; }
 
@@ -235,41 +376,64 @@ public partial class TblCountryViewModel : ObservableObject
 
     private async Task DeleteCountryAsync()
     {
+        // 1️⃣ Dialog anzeigen
         if (RequestDeleteDialog != null)
         {
             var confirm = await RequestDeleteDialog();
-
             if (!confirm)
                 return;
         }
-        if (CountrySelected == null) return;
 
-        await _dataService.DeleteCountryAsync(CountrySelected.CountryId);
+        // 2️⃣ Safety: Kein SelectedItem → nichts zu löschen
+        if (CountrySelected == null)
+            return;
 
+        var idToDelete = CountrySelected.CountryId;
+
+        // 3️⃣ Löschen
+        await _dataService.DeleteCountryAsync(idToDelete);
+
+        // 4️⃣ Aus Liste entfernen
         Countries.Remove(CountrySelected);
 
+        // 5️⃣ Neuen Datensatz auswählen (falls vorhanden)
         CountrySelected = Countries.FirstOrDefault();
+
+        // 6️⃣ Dataset Count aktualisieren
         CountryDataSetCount = Countries.Count;
         OnPropertyChanged(nameof(CountryDataSetCountText));
 
-        IsDetailVisible = CountrySelected != null;
-
+        // 7️⃣ UI‑Zustände zurücksetzen
         _backupCountry = null;
         IsInEditCountry = false;
         IsNewCountry = false;
+        IsDetailVisible = CountrySelected != null;
 
+        // 8️⃣ Commands aktualisieren
+        (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
 
     // ------------------ Cancel --------------------
     private void CancelEdit()
     {
+        // 1️⃣ Änderungen zurücksetzen
         if (_backupCountry != null && CountrySelected != null)
         {
             CountrySelected.CopyFrom(_backupCountry);
         }
 
+        // 2️⃣ Editmodus beenden
         IsInEditCountry = false;
         IsNewCountry = false;
+
+        // 3️⃣ Commands aktualisieren
+        (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
     public bool CanCancelCountry => IsInEditCountry;
     public Task CancelAsync()
@@ -294,16 +458,40 @@ public partial class TblCountryViewModel : ObservableObject
         IsNewCountry = false;
     }
 
-    // =========================================================
+    public void Sort(string columnName, bool ascending)
+    {
+        var prop = typeof(TblCountry).GetProperty(columnName);
+        if (prop == null)
+            return;
+
+        var sorted = ascending
+            ? Countries.OrderBy(x => prop.GetValue(x) ?? "").ToList()
+            : Countries.OrderByDescending(x => prop.GetValue(x) ?? "").ToList();
+
+        Countries.Clear();
+
+        foreach (var item in sorted)
+            Countries.Add(item);
+    }
+    //=========================================================
     #endregion [Methods Country]
     // =========================================================
 
     // =========================================================
     #region [All Properties]
     // =========================================================
+    private ObservableCollection<TblCountry> _countries = new();
+    public ObservableCollection<TblCountry> Countries
+    {
+        get => _countries;
+        set
+        {
+            _countries = value;
+            OnPropertyChanged();
+        }
+    }
 
     // ------------------ Collections --------------------
-    public ObservableCollection<TblCountry> Countries { get; }
 
     public bool IsDetailEnabled => CountrySelected != null;
 
@@ -314,13 +502,37 @@ public partial class TblCountryViewModel : ObservableObject
         get => _countrySelected;
         set
         {
+            Debug.WriteLine($"[CountrySelected] SET → {(value == null ? "NULL" : value.CountryId.ToString())}");
+            // 1️⃣ Null-Guard
+            if (value == null)
+            {
+                if (SetProperty(ref _countrySelected, null))
+                {
+                    IsDetailVisible = false;
+                    IsNewCountry = false;
+                    _isInEditCountry = false;
+                    OnPropertyChanged(nameof(HasSelection));
+                    OnPropertyChanged(nameof(IsInEditCountry));
+                    OnPropertyChanged(nameof(CanEditCountry));
+                    (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+                    (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+                    (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                    (RefreshCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+                }
+                return; // ⛔ WICHTIG: NICHT WEITER MACHEN
+            }
+
             if (SetProperty(ref _countrySelected, value))
             {
-                Debug.WriteLine($"CountrySelected Type: {value?.GetType().FullName}");
+                //Debug.WriteLine($"[CountrySelected] SET → {(value == null ? "NULL" : value.CountryId.ToString())}");
+                //Debug.WriteLine(Environment.StackTrace);
+
                 OnPropertyChanged(nameof(HasSelection));
 
                 // 1️⃣ Erst alle Zustände setzen
-                IsDetailVisible = value != null;
+                //IsDetailVisible = value != null; vorher
+                IsDetailVisible = true;
                 IsNewCountry = false;
 
                 // Wichtig: IsInEditCountry löst selbst CanEditCountry aus
@@ -335,6 +547,8 @@ public partial class TblCountryViewModel : ObservableObject
                 (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
                 (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+                (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (RefreshCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
             }
         }
     }
@@ -377,11 +591,12 @@ public partial class TblCountryViewModel : ObservableObject
     };
 
     // ------------------ UI State --------------------
-    private bool _isLoading;
+
+    private bool _isLoading = false; // GANZ WICHTIG!
     public bool IsLoading
     {
         get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
+        set { SetProperty(ref _isLoading, value); Debug.WriteLine("IsLoading SET: " + value); }
     }
 
     private string? _currentQuery;
@@ -391,6 +606,7 @@ public partial class TblCountryViewModel : ObservableObject
         get => _currentQuery;
         set => SetProperty(ref _currentQuery, value);
     }
+
     private bool _isDetailVisible;
     public bool IsDetailVisible
     {
@@ -411,6 +627,7 @@ public partial class TblCountryViewModel : ObservableObject
                 (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
                 (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
                 (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (RefreshCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
             }
         }
     }
@@ -422,28 +639,7 @@ public partial class TblCountryViewModel : ObservableObject
         get => _isNewCountry;
         set => SetProperty(ref _isNewCountry, value);
     }
-    //   public bool CanEditCountry => CountrySelected != null;
 
-    //public bool CanEditCountry => CountrySelected != null && !IsInEditCountry;
-
-    //   public bool DataGridHasFocus => true;
-
-    //    private bool _dataGridHasFocus;
-    //public bool DataGridHasFocus
-    //{
-    //    get => _dataGridHasFocus;
-    //    set
-    //    {
-    //        _dataGridHasFocus = value;
-    //        OnPropertyChanged();
-    //        OnPropertyChanged(nameof(CanEditCountry));
-
-    //        //if (SetProperty(ref _dataGridHasFocus, value))
-    //        //{
-    //        //    UpdateCanEditCountry();
-    //        //}
-    //    }
-    //}
 
     // ------------------ Dataset Count --------------------
     private int _countryDataSetCount;
@@ -462,17 +658,16 @@ public partial class TblCountryViewModel : ObservableObject
     public IAsyncRelayCommand<string> SearchCommand { get; }
     public IRelayCommand AddCountryCommand { get; }
     public IRelayCommand SyncCountryCommand { get; } = null!;
-
     public IRelayCommand CancelEditCountryCommand { get; }
-    //public IRelayCommand? BackToListCommand { get; }
     public IRelayCommand<TblCountry> OpenCountryCommand { get; }
     public IAsyncRelayCommand SaveCountryCommand { get; }
     public IAsyncRelayCommand DeleteCountryCommand { get; }
     public IRelayCommand StartEditCountryCommand { get; }
-    public IAsyncRelayCommand RefreshCountryCommand { get; }
+    public IAsyncRelayCommand RefreshCommand { get; }
 
     #endregion [All Properties]
 }
+
 
 
 

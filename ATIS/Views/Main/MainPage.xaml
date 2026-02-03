@@ -2,7 +2,7 @@
 <Page x:Class="ATIS.Views.Main.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:controls="using:ATIS.AtisDesignsystem.Controls"
+      xmlns:components="using:ATIS.DesignSystem.Components"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,6 +13,7 @@
     <Grid RowDefinitions="45, *">
         <TitleBar x:Name="AppTitleBar"
                   Title="{x:Bind wuc:ProcessInfoHelper.ProductName}"
+                  Grid.Row="0"
                   BackRequested="AppTitleBar_OnBackRequested"
                   IconSource="{wuc:BitmapIconSource Source=ms-appx:///Assets/icon.png}"
                   IsBackButtonVisible="True"
@@ -122,31 +123,38 @@
                         </MenuBarItem>
                         <MenuBarItem loca:Uids.Uid="MenuBarItemLanguage">
                             <MenuFlyoutItem loca:Uids.Uid="de-DE"
-                                            Tag="german">
+                                            Click="MenuFlyoutLanguage_Click"
+                                            Tag="de-DE">
                                 <MenuFlyoutItem.Icon>
                                     <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/germany.png" />
+                                                UriSource="ms-appx:///Assets/Fluent/germany.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
+
                             <MenuFlyoutItem loca:Uids.Uid="en-US"
-                                            Tag="englisch">
+                                            Click="MenuFlyoutLanguage_Click"
+                                            Tag="en-US">
                                 <MenuFlyoutItem.Icon>
                                     <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/usa.png" />
+                                                UriSource="ms-appx:///Assets/Fluent/usa.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
+
                             <MenuFlyoutItem loca:Uids.Uid="fr-FR"
-                                            Tag="französich">
+                                            Click="MenuFlyoutLanguage_Click"
+                                            Tag="fr-FR">
                                 <MenuFlyoutItem.Icon>
                                     <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/france.png" />
+                                                UriSource="ms-appx:///Assets/Fluent/france.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="sp-SP"
-                                            Tag="spanisch">
+
+                            <MenuFlyoutItem loca:Uids.Uid="es-ES"
+                                            Click="MenuFlyoutLanguage_Click"
+                                            Tag="es-ES">
                                 <MenuFlyoutItem.Icon>
                                     <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/spain.png" />
+                                                UriSource="ms-appx:///Assets/Fluent/spain.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuBarItem>
@@ -170,7 +178,7 @@
                                     QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                                     TextChanged="AutoSuggestBox_TextChanged" />
                     <ContentDialog x:Name="ContentDialogLogIn"
-                                   CloseButtonStyle="{StaticResource CrudButtonStyle}"
+                                   CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
                             <!--<contentDialogs:SignInContentDialog />-->
@@ -178,21 +186,21 @@
                         </StackPanel>
                     </ContentDialog>
                     <ContentDialog x:Name="ContentDialogRegister"
-                                   CloseButtonStyle="{StaticResource CrudButtonStyle}"
+                                   CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
                             <userControls:RegisterControl />
                         </StackPanel>
                     </ContentDialog>
                     <ContentDialog x:Name="ContentDialogPasswordChange"
-                                   CloseButtonStyle="{StaticResource CrudButtonStyle}"
+                                   CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
                             <userControls:PasswordChangeControl />
                         </StackPanel>
                     </ContentDialog>
                     <ContentDialog x:Name="ContentDialogPasswordForgot"
-                                   CloseButtonStyle="{StaticResource CrudButtonStyle}"
+                                   CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
                             <userControls:PasswordForgotControl />
@@ -220,11 +228,6 @@
                 </StackPanel>
             </TitleBar.RightHeader>
         </TitleBar>
-        <!--
-        Loaded="NavigationView_Loaded"
-        SelectionChanged="NavigationView_SelectionChanged"
-        SuggestionChosen="ControlsSearchBox_SuggestionChosen"
-        -->
         <NavigationView x:Name="NavView"
                         Grid.Row="1"
                         CompactModeThresholdWidth="641"
@@ -271,6 +274,7 @@
                 <NavigationViewItem loca:Uids.Uid="Nav_Database">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE8B7;" />
+                        <!--  Folder  -->
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Name="NavSpecies"
@@ -300,6 +304,7 @@
                         <NavigationViewItem loca:Uids.Uid="Nav_Tribusses">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
+                                <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfratribus"
@@ -339,6 +344,7 @@
                         <NavigationViewItem loca:Uids.Uid="Nav_Families">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
+                                <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfrafamily"
@@ -378,6 +384,7 @@
                         <NavigationViewItem loca:Uids.Uid="Nav_Ordos">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
+                                <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfraordo"
@@ -417,6 +424,7 @@
                         <NavigationViewItem loca:Uids.Uid="Nav_Classes">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
+                                <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfraclass"
@@ -456,6 +464,7 @@
                         <NavigationViewItem loca:Uids.Uid="Nav_Phylums">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
+                                <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavSubphylum"
@@ -487,6 +496,7 @@
                         <NavigationViewItem loca:Uids.Uid="Nav_AddOns">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
+                                <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavNames"
@@ -532,6 +542,7 @@
                                 <NavigationViewItem loca:Uids.Uid="Nav_RefDetails">
                                     <NavigationViewItem.Icon>
                                         <FontIcon Glyph="&#xE8B7;" />
+                                        <!--  Folder  -->
                                     </NavigationViewItem.Icon>
                                     <NavigationViewItem.MenuItems>
                                         <NavigationViewItem x:Name="NavRefExperts"
