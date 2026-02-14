@@ -12,8 +12,10 @@
         <ResourceDictionary x:Key="Light">
 
             <!--  PRIMARY BUTTON  -->
-            <SolidColorBrush x:Key="AtisPrimaryBrush" Color="#0078D4" />
-            <SolidColorBrush x:Key="AtisPrimaryForegroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisPrimaryBrush"
+                             Color="#0078D4" />
+            <SolidColorBrush x:Key="AtisPrimaryForegroundBrush"
+                             Color="#FFFFFF" />
             <SolidColorBrush x:Key="AtisPrimaryHoverBrush"
                              Color="#1D4ED8" />
             <SolidColorBrush x:Key="AtisPrimaryPressedBrush"
@@ -24,15 +26,19 @@
                              Color="#E5E7EB" />
 
             <!--  SECONDARY BUTTON  -->
-            <SolidColorBrush x:Key="AtisSecondaryBackgroundBrush" Color="#F3F3F3" />
-            <SolidColorBrush x:Key="AtisSecondaryForegroundBrush" Color="#333333" />
-            <SolidColorBrush x:Key="AtisSecondaryBorderBrush" Color="#CCCCCC" />
+            <SolidColorBrush x:Key="AtisSecondaryBackgroundBrush"
+                             Color="#F0F0F0" />
             <SolidColorBrush x:Key="AtisSecondaryHoverBrush"
-                             Color="#E5E7EB" />
+                             Color="#E5E5E5" />
             <SolidColorBrush x:Key="AtisSecondaryPressedBrush"
-                             Color="#D1D5DB" />
+                             Color="#DADADA" />
             <SolidColorBrush x:Key="AtisSecondaryDisabledBrush"
-                             Color="#F9FAFB" />
+                             Color="#C8C8C8" />
+            <SolidColorBrush x:Key="AtisSecondaryBorderBrush"
+                             Color="#CCCCCC" />
+
+            <SolidColorBrush x:Key="AtisSecondaryForegroundBrush"
+                             Color="#333333" />
             <SolidColorBrush x:Key="AtisSecondaryDisabledForegroundBrush"
                              Color="#9CA3AF" />
 
@@ -45,7 +51,8 @@
                              Color="#E5E7EB" />
             <SolidColorBrush x:Key="AtisSubtleDisabledForegroundBrush"
                              Color="#9CA3AF" />
-            <SolidColorBrush x:Key="AtisNeutralForegroundBrush" Color="#333333" />
+            <SolidColorBrush x:Key="AtisNeutralForegroundBrush"
+                             Color="#333333" />
 
         </ResourceDictionary>
 
@@ -55,8 +62,10 @@
         <ResourceDictionary x:Key="Dark">
 
             <!--  PRIMARY BUTTON  -->
-            <SolidColorBrush x:Key="AtisPrimaryBrush" Color="#3399FF" />
-            <SolidColorBrush x:Key="AtisPrimaryForegroundBrush" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisPrimaryBrush"
+                             Color="#3399FF" />
+            <SolidColorBrush x:Key="AtisPrimaryForegroundBrush"
+                             Color="#FFFFFF" />
             <SolidColorBrush x:Key="AtisPrimaryHoverBrush"
                              Color="#2563EB" />
             <SolidColorBrush x:Key="AtisPrimaryPressedBrush"
@@ -67,9 +76,12 @@
                              Color="#6B7280" />
 
             <!--  SECONDARY BUTTON  -->
-            <SolidColorBrush x:Key="AtisSecondaryBackgroundBrush" Color="#2A2A2A" />
-            <SolidColorBrush x:Key="AtisSecondaryForegroundBrush" Color="#E6E6E6" />
-            <SolidColorBrush x:Key="AtisSecondaryBorderBrush" Color="#3A3A3A" />
+            <SolidColorBrush x:Key="AtisSecondaryBackgroundBrush"
+                             Color="#2A2A2A" />
+            <SolidColorBrush x:Key="AtisSecondaryForegroundBrush"
+                             Color="#E6E6E6" />
+            <SolidColorBrush x:Key="AtisSecondaryBorderBrush"
+                             Color="#3A3A3A" />
             <SolidColorBrush x:Key="AtisSecondaryHoverBrush"
                              Color="#4B5563" />
             <SolidColorBrush x:Key="AtisSecondaryPressedBrush"
@@ -91,7 +103,8 @@
 
 
 
-            <SolidColorBrush x:Key="AtisNeutralForegroundBrush" Color="#E6E6E6" />
+            <SolidColorBrush x:Key="AtisNeutralForegroundBrush"
+                             Color="#E6E6E6" />
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

@@ -3585,6 +3585,17 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(k => k.Name)
             .ToListAsync();
     }
+    public async Task<bool> CountryExistsAsync(TblCountry model)
+    {
+        return await _context.TblCountries.AnyAsync(c =>
+            c.CountryId != model.CountryId &&
+            c.Name == model.Name &&
+            c.Regex == model.Regex &&
+            c.ZoomLevel == model.ZoomLevel &&
+            c.Latitude == model.Latitude &&
+            c.Longitude == model.Longitude
+        );
+    }
 
     public async Task<TblCountry?> GetCountryByIdAsync(int? countryid)
     {

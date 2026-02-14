@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace ATIS.Models;
 
@@ -9,7 +10,7 @@ public class TblCountry
     // Beim Erstellen eines neuen Datensatzes darf CountryId null sein.
     // EF setzt den Wert beim Speichern automatisch.
     [Key]
-    public int? CountryId { get; set; }
+    public int CountryId { get; set; }
 
     // ------------------ Required Name ------------------
     // Name ist Pflichtfeld → non-nullable
@@ -26,9 +27,10 @@ public class TblCountry
 
     // ------------------ Coordinates ------------------
     // Diese Werte sind immer gesetzt → non-nullable
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public int ZoomLevel { get; set; }
+    public int? ZoomLevel { get; set; }
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
+
 
     // ------------------ Clone ------------------
     public TblCountry Clone()
@@ -47,14 +49,17 @@ public class TblCountry
     // ------------------ CopyFrom ------------------
     public void CopyFrom(TblCountry other)
     {
+        Debug.WriteLine($"[COPYFROM] {Name} → {other.Name}");
         CountryId = other.CountryId;
         Name = other.Name;
         Regex = other.Regex;
+        ZoomLevel = other.ZoomLevel;
         Latitude = other.Latitude;
         Longitude = other.Longitude;
-        ZoomLevel = other.ZoomLevel;
     }
     // ------------------ Alternate RowColor in DataGrid ------------------
     [NotMapped]
     public bool IsAlternate { get; set; }
+
+
 }

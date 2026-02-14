@@ -118,8 +118,8 @@
 
 
     <Style x:Key="AtisSecondaryButton"
-           TargetType="Button"
-           BasedOn="{StaticResource AtisSecondaryBase}">
+           BasedOn="{StaticResource AtisSecondaryBase}"
+           TargetType="Button">
 
         <Setter Property="Background" Value="{ThemeResource AtisToggleBackgroundBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource AtisToggleForegroundBrush}" />
@@ -129,20 +129,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
 
-                    <!-- WICHTIG: Grid als Root -->
+                    <!--  WICHTIG: Grid als Root  -->
                     <Grid>
 
-                        <Border x:Name="Root"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding CornerRadius}"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
-
-                        <!-- VisualStates MÜSSEN hier stehen -->
+                        <!--  VisualStates MÜSSEN hier stehen  -->
                         <VisualStateManager.VisualStateGroups>
 
                             <VisualStateGroup x:Name="CommonStates">
@@ -151,30 +141,36 @@
 
                                 <VisualState x:Name="PointerOver">
                                     <VisualState.Setters>
-                                        <Setter Target="Root.Background"
-                                                Value="{ThemeResource AtisToggleHoverBackgroundBrush}" />
+                                        <Setter Target="Root.Background" Value="{ThemeResource AtisToggleHoverBackgroundBrush}" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                                 <VisualState x:Name="Pressed">
                                     <VisualState.Setters>
-                                        <Setter Target="Root.Background"
-                                                Value="{ThemeResource AtisTogglePressedBackgroundBrush}" />
+                                        <Setter Target="Root.Background" Value="{ThemeResource AtisTogglePressedBackgroundBrush}" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                                 <VisualState x:Name="Disabled">
                                     <VisualState.Setters>
-                                        <Setter Target="Root.Background"
-                                                Value="{ThemeResource AtisToggleDisabledBackgroundBrush}" />
-                                        <Setter Target="Root.BorderBrush"
-                                                Value="{ThemeResource AtisToggleDisabledForegroundBrush}" />
+                                        <Setter Target="Root.Background" Value="{ThemeResource AtisToggleDisabledBackgroundBrush}" />
+                                        <Setter Target="Root.BorderBrush" Value="{ThemeResource AtisToggleDisabledForegroundBrush}" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                             </VisualStateGroup>
 
                         </VisualStateManager.VisualStateGroups>
+
+                        <Border x:Name="Root"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
 
                     </Grid>
 

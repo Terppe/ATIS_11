@@ -1,11 +1,11 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ========================================================= -->
-    <!--  BASE TEXTBLOCK STYLE                                     -->
-    <!-- ========================================================= -->
-    <Style x:Key="AtisTextBlockBase" TargetType="TextBlock">
+    <!--  =========================================================  -->
+    <!--  BASE TEXTBLOCK STYLE  -->
+    <!--  =========================================================  -->
+    <Style x:Key="AtisTextBlockBase"
+           TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource AtisTextForegroundBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
@@ -13,64 +13,79 @@
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  PAGE TITLE (H1)                                          -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  PAGE TITLE (H1)  -->
+    <!--  =========================================================  -->
     <Style x:Key="AtisPageTitleTextStyle"
-           TargetType="TextBlock"
-           BasedOn="{StaticResource AtisTextBlockBase}">
+           BasedOn="{StaticResource AtisTextBlockBase}"
+           TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeXxl}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,12" />
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  SECTION TITLE (H2)                                       -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  SECTION TITLE (H2)  -->
+    <!--  =========================================================  -->
     <Style x:Key="AtisSectionTitleTextStyle"
-           TargetType="TextBlock"
-           BasedOn="{StaticResource AtisTextBlockBase}">
+           BasedOn="{StaticResource AtisTextBlockBase}"
+           TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeXl}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,8" />
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  SUBTITLE (H3)                                            -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  SUBTITLE (H3)  -->
+    <!--  =========================================================  -->
     <Style x:Key="AtisSubtitleTextStyle"
-           TargetType="TextBlock"
-           BasedOn="{StaticResource AtisTextBlockBase}">
+           BasedOn="{StaticResource AtisTextBlockBase}"
+           TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeL}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,6" />
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  BODY TEXT                                                -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  BODY TEXT  -->
+    <!--  =========================================================  -->
     <Style x:Key="AtisBodyTextStyle"
-           TargetType="TextBlock"
-           BasedOn="{StaticResource AtisTextBlockBase}">
+           BasedOn="{StaticResource AtisTextBlockBase}"
+           TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeM}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Margin" Value="0,0,0,4" />
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  CAPTION / SMALL TEXT                                     -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  CAPTION / SMALL TEXT  -->
+    <!--  =========================================================  -->
     <Style x:Key="AtisCaptionTextStyle"
-           TargetType="TextBlock"
-           BasedOn="{StaticResource AtisTextBlockBase}">
+           BasedOn="{StaticResource AtisTextBlockBase}"
+           TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeS}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Foreground" Value="{ThemeResource AtisTextCaptionBrush}" />
         <Setter Property="Margin" Value="0,0,0,2" />
+    </Style>
+
+    <!--  =========================================================  -->
+    <!--  CAPTION / SMALL TEXT Felder im Detail -->
+    <!--  =========================================================  -->
+    <Style x:Key="AtisFormLabelTextStyle"
+           TargetType="TextBlock">
+        <!--  kleiner als normaler Text  -->
+        <Setter Property="FontSize" Value="12" />
+        <!--  nicht schwarz, sondern dezenter  -->
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+        <!--  etwas Abstand nach unten zum Feld  -->
+        <Setter Property="Margin" Value="0,0,0,6" />
+        <!--  optional: leicht fett, wenn du mehr Gewicht willst  -->
+        <!-- <Setter Property="FontWeight" Value="SemiBold" /> -->
     </Style>
 
 </ResourceDictionary>

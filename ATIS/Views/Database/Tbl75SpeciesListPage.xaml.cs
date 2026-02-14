@@ -3014,9 +3014,9 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
         });
         var selected = ViewModel.TblCountriesList[0];
 
-        ViewModel.GeographicSelected.ZoomLevel = selected.ZoomLevel;
-        ViewModel.GeographicSelected.Latitude = selected.Latitude;
-        ViewModel.GeographicSelected.Longitude = selected.Longitude;
+        //ViewModel.GeographicSelected.ZoomLevel = selected.ZoomLevel;
+        //ViewModel.GeographicSelected.Latitude = selected.Latitude;
+        //ViewModel.GeographicSelected.Longitude = selected.Longitude;
 
             if (ViewModel.Tbl87GeographicsList.Count != 0)
             {

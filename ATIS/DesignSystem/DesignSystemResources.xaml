@@ -4,14 +4,14 @@
 
     <ResourceDictionary.MergedDictionaries>
 
-        <!--  7) Generic (immer zuletzt) // Überflüssig ? -->
+        <!--  7) Generic (immer zuletzt) // Überflüssig ?  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Themes/Generic.xaml" />
 
         <!--  1) Converters – immer ganz oben  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Converters/Converters.xaml" />
 
         <!--  2) Foundations  -->
-        <!--  2) Foundations (korrekte Reihenfolge!) -->
+        <!--  2) Foundations (korrekte Reihenfolge!)  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Colors.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Brushes.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/DesignTokens.xaml" />

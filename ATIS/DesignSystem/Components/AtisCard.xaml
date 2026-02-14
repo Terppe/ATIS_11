@@ -7,18 +7,22 @@
 
     <ResourceDictionary.ThemeDictionaries>
 
-        <!-- LIGHT -->
+        <!--  LIGHT  -->
         <ResourceDictionary x:Key="Light">
 
-            <!-- Input Brushes (Light) -->
-            <SolidColorBrush x:Key="AtisInputBackgroundBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="AtisInputBorderBrush" Color="#CCCCCC" />
+            <!--  Input Brushes (Light)  -->
+            <SolidColorBrush x:Key="AtisInputBackgroundBrush"
+                             Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisInputBorderBrush"
+                             Color="#CCCCCC" />
 
-            <!-- Optional -->
-            <SolidColorBrush x:Key="AtisNeutralBorderBrush" Color="#33000000" />
+            <!--  Optional  -->
+            <SolidColorBrush x:Key="AtisNeutralBorderBrush"
+                             Color="#33000000" />
 
-            <!-- AtisCard -->
-            <Style x:Key="AtisCard" TargetType="Border">
+            <!--  AtisCard  -->
+            <Style x:Key="AtisCard"
+                   TargetType="Border">
                 <Setter Property="Background" Value="{ThemeResource AtisInputBackgroundBrush}" />
                 <Setter Property="BorderBrush" Value="{ThemeResource AtisInputBorderBrush}" />
                 <Setter Property="BorderThickness" Value="1" />
@@ -30,19 +34,24 @@
         </ResourceDictionary>
 
 
-        <!-- DARK -->
+        <!--  DARK  -->
         <ResourceDictionary x:Key="Dark">
 
-            <!-- Input Brushes (Dark) -->
-            <SolidColorBrush x:Key="AtisInputBackgroundBrush" Color="#2A2A2A" />
-            <SolidColorBrush x:Key="AtisInputBorderBrush" Color="#444444" />
+            <!--  Input Brushes (Dark)  -->
+            <SolidColorBrush x:Key="AtisInputBackgroundBrush"
+                             Color="#2A2A2A" />
+            <SolidColorBrush x:Key="AtisInputBorderBrush"
+                             Color="#444444" />
 
-            <!-- Optional -->
-            <SolidColorBrush x:Key="AtisNeutralBorderBrush" Color="#33FFFFFF" />
-            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#111111" />
+            <!--  Optional  -->
+            <SolidColorBrush x:Key="AtisNeutralBorderBrush"
+                             Color="#33FFFFFF" />
+            <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush"
+                             Color="#111111" />
 
-            <!-- AtisCard -->
-            <Style x:Key="AtisCard" TargetType="Border">
+            <!--  AtisCard  -->
+            <Style x:Key="AtisCard"
+                   TargetType="Border">
                 <Setter Property="Background" Value="{ThemeResource AtisInputBackgroundBrush}" />
                 <Setter Property="BorderBrush" Value="{ThemeResource AtisInputBorderBrush}" />
                 <Setter Property="BorderThickness" Value="1" />
@@ -63,7 +72,9 @@
                         <ControlTemplate TargetType="local:AtisCard">
                             <Grid x:Name="RootGrid">
 
-                                --><!-- Simulierter Shadow: einfach ein leicht dunkler Hintergrund-Rahmen --><!--
+            -->
+            <!--  Simulierter Shadow: einfach ein leicht dunkler Hintergrund-Rahmen  -->
+            <!--
                                 <Border x:Name="ShadowLayer"
                                 Background="{StaticResource AtisOverlayLight}"
                                 CornerRadius="{TemplateBinding CornerRadius}"

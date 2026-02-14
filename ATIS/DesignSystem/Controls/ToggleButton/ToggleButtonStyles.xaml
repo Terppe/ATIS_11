@@ -1,22 +1,10 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ControlTemplate x:Key="AtisToggleTemplate"
                      TargetType="ToggleButton">
 
         <Grid>
-
-            <Border x:Name="Root"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}"
-                    Padding="{TemplateBinding Padding}">
-                <ContentPresenter x:Name="ContentPresenter"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center" />
-            </Border>
 
             <VisualStateManager.VisualStateGroups>
 
@@ -26,24 +14,20 @@
 
                     <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
-                            <Setter Target="Root.Background"
-                                    Value="{ThemeResource AtisToggleHoverBackgroundBrush}" />
+                            <Setter Target="Root.Background" Value="{ThemeResource AtisToggleHoverBackgroundBrush}" />
                         </VisualState.Setters>
                     </VisualState>
 
                     <VisualState x:Name="Pressed">
                         <VisualState.Setters>
-                            <Setter Target="Root.Background"
-                                    Value="{ThemeResource AtisTogglePressedBackgroundBrush}" />
+                            <Setter Target="Root.Background" Value="{ThemeResource AtisTogglePressedBackgroundBrush}" />
                         </VisualState.Setters>
                     </VisualState>
 
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Target="Root.Background"
-                                    Value="{ThemeResource AtisToggleDisabledBackgroundBrush}" />
-                            <Setter Target="ContentPresenter.Foreground"
-                                    Value="{ThemeResource AtisToggleDisabledForegroundBrush}" />
+                            <Setter Target="Root.Background" Value="{ThemeResource AtisToggleDisabledBackgroundBrush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AtisToggleDisabledForegroundBrush}" />
                         </VisualState.Setters>
                     </VisualState>
 
@@ -55,10 +39,8 @@
 
                     <VisualState x:Name="Checked">
                         <VisualState.Setters>
-                            <Setter Target="Root.Background"
-                                    Value="{ThemeResource AtisToggleCheckedBackgroundBrush}" />
-                            <Setter Target="ContentPresenter.Foreground"
-                                    Value="{ThemeResource AtisToggleCheckedForegroundBrush}" />
+                            <Setter Target="Root.Background" Value="{ThemeResource AtisToggleCheckedBackgroundBrush}" />
+                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource AtisToggleCheckedForegroundBrush}" />
                         </VisualState.Setters>
                     </VisualState>
 
@@ -66,12 +48,23 @@
 
             </VisualStateManager.VisualStateGroups>
 
+            <Border x:Name="Root"
+                    Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                <ContentPresenter x:Name="ContentPresenter"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center" />
+            </Border>
+
         </Grid>
     </ControlTemplate>
 
     <Style x:Key="AtisSecondaryToggleButton"
-           TargetType="ToggleButton"
-           BasedOn="{StaticResource AtisSecondaryBase}">
+           BasedOn="{StaticResource AtisSecondaryBase}"
+           TargetType="ToggleButton">
 
         <Setter Property="Background" Value="{ThemeResource AtisToggleBackgroundBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource AtisToggleForegroundBrush}" />

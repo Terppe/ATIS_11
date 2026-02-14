@@ -5,9 +5,9 @@ namespace ATIS.Services;
 
 public static class LocalizationManager
 {
-    public static event Action LanguageChanged;
+    public static event Action? LanguageChanged;
 
-    public static IStringLocalizer Localizer { get; private set; }
+    public static IStringLocalizer? Localizer { get; private set; }
 
     public static void Initialize(IStringLocalizer localizer)
     {

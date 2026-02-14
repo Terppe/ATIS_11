@@ -1,5 +1,12 @@
 ﻿### Projekt ToDo-Liste
-Erstellt am 2026-01-07 14:38
-Datenbank TblFood und TblMiscellaneous fehlt bei ShortInfo der Haken, also kann leer sein
-CountryPage auf MMVM umstellen ahnlich wie TblFood
-Version läuft nur optik bei CountryPage noch durcheinander
+Erstellt am 2026-002-07 15:38
+Läuft stabil. umgestellt auf V10.2.2605 von 10.1.2602... Alle Textbox-Width über Feldlänge aus DB gelöst.  Einfügen von Validation für Name in countrypage fertig. Jetzt die nächsten Regex, ZoomLevel,Latitude,Longitude alles soweit fertig. speichern von ZoomLevel,Latitude,Longitude mit Error-Überwachung fehler. diese Version könnte man weiterentwickeln mit public int? ZoomLevel { get; set; }
+public double? Latitude { get; set; }
+public double? Longitude { get; set; }. Aber mit der nächsten Version wird versucht mit public string Latitude { get; set; }
+public string Longitude { get; set; }
+public string ZoomLevel { get; set; } das sicher zu machen. Validierung abgeschlossen.jetzt kommt ContendDialog mit daten aus der Resources.resw für alle texte. Alle texte der Meldungen erfassen und Resources.resw vervollständigen. Fehler bei Service: der ist behoben.probleme zwischen WinUI3Localizer , jetzt mus überall in pges xmlns:loc="using:WinUI3Localizer" und statt loca:Uids.Uid="SomeKey" soll jetzt loc:Key="SomeKey". ganzes project. hoffentlich ok. diese version ist total durcheinander. Der versuch mit loc  ist gescheitert. Versuch über ViewModel die Inhalte aus Resources.resw zu lesen und umstieg auf Localize.get um loca:Uids.Uid zu vermeiden und einheitlich auf die Resources.resw zuzugreifen geht nur teilweise. Der gesamte Bereich der Page ist nicht mehr auf Buttodruck lokalisierbar. Gleichzeitig wurden wieder die Load, Edit und Save Methoden verändert. diese version funktioniert noch nicht . countrypage wird name und regex nicht angezeigt . erstnach culturebutton drüchen. aber culture funktioniert nicht wie bei loca:Uids.uid.doppeltes countrypage strten beseitigt in MainPage.cs.Version zeigt name und Regex bei fokus im datagrid nicht an. erst wenn ButtonCulture gedrückt wird erscheinen beide.
+
+, 
+
+
+

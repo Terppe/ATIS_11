@@ -594,6 +594,7 @@ public interface IDataService
     Task<List<TblCountry>> GetAllCountriesAsync();
     Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query);
     Task<List<TblCountry>> GetCountriesByNameAsync(string? query);
+    Task<bool> CountryExistsAsync(TblCountry model);
     Task<List<TblCountry>> GetCountryAsync();
     Task<List<TblCountry>> GetCountryAsync(int countryid);
     Task<TblCountry?> GetCountryByIdAsync(int? countryid);

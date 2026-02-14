@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using ATIS.DesignSystem.Services;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -26,6 +27,7 @@ using WinUIEx;
 using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
 using FoodPage = ATIS.Views.Main.Food.FoodPage;
 using MiscellaneousPage = ATIS.Views.Main.Miscellaneous.MiscellaneousPage;
+using TblCountryViewModel = ATIS.ViewModels.TblCountryViewModel;
 
 namespace ATIS;
 
@@ -92,7 +94,7 @@ public partial class App : Application
         InitializeLogging();
 
         // 7 Splash 
-        await ShowSplashAsync();
+   //solange entwickelt wird     await ShowSplashAsync();
 
         // 8 Window aktivieren
         MainWindow.Activate();
@@ -118,11 +120,16 @@ public partial class App : Application
         // THEME SERVICE (KORREKT)
         services.AddSingleton<WinUICommunity.IThemeService, WinUICommunity.ThemeService>();
 
-        // DATABASE + DATA SERVICE
+        // LOCALIZER + DATABASE + DATA SERVICE
+        //services.AddSingleton<ILocalizer, Localizer>();
         services.AddDbContext<AtisDbContext>();
         services.AddScoped<IDataService, DataService>();
 
+        // DESIGN SYSTEM SERVICES
+        services.AddSingleton<DialogService>();
+
         // VIEWMODELS
+        services.AddTransient<TblCountryListTestPage>();
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();
         services.AddTransient<AuthenticationViewModel>();
@@ -168,8 +175,7 @@ public partial class App : Application
         services.AddTransient<Tbl90RefExpertViewModel>();
         services.AddTransient<Tbl90RefSourceViewModel>();
         services.AddTransient<Tbl93CommentViewModel>();
- //       services.AddTransient<TblCountryViewModel>();
-        services.AddSingleton<TblCountryViewModel>();
+        services.AddTransient<TblCountryViewModel>();
         services.AddTransient<TblUserProfileViewModel>();
         services.AddTransient<FoodViewModel>();
         services.AddTransient<TblFoodViewModel>();
@@ -273,92 +279,6 @@ public partial class App : Application
             .Build();
     }
 
-    //private static async Task InitializeLocalizer()  //WinUI3Localizer
-    //{
-    //    // Initialize a "Strings" folder in the executables folder.
-    //    StringsFolderPath = Path.Combine(AppContext.BaseDirectory, "Strings");
-    //    _ = await new LocalizerBuilder()
-    //        .AddStringResourcesFolderForLanguageDictionaries(StringsFolderPath)
-    //    //later to use for DataGridTemplateColumn, DataGridTextColumn, DataGridComboBoxColumn, DataGridCheckBoxColumn
-    //.AddLocalizationAction(
-    //new LocalizationActions.ActionItem(
-    //    typeof(DataGridColumn),
-    //    arguments =>
-    //    {
-    //        if (arguments.DependencyObject is DataGridColumn target)
-    //        {
-    //            target.Header = arguments.Value;
-    //        }
-    //    }))
-    //        .AddLocalizationAction(new LocalizationActions.ActionItem(
-    //            typeof(DataGridTemplateColumn),
-    //            arguments =>
-    //            {
-    //                if (arguments.DependencyObject is DataGridTemplateColumn target)
-    //                {
-    //                    target.Header = arguments.Value;
-    //                }
-    //            }))
-    //        .AddLocalizationAction(new LocalizationActions.ActionItem(
-    //            typeof(DataGridTextColumn),
-    //            arguments =>
-    //            {
-    //                if (arguments.DependencyObject is DataGridTextColumn target)
-    //                {
-    //                    target.Header = arguments.Value;
-    //                }
-    //            }))
-    //        .AddLocalizationAction(new LocalizationActions.ActionItem(
-    //            typeof(DataGridComboBoxColumn),
-    //            arguments =>
-    //            {
-    //                if (arguments.DependencyObject is DataGridComboBoxColumn target)
-    //                {
-    //                    target.Header = arguments.Value;
-    //                }
-    //            }))
-    //        .AddLocalizationAction(new LocalizationActions.ActionItem(
-    //            typeof(DataGridCheckBoxColumn),
-    //            arguments =>
-    //            {
-    //                if (arguments.DependencyObject is DataGridCheckBoxColumn target)
-    //                {
-    //                    target.Header = arguments.Value;
-    //                }
-    //            }))
-    //        .AddLocalizationAction(
-    //            new LocalizationActions.ActionItem(
-    //                typeof(Run),
-    //                arguments =>
-    //                {
-    //                    if (arguments.DependencyObject is Run target)
-    //                    {
-    //                        target.Text = arguments.Value;
-    //                    }
-    //                }))
-    //        .AddLocalizationAction(
-    //            new LocalizationActions.ActionItem(
-    //                typeof(Hyperlink),
-    //                arguments =>
-    //                {
-    //                    if (arguments.DependencyObject is Hyperlink target && target.Inlines.Count is 0)
-    //                    {
-    //                        target.Inlines.Clear();
-    //                        target.Inlines.Add(new Run() { Text = arguments.Value });
-    //                    }
-    //                }))
-    //        .SetOptions(options =>
-    //        {
-    //            //    options.DefaultLanguage = "de-DE";
-    //            options.DefaultLanguage = ConfigurationManager.AppSettings.Get("Culture")!;
-
-    //        })
-    //        .Build();
-    //}
-
-    // ---------------------------------------------------------
-    // 6. SPLASHSCREEN
-    // ---------------------------------------------------------
     private async Task ShowSplashAsync()
     {
         splash = new SplashWindow();
@@ -437,111 +357,6 @@ public partial class App : Application
     public static string StringsFolderPath { get; private set; } = string.Empty;
     public static string? SearchQuickString { get; set; } // from MainPage filled
     public static int WindowsCounter { get; set; } = 0;// Count the created and open windows
-
-    //public static IServiceProvider? Services { get; private set; }
-    //public static WinUICommunity.IThemeService GetThemeService
-    //    => GetService<WinUICommunity.IThemeService>();
-
-    //public static IDataService? StaticDataService => Services.GetService<IDataService>();
-
-
-    //public static WindowEx MainWindow = new();
-    //public static Window MainWindow { get; private set; }
-
-    //public new static App Current => (App)Application.Current;
-    //public string AppVersion { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-    //public string AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
-    //public string Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
-
-
-    //public static string? SearchQuickString { get; set; } // from MainPage filled
-    ////public static FrameworkElement MainRoot { get; set; }
-    //public static int WindowsCounter { get; set; } = 0;// Count the created and open windows
-
-
-
-
-
-    //  private static readonly AtisDbContext Context = new();
-
-
-    //protected override async void OnLaunched(LaunchActivatedEventArgs args)
-    //{
-    //    try
-    //    {
-    //        // 1️⃣ DI INITIALISIEREN – GANZ OBEN!
-    //        Services = ConfigureServices();
-
-    //        // 2️⃣ Fenster erstellen
-    //        //MainWindow = new WindowEx();
-    //        //MainWindow.IsContentPresenter = true;
-
-    //        //System.Diagnostics.Debug.WriteLine("CONTENT TYPE: " + MainWindow.Content?.GetType().Name);
-
-    //        //MainWindow.AppWindow.Title = ProcessInfoHelper.ProductNameAndVersion;
-    //        //MainWindow.AppWindow.SetIcon("Assets/icon.ico");
-
-    //        //MainWindow.Height = Convert.ToInt32(ConfigurationManager.AppSettings.Get("MainHeight"));
-    //        //MainWindow.Width = Convert.ToInt32(ConfigurationManager.AppSettings.Get("MainWidth"));
-    //        //MainWindow.CenterOnScreen();
-    //        //MainWindow.IsAlwaysOnTop = false;
-    //        //MainWindow.IsTitleBarVisible = true;
-
-    //        MainWindow = new Window();
-    //        MainWindow.Title = ProcessInfoHelper.ProductNameAndVersion;
-
-    //        MainWindow.Content = new MainPage();
-
-    //        await InitializeLocalizer();
-
-    //        SimpleLog.SetLogDir("C:\\Temp", true);
-    //        SimpleLog.SetLogFile(logDir: "C:\\Temp\\LogAtis", prefix: "Atis_Log_" + AppVersion + "_", writeText: true);
-    //        SimpleLog.Info(" Started ATIS Application ");
-
-
-
-    //        // 3️⃣ Jetzt ist DI bereit → ThemeService funktioniert
-    //        GetThemeService?.AutoInitialize(MainWindow);
-
-    //        MainRoot = MainWindow.Content as FrameworkElement;
-
-
-
-
-    //        splash_screen = new SplashWindow();
-    //        splash_screen.CenterOnScreen();
-    //        splash_screen.IsAlwaysOnTop = true;
-    //        splash_screen.Activate();
-
-    //        await Task.Delay(7000);
-    //        MainWindow.Activate();
-
-    //        splash_screen.Close();
-
-    //        var customPrincipal = new CustomPrincipal();
-    //        AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
-
-    //        Cult = ConfigurationManager.AppSettings.Get("Culture");
-    //        Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult ?? string.Empty);
-    //        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult ?? string.Empty);
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //public static class AppData
-    //{
-    //    public static IDataService Data => App.StaticDataService;
-    //}
-
-    //public XamlRoot XamlRoot { get; set; }
-
-
-
-
 
 }
 

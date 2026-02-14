@@ -237,9 +237,9 @@
                         Loaded="NavigationView_Loaded"
                         OpenPaneLength="285"
                         PaneDisplayMode="Left"
-                        SelectionChanged="NavigationView_SelectionChanged">
+                        >
             <NavigationView.Header>
-                <!--<wuc:BreadcrumbNavigator x:Name="JsonBreadCrumbNavigator" />-->
+                <!--<wuc:BreadcrumbNavigator x:Name="JsonBreadCrumbNavigator"   SelectionChanged="NavigationView_SelectionChanged"/>-->
             </NavigationView.Header>
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox x:Name="ControlsSearchBox"
@@ -254,6 +254,14 @@
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.MenuItems>
+                <NavigationViewItem x:Name="NavTest"
+                                    loca:Uids.Uid="Nav_Home"
+                                    Tag="ATIS.Views.Database.TblCountryListTestPage">
+                    <NavigationViewItem.Icon>
+                        <BitmapIcon ShowAsMonochrome="False"
+                                    UriSource="ms-appx:///Assets/Fluent/dashboard.png" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem x:Name="NavHome"
                                     loca:Uids.Uid="Nav_Home"
                                     Tag="ATIS.Views.Main.HomePage">

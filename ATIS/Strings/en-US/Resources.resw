@@ -168,6 +168,12 @@
   <data name="AppBarButtonAdd.Label" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AppBarButtonAdd.Label2" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AppBarButtonAdd.Label1" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="AppBarButtonCancel.Label" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -332,6 +338,48 @@
   </data>
   <data name="ComboBox_Title.Header" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="Country_Page_Title" xml:space="preserve">
+    <value>Countries</value>
+  </data>
+  <data name="Country_Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Country_ZoomLevel_Placeholder" xml:space="preserve">
+    <value>Zoom level…</value>
+  </data>
+  <data name="Country_Latitude_Placeholder" xml:space="preserve">
+    <value>Latitude…</value>
+  </data>
+  <data name="Country_Regex_Placeholder" xml:space="preserve">
+    <value>Enter regex…</value>
+  </data>
+  <data name="Country_Name_Placeholder" xml:space="preserve">
+    <value>Enter name…</value>
+  </data>
+  <data name="Country_Detail_Title" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Country_Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
+  <data name="Country_Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="Country_ZoomLevel" xml:space="preserve">
+    <value>Zoom level</value>
+  </data>
+  <data name="Country_Regex" xml:space="preserve">
+    <value>Regex</value>
+  </data>
+  <data name="Country_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Country_Longitude_Placeholder" xml:space="preserve">
+    <value>Longitude…</value>
+  </data>
+  <data name="DataSetCount_Label" xml:space="preserve">
+    <value>Records:</value>
   </data>
   <data name="ComboBox_TribusName.Header" xml:space="preserve">
     <value>Tribus Name</value>
@@ -3675,6 +3723,24 @@
   <data name="Button_PrintPdf.Content" xml:space="preserve">
     <value>Print Pdf</value>
   </data>
+  <data name="Button_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Button_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="MenuFlyout_Print.Text" xml:space="preserve">
     <value>Print Dataset</value>
   </data>
@@ -3722,6 +3788,9 @@
   </data>
   <data name="SearchBox_Search.PlaceholderText" xml:space="preserve">
     <value>Search</value>
+  </data>
+  <data name="Search_Placeholder" xml:space="preserve">
+    <value>Search…</value>
   </data>
   <data name="HeaderTile_Components.Description" xml:space="preserve">
     <value>Experience WinUI 3 quickly and easily with the help of Components, Everything you need to develop an application is gathered in one place.</value>
@@ -3989,6 +4058,66 @@
   </data>
   <data name="de-DE.Text" xml:space="preserve">
     <value>German</value>
+  </data>
+  <data name="Dialog_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Dialog_Save_Title" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="Dialog_Delete_Title" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Dialog_Delete_Confirm" xml:space="preserve">
+    <value>Do you really want to delete this record?</value>
+  </data>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_Delete_Success" xml:space="preserve">
+    <value>The record has been deleted successfully.</value>
+  </data>
+  <data name="Dialog_Save_Success" xml:space="preserve">
+    <value>The record has been saved successfully.</value>
+  </data>
+  <data name="Dialog_Error_Duplicate" xml:space="preserve">
+    <value>An identical record already exists.</value>
+  </data>
+  <data name="Dialog_Error_FixBeforeSave" xml:space="preserve">
+    <value>Please correct the errors before saving.</value>
+  </data>
+  <data name="Dialog_OK" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Dialog_Error_DeleteFailed" xml:space="preserve">
+    <value>Deletion failed.</value>
+  </data>
+  <data name="Dialog_Error_SaveFailed" xml:space="preserve">
+    <value>Saving failed.</value>
+  </data>
+  <data name="Error_Name_Required" xml:space="preserve">
+    <value>Name must be between {0} and {1} characters.</value>
+  </data>
+  <data name="Error_Regex_Invalid" xml:space="preserve">
+    <value>The regular expression is invalid.</value>
+  </data>
+  <data name="Error_Zoom_Invalid" xml:space="preserve">
+    <value>Zoom must be between 1 and 20.</value>
+  </data>
+  <data name="Error_Longitude_Invalid" xml:space="preserve">
+    <value>Longitude is invalid.</value>
+  </data>
+  <data name="Error_Latitude_Invalid" xml:space="preserve">
+    <value>Latitude is invalid.</value>
+  </data>
+  <data name="Error_Name_Length" xml:space="preserve">
+    <value>Name must not be empty.</value>
   </data>
   <data name="fr-FR.Text" xml:space="preserve">
     <value>French</value>

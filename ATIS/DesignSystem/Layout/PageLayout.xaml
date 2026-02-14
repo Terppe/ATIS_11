@@ -4,9 +4,9 @@
 
 
 
-    <!-- ========================================================= -->
-    <!--  SPACING TOKENS (globales Abstands-System)                -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  SPACING TOKENS (globales Abstands-System)  -->
+    <!--  =========================================================  -->
 
     <x:Double x:Key="AtisSpacingXs">4</x:Double>
     <x:Double x:Key="AtisSpacingS">8</x:Double>
@@ -16,9 +16,9 @@
     <x:Double x:Key="AtisSpacingXxl">32</x:Double>
 
 
-    <!-- ========================================================= -->
-    <!--  PAGE CONTAINER                                           -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  PAGE CONTAINER  -->
+    <!--  =========================================================  -->
 
     <Style x:Key="AtisPageContainer"
            TargetType="Grid">
@@ -29,9 +29,9 @@
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  SECTION HEADER                                           -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  SECTION HEADER  -->
+    <!--  =========================================================  -->
 
     <Style x:Key="AtisSectionHeader"
            TargetType="TextBlock">
@@ -43,9 +43,9 @@
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  CARD / PANEL                                             -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  CARD / PANEL  -->
+    <!--  =========================================================  -->
 
     <!--<Style x:Key="AtisCard"
            TargetType="Border">
@@ -57,9 +57,9 @@
     </Style>-->
 
 
-    <!-- ========================================================= -->
-    <!--  SECTION CONTAINER                                        -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  SECTION CONTAINER  -->
+    <!--  =========================================================  -->
 
     <Style x:Key="AtisSection"
            TargetType="StackPanel">
@@ -68,11 +68,11 @@
     </Style>
 
 
-    <!-- ========================================================= -->
-    <!--  GRID LAYOUTS                                             -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  GRID LAYOUTS  -->
+    <!--  =========================================================  -->
 
-    <!-- 2-Spalten Layout -->
+    <!--  2-Spalten Layout  -->
     <Style x:Key="AtisTwoRowGrid"
            TargetType="Grid">
         <Setter Property="helpers:AtisRowExtensions.Rows" Value="2" />
@@ -85,25 +85,28 @@
         <Setter Property="RowSpacing" Value="{StaticResource AtisSpacingM}" />
     </Style>
 
-    <Style x:Key="AtisTwoColumnGrid" TargetType="Grid">
+    <Style x:Key="AtisTwoColumnGrid"
+           TargetType="Grid">
         <Setter Property="helpers:AtisGridExtensions.Columns" Value="2" />
         <Setter Property="helpers:AtisGridSpacing.ColumnSpacing" Value="{StaticResource AtisSpacingL}" />
         <Setter Property="helpers:AtisGridSpacing.RowSpacing" Value="{StaticResource AtisSpacingM}" />
     </Style>
-    <!-- ========================================================= -->
-    <!--  THEME-SPECIFIC VALUES (Light/Dark)                       -->
-    <!-- ========================================================= -->
+    <!--  =========================================================  -->
+    <!--  THEME-SPECIFIC VALUES (Light/Dark)  -->
+    <!--  =========================================================  -->
 
     <ResourceDictionary.ThemeDictionaries>
 
-        <!-- LIGHT -->
+        <!--  LIGHT  -->
         <ResourceDictionary x:Key="Light">
-            <SolidColorBrush x:Key="AtisCardShadowBrush" Color="#22000000" />
+            <SolidColorBrush x:Key="AtisCardShadowBrush"
+                             Color="#22000000" />
         </ResourceDictionary>
 
-        <!-- DARK -->
+        <!--  DARK  -->
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="AtisCardShadowBrush" Color="#33FFFFFF" />
+            <SolidColorBrush x:Key="AtisCardShadowBrush"
+                             Color="#33FFFFFF" />
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

@@ -17,6 +17,11 @@
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
     <converters:DoubleConverter x:Key="DoubleConverter" />
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters:NullOrEmptyToBoolConverter x:Key="NullOrEmptyToBoolConverter" />
+    <converters:ErrorsToBrushConverter x:Key="ErrorsToBrushConverter" />
+    <converters:DebugConverter x:Key="DebugConverter" />
+    <converters:EfWidthConverter x:Key="EfWidthConverter" />
+    <converters:ErrorListToStringConverter x:Key="ErrorListToStringConverter" />
 
 </ResourceDictionary>
 

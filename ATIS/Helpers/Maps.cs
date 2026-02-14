@@ -64,16 +64,16 @@ public interface Maps
                 SingleCountry = AppData.Data.TblCountries.FirstOrDefault(x => x.Name == graphSelect.Continent);
                 if (SingleCountry != null)
                 {
-                    centerOf1LongX = SingleCountry.Longitude;
-                    centerOf1LatiY = SingleCountry.Latitude;
-                    zoom = (int)SingleCountry.ZoomLevel;
+                    //centerOf1LongX = SingleCountry.Longitude;
+                    //centerOf1LatiY = SingleCountry.Latitude;
+                    //zoom = (int)SingleCountry.ZoomLevel;
                 }
             }
             else
             {
-                centerOf1LongX = SingleCountry.Longitude;
-                centerOf1LatiY = SingleCountry.Latitude;
-                zoom = (int)SingleCountry.ZoomLevel;
+                //centerOf1LongX = SingleCountry.Longitude;
+                //centerOf1LatiY = SingleCountry.Latitude;
+                //zoom = (int)SingleCountry.ZoomLevel;
             }
 
         }

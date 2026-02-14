@@ -10,13 +10,13 @@ public sealed partial class AtisPageLayout : UserControl
     {
         InitializeComponent();
 
-        DataContextChanged += (_, __) =>
-        {
-            ApplyDataContext(HeaderPresenter);
-            ApplyDataContext(AppBarPresenter);
-            ApplyDataContext(ListPresenter);
-            ApplyDataContext(DetailPresenter);
-        };
+        //DataContextChanged += (_, __) =>
+        //{
+        //    ApplyDataContext(HeaderPresenter);
+        //    ApplyDataContext(AppBarPresenter);
+        //    ApplyDataContext(ListPresenter);
+        //    ApplyDataContext(DetailPresenter);
+        //};
     }
 
     private void ApplyDataContext(ContentPresenter presenter)
@@ -46,8 +46,8 @@ public sealed partial class AtisPageLayout : UserControl
         var control = (AtisPageLayout)d;
         control.HeaderPresenter.Content = e.NewValue;
 
-        if (e.NewValue is FrameworkElement fe)
-            fe.DataContext = control.DataContext;
+        //if (e.NewValue is FrameworkElement fe)
+        //    fe.DataContext = control.DataContext;
     }
 
     // -------------------------
@@ -71,8 +71,8 @@ public sealed partial class AtisPageLayout : UserControl
         var control = (AtisPageLayout)d;
         control.AppBarPresenter.Content = e.NewValue;
 
-        if (e.NewValue is FrameworkElement fe)
-            fe.DataContext = control.DataContext;
+        //if (e.NewValue is FrameworkElement fe)
+        //    fe.DataContext = control.DataContext;
     }
 
     // -------------------------
@@ -96,8 +96,8 @@ public sealed partial class AtisPageLayout : UserControl
         var control = (AtisPageLayout)d;
         control.ListPresenter.Content = e.NewValue;
 
-        if (e.NewValue is FrameworkElement fe)
-            fe.DataContext = control.DataContext;
+        //if (e.NewValue is FrameworkElement fe)
+        //    fe.DataContext = control.DataContext;
     }
 
     // -------------------------
@@ -121,8 +121,8 @@ public sealed partial class AtisPageLayout : UserControl
         var control = (AtisPageLayout)d;
         control.DetailPresenter.Content = e.NewValue;
 
-        if (e.NewValue is FrameworkElement fe)
-            fe.DataContext = control.DataContext;
+        //if (e.NewValue is FrameworkElement fe)
+        //    fe.DataContext = control.DataContext;
     }
 
     public bool IsLoading

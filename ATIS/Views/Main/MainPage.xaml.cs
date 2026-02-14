@@ -5,6 +5,7 @@ using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.ViewModels;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
@@ -14,10 +15,10 @@ using ATIS.Views.Settings;
 using ATIS.Views.User;
 using Microsoft.Data.SqlClient;
 using Microsoft.UI;
-using WinUI3Localizer;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
+using WinUI3Localizer;
 using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 
 namespace ATIS.Views.Main;
@@ -333,40 +334,11 @@ public sealed partial class MainPage : Page
         App.Cult = languageOverride;
 
         // 3. UI neu laden / Texte aktualisieren
-        ChangeLanguageLoginReset();
+  //      ChangeLanguageLoginReset();
+
+        // 4. 🔥 ALLE ViewModels aktualisieren
+        ApplyCultureToAllViewModels();
     }
-
-    //private void MenuFlyoutGermanItem_Click(object sender, RoutedEventArgs e)
-    //{
-    //    ReloadLanguage("de-DE");
-    //}
-    //private void MenuFlyoutUsaItem_Click(object sender, RoutedEventArgs e)
-    //{
-    //    ReloadLanguage("en-US");
-    //}
-    //private void MenuFlyoutFrenchItem_Click(object sender, RoutedEventArgs e)
-    //{
-    //    ReloadLanguage("fr-FR");
-    //}
-
-    //private void MenuFlyoutSpainItem_Click(object sender, RoutedEventArgs e)
-    //{
-    //    ReloadLanguage("sp-SP");
-    //}
-    ////--------------------------------------------------------------------
-    ////  App.SetCulture(languageOverride);
-
-    //private void ReloadLanguage(string languageOverride)
-    //{
-    //    Thread.CurrentThread.CurrentCulture = new CultureInfo(languageOverride);
-    //    Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageOverride);
-
-    //    Localizer.Get().SetLanguage(languageOverride);
-
-    //    App.Cult = languageOverride;
-
-    //    ChangeLanguageLoginReset();
-    //}
 
     private void ChangeLanguageLoginReset()
     {
@@ -383,6 +355,16 @@ public sealed partial class MainPage : Page
         }
     }
 
+    private void ApplyCultureToAllViewModels()
+    {
+        if (App.GetService<TblCountryViewModel>() is { } countryVm)
+            countryVm.ApplyCulture();
+        //if (App.GetService<TblDiseaseViewModel>() is { } diseaseVm)
+        //    diseaseVm.ApplyCulture();
+        //if (App.GetService<TblFoodViewModel>() is { } foodVm)
+        //    foodVm.ApplyCulture();
+        // usw. für alle ViewModels
+        }
     //----------------------------------------------------
     private async Task LogIn()
     {
@@ -505,6 +487,11 @@ public sealed partial class MainPage : Page
             return;
         }
 
+        if ((string)args.ChosenSuggestion == (string)NavHome.Content)
+        {
+            NavFrame.Navigate(typeof(TblCountryListTestPage));
+            return;
+        }
         if ((string)args.ChosenSuggestion == (string)NavHome.Content)
         {
             NavFrame.Navigate(typeof(HomePage));
@@ -747,6 +734,12 @@ public sealed partial class MainPage : Page
     {
 
         if (args.InvokedItemContainer != null &&
+            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Database.TblCountryListTestPage")
+        {
+            NavFrame.Navigate(typeof(TblCountryListTestPage), null, args.RecommendedNavigationTransitionInfo);
+            return;
+        }
+        if (args.InvokedItemContainer != null &&
             (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Disease.DiseasePage")
         {
             NavFrame.Navigate(typeof(DiseasePage), null, args.RecommendedNavigationTransitionInfo);
@@ -786,81 +779,83 @@ public sealed partial class MainPage : Page
 
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)
     {
-        NavFrame.Navigate(typeof(HomePage));
+        //  NavFrame.Navigate(typeof(HomePage));
+        // NICHT navigieren!
+        NavView.SelectedItem = NavHome;
     }
 
-    private async void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-    {
-        var nvi = args.SelectedItemContainer as NavigationViewItem;
-        if (nvi == null) return;
+    //private async void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    //{
+    //    var nvi = args.SelectedItemContainer as NavigationViewItem;
+    //    if (nvi == null) return;
 
-        var tag = (string)nvi.Tag;
-        if (tag == null) return;
-
-
-        // 1. Seiten ohne Permission-Prüfung
-        if (tag == "ATIS.Views.Search.SearchQuickPage")
-        {
-            NavFrame.Navigate(typeof(SearchQuickPage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        if (tag == "ATIS.Views.Main.HomePage")
-        {
-            NavFrame.Navigate(typeof(HomePage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        // ⬅️ Während der Entwicklung, da keine Berechtigung!
-        if (tag == "ATIS.Views.Database.TblCountryListPage")
-        {
-            NavFrame.Navigate(typeof(TblCountryListPage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        if (tag == "ATIS.Views.Main.Disease.DiseasePage")
-        {
-            NavFrame.Navigate(typeof(Disease.DiseasePage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        if (tag == "ATIS.Views.Main.Food.FoodPage")
-        {
-            NavFrame.Navigate(typeof(Food.FoodPage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
-        {
-            NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        if (tag == "Settings")
-        {
-            NavFrame.Navigate(typeof(SettingsPage));
-            PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-            return;
-        }
-
-        // 2.🔥 PermissionHelper einsetzen
-        if (!await PermissionHelper.CheckOrGoBackAsync(NavView, NavFrame, tag))
-            return;
+    //    var tag = (string)nvi.Tag;
+    //    if (tag == null) return;
 
 
-        // 3. Permission OK → Page laden
-        var type = Type.GetType(tag);
-        NavFrame.Navigate(type);
+    //    // 1. Seiten ohne Permission-Prüfung
+    //    if (tag == "ATIS.Views.Search.SearchQuickPage")
+    //    {
+    //        NavFrame.Navigate(typeof(SearchQuickPage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
 
-        // 4. Und jetzt WICHTIG:
-        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    }
+    //    if (tag == "ATIS.Views.Main.HomePage")
+    //    {
+    //        NavFrame.Navigate(typeof(HomePage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
+
+    //    // ⬅️ Während der Entwicklung, da keine Berechtigung!
+    //    if (tag == "ATIS.Views.Database.TblCountryListPage")
+    //    {
+    //        NavFrame.Navigate(typeof(TblCountryListPage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
+
+    //    if (tag == "ATIS.Views.Main.Disease.DiseasePage")
+    //    {
+    //        NavFrame.Navigate(typeof(Disease.DiseasePage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
+
+    //    if (tag == "ATIS.Views.Main.Food.FoodPage")
+    //    {
+    //        NavFrame.Navigate(typeof(Food.FoodPage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
+
+    //    if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
+    //    {
+    //        NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
+
+    //    if (tag == "Settings")
+    //    {
+    //        NavFrame.Navigate(typeof(SettingsPage));
+    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //        return;
+    //    }
+
+    //    // 2.🔥 PermissionHelper einsetzen
+    //    if (!await PermissionHelper.CheckOrGoBackAsync(NavView, NavFrame, tag))
+    //        return;
+
+
+    //    // 3. Permission OK → Page laden
+    //    var type = Type.GetType(tag);
+    //    NavFrame.Navigate(type);
+
+    //    // 4. Und jetzt WICHTIG:
+    //    PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
+    //}
 
 
 

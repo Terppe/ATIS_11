@@ -47,8 +47,10 @@
             <SolidColorBrush x:Key="DataGridCellBorderBrush"
                              Color="#33000000" />
             <!--  Alternate  -->
-            <SolidColorBrush x:Key="AtisGridRowBackground" Color="#FFFFFFFF" />
-            <SolidColorBrush x:Key="AtisGridRowAlternateBackground" Color="#FFF5F5F5" />
+            <SolidColorBrush x:Key="AtisGridRowBackground"
+                             Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="AtisGridRowAlternateBackground"
+                             Color="#FFF5F5F5" />
 
 
         </ResourceDictionary>
@@ -94,8 +96,10 @@
                              Color="#33FFFFFF" />
 
             <!--  alternate  -->
-            <SolidColorBrush x:Key="AtisGridRowBackground" Color="#FF1E1E1E" />
-            <SolidColorBrush x:Key="AtisGridRowAlternateBackground" Color="#FF2A2A2A" />
+            <SolidColorBrush x:Key="AtisGridRowBackground"
+                             Color="#FF1E1E1E" />
+            <SolidColorBrush x:Key="AtisGridRowAlternateBackground"
+                             Color="#FF2A2A2A" />
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

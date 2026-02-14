@@ -5,24 +5,31 @@
 
         <!--  LIGHT MODE  -->
         <ResourceDictionary x:Key="Light">
-            <!--Input Brushes-->
-            <SolidColorBrush x:Key="AtisInputBackgroundBrush" Color="#1E1E1E" />
-            <SolidColorBrush x:Key="AtisInputBorderBrush" Color="#3A3A3A" />
-            <SolidColorBrush x:Key="AtisInputForegroundBrush" Color="White" />
+            <!--  Input Brushes  -->
+            <SolidColorBrush x:Key="AtisInputBackgroundBrush"
+                             Color="#1E1E1E" />
+            <SolidColorBrush x:Key="AtisInputBorderBrush"
+                             Color="#3A3A3A" />
+            <SolidColorBrush x:Key="AtisInputForegroundBrush"
+                             Color="White" />
 
-            <!--TextBox-Aliasse (einfach kopiert, kein Color-Binding nötig)-->
-            <SolidColorBrush x:Key="AtisTextBoxBackgroundBrush" Color="#F5F5F5" />
+            <!--  TextBox-Aliasse (einfach kopiert, kein Color-Binding nötig)  -->
+            <SolidColorBrush x:Key="AtisTextBoxBackgroundBrush"
+                             Color="#F5F5F5" />
             <!--<SolidColorBrush x:Key="AtisTextBoxBackgroundBrush" Color="#F5F5F5" />-->
-            <SolidColorBrush x:Key="AtisTextBoxForegroundBrush" Color="#000000" />
-            <SolidColorBrush x:Key="AtisTextBoxBorderBrush" Color="#C8C8C8" />
-            <SolidColorBrush x:Key="AtisTextBoxHoverBorderBrush" Color="#9A9A9A" />
-            <!--Standard-TextControl-Brushes-->
+            <SolidColorBrush x:Key="AtisTextBoxForegroundBrush"
+                             Color="#000000" />
+            <SolidColorBrush x:Key="AtisTextBoxBorderBrush"
+                             Color="#C8C8C8" />
+            <SolidColorBrush x:Key="AtisTextBoxHoverBorderBrush"
+                             Color="#9A9A9A" />
+            <!--  Standard-TextControl-Brushes  -->
             <SolidColorBrush x:Key="TextControlBackground"
                              Color="White" />
             <SolidColorBrush x:Key="TextControlBackgroundFocused"
                              Color="White" />
 
-            <!--Disabled-States angleichen-->
+            <!--  Disabled-States angleichen  -->
             <SolidColorBrush x:Key="TextControlBackgroundDisabled"
                              Color="White" />
             <SolidColorBrush x:Key="TextControlForegroundDisabled"
@@ -56,24 +63,37 @@
         <!--  DARK MODE  -->
         <ResourceDictionary x:Key="Dark">
 
-            <!--Input Brushes-->
-            <SolidColorBrush x:Key="AtisInputBackgroundBrush" Color="#1E1E1E" />
-            <SolidColorBrush x:Key="AtisInputBorderBrush" Color="#3A3A3A" />
-            <SolidColorBrush x:Key="AtisInputForegroundBrush" Color="White" />
+            <!--  Input Brushes  -->
+            <SolidColorBrush x:Key="AtisInputBackgroundBrush"
+                             Color="#1E1E1E" />
+            <SolidColorBrush x:Key="AtisInputBorderBrush"
+                             Color="#3A3A3A" />
+            <SolidColorBrush x:Key="AtisInputForegroundBrush"
+                             Color="White" />
 
-            <SolidColorBrush x:Key="AtisTextBoxBackgroundBrush" Color="#363636" />
+            <SolidColorBrush x:Key="AtisTextBoxBackgroundBrush"
+                             Color="#363636" />
             <!--<SolidColorBrush x:Key="AtisTextBoxBackgroundBrush" Color="#2A2A2A" />-->
-            <SolidColorBrush x:Key="AtisTextBoxForegroundBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="AtisTextBoxBorderBrush" Color="#3A3A3A" />
-            <SolidColorBrush x:Key="AtisTextBoxHoverBorderBrush" Color="#5A5A5A" />
-            <!--Normal States-->
-            <SolidColorBrush x:Key="TextControlBackground" Color="#1E1E1E" />
-            <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#1E1E1E" />
-            <!--Disabled States (WICHTIG!)-->
-            <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="#1E1E1E" />
-            <SolidColorBrush x:Key="TextControlForegroundDisabled" Color="White" />
-            <SolidColorBrush x:Key="TextControlHeaderForegroundDisabled" Color="White" />
-            <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="#3A3A3A" />
+            <SolidColorBrush x:Key="AtisTextBoxForegroundBrush"
+                             Color="#FFFFFF" />
+            <SolidColorBrush x:Key="AtisTextBoxBorderBrush"
+                             Color="#3A3A3A" />
+            <SolidColorBrush x:Key="AtisTextBoxHoverBorderBrush"
+                             Color="#5A5A5A" />
+            <!--  Normal States  -->
+            <SolidColorBrush x:Key="TextControlBackground"
+                             Color="#1E1E1E" />
+            <SolidColorBrush x:Key="TextControlBackgroundFocused"
+                             Color="#1E1E1E" />
+            <!--  Disabled States (WICHTIG!)  -->
+            <SolidColorBrush x:Key="TextControlBackgroundDisabled"
+                             Color="#1E1E1E" />
+            <SolidColorBrush x:Key="TextControlForegroundDisabled"
+                             Color="White" />
+            <SolidColorBrush x:Key="TextControlHeaderForegroundDisabled"
+                             Color="White" />
+            <SolidColorBrush x:Key="TextControlBorderBrushDisabled"
+                             Color="#3A3A3A" />
             <!--  SECONDARY BUTTON  -->
             <SolidColorBrush x:Key="AtisSecondaryBackgroundBrush"
                              Color="#F3F4F6" />

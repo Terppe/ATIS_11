@@ -131,19 +131,19 @@
 	</ItemGroup>
 	<ItemGroup>
 	<Page Update="DesignSystem\Controls\ContentDialog\ContentDialogStyles.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ContentDialog\ContentDialogBrushes.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\Flyout\MenuFlyoutStyles.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ToggleButton.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\NumberBox.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ComboBox.xaml">
 		<SubType>Designer</SubType>
@@ -152,19 +152,19 @@
 		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Foundations\Spacing.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Icons\AtisIcons.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\AtisResources.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="DesignSystem\Themes\AtisDesignTokens.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Themes\AtisElevation.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\UserControls\AtisDetailHeader.xaml">
 		<SubType>Designer</SubType>
@@ -176,7 +176,7 @@
 		<SubType>Code</SubType>
 	</Compile>
 	<Page Update="DesignSystem\Controls\DataGrid\DataGridStyles.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 
 <Page Update="Views\ContentDialogs\AtisDeleteDialog.xaml">
@@ -771,6 +771,7 @@
 		<None Remove="Views\Database\Tbl90RefSourceListPage.xaml" />
 		<None Remove="Views\Database\Tbl93CommentListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListPage.xaml" />
+		<None Remove="Views\Database\TblCountryListTestPage.xaml" />
 		<None Remove="Views\Database\TblUserProfileListPage.xaml" />
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
@@ -952,36 +953,38 @@
 	</PropertyGroup>
 
 <ItemGroup>
-	<PRIResource Remove="Strings\de-DE\ManifestResources.resw" />
-</ItemGroup>
-
-<ItemGroup>
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Components\LoadingOverlayControl.xaml">
+  <Page Update="Views\Database\TblCountryListTestPage.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Components\AtisCard.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-  <Page Update="DesignSystem\Components\AtisDetailHeader.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-  <Page Update="DesignSystem\Components\AtisPageLayout.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="DesignSystem\Components\LoadingOverlayControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Main\HomePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="DesignSystem\Components\AtisCard.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="DesignSystem\Components\AtisDetailHeader.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Update="DesignSystem\Components\AtisPageLayout.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="Views\Main\HomePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 </Project>

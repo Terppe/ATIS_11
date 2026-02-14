@@ -5,31 +5,53 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="using:ATIS.DesignSystem.Controls">
 
-    <!-- Farbige Icons (PNG/SVG) -->
-    <BitmapImage x:Key="Icon.Dashboard.Color" UriSource="ms-appx:///Assets/Fluent/dashboard.png" />
-    <BitmapImage x:Key="Icon.Search.Color" UriSource="ms-appx:///Assets/Fluent/search.png" />
-    <BitmapImage x:Key="Icon.Country.Color" UriSource="ms-appx:///Assets/Fluent/country.png" />
-    <BitmapImage x:Key="Icon.Disease.Color" UriSource="ms-appx:///Assets/Fluent/disease.png" />
-    <BitmapImage x:Key="Icon.Food.Color" UriSource="ms-appx:///Assets/Fluent/food.png" />
-    <BitmapImage x:Key="Icon.Misc.Color" UriSource="ms-appx:///Assets/Fluent/miscellaneous.png" />
-    <BitmapImage x:Key="Icon.Database.Color" UriSource="ms-appx:///Assets/Fluent/database.png" />
-    <BitmapImage x:Key="Icon.Admin.Color" UriSource="ms-appx:///Assets/Fluent/adminarea.png" />
-    <BitmapImage x:Key="Icon.User.Color" UriSource="ms-appx:///Assets/Fluent/userarea.png" />
-    <BitmapImage x:Key="Icon.Folder.Color" UriSource="ms-appx:///Assets/Fluent/folder.png" />
-    <BitmapImage x:Key="Icon.Collection.Color" UriSource="ms-appx:///Assets/Fluent/collection.png" />
+    <!--  Farbige Icons (PNG/SVG)  -->
+    <BitmapImage x:Key="Icon.Dashboard.Color"
+                 UriSource="ms-appx:///Assets/Fluent/dashboard.png" />
+    <BitmapImage x:Key="Icon.Search.Color"
+                 UriSource="ms-appx:///Assets/Fluent/search.png" />
+    <BitmapImage x:Key="Icon.Country.Color"
+                 UriSource="ms-appx:///Assets/Fluent/country.png" />
+    <BitmapImage x:Key="Icon.Disease.Color"
+                 UriSource="ms-appx:///Assets/Fluent/disease.png" />
+    <BitmapImage x:Key="Icon.Food.Color"
+                 UriSource="ms-appx:///Assets/Fluent/food.png" />
+    <BitmapImage x:Key="Icon.Misc.Color"
+                 UriSource="ms-appx:///Assets/Fluent/miscellaneous.png" />
+    <BitmapImage x:Key="Icon.Database.Color"
+                 UriSource="ms-appx:///Assets/Fluent/database.png" />
+    <BitmapImage x:Key="Icon.Admin.Color"
+                 UriSource="ms-appx:///Assets/Fluent/adminarea.png" />
+    <BitmapImage x:Key="Icon.User.Color"
+                 UriSource="ms-appx:///Assets/Fluent/userarea.png" />
+    <BitmapImage x:Key="Icon.Folder.Color"
+                 UriSource="ms-appx:///Assets/Fluent/folder.png" />
+    <BitmapImage x:Key="Icon.Collection.Color"
+                 UriSource="ms-appx:///Assets/Fluent/collection.png" />
 
-    <!-- Monochrome Icons (Segoe Fluent Glyphs) -->
-    <FontIcon x:Key="Icon.Dashboard.Mono" Glyph="&#xE9D2;" />
-    <FontIcon x:Key="Icon.Search.Mono" Glyph="&#xE825;" />
-    <FontIcon x:Key="Icon.Country.Mono" Glyph="&#xE825;" />
-    <FontIcon x:Key="Icon.Disease.Mono" Glyph="&#xE91F;" />
-    <FontIcon x:Key="Icon.Food.Mono" Glyph="&#xE8C8;" />
-    <FontIcon x:Key="Icon.Misc.Mono" Glyph="&#xE14C;" />
-    <FontIcon x:Key="Icon.Database.Mono" Glyph="&#xE74E;" />
-    <FontIcon x:Key="Icon.Admin.Mono" Glyph="&#xE713;" />
-    <FontIcon x:Key="Icon.User.Mono" Glyph="&#xE77B;" />
-    <FontIcon x:Key="Icon.Folder.Mono" Glyph="&#xE8B7;" />
-    <FontIcon x:Key="Icon.Collection.Mono" Glyph="&#xE77B;" />
+    <!--  Monochrome Icons (Segoe Fluent Glyphs)  -->
+    <FontIcon x:Key="Icon.Dashboard.Mono"
+              Glyph="&#xE9D2;" />
+    <FontIcon x:Key="Icon.Search.Mono"
+              Glyph="&#xE825;" />
+    <FontIcon x:Key="Icon.Country.Mono"
+              Glyph="&#xE825;" />
+    <FontIcon x:Key="Icon.Disease.Mono"
+              Glyph="&#xE91F;" />
+    <FontIcon x:Key="Icon.Food.Mono"
+              Glyph="&#xE8C8;" />
+    <FontIcon x:Key="Icon.Misc.Mono"
+              Glyph="&#xE14C;" />
+    <FontIcon x:Key="Icon.Database.Mono"
+              Glyph="&#xE74E;" />
+    <FontIcon x:Key="Icon.Admin.Mono"
+              Glyph="&#xE713;" />
+    <FontIcon x:Key="Icon.User.Mono"
+              Glyph="&#xE77B;" />
+    <FontIcon x:Key="Icon.Folder.Mono"
+              Glyph="&#xE8B7;" />
+    <FontIcon x:Key="Icon.Collection.Mono"
+              Glyph="&#xE77B;" />
 
     <Style TargetType="controls:AtisIcon">
         <Setter Property="Template">
