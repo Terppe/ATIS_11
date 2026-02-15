@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-using ATIS.ViewModels;
 using ATIS.Views.ContentDialogs;
+using ATIS.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
 using CommunityToolkit.WinUI.UI.Controls.Primitives;
-using WinUI3Localizer;
 
 namespace ATIS.Views.Database;
 
@@ -18,19 +17,29 @@ public sealed partial class TblCountryListPage : Page
         {
             InitializeComponent();
             ViewModel = App.GetService<TblCountryViewModel>();
-            DataContext = ViewModel;
-
-            ViewModel.ApplyCulture();
-            ViewModel.LoadCommand.Execute(null);
-
-            Debug.WriteLine($"[CTOR] TblCountryListPage Hash={GetHashCode()} VM={ViewModel?.GetHashCode()} DC={DataContext?.GetType().Name}");
-            if (ViewModel is null)
-                throw new InvalidOperationException("TblCountryViewModel is not registered.");
-
             Debug.WriteLine($"Page-Konstruktor, ViewModel-Instanz: {ViewModel.GetHashCode()}");
-
+            this.DataContext = ViewModel;
             CommandProxy = this;
 
+            //Loaded += (s, e) =>
+            //{
+            //    ViewModel.CurrentPageWidth = RootGrid.ActualWidth;
+
+            //    if (ViewModel.CountryEdit != null)
+            //        ViewModel.CountryEdit.ApplyPageWidth(ViewModel.CurrentPageWidth);
+            //};
+            //ViewModel.ApplyPageWidthRequest = width =>
+            //{
+            //    if (ViewModel.CountryEdit != null)
+            //        ViewModel.CountryEdit.ApplyPageWidth(width);
+            //};
+            //RootGrid.SizeChanged += (s, e) =>
+            //{
+            //    ViewModel.CurrentPageWidth = e.NewSize.Width;
+
+            //    if (ViewModel.CountryEdit != null)
+            //        ViewModel.CountryEdit.ApplyPageWidth(e.NewSize.Width);
+            //};
 
             ViewModel.RequestDeleteDialog = ShowDeleteDialogAsync;
             ViewModel.RequestSaveDialog = ShowSaveDialogAsync;
@@ -55,7 +64,7 @@ public sealed partial class TblCountryListPage : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        Debug.WriteLine($"[NAVIGATED] TblCountryListPage Hash={GetHashCode()} VM={ViewModel?.GetHashCode()} DC={DataContext?.GetType().Name}");
+
         await ViewModel.LoadAsync();
     }
 
@@ -65,8 +74,6 @@ public sealed partial class TblCountryListPage : Page
 
     private async void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        Debug.WriteLine("🔥 QuerySubmitted fired: " + args.QueryText);
-
         await ViewModel.LoadSearchAsync(args.QueryText);
         CountryDataGrid.Focus(FocusState.Programmatic);
     }
@@ -124,10 +131,6 @@ public sealed partial class TblCountryListPage : Page
     {
         if (DataContext is TblCountryViewModel vm)
             vm.CurrentPageWidth = e.NewSize.Width;
-    }
-
-    private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    {
     }
 }
 

@@ -34,7 +34,7 @@ public sealed partial class TblCountryListTestPage : Page
         DataContext = ViewModel;
 
         Debug.WriteLine($"[TEST] VM={ViewModel.GetHashCode()}");
-        ViewModel.ApplyCulture();
+    //    ViewModel.ApplyCulture();
         ViewModel.LoadCommand.Execute(null);
     }
 }

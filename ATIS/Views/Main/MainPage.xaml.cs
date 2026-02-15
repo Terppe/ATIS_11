@@ -333,11 +333,23 @@ public sealed partial class MainPage : Page
         Localizer.Get().SetLanguage(languageOverride);
         App.Cult = languageOverride;
 
-        // 3. UI neu laden / Texte aktualisieren
-  //      ChangeLanguageLoginReset();
+        // 3. UI neu laden
+        // Seite neu laden
+      //  RefreshCurrentPage();
+        // // 3. UI neu laden / Texte aktualisieren
+              ChangeLanguageLoginReset();
 
         // 4. 🔥 ALLE ViewModels aktualisieren
-        ApplyCultureToAllViewModels();
+        //ApplyCultureToAllViewModels();
+    }
+
+
+    private void RefreshCurrentPage()
+    {
+        var currentPageType = NavFrame.CurrentSourcePageType;
+        var parameter = (NavFrame.Content as Page)?.Tag;
+
+        NavFrame.Navigate(currentPageType, parameter);
     }
 
     private void ChangeLanguageLoginReset()
@@ -355,16 +367,16 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void ApplyCultureToAllViewModels()
-    {
-        if (App.GetService<TblCountryViewModel>() is { } countryVm)
-            countryVm.ApplyCulture();
-        //if (App.GetService<TblDiseaseViewModel>() is { } diseaseVm)
-        //    diseaseVm.ApplyCulture();
-        //if (App.GetService<TblFoodViewModel>() is { } foodVm)
-        //    foodVm.ApplyCulture();
-        // usw. für alle ViewModels
-        }
+    //private void ApplyCultureToAllViewModels()
+    //{
+    //    if (App.GetService<TblCountryViewModel>() is { } countryVm)
+    //        countryVm.ApplyCulture();
+    //    //if (App.GetService<TblDiseaseViewModel>() is { } diseaseVm)
+    //    //    diseaseVm.ApplyCulture();
+    //    //if (App.GetService<TblFoodViewModel>() is { } foodVm)
+    //    //    foodVm.ApplyCulture();
+    //    // usw. für alle ViewModels
+    //    }
     //----------------------------------------------------
     private async Task LogIn()
     {

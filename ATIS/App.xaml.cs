@@ -201,6 +201,7 @@ public partial class App : Application
         StringsFolderPath = Path.Combine(AppContext.BaseDirectory, "Strings");
         _ = await new LocalizerBuilder()
             .AddStringResourcesFolderForLanguageDictionaries(StringsFolderPath)
+            
             //later to use for DataGridTemplateColumn, DataGridTextColumn, DataGridComboBoxColumn, DataGridCheckBoxColumn
             .AddLocalizationAction(
                 new LocalizationActions.ActionItem(
@@ -212,7 +213,6 @@ public partial class App : Application
                             target.Header = arguments.Value;
                         }
                     }))
-
             .AddLocalizationAction(new LocalizationActions.ActionItem(
                 typeof(DataGridTemplateColumn),
                 arguments =>

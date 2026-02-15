@@ -6,6 +6,7 @@
       xmlns:behaviors="using:ATIS.DesignSystem.Behaviors"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
       x:Name="RootPage"
@@ -20,103 +21,101 @@
     <Grid x:Name="RootGrid">
 
         <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <atis:AtisPageLayout>
+            <atis:AtisPageLayout>
 
-            <!--  HEADER LINKS  -->
+                <!--  HEADER LINKS  -->
+                <atis:AtisPageLayout.Header>
 
-            <atis:AtisPageLayout.Header>
+                    <StackPanel Margin="8,0,0,8"
+                                Orientation="Horizontal"
+                                Spacing="10">
+                        <TextBlock Margin="0,4,0,0"
+                                   loca:Uids.Uid="TextBlock_Countries"
+                                   Style="{StaticResource AtisPageTitleTextStyle}" />
 
-                <StackPanel Margin="8,0,0,8"
-                            Orientation="Horizontal"
-                            Spacing="10">
-                    <TextBlock Margin="0,4,0,0"
-                               Style="{StaticResource AtisPageTitleTextStyle}"
-                               Text="{x:Bind ViewModel.CountryPageTitle}" />
-                    <TextBlock Margin="0,16,0,0"
-                               Style="{StaticResource AtisBodyTextStyle}"
-                               Text="{x:Bind ViewModel.DataSetCountLabel}" />
-                    <TextBlock Margin="0,16,0,0"
-                               Style="{StaticResource AtisBodyTextStyle}"
-                               Text="{Binding CountryDataSetCount, Mode=OneWay}" />
-                </StackPanel>
-            </atis:AtisPageLayout.Header>
+                        <TextBlock Margin="0,16,0,0"
+                                   loca:Uids.Uid="TextBlock_DataSetCount"
+                                   Style="{StaticResource AtisBodyTextStyle}" />
 
-            <!--  APPBAR RECHTS  -->
-            <atis:AtisPageLayout.AppBar>
-                <Grid ColumnSpacing="8">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <!--  LEFT: Buttons  -->
-                    <StackPanel Grid.Column="0"
-                                Margin="8"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-
-                        <Button Margin="5,0,5,0"
-                                Command="{x:Bind ViewModel.AddCountryCommand}"
-                                Style="{StaticResource AtisPrimaryButton}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="6">
-                                <FontIcon Glyph="&#xE710;" />
-                                <TextBlock Text="{x:Bind ViewModel.ButtonAddLabel}" />
-                            </StackPanel>
-                        </Button>
-
-                        <Button Margin="5,0,5,0"
-                                Command="{x:Bind ViewModel.SaveCountryCommand}"
-                                Style="{StaticResource AtisSecondaryButton}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="6">
-                                <FontIcon Glyph="&#xE74E;" />
-                                <TextBlock Text="{x:Bind ViewModel.ButtonSaveLabel}" />
-                            </StackPanel>
-                        </Button>
-
-                        <Button Margin="5,0,5,0"
-                                Command="{x:Bind ViewModel.DeleteCountryCommand}"
-                                Style="{StaticResource AtisSecondaryButton}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="6">
-                                <FontIcon Glyph="&#xE74D;" />
-                                <TextBlock Text="{x:Bind ViewModel.ButtonDeleteLabel}" />
-                            </StackPanel>
-                        </Button>
-
-                        <Button Margin="5,0,5,0"
-                                Command="{x:Bind ViewModel.RefreshCommand}"
-                                Style="{StaticResource AtisSecondaryButton}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="6">
-                                <FontIcon Glyph="&#xE72C;" />
-                                <TextBlock Text="{x:Bind ViewModel.ButtonRefreshLabel}" />
-                            </StackPanel>
-                        </Button>
-
+                        <TextBlock Margin="0,16,0,0"
+                                   Style="{StaticResource AtisBodyTextStyle}"
+                                   Text="{Binding CountryDataSetCount, Mode=OneWay}" />
                     </StackPanel>
+                </atis:AtisPageLayout.Header>
 
-                    <!--  RIGHT: SearchBox  -->
-                    <AutoSuggestBox x:Name="SearchBox"
-                                    Grid.Column="1"
-                                    Width="260"
-                                    Height="32"
-                                    Margin="10,0,18,0"
+                <!--  APPBAR RECHTS  -->
+                <atis:AtisPageLayout.AppBar>
+                    <Grid ColumnSpacing="8">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  LEFT: Buttons  -->
+                        <StackPanel Grid.Column="0"
+                                    Margin="8"
                                     VerticalAlignment="Center"
-                                    Loaded="SearchBox_OnLoaded"
-                                    PlaceholderText="{x:Bind ViewModel.SearchPlaceholder}"
-                                    QueryIcon="Find"
-                                    QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                                    Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}"
-                                    TextChanged="SearchBox_TextChanged" />
-                </Grid>
-            </atis:AtisPageLayout.AppBar>
+                                    Orientation="Horizontal">
 
-            <!--  ⭐ LIST CONTENT  -->
-            <atis:AtisPageLayout.ListContent>
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding AddCountryCommand}"
+                                    Style="{StaticResource AtisPrimaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE710;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Add" />
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding SaveCountryCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE74E;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Save" />
+                                </StackPanel>
+                            </Button>
 
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding DeleteCountryCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE74D;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Delete" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding RefreshCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE72C;" />
+                                    <TextBlock loca:Uids.Uid="TextBlock_Sync" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+
+                        <!--  RIGHT: SearchBox  -->
+                        <AutoSuggestBox x:Name="SearchBox"
+                                        Grid.Column="1"
+                                        Width="260"
+                                        Height="32"
+                                        Margin="10,0,18,0"
+                                        VerticalAlignment="Center"
+                                        loca:Uids.Uid="AutoSuggestBox_Search"
+                                        Loaded="SearchBox_OnLoaded"
+                                        QueryIcon="Find"
+                                        QuerySubmitted="AutoSuggestBox_QuerySubmitted"
+                                        Text="{Binding SearchText, Mode=TwoWay}" />
+                    </Grid>
+                </atis:AtisPageLayout.AppBar>
+
+                <!--  ⭐ LIST CONTENT  -->
+                <atis:AtisPageLayout.ListContent>
                     <Border Style="{StaticResource AtisCard}">
                         <Grid>
                             <toolkit:DataGrid x:Name="CountryDataGrid"
@@ -136,34 +135,36 @@
                                               Sorting="CountryDataGrid_Sorting"
                                               Style="{StaticResource AtisDataGridStyle}">
 
+
                                 <!--  ContextFlyout  -->
                                 <toolkit:DataGrid.ContextFlyout>
                                     <MenuFlyout>
-                                        <MenuFlyoutItem Command="{x:Bind ViewModel.AddCountryCommand}"
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add"
+                                                        Command="{Binding AddCountryCommand}"
                                                         Icon="Add"
-                                                        Style="{StaticResource AtisPrimaryMenuFlyoutItem}"
-                                                        Text="{x:Bind ViewModel.CtxAddLabel}" />
+                                                        Style="{StaticResource AtisPrimaryMenuFlyoutItem}" />
 
-                                        <MenuFlyoutItem Command="{x:Bind ViewModel.StartEditCountryCommand}"
-                                                        Icon="Edit"
-                                                        Text="{x:Bind ViewModel.CtxEditLabel}" />
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Edit"
+                                                        Command="{Binding StartEditCountryCommand}"
+                                                        Icon="Edit" />
 
-                                        <MenuFlyoutItem Command="{x:Bind ViewModel.SaveCountryCommand}"
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save"
+                                                        Command="{Binding SaveCountryCommand}"
                                                         Icon="Save"
-                                                        IsEnabled="{x:Bind ViewModel.CountrySelected, Converter={StaticResource NullToBoolConverter}}"
-                                                        Text="{x:Bind ViewModel.CtxSaveLabel}" />
+                                                        IsEnabled="{Binding CountrySelected, Converter={StaticResource NullToBoolConverter}}" />
 
-                                        <MenuFlyoutItem Command="{x:Bind ViewModel.DeleteCountryCommand}"
-                                                        Icon="Delete"
-                                                        Text="{x:Bind ViewModel.CtxDeleteLabel}" />
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete"
+                                                        Command="{Binding DeleteCountryCommand}"
+                                                        Icon="Delete" />
 
-                                        <MenuFlyoutItem Command="{x:Bind ViewModel.RefreshCommand}"
-                                                        Icon="Refresh"
-                                                        Text="{x:Bind ViewModel.CtxRefreshLabel}" />
+                                        <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
+                                                        Command="{Binding RefreshCommand}"
+                                                        Icon="Refresh" />
+
                                     </MenuFlyout>
                                 </toolkit:DataGrid.ContextFlyout>
 
-                                <!--  RowStyle  -->
+                                <!--  Columns  -->
                                 <toolkit:DataGrid.RowStyle>
                                     <Style TargetType="toolkit:DataGridRow">
                                         <Setter Property="Background" Value="{Binding IsAlternate, Converter={StaticResource BoolToRowBackgroundConverter}}" />
@@ -172,255 +173,344 @@
 
                                 <!--  Columns  -->
                                 <toolkit:DataGrid.Columns>
-
-                                    <toolkit:DataGridTextColumn Binding="{Binding CountryId}"
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTemplateColumn_CountryId"
+                                                                Binding="{Binding CountryId}"
                                                                 CanUserSort="True"
-                                                                Header="{Binding ColCountryId}"
                                                                 IsReadOnly="True"
                                                                 Tag="CountryId" />
-
-                                    <toolkit:DataGridTextColumn Binding="{Binding Name}"
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_CountryName"
+                                                                Binding="{Binding Name}"
                                                                 CanUserSort="True"
-                                                                Header="{Binding ColCountryName}"
                                                                 Tag="Name" />
-
-                                    <toolkit:DataGridTextColumn Binding="{Binding Regex}"
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Regex"
+                                                                Binding="{Binding Regex}"
                                                                 CanUserSort="True"
-                                                                Header="{Binding ColCountryRegex}"
                                                                 Tag="Regex" />
-
-                                    <toolkit:DataGridTextColumn Binding="{Binding ZoomLevel}"
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_ZoomLevel"
+                                                                Binding="{Binding ZoomLevel}"
                                                                 CanUserSort="True"
-                                                                Header="{Binding ColCountryZoomLevel}"
                                                                 Tag="ZoomLevel" />
-
-                                    <toolkit:DataGridTextColumn Binding="{Binding Latitude}"
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Latitude"
+                                                                Binding="{Binding Latitude}"
                                                                 CanUserSort="True"
-                                                                Header="{Binding ColCountryLatitude}"
                                                                 Tag="Latitude" />
-
-                                    <toolkit:DataGridTextColumn Binding="{Binding Longitude}"
+                                    <toolkit:DataGridTextColumn loca:Uids.Uid="DataGridTextColumn_Longitude"
+                                                                Binding="{Binding Longitude}"
                                                                 CanUserSort="True"
-                                                                Header="{Binding ColCountryLongitude}"
                                                                 Tag="Longitude" />
-
                                 </toolkit:DataGrid.Columns>
 
                             </toolkit:DataGrid>
                         </Grid>
                     </Border>
+                </atis:AtisPageLayout.ListContent>
 
-            </atis:AtisPageLayout.ListContent>
+                <!--  ⭐ DETAIL CONTENT  -->
+                <atis:AtisPageLayout.DetailContent>
+                    <Border Style="{StaticResource AtisCard}"
+                            Visibility="{Binding CountrySelected, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Spacing="8">
 
-            <!--  ⭐ DETAIL CONTENT  -->
-            <atis:AtisPageLayout.DetailContent>
-                <Border Style="{StaticResource AtisCard}"
-                        Visibility="{Binding CountrySelected, Converter={StaticResource NullToVisibilityConverter}}">
-                    <StackPanel Spacing="8">
+                            <!--  Detail CommandBar  -->
+                            <atis:AtisDetailHeader IsEnabled="True">
+                                <atis:AtisDetailHeader.LeftContent>
 
-                        <!--  Detail CommandBar  -->
-                        <atis:AtisDetailHeader IsEnabled="True">
-                            <atis:AtisDetailHeader.LeftContent>
+                                    <TextBlock loca:Uids.Uid="TextBlock_Country"
+                                               Style="{StaticResource AtisSectionTitleTextStyle}" />
 
-                                <TextBlock Style="{StaticResource AtisSectionTitleTextStyle}"
-                                           Text="{x:Bind ViewModel.CountryDetailTitle}" />
-                            </atis:AtisDetailHeader.LeftContent>
+                                </atis:AtisDetailHeader.LeftContent>
 
-                            <atis:AtisDetailHeader.RightContent>
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="8">
-                                    <Button Margin="5,0,5,0"
-                                            Command="{Binding SaveCountryCommand}"
-                                            Style="{StaticResource AtisSecondaryButton}"
-                                            Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="6">
-                                            <FontIcon Glyph="&#xE74E;" />
-                                            <TextBlock Text="{x:Bind ViewModel.ButtonSaveLabel}" />
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Margin="5,0,5,0"
-                                            Command="{Binding CancelEditCountryCommand}"
-                                            Style="{StaticResource AtisSecondaryButton}"
-                                            Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="6">
-                                            <FontIcon Glyph="&#xE8BB;" />
-                                            <TextBlock Text="{x:Bind ViewModel.ButtonCancelLabel}" />
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Command="{Binding StartEditCountryCommand}"
-                                            IsEnabled="{Binding CanEditCountry}"
-                                            Style="{StaticResource AtisSecondaryButton}">
-                                        <StackPanel Orientation="Horizontal"
-                                                    Spacing="6">
-                                            <FontIcon Glyph="&#xE70F;" />
-                                            <TextBlock Text="{x:Bind ViewModel.ButtonEditLabel}" />
-                                        </StackPanel>
-                                    </Button>
-                                </StackPanel>
-                            </atis:AtisDetailHeader.RightContent>
-                        </atis:AtisDetailHeader>
+                                <atis:AtisDetailHeader.RightContent>
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="8">
+                                        <Button Margin="5,0,5,0"
+                                                Command="{Binding SaveCountryCommand}"
+                                                Style="{StaticResource AtisSecondaryButton}"
+                                                Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="6">
+                                                <FontIcon Glyph="&#xE74E;" />
+                                                <TextBlock loca:Uids.Uid="TextBlock_Save" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Margin="5,0,5,0"
+                                                Command="{Binding CancelEditCountryCommand}"
+                                                Style="{StaticResource AtisSecondaryButton}"
+                                                Visibility="{Binding IsInEditCountry, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="6">
+                                                <FontIcon Glyph="&#xE8BB;" />
+                                                <TextBlock loca:Uids.Uid="TextBlock_Cancel" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding StartEditCountryCommand}"
+                                                IsEnabled="{Binding CanEditCountry}"
+                                                Style="{StaticResource AtisSecondaryButton}">
+                                            <StackPanel Orientation="Horizontal"
+                                                        Spacing="6">
+                                                <FontIcon Glyph="&#xE70F;" />
+                                                <TextBlock loca:Uids.Uid="TextBlock_Edit" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </atis:AtisDetailHeader.RightContent>
+                            </atis:AtisDetailHeader>
 
-                        <!--  Detail Fields  -->
-                        <Grid RowSpacing="8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                            <!--  Detail Fields  -->
+                            <Grid RowSpacing="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                            <!--  Row 0  -->
-                            <Grid Grid.Row="0"
-                                  ColumnSpacing="8">
+                                <!--  Row 0  -->
+                                <Grid Grid.Row="0"
+                                      ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBox x:Name="CountryName"
+                                                 MinWidth="{Binding NameUi.MinWidth}"
+                                                 MaxWidth="{Binding NameUi.MaxWidth}"
+                                                 loca:Uids.Uid="TextBox_CountryName"
+                                                 BorderBrush="{Binding NameErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                                 DataContext="{Binding}"
+                                                 GotFocus="{x:Bind ViewModel.BeginUserEdit}"
+                                                 IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                                 LostFocus="{x:Bind ViewModel.ValidateName}"
+                                                 MaxLength="{Binding NameUi.MaxLength}"
+                                                 Style="{StaticResource AtisTextBox}"
+                                                 Text="{Binding CountryEdit.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
+                                        <TextBlock FontSize="12"
+                                                   Foreground="Red"
+                                                   Text="{Binding NameErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                                   TextWrapping="Wrap" />
+
+                                    </StackPanel>
+                                </Grid>
+
+                                <!--  Row 1  -->
+                                <Grid Grid.Row="1"
+                                      ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBox MinWidth="{Binding NameUi.MinWidth}"
+                                                 MaxWidth="{Binding NameUi.MaxWidth}"
+                                                 loca:Uids.Uid="TextBox_Regex"
+                                                 BorderBrush="{Binding RegexErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                                 DataContext="{Binding}"
+                                                 IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                                 LostFocus="{x:Bind ViewModel.ValidateRegex}"
+                                                 MaxLength="{Binding NameUi.MaxLength}"
+                                                 Style="{StaticResource AtisTextBox}"
+                                                 Text="{Binding CountryEdit.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
+                                        <TextBlock FontSize="12"
+                                                   Foreground="Red"
+                                                   Text="{Binding RegexErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <!--  Row 2  -->
+                                <Grid Grid.Row="2"
+                                      ColumnSpacing="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBox loca:Uids.Uid="TextBox_ZoomLevel"
+                                                 BorderBrush="{Binding ZoomLevelErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                                 DataContext="{Binding}"
+                                                 GotFocus="{x:Bind ViewModel.BeginUserEdit}"
+                                                 InputScope="Number"
+                                                 IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                                 LostFocus="{x:Bind ViewModel.ValidateZoomLevel}"
+                                                 Style="{StaticResource AtisTextBox}"
+                                                 Text="{Binding CountryEdit.ZoomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
+                                        <TextBlock FontSize="12"
+                                                   Foreground="Red"
+                                                   Text="{Binding ZoomLevelErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBox loca:Uids.Uid="TextBox_Latitude"
+                                                 BorderBrush="{Binding LatitudeErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                                 DataContext="{Binding}"
+                                                 GotFocus="{x:Bind ViewModel.BeginUserEdit}"
+                                                 InputScope="Number"
+                                                 IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                                 LostFocus="{x:Bind ViewModel.ValidateLatitude}"
+                                                 Style="{StaticResource AtisTextBox}"
+                                                 Text="{Binding CountryEdit.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
+                                        <TextBlock FontSize="12"
+                                                   Foreground="Red"
+                                                   Text="{Binding LatitudeErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBox loca:Uids.Uid="TextBox_Longitude"
+                                                 BorderBrush="{Binding LongitudeErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                                 DataContext="{Binding}"
+                                                 GotFocus="{x:Bind ViewModel.BeginUserEdit}"
+                                                 InputScope="Number"
+                                                 IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                                 LostFocus="{x:Bind ViewModel.ValidateLongitude}"
+                                                 Style="{StaticResource AtisTextBox}"
+                                                 Text="{Binding CountryEdit.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
+                                        <TextBlock FontSize="12"
+                                                   Foreground="Red"
+                                                   Text="{Binding LongitudeErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Grid>
+
+
+
+
+
+
+                                <!--  Row 0  -->
+                                <!--
+                                <Grid Grid.Row="0"
+                                ColumnSpacing="12"
+                                RowSpacing="8">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <!--  Header  -->
-                                    <!--<TextBlock Style="{StaticResource AtisFormLabelTextStyle}"
-                                    Text="{Binding CountryNameLabel}" />-->
-                                    <!--  Input  -->
-                                    <TextBox x:Name="CountryName"
-                                             MinWidth="{Binding NameUi.MinWidth}"
-                                             MaxWidth="{Binding NameUi.MaxWidth}"
-                                             BorderBrush="{Binding NameErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
-                                             GotFocus="{x:Bind ViewModel.BeginUserEdit}"
-                                             Header="{Binding ColCountryName}"
-                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                             LostFocus="{x:Bind ViewModel.ValidateName}"
-                                             MaxLength="{Binding NameUi.MaxLength}"
-                                             PlaceholderText="{Binding CountryNamePlaceholder}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding CountryEdit.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
-                                    <!--  Errors  -->
-                                    <TextBlock FontSize="12"
-                                               Foreground="Red"
-                                               Text="{Binding NameErrors, Converter={StaticResource ErrorListToStringConverter}}"
-                                               TextWrapping="Wrap" />
+                                <TextBox x:Name="CountryName1"
+                                MinWidth="{Binding NameUi.MinWidth}"
+                                MaxWidth="{Binding NameUi.MaxWidth}"
+                                loca:Uids.Uid="TextBox_CountryName"
+                                BorderBrush="{Binding NameErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                DataContext="{Binding}"
+                                IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                LostFocus="{x:Bind ViewModel.ValidateName}"
+                                MaxLength="{Binding NameUi.MaxLength}"
+                                Style="{StaticResource AtisTextBox}"
+                                Text="{Binding CountryEdit.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="{x:Bind ViewModel.ValidateName}" />
+                                <TextBlock FontSize="12"
+                                Foreground="Red"
+                                Text="{Binding NameErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                TextWrapping="Wrap" />
                                 </StackPanel>
-                            </Grid>
+                                </Grid>
+                                <StackPanel Grid.Row="1">
+                                <TextBox x:Name="Regex"
+                                MinWidth="{Binding NameUi.MinWidth}"
+                                MaxWidth="{Binding NameUi.MaxWidth}"
+                                loca:Uids.Uid="TextBox_Regex"
+                                BorderBrush="{Binding NameErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                DataContext="{Binding}"
+                                IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                LostFocus="{x:Bind ViewModel.ValidateRegex}"
+                                MaxLength="{Binding NameUi.MaxLength}"
+                                Style="{StaticResource AtisTextBox}"
+                                Text="{Binding CountryEdit.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="{x:Bind ViewModel.ValidateRegex}" />
+                                <TextBlock FontSize="12"
+                                Foreground="Red"
+                                Text="{Binding NameErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                TextWrapping="Wrap" />
+                                </StackPanel>
 
-                            <!--  Row 1  -->
-                            <Grid Grid.Row="1"
-                                  ColumnSpacing="8">
+                                -->
+                                <!--  Row 2  -->
+                                <!--
+                                <Grid Grid.Row="2"
+                                ColumnSpacing="12"
+                                RowSpacing="8">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <!--  Header  -->
-                                    <!--<TextBlock Style="{StaticResource AtisFormLabelTextStyle}"
-                                    Text="{Binding CountryRegexLabel}" />-->
-                                    <!--  Input  -->
-                                    <TextBox MinWidth="{Binding NameUi.MinWidth}"
-                                             MaxWidth="{Binding NameUi.MaxWidth}"
-                                             BorderBrush="{Binding RegexErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
-                                             GotFocus="{x:Bind ViewModel.BeginUserEdit}"
-                                             Header="{Binding ColCountryRegex}"
-                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                             LostFocus="{x:Bind ViewModel.ValidateRegex}"
-                                             MaxLength="{Binding NameUi.MaxLength}"
-                                             PlaceholderText="{Binding CountryRegexPlaceholder}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding CountryEdit.Regex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
-                                    <!--  Errors  -->
-                                    <TextBlock FontSize="12"
-                                               Foreground="Red"
-                                               Text="{Binding RegexErrors, Converter={StaticResource ErrorListToStringConverter}}"
-                                               TextWrapping="Wrap" />
+                                <TextBox x:Name="ZoomLevel"
+                                MinWidth="{Binding NameUi.MinWidth}"
+                                MaxWidth="{Binding NameUi.MaxWidth}"
+                                loca:Uids.Uid="TextBox_ZoomLevel"
+                                BorderBrush="{Binding ZoomLevelErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                DataContext="{Binding}"
+                                InputScope="Number"
+                                IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                LostFocus="{x:Bind ViewModel.ValidateZoomLevel}"
+                                Style="{StaticResource AtisTextBox}"
+                                Text="{Binding CountryEdit.ZoomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="{x:Bind ViewModel.ValidateZoomLevel}" />
+                                <TextBlock FontSize="12"
+                                Foreground="Red"
+                                Text="{Binding ZoomLevelErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                TextWrapping="Wrap" />
                                 </StackPanel>
-                            </Grid>
 
-                            <!--  Row 2  -->
-                            <Grid Grid.Row="2"
-                                  ColumnSpacing="8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0">
-                                    <!--  Header  -->
-                                    <!--<TextBlock Style="{StaticResource AtisFormLabelTextStyle}"
-                                    Text="{Binding CountryZoomLevelLabel}" />-->
-                                    <!--  Input  -->
-                                    <TextBox BorderBrush="{Binding ZoomLevelErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
-                                             GotFocus="{x:Bind ViewModel.BeginUserEdit}"
-                                             Header="{Binding ColCountryZoomLevel}"
-                                             InputScope="Number"
-                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                             LostFocus="{x:Bind ViewModel.ValidateZoomLevel}"
-                                             PlaceholderText="{Binding CountryZoomLevelPlaceholder}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding CountryEdit.ZoomLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
-                                    <!--  Errors  -->
-                                    <TextBlock FontSize="12"
-                                               Foreground="Red"
-                                               Text="{Binding ZoomLevelErrors, Converter={StaticResource ErrorListToStringConverter}}"
-                                               TextWrapping="Wrap" />
-                                </StackPanel>
                                 <StackPanel Grid.Column="1">
-                                    <!--  Header  -->
-                                    <!--<TextBlock Style="{StaticResource AtisFormLabelTextStyle}"
-                                    Text="{Binding CountryLatitudeLabel}" />-->
-                                    <!--  Input  -->
-                                    <TextBox BorderBrush="{Binding LatitudeErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
-                                             GotFocus="{x:Bind ViewModel.BeginUserEdit}"
-                                             Header="{Binding ColCountryLatitude}"
-                                             InputScope="Number"
-                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                             LostFocus="{x:Bind ViewModel.ValidateLatitude}"
-                                             PlaceholderText="{Binding CountryLatitudePlaceholder}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding CountryEdit.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
-                                    <!--  Errors  -->
-                                    <TextBlock FontSize="12"
-                                               Foreground="Red"
-                                               Text="{Binding LatitudeErrors, Converter={StaticResource ErrorListToStringConverter}}"
-                                               TextWrapping="Wrap" />
+                                <TextBox x:Name="Latitude"
+                                MinWidth="{Binding NameUi.MinWidth}"
+                                MaxWidth="{Binding NameUi.MaxWidth}"
+                                loca:Uids.Uid="TextBox_Latitude"
+                                BorderBrush="{Binding LatitudeErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                DataContext="{Binding}"
+                                InputScope="Number"
+                                IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                LostFocus="{x:Bind ViewModel.ValidateLatitude}"
+                                Style="{StaticResource AtisTextBox}"
+                                Text="{Binding CountryEdit.Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="{x:Bind ViewModel.ValidateLatitude}" />
+                                <TextBlock FontSize="12"
+                                Foreground="Red"
+                                Text="{Binding LatitudeErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                TextWrapping="Wrap" />
+
                                 </StackPanel>
+
                                 <StackPanel Grid.Column="2">
-                                    <!--  Header  -->
-                                    <!--<TextBlock Style="{StaticResource AtisFormLabelTextStyle}"
-                                    Text="{Binding CountryLongitudeLabel}" />-->
-                                    <!--  Input  -->
-                                    <TextBox BorderBrush="{Binding LongitudeErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
-                                             GotFocus="{x:Bind ViewModel.BeginUserEdit}"
-                                             Header="{Binding ColCountryLongitude}"
-                                             InputScope="Number"
-                                             IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
-                                             LostFocus="{x:Bind ViewModel.ValidateLongitude}"
-                                             PlaceholderText="{Binding CountryLongitudePlaceholder}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding CountryEdit.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextChanged="{x:Bind ViewModel.OnFieldChanged}" />
-                                    <!--  Errors  -->
-                                    <TextBlock FontSize="12"
-                                               Foreground="Red"
-                                               Text="{Binding LongitudeErrors, Converter={StaticResource ErrorListToStringConverter}}"
-                                               TextWrapping="Wrap"
-                                               Visibility="{Binding CountrySelected, Converter={StaticResource NullToCollapsedConverter}}" />
+                                <TextBox x:Name="Longitude"
+                                MinWidth="{Binding NameUi.MinWidth}"
+                                MaxWidth="{Binding NameUi.MaxWidth}"
+                                loca:Uids.Uid="TextBox_Longitude"
+                                BorderBrush="{Binding LongitudeErrors, FallbackValue=Gray, TargetNullValue=Gray, Converter={StaticResource ErrorsToBrushConverter}}"
+                                DataContext="{Binding}"
+                                InputScope="Number"
+                                IsReadOnly="{Binding IsInEditCountry, Converter={StaticResource InvertBoolConverter}}"
+                                LostFocus="{x:Bind ViewModel.ValidateLongitude}"
+                                Style="{StaticResource AtisTextBox}"
+                                Text="{Binding CountryEdit.Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextChanged="{x:Bind ViewModel.ValidateLongitude}" />
+
+                                <TextBlock FontSize="12"
+                                Foreground="Red"
+                                Text="{Binding LongitudeErrors, Converter={StaticResource ErrorListToStringConverter}}"
+                                TextWrapping="Wrap" />
+
                                 </StackPanel>
+
+                                </Grid>-->
+
                             </Grid>
 
-                        </Grid>
+                        </StackPanel>
+                    </Border>
 
-                    </StackPanel>
-                </Border>
+                </atis:AtisPageLayout.DetailContent>
 
-            </atis:AtisPageLayout.DetailContent>
-
-        </atis:AtisPageLayout>
+            </atis:AtisPageLayout>
         </ScrollViewer>
 
         <!--  2. 🔥 Modernes Lade Overlay  -->
         <atis:LoadingOverlayControl Grid.RowSpan="1"
-                                    IsLoading="{Binding IsLoading}" />
-        <!--<atis:LoadingOverlayControl Grid.RowSpan="1"
-        IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
+                                    IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
     </Grid>
 </Page>
