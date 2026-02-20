@@ -34,10 +34,10 @@
                              IsClosable="False">
                     <database:Tbl90RefAuthorListPage />
                 </TabViewItem>
-                <TabViewItem x:Uid="TabViewItem_RefExperts"
+                <!--<TabViewItem x:Uid="TabViewItem_RefExperts"
                              IsClosable="False">
                     <database:Tbl90RefExpertListPage />
-                </TabViewItem>
+                </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_RefSources"
                              IsClosable="False">
                     <database:Tbl90RefSourceListPage />

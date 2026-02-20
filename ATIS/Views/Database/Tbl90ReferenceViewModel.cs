@@ -96,7 +96,7 @@ public partial class Tbl90ReferenceViewModel : ObservableObject
         Tbl75SpeciessesAllList = _dataService.GetSpeciesAsync();
 
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = _dataService.GetRefExpertAsync();
+        Tbl90ExpertsAllList = _dataService.GetRefExpertAsyncAlt();
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = _dataService.GetRefSourceAsync();
         Tbl90AuthorsAllList ??= [];

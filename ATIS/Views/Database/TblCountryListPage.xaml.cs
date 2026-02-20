@@ -2,7 +2,7 @@
 using ATIS.Views.ContentDialogs;
 using ATIS.ViewModels;
 using CommunityToolkit.WinUI.UI.Controls;
-using CommunityToolkit.WinUI.UI.Controls.Primitives;
+using Microsoft.UI.Dispatching;
 
 namespace ATIS.Views.Database;
 
@@ -20,26 +20,6 @@ public sealed partial class TblCountryListPage : Page
             Debug.WriteLine($"Page-Konstruktor, ViewModel-Instanz: {ViewModel.GetHashCode()}");
             this.DataContext = ViewModel;
             CommandProxy = this;
-
-            //Loaded += (s, e) =>
-            //{
-            //    ViewModel.CurrentPageWidth = RootGrid.ActualWidth;
-
-            //    if (ViewModel.CountryEdit != null)
-            //        ViewModel.CountryEdit.ApplyPageWidth(ViewModel.CurrentPageWidth);
-            //};
-            //ViewModel.ApplyPageWidthRequest = width =>
-            //{
-            //    if (ViewModel.CountryEdit != null)
-            //        ViewModel.CountryEdit.ApplyPageWidth(width);
-            //};
-            //RootGrid.SizeChanged += (s, e) =>
-            //{
-            //    ViewModel.CurrentPageWidth = e.NewSize.Width;
-
-            //    if (ViewModel.CountryEdit != null)
-            //        ViewModel.CountryEdit.ApplyPageWidth(e.NewSize.Width);
-            //};
 
             ViewModel.RequestDeleteDialog = ShowDeleteDialogAsync;
             ViewModel.RequestSaveDialog = ShowSaveDialogAsync;

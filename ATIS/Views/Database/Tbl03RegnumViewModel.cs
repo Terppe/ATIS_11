@@ -45,7 +45,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
         Tbl03RegnumsAllList ??= [];
         Tbl03RegnumsAllList = _dataService.GetRegnumAsync();
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = new ObservableCollection<Tbl90RefExpert>(_dataService.GetRefExpertAsync());
+        Tbl90ExpertsAllList = new ObservableCollection<Tbl90RefExpert>(_dataService.GetRefExpertAsyncAlt());
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = new ObservableCollection<Tbl90RefSource>(_dataService.GetRefSourceAsync());
         Tbl90AuthorsAllList ??= [];
@@ -262,7 +262,7 @@ public partial class Tbl03RegnumViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, RegnumId = RegnumSelected.RegnumId });

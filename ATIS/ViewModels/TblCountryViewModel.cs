@@ -1,9 +1,9 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using ATIS.DesignSystem.Services;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -28,41 +28,25 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
     public FieldUiInfo LatitudeUi => _fieldUi["Latitude"];
     public FieldUiInfo LongitudeUi => _fieldUi["Longitude"];
 
+    private readonly DialogService _dialogService;
+
     private readonly Dictionary<string, List<string>> _errors = new();
+    private CancellationTokenSource? _applyWidthsCts;
 
     private TblCountry? _backupCountry;
-    private TblCountry? _countrySelected;
-    private CountryEditModel? _countryEdit;
 
-    private bool _isLoading;
-    private bool _isDetailVisible;
-    private bool _isNewCountry;
-    private bool _isInEditCountry;
-    private string? _searchText;
-    private string? _currentQuery;
-    private int _countryDataSetCount;
-    private double _currentPageWidth;
-    private int _nameMaxChars;
-    private int _nameMinChars = 1;
-    private double _nameMaxWidth;
-    private double _nameMinWidth;
-    private int _nameMaxLength;
-    private int _nameMinLength = 1;
     #endregion
     // =========================================================
 
+    // =========================================================
     #region [ Constructor ]
     // =========================================================
 
-    public TblCountryViewModel(IDataService dataService, AtisDbContext db)
+    public TblCountryViewModel(IDataService dataService, AtisDbContext db, DialogService dialogService)
     {
         _dataService = dataService;
         _db = db;
-
-        Countries.CollectionChanged += (_, __) =>
-        {
-            Debug.WriteLine($"[CountryPageVM] IsLoading Default: {IsLoading}");
-        };
+        _dialogService = dialogService;
 
         LoadCommand = new AsyncRelayCommand(LoadAsync);
         SearchCommand = new AsyncRelayCommand<string>(LoadSearchAsync);
@@ -101,19 +85,13 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
     #region [ CountryEdit Handling ]
     // =========================================================
 
-
-    /// <summary>
-    /// Das Formular-Model für die Detailansicht (direkt das TblCountry).
-    /// </summary>
+    private CountryEditModel? _countryEdit;
     public CountryEditModel? CountryEdit
     {
         get => _countryEdit;
         private set => SetProperty(ref _countryEdit, value);
     }
 
-    /// <summary>
-    /// Erzeugt ein Edit-Model als Clone des gegebenen Models.
-    /// </summary>
     private void SetEditModel(TblCountry model)
     {
         if (model == null)
@@ -123,7 +101,6 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
         CountryEdit = new CountryEditModel
         {
-     //       CountryId = model.CountryId,
             Name = model.Name ?? "",
             Regex = model.Regex ?? "",
             ZoomLevel = model.ZoomLevel?.ToString(CultureInfo.InvariantCulture) ?? "",
@@ -145,6 +122,7 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
     #region [ Selection / Open / Sort ]
     // =========================================================
 
+    private TblCountry? _countrySelected;
     public TblCountry? CountrySelected
     {
         get => _countrySelected;
@@ -233,9 +211,8 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
             if (!string.IsNullOrWhiteSpace(search))
             {
                 var list = await _dataService.GetCountriesByNameOrIdAsync(search);
-                //foreach (var item in list)
-                //    Countries.Add(item);
-                Countries = new ObservableCollection<TblCountry>(list);
+                foreach (var item in list)
+                    Countries.Add(item);
 
                 CountryDataSetCount = Countries.Count;
             }
@@ -290,42 +267,6 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         }
     }
 
-    //private async Task LoadSearchInternalAsync(string? search, int? selectId)
-    //{
-    //    IsLoading = true;
-    //    try
-    //    {
-    //        Countries.Clear();
-    //        if (!string.IsNullOrWhiteSpace(search))
-    //        {
-    //            var list = await _dataService.GetCountriesByNameOrIdAsync(search);
-    //            foreach (var item in list)
-    //                Countries.Add(item);
-    //            CountryDataSetCount = Countries.Count;
-    //        }
-    //        else
-    //        {
-    //            CountryDataSetCount = 0;
-    //        }
-
-    //        if (!IsInEditCountry)
-    //        {
-    //            if (selectId != null)
-    //            {
-    //                CountrySelected = Countries.FirstOrDefault(c => c.CountryId == selectId);
-    //                OnPropertyChanged(nameof(CountrySelected));
-    //            }
-    //        }
-
-    //        OnPropertyChanged(nameof(CountryDataSetCountText));
-    //    }
-    //    finally
-    //    {
-    //        IsLoading = false;
-    //    }
-    //}
-
-
     #endregion
     // =========================================================
 
@@ -344,7 +285,6 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         IsInEditCountry = true;
         IsNewCountry = true;
 
-        //ValidateAllFields(); // ⭐ WICHTIG
         UpdateCommands();
 
         RequestFocusName?.Invoke();
@@ -397,6 +337,11 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         // 1️⃣ Nur prüfen – NICHT validieren
         if (HasErrors)
         {
+            await ShowMessageAsync(
+                LocalizationManager.Get("ErrorTitle"),
+                LocalizationManager.Get("ErrorFixBeforeSave")
+            );
+
             await ShowMessageAsync("Fehler", "Bitte korrigiere die Fehler, bevor du speicherst.");
             return;
         }
@@ -458,8 +403,12 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
         UpdateCommands();
 
+        RequestFocusName?.Invoke();
+
         // 1️⃣0️⃣ Meldung
-        await ShowMessageAsync("Gespeichert", "Der Datensatz wurde erfolgreich gespeichert.");
+        //   await ShowMessageAsync("Gespeichert", "Der Datensatz wurde erfolgreich gespeichert.");
+        await _dialogService.ShowMessageAsync("SaveSuccessTitle", "SaveSuccessMessage");
+
     }
 
     private bool CanDeleteCountry()
@@ -575,34 +524,34 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
     private bool _isUserEditing = false;
 
-    //public void OnNameLostFocus()
-    //{
-    //    EndUserEdit();
-    //    ValidateName();
-    //}
+    public void OnNameLostFocus()
+    {
+        EndUserEdit();
+        ValidateName();
+    }
 
-    //public void OnRegexLostFocus()
-    //{
-    //    EndUserEdit();
-    //    ValidateRegex();
-    //}
-    //public void OnZoomLevelLostFocus()
-    //{
-    //    EndUserEdit();
-    //    ValidateZoomLevel();
-    //}
+    public void OnRegexLostFocus()
+    {
+        EndUserEdit();
+        ValidateRegex();
+    }
+    public void OnZoomLevelLostFocus()
+    {
+        EndUserEdit();
+        ValidateZoomLevel();
+    }
 
-    //public void OnLatitudeLostFocus()
-    //{
-    //    EndUserEdit();
-    //    ValidateLatitude();
-    //}
+    public void OnLatitudeLostFocus()
+    {
+        EndUserEdit();
+        ValidateLatitude();
+    }
 
-    //public void OnLongitudeLostFocus()
-    //{
-    //    EndUserEdit();
-    //    ValidateLongitude();
-    //}
+    public void OnLongitudeLostFocus()
+    {
+        EndUserEdit();
+        ValidateLongitude();
+    }
 
     private async Task ShowMessageAsync(string title, string message)
     {
@@ -647,21 +596,29 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
                 MinLength = max / 2 // // Standardregel: halbe EF-Länge
             };
         }
-        //
-        // ⭐ HIER kommen deine individuellen Overrides hin
-        //
-        // Beispiel: Name soll 2/3 der EF-Länge als Mindestlänge haben
-        // _fieldUi["Name"].MinLengthOverride = (int)(_fieldUi["Name"].MaxLength * 0.66);
-        // Beispiel: Regex soll 80% der EF-Länge als Mindestlänge haben
-        // _fieldUi["Regex"].MinLengthOverride = (int)(_fieldUi["Regex"].MaxLength * 0.8);
-        // Beispiel: ZoomLevel soll immer mindestens 3 Zeichen breit sein
-        // _fieldUi["ZoomLevel"].MinLengthOverride = 3;
 
         OnPropertyChanged(nameof(NameUi));
         OnPropertyChanged(nameof(FieldUi));
-
     }
-    private void ApplyWidths(double pageWidth)
+    public async void ApplyWidths(double pageWidth)
+    {
+        _applyWidthsCts?.Cancel();
+        _applyWidthsCts = new CancellationTokenSource();
+        var token = _applyWidthsCts.Token;
+
+        try
+        {
+            // 50 ms warten – wenn in der Zeit neue Events kommen, wird abgebrochen
+            await Task.Delay(50, token);
+
+            ApplyWidthsInternal(pageWidth);
+        }
+        catch (TaskCanceledException)
+        {
+            // Debounce – ignorieren
+        }
+    }
+    private void ApplyWidthsInternal(double pageWidth)
     {
         foreach (var kvp in _fieldUi)
         {
@@ -673,11 +630,12 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
                 info.MaxLength,
                 minChars,
                 pageWidth
-                );
+            );
 
             info.MinWidth = widths.MinWidth;
             info.MaxWidth = widths.MaxWidth;
         }
+
         OnPropertyChanged(nameof(NameUi));
         OnPropertyChanged(nameof(RegexUi));
         OnPropertyChanged(nameof(ZoomLevelUi));
@@ -685,221 +643,11 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         OnPropertyChanged(nameof(LongitudeUi));
         OnPropertyChanged(nameof(FieldUi));
 
-        // usw.
         Debug.WriteLine($"ApplyWidths called, pageWidth={pageWidth}");
-
     }
 
     #endregion
     // =========================================================
-
-    // =========================================================
-    //#region [ Validation / Service]
-    //public IReadOnlyDictionary<string, FieldUiInfo> FieldUi => _fieldUi;
-
-    //public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-    //public bool HasErrors => _errors.Any();
-
-    //public IEnumerable GetErrors(string? propertyName)
-    //{
-    //    if (string.IsNullOrEmpty(propertyName))
-    //        return _errors.SelectMany(kv => kv.Value);
-
-    //    return _errors.TryGetValue(propertyName, out var list)
-    //        ? list
-    //        : Enumerable.Empty<string>();
-    //}
-
-    //private void OnErrorsChanged(string propertyName)
-    //{
-    //    ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-    //}
-    //public void SetErrors(string field, IEnumerable<string> errors)
-    //{
-    //    if (errors.Any())
-    //        _errors[field] = errors.ToList();
-    //    else
-    //        _errors.Remove(field);
-
-    //    OnErrorsChanged(field);
-    //    OnPropertyChanged($"{field}Errors");
-
-    //    SaveCountryCommand.NotifyCanExecuteChanged();
-    //    DeleteCountryCommand.NotifyCanExecuteChanged();
-    //}
-    //private void ClearAllErrors()
-    //{
-    //    _errors.Clear();
-    //    OnErrorsChanged(string.Empty);
-    //}
-
-    //public void ValidateName()
-    //{
-    //    var errors = new List<string>();
-
-    //    if (string.IsNullOrWhiteSpace(CountryEdit?.Name))
-    //        errors.Add("Name darf nicht leer sein.");
-    //    else if (CountryEdit.Name.Length < 3)
-    //        errors.Add("Name muss mindestens 3 Zeichen lang sein.");
-
-    //    SetErrors(nameof(CountryEdit.Name), errors);
-    //}
-    //public void ValidateRegex()
-    //{
-    //    var errors = new List<string>();
-
-    //    if (!string.IsNullOrWhiteSpace(CountryEdit?.Regex))
-    //    {
-    //        try
-    //        {
-    //            _ = new System.Text.RegularExpressions.Regex(CountryEdit.Regex);
-    //        }
-    //        catch
-    //        {
-    //            errors.Add("Ungültiger Regex-Ausdruck.");
-    //        }
-    //    }
-
-    //    SetErrors(nameof(CountryEdit.Regex), errors);
-    //}
-
-    //public void ValidateZoomLevel()
-    //{
-    //    var errors = new List<string>();
-
-    //    if (!string.IsNullOrWhiteSpace(CountryEdit?.ZoomLevel))
-    //    {
-    //        var text = CountryEdit.ZoomLevel.Replace(',', '.');
-
-    //        if (text.Contains("e", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            errors.Add("Wissenschaftliche Notation (E) ist nicht erlaubt.");
-    //        }
-    //        else if (!int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var zoom))
-    //        {
-    //            errors.Add("ZoomLevel muss eine ganze Zahl sein.");
-    //        }
-    //        else if (zoom < 0 || zoom > 20)
-    //        {
-    //            errors.Add("ZoomLevel muss zwischen 0 und 20 liegen.");
-    //        }
-    //    }
-
-    //    SetErrors(nameof(CountryEdit.ZoomLevel), errors);
-    //}
-    //public void ValidateLatitude()
-    //{
-    //    var errors = new List<string>();
-
-    //    if (!string.IsNullOrWhiteSpace(CountryEdit?.Latitude))
-    //    {
-    //        var text = CountryEdit.Latitude.Replace(',', '.');
-
-    //        // ⭐ Zwischenzustand erlauben: nur "-"
-    //        if (text == "-")
-    //        {
-    //            SetErrors(nameof(CountryEdit.Latitude), errors);
-    //            return;
-    //        }
-
-    //        if (text.Contains("e", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            errors.Add("Wissenschaftliche Notation (E) ist nicht erlaubt.");
-    //        }
-    //        else if (!double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var lat))
-    //        {
-    //            errors.Add("Latitude ist keine gültige Zahl.");
-    //        }
-    //        else if (lat < -90 || lat > 90)
-    //        {
-    //            errors.Add("Latitude muss zwischen -90 und 90 liegen.");
-    //        }
-    //    }
-
-    //    SetErrors(nameof(CountryEdit.Latitude), errors);
-    //}
-    //public void ValidateLongitude()
-    //{
-    //    var errors = new List<string>();
-
-    //    if (!string.IsNullOrWhiteSpace(CountryEdit?.Longitude))
-    //    {
-    //        var text = CountryEdit.Longitude.Replace(',', '.');
-
-    //        // ⭐ Zwischenzustand erlauben
-    //        if (text == "-")
-    //        {
-    //            SetErrors(nameof(CountryEdit.Longitude), errors);
-    //            return;
-    //        }
-
-    //        if (text.Contains("e", StringComparison.OrdinalIgnoreCase))
-    //        {
-    //            errors.Add("Wissenschaftliche Notation (E) ist nicht erlaubt.");
-    //        }
-    //        else if (!double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out var lon))
-    //        {
-    //            errors.Add("Longitude ist keine gültige Zahl.");
-    //        }
-    //        else if (lon < -180 || lon > 180)
-    //        {
-    //            errors.Add("Longitude muss zwischen -180 und 180 liegen.");
-    //        }
-    //    }
-
-    //    SetErrors(nameof(CountryEdit.Longitude), errors);
-    //}
-
-    //private void ValidateAllFields()
-    //{
-    //    ValidateName();
-    //    ValidateRegex();
-    //    ValidateZoomLevel();
-    //    ValidateLatitude();
-    //    ValidateLongitude();
-
-    //}
-
-    //public IReadOnlyList<string> NameErrors
-    //    => _errors.TryGetValue(nameof(CountryEdit.Name), out var list)
-    //        ? list
-    //        : new List<string>();
-    //public IReadOnlyList<string> RegexErrors
-    //    => _errors.TryGetValue(nameof(CountryEdit.Regex), out var list)
-    //        ? list
-    //        : new List<string>();
-
-    //public IReadOnlyList<string> ZoomLevelErrors
-    //    => _errors.TryGetValue(nameof(CountryEdit.ZoomLevel), out var list)
-    //        ? list
-    //        : new List<string>();
-
-    //public IReadOnlyList<string> LatitudeErrors
-    //    => _errors.TryGetValue(nameof(CountryEdit.Latitude), out var list)
-    //        ? list
-    //        : new List<string>();
-
-    //public IReadOnlyList<string> LongitudeErrors
-    //    => _errors.TryGetValue(nameof(CountryEdit.Longitude), out var list)
-    //        ? list
-    //        : new List<string>();
-
-
-    //public void OnFieldChanged()
-    //{
-    //    if (!_isUserEditing)
-    //        return;
-
-    //    ValidateName();
-    //    ValidateRegex();
-    //    ValidateZoomLevel();
-    //    ValidateLatitude();
-    //    ValidateLongitude();
-    //}
-
-
-    //#endregion [ Validation ]
 
     // =========================================================
     #region [ Validation / Service]
@@ -923,6 +671,7 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
     {
         ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
     }
+
     public void SetErrors(string field, IEnumerable<string> errors)
     {
         if (errors.Any())
@@ -932,10 +681,13 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
         OnErrorsChanged(field);
         OnPropertyChanged($"{field}Errors");
+        OnPropertyChanged($"{field}ErrorsString");
+        OnPropertyChanged($"{field}HasErrors");
 
         SaveCountryCommand.NotifyCanExecuteChanged();
         DeleteCountryCommand.NotifyCanExecuteChanged();
     }
+
     private void ClearAllErrors()
     {
         _errors.Clear();
@@ -1116,30 +868,43 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
     }
 
-    private void ValidateAll()
-    {
-        if (CountryEdit == null)
-            return;
+    //neu hinzu
+    public string NameErrorsString =>
+        string.Join("\n", GetErrors(nameof(CountryEdit.Name)).Cast<string>());
 
-        // 🔒 Während Laden/Cancel/Refresh keine Validierung
-        if (!_isUserEditing)
-            return;
+    public string RegexErrorsString =>
+        string.Join("\n", GetErrors(nameof(CountryEdit.Regex)).Cast<string>());
 
-        ValidateName();
-        ValidateRegex();
-        ValidateZoomLevel();
-        ValidateLatitude();
-        ValidateLongitude();
+    public string ZoomLevelErrorsString =>
+        string.Join("\n", GetErrors(nameof(CountryEdit.ZoomLevel)).Cast<string>());
 
-        // 🔁 UI & Commands aktualisieren
-        OnPropertyChanged(nameof(HasErrors));
-        UpdateCommands();
-    }
+    public string LatitudeErrorsString =>
+        string.Join("\n", GetErrors(nameof(CountryEdit.Latitude)).Cast<string>());
+
+    public string LongitudeErrorsString =>
+        string.Join("\n", GetErrors(nameof(CountryEdit.Longitude)).Cast<string>());
+
+    public bool NameHasErrors =>
+        GetErrors(nameof(CountryEdit.Name)).Cast<string>().Any();
+
+    public bool RegexHasErrors =>
+        GetErrors(nameof(CountryEdit.Regex)).Cast<string>().Any();
+
+    public bool ZoomLevelHasErrors =>
+        GetErrors(nameof(CountryEdit.ZoomLevel)).Cast<string>().Any();
+
+    public bool LatitudeHasErrors =>
+        GetErrors(nameof(CountryEdit.Latitude)).Cast<string>().Any();
+
+    public bool LongitudeHasErrors =>
+        GetErrors(nameof(CountryEdit.Longitude)).Cast<string>().Any();
+
 
     public IReadOnlyList<string> NameErrors
         => _errors.TryGetValue(nameof(CountryEdit.Name), out var list)
             ? list
             : new List<string>();
+
     public IReadOnlyList<string> RegexErrors
         => _errors.TryGetValue(nameof(CountryEdit.Regex), out var list)
             ? list
@@ -1164,7 +929,6 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         set => throw new NotImplementedException();
     }
 
-
     public void OnFieldChanged()
     {
         if (!_isUserEditing)
@@ -1179,29 +943,33 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
 
     #endregion [ Validation ]
+    // =========================================================
 
     // =========================================================
     #region [ UI State ]
     // =========================================================
-
+    private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
 
+    private bool _isDetailVisible;
     public bool IsDetailVisible
     {
         get => _isDetailVisible;
         set => SetProperty(ref _isDetailVisible, value);
     }
 
+    private bool _isNewCountry;
     public bool IsNewCountry
     {
         get => _isNewCountry;
         set => SetProperty(ref _isNewCountry, value);
     }
 
+    private bool _isInEditCountry;
     public bool IsInEditCountry
     {
         get => _isInEditCountry;
@@ -1215,29 +983,30 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         }
     }
 
-    public bool CanEditCountry =>
-        CountrySelected != null && !IsInEditCountry;
+    public bool CanEditCountry => CountrySelected != null && !IsInEditCountry;
 
+    private string? _searchText;
     public string? SearchText
     {
         get => _searchText;
         set => SetProperty(ref _searchText, value);
     }
 
+    private string? _currentQuery;
     public string? CurrentQuery
     {
         get => _currentQuery;
         set => SetProperty(ref _currentQuery, value);
     }
 
+    private int _countryDataSetCount;
     public int CountryDataSetCount
     {
         get => _countryDataSetCount;
         set => SetProperty(ref _countryDataSetCount, value);
     }
 
- //   public string CountryDataSetCountText => $"{CountryDataSetCount} Datensätze gefunden";
-
+    private double _currentPageWidth;
     public double CurrentPageWidth
     {
         get => _currentPageWidth;
@@ -1248,35 +1017,41 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
         }
     }
 
+    private int _nameMaxChars;
     public int NameMaxChars
     {
         get => _nameMaxChars;
         private set => SetProperty(ref _nameMaxChars, value);
     }
 
+    private int _nameMinChars = 1;
     public int NameMinChars
     {
         get => _nameMinChars;
         private set => SetProperty(ref _nameMinChars, value);
     }
 
+    private double _nameMaxWidth;
     public double NameMaxWidth
     {
         get => _nameMaxWidth;
         private set => SetProperty(ref _nameMaxWidth, value);
     }
 
+    private double _nameMinWidth;
     public double NameMinWidth
     {
         get => _nameMinWidth;
         private set => SetProperty(ref _nameMinWidth, value);
     }
+    private int _nameMaxLength;
     public int NameMaxLength
     {
         get => _nameMaxLength;
         private set => SetProperty(ref _nameMaxLength, value);
     }
 
+    private int _nameMinLength = 1;
     public int NameMinLength
     {
         get => _nameMinLength;
@@ -1292,14 +1067,7 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
     // =========================================================
     #region [ Collections ]
     // =========================================================
-
-    private ObservableCollection<TblCountry> _countries = new();
-
-    public ObservableCollection<TblCountry> Countries
-    {
-        get => _countries;
-        set => SetProperty(ref _countries, value);
-    }
+    public ObservableCollection<TblCountry> Countries { get; } = new();
 
     #endregion
     // =========================================================
@@ -1307,15 +1075,21 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
     // =========================================================
     #region [ Commands / Callbacks ]
     // =========================================================
-
     private void UpdateCommands()
     {
-        (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
-        (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
-        (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
-        (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
-        (RefreshCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+        StartEditCountryCommand.NotifyCanExecuteChanged();
+        CancelEditCountryCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
+
+    //private void UpdateCommands()
+    //{
+    //    (StartEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+    //    (SaveCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+    //    (DeleteCountryCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+    //    (CancelEditCountryCommand as RelayCommand)?.NotifyCanExecuteChanged();
+    //    (RefreshCommand as IAsyncRelayCommand)?.NotifyCanExecuteChanged();
+    //}
 
     public IAsyncRelayCommand LoadCommand { get; }
     public IAsyncRelayCommand<string> SearchCommand { get; }

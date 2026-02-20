@@ -221,17 +221,6 @@ public interface IDataService
 
     #endregion Phylum
 
-    //#region Division                  
-
-    //ObservableCollection<Tbl09Division> GetDivisionAsync();
-    //ObservableCollection<Tbl09Division> GetDivisionAsync(int divisionid);
-    //ObservableCollection<Tbl09Division> GetDivisionAsync(string search);
-    //ObservableCollection<Tbl09Division> GetDivisionFromRegnumIdAsync(int regnumid);
-    //Task<Tbl09Division> UpsertDivisionAsync(Tbl09Division division);
-    //Task DeleteDivisionAsync(int divisionid);
-
-    //#endregion Division
-
     #region Subphylum
 
     ObservableCollection<Tbl12Subphylum> GetSubphylumAsync();
@@ -242,17 +231,6 @@ public interface IDataService
     Task DeleteSubphylumAsync(int subphylumid);
 
     #endregion Subphylum
-
-    //#region Subdivision
-
-    //ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync();
-    //ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(int subdivisionid);
-    //ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(string search);
-    //ObservableCollection<Tbl15Subdivision> GetSubdivisionFromDivisionIdAsync(int divisionid);
-    //Task<Tbl15Subdivision> UpsertSubdivisionAsync(Tbl15Subdivision subdivision);
-    //Task DeleteSubdivisionAsync(int subdivisionid);
-
-    //#endregion Subdivision
 
     #region Superclass
 
@@ -463,31 +441,6 @@ public interface IDataService
 
     #endregion Species
 
-
-    //#region FiSpecies                  
-
-    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync();
-    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(int fispeciesid);
-    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesAsync(string search);
-    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusNameAsync(string search);
-    //ObservableCollection<Tbl69FiSpecies> GetFiSpeciesFromGenusIdAsync(int genusid);
-    //Task<Tbl69FiSpecies> UpsertFiSpeciesAsync(Tbl69FiSpecies fispecies);
-    //Task DeleteFiSpeciesAsync(int fispeciesid);
-
-    //#endregion FiSpecies
-
-    //#region PlSpecies                  
-
-    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync();
-    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(int plspeciesid);
-    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesAsync(string search);
-    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusNameAsync(string search);
-    //ObservableCollection<Tbl72PlSpecies> GetPlSpeciesFromGenusIdAsync(int genusid);
-    //Task<Tbl72PlSpecies> UpsertPlSpeciesAsync(Tbl72PlSpecies plspecies);
-    //Task DeletePlSpeciesAsync(int plspeciesid);
-
-    //#endregion PlSpecies
-
     #region Name                  
 
     ObservableCollection<Tbl78Name> GetNameAsync();
@@ -573,11 +526,27 @@ public interface IDataService
     #endregion RefSource
 
     #region RefExpert
-    ObservableCollection<Tbl90RefExpert> GetRefExpertAsync();
-    ObservableCollection<Tbl90RefExpert> GetRefExpertAsync(int refexpertid);
-    Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsync(string search);
-    Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert refexpert);
-    Task DeleteRefExpertAsync(int refexpertid);
+    Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertAsync();
+    Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search);
+    Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model);
+    Task DeleteRefExpertAsync(int id);
+
+    //Task<List<Tbl90RefExpert>> GetAllRefExpertsAsync();
+    //Task<List<Tbl90RefExpert>> GetRefExpertsByNameOrIdAsync(string? query);
+    //Task<List<Tbl90RefExpert>> GetRefExpertsByNameAsync(string? query);
+    //Task<bool> RefExpertExistsAsync(Tbl90RefExpert model);
+    //Task<List<Tbl90RefExpert>> GetRefExpertAsync();
+    //Task<List<Tbl90RefExpert>> GetRefExpertAsync(int refexpertid);
+    //Task<Tbl90RefExpert?> GetRefExpertByIdAsync(int? refexpertid);
+    //Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert refexpert);
+    //Task DeleteRefExpertAsync(int? refexpertid);
+
+
+    ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt();
+    ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt(int refexpertid);
+    Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsyncAlt(string search);
+    Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert);
+    Task DeleteRefExpertAsyncAlt(int refexpertid);
 
     #endregion RefExpert
 

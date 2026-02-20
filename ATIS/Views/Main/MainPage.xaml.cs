@@ -1,11 +1,8 @@
 ﻿using System.Configuration;
 using System.Globalization;
 using System.Net.Sockets;
-using ATIS.Helpers;
 using ATIS.Models;
-using ATIS.Services;
 using ATIS.Strings;
-using ATIS.ViewModels;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
@@ -13,24 +10,31 @@ using ATIS.Views.Main.Disease;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
-using Microsoft.Data.SqlClient;
 using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
+using Windows.UI.WindowManagement;
+using ATIS.Views.Modules.Tbl90RefExpert;
+using WinRT.Interop;
 using WinUI3Localizer;
+using AppWindow = Microsoft.UI.Windowing.AppWindow;
 using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 
 namespace ATIS.Views.Main;
 
 public sealed partial class MainPage : Page
 {
+    private AppWindow _appWindow;
     public MainViewModel ViewModel { get; set; }
     private string _currentPageTag { get; set; }
+    private DialogService _dialogService;
 
     public MainPage()
     {
         ViewModel = App.GetService<MainViewModel>();
+
         InitializeComponent();
         //DataContext = ViewModel;
         System.Diagnostics.Debug.WriteLine($"DataContext ({this.GetType().Name}): {this.DataContext?.GetType().Name}");
@@ -55,174 +59,16 @@ public sealed partial class MainPage : Page
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-
-        ViewModel = App.GetService<MainViewModel>();
-        System.Diagnostics.Debug.WriteLine($"DataContext: {this.DataContext}");
-
         App.MainWindow.ExtendsContentIntoTitleBar = true;
         App.MainWindow.SetTitleBar(AppTitleBar);
 
-        ////Check Server and Database
-        //CheckSql_Db();
+        var hWnd = WindowNative.GetWindowHandle(App.MainWindow);
+        var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+        _appWindow = AppWindow.GetFromWindowId(windowId);
 
-        //CloseApp();
-        //// Write info message to log
-        //SimpleLog.Info("MainWindow logging started.");
+        _appWindow.Closing += AppWindow_Closing;
 
-        //ViewModel.IsLoading = false;
-        // Call ViewModel initialization
         await ViewModel.InitAsync();
-    }
-
-  //  private void CheckSql_Db()
-    //{
-    //    if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
-    //            Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
-    //    {
-    //        TbDataBase.Text = StringsRes.SqlServerNotRunning;
-    //    }
-    //    else
-    //    {
-    //        if (!CheckDatabaseExist(ConfigurationManager.AppSettings.Get("ServerName")))
-    //        {
-    //            TbDataBase.Text = StringsRes.DatabaseNotFound;
-    //            ;
-    //        }
-    //    }
-
-    //}
-
-    //------------------------Check Server and Database-------------------------------
-    //private static bool CheckForServer(string address, int port)
-    //{
-    //    var timeout = 500;
-    //    if (ConfigurationManager.AppSettings.Get("RemoteTestTimeout") != null)
-    //    {
-    //        timeout = int.Parse(ConfigurationManager.AppSettings.Get("RemoteTestTimeout") ?? string.Empty);
-    //    }
-
-    //    try
-    //    {
-    //        var result = false;
-    //        using var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-    //        if (address != null)
-    //        {
-    //            var asyncResult = socket.BeginConnect(address, port, null, null);
-    //            result = asyncResult.AsyncWaitHandle.WaitOne(timeout, true);
-    //        }
-
-    //        socket.Close();
-
-    //        return result;
-    //    }
-    //    catch (SqlException e)
-    //    {
-    //        _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
-
-    //        _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
-    //        //MessageBox.Show(CultRes.StringsRes.NoConnectServer, e.Message,
-    //        //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-
-    //        SimpleLog.Error("Server not connected" + e.Message);
-
-    //        return false;
-    //    }
-    //}
-
-    //Check if database exist or SQLServer not running
-    //private bool CheckDatabaseExist(string db)
-    //{
-    //    var ret = false;
-
-    //    try
-    //    {
-    //        using var context = new AtisDbContext();
-    //        var dbExists = context.Database.CanConnect();
-
-    //        if (!dbExists)
-    //        {
-    //            // MessageBox.Show(CultRes.StringsRes.NoConnectServer + " " + db, $"CultRes.StringsRes.NoConnectServer: {db}");
-    //            if (db != null)
-    //            {
-    //                _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
-    //            }
-
-    //            //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
-    //            //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-    //            if (true)
-    //            {
-    //                ret = false;
-    //            }
-
-    //            SimpleLog.Error("Database does not exist - SQL - Server ok");
-    //        }
-    //        else
-    //        {
-    //            TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
-    //            ret = true;
-    //        }
-    //    }
-    //    catch (SqlException e)
-    //    {
-    //        _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
-
-    //        _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
-    //        //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,
-    //        //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-
-    //        SimpleLog.Error($"Server not connected: {db}");
-    //        ret = false;
-    //    }
-
-    //    return ret;
-    //}
-    //--------------------------------------------------------------------
-
-    private void CloseApp()
-    {
-        //Close Application
-        var closing = false;
-        App.MainWindow.Closed += async (se, ee) =>
-        {
-            if (closing)
-            {
-                return;
-            }
-
-            closing = true;
-            ee.Handled = true;
-
-            var dialog = new ContentDialog
-            {
-                XamlRoot = Content.XamlRoot,
-                Title = StringsRes.WantToCloseApp,
-                PrimaryButtonText = StringsRes.Yes,
-                CloseButtonText = StringsRes.No,
-                DefaultButton = ContentDialogButton.Close
-            };
-            //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.None)
-            {
-                closing = false;
-            }
-            else
-            {
-                dialog.Hide();
-                // to write in App.config not possible in unpacked version find solution
-                //SaveCulture(App.Cult);
-
-                // Write info message to log
-                SimpleLog.Info(StringsRes.AppClosed);
-
-                // Close this Application
-                App.MainWindow.Close();
-
-                //   Process.GetCurrentProcess().Kill();
-                Application.Current.Exit();
-            }
-        };
-
     }
 
     //--------------------------------------------------------------------
@@ -250,6 +96,26 @@ public sealed partial class MainPage : Page
         ThemeService.ChangeThemeWithoutSave(App.MainWindow);
     }
 
+    private async void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+    {
+        args.Cancel = true;
+
+        var loc = Localizer.Get();
+
+        var dialog = new ContentDialog
+        {
+            Title = loc.GetLocalizedString("ConfirmExitTitle"),
+            Content = loc.GetLocalizedString("ConfirmExitMessage"),
+            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+            Application.Current.Exit();
+    }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
@@ -273,7 +139,7 @@ public sealed partial class MainPage : Page
     {
         SearchSearchBox.Visibility = Visibility.Visible;
         SearchSearchBox.Focus(FocusState.Programmatic);
-        SearchSearchBox.PlaceholderText = StringsRes.SearchName;
+        SearchSearchBox.PlaceholderText = "SearchName";
     }
 
     private async void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
@@ -308,11 +174,46 @@ public sealed partial class MainPage : Page
                     SimpleLog.ShowLogFile();
                     break;
                 case "close":
-                    await Close();
+                    await Exit();
                     break;
             }
         }
     }
+    private async Task Exit()
+    {
+        var result = await _dialogService.ShowYesNoAsync("ConfirmExitTitle", "ConfirmExitMessage");
+
+        if (result)
+            Application.Current.Exit();
+    }
+
+    //private async Task Exit()
+    //{
+    //    try
+    //    {
+
+    //        var loc = Localizer.Get();
+
+    //        var dialog = new ContentDialog
+    //        {
+    //            Title = loc.GetLocalizedString("ConfirmExitTitle"),
+    //            Content = loc.GetLocalizedString("ConfirmExitMessage"),
+    //            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+    //            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+    //            XamlRoot = App.MainWindow.Content.XamlRoot
+    //        };
+
+    //        var result = await dialog.ShowAsync();
+
+    //        if (result == ContentDialogResult.Primary)
+    //            Application.Current.Exit();
+    //    }
+    //    finally
+    //    {
+    //    }
+    //}
+
+    //await _dialogService.ShowYesNoAsync("ConfirmExitTitle", "ConfirmExitMessage");
 
     //--------------------------------------------------------------------
     private void MenuFlyoutLanguage_Click(object sender, RoutedEventArgs e)
@@ -333,14 +234,8 @@ public sealed partial class MainPage : Page
         Localizer.Get().SetLanguage(languageOverride);
         App.Cult = languageOverride;
 
-        // 3. UI neu laden
-        // Seite neu laden
-      //  RefreshCurrentPage();
-        // // 3. UI neu laden / Texte aktualisieren
-              ChangeLanguageLoginReset();
-
-        // 4. 🔥 ALLE ViewModels aktualisieren
-        //ApplyCultureToAllViewModels();
+        // 3. UI neu laden color in header
+        ChangeLanguageLoginReset();
     }
 
 
@@ -367,16 +262,6 @@ public sealed partial class MainPage : Page
         }
     }
 
-    //private void ApplyCultureToAllViewModels()
-    //{
-    //    if (App.GetService<TblCountryViewModel>() is { } countryVm)
-    //        countryVm.ApplyCulture();
-    //    //if (App.GetService<TblDiseaseViewModel>() is { } diseaseVm)
-    //    //    diseaseVm.ApplyCulture();
-    //    //if (App.GetService<TblFoodViewModel>() is { } foodVm)
-    //    //    foodVm.ApplyCulture();
-    //    // usw. für alle ViewModels
-    //    }
     //----------------------------------------------------
     private async Task LogIn()
     {
@@ -466,7 +351,7 @@ public sealed partial class MainPage : Page
         var dialog = new ContentDialog
         {
             XamlRoot = Content.XamlRoot,
-            Title = StringsRes.WantToCloseApp,
+            Title = "StringsRes.WantToCloseApp",
             PrimaryButtonText = StringsRes.Yes,
             CloseButtonText = StringsRes.No,
             DefaultButton = ContentDialogButton.Close
@@ -690,7 +575,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavRefExperts.Content)
         {
-            NavFrame.Navigate(typeof(Tbl90RefExpertListPage));
+            NavFrame.Navigate(typeof(Tbl90RefExpertPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavRefSources.Content)

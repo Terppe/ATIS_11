@@ -15,14 +15,13 @@ public class TblCountry
     // ------------------ Required Name ------------------
     // Name ist Pflichtfeld → non-nullable
     // Default = "" verhindert SqlNullValueException
-    [Required(ErrorMessageResourceName = "RequiredNameName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    [StringLength(100)]
     public string Name { get; set; } = string.Empty;
 
     // ------------------ Optional Regex ------------------
     // Regex ist optional → nullable
     // Default = "" verhindert NullReference-Probleme im UI
-    [StringLength(250, ErrorMessageResourceName = "StringLength_250", ErrorMessageResourceType = typeof(Strings.StringsRes))]
+    [StringLength(250)]
     public string? Regex { get; set; } = string.Empty;
 
     // ------------------ Coordinates ------------------
@@ -30,7 +29,6 @@ public class TblCountry
     public int? ZoomLevel { get; set; }
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
-
 
     // ------------------ Clone ------------------
     public TblCountry Clone()

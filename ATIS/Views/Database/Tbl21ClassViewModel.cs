@@ -47,7 +47,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
         Tbl21ClassesAllList ??= [];
         Tbl21ClassesAllList = [.. _dataService.GetClassAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -257,7 +257,7 @@ public partial class Tbl21ClassViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, ClassId = ClassSelected.ClassId });

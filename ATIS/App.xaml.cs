@@ -2,11 +2,11 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using ATIS.DesignSystem.Services;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
@@ -20,8 +20,13 @@ using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI;
 using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
+using Windows.UI.Core.Preview;
+using ATIS.Views.Modules.Tbl90RefExpert;
+using Microsoft.UI.Windowing;
+using WinRT.Interop;
 using WinUI3Localizer;
 using WinUIEx;
 using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
@@ -45,7 +50,7 @@ public partial class App : Application
     public string AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
     public string Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
 
-    public static string Cult = "";
+    public static string? Cult = "";
 
     private SplashWindow splash;
     // ---------------------------------------------------------
@@ -94,9 +99,11 @@ public partial class App : Application
         InitializeLogging();
 
         // 7 Splash 
-   //solange entwickelt wird     await ShowSplashAsync();
+        //solange entwickelt wird     await ShowSplashAsync();
 
-        // 8 Window aktivieren
+        // 8 Close Application
+        Close();
+
         MainWindow.Activate();
 
 
@@ -104,10 +111,104 @@ public partial class App : Application
 
         var customPrincipal = new CustomPrincipal();
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
-
-
     }
 
+    //---------------------------------------------------------
+    // 3. CLOSE
+    //---------------------------------------------------------
+    private static void Close()
+    {
+        var closing = false;
+
+        App.MainWindow.Closed += async (se, ee) =>
+        {
+            if (closing)
+            {
+                return;
+            }
+
+            closing = true;
+            ee.Handled = true;
+
+            var dialog = new ContentDialog
+            {
+                XamlRoot = MainWindow.Content.XamlRoot,
+                Title = StringsRes.WantToCloseApp,
+                PrimaryButtonText = StringsRes.Yes,
+                CloseButtonText = StringsRes.No,
+                DefaultButton = ContentDialogButton.Close
+            };
+            //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
+            var result = await dialog.ShowAsync();
+            if (result == ContentDialogResult.None)
+            {
+                closing = false;
+            }
+            else
+            {
+                dialog.Hide();
+                // to write in App.config not possible in unpacked version find solution
+                //SaveCulture(App.Cult);
+
+                // Write info message to log
+                SimpleLog.Info(StringsRes.AppClosed);
+
+                // Close this Application
+                App.MainWindow.Close();
+
+                //   Process.GetCurrentProcess().Kill();
+                Application.Current.Exit();
+            }
+        };
+        //return closing;
+    }
+
+    //private static void Close()
+    //{
+    //    var closing = false;
+
+    //    App.MainWindow.Closed += async (se, ee) =>
+    //    {
+    //        if (closing)
+    //        {
+    //            return;
+    //        }
+
+    //        closing = true;
+    //        ee.Handled = true;
+
+    //        var dialog = new ContentDialog
+    //        {
+    //            XamlRoot = MainWindow.Content.XamlRoot,
+    //            Title = "StringsRes.WantToCloseApp",
+    //            PrimaryButtonText = StringsRes.Yes,
+    //            CloseButtonText = StringsRes.No,
+    //            DefaultButton = ContentDialogButton.Close
+    //        };
+    //        //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
+    //        var result = await dialog.ShowAsync();
+    //        if (result == ContentDialogResult.None)
+    //        {
+    //            closing = false;
+    //        }
+    //        else
+    //        {
+    //            dialog.Hide();
+    //            // to write in App.config not possible in unpacked version find solution
+    //            //SaveCulture(App.Cult);
+
+    //            // Write info message to log
+    //            SimpleLog.Info(StringsRes.AppClosed);
+
+    //            // Close this Application
+    //            App.MainWindow.Close();
+
+    //            //   Process.GetCurrentProcess().Kill();
+    //            Application.Current.Exit();
+    //        }
+    //    };
+    //    //return closing;
+    //}
 
     // ---------------------------------------------------------
     // 4. DI KONFIGURATION
@@ -123,10 +224,15 @@ public partial class App : Application
         // LOCALIZER + DATABASE + DATA SERVICE
         //services.AddSingleton<ILocalizer, Localizer>();
         services.AddDbContext<AtisDbContext>();
+
+        // DATA SERVICE
         services.AddScoped<IDataService, DataService>();
 
         // DESIGN SYSTEM SERVICES
         services.AddSingleton<DialogService>();
+
+        // USER SERVICES
+        services.AddSingleton<IUserService, UserService>();
 
         // VIEWMODELS
         services.AddTransient<TblCountryListTestPage>();
@@ -172,7 +278,9 @@ public partial class App : Application
         services.AddTransient<Tbl87GeographicViewModel>();
         services.AddTransient<Tbl90ReferenceViewModel>();
         services.AddTransient<Tbl90RefAuthorViewModel>();
+
         services.AddTransient<Tbl90RefExpertViewModel>();
+
         services.AddTransient<Tbl90RefSourceViewModel>();
         services.AddTransient<Tbl93CommentViewModel>();
         services.AddTransient<TblCountryViewModel>();
@@ -188,6 +296,16 @@ public partial class App : Application
         services.AddTransient<ReportViewModel>();
 
         Services = services.BuildServiceProvider();
+        //try
+        //{
+        //    return (ServiceProvider)Services;
+        //}
+        //catch (Exception ex)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("DI ERROR: " + ex);
+        //    throw;
+        //}
+
         return (ServiceProvider)Services;
     }
 
@@ -299,6 +417,7 @@ public partial class App : Application
         Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
     }
+
 
     // ---------------------------------------------------------
     // 8. LOGGING

@@ -22,6 +22,7 @@
     <converters:DebugConverter x:Key="DebugConverter" />
     <converters:EfWidthConverter x:Key="EfWidthConverter" />
     <converters:ErrorListToStringConverter x:Key="ErrorListToStringConverter" />
+    <converters:BoolToBrushConverter x:Key="BoolToBrushConverter" />
 
 </ResourceDictionary>
 

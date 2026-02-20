@@ -46,7 +46,7 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
         Tbl18SuperclassesAllList ??= [];
         Tbl18SuperclassesAllList = new ObservableCollection<Tbl18Superclass>(_dataService.GetSuperclassAsync());
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = new ObservableCollection<Tbl90RefExpert>(_dataService.GetRefExpertAsync());
+        Tbl90ExpertsAllList = new ObservableCollection<Tbl90RefExpert>(_dataService.GetRefExpertAsyncAlt());
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = new ObservableCollection<Tbl90RefSource>(_dataService.GetRefSourceAsync());
         Tbl90AuthorsAllList ??= [];
@@ -256,7 +256,7 @@ public partial class Tbl18SuperclassViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, SuperclassId = SuperclassSelected.SuperclassId });

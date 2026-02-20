@@ -391,114 +391,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion Phylum
 
-    //#region Division                
-
-    //public ObservableCollection<Tbl09Division> GetDivisionAsync()
-    //{
-    //    var collection = new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
-    //        .AsNoTracking()
-    //        .OrderBy(a => a.DivisionName));
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl09Division> GetDivisionAsync(int divisionid)
-    //{
-    //    var collection = new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
-    //        .AsNoTracking()
-    //        .Where(e => e.DivisionId == divisionid)
-    //        .OrderBy(k => k.DivisionName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl09Division> GetDivisionAsync(string search)
-    //{
-    //    var collection = int.TryParse(search, out var id)
-    //        ? new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
-    //            .Where(e => e.DivisionId == id))
-    //        : new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
-    //            .Where(e => search != null && e.DivisionName.StartsWith(search))
-    //            .OrderBy(a => a.DivisionName));
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl09Division> GetDivisionFromRegnumIdAsync(int regnumid)
-    //{
-    //    var collection = new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
-    //        .Where(e => e.RegnumId == regnumid)
-    //        .OrderBy(k => k.DivisionName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public async Task<Tbl09Division> UpsertDivisionAsync(Tbl09Division division)
-    //{
-    //    var current = await _context.Tbl09Divisions.FirstOrDefaultAsync(c => c.DivisionId == division.DivisionId);
-    //    if (null == current)
-    //    {
-    //        division.CountId = RandomHelper.Randomnumber();
-    //        division.Writer = Environment.UserName;
-    //        division.WriterDate = DateTime.Now;
-    //        division.Updater = Environment.UserName;
-    //        division.UpdaterDate = DateTime.Now;
-    //        _context.Tbl09Divisions.Add(division);
-    //    }
-    //    else
-    //    {
-    //        division.Updater = Environment.UserName;
-    //        division.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(division);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return division;
-    //}
-
-    //public async Task DeleteDivisionAsync(int divisionid)
-    //{
-    //    var division = await _context.Tbl09Divisions.FirstOrDefaultAsync(b => b.DivisionId == divisionid);
-    //    if (division != null)
-    //    {
-    //        //necessary to delete before
-    //        var subdivisions = await _context.Tbl15Subdivisions.Where(a => a.DivisionId == divisionid).ToListAsync();
-    //        foreach (var subdivision in subdivisions)
-    //        {
-    //            for (var i = 0; i <= subdivisions.Count; i++)
-    //            {
-    //                var subdivisionid = subdivision.SubdivisionId;
-    //                var singleref = _context.Tbl90References.SingleOrDefault(a => a.SubdivisionId == subdivisionid);
-    //                if (singleref != null)
-    //                {
-    //                    _context.Tbl90References.Remove(singleref);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //                var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SubdivisionId == subdivisionid);
-    //                if (singlecom != null)
-    //                {
-    //                    _context.Tbl93Comments.Remove(singlecom);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //            }
-    //        }
-    //        _context.Tbl15Subdivisions.RemoveRange(subdivisions);
-    //        await _context.SaveChangesAsync();
-
-    //        var references = await _context.Tbl90References.Where(reference => reference.DivisionId == divisionid).ToListAsync();
-    //        _context.Tbl90References.RemoveRange(references);
-    //        await _context.SaveChangesAsync();
-
-    //        var comments = await _context.Tbl93Comments.Where(comment => comment.DivisionId == divisionid).ToListAsync();
-    //        _context.Tbl93Comments.RemoveRange(comments);
-    //        await _context.SaveChangesAsync();
-
-    //        _context.Tbl09Divisions.Remove(division);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
-    //#endregion Division
-
     #region Subphylum
 
     public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync()
@@ -602,115 +494,6 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     #endregion Subphylum
-
-    //#region Subdivision
-    //public ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync()
-    //{
-    //    var collection = new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
-    //        .AsNoTracking()
-    //        .OrderBy(a => a.SubdivisionName));
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(int subdivisionid)
-    //{
-    //    var collection = new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
-    //        .AsNoTracking()
-    //        .Where(e => e.SubdivisionId == subdivisionid)
-    //        .OrderBy(k => k.SubdivisionName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl15Subdivision> GetSubdivisionAsync(string search)
-    //{
-    //    var collection = int.TryParse(search, out var id)
-    //        ? new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
-    //            .Where(e => e.SubdivisionId == id))
-    //        : new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
-    //            .Where(e => search != null && e.SubdivisionName.StartsWith(search))
-    //            .OrderBy(a => a.SubdivisionName));
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl15Subdivision> GetSubdivisionFromDivisionIdAsync(int divisionid)
-    //{
-    //    var collection = new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
-    //        .Where(e => e.DivisionId == divisionid)
-    //        .OrderBy(k => k.SubdivisionName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public async Task<Tbl15Subdivision> UpsertSubdivisionAsync(Tbl15Subdivision subdivision)
-    //{
-    //    var current = await _context.Tbl15Subdivisions.FirstOrDefaultAsync(a => a.SubdivisionId == subdivision.SubdivisionId);
-    //    if (null == current)
-    //    {
-    //        subdivision.CountId = RandomHelper.Randomnumber();
-    //        subdivision.Writer = Environment.UserName;
-    //        subdivision.WriterDate = DateTime.Now;
-    //        subdivision.Updater = Environment.UserName;
-    //        subdivision.UpdaterDate = DateTime.Now;
-    //        _context.Tbl15Subdivisions.Add(subdivision);
-    //    }
-    //    else
-    //    {
-    //        subdivision.Updater = Environment.UserName;
-    //        subdivision.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(subdivision);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return subdivision;
-    //}
-
-    //public async Task DeleteSubdivisionAsync(int subdivisionid)
-    //{
-    //    var subdivision = await _context.Tbl15Subdivisions.FirstOrDefaultAsync(reg => reg.SubdivisionId == subdivisionid);
-    //    if (subdivision != null)
-    //    {
-    //        //necessary to delete before
-    //        var superclasss = await _context.Tbl18Superclasses.Where(a => a.SubdivisionId == subdivisionid).ToListAsync();
-    //        foreach (var superclass in superclasss)
-    //        {
-    //            for (var i = 0; i <= superclasss.Count; i++)
-    //            {
-    //                var superclassid = superclass.SuperclassId;
-    //                var singleref = _context.Tbl90References.SingleOrDefault(a => a.SuperclassId == superclassid);
-    //                if (singleref != null)
-    //                {
-    //                    _context.Tbl90References.Remove(singleref);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //                var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SuperclassId == superclassid);
-    //                if (singlecom != null)
-    //                {
-    //                    _context.Tbl93Comments.Remove(singlecom);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //            }
-    //        }
-
-    //        _context.Tbl18Superclasses.RemoveRange(superclasss);
-    //        await _context.SaveChangesAsync();
-
-    //        var references = await _context.Tbl90References.Where(r => r.SubdivisionId == subdivisionid).ToListAsync();
-    //        _context.Tbl90References.RemoveRange(references);
-    //        await _context.SaveChangesAsync();
-
-    //        var comments = await _context.Tbl93Comments.Where(c => c.SubdivisionId == subdivisionid).ToListAsync();
-    //        _context.Tbl93Comments.RemoveRange(comments);
-    //        await _context.SaveChangesAsync();
-
-    //        _context.Tbl15Subdivisions.Remove(subdivision);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
-
-    //#endregion Subdivision
 
     #region Superclass
 
@@ -3345,15 +3128,184 @@ public partial class DataService : ObservableObject, IDataService
     #endregion RefSource
 
     #region RefExpert
+    public async Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertAsync()
+    {
+        return await _context.Tbl90RefExperts
+            .OrderBy(e => e.RefExpertName)
+            .ToListAsync();
+    }
 
-    public ObservableCollection<Tbl90RefExpert> GetRefExpertAsync()
+    public async Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl90RefExpert>();
+
+        return await _context.Tbl90RefExperts
+            .Where(e =>
+                e.RefExpertName.Contains(search) ||
+                e.RefExpertId.ToString() == search)
+            .OrderBy(e => e.RefExpertName)
+            .ToListAsync();
+    }
+
+    public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model)
+    {
+        if (model.RefExpertId == 0)
+            _context.Entry(model).State = EntityState.Added;
+        else
+            _context.Entry(model).State = EntityState.Modified;
+
+        await _context.SaveChangesAsync();
+        return model;
+    }
+
+    public async Task DeleteRefExpertAsync(int id)
+    {
+        var entity = await _context.Tbl90RefExperts.FindAsync(id);
+        if (entity != null)
+        {
+            _context.Tbl90RefExperts.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    //public async Task<List<Tbl90RefExpert>> GetAllRefExpertsAsync()
+    //{
+    //    return await _context.Tbl90RefExperts
+    //        .AsNoTracking()
+    //        .OrderBy(a => a.RefExpertName)
+    //        .ToListAsync();
+    //}
+
+    //public async Task<List<Tbl90RefExpert>> GetRefExpertsByNameOrIdAsync(string? query)
+    //{
+    //    if (string.IsNullOrWhiteSpace(query))
+    //        return [];
+
+    //    var isId = int.TryParse(query, out int idValue);
+
+    //    var queryable = _context.Tbl90RefExperts.AsNoTracking();
+
+    //    if (isId)
+    //    {
+    //        return await queryable
+    //            .Where(f => f.RefExpertId == idValue)
+    //            .OrderBy(a => a.RefExpertName)
+    //            .ToListAsync();
+    //    }
+    //    else
+    //    {
+    //        return await queryable
+    //            .Where(f => EF.Functions.Like(f.RefExpertName, $"{query}%"))
+    //            .OrderBy(a => a.RefExpertName)
+    //            .ToListAsync();
+    //    }
+    //}
+
+    //public async Task<List<Tbl90RefExpert>> GetRefExpertsByNameAsync(string? query)
+    //{
+    //    if (string.IsNullOrWhiteSpace(query))
+    //        return [];
+
+    //    var queryable = _context.Tbl90RefExperts.AsNoTracking();
+    //    {
+    //        return await queryable
+    //            .Where(f => EF.Functions.Like(f.RefExpertName, $"{query}%"))
+    //            .OrderBy(a => a.RefExpertName)
+    //            .ToListAsync();
+    //    }
+    //}
+
+    //public async Task<bool> RefExpertExistsAsync(Tbl90RefExpert model)
+    //{
+    //    return await _context.Tbl90RefExperts.AnyAsync(c =>
+    //        c.RefExpertId != model.RefExpertId &&
+    //        c.RefExpertName == model.RefExpertName &&
+    //        c.Valid == model.Valid &&
+    //        c.ValidYear == model.ValidYear &&
+    //        c.Info == model.Info &&
+    //        c.Notes == model.Notes &&
+    //        c.Memo == model.Memo
+    //    );
+    //}
+
+    //public async Task<List<Tbl90RefExpert>> GetRefExpertAsync()
+    //{
+    //    return await _context.Tbl90RefExperts
+    //        .AsNoTracking()
+    //        .OrderBy(a => a.RefExpertName)
+    //        .ToListAsync();
+    //}
+
+    //public async Task<List<Tbl90RefExpert>> GetRefExpertAsync(int refexpertid)
+    //{
+    //    return await _context.Tbl90RefExperts
+    //        .AsNoTracking()
+    //        .Where(e => e.RefExpertId == refexpertid)
+    //        .OrderBy(k => k.RefExpertName)
+    //        .ToListAsync();
+    //}
+
+    //public async Task<Tbl90RefExpert?> GetRefExpertByIdAsync(int? refexpertid)
+    //{
+    //    return await _context.Tbl90RefExperts
+    //        .AsNoTracking()
+    //        .FirstOrDefaultAsync(e => e.RefExpertId == refexpertid);
+    //}
+
+    //public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert refexpert)
+    //{
+    //    if (refexpert.RefExpertId == 0)
+    //    {
+    //        if (refexpert.Valid != null)
+    //        {
+    //        }
+    //        else
+    //        {
+    //            refexpert.Valid = false; //Valid cannot be null. eingefügt 06.01.2025 Terppe
+    //        }
+
+    //        refexpert.CountId = RandomHelper.Randomnumber();
+    //        refexpert.Writer = Environment.UserName;
+    //        refexpert.WriterDate = DateTime.Now;
+    //        refexpert.Updater = Environment.UserName;
+    //        refexpert.UpdaterDate = DateTime.Now;
+    //        await _context.Tbl90RefExperts.AddAsync(refexpert);
+    //    }
+    //    else
+    //    {
+    //        refexpert.Updater = Environment.UserName;
+    //        refexpert.UpdaterDate = DateTime.Now;
+    //        _context.Tbl90RefExperts.Update(refexpert);
+    //    }
+
+    //    await _context.SaveChangesAsync();
+    //    return refexpert;
+    //}
+
+    //public async Task DeleteRefExpertAsync(int? refexpertid)
+    //{
+    //    if (refexpertid is null)
+    //        return;
+
+    //    var refexpert = await _context.Tbl90RefExperts
+    //        .FirstOrDefaultAsync(c => c.RefExpertId == refexpertid);
+
+    //    if (refexpert != null)
+    //    {
+    //        _context.Tbl90RefExperts.Remove(refexpert);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
+    //-----------------------------------------------------
+    public ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt()
     {
         var collection = new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
             .OrderBy(k => k.RefExpertName));
         return collection;
     }
 
-    public ObservableCollection<Tbl90RefExpert> GetRefExpertAsync(int refexpertid)
+    public ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt(int refexpertid)
     {
         var collection = new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
             .Where(e => e.RefExpertId == refexpertid)
@@ -3362,7 +3314,7 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsync(string search)
+    public async Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsyncAlt(string search)
     {
         var collection = int.TryParse(search, out var id)
             ? new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
@@ -3375,7 +3327,7 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert refexpert)
+    public async Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert)
     {
         var current = await _context.Tbl90RefExperts.FirstOrDefaultAsync(_comment => _comment.RefExpertId == refexpert.RefExpertId);
         if (null == current)
@@ -3403,8 +3355,7 @@ public partial class DataService : ObservableObject, IDataService
         return refexpert;
     }
 
-
-    public async Task DeleteRefExpertAsync(int refexpertid)
+    public async Task DeleteRefExpertAsyncAlt(int refexpertid)
     {
         var reference = await _context.Tbl90RefExperts.FirstOrDefaultAsync(_reference => _reference.RefExpertId == refexpertid);
         if (null != reference)
@@ -3413,8 +3364,7 @@ public partial class DataService : ObservableObject, IDataService
             await _context.SaveChangesAsync();
         }
     }
-
-    //-----------------------------------------------------------
+    //--------------------------------------------------------
     public ObservableCollection<Tbl90Reference> GetTbl90ReferenceAuthorsCollectionOrderByInfoFromGenusIdAndRefSourceIdIsNullAndRefExpertIdIsNull(int? genusId)
     {
         if (_context.Tbl90References != null)
@@ -3569,6 +3519,17 @@ public partial class DataService : ObservableObject, IDataService
                 .ToListAsync();
         }
     }
+    public async Task<bool> CountryExistsAsync(TblCountry model)
+    {
+        return await _context.TblCountries.AnyAsync(c =>
+            c.CountryId != model.CountryId &&
+            c.Name == model.Name &&
+            c.Regex == model.Regex &&
+            c.ZoomLevel == model.ZoomLevel &&
+            c.Latitude == model.Latitude &&
+            c.Longitude == model.Longitude
+        );
+    }
 
     public async Task<List<TblCountry>> GetCountryAsync()
     {
@@ -3584,17 +3545,6 @@ public partial class DataService : ObservableObject, IDataService
             .Where(e => e.CountryId == countryid)
             .OrderBy(k => k.Name)
             .ToListAsync();
-    }
-    public async Task<bool> CountryExistsAsync(TblCountry model)
-    {
-        return await _context.TblCountries.AnyAsync(c =>
-            c.CountryId != model.CountryId &&
-            c.Name == model.Name &&
-            c.Regex == model.Regex &&
-            c.ZoomLevel == model.ZoomLevel &&
-            c.Latitude == model.Latitude &&
-            c.Longitude == model.Longitude
-        );
     }
 
     public async Task<TblCountry?> GetCountryByIdAsync(int? countryid)

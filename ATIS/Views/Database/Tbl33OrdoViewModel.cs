@@ -47,7 +47,7 @@ public partial class Tbl33OrdoViewModel : ObservableObject
         Tbl33OrdosAllList ??= [];
         Tbl33OrdosAllList = [.. _dataService.GetOrdoAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -244,7 +244,7 @@ public partial class Tbl33OrdoViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, OrdoId = OrdoSelected.OrdoId });

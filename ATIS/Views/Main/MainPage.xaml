@@ -2,9 +2,8 @@
 <Page x:Class="ATIS.Views.Main.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:components="using:ATIS.DesignSystem.Components"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:loca="using:WinUI3Localizer"
+      xmlns:loc="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:userControls="using:ATIS.Views.UserControls"
       xmlns:wuc="using:WinUICommunity"
@@ -27,26 +26,26 @@
                              Height="32"
                              Margin="0,4,0,0"
                              HorizontalAlignment="Left">
-                        <MenuBarItem loca:Uids.Uid="MenuBarItemFile">
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemNew">
+                        <MenuBarItem loc:Uids.Uid="MenuBarItemFile">
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemNew">
                                 <MenuFlyoutItem.KeyboardAccelerators>
                                     <KeyboardAccelerator Key="N"
                                                          Modifiers="Control" />
                                 </MenuFlyoutItem.KeyboardAccelerators>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemOpen">
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemOpen">
                                 <MenuFlyoutItem.KeyboardAccelerators>
                                     <KeyboardAccelerator Key="O"
                                                          Modifiers="Control" />
                                 </MenuFlyoutItem.KeyboardAccelerators>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemSave">
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemSave">
                                 <MenuFlyoutItem.KeyboardAccelerators>
                                     <KeyboardAccelerator Key="S"
                                                          Modifiers="Control" />
                                 </MenuFlyoutItem.KeyboardAccelerators>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemLog"
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemLog"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="showlogfile">
                                 <MenuFlyoutItem.Icon>
@@ -54,7 +53,7 @@
                                                 UriSource="/Assets/Fluent/log.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemClose"
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemClose"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="close">
                                 <MenuFlyoutItem.Icon>
@@ -63,8 +62,8 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuBarItem>
-                        <MenuBarItem loca:Uids.Uid="MenuBarItemAuth">
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemLogin"
+                        <MenuBarItem loc:Uids.Uid="MenuBarItemAuth">
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemLogin"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="login">
                                 <MenuFlyoutItem.Icon>
@@ -72,7 +71,7 @@
                                                 UriSource="/Assets/Fluent/arrowleft.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemRegister"
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemRegister"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="register">
                                 <MenuFlyoutItem.Icon>
@@ -80,7 +79,7 @@
                                                 UriSource="/Assets/Fluent/arrowright.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemChangePw"
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemChangePw"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="changepw">
                                 <MenuFlyoutItem.Icon>
@@ -88,7 +87,7 @@
                                                 UriSource="/Assets/Fluent/arrowright.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemForgotPw"
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemForgotPw"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="forgotpw">
                                 <MenuFlyoutItem.Icon>
@@ -104,7 +103,7 @@
                                                 UriSource="/Assets/Fluent/update.png" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemLogout"
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemLogout"
                                             Click="MenuFlyoutItem_Click"
                                             Tag="logout">
                                 <MenuFlyoutItem.Icon>
@@ -113,16 +112,16 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuBarItem>
-                        <MenuBarItem loca:Uids.Uid="MenuBarItemHelp">
-                            <MenuFlyoutItem loca:Uids.Uid="MenuFlyoutItemAbout">
+                        <MenuBarItem loc:Uids.Uid="MenuBarItemHelp">
+                            <MenuFlyoutItem loc:Uids.Uid="MenuFlyoutItemAbout">
                                 <MenuFlyoutItem.KeyboardAccelerators>
                                     <KeyboardAccelerator Key="I"
                                                          Modifiers="Control" />
                                 </MenuFlyoutItem.KeyboardAccelerators>
                             </MenuFlyoutItem>
                         </MenuBarItem>
-                        <MenuBarItem loca:Uids.Uid="MenuBarItemLanguage">
-                            <MenuFlyoutItem loca:Uids.Uid="de-DE"
+                        <MenuBarItem loc:Uids.Uid="MenuBarItemLanguage">
+                            <MenuFlyoutItem loc:Uids.Uid="de-DE"
                                             Click="MenuFlyoutLanguage_Click"
                                             Tag="de-DE">
                                 <MenuFlyoutItem.Icon>
@@ -131,7 +130,7 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
 
-                            <MenuFlyoutItem loca:Uids.Uid="en-US"
+                            <MenuFlyoutItem loc:Uids.Uid="en-US"
                                             Click="MenuFlyoutLanguage_Click"
                                             Tag="en-US">
                                 <MenuFlyoutItem.Icon>
@@ -140,7 +139,7 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
 
-                            <MenuFlyoutItem loca:Uids.Uid="fr-FR"
+                            <MenuFlyoutItem loc:Uids.Uid="fr-FR"
                                             Click="MenuFlyoutLanguage_Click"
                                             Tag="fr-FR">
                                 <MenuFlyoutItem.Icon>
@@ -149,7 +148,7 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
 
-                            <MenuFlyoutItem loca:Uids.Uid="es-ES"
+                            <MenuFlyoutItem loc:Uids.Uid="es-ES"
                                             Click="MenuFlyoutLanguage_Click"
                                             Tag="es-ES">
                                 <MenuFlyoutItem.Icon>
@@ -163,7 +162,7 @@
                                Width="Auto"
                                Margin="10,16,10,0"
                                HorizontalAlignment="Left"
-                               loca:Uids.Uid="TextBlock_DbExist_SQLActiv"
+                               loc:Uids.Uid="TextBlock_DbExist_SQLActiv"
                                Foreground="Red"
                                TextWrapping="NoWrap"
                                Visibility="Visible" />
@@ -171,7 +170,7 @@
                                     Width="200"
                                     Height="32"
                                     Margin="10,0,10,-4"
-                                    loca:Uids.Uid="AutoSuggestBox_Search"
+                                    loc:Uids.Uid="AutoSuggestBox_Search"
                                     Loaded="SearchSearchBox_OnLoaded"
                                     PlaceholderText="Search"
                                     QueryIcon="Find"
@@ -211,7 +210,7 @@
                                Width="Auto"
                                Margin="10,16,10,0"
                                HorizontalAlignment="Right"
-                               loca:Uids.Uid="TextBlock_NoLogin"
+                               loc:Uids.Uid="TextBlock_NoLogin"
                                Foreground="Red" />
                 </StackPanel>
             </TitleBar.Content>
@@ -245,7 +244,7 @@
                 <AutoSuggestBox x:Name="ControlsSearchBox"
                                 MinWidth="200"
                                 VerticalAlignment="Center"
-                                loca:Uids.Uid="SearchBox_Search"
+                                loc:Uids.Uid="SearchBox_Search"
                                 x:FieldModifier="public"
                                 KeyboardAcceleratorPlacementMode="Hidden"
                                 QueryIcon="Find"
@@ -255,7 +254,7 @@
 
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Name="NavTest"
-                                    loca:Uids.Uid="Nav_Home"
+                                    loc:Uids.Uid="Nav_Home"
                                     Tag="ATIS.Views.Database.TblCountryListTestPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
@@ -263,7 +262,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavHome"
-                                    loca:Uids.Uid="Nav_Home"
+                                    loc:Uids.Uid="Nav_Home"
                                     Tag="ATIS.Views.Main.HomePage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
@@ -272,21 +271,21 @@
                 </NavigationViewItem>
 
                 <NavigationViewItem x:Name="NavSearch"
-                                    loca:Uids.Uid="Nav_Search"
+                                    loc:Uids.Uid="Nav_Search"
                                     Tag="ATIS.Views.Search.SearchQuickPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/search.png" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem loca:Uids.Uid="Nav_Database">
+                <NavigationViewItem loc:Uids.Uid="Nav_Database">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE8B7;" />
                         <!--  Folder  -->
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Name="NavSpecies"
-                                            loca:Uids.Uid="Nav_FiSpecies"
+                                            loc:Uids.Uid="Nav_FiSpecies"
                                             Tag="ATIS.Views.Database.Tbl75SpeciesListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -294,7 +293,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavGenus"
-                                            loca:Uids.Uid="Nav_Genus"
+                                            loc:Uids.Uid="Nav_Genus"
                                             Tag="ATIS.Views.Database.Tbl66GenusListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -302,21 +301,21 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavSpeciesgroup"
-                                            loca:Uids.Uid="Nav_Speciesgroup"
+                                            loc:Uids.Uid="Nav_Speciesgroup"
                                             Tag="ATIS.Views.Database.Tbl68SpeciesgroupListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                        <NavigationViewItem loca:Uids.Uid="Nav_Tribusses">
+                        <NavigationViewItem loc:Uids.Uid="Nav_Tribusses">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
                                 <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfratribus"
-                                                    loca:Uids.Uid="Nav_Infratribus"
+                                                    loc:Uids.Uid="Nav_Infratribus"
                                                     Tag="ATIS.Views.Database.Tbl63InfratribusListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -324,7 +323,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubtribus"
-                                                    loca:Uids.Uid="Nav_Subtribus"
+                                                    loc:Uids.Uid="Nav_Subtribus"
                                                     Tag="ATIS.Views.Database.Tbl60SubtribusListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -332,7 +331,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavTribus"
-                                                    loca:Uids.Uid="Nav_Tribus"
+                                                    loc:Uids.Uid="Nav_Tribus"
                                                     Tag="ATIS.Views.Database.Tbl57TribusListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -340,7 +339,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSupertribus"
-                                                    loca:Uids.Uid="Nav_Supertribus"
+                                                    loc:Uids.Uid="Nav_Supertribus"
                                                     Tag="ATIS.Views.Database.Tbl54SupertribusListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -349,14 +348,14 @@
                                 </NavigationViewItem>
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
-                        <NavigationViewItem loca:Uids.Uid="Nav_Families">
+                        <NavigationViewItem loc:Uids.Uid="Nav_Families">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
                                 <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfrafamily"
-                                                    loca:Uids.Uid="Nav_Infrafamily"
+                                                    loc:Uids.Uid="Nav_Infrafamily"
                                                     Tag="ATIS.Views.Database.Tbl51InfrafamilyListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -364,7 +363,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubfamily"
-                                                    loca:Uids.Uid="Nav_Subfamily"
+                                                    loc:Uids.Uid="Nav_Subfamily"
                                                     Tag="ATIS.Views.Database.Tbl48SubfamilyListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -372,7 +371,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavFamily"
-                                                    loca:Uids.Uid="Nav_Family"
+                                                    loc:Uids.Uid="Nav_Family"
                                                     Tag="ATIS.Views.Database.Tbl45FamilyListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -380,7 +379,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSuperfamily"
-                                                    loca:Uids.Uid="Nav_Superfamily"
+                                                    loc:Uids.Uid="Nav_Superfamily"
                                                     Tag="ATIS.Views.Database.Tbl42SuperfamilyListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -389,14 +388,14 @@
                                 </NavigationViewItem>
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
-                        <NavigationViewItem loca:Uids.Uid="Nav_Ordos">
+                        <NavigationViewItem loc:Uids.Uid="Nav_Ordos">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
                                 <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfraordo"
-                                                    loca:Uids.Uid="Nav_Infraordo"
+                                                    loc:Uids.Uid="Nav_Infraordo"
                                                     Tag="ATIS.Views.Database.Tbl39InfraordoListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -404,7 +403,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubordo"
-                                                    loca:Uids.Uid="Nav_Subordo"
+                                                    loc:Uids.Uid="Nav_Subordo"
                                                     Tag="ATIS.Views.Database.Tbl36SubordoListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -412,7 +411,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavOrdo"
-                                                    loca:Uids.Uid="Nav_Ordo"
+                                                    loc:Uids.Uid="Nav_Ordo"
                                                     Tag="ATIS.Views.Database.Tbl33OrdoListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -420,7 +419,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavLegio"
-                                                    loca:Uids.Uid="Nav_Legio"
+                                                    loc:Uids.Uid="Nav_Legio"
                                                     Tag="ATIS.Views.Database.Tbl30LegioListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -429,14 +428,14 @@
                                 </NavigationViewItem>
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
-                        <NavigationViewItem loca:Uids.Uid="Nav_Classes">
+                        <NavigationViewItem loc:Uids.Uid="Nav_Classes">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
                                 <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfraclass"
-                                                    loca:Uids.Uid="Nav_Infraclass"
+                                                    loc:Uids.Uid="Nav_Infraclass"
                                                     Tag="ATIS.Views.Database.Tbl27InfraclassListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -444,7 +443,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubclass"
-                                                    loca:Uids.Uid="Nav_Subclass"
+                                                    loc:Uids.Uid="Nav_Subclass"
                                                     Tag="ATIS.Views.Database.Tbl24SubclassListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -452,7 +451,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavClass"
-                                                    loca:Uids.Uid="Nav_Class"
+                                                    loc:Uids.Uid="Nav_Class"
                                                     Tag="ATIS.Views.Database.Tbl21ClassListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -460,7 +459,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSuperclass"
-                                                    loca:Uids.Uid="Nav_Superclass"
+                                                    loc:Uids.Uid="Nav_Superclass"
                                                     Tag="ATIS.Views.Database.Tbl18SuperclassListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -469,14 +468,14 @@
                                 </NavigationViewItem>
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
-                        <NavigationViewItem loca:Uids.Uid="Nav_Phylums">
+                        <NavigationViewItem loc:Uids.Uid="Nav_Phylums">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
                                 <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavSubphylum"
-                                                    loca:Uids.Uid="Nav_Subphylum"
+                                                    loc:Uids.Uid="Nav_Subphylum"
                                                     Tag="ATIS.Views.Database.Tbl12SubphylumListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -484,7 +483,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavPhylum"
-                                                    loca:Uids.Uid="Nav_Phylum"
+                                                    loc:Uids.Uid="Nav_Phylum"
                                                     Tag="ATIS.Views.Database.Tbl06PhylumListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -494,21 +493,21 @@
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavRegnum"
-                                            loca:Uids.Uid="Nav_Regnum"
+                                            loc:Uids.Uid="Nav_Regnum"
                                             Tag="ATIS.Views.Database.Tbl03RegnumListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                        <NavigationViewItem loca:Uids.Uid="Nav_AddOns">
+                        <NavigationViewItem loc:Uids.Uid="Nav_AddOns">
                             <NavigationViewItem.Icon>
                                 <FontIcon Glyph="&#xE8B7;" />
                                 <!--  Folder  -->
                             </NavigationViewItem.Icon>
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavNames"
-                                                    loca:Uids.Uid="Nav_Names"
+                                                    loc:Uids.Uid="Nav_Names"
                                                     Tag="ATIS.Views.Database.Tbl78NameListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -516,7 +515,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavImages"
-                                                    loca:Uids.Uid="Nav_Images"
+                                                    loc:Uids.Uid="Nav_Images"
                                                     Tag="ATIS.Views.Database.Tbl81ImageListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -524,7 +523,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSynonyms"
-                                                    loca:Uids.Uid="Nav_Synonyms"
+                                                    loc:Uids.Uid="Nav_Synonyms"
                                                     Tag="ATIS.Views.Database.Tbl84SynonymListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -532,7 +531,7 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavGeographics"
-                                                    loca:Uids.Uid="Nav_Geographics"
+                                                    loc:Uids.Uid="Nav_Geographics"
                                                     Tag="ATIS.Views.Database.Tbl87GeographicListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
@@ -540,29 +539,29 @@
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavReferences"
-                                                    loca:Uids.Uid="Nav_References"
+                                                    loc:Uids.Uid="Nav_References"
                                                     Tag="ATIS.Views.Database.Tbl90ReferenceListPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
                                     </NavigationViewItem.Icon>
                                 </NavigationViewItem>
-                                <NavigationViewItem loca:Uids.Uid="Nav_RefDetails">
+                                <NavigationViewItem loc:Uids.Uid="Nav_RefDetails">
                                     <NavigationViewItem.Icon>
                                         <FontIcon Glyph="&#xE8B7;" />
                                         <!--  Folder  -->
                                     </NavigationViewItem.Icon>
                                     <NavigationViewItem.MenuItems>
                                         <NavigationViewItem x:Name="NavRefExperts"
-                                                            loca:Uids.Uid="Nav_RefExperts"
-                                                            Tag="ATIS.Views.Database.Tbl90RefExpertListPage">
+                                                            loc:Uids.Uid="Nav_RefExperts"
+                                                            Tag="ATIS.Views.Modules.Tbl90RefExpert.Tbl90RefExpertPage">
                                             <NavigationViewItem.Icon>
                                                 <BitmapIcon ShowAsMonochrome="False"
                                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                                             </NavigationViewItem.Icon>
                                         </NavigationViewItem>
                                         <NavigationViewItem x:Name="NavRefSources"
-                                                            loca:Uids.Uid="Nav_RefSources"
+                                                            loc:Uids.Uid="Nav_RefSources"
                                                             Tag="ATIS.Views.Database.Tbl90RefSourceListPage">
                                             <NavigationViewItem.Icon>
                                                 <BitmapIcon ShowAsMonochrome="False"
@@ -570,7 +569,7 @@
                                             </NavigationViewItem.Icon>
                                         </NavigationViewItem>
                                         <NavigationViewItem x:Name="NavRefAuthors"
-                                                            loca:Uids.Uid="Nav_RefAuthors"
+                                                            loc:Uids.Uid="Nav_RefAuthors"
                                                             Tag="ATIS.Views.Database.Tbl90RefAuthorListPage">
                                             <NavigationViewItem.Icon>
                                                 <BitmapIcon ShowAsMonochrome="False"
@@ -582,7 +581,7 @@
                             </NavigationViewItem.MenuItems>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavComments"
-                                            loca:Uids.Uid="Nav_Comments"
+                                            loc:Uids.Uid="Nav_Comments"
                                             Tag="ATIS.Views.Database.Tbl93CommentListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -590,7 +589,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavCountries"
-                                            loca:Uids.Uid="Nav_Countries"
+                                            loc:Uids.Uid="Nav_Countries"
                                             Tag="ATIS.Views.Database.TblCountryListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -598,7 +597,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavDiseases1"
-                                            loca:Uids.Uid="Nav_Diseases"
+                                            loc:Uids.Uid="Nav_Diseases"
                                             Tag="ATIS.Views.Database.TblDiseaseListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -606,7 +605,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavFoods1"
-                                            loca:Uids.Uid="Nav_Foods"
+                                            loc:Uids.Uid="Nav_Foods"
                                             Tag="ATIS.Views.Database.TblFoodListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -614,7 +613,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavMiscellaneousses1"
-                                            loca:Uids.Uid="Nav_Miscellaneousses"
+                                            loc:Uids.Uid="Nav_Miscellaneousses"
                                             Tag="ATIS.Views.Database.TblMiscellaneousListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -622,7 +621,7 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavUserProfiles"
-                                            loca:Uids.Uid="Nav_UserProfiles"
+                                            loc:Uids.Uid="Nav_UserProfiles"
                                             Tag="ATIS.Views.Database.TblUserProfileListPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
@@ -632,7 +631,7 @@
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavDiseases"
-                                    loca:Uids.Uid="Nav_Diseases"
+                                    loc:Uids.Uid="Nav_Diseases"
                                     Tag="ATIS.Views.Main.Disease.DiseasePage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
@@ -640,7 +639,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavFoods"
-                                    loca:Uids.Uid="Nav_Foods"
+                                    loc:Uids.Uid="Nav_Foods"
                                     Tag="ATIS.Views.Main.Food.FoodPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
@@ -648,7 +647,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavMiscellaneousses"
-                                    loca:Uids.Uid="Nav_Miscellaneousses"
+                                    loc:Uids.Uid="Nav_Miscellaneousses"
                                     Tag="ATIS.Views.Main.Miscellaneous.MiscellaneousPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
@@ -656,7 +655,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavAdmin_Area"
-                                    loca:Uids.Uid="Nav_Admin_Area"
+                                    loc:Uids.Uid="Nav_Admin_Area"
                                     Tag="ATIS.Views.Admin.AdminAreaPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
@@ -664,7 +663,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Name="NavUser_Area"
-                                    loca:Uids.Uid="Nav_User_Area"
+                                    loc:Uids.Uid="Nav_User_Area"
                                     Tag="ATIS.Views.User.UserAreaPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"

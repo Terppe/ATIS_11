@@ -46,7 +46,7 @@ public partial class Tbl39InfraordoViewModel : ObservableObject
         Tbl39InfraordosAllList ??= [];
         Tbl39InfraordosAllList = [.. _dataService.GetInfraordoAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -236,7 +236,7 @@ public partial class Tbl39InfraordoViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, InfraordoId = InfraordoSelected.InfraordoId });

@@ -1,5 +1,4 @@
-﻿
-using System.Configuration;
+﻿using System.Configuration;
 using System.Net.Sockets;
 using ATIS.Helpers;
 using ATIS.Interfaces;
@@ -7,8 +6,6 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.Data.SqlClient;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Media;
 
 namespace ATIS.Views.Main;
 public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAware
@@ -30,11 +27,32 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
     {
         IsLoading = true;
 
-        await CheckSql_DbAsync(); // Asynchrone Initialisierung!
-        // await CloseAppAsync();    // Falls gewünscht
+        await CheckSql_DbAsync();
         // Logging etc.
+
         SimpleLog.Info("MainWindow logging started.");
         IsLoading = false;
+    }
+
+
+    public async Task RequestCloseAsync()
+    {
+        var dialog = new ContentDialog
+        {
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+            Title = StringsRes.WantToCloseApp,
+            PrimaryButtonText = StringsRes.Yes,
+            CloseButtonText = StringsRes.No,
+            DefaultButton = ContentDialogButton.Close
+        };
+
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            SimpleLog.Info(StringsRes.AppClosed);
+            App.MainWindow.Close();
+        }
     }
 
     private Task CheckSql_DbAsync()
@@ -141,6 +159,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
 
         return ret;
     }
+
 
     public void OnAutoSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {

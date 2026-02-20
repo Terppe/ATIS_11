@@ -47,7 +47,7 @@ public partial class Tbl06PhylumViewModel : ObservableObject
         Tbl06PhylumsAllList ??= [];
         Tbl06PhylumsAllList = [.. _dataService.GetPhylumAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -267,7 +267,7 @@ public partial class Tbl06PhylumViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, PhylumId = PhylumSelected.PhylumId });

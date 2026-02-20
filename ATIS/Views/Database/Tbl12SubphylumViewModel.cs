@@ -46,7 +46,7 @@ public partial class Tbl12SubphylumViewModel : ObservableObject
         Tbl12SubphylumsAllList ??= [];
         Tbl12SubphylumsAllList = [.. _dataService.GetSubphylumAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -263,7 +263,7 @@ public partial class Tbl12SubphylumViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, SubphylumId = SubphylumSelected.SubphylumId });

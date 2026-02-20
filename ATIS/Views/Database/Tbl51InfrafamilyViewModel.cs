@@ -48,7 +48,7 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
         Tbl51InfrafamiliesAllList ??= [];
         Tbl51InfrafamiliesAllList = [.. _dataService.GetInfrafamilyAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -227,7 +227,7 @@ public partial class Tbl51InfrafamilyViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, InfrafamilyId = InfrafamilySelected.InfrafamilyId });

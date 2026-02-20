@@ -31,10 +31,10 @@
                              IsClosable="False">
                     <database:Tbl68SpeciesgroupListPage />
                 </TabViewItem>
-                <TabViewItem Header="Experts"
+                <!--<TabViewItem Header="Experts"
                              IsClosable="False">
                     <database:Tbl90RefExpertListPage />
-                </TabViewItem>
+                </TabViewItem>-->
                 <TabViewItem Header="Sources"
                              IsClosable="False">
                     <database:Tbl90RefSourceListPage />

@@ -234,6 +234,9 @@
   <data name="CheckBox_Valid.Content" xml:space="preserve">
     <value>Valid</value>
   </data>
+  <data name="ConfirmExitMessage" xml:space="preserve">
+    <value>Would you like to close your application?</value>
+  </data>
   <data name="ComboBox_ClassName.Header" xml:space="preserve">
     <value>Class Name</value>
   </data>
@@ -344,6 +347,9 @@
   </data>
   <data name="Country_Id" xml:space="preserve">
     <value>ID</value>
+  </data>
+  <data name="ConfirmExitTitle" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="Country_ZoomLevel_Placeholder" xml:space="preserve">
     <value>Zoom level…</value>
@@ -3792,6 +3798,9 @@
   <data name="Search_Placeholder" xml:space="preserve">
     <value>Search…</value>
   </data>
+  <data name="SearchName" xml:space="preserve">
+    <value>Search Name</value>
+  </data>
   <data name="HeaderTile_Components.Description" xml:space="preserve">
     <value>Experience WinUI 3 quickly and easily with the help of Components, Everything you need to develop an application is gathered in one place.</value>
   </data>
@@ -4059,6 +4068,12 @@
   <data name="de-DE.Text" xml:space="preserve">
     <value>German</value>
   </data>
+  <data name="DeleteSuccessMessage" xml:space="preserve">
+    <value>The dataset was successful deleted</value>
+  </data>
+  <data name="DeleteSuccessTitle" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
   <data name="Dialog_Error_Title" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -4066,7 +4081,7 @@
     <value>Saved</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
-    <value> </value>
+    <value>Yes</value>
   </data>
   <data name="Dialog_Delete_Title" xml:space="preserve">
     <value>Deleted</value>
@@ -4090,7 +4105,7 @@
     <value>Please correct the errors before saving.</value>
   </data>
   <data name="Dialog_OK" xml:space="preserve">
-    <value> </value>
+    <value>Ok</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>No</value>
@@ -4115,6 +4130,21 @@
   </data>
   <data name="Error_Latitude_Invalid" xml:space="preserve">
     <value>Latitude is invalid.</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="SaveSuccessTitle" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="SaveSuccessMessage" xml:space="preserve">
+    <value>the dataset was succesful saved</value>
+  </data>
+  <data name="ErrorDuplicate" xml:space="preserve">
+    <value>the same dataset exist</value>
+  </data>
+  <data name="ErrorFixBeforeSave" xml:space="preserve">
+    <value>Please correct the errors bofore you save</value>
   </data>
   <data name="Error_Name_Length" xml:space="preserve">
     <value>Name must not be empty.</value>

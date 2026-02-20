@@ -196,7 +196,7 @@ public class AllDialogs
     public static async Task<bool> CloseAppQuestionConfirmationDialogAsync(string appName)
     {
         var result = await App.MainRoot.ConfirmationDialogAsync("",
-            StringsRes.WantToCloseApp + " " + appName + " ?", StringsRes.Yes, StringsRes.No, "");
+            StringsRes.Cancel + " " + appName + " ?", StringsRes.Yes, StringsRes.No, "");
         return result != null && (bool)result;
     }
 

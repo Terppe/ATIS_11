@@ -1,12 +1,78 @@
 ﻿### Projekt ToDo-Liste
-Erstellt am 2026-002-07 15:38
+Erstellt am 2026-002-07 15:38  
 Läuft stabil. umgestellt auf V10.2.2605 von 10.1.2602... Alle Textbox-Width über Feldlänge aus DB gelöst.  Einfügen von Validation für Name in countrypage fertig. Jetzt die nächsten Regex, ZoomLevel,Latitude,Longitude alles soweit fertig. speichern von ZoomLevel,Latitude,Longitude mit Error-Überwachung fehler. diese Version könnte man weiterentwickeln mit public int? ZoomLevel { get; set; }
 public double? Latitude { get; set; }
 public double? Longitude { get; set; }. Aber mit der nächsten Version wird versucht mit public string Latitude { get; set; }
 public string Longitude { get; set; }
-public string ZoomLevel { get; set; } das sicher zu machen. Validierung abgeschlossen.jetzt kommt ContendDialog mit daten aus der Resources.resw für alle texte. Alle texte der Meldungen erfassen und Resources.resw vervollständigen. Fehler bei Service: der ist behoben.probleme zwischen WinUI3Localizer , jetzt mus überall in pges xmlns:loc="using:WinUI3Localizer" und statt loca:Uids.Uid="SomeKey" soll jetzt loc:Key="SomeKey". ganzes project. hoffentlich ok. diese version ist total durcheinander. Der versuch mit loc  ist gescheitert. Versuch über ViewModel die Inhalte aus Resources.resw zu lesen und umstieg auf Localize.get um loca:Uids.Uid zu vermeiden und einheitlich auf die Resources.resw zuzugreifen geht nur teilweise. Der gesamte Bereich der Page ist nicht mehr auf Buttodruck lokalisierbar. Gleichzeitig wurden wieder die Load, Edit und Save Methoden verändert. diese version funktioniert noch nicht . countrypage wird name und regex nicht angezeigt . erstnach culturebutton drüchen. aber culture funktioniert nicht wie bei loca:Uids.uid.doppeltes countrypage strten beseitigt in MainPage.cs.Version zeigt name und Regex bei fokus im datagrid nicht an. erst wenn ButtonCulture gedrückt wird erscheinen beide.
+public string ZoomLevel { get; set; } das sicher zu machen. Validierung abgeschlossen.jetzt kommt ContendDialog mit daten aus der Resources.resw für alle texte. Alle texte der Meldungen erfassen und Resources.resw vervollständigen. 
+---------------------
+Version neu aufgesetzt bei Countrypage aus Version 10.2.0.2605_008 jetzt Version 10.3.0.2607_000
+Geblieben bei loca:Uids.Uid="TextBox_Longitude" aus xmlns:loca="using:WinUI3Localizer". wird geändert in xmlns:l="using:WinUI3Localizer" => l:Uids.Uid="TextBox_Longitude".
+Einige Kleinigkeiten müssen noch beseitigt werden, aber Change Culture geht über den CultureButton in MainPage.
+Version ist ohne sichtbare fehler. Zuviele Error-einträge in list. Konverter erweitert.aber immer noch nicht gut. wird noch einmal nachgearbeitet.
+Close- Methode in App.cs eingebaut. erroreinträge in list beseitigt und Vievmodel aufgeräumt. noch einige kleine Änderungen.
+jetzt noch ShowMessageAsync mit resources.resw verbinden. Umstellung von alten StringsRes auf Resources.resw macht mehr schwierigkeiten
+------------------------------------
+ILocalizer localizer = Localizer.Get();
+List<string> localizedColors = colors
+    .Select(x => localizer.GetLocalizedString(x))
+    .ToList();
 
-, 
+    In this case, we just use the Uid as Name. das ist gelöst. Close App und vom roten X oben rechts klappt wieder nicht. Version soweit fertig um eine Basic1Datagrid1DetailPage und Viewmodel zu erzeugen,
+    die dann als Basis für weitere gleichgelagerte Pages und Viewmodels dienen soll. Später weitere Basic2Datagrid4DetailPages und Viewmodels.
+    ----------------------------------
+🧱 Warum die Basis zuerst kommen sollte
+Eine Basis‑Page definiert:
+das Layout‑Gerüst
+die Commands
+die Lifecycle‑Methoden
+die Bindungspunkte für Grid, Toolbar, Detail
+die Struktur für Validierung, Dialoge, Localizer
+die Standard‑Events (Loaded, Unloaded, ApplyWidths, etc.)
+Wenn diese Basis existiert, dann ist eine konkrete Page wie TblCountryListPage nur noch:
+ein ViewModel, das Daten lädt
+ein Detail‑UserControl
+ein Grid‑UserControl
+ein paar Labels und Localizer‑Keys
+----------------------------------------
+Angefangen Base für Basic1Datagrid1Detail im Moment bei Dataservice, da gibt es fehler für andere Pages muss noch überarbeitet werden.
+----------------------------------------
+Wie Base1DataGrid1Detail aufgebaut wird
+Die Basis besteht aus drei Teilen:
+
+1. Base1DataGrid1DetailViewModel<T>
+Ein generisches ViewModel, das:
+
+die komplette Edit‑Zustandsmaschine enthält
+Commands bereitstellt
+SelectedItem verwaltet
+EditItem/BackupItem verwaltet
+Save/Cancel implementiert
+DataGrid sperrt
+Fokussteuerung anbietet
+
+2. Base1DataGrid1DetailPage
+Eine generische Page‑Struktur, die:
+
+DataGrid
+Detailbereich
+Buttons (New, Edit, Delete, Save, Cancel)
+Bindings zu den Commands
+Bindings zu den Zustandsflags
+enthält.
+
+3. Modulspezifische Ableitung
+Für RefExpert:
+
+Tbl90RefExpertViewModel erbt von Base1DataGrid1DetailViewModel<Tbl90RefExpert>
+Tbl90RefExpertPage erbt von Base1DataGrid1DetailPage
+Tbl90RefExpertDetailControl ist das Eingabeformular
+
+Das ist minimaler Code – der Großteil steckt in der Basis.
+--------------------------------------------------------
+atis läuft, aber als nackte anwendung. Keine Daten in detail. aber viel arbeit um weitere Funktionen zu erreichen. Validierung optik platzierung
+diese version ist lauffähig als neue Dialogbasierte Version in Minimal-Ausführung. werde jetzt einen neuen Ordner für diese Dialog-version anlegen.
+Unterscheidet sich von Countrypage 
 
 
 

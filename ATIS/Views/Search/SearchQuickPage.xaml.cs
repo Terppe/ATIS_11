@@ -88,7 +88,7 @@ public sealed partial class SearchQuickPage : Page
         }
         else
         {
-            SearchAutoSuggestBox.Text = StringsRes.SearchName;
+            SearchAutoSuggestBox.Text = "SearchName" ;
         }
     }
     private void GetNameByName(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

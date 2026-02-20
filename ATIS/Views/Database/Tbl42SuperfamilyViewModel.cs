@@ -46,7 +46,7 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
         Tbl42SuperfamiliesAllList ??= [];
         Tbl42SuperfamiliesAllList = [.. _dataService.GetSuperfamilyAsync()];
         Tbl90ExpertsAllList ??= [];
-        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+        Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
         Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
         Tbl90AuthorsAllList ??= [];
@@ -235,7 +235,7 @@ public partial class Tbl42SuperfamilyViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90ExpertsAllList ??= [];
-            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsync()];
+            Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, SuperfamilyId = SuperfamilySelected.SuperfamilyId });
