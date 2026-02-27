@@ -1,9 +1,11 @@
-﻿using ATIS;
+﻿using ATIS.Interfaces;
 using WinUI3Localizer;
 
-public class DialogService
+namespace ATIS.Services;
+
+public class DialogService : IDialogService
 {
-    public async Task ShowMessageAsync(string titleKey, string messageKey)
+    public async Task ShowInfoAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
 
@@ -84,7 +86,6 @@ public class DialogService
         return result == ContentDialogResult.Primary;
     }
 
-    // 🔥 WICHTIG: Generischer Dialog für DetailControls
     public async Task<bool> ShowDetailDialogAsync(FrameworkElement content, string titleKey)
     {
         var loc = Localizer.Get();

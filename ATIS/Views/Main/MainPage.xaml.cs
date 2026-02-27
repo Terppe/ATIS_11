@@ -29,7 +29,6 @@ public sealed partial class MainPage : Page
     private AppWindow _appWindow;
     public MainViewModel ViewModel { get; set; }
     private string _currentPageTag { get; set; }
-    private DialogService _dialogService;
 
     public MainPage()
     {
@@ -181,9 +180,9 @@ public sealed partial class MainPage : Page
     }
     private async Task Exit()
     {
-        var result = await _dialogService.ShowYesNoAsync("ConfirmExitTitle", "ConfirmExitMessage");
+  //      var result = await _dialogService.ShowYesNoAsync("ConfirmExitTitle", "ConfirmExitMessage");
 
-        if (result)
+     //   if (result)
             Application.Current.Exit();
     }
 

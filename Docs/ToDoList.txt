@@ -70,9 +70,39 @@ Tbl90RefExpertDetailControl ist das Eingabeformular
 
 Das ist minimaler Code – der Großteil steckt in der Basis.
 --------------------------------------------------------
-atis läuft, aber als nackte anwendung. Keine Daten in detail. aber viel arbeit um weitere Funktionen zu erreichen. Validierung optik platzierung
+atis läuft, aber als nackte anwendung. aber viel arbeit um weitere Funktionen zu erreichen. Validierung optik platzierung
 diese version ist lauffähig als neue Dialogbasierte Version in Minimal-Ausführung. werde jetzt einen neuen Ordner für diese Dialog-version anlegen.
-Unterscheidet sich von Countrypage 
+Unterscheidet sich von Countrypage
+---------------------------------------------------------
+21.02.2026 10:00 Uhr Alle Nuget-Pakete auf neuesten Stand gebracht.
+----------------------------------------------------------
+21.02.2026 15:00 Uhr Als Searchbox wird die AutoSuggestBox von WinUI 3 verwendet. Sie bietet eine integrierte Suchfunktionalität und ist einfach zu implementieren.
+Die AutoSuggestBox ermöglicht es den Benutzern, während der Eingabe Vorschläge zu erhalten, was die Benutzerfreundlichkeit verbessert. Statt TextBox.
+Jetzt sichern, da umbenannt werden soll von Basic1DataGrid1DetailPage in Base1List1DetailPage.
+Auch Basic1DataGrid1DetailViewModel in Base1List1DetailViewModel und AtisPageLayout.xaml → List1Detail1PageLayout.xaml und AtisPageLayout.xaml.cs → List1Detail1PageLayout.xaml.cs
+-------------------------------------------------------------
+23.02.2026 19.00 Uhr Version neu als Basis, da in ATIS_10.4.0.2608.000 kein refresh im Datagrid hinzukriegen war. Kleine Schritte jetzt zum weitermachen
+Auch Basic1DataGrid1DetailViewModel in Base1List1DetailViewModel und AtisPageLayout.xaml → Base1List1DetailPageLayout.xaml und AtisPageLayout.xaml.cs → Base1List1DetailPageLayout.xaml.cs
+-------------------------------------------------------------
+24.02.2026 14:00 Uhr Alle Änderungen von Basic1List1Detail1PageLayout.xaml.cs unklar ob    eingefügt werden soll. Jetzt Tbl90RefExpertPage mit Base1List1DetailPageLayout.xaml.cs verbunden.
+Page fertig bis auf Checkbox, optik falsch bei Edit. Fehler bei     public void Sort(string columnName, bool ascending)
+Item.clear, Item.Add geht nicht weil keine     public ObservableCollection<TblRefExpert> RefExperts { get; } = new();
+sondern     public IEnumerable<TDomain>? Items { get; private set; }
+//if (e.NewValue is FrameworkElement fe)
+//    fe.DataContext = control.DataContext; aktiviert in Base1List1DetailPageLayout.xaml.cs
+-------------------------------------------------------------
+24.02.2026 16:00 beide probleme ausbügeln als nächstes isLoading fehlt, erledigt. Refreshbutton fehlt.
+Checkbox soll im normalzustand aussehen wie im editzustand. bisher nicht gelöst.
+-------------------------------------------------------------
+25.02.2026 10:00 Uhr Checkbox soll im Normalzustand aussehen wie im Editzustand, gelöst. 
+-------------------------------------------------------------
+25.02.2026 14:00 Uhr Start Page, Eingabe "a" in Searchbox, dann Enter und der Suchvorgang beginnt. Modul umgestellt auf public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
+beides erledigt
+-------------------------------------------------------------
+26.02.2026 14:00 Uhr Base1List1DetailViewModel aufgeräumt. Noch nicht im Code verändert aben lauffähig.
+--------------------------------------------------------------
+27.02.2026 10:00 Uhr  new ändern damit Farbiger Fokus im Datadrid. farbiger fokus bei Save, delet, edit.
+Bei new wurde im Datagrid am Bottom der leere datensatz angezeigt und dann einsortiert nach save im Datagrid. ok
+DialogService Alle Meldungen (Save‑Prüfung, Existenzprüfung, Fehler, Warnungen, Bestätigungen) sollen . abgeschlossen.
 
-
-
+Refreshbutton fehlt, wird aber später eingebaut.width von TextBox.

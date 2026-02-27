@@ -3141,23 +3141,36 @@ public partial class DataService : ObservableObject, IDataService
             return Enumerable.Empty<Tbl90RefExpert>();
 
         return await _context.Tbl90RefExperts
-            .Where(e =>
-                e.RefExpertName.Contains(search) ||
-                e.RefExpertId.ToString() == search)
+            //.Where(e => e.RefExpertName.Contains(search) || e.RefExpertId.ToString() == search)
+            .Where(e => e.RefExpertName.StartsWith(search) || e.RefExpertId.ToString() == search)
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
     }
-
     public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model)
     {
         if (model.RefExpertId == 0)
-            _context.Entry(model).State = EntityState.Added;
+        {
+            _context.Tbl90RefExperts.Add(model);
+        }
         else
-            _context.Entry(model).State = EntityState.Modified;
+        {
+            _context.Tbl90RefExperts.Update(model);
+        }
 
         await _context.SaveChangesAsync();
         return model;
     }
+
+    //public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model)
+    //{
+    //    if (model.RefExpertId == 0)
+    //        _context.Entry(model).State = EntityState.Added;
+    //    else
+    //        _context.Entry(model).State = EntityState.Modified;
+
+    //    await _context.SaveChangesAsync();
+    //    return model;
+    //}
 
     public async Task DeleteRefExpertAsync(int id)
     {
@@ -3167,6 +3180,17 @@ public partial class DataService : ObservableObject, IDataService
             _context.Tbl90RefExperts.Remove(entity);
             await _context.SaveChangesAsync();
         }
+    }
+    public async Task<bool> RefExpertExistsAsync(Tbl90RefExpert model)
+    {
+        return await _context.Tbl90RefExperts.AnyAsync(c =>
+            c.RefExpertName == model.RefExpertName &&
+            c.Valid == model.Valid &&
+            c.ValidYear == model.ValidYear &&
+            c.Info == model.Info &&
+            c.Notes == model.Notes &&
+            c.Memo == model.Memo
+        );
     }
 
     //public async Task<List<Tbl90RefExpert>> GetAllRefExpertsAsync()

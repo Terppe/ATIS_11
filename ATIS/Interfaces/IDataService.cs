@@ -547,6 +547,7 @@ public interface IDataService
     Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsyncAlt(string search);
     Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert);
     Task DeleteRefExpertAsyncAlt(int refexpertid);
+    Task<bool> RefExpertExistsAsync(Tbl90RefExpert model);
 
     #endregion RefExpert
 

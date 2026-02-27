@@ -3,6 +3,10 @@ namespace ATIS.Interfaces;
 
 public interface IDialogService
 {
-    Task<bool?> ShowDialogAsync(FrameworkElement content, string title);
-    Task<bool?> ShowConfirmAsync(string title, string message);
+    Task ShowInfoAsync(string titleKey, string messageKey);
+    Task ShowErrorAsync(string titleKey, string messageKey);
+    Task<bool> ShowYesNoAsync(string titleKey, string messageKey);
+    Task<bool> ShowOkCancelAsync(string titleKey, string messageKey);
+    Task<bool> ShowConfirmAsync(string messageKey);
+    Task<bool> ShowDetailDialogAsync(FrameworkElement content, string titleKey);
 }

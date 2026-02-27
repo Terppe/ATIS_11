@@ -20,13 +20,8 @@ using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI;
 using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
-using Windows.UI.Core.Preview;
-using ATIS.Views.Modules.Tbl90RefExpert;
-using Microsoft.UI.Windowing;
-using WinRT.Interop;
 using WinUI3Localizer;
 using WinUIEx;
 using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
@@ -229,7 +224,7 @@ public partial class App : Application
         services.AddScoped<IDataService, DataService>();
 
         // DESIGN SYSTEM SERVICES
-        services.AddSingleton<DialogService>();
+        services.AddSingleton<IDialogService, DialogService>();
 
         // USER SERVICES
         services.AddSingleton<IUserService, UserService>();

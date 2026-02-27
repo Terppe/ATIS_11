@@ -23,7 +23,7 @@
 
 		<IsAotCompatible>False</IsAotCompatible>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-	<Version>10.3.0.2607</Version>
+	<Version>10.5.0.2609</Version>
 
 		<!--Remove git hash from assembly informational version in .NET >= 8, Example: false = 1.0.0, true = 1.0.0+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
@@ -46,7 +46,7 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-		<PackageReference Include="log4net" Version="3.2.0" />
+		<PackageReference Include="log4net" Version="3.3.0" />
 		<PackageReference Include="MailKit" Version="4.15.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
@@ -59,7 +59,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2026.2.0" />
+		<PackageReference Include="QuestPDF" Version="2026.2.1" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -74,7 +74,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3179.45" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3800.47" ExcludeAssets="buildTransitive" />
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
 	</ItemGroup>
 
@@ -740,8 +740,7 @@
 		<None Remove="Assets\splash.jpg" />
 		<None Remove="Assets\Usa.png" />
 		<None Remove="DesignSystem\Components\AtisCard.xaml" />
-		<None Remove="DesignSystem\Components\AtisDetailHeader.xaml" />
-		<None Remove="DesignSystem\Components\AtisPageLayout.xaml" />
+		<None Remove="DesignSystem\Components\Base1List1DetailPageLayout.xaml" />
 		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
 		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
@@ -978,13 +977,19 @@
 </ItemGroup>
 
 <ItemGroup>
+  <Page Update="DesignSystem\Components\Base1List1DetailPageLayout.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
   <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Base\Base1DataGrid1DetailPage.xaml">
+  <Page Update="Views\Base\Base1List1DetailPage.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>

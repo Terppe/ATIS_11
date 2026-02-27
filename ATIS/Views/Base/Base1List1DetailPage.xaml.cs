@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace ATIS.Views.Base;
 
-public abstract partial class Basic1DataGrid1DetailPage : Page
+public abstract partial class Basic1List1DetailPage : Page
 {
     public object ViewModel
     {
@@ -11,7 +11,7 @@ public abstract partial class Basic1DataGrid1DetailPage : Page
         protected set => DataContext = value;
     }
 
-    public Basic1DataGrid1DetailPage()
+    public Basic1List1DetailPage()
     {
         InitializeComponent();
         Loaded += OnLoaded;

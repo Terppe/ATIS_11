@@ -147,6 +147,12 @@
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
     <value>Light</value>
   </data>
+  <data name="Save_Title" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Save_Message" xml:space="preserve">
+    <value>The record has been saved successfully.</value>
+  </data>
   <data name="Settings_Theme_Dark.Content" xml:space="preserve">
     <value>Dark</value>
   </data>
@@ -350,6 +356,12 @@
   </data>
   <data name="ConfirmExitTitle" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="Confirm_Title" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="Confirm_Message" xml:space="preserve">
+    <value>Do you want to continue?</value>
   </data>
   <data name="Country_ZoomLevel_Placeholder" xml:space="preserve">
     <value>Zoom level…</value>
@@ -3186,6 +3198,9 @@
   <data name="ProgressPage_Title.Text" xml:space="preserve">
     <value>under progress</value>
   </data>
+  <data name="Save_Confirm_Title" xml:space="preserve">
+    <value>Save changes?</value>
+  </data>
   <data name="NameLonger1Character" xml:space="preserve">
     <value>Name should be longer than one character</value>
   </data>
@@ -3684,11 +3699,20 @@
   <data name="TextBlock_RefAuthor.Text" xml:space="preserve">
     <value>Reference Author</value>
   </data>
+  <data name="TextBlock_RefAuthorDetail.Text" xml:space="preserve">
+    <value>Reference Author Detail</value>
+  </data>
   <data name="TextBlock_RefExpert.Text" xml:space="preserve">
     <value>Reference Expert</value>
   </data>
+  <data name="TextBlock_RefExpertDetail.Text" xml:space="preserve">
+    <value>Reference Expert Detail</value>
+  </data>
   <data name="TextBlock_RefSource.Text" xml:space="preserve">
     <value>Reference Source</value>
+  </data>
+  <data name="TextBlock_RefSourceDetail.Text" xml:space="preserve">
+    <value>Reference Source Detail</value>
   </data>
   <data name="AppBarButtonAddCountry.Label" xml:space="preserve">
     <value>Country</value>
@@ -3740,6 +3764,12 @@
   </data>
   <data name="Button_Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="Cancel_Title" xml:space="preserve">
+    <value>Discard changes?</value>
+  </data>
+  <data name="Cancel_Message" xml:space="preserve">
+    <value>Möchten Sie die Änderungen wirklich verwerfen?</value>
   </data>
   <data name="Button_Edit" xml:space="preserve">
     <value>Edit</value>
@@ -4068,10 +4098,16 @@
   <data name="de-DE.Text" xml:space="preserve">
     <value>German</value>
   </data>
-  <data name="DeleteSuccessMessage" xml:space="preserve">
+  <data name="Delete_Title" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Delete_Message" xml:space="preserve">
+    <value>Do you really want to delete the selected record?</value>
+  </data>
+  <data name="Delete_Success_Message" xml:space="preserve">
     <value>The dataset was successful deleted</value>
   </data>
-  <data name="DeleteSuccessTitle" xml:space="preserve">
+  <data name="Delete_Success_Title" xml:space="preserve">
     <value>Deleted</value>
   </data>
   <data name="Dialog_Error_Title" xml:space="preserve">
@@ -4079,6 +4115,9 @@
   </data>
   <data name="Dialog_Save_Title" xml:space="preserve">
     <value>Saved</value>
+  </data>
+  <data name="Dialog_Save" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
     <value>Yes</value>
@@ -4104,8 +4143,8 @@
   <data name="Dialog_Error_FixBeforeSave" xml:space="preserve">
     <value>Please correct the errors before saving.</value>
   </data>
-  <data name="Dialog_OK" xml:space="preserve">
-    <value>Ok</value>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>No</value>
@@ -4122,11 +4161,17 @@
   <data name="Error_Regex_Invalid" xml:space="preserve">
     <value>The regular expression is invalid.</value>
   </data>
+  <data name="Error_RecordExists_Title" xml:space="preserve">
+    <value>Record already exists</value>
+  </data>
   <data name="Error_Zoom_Invalid" xml:space="preserve">
     <value>Zoom must be between 1 and 20.</value>
   </data>
   <data name="Error_Longitude_Invalid" xml:space="preserve">
     <value>Longitude is invalid.</value>
+  </data>
+  <data name="Error_RecordExists_Message" xml:space="preserve">
+    <value>A record with these values already exists.</value>
   </data>
   <data name="Error_Latitude_Invalid" xml:space="preserve">
     <value>Latitude is invalid.</value>
@@ -4134,10 +4179,10 @@
   <data name="ErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="SaveSuccessTitle" xml:space="preserve">
+  <data name="Save_Success_Title" xml:space="preserve">
     <value>Saved</value>
   </data>
-  <data name="SaveSuccessMessage" xml:space="preserve">
+  <data name="Save_Success_Message" xml:space="preserve">
     <value>the dataset was succesful saved</value>
   </data>
   <data name="ErrorDuplicate" xml:space="preserve">
@@ -4226,5 +4271,8 @@
   </data>
   <data name="TextBlock_Miscellaneous.Text" xml:space="preserve">
     <value>Miscellaneous</value>
+  </data>
+  <data name="Save_Confirm_Message" xml:space="preserve">
+    <value>Do you really want to save the changes?</value>
   </data>
 </root>

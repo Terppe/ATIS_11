@@ -4,15 +4,28 @@ using ATIS.Models;
 using ATIS.Views.Modules.Tbl90RefExpert;
 
 public class Tbl90RefExpertViewModel
-    : Base1DataGrid1DetailViewModel<Tbl90RefExpert, RefExpertEditModel>
+    : Base1List1DetailViewModel<Tbl90RefExpert, RefExpertEditModel>
 {
     private readonly IDataService _data;
     private readonly IUserService _user;
 
-    public Tbl90RefExpertViewModel(IDataService data, IUserService user)
+    public Tbl90RefExpertViewModel(IDataService data, IUserService user, IDialogService dialogService)
+        : base(dialogService)
     {
         _data = data;
         _user = user;
+    }
+    protected override async Task<IEnumerable<Tbl90RefExpert>> SearchItemsAsync(string text)
+    {
+        IsLoading = true;
+        try
+        {
+            return await _data.SearchRefExpertAsync(text);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     protected override async Task<IEnumerable<Tbl90RefExpert>> LoadItemsAsync()
@@ -23,6 +36,25 @@ public class Tbl90RefExpertViewModel
 
     protected override Tbl90RefExpert CloneDomain(Tbl90RefExpert source)
         => source.Clone();
+
+    //protected override Task<bool> ExistsAsync(RefExpertEditModel edit)
+    //{
+    //    return _data.RefExpertExistsAsync(edit.RefExpertName);
+    //}
+    protected override Task<bool> ExistsAsync(RefExpertEditModel edit)
+    {
+        var domain = new Tbl90RefExpert
+        {
+            RefExpertName = edit.RefExpertName,
+            Valid = edit.Valid,
+            ValidYear = edit.ValidYear,
+            Info = edit.Info,
+            Notes = edit.Notes,
+            Memo = edit.Memo
+        };
+
+        return _data.RefExpertExistsAsync(domain);
+    }
 
     protected override RefExpertEditModel ConvertDomainToEdit(Tbl90RefExpert d)
         => new RefExpertEditModel

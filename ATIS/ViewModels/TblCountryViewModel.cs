@@ -407,7 +407,7 @@ public partial class TblCountryViewModel : ObservableObject, INotifyDataErrorInf
 
         // 1️⃣0️⃣ Meldung
         //   await ShowMessageAsync("Gespeichert", "Der Datensatz wurde erfolgreich gespeichert.");
-        await _dialogService.ShowMessageAsync("SaveSuccessTitle", "SaveSuccessMessage");
+      //  await _dialogService.ShowMessageAsync("SaveSuccessTitle", "SaveSuccessMessage");
 
     }
 

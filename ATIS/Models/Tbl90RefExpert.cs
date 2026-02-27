@@ -5,50 +5,102 @@ using ATIS.Interfaces;
 
 namespace ATIS.Models;
 
-public class Tbl90RefExpert : ICopyable<Tbl90RefExpert>
+public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
 {
-    // ------------------ Primary Key ------------------
     [Key]
     public int RefExpertId { get; set; }
 
-    // ------------------ Expert Name ------------------
-    [StringLength(300)]
-    public string? RefExpertName { get; set; }
+    private int _countId;
+    public int CountId
+    {
+        get => _countId;
+        set => SetProperty(ref _countId, value);
+    }
 
-    // ------------------ Counter ------------------
-    public int CountId { get; set; }
+    private bool? _valid;
+    public bool? Valid
+    {
+        get => _valid;
+        set => SetProperty(ref _valid, value);
+    }
 
-    // ------------------ Valid Flag ------------------
-    public bool? Valid { get; set; }
-
-    // ------------------ Valid Year ------------------
     [StringLength(4)]
-    public string? ValidYear { get; set; }
+    private string? _validYear;
+    public string? ValidYear
+    {
+        get => _validYear;
+        set => SetProperty(ref _validYear, value);
+    }
 
-    // ------------------ Notes ------------------
+    [StringLength(300)]
+    private string? _refExpertName;
+    public string? RefExpertName
+    {
+        get => _refExpertName;
+        set => SetProperty(ref _refExpertName, value);
+    }
+
     [StringLength(1000)]
-    public string? Notes { get; set; }
+    private string? _notes;
+    public string? Notes
+    {
+        get => _notes;
+        set => SetProperty(ref _notes, value);
+    }
 
-    // ------------------ Info ------------------
     [StringLength(100)]
-    public string? Info { get; set; }
+    private string? _info;
+    public string? Info
+    {
+        get => _info;
+        set => SetProperty(ref _info, value);
+    }
 
-    // ------------------ Writer ------------------
     [StringLength(50)]
-    public string? Writer { get; set; }
+    private string? _writer;
+    public string? Writer
+    {
+        get => _writer;
+        set => SetProperty(ref _writer, value);
+    }
 
-    public DateTime? WriterDate { get; set; }
+    private DateTime? _writerDate;
+    public DateTime? WriterDate
+    {
+        get => _writerDate;
+        set => SetProperty(ref _writerDate, value);
+    }
 
-    // ------------------ Updater ------------------
     [StringLength(50)]
-    public string? Updater { get; set; }
+    private string? _updater;
+    public string? Updater
+    {
+        get => _updater;
+        set => SetProperty(ref _updater, value);
+    }
 
-    public DateTime? UpdaterDate { get; set; }
+    private DateTime? _updaterDate;
+    public DateTime? UpdaterDate
+    {
+        get => _updaterDate;
+        set => SetProperty(ref _updaterDate, value);
+    }
 
-    // ------------------ Memo ------------------
-    public string? Memo { get; set; }
+    private string? _memo;
+    public string? Memo
+    {
+        get => _memo;
+        set => SetProperty(ref _memo, value);
+    }
 
-    // ------------------ Clone ------------------
+    //[NotMapped]
+    //private bool _isAlternate;
+    //public bool IsAlternate
+    //{
+    //    get => _isAlternate;
+    //    set => SetProperty(ref _isAlternate, value);
+    //}
+
     public Tbl90RefExpert Clone()
     {
         return new Tbl90RefExpert
@@ -65,10 +117,10 @@ public class Tbl90RefExpert : ICopyable<Tbl90RefExpert>
             Updater = Updater,
             UpdaterDate = UpdaterDate,
             Memo = Memo
+            //IsAlternate = IsAlternate
         };
     }
 
-    // ------------------ CopyFrom ------------------
     public void CopyFrom(Tbl90RefExpert other)
     {
         Debug.WriteLine($"[COPYFROM] {RefExpertName} → {other.RefExpertName}");
@@ -84,9 +136,6 @@ public class Tbl90RefExpert : ICopyable<Tbl90RefExpert>
         Updater = other.Updater;
         UpdaterDate = other.UpdaterDate;
         Memo = other.Memo;
+        //IsAlternate = other.IsAlternate;
     }
-
-    // ------------------ Alternate RowColor in DataGrid ------------------
-    [NotMapped]
-    public bool IsAlternate { get; set; }
 }

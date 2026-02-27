@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ATIS.DesignSystem.Components.Base1List1DetailPageLayout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Foundations, falls nötig -->
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Brushes.xaml" />
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/ThemeBrushes.xaml" />
+                <!-- NumberBox: IMMER Brushes → Styles -->
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/NumberBox/NumberBoxBrushes.xaml" />
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/NumberBox/NumberBoxStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          RowSpacing="0">
+
+        <Grid.RowDefinitions>
+            <!--  Header + AppBar  -->
+            <RowDefinition Height="Auto" />
+            <!--  List  -->
+            <RowDefinition Height="*" />
+            <!--  Detail  -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  HEADER + APPBAR in EINER Zeile  -->
+        <Grid Grid.Row="0"
+              VerticalAlignment="Center"
+              ColumnSpacing="12">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--  HEADER LINKS  -->
+            <ContentPresenter x:Name="HeaderPresenter"
+                              Grid.Column="0"
+                              VerticalAlignment="Center" />
+
+            <!--  APPBAR RECHTS  -->
+            <ContentPresenter x:Name="AppBarPresenter"
+                              Grid.Column="1"
+                              VerticalAlignment="Center" />
+        </Grid>
+
+        <!--  LIST  -->
+        <ContentPresenter x:Name="ListPresenter"
+                          Grid.Row="1"
+                          Background="Transparent" />
+
+        <!--  DETAIL  -->
+        <ContentPresenter x:Name="DetailPresenter"
+                          Grid.Row="2"
+                          Background="Transparent" />
+
+    </Grid>
+</UserControl>
