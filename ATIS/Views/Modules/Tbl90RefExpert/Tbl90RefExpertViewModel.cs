@@ -1,10 +1,11 @@
 ﻿using ATIS.Helpers;
 using ATIS.Interfaces;
-using ATIS.Models;
-using ATIS.Views.Modules.Tbl90RefExpert;
+using ATIS.Views.Base;
+
+namespace ATIS.Views.Modules.Tbl90RefExpert;
 
 public class Tbl90RefExpertViewModel
-    : Base1List1DetailViewModel<Tbl90RefExpert, RefExpertEditModel>
+    : Base1List1DetailViewModel<Models.Tbl90RefExpert, RefExpertEditModel>
 {
     private readonly IDataService _data;
     private readonly IUserService _user;
@@ -15,7 +16,7 @@ public class Tbl90RefExpertViewModel
         _data = data;
         _user = user;
     }
-    protected override async Task<IEnumerable<Tbl90RefExpert>> SearchItemsAsync(string text)
+    protected override async Task<IEnumerable<Models.Tbl90RefExpert>> SearchItemsAsync(string? text)
     {
         IsLoading = true;
         try
@@ -27,23 +28,14 @@ public class Tbl90RefExpertViewModel
             IsLoading = false;
         }
     }
+    protected override Models.Tbl90RefExpert CreateNewDomainModel()
+        => new Models.Tbl90RefExpert();
 
-    protected override async Task<IEnumerable<Tbl90RefExpert>> LoadItemsAsync()
-        => await _data.GetAllRefExpertAsync();
-
-    protected override Tbl90RefExpert CreateNewDomainModel()
-        => new Tbl90RefExpert();
-
-    protected override Tbl90RefExpert CloneDomain(Tbl90RefExpert source)
+    protected override Models.Tbl90RefExpert CloneDomain(Models.Tbl90RefExpert source)
         => source.Clone();
-
-    //protected override Task<bool> ExistsAsync(RefExpertEditModel edit)
-    //{
-    //    return _data.RefExpertExistsAsync(edit.RefExpertName);
-    //}
     protected override Task<bool> ExistsAsync(RefExpertEditModel edit)
     {
-        var domain = new Tbl90RefExpert
+        var domain = new Models.Tbl90RefExpert
         {
             RefExpertName = edit.RefExpertName,
             Valid = edit.Valid,
@@ -56,7 +48,7 @@ public class Tbl90RefExpertViewModel
         return _data.RefExpertExistsAsync(domain);
     }
 
-    protected override RefExpertEditModel ConvertDomainToEdit(Tbl90RefExpert d)
+    protected override RefExpertEditModel ConvertDomainToEdit(Models.Tbl90RefExpert d)
         => new RefExpertEditModel
         {
             RefExpertName = d.RefExpertName,
@@ -68,7 +60,7 @@ public class Tbl90RefExpertViewModel
             CountId = d.CountId
         };
 
-    protected override void ConvertEditToDomain(RefExpertEditModel e, Tbl90RefExpert d)
+    protected override void ConvertEditToDomain(RefExpertEditModel e, Models.Tbl90RefExpert d)
     {
         d.RefExpertName = e.RefExpertName;
         d.ValidYear = e.ValidYear;
@@ -79,16 +71,16 @@ public class Tbl90RefExpertViewModel
         d.CountId = e.CountId;
     }
 
-    protected override async Task<Tbl90RefExpert> SaveDomainAsync(Tbl90RefExpert domain)
+    protected override async Task<Models.Tbl90RefExpert> SaveDomainAsync(Models.Tbl90RefExpert domain)
         => await _data.UpsertRefExpertAsync(domain);
 
-    protected override async Task DeleteDomainAsync(Tbl90RefExpert domain)
+    protected override async Task DeleteDomainAsync(Models.Tbl90RefExpert domain)
         => await _data.DeleteRefExpertAsync(domain.RefExpertId);
 
-    protected override int GetId(Tbl90RefExpert model)
+    protected override int GetId(Models.Tbl90RefExpert model)
         => model.RefExpertId;
 
-    protected override void OnBeforeSave(Tbl90RefExpert domain, bool isNew)
+    protected override void OnBeforeSave(Models.Tbl90RefExpert domain, bool isNew)
     {
         if (isNew)
         {

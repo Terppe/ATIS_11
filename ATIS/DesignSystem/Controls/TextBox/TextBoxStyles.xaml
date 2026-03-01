@@ -2,7 +2,8 @@
 <!--  Licensed under the MIT License.  -->
 
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:helpers="using:ATIS.Helpers">
 
     <Style x:Key="AtisTextBox"
            TargetType="TextBox">
@@ -53,48 +54,98 @@
         </Setter>
     </Style>
 
-    <!--<Style x:Key="ValidationTextBoxStyle"
+    <!--  Kleine Felder (varchar 4 → exakt 4 Zeichen breit)  -->
+    <Style x:Key="AtisTextBoxYear"
            BasedOn="{StaticResource AtisTextBox}"
            TargetType="TextBox">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Grid>
+        <Setter Property="MinWidth" Value="50" />
+        <Setter Property="MaxWidth" Value="80" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="ValidationStates">
+    <!--  Kleine Felder (varchar 4 → exakt 4 Zeichen breit)  -->
+    <Style x:Key="AtisTextBoxSmall"
+           BasedOn="{StaticResource AtisTextBox}"
+           TargetType="TextBox">
+        <Setter Property="MinWidth" Value="60" />
+        <Setter Property="MaxWidth" Value="80" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
-                                <VisualState x:Name="Valid" />
+    <!--  Mittlere Felder (varchar 100 → dynamisch bis Pagebreite)  -->
+    <Style x:Key="AtisTextBoxMedium"
+           BasedOn="{StaticResource AtisTextBox}"
+           TargetType="TextBox">
+        <Setter Property="MinWidth" Value="200" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
 
-                                <VisualState x:Name="Invalid">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.BorderBrush" Value="Red" />
-                                        <Setter Target="BorderElement.BorderThickness" Value="2" />
-                                    </VisualState.Setters>
-                                </VisualState>
+    <!--  Große Felder (varchar 300 → groß, dynamisch)  -->
+    <Style x:Key="AtisTextBoxLarge"
+           BasedOn="{StaticResource AtisTextBox}"
+           TargetType="TextBox">
+        <Setter Property="MinWidth" Value="600" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="BorderBrush"
+                Value="{Binding Path=(helpers:ValidationHelper.HasError), RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToBrushConverter}}" />
+    </Style>
 
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+    <!--<Style x:Key="AtisTextBoxValidationStyle"
+    BasedOn="{StaticResource AtisTextBox}"
+    TargetType="TextBox">
+    --><!--<Setter Property="BorderBrush" Value="{Binding (helpers:ValidationHelper.HasError), RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToBrushConverter}}" />-->
+    <!--<Setter Property="BorderThickness"
+    Value="{Binding (helpers:ValidationHelper.HasError),
+    RelativeSource={RelativeSource Self},
+    Converter={StaticResource BoolToThicknessConverter}}" />--><!--
+    </Style>-->
 
-                        --><!--  ⭐ Das Border, das du brauchst  --><!--
-                        <Border x:Name="BorderElement"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4">
+    <!--<Style x:Key="ValidationTextBoxStyle"
+    BasedOn="{StaticResource AtisTextBox}"
+    TargetType="TextBox">
+    <Setter Property="Template">
+    <Setter.Value>
+    <ControlTemplate TargetType="TextBox">
+    <Grid>
 
-                            --><!--  ⭐ Das echte TextBox‑ContentElement  --><!--
-                            <ScrollViewer x:Name="ContentElement"
-                                          Padding="{TemplateBinding Padding}"
-                                          HorizontalScrollBarVisibility="Hidden"
-                                          IsTabStop="False"
-                                          VerticalScrollBarVisibility="Hidden" />
-                        </Border>
+    <VisualStateManager.VisualStateGroups>
+    <VisualStateGroup x:Name="ValidationStates">
 
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <VisualState x:Name="Valid" />
+
+    <VisualState x:Name="Invalid">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="Red" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    </VisualState.Setters>
+    </VisualState>
+
+    </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    -->
+    <!--  ⭐ Das Border, das du brauchst  -->
+    <!--
+    <Border x:Name="BorderElement"
+    Background="{TemplateBinding Background}"
+    BorderBrush="{TemplateBinding BorderBrush}"
+    BorderThickness="{TemplateBinding BorderThickness}"
+    CornerRadius="4">
+
+    -->
+    <!--  ⭐ Das echte TextBox‑ContentElement  -->
+    <!--
+    <ScrollViewer x:Name="ContentElement"
+    Padding="{TemplateBinding Padding}"
+    HorizontalScrollBarVisibility="Hidden"
+    IsTabStop="False"
+    VerticalScrollBarVisibility="Hidden" />
+    </Border>
+
+    </Grid>
+    </ControlTemplate>
+    </Setter.Value>
+    </Setter>
 
     </Style>-->
 

@@ -1,12 +1,27 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
-using ATIS.Views.Modules.Tbl90RefExpert;
+
+namespace ATIS.Views.Base;
 
 public abstract class Base1List1DetailViewModel<TDomain, TEdit>
-    : ObservableObject
+    : Base1List1DetailViewModelBase
     where TDomain : class, ICopyable<TDomain>, new()
-    where TEdit : class, new()
+    where TEdit : BaseEditModel, new()
 {
+    // ------------------------------------------------------------
+    #region [ EDIT ITEM ]
+    // ------------------------------------------------------------
+    private TEdit? _editItem;
+
+    public TEdit? EditItem
+    {
+        get => _editItem;
+        set => SetProperty(ref _editItem, value);
+    }
+    public override object? EditItemUntyped => EditItem;
+
+    #endregion [ EDIT ITEM ]
+
     // ------------------------------------------------------------
     #region [ STATE ]
     // ------------------------------------------------------------
@@ -22,6 +37,7 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
                 UpdateCommands();
         }
     }
+
 
     private bool _isDetailVisible;
     public bool IsDetailVisible
@@ -66,13 +82,6 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         private set => SetProperty(ref _backupItem, value);
     }
 
-    private TEdit? _editItem;
-    public TEdit? EditItem
-    {
-        get => _editItem;
-        private set => SetProperty(ref _editItem, value);
-    }
-
     private string? _searchText;
     public string? SearchText
     {
@@ -96,8 +105,23 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         set => SetProperty(ref _isLoading, value);
     }
     private TDomain? _previousSelectedItem;
+    private enum LoadMode
+    {
+        None, // Startzustand
+        Search // letzte Suche
+    }
 
-    protected readonly IDialogService DialogService;
+    private bool _shouldFocusRefExpertName;
+    public bool ShouldFocusRefExpertName
+    {
+        get => _shouldFocusRefExpertName;
+        set => SetProperty(ref _shouldFocusRefExpertName, value);
+    }
+
+    private LoadMode _currentLoadMode = LoadMode.None;
+    private string? _lastSearchText;
+
+    protected readonly IDialogService _dialogService;
 
     private readonly ObservableCollection<TDomain> _itemsInternal = new();
     public ObservableCollection<TDomain> Items => _itemsInternal;
@@ -113,10 +137,11 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
     public IRelayCommand CancelCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
     public IAsyncRelayCommand SearchCommand { get; }
+    public IAsyncRelayCommand RefreshCommand { get; }
 
     protected Base1List1DetailViewModel(IDialogService dialogService)
     {
-        DialogService = dialogService;
+        _dialogService = dialogService;
 
         LoadCommand = new AsyncRelayCommand(LoadAsync);
         NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(NewItem);
@@ -125,16 +150,26 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         CancelCommand = new AsyncRelayCommand(CancelEdit);
         DeleteCommand = new AsyncRelayCommand(DeleteAsync, () => SelectedItem != null);
         SearchCommand = new AsyncRelayCommand(SearchAsync);
+        RefreshCommand = new AsyncRelayCommand(RefreshAsync);
     }
     #endregion [ COMMANDS ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
     #region [ ABSTRACTS ]
     // ------------------------------------------------------------
-    //protected virtual Task<IEnumerable<TDomain>> LoadItemsAsync()
-    //    => Task.FromResult(Enumerable.Empty<TDomain>());
-    //  Enumerable.Empty<Tbl90RefExpert>();
-    protected abstract Task<IEnumerable<TDomain>> LoadItemsAsync();
+    protected abstract Task<IEnumerable<TDomain>> SearchItemsAsync(string? searchText);
+
+    protected virtual async Task<IEnumerable<TDomain>> LoadItemsAsync()
+    {
+        return _currentLoadMode switch
+        {
+            LoadMode.Search when !string.IsNullOrWhiteSpace(_lastSearchText)
+                => await SearchItemsAsync(_lastSearchText),
+
+            _ => Enumerable.Empty<TDomain>()
+        };
+    }
+
     protected abstract TDomain CreateNewDomainModel();
     protected abstract TDomain CloneDomain(TDomain source);
     protected abstract TEdit ConvertDomainToEdit(TDomain domain);
@@ -143,60 +178,121 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
     protected abstract Task DeleteDomainAsync(TDomain domain);
     protected abstract int GetId(TDomain model);
     protected abstract void OnBeforeSave(TDomain domain, bool isNew);
-    protected abstract Task<IEnumerable<TDomain>> SearchItemsAsync(string? searchText);
     #endregion [ ABSTRACTS ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
-    #region [ LOAD ]
+    #region [ LOAD + SETITEMS ]
     // ------------------------------------------------------------
     private async Task LoadAsync()
     {
-        var result = await LoadItemsAsync();
-        SetItems(result);
+        // Startzustand: keine Daten
+        SetItems(Enumerable.Empty<TDomain>());
+        DataSetCount = 0;
+
+        SelectedItem = null;
+        EditItem = null;
+
         OnPropertyChanged(nameof(Items));
     }
+
+    //private async Task LoadAsync()
+    //{
+    //    var result = await LoadItemsAsync();
+    //    SetItems(result);
+    //    DataSetCount = Items.Count;
+
+    //    OnPropertyChanged(nameof(Items));
+    //}
     protected void SetItems(IEnumerable<TDomain> items)
     {
         _itemsInternal.Clear();
         foreach (var item in items)
             _itemsInternal.Add(item);
     }
-    #endregion [ LOAD ]
+    #endregion [ LOAD + SETITEMS ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
     #region [ SEARCH ]
     // ------------------------------------------------------------
+
     private async Task SearchAsync()
     {
         if (_isSearching)
             return;
+
         _isSearching = true;
 
         try
         {
-
+            // 1) Leeres Suchfeld → Liste leeren
             if (string.IsNullOrWhiteSpace(SearchText))
             {
+                _lastSearchText = null;
+
                 SetItems(Enumerable.Empty<TDomain>());
-                SelectedItem = null;
-                OnPropertyChanged(nameof(Items));
                 DataSetCount = 0;
-                //return;
+
+                SelectedItem = null;
+                EditItem = null;
+
+                OnPropertyChanged(nameof(Items));
+                return;
             }
 
+            // 2) Suchtext merken (für Refresh)
+            _lastSearchText = SearchText;
+
+            // 3) Suche ausführen
             var result = await SearchItemsAsync(SearchText);
 
             SetItems(result);
-            OnPropertyChanged(nameof(Items));
-            DataSetCount = Items.Count();
+            DataSetCount = Items.Count;
 
+            // 4) Auswahl setzen, wenn es Ergebnisse gibt
             SelectedItem = Items.FirstOrDefault();
+            EditItem = SelectedItem != null
+                ? ConvertDomainToEdit(SelectedItem)
+                : null;
+
+            OnPropertyChanged(nameof(Items));
         }
         finally
         {
             _isSearching = false;
         }
     }
+
+    //private async Task SearchAsync()
+    //{
+    //    if (_isSearching)
+    //        return;
+    //    _isSearching = true;
+
+    //    try
+    //    {
+
+    //        if (string.IsNullOrWhiteSpace(SearchText))
+    //        {
+    //            SetItems(Enumerable.Empty<TDomain>());
+    //            SelectedItem = null;
+    //            OnPropertyChanged(nameof(Items));
+    //            DataSetCount = 0;
+    //            //return;
+    //        }
+
+    //        var result = await SearchItemsAsync(SearchText);
+
+    //        SetItems(result);
+    //        OnPropertyChanged(nameof(Items));
+    //        DataSetCount = Items.Count();
+
+    //        SelectedItem = Items.FirstOrDefault();
+    //    }
+    //    finally
+    //    {
+    //        _isSearching = false;
+    //    }
+    //}
     #endregion [ SEARCH ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
@@ -221,20 +317,11 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         // 4) Edit-Modus aktivieren
         IsNew = true;
         IsInEdit = true;
+
+        // 5) Fokus setzen
+        ShouldFocusRefExpertName = true;
+        ShouldFocusRefExpertName = false; // Reset
     }
-    //private void NewItem()
-    //{
-    //    var domain = CreateNewDomainModel();
-    //    BackupItem = CloneDomain(domain);
-    //    EditItem = ConvertDomainToEdit(BackupItem);
-    //    SelectedItem = domain;
-    //    DataSetCount = 0;
-
-    //    DataSetCount = Items.Count;
-
-    //    IsNew = true;
-    //    IsInEdit = true;
-    //}
     #endregion [ NEW ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
@@ -250,6 +337,10 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
 
         IsNew = false;
         IsInEdit = true;
+
+        // 5) Fokus setzen
+        ShouldFocusRefExpertName = true;
+        ShouldFocusRefExpertName = false; // Reset
     }
     #endregion [ EDIT ]
     // ------------------------------------------------------------
@@ -258,7 +349,7 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
     // ------------------------------------------------------------
     protected virtual async Task CancelEdit()
     {
-        var confirm = await DialogService.ShowOkCancelAsync("Cancel_Title", "Cancel_Message");
+        var confirm = await _dialogService.ShowOkCancelAsync("Cancel_Title", "Cancel_Message");
         if (!confirm)
             return;
 
@@ -324,6 +415,7 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
     //}
     #endregion [ CANCEL ]
     // ------------------------------------------------------------
+    // ------------------------------------------------------------
     #region [ SAVE + VALIDATE + EXISTS ]
     // ------------------------------------------------------------
     protected async Task SaveAsync()
@@ -332,7 +424,7 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
             return;
 
         // 1) Vor dem Speichern: Ja/Nein
-        var confirm = await DialogService.ShowYesNoAsync("Save_Title", "Save_Question");
+        var confirm = await _dialogService.ShowYesNoAsync("Save_Title", "Save_Question");
         if (!confirm)
             return;
 
@@ -342,7 +434,7 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
 
         if (await ExistsAsync(EditItem))
         {
-            await DialogService.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            await _dialogService.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
             return;
         }
 
@@ -354,31 +446,16 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         var saved = await SaveDomainAsync(SelectedItem);
 
         // 5) Nach dem Speichern: OK
-        await DialogService.ShowInfoAsync("Save_Success_Title", "Save_Success_Message");
+        await _dialogService.ShowInfoAsync("Save_Success_Title", "Save_Success_Message");
 
         // 6) Reload + Auswahl
+        _currentLoadMode = LoadMode.Search;
         await ReloadAndSelectAsync(saved);
 
         IsInEdit = false;
         IsNew = false;
     }
 
-
-    //private async Task SaveAsync()
-    //{
-    //    if (SelectedItem == null || EditItem == null)
-    //        return;
-
-    //    ConvertEditToDomain(EditItem, SelectedItem);
-
-    //    OnBeforeSave(SelectedItem, IsNew);
-
-    //    var saved = await SaveDomainAsync(SelectedItem);
-
-    //    await ReloadAndSelectAsync(saved);
-
-    //    IsInEdit = false;
-    //}
     protected virtual Task<bool> ValidateBeforeSaveAsync()
     {
         // Default: keine Validierung
@@ -401,7 +478,7 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
             return;
 
         // 1. Bestätigung
-        var confirm = await DialogService.ShowYesNoAsync("Delete_Title", "Delete_Message");
+        var confirm = await _dialogService.ShowYesNoAsync("Delete_Title", "Delete_Message");
         if (!confirm)
             return;
 
@@ -409,21 +486,13 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         await DeleteDomainAsync(SelectedItem);
 
         // 3. Erfolgsmeldung
-        await DialogService.ShowInfoAsync("Delete_Success_Title", "Delete_Success_Message");
+        await _dialogService.ShowInfoAsync("Delete_Success_Title", "Delete_Success_Message");
 
         // 4. Reload
+        _currentLoadMode = LoadMode.Search;
         await ReloadAndSelectAsync(null);
     }
 
-    //private async Task DeleteAsync()
-    //{
-    //    if (SelectedItem == null)
-    //        return;
-
-    //    await DeleteDomainAsync(SelectedItem);
-
-    //    await ReloadAndSelectAsync(null);
-    //}
     #endregion [ DELETE (A1) ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
@@ -447,6 +516,43 @@ public abstract class Base1List1DetailViewModel<TDomain, TEdit>
         }
     }
     #endregion [ RELOAD +  RE-SELECT ]
+    // ------------------------------------------------------------
+    // ------------------------------------------------------------
+    #region [ REFRESH ]
+    // ------------------------------------------------------------
+    private async Task RefreshAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_lastSearchText))
+            return;
+
+        // 1. vorherigen Datensatz merken
+        _previousSelectedItem = SelectedItem;
+
+        // 2. Suche erneut ausführen
+        var result = await SearchItemsAsync(_lastSearchText);
+
+        SetItems(result);
+        DataSetCount = Items.Count();
+
+        // 3. vorherigen Datensatz wieder auswählen
+        if (_previousSelectedItem != null)
+        {
+            var match = Items.FirstOrDefault(x => GetId(x) == GetId(_previousSelectedItem));
+            SelectedItem = match ?? Items.FirstOrDefault();
+        }
+        else
+        {
+            SelectedItem = Items.FirstOrDefault();
+        }
+
+        // 4. Detail aktualisieren
+        EditItem = SelectedItem != null
+            ? ConvertDomainToEdit(SelectedItem)
+            : null;
+
+        OnPropertyChanged(nameof(Items));
+    }
+    #endregion [ REFRESH ]
     // ------------------------------------------------------------
     // ------------------------------------------------------------
     #region [ COMMAND UPDATES ]

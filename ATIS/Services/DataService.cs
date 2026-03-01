@@ -3141,7 +3141,6 @@ public partial class DataService : ObservableObject, IDataService
             return Enumerable.Empty<Tbl90RefExpert>();
 
         return await _context.Tbl90RefExperts
-            //.Where(e => e.RefExpertName.Contains(search) || e.RefExpertId.ToString() == search)
             .Where(e => e.RefExpertName.StartsWith(search) || e.RefExpertId.ToString() == search)
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();

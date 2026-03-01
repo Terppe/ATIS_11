@@ -104,5 +104,15 @@ beides erledigt
 27.02.2026 10:00 Uhr  new ändern damit Farbiger Fokus im Datadrid. farbiger fokus bei Save, delet, edit.
 Bei new wurde im Datagrid am Bottom der leere datensatz angezeigt und dann einsortiert nach save im Datagrid. ok
 DialogService Alle Meldungen (Save‑Prüfung, Existenzprüfung, Fehler, Warnungen, Bestätigungen) sollen . abgeschlossen.
+---------------------------------------------------------------
+28.02.2026 Refreshbutton fehlt, wird eingebuat. aber probleme mit LoadItemsAsync.     protected override async Task<IEnumerable<Tbl90RefExpert>> LoadItemsAsync()
+        => await _data.GetAllRefExpertAsync();
+lädt immer alle datensätze. lädt nicht mehr alle datensätze. Fehler beseitigt. Scheint soweit alles zu funktiuonieren.
+---------------------------------------------------------------
+01.03.2026 12:00 Uhr Anzeige der TextBoxen im detail gelöst. und Fokus auf RefExpertname gelöst.
+------------------------------------
+jetzt fehlt noch Validierung. angefangen fehlermeldung wird angezeigt und verschwindet nach eingabe bei RefExpertname.
+     Probleme   <Setter Property="BorderBrush"
+                Value="{Binding Path=(helpers:ValidationHelper.HasError), RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToBrushConverter}}" />
+                versuchen in ein UserControl einzubetten.
 
-Refreshbutton fehlt, wird aber später eingebaut.width von TextBox.

@@ -2193,6 +2193,9 @@
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
   </data>
+  <data name="TextBlock_Refresh.Text" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
   <data name="TextBlock_Reason.Text" xml:space="preserve">
     <value>Ursache</value>
   </data>
@@ -3769,7 +3772,7 @@
     <value>Änderungen verwerfen?</value>
   </data>
   <data name="Cancel_Message" xml:space="preserve">
-    <value>Änderungen verwerfen?</value>
+    <value>Möchten Sie die Änderungen wirklich verwerfen?</value>
   </data>
   <data name="Button_Edit" xml:space="preserve">
     <value>Bearbeiten</value>

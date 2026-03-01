@@ -11,10 +11,12 @@ namespace ATIS.Views.Main;
 public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAware
 {
     private readonly IDataService _dataService;
+    protected readonly IDialogService _dialogService;
 
-    public MainViewModel(IDataService dataService)
+    public MainViewModel(IDataService dataService, IDialogService dialogService)
     {
         _dataService = dataService;
+        _dialogService = dialogService;
     }
 
     private bool _isLoading;
@@ -125,10 +127,13 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
             if (!dbExists)
             {
                 // MessageBox.Show(CultRes.StringsRes.NoConnectServer + " " + db, $"CultRes.StringsRes.NoConnectServer: {db}");
+              //  _dialogService.ShowYesNoAsync("Delete_Title", "Delete_Message");
+
                 if (db != null)
                 {
                     _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
                 }
+             //   _dialogService.ShowYesNoAsync("Delete_Title", "Delete_Message");
 
                 //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
                 //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);

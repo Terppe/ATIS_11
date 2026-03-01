@@ -24,6 +24,8 @@
     <converters:ErrorListToStringConverter x:Key="ErrorListToStringConverter" />
     <converters:BoolToBrushConverter x:Key="BoolToBrushConverter" />
     <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+    <converters:PageWidthFractionConverter x:Key="PageWidthFractionConverter" />
+    <converters:FractionConverter x:Key="FractionConverter" />
 
 </ResourceDictionary>
 

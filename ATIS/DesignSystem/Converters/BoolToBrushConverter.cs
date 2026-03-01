@@ -7,7 +7,7 @@ namespace ATIS.DesignSystem.Converters;
 public class BoolToBrushConverter : IValueConverter
 {
     public Brush TrueBrush { get; set; } = new SolidColorBrush(Colors.Red);
-    public Brush FalseBrush { get; set; } = new SolidColorBrush(Colors.Gray);
+    public Brush FalseBrush { get; set; } = new SolidColorBrush(Colors.Transparent);
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
