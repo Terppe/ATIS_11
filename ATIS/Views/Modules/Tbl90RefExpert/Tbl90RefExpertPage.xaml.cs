@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel;
+using System.Diagnostics;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Input;
 
@@ -13,9 +15,29 @@ public sealed partial class Tbl90RefExpertPage : Page
         InitializeComponent();
         ViewModel = App.GetService<Tbl90RefExpertViewModel>();
         DataContext = ViewModel;
+
+        //Fokus auf Search
         Loaded += (_, _) => { SearchBox.Focus(FocusState.Programmatic); };
+
+        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
     }
 
+    private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModel.ShouldFocusFirstField)
+            && ViewModel.ShouldFocusFirstField)
+        {
+            FocusRefExpertName();
+        }
+    }
+
+    public void FocusRefExpertName()
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            RefExpertName.Focus(FocusState.Programmatic);
+        });
+    }
 
     private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
@@ -30,4 +52,5 @@ public sealed partial class Tbl90RefExpertPage : Page
             ViewModel.SearchCommand.Execute(null);
         }
     }
+
 }

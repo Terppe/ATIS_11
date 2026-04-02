@@ -1,7 +1,7 @@
 ﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
 <!--  Licensed under the MIT License.  -->
 
-<!--Anwendung-->
+<!--  Anwendung  -->
 <!--<Style TargetType="NavigationViewItem"
        BasedOn="{StaticResource UniversalBorderStyle}" />-->
 
@@ -73,7 +73,8 @@
                                    Foreground="{ThemeResource TextPrimaryBrush}"
                                    Text="{TemplateBinding Content}" />
 
-                        <Rectangle Grid.Column="1" x:Name="SelectionIndicator"
+                        <Rectangle x:Name="SelectionIndicator"
+                                   Grid.Column="1"
                                    Width="3"
                                    HorizontalAlignment="Left"
                                    Fill="{ThemeResource BrandAccentBrush}"

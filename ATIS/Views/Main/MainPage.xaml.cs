@@ -6,6 +6,9 @@ using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
 using ATIS.Views.Main.Disease;
+using ATIS.Views.Modules.Tbl90RefAuthor;
+using ATIS.Views.Modules.Tbl90RefExpert;
+using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
@@ -14,7 +17,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
-using ATIS.Views.Modules.Tbl90RefExpert;
+using ATIS.Views.Modules.Tbl63Infratribus;
 using WinRT.Interop;
 using WinUI3Localizer;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
@@ -419,7 +422,7 @@ public sealed partial class MainPage : Page
         //-------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavInfratribus.Content)
         {
-            NavFrame.Navigate(typeof(Tbl63InfratribusListPage));
+            NavFrame.Navigate(typeof(Tbl63InfratribusPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSubtribus.Content)
@@ -567,7 +570,7 @@ public sealed partial class MainPage : Page
         //------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavRefAuthors.Content)
         {
-            NavFrame.Navigate(typeof(Tbl90RefAuthorListPage));
+            NavFrame.Navigate(typeof(Tbl90RefAuthorPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavRefExperts.Content)
@@ -577,7 +580,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavRefSources.Content)
         {
-            NavFrame.Navigate(typeof(Tbl90RefSourceListPage));
+            NavFrame.Navigate(typeof(Tbl90RefSourcePage));
         }
 
         //-----------------------------------------------

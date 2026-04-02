@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusRowControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:ATIS.Models">
+
+    <Grid x:Name="RootGrid"
+          Background="Transparent"
+          Height="32"
+          Padding="6,0"
+          ColumnDefinitions="80,200,120,120,120,120,120,200">
+
+        <TextBlock Grid.Column="0" Text="{Binding SubtribusId}"  VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Text="{Binding SubtribusName}" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="2" Text="{Binding TribusId}"      VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="3" Text="{Binding Valid}"         VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="4" Text="{Binding Author}"        VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="5" Text="{Binding AuthorYear}"    VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="6" Text="{Binding Synonym}"       VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="7" Text="{Binding Info}"          VerticalAlignment="Center"/>
+
+    </Grid>
+</UserControl>

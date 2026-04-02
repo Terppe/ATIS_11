@@ -1398,13 +1398,13 @@
                                       VerticalScrollBarVisibility="Auto"
                                       VerticalScrollMode="Auto">
                             <RelativePanel Margin="4,0,0,0">
-                                <TextBox x:Name="SubtribusId"
+                                <!--<TextBox x:Name="SubtribusId"
                                          MinWidth="110"
                                          Margin="{StaticResource XSmallRightMargin}"
                                          loca:Uids.Uid="TextBox_SubtribusId"
                                          IsReadOnly="True"
                                          RelativePanel.AlignLeftWithPanel="True"
-                                         Text="{x:Bind ViewModel.SubtribusSelected.SubtribusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         Text="{x:Bind ViewModel.SubtribusSelected.SubtribusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                 <TextBox x:Name="SubtribusName"
                                          MinWidth="150"
                                          Margin="{StaticResource XSmallRightMargin}"

@@ -44,14 +44,14 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
         Tbl60SubtribussesAllList ??= [];
         Tbl60SubtribussesAllList = [.. _dataService.GetSubtribusAsync()];
         Tbl63InfratribussesAllList ??= [];
-        Tbl63InfratribussesAllList = [.. _dataService.GetInfratribusAsync()];
+        Tbl63InfratribussesAllList = [.. _dataService.GetInfratribusAsyncAlt()];
 
         Tbl90ExpertsAllList ??= [];
         Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
-        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
         Tbl90AuthorsAllList ??= [];
-        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
     }
     public Tbl63InfratribusViewModel()
     {
@@ -230,7 +230,7 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90SourcesAllList ??= [];
-            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, InfratribusId = InfratribusSelected.InfratribusId });
@@ -244,7 +244,7 @@ public partial class Tbl63InfratribusViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90AuthorsAllList ??= [];
-            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, InfratribusId = InfratribusSelected.InfratribusId });

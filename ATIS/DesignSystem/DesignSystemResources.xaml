@@ -3,14 +3,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-
-        <!--  7) Generic (immer zuletzt) // Überflüssig ?  -->
-        <ResourceDictionary Source="ms-appx:///DesignSystem/Themes/Generic.xaml" />
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Themes/Generic.xaml" />-->
 
         <!--  1) Converters – immer ganz oben  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Converters/Converters.xaml" />
 
-        <!--  2) Foundations  -->
         <!--  2) Foundations (korrekte Reihenfolge!)  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Colors.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Foundations/Brushes.xaml" />
@@ -68,6 +65,7 @@
 
         <!--  6) Icons  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Icons/AtisIcons.xaml" />
+
 
 
     </ResourceDictionary.MergedDictionaries>

@@ -11,8 +11,7 @@
                PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
                SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
                SecondaryButtonStyle="{StaticResource AtisButtonPrimary}"
-               mc:Ignorable="d">
-</ContentDialog>
+               mc:Ignorable="d" />
 
 <!--  Content="You have unsaved changes that will be lost. Would you like to save your changes?"  -->
 

@@ -1,0 +1,199 @@
+﻿<UserControl x:Class="ATIS.Views.Modules.Tbl93Comment.Tbl93CommentEditControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:WinUI3Localizer" x:Name="EditRoot">
+
+    <Border Padding="12"
+            Background="WhiteSmoke"
+            CornerRadius="6"
+            BorderBrush="#DDDDDD"
+            BorderThickness="1">
+
+        <StackPanel Spacing="16">
+
+            <!-- Titel --><!--
+            <TextBlock loc:Uids.Uid="TextBlock_Comment"
+            Style="{StaticResource AtisSectionTitleTextStyle}" />-->
+            <!--  HEADER-ZEILE  -->
+            <Grid Margin="0,0,0,8"
+                  ColumnDefinitions="*,Auto">
+
+                <!--  Titel links  -->
+                <TextBlock Grid.Column="0"
+                           loc:Uids.Uid="TextBlock_Comment"
+                           Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                <!--  Buttons rechts  -->
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
+
+                    <Button Command="{Binding CloseCommentCommand}" IsEnabled="True"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE72B;" />
+                            <TextBlock Text="Back" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding NewCommentCommand}" IsEnabled="True"
+                            Style="{StaticResource AtisPrimaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE710;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding SaveCommentCommand}" IsEnabled="True"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74E;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Save" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding DeleteCommentCommand}" IsEnabled="True"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74D;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Delete" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+
+            </Grid>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="8">
+
+                <!--  ID (read-only)  -->
+                <TextBox Width="120"
+                         IsReadOnly="True"
+                         loc:Uids.Uid="TextBox_CommentId"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding SelectedComment.CommentId, Mode=OneWay}" />
+
+                <CheckBox loc:Uids.Uid="CheckBox_Valid"
+                          Style="{StaticResource AtisCheckBox}"
+                          IsChecked="{Binding SelectedComment.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBox Width="80"
+                         loc:Uids.Uid="TextBox_ValidYear"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding SelectedComment.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!-- Info -->
+            <TextBox loc:Uids.Uid="TextBox_Info"
+                     Style="{StaticResource AtisTextBox}"
+                     TextWrapping="Wrap"
+                     Text="{Binding SelectedComment.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <!-- Memo -->
+            <TextBox Height="100"
+                     AcceptsReturn="True"
+                     loc:Uids.Uid="TextBox_Memo"
+                     Style="{StaticResource AtisTextBox}"
+                     TextWrapping="Wrap"
+                     Text="{Binding SelectedComment.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <!-- BUTTONS (neu) -->
+            <!--<StackPanel Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Spacing="8">
+
+            <Button Command="{Binding NewCommentCommand}"
+            Style="{StaticResource AtisPrimaryButton}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+            <FontIcon Glyph="&#xE710;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Add" />
+            </StackPanel>
+            </Button>
+
+            <Button Command="{Binding SaveCommentCommand}"
+            Style="{StaticResource AtisSecondaryButton}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+            <FontIcon Glyph="&#xE74E;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Save" />
+            </StackPanel>
+            </Button>
+
+            <Button Command="{Binding DeleteCommentCommand}"
+            Style="{StaticResource AtisSecondaryButton}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+            <FontIcon Glyph="&#xE74D;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Delete" />
+            </StackPanel>
+            </Button>
+
+            </StackPanel>-->
+
+        </StackPanel>
+    </Border>
+
+</UserControl>
+
+
+
+<!--<UserControl x:Class="ATIS.Views.Modules.Tbl93Comment.Tbl93CommentEditControl"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:loc="using:WinUI3Localizer">
+
+<Border Padding="12"
+Background="WhiteSmoke"
+CornerRadius="6"
+BorderBrush="#DDDDDD"
+BorderThickness="1">
+
+<StackPanel Spacing="12">
+
+--><!-- Titel (ohne Buttons, weil FK) --><!--
+<TextBlock loc:Uids.Uid="TextBlock_Comment"
+Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+--><!-- Erste Zeile --><!--
+<StackPanel Orientation="Horizontal" Spacing="8">
+
+<TextBox Width="120"
+IsReadOnly="True"
+loc:Uids.Uid="TextBox_CommentId"
+Style="{StaticResource AtisTextBox}"
+Text="{Binding SelectedComment.CommentId}" />
+
+<CheckBox loc:Uids.Uid="CheckBox_Valid"
+Style="{StaticResource AtisCheckBox}"
+IsChecked="{Binding SelectedComment.Valid}" />
+
+<TextBox Width="80"
+loc:Uids.Uid="TextBox_ValidYear"
+Style="{StaticResource AtisTextBox}"
+Text="{Binding SelectedComment.ValidYear}" />
+</StackPanel>
+
+--><!-- Info --><!--
+<TextBox loc:Uids.Uid="TextBox_Info"
+Style="{StaticResource AtisTextBox}"
+TextWrapping="Wrap"
+Text="{Binding SelectedComment.Info}" />
+
+--><!-- Memo --><!--
+<TextBox Height="100"
+AcceptsReturn="True"
+loc:Uids.Uid="TextBox_Memo"
+Style="{StaticResource AtisTextBox}"
+TextWrapping="Wrap"
+Text="{Binding SelectedComment.Memo}" />
+
+</StackPanel>
+</Border>
+
+</UserControl>-->
+
+

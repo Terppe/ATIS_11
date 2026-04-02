@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusPreviewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:WinUI3Localizer">
+
+    <StackPanel Padding="12"
+                Spacing="8">
+
+        <!--  TITEL  -->
+        <TextBlock loc:Uids.Uid="TextBlock_InfratribusName"
+                   FontSize="20"
+                   FontWeight="SemiBold"
+                   Foreground="Black"
+                   Text="{x:Bind Item.InfratribusName, Mode=OneWay}" />
+
+        <!--  ID  -->
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+            <TextBlock FontWeight="SemiBold"
+                       Foreground="Gray"
+                       Text="ID:" />
+            <TextBlock loc:Uids.Uid="TextBlock_InfratribusId"
+                       Foreground="Black"
+                       Text="{x:Bind Item.InfratribusId, Mode=OneWay}" />
+
+            <!--  SUBTRIBUS später evtl Combobox oder SubtribusName  -->
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Subtribus:" />-->
+            <TextBlock loc:Uids.Uid="TextBlock_SubtribusId"
+                       Foreground="Black"
+                       Text="{x:Bind Item.SubtribusId, Mode=OneWay}" />
+
+            <!--  Valid + ValidYear  -->
+            <CheckBox loc:Uids.Uid="CheckBox_Valid" Style="{StaticResource AtisCheckBox}"
+                      IsChecked="{Binding Item.Valid, Mode=OneWay}" />
+            <TextBlock loc:Uids.Uid="TextBlock_Valid_Year"
+                       Foreground="Black"
+                       Text="{x:Bind Item.ValidYear, Mode=OneWay}" />
+
+
+            <!--  VALID  --><!--
+            <StackPanel Orientation="Horizontal"
+            Spacing="8">
+            <TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Valid:" />
+            <TextBlock Foreground="Black"
+            Text="{x:Bind Item.Valid, Mode=OneWay}" />
+            </StackPanel>-->
+
+            <!--  VALIDYEAR  -->
+            <!--<StackPanel Orientation="Horizontal"
+            Spacing="8">
+            <TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Valid Year:" />
+            <TextBlock Foreground="Black"
+            Text="{x:Bind Item.ValidYear, Mode=OneWay}" />-->
+        </StackPanel>
+
+        <!--  AUTHOR  -->
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Author:" />-->
+            <TextBlock Foreground="Black"   loc:Uids.Uid="TextBlock_Author"
+                       Text="{x:Bind Item.Author, Mode=OneWay}" />
+
+            <!--  AUTHORYEAR  -->
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Author Year:" />-->
+            <TextBlock Foreground="Black"  loc:Uids.Uid="TextBlock_Author_Year"
+                       Text="{x:Bind Item.AuthorYear, Mode=OneWay}" />
+        </StackPanel>
+
+        <!--  INFO  -->
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Info:" />-->
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_Info"
+                       Text="{x:Bind Item.Info, Mode=OneWay}" />
+        </StackPanel>
+
+        <!--  Synonym  -->
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Info:" />-->
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_Synonym"
+                       Text="{x:Bind Item.Synonym, Mode=OneWay}" />
+        </StackPanel>
+
+        <!--  Language  -->
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Info:" />-->
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_EnglishName"
+                       Text="{x:Bind Item.EngName, Mode=OneWay}" />
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_GermanName"
+                       Text="{x:Bind Item.GerName, Mode=OneWay}" />
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_FrenchName"
+                       Text="{x:Bind Item.FraName, Mode=OneWay}" />
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_SpanishName"
+                       Text="{x:Bind Item.PorName, Mode=OneWay}" />
+        </StackPanel>
+
+        <!--  Memo  -->
+        <StackPanel Orientation="Horizontal"
+                    Spacing="8">
+            <!--<TextBlock FontWeight="SemiBold"
+            Foreground="Gray"
+            Text="Info:" />-->
+            <TextBlock Foreground="Black" loc:Uids.Uid="TextBlock_Memo"
+                       Text="{x:Bind Item.Memo, Mode=OneWay}" />
+        </StackPanel>
+
+    </StackPanel>
+</UserControl>

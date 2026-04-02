@@ -2,28 +2,23 @@
 <!--  Licensed under the MIT License.  -->
 
 
-<!--Anwendung-->
+<!--  Anwendung  -->
 <!--<Style TargetType="TabViewItem"
 BasedOn="{StaticResource UniversalBorderStyle}" />-->
 
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ============================= -->
-    <!-- TabViewItem Style             -->
-    <!-- ============================= -->
+    <!--  =============================  -->
+    <!--  TabViewItem Style  -->
+    <!--  =============================  -->
     <Style TargetType="TabViewItem">
 
-        <Setter Property="Padding"
-                Value="16,8" />
-        <Setter Property="Margin"
-                Value="4,0" />
-        <Setter Property="CornerRadius"
-                Value="8" />
-        <Setter Property="Background"
-                Value="Transparent" />
-        <Setter Property="Foreground"
-                Value="{ThemeResource TextPrimaryBrush}" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Margin" Value="4,0" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -31,36 +26,16 @@ BasedOn="{StaticResource UniversalBorderStyle}" />-->
                 <ControlTemplate TargetType="TabViewItem">
 
                     <Grid x:Name="RootGrid"
+                          Height="40"
                           Background="{TemplateBinding Background}"
-                          CornerRadius="{TemplateBinding CornerRadius}"
-                          Height="40">
+                          CornerRadius="{TemplateBinding CornerRadius}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="32" />
                         </Grid.ColumnDefinitions>
 
-                        <!-- Header -->
-                        <ContentPresenter x:Name="HeaderPresenter"
-                                          Grid.Column="0"
-                                          VerticalAlignment="Center"
-                                          Margin="8,0"
-                                          Content="{TemplateBinding Header}" />
-
-                        <!-- Close Button -->
-                        <Button x:Name="CloseButton"
-                                Grid.Column="1"
-                                Width="24"
-                                Height="24"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Visibility="Collapsed"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                            <FontIcon Glyph="&#xE8BB;" />
-                        </Button>
-
-                        <!-- Visual States -->
+                        <!--  Visual States  -->
                         <VisualStateManager.VisualStateGroups>
 
                             <VisualStateGroup x:Name="CommonStates">
@@ -69,34 +44,48 @@ BasedOn="{StaticResource UniversalBorderStyle}" />-->
 
                                 <VisualState x:Name="PointerOver">
                                     <VisualState.Setters>
-                                        <Setter Target="RootGrid.Background"
-                                                Value="{ThemeResource ControlHoverBrush}" />
-                                        <Setter Target="CloseButton.Visibility"
-                                                Value="Visible" />
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlHoverBrush}" />
+                                        <Setter Target="CloseButton.Visibility" Value="Visible" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                                 <VisualState x:Name="Selected">
                                     <VisualState.Setters>
-                                        <Setter Target="RootGrid.Background"
-                                                Value="{ThemeResource ControlPressedBrush}" />
-                                        <Setter Target="CloseButton.Visibility"
-                                                Value="Visible" />
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlPressedBrush}" />
+                                        <Setter Target="CloseButton.Visibility" Value="Visible" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                                 <VisualState x:Name="Disabled">
                                     <VisualState.Setters>
-                                        <Setter Target="RootGrid.Background"
-                                                Value="{ThemeResource ControlDisabledBrush}" />
-                                        <Setter Target="HeaderPresenter.Foreground"
-                                                Value="{ThemeResource TextSecondaryBrush}" />
+                                        <Setter Target="RootGrid.Background" Value="{ThemeResource ControlDisabledBrush}" />
+                                        <Setter Target="HeaderPresenter.Foreground" Value="{ThemeResource TextSecondaryBrush}" />
                                     </VisualState.Setters>
                                 </VisualState>
 
                             </VisualStateGroup>
 
                         </VisualStateManager.VisualStateGroups>
+
+                        <!--  Header  -->
+                        <ContentPresenter x:Name="HeaderPresenter"
+                                          Grid.Column="0"
+                                          Margin="8,0"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Header}" />
+
+                        <!--  Close Button  -->
+                        <Button x:Name="CloseButton"
+                                Grid.Column="1"
+                                Width="24"
+                                Height="24"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Visibility="Collapsed">
+                            <FontIcon Glyph="&#xE8BB;" />
+                        </Button>
 
                     </Grid>
 
@@ -108,8 +97,8 @@ BasedOn="{StaticResource UniversalBorderStyle}" />-->
     </Style>
 
 
-    <!-- ============================= -->
-    <!-- TabView Style                 -->
-    <!-- ============================= -->
+    <!--  =============================  -->
+    <!--  TabView Style  -->
+    <!--  =============================  -->
 
 </ResourceDictionary>

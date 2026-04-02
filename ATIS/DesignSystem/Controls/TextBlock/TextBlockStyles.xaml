@@ -74,7 +74,7 @@
     </Style>
 
     <!--  =========================================================  -->
-    <!--  CAPTION / SMALL TEXT Felder im Detail -->
+    <!--  CAPTION / SMALL TEXT Felder im Detail  -->
     <!--  =========================================================  -->
     <Style x:Key="AtisFormLabelTextStyle"
            TargetType="TextBlock">

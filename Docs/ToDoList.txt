@@ -111,8 +111,191 @@ lädt immer alle datensätze. lädt nicht mehr alle datensätze. Fehler beseitig
 ---------------------------------------------------------------
 01.03.2026 12:00 Uhr Anzeige der TextBoxen im detail gelöst. und Fokus auf RefExpertname gelöst.
 ------------------------------------
-jetzt fehlt noch Validierung. angefangen fehlermeldung wird angezeigt und verschwindet nach eingabe bei RefExpertname.
+02.03.2026 jetzt fehlt noch Validierung. angefangen fehlermeldung wird angezeigt und verschwindet nach eingabe bei RefExpertname.
      Probleme   <Setter Property="BorderBrush"
                 Value="{Binding Path=(helpers:ValidationHelper.HasError), RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToBrushConverter}}" />
-                versuchen in ein UserControl einzubetten.
+                versuchen in ein UserControl einzubetten. geändert in CustomControl
+                version mit LabeledTextBoxWithError fast fertig aber noch doppelte RefExpertname anzeige sonst schon ganz gut mit Meldungen "feld darf nicht leer sein und mindestläönge 3 Zeichen, die auch verschwindne ,
+                wenn Feld gefüllt wird. Aber noch nicht fertig. mit Usercontrol sind wir genauso weit, aber es scheint etwas einfacher zu sein
+------------------------------------------------
+03.03.2026  10.30 Mit usercontrol funktion ok, roter fehlertext und roter rahmen. nur die Backgroundfarbe und die Rahmenfarbe stimmen noch nicht.
+KI sagt geht nur mit CustumControl, was wir schon einmal versucht haben und auch probleme hatten. BorderBrush="#D6D6D6" passt nicht genau
+-------------------------------------------------------------
+03.03.2026  16.30 soll mit Customcontrol noch einmal versucht werden. Bis auf einige Kleinigkeiten auch ganz gut. fast fertig . vorsichtshalber sichern. fast fertig
+-------------------------------------------------------------
+05.03.2026 9.30 alle felder mit validierung LabeledTextBoxWithError funktionieren. scheint keine größeren Fehler mehr zu haben.
+--------------------------------------------------------------
+05.03.2026 16:00 Uhr jetzt noch ein Control für die übrigen felder, die kein validierung brauchen LabeledTextBox. vereinfacht wieder ValisYear und Valid. editieren ok, aber ohne Validierung
+--------------------------------------------------------------
+07.03.2026 10:00 Uhr Jetzt Validierung einbauen. anwendung fast perfekt. RefSources Page aus Base erzeugt. Leider noch Fehler.
+--------------------------------------------------------------
+08.03.2026 10:00 Uhr RefSourcesPage aus Base und RefAuthorsPage aus base erzeugt. fast fehlerfrei. unklar noch PublicationYear, ob eingefügt werden muss.
+--------------------------------------------------------------
+08.03.2026 15:00 Start mit Base4List4Detail und Tbl63Infratribus. langsam rangetaste. Grobe Base4 installiert.
+--------------------------------------------------------------
+09.03.2026 10:00 Uhr weiter mit Tbl63Infratribus und Base4List4Detail. fast fertig.festgestellt, dass base1 und Base4 und damit RefExpert, RefSource und RefAuthor fasches verhalten bei
+eingabe in Searchbox und enter. sie rufen sofort den i. datensatz mit Fokus auf. das soll so nicht sein, a und Enter,
+Datensätze laden und manuell einem Datensatz den Fokus geben.Base1 und Base4 überarbeitet. grundgerüst fertig FK Subtribus combobox wird nicht im datagrid angezeigt, aber im Detailbereich.
+muss später noch gemacht werden
+--------------------------------------------------------------
+Jetzt Datagrid aufbohren mit den 3 Datagrids von Genus,Reference und Comment . Module von Genus, Reference und Comment erstellt.
+im Datagrid geht ein preview auf, zeigt abern noch keine Datensätze an. erstmal abgebrochen Viele Probleme mit Prewiew.test
 
+------------------------------------diese version hat Tbl63Infratribus als Testseite
++------------------------------+
+|          DataGrid            |
++------------------------------+
+|        PreviewControl        |
++------------------------------+
+|         EditControl          | 
++------------------------------+
+-------------------------------+
+nächste Version 🟧 Langfristig (ATIS‑Ideal):
+Ein eigenes Grid auf Basis von ItemsRepeater + Grid:
+
+100% stabil
+
+100% kontrollierbar
+
+100% ATIS‑Style
+
+keine Überraschungen
+
+keine Altlasten
+
+perfekte Performance
+
+perfekte Ordnung
+
+⭐ Komplette Base7List7Detail‑Page (ItemsRepeater‑Pseudo‑Grid)
+
+
+testversion. erster versuch. Lauffähig für 3 Felder von Tbl63Infratribus mit Repeater,
+Preview und Edit. searchbox liegt völlig falsche stelle, muss verlegt werden in Header
+---------------------------------------
+11.03.2026 18:00 Uhr Die searchbox ist im header funktion bei search muss noch mit SearchCommand im Viewmodel verbunden werden. Dann Base ok lauffähig
+------------------------------
+13.03.2026 10:00 Uhr Jetzt Tbl93Comment mit CRUD einfügen
++----------------------+-------------------------------------------+
+| NavigationView       | Action Bar                                |
+|                      +-------------------------------------------+
+|                      | Liste Tbl63Infratribus                    |
+|                      +-------------------------------------------+
+|                      | Preview | Edit | Comments | ...           |
+|                      +-------------------------------------------+
+|                      | [Tab-Inhalt]                              |
+|                      |                                           |
++----------------------+-------------------------------------------+
+Seite lauffähig. nur ItemsRepeater Infratribus soll genauso aussehen wie ItemsRepeaterComments. ok
+--------------------------
+14.03.2026 11:00 Uhr Infratribus mit Comments fertig. jetzt soll noch sortierung eingebaut werden.
+-------------------------------
+14.03.2026 11:00 Uhr
+ATIS
+ ├── DesignSystem
+ │     ├── Controls
+ │     │     ├── Button
+ │     │     ├── TextBox
+ │     │     ├── ComboBox
+ │     │     ├── ListHeader
+ │     │     │     ├── ListHeaderControl.xaml
+ │     │     │     └── ListHeaderControl.xaml.cs
+ │     │     ├── RowControlBase.xaml   (optional)
+ │     │     └── FormField.xaml        (optional)
+ │     │
+ │     ├── Styles
+ │     │     ├── Buttons.xaml
+ │     │     ├── TextBox.xaml
+ │     │     ├── CheckBox.xaml
+ │     │     ├── Colors.xaml
+ │     │     └── Typography.xaml
+ │
+ ├── Views
+ │     └── Modules
+ │           ├── Tbl63Infratribus
+ │           ├── Tbl93Comment
+ │           └── ...
+noch nicht lauffähig mit sortieren. Keine Datensätze werden im ItemsRepeater angezeigt
+15.03.2026 10:00 Uhr Nuget aktualisiert
+--------------------------------------------
+15.03.2026 11:00 Uhr Header im Infratribus und Comment gleich. 
+----------------------------------------
+16.03.2026 17:00 Uhr aber keine weiteren im header Button angezeigt. grundfunktion aus Version 41 kopiert. Soweit angefangen umzubauen.
+Minimalistisch mit Infratribusname wird im Grid angezeigt. 
+--------------------------------------------
+17.03.2026 13:30 Uhr Header und ItemsRepeater bit gleicher breite, aber 2x eingeben.Im Viewmodel und im Tbl63InfratribusRowControl.
+soll nur an einer stelle bei neuer Page Ändern im Viewmodel und im Rowcontrol. alles andere ist soweit ok. 
+--------------------------------------------
+17.03.2026 17:30 Uhr Optik verbessern für Infratribus Header und ItemsRepeater wie bei CommentRowcontrol ok.
+jetzt noch die optik von Comment und Infratribus wie comment
+--------------------------------------
+17.03.2026 19:30 Uhr optik von Comment und Infratribus wie comment. fast perfekt
+--------------------------------------
+18.03.2026 14:30 Uhr weiter mit Kleinigkeiten verbessern. Alle Felder bei Infratribus und Comment einfügen und dann CRUD.
+loc:Uids.Uid eingefügt aber Preview Usercontrol raus, weil es auch kein loc:Uids.Uid anzeigt und unnötig ist.
+jedes control muss noch sauber bearbeitet werden.
+--------------------------------------
+18.03.2026 17:30 Uhr Comment so wie Infratribus machen in der Konstruction. als nächstes Comment mit
+<Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="IdColumn" />
+            <ColumnDefinition x:Name="FkIdColumn" />
+            <ColumnDefinition x:Name="Extra1Column" />
+            <ColumnDefinition x:Name="Extra2Column" />
+            <ColumnDefinition x:Name="Extra3Column" />
+            <ColumnDefinition x:Name="Extra4Column" />
+            <ColumnDefinition x:Name="Extra5Column" />
+            <ColumnDefinition x:Name="Extra6Column" />
+        </Grid.ColumnDefinitions> ändern 
+-----------------------------------------------
+20.03.2026 11:30 Uhr loc:Uids.Uid eingefügt und TextBoxen in den textBlocks etwas bearbeitet. soweit noch nicht fertig. Version Funktionsfähig ohne CRUD
+---------------------------------------------
+21.03.2026 10:30 Uhr BaseBossPageLayout für Header erzeugt Datasetcount und Buttons in den Header zu bekommen. lauffähig mit InfratribusElementen.
+Jetzt fehlt noch header-Anpassung in comment
+-----------------------------------------------
+21.03.2026 14:30 Uhr Jetzt kommt noch header-Anpassung in comment. schon sehr gut. Noch Kleinigkeiten. Jetzt New, Save, Delete im Viewmodel. Fehler in den Base
+-------------------------------------------------
+23.03.2026 19:30 Uhr Add und save klappt bei Infratribus. refresh und delete noch nicht ok. danach für Comment
+-----------------------------------------------
+24.03.2026 13:30 Uhr Nuget-Paket aktualisiert
+-----------------------------------------------
+24.03.2026 14:30 Uhr SubtribusName in ItemsRepeater und Edit Infratribus eingefügt.
+public Tbl60Subtribus? Subtribus { get; set; }
+    [NotMapped]
+    public string? SubtribusName => Subtribus?.SubtribusName;
+-----------------------------------------------
+24.03.2026 17:30 Uhr  Fehler bei             private void UpdateTwoWay_13_SelectedValue()
+            {
+                if (this.initialized)
+                {
+                    if (this.dataRoot != null)
+                    {
+                        if (this.dataRoot.Item != null)
+                        {
+                            this.dataRoot.Item.SubtribusId = (global::System.Int32)this.obj13.SelectedValue;
+                        }
+                    }
+                }
+            }
+-----------------------------------------------
+25.03.2026 14:30 Uhr Fehler behoben und lauffähig.aber die Abstände zwischen header und ItemsRepeater abstand nicht gleich. angefangen crud für Comment. Add z.B. geht noch nicht
+--------------------------------------------
+25.03.2026 14:30 Uhr fehler bei Comment-Itemsrepeater zurückgesetzt aus Vorversion ohne header im VK-Comment und im Infratribus über Resources
+-------------------------------------------
+25.03.2026 16:30 Uhr FK-Comment mit Header und ItemsRepeater und Width ok. kleine Fehler noch bei aktualisieren und Refresh. jetzt noch Infratribus header und Itemsrepeater
+so vereinfachen wie bei Comment ohne Resource
+-------------------------------------------
+25.03.2026 17:30 Uhr  Infratribus header umgebaut. Funktionalität scheint ok, bloss editcontrol ist oben und Buttons von Comment bei Edit unten, falsch müssen nach oben auf der editseite
+--------------------------------------------
+31.03.2026 14:45 Uhr Version 60 reloadet. namespace ATIS.Views.Modules.Tbl63Infratribus; fehlte in ItemsRepeater erstmal abgebrochen
+-------------------------------------------------------------
+02.04.2026 15:00 Uhr ATIS_V10.6.0.2610_000 neu mit ListView.Datei
+Zweck
+BaseViewModel.cs	Grundfunktionen
+BaseListViewModel.cs	Items + SelectedItem + Reload
+Tbl60Subtribus.cs	EF‑Model
+Tbl60SubtribusViewModel.cs	Modul‑Logik
+Tbl60SubtribusRowControl.xaml	Zeilenlayout
+Tbl60SubtribusControl.xaml	ListView‑UI
+Tbl60SubtribusPage.xaml	Page‑Layout.
+Läuft mit Searchbox a Enter. Umstellen auf Dataservice und loc:Uids.Uid und evtl. BaseBossPageLayout wie bei Infratribus
+-------------------------------------------------------------

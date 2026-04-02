@@ -6,7 +6,7 @@
 
     <ResourceDictionary.ThemeDictionaries>
 
-        <!-- LIGHT -->
+        <!--  LIGHT  -->
         <ResourceDictionary x:Key="Light">
 
             <SolidColorBrush x:Key="AppBackgroundBrush"
@@ -29,7 +29,7 @@
 
         </ResourceDictionary>
 
-        <!-- DARK -->
+        <!--  DARK  -->
         <ResourceDictionary x:Key="Dark">
 
             <SolidColorBrush x:Key="AppBackgroundBrush"

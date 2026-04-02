@@ -1,49 +1,81 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using ATIS.Interfaces;
 
 namespace ATIS.Models;
 
-public class Tbl60Subtribus
+public class Tbl60Subtribus : ObservableObject, ICopyable<Tbl60Subtribus>
 {
     [Key]
+    public int SubtribusId { get; init; }
 
-    public int SubtribusId { get; set; }
-    [Required(ErrorMessageResourceName = "RequiredSubtribusName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    //  [MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    // [MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string SubtribusName { get; set; }
-    [Required]
+    [Required, StringLength(100)]
+    public string SubtribusName { get; set; } = string.Empty;
+
     public int TribusId { get; set; }
-    [Required]
     public int CountId { get; set; }
     public bool Valid { get; set; }
-    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string ValidYear { get; set; }
-    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Synonym { get; set; }
-    [StringLength(60, ErrorMessageResourceName = "StringLength_60", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Author { get; set; }
-    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string AuthorYear { get; set; }
-    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Info { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string EngName { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string GerName { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string FraName { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string PorName { get; set; }
-    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Writer { get; set; }
-    public DateTime WriterDate { get; set; }
-    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Updater { get; set; }
-    public DateTime UpdaterDate { get; set; }
-    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Memo { get; set; }
-    //     public byte[] RowVersion { get; set; }
 
+    [StringLength(4)]
+    public string? ValidYear { get; set; }
+
+    [StringLength(1000)]
+    public string? Synonym { get; set; }
+
+    [StringLength(60)]
+    public string? Author { get; set; }
+
+    [StringLength(4)]
+    public string? AuthorYear { get; set; }
+
+    [StringLength(1000)]
+    public string? Info { get; set; }
+
+    [StringLength(200)]
+    public string? EngName { get; set; }
+
+    [StringLength(200)]
+    public string? GerName { get; set; }
+
+    [StringLength(200)]
+    public string? FraName { get; set; }
+
+    [StringLength(200)]
+    public string? PorName { get; set; }
+
+    [StringLength(50)]
+    public string Writer { get; set; } = string.Empty;
+
+    public DateTime WriterDate { get; set; }
+
+    [StringLength(50)]
+    public string Updater { get; set; } = string.Empty;
+
+    public DateTime UpdaterDate { get; set; }
+
+    [StringLength(1000)]
+    public string? Memo { get; set; }
+
+    public Tbl60Subtribus Clone() => (Tbl60Subtribus)MemberwiseClone();
+
+    public void CopyFrom(Tbl60Subtribus other)
+    {
+        SubtribusName = other.SubtribusName;
+        TribusId = other.TribusId;
+        CountId = other.CountId;
+        Valid = other.Valid;
+        ValidYear = other.ValidYear;
+        Synonym = other.Synonym;
+        Author = other.Author;
+        AuthorYear = other.AuthorYear;
+        Info = other.Info;
+        EngName = other.EngName;
+        GerName = other.GerName;
+        FraName = other.FraName;
+        PorName = other.PorName;
+        Writer = other.Writer;
+        WriterDate = other.WriterDate;
+        Updater = other.Updater;
+        UpdaterDate = other.UpdaterDate;
+        Memo = other.Memo;
+    }
 }

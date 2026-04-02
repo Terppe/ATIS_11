@@ -11,7 +11,6 @@
                PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
                SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
                SecondaryButtonStyle="{StaticResource AtisButtonPrimary}"
-               mc:Ignorable="d">
-</ContentDialog>
+               mc:Ignorable="d" />
 
 <!--  Content="Would you like to delete your dataset?"  -->

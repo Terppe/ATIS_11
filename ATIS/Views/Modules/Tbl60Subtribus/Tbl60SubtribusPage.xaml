@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page x:Class="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:layout="using:ATIS.DesignSystem.Layout"
+      xmlns:loc="using:WinUI3Localizer"
+      xmlns:local="using:ATIS.Views.Modules.Tbl60Subtribus"
+      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+      x:Name="RootPage">
+
+    <Grid x:Name="RootGrid">
+
+        <layout:BaseBossPageLayout>
+
+            <!-- HEADER LEFT -->
+            <layout:BaseBossPageLayout.Header>
+                <StackPanel Margin="8,0,0,8"
+                            Orientation="Horizontal"
+                            Spacing="10">
+
+                    <TextBlock Margin="0,4,0,0"
+                               loc:Uids.Uid="TextBlock_Subtribusses"
+                               Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                    <TextBlock Margin="0,12,0,0"
+                               loc:Uids.Uid="TextBlock_DataSetCount"
+                               Style="{StaticResource AtisBodyTextStyle}" />
+
+                    <TextBlock Margin="0,12,0,0"
+                               Style="{StaticResource AtisBodyTextStyle}"
+                               Text="{Binding DataSetCount}" />
+                </StackPanel>
+            </layout:BaseBossPageLayout.Header>
+
+            <!-- APPBAR RIGHT -->
+            <layout:BaseBossPageLayout.AppBar>
+                <Grid ColumnSpacing="8">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0"
+                                Margin="8"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+
+                        <Button Margin="5,0,5,0"
+                                Command="{Binding NewCommand}"
+                                Style="{StaticResource AtisPrimaryButton}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE710;" />
+                                <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="5,0,5,0"
+                                Command="{Binding DeleteCommand}"
+                                Style="{StaticResource AtisSecondaryButton}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE74D;" />
+                                <TextBlock loc:Uids.Uid="TextBlock_Delete" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="5,0,5,0"
+                                Command="{Binding RefreshCommand}"
+                                Style="{StaticResource AtisSecondaryButton}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <FontIcon Glyph="&#xE72C;" />
+                                <TextBlock loc:Uids.Uid="TextBlock_Refresh" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+
+                    <!-- SEARCH -->
+                    <AutoSuggestBox x:Name="SearchBox"
+                                    Grid.Column="1"
+                                    Width="260"
+                                    Height="32"
+                                    Margin="12,0"
+                                    VerticalAlignment="Center"
+                                    KeyUp="SearchBox_OnKeyUp"
+                                    PlaceholderText="Suchen..."
+                                    QueryIcon="Find"
+                                    Text="{Binding SearchText, Mode=TwoWay}" />
+                </Grid>
+            </layout:BaseBossPageLayout.AppBar>
+
+            <!-- LIST CONTENT -->
+            <layout:BaseBossPageLayout.ListContent>
+                <local:Tbl60SubtribusControl DataContext="{Binding}" />
+            </layout:BaseBossPageLayout.ListContent>
+
+            <!-- DETAIL CONTENT -->
+            <layout:BaseBossPageLayout.DetailContent>
+
+                <TabView Margin="0,6,0,0">
+
+                    <!-- EDIT -->
+                    <TabViewItem Header="Edit">
+                        <ScrollViewer Padding="6">
+                            <local:Tbl60SubtribusEditControl Item="{Binding SelectedItem}" />
+                        </ScrollViewer>
+                    </TabViewItem>
+
+                    <!-- COMMENTS -->
+                    <TabViewItem Header="Comments">
+                        <ScrollViewer Padding="12">
+                            <tbl93Comment:Tbl93CommentControl
+                                DataContext="{x:Bind ViewModel.CommentViewModel}"
+                                ParentViewModel="{x:Bind ViewModel}" />
+                        </ScrollViewer>
+                    </TabViewItem>
+
+                    <!-- REFERENCES -->
+                    <TabViewItem Header="References">
+                        <ScrollViewer Padding="12">
+                            <TextBlock Text="References kommen später hier rein." />
+                        </ScrollViewer>
+                    </TabViewItem>
+
+                </TabView>
+
+            </layout:BaseBossPageLayout.DetailContent>
+
+        </layout:BaseBossPageLayout>
+
+    </Grid>
+</Page>

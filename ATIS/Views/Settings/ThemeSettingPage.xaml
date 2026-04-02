@@ -90,7 +90,6 @@ HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/color.png}"
 IsClickEnabled="True"
 LaunchUri="ms-settings:colors" />
 
-
 -->
 <!--<wuc:SettingsCard
 x:Name="ThemeSetting"

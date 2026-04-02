@@ -66,9 +66,9 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
         Tbl90ExpertsAllList ??= [];
         Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
-        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
         Tbl90AuthorsAllList ??= [];
-        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
 
         TblCountriesAllList ??= [];
         TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
@@ -251,7 +251,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90SourcesAllList ??= [];
-            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, SpeciesId = SpeciesSelected.SpeciesId });
@@ -265,7 +265,7 @@ public partial class Tbl75SpeciesViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90AuthorsAllList ??= [];
-            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, SpeciesId = SpeciesSelected.SpeciesId });

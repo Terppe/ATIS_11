@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using ATIS.Interfaces;
 
@@ -9,6 +8,14 @@ public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
 {
     [Key]
     public int RefExpertId { get; set; }
+
+    [StringLength(300)]
+    private string? _refExpertName;
+    public string? RefExpertName
+    {
+        get => _refExpertName;
+        set => SetProperty(ref _refExpertName, value);
+    }
 
     private int _countId;
     public int CountId
@@ -32,13 +39,6 @@ public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
         set => SetProperty(ref _validYear, value);
     }
 
-    [StringLength(300)]
-    private string? _refExpertName;
-    public string? RefExpertName
-    {
-        get => _refExpertName;
-        set => SetProperty(ref _refExpertName, value);
-    }
 
     [StringLength(1000)]
     private string? _notes;
@@ -93,14 +93,6 @@ public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
         set => SetProperty(ref _memo, value);
     }
 
-    //[NotMapped]
-    //private bool _isAlternate;
-    //public bool IsAlternate
-    //{
-    //    get => _isAlternate;
-    //    set => SetProperty(ref _isAlternate, value);
-    //}
-
     public Tbl90RefExpert Clone()
     {
         return new Tbl90RefExpert
@@ -117,7 +109,6 @@ public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
             Updater = Updater,
             UpdaterDate = UpdaterDate,
             Memo = Memo
-            //IsAlternate = IsAlternate
         };
     }
 
@@ -136,6 +127,5 @@ public class Tbl90RefExpert : ObservableObject, ICopyable<Tbl90RefExpert>
         Updater = other.Updater;
         UpdaterDate = other.UpdaterDate;
         Memo = other.Memo;
-        //IsAlternate = other.IsAlternate;
     }
 }

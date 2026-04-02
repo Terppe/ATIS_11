@@ -17,20 +17,22 @@ namespace ATIS.Helpers
         public static bool GetHasError(DependencyObject obj)
             => (bool)obj.GetValue(HasErrorProperty);
 
-        public static void Hook(INotifyDataErrorInfo notifier, string propertyName, TextBox textBox)
+        public static void Hook(INotifyDataErrorInfo notifier, string propertyName, Control control)
         {
             notifier.ErrorsChanged += (_, args) =>
             {
                 if (args.PropertyName == propertyName)
                 {
                     bool hasError = notifier.GetErrors(propertyName).Cast<object>().Any();
-                    SetHasError(textBox, hasError);
+                    SetHasError(control, hasError);
+
+                    VisualStateManager.GoToState(control, hasError ? "Invalid" : "Valid", true);
                 }
             };
 
-            // Initial prüfen
             bool initial = notifier.GetErrors(propertyName).Cast<object>().Any();
-            SetHasError(textBox, initial);
+            SetHasError(control, initial);
+            VisualStateManager.GoToState(control, initial ? "Invalid" : "Valid", false);
         }
     }
 }

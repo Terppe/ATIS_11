@@ -5,6 +5,14 @@ namespace ATIS.Interfaces;
 
 public interface IDataService
 {
+    public interface IAuditable
+    {
+        string Writer { get; set; }
+        DateTime WriterDate { get; set; }
+        string Updater { get; set; }
+        DateTime UpdaterDate { get; set; }
+        int CountId { get; set; }
+    }
 
     #region für provisorium
 
@@ -387,7 +395,10 @@ public interface IDataService
     #endregion Tribus
 
     #region Subtribus                  
+    // neu
+    Task<IEnumerable<Tbl60Subtribus>> GetAllSubtribusAsync();
 
+    //alt
     ObservableCollection<Tbl60Subtribus> GetSubtribusAsync();
     ObservableCollection<Tbl60Subtribus> GetSubtribusAsync(int subtribusid);
     ObservableCollection<Tbl60Subtribus> GetSubtribusAsync(string search);
@@ -397,14 +408,32 @@ public interface IDataService
 
     #endregion Subtribus
 
-    #region Infratribus                  
+    #region Infratribus
+    Task<Tbl63Infratribus?> GetInfratribusByIdAsync(int id);
 
-    ObservableCollection<Tbl63Infratribus> GetInfratribusAsync();
-    ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(int infratribusid);
-    ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(string search);
-    ObservableCollection<Tbl63Infratribus> GetInfratribusFromSubtribusIdAsync(int subtribusid);
-    Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus infratribus);
-    Task DeleteInfratribusAsync(int infratribusid);
+    Task<IEnumerable<Tbl63Infratribus>> GetAllInfratribusAsync();
+    Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusAsync(string? search);
+    Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus model);
+    Task DeleteInfratribusAsync(int id);
+    Task<bool> InfratribusExistsAsync(Tbl63Infratribus model);
+    Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId);
+    Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId);
+    Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int infratribusId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsForInfratribusAsync(int infratribusId);
+
+    Task<bool> HasGenusAsync(int infratribusId);
+    Task DeleteCommentsAsync(int infratribusId);
+    Task DeleteReferencesAsync(int infratribusId);
+    //-------------------------------------------------------------------------------
+    ObservableCollection<Tbl63Infratribus> GetInfratribusAsyncAlt();
+
+
+   // ObservableCollection<Tbl63Infratribus> GetInfratribusAsync();
+    //ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(int infratribusid);
+    //ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(string search);
+    //ObservableCollection<Tbl63Infratribus> GetInfratribusFromSubtribusIdAsync(int subtribusid);
+    //Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus infratribus);
+    //Task DeleteInfratribusAsync(int infratribusid);
 
     #endregion Infratribus
 
@@ -506,30 +535,37 @@ public interface IDataService
 
     #region RefAuthor
 
-    ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync();
-    ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync(int refauthorid);
-    Task<ObservableCollection<Tbl90RefAuthor>> GetRefAuthorAsync(string search);
-    Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor refauthor);
-    Task DeleteRefAuthorAsync(int refauthorid);
+    Task<IEnumerable<Tbl90RefAuthor>> SearchRefAuthorAsync(string? search);
+    Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor model);
+    Task DeleteRefAuthorAsync(int id);
+    Task<bool> RefAuthorExistsAsync(Tbl90RefAuthor model);
+
+    ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsyncAlt();
+
+    //ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync();
+    //ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync(int refauthorid);
+    //Task<ObservableCollection<Tbl90RefAuthor>> GetRefAuthorAsync(string search);
+    //Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor refauthor);
+    //Task DeleteRefAuthorAsync(int refauthorid);
 
     #endregion RefAuthor
 
     #region RefSource
+    Task<IEnumerable<Tbl90RefSource>> SearchRefSourceAsync(string? search);
+    Task<Tbl90RefSource> UpsertRefSourceAsync(Tbl90RefSource model);
+    Task DeleteRefSourceAsync(int id);
+    Task<bool> RefSourceExistsAsync(Tbl90RefSource model);
 
-    ObservableCollection<Tbl90RefSource> GetRefSourceAsync();
-    ObservableCollection<Tbl90RefSource> GetRefSourceAsync(int refsourceid);
-    Task<ObservableCollection<Tbl90RefSource>> GetRefSourceAsync(string search);
-    Task<Tbl90RefSource> UpsertRefSourceAsync(Tbl90RefSource refsource);
-    Task DeleteRefSourceAsync(int refsourceid);
+    ObservableCollection<Tbl90RefSource> GetRefSourceAsyncAlt();
 
-
-    #endregion RefSource
+    #endregion
 
     #region RefExpert
-    Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertAsync();
     Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search);
     Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model);
     Task DeleteRefExpertAsync(int id);
+    Task<bool> RefExpertExistsAsync(Tbl90RefExpert model);
+
 
     //Task<List<Tbl90RefExpert>> GetAllRefExpertsAsync();
     //Task<List<Tbl90RefExpert>> GetRefExpertsByNameOrIdAsync(string? query);
@@ -547,16 +583,18 @@ public interface IDataService
     Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsyncAlt(string search);
     Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert);
     Task DeleteRefExpertAsyncAlt(int refexpertid);
-    Task<bool> RefExpertExistsAsync(Tbl90RefExpert model);
 
     #endregion RefExpert
 
     #region Comment
+    Task<IEnumerable<Tbl93Comment>> GetAllCommentAsync();
+
+    Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment model);
+    Task DeleteCommentAsync(int id);
+
     ObservableCollection<Tbl93Comment> GetCommentAsync();
     ObservableCollection<Tbl93Comment> GetCommentAsync(int commentid);
     Task<ObservableCollection<Tbl93Comment>> GetCommentAsync(string search);
-    Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment comment);
-    Task DeleteCommentAsync(int commentid);
 
     #endregion Comment
 

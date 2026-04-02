@@ -375,7 +375,7 @@ public partial class SearchViewModel(IDataService dataService) : ObservableObjec
             {
                 ClearAllCollections();
                 Tbl63InfratribussesAllList ??= [];
-                Tbl63InfratribussesAllList = dataService.GetInfratribusAsync();
+                Tbl63InfratribussesAllList = dataService.GetInfratribusAsyncAlt();
                 GenussesCollection = dataService.GetTbl66GenussesCollectionOrderByGenusNameFromFilterText(FilterText);
                 DataSetCount = GenussesCollection.Count;
                 RefreshGenusItems();

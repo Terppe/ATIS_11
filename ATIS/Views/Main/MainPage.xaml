@@ -316,7 +316,7 @@
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfratribus"
                                                     loc:Uids.Uid="Nav_Infratribus"
-                                                    Tag="ATIS.Views.Database.Tbl63InfratribusListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -324,7 +324,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubtribus"
                                                     loc:Uids.Uid="Nav_Subtribus"
-                                                    Tag="ATIS.Views.Database.Tbl60SubtribusListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -562,7 +562,7 @@
                                         </NavigationViewItem>
                                         <NavigationViewItem x:Name="NavRefSources"
                                                             loc:Uids.Uid="Nav_RefSources"
-                                                            Tag="ATIS.Views.Database.Tbl90RefSourceListPage">
+                                                            Tag="ATIS.Views.Modules.Tbl90RefSource.Tbl90RefSourcePage">
                                             <NavigationViewItem.Icon>
                                                 <BitmapIcon ShowAsMonochrome="False"
                                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -570,7 +570,7 @@
                                         </NavigationViewItem>
                                         <NavigationViewItem x:Name="NavRefAuthors"
                                                             loc:Uids.Uid="Nav_RefAuthors"
-                                                            Tag="ATIS.Views.Database.Tbl90RefAuthorListPage">
+                                                            Tag="ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorPage">
                                             <NavigationViewItem.Icon>
                                                 <BitmapIcon ShowAsMonochrome="False"
                                                             UriSource="ms-appx:///Assets/Fluent/database.png" />

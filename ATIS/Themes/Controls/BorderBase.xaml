@@ -3,7 +3,6 @@
 
 <!--<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
 -->
 <!--  ATIS: Grundfarben für Rahmen  -->
 <!--
@@ -13,7 +12,6 @@ Color="{ThemeResource SystemBaseLowColor}" />
 Color="{ThemeResource SystemBaseMediumColor}" />
 <SolidColorBrush x:Key="AtisCardBackground"
 Color="{ThemeResource CardBackgroundFillColorDefault}" />
-
 -->
 <!--  ATIS: Standard Border Style (für Controls, Container, UserControls)  -->
 <!--
@@ -25,7 +23,6 @@ TargetType="Border">
 <Setter Property="Padding" Value="12" />
 <Setter Property="Background" Value="{StaticResource AtisCardBackground}" />
 </Style>
-
 -->
 <!--  ATIS: Page Border Style (größerer Rahmen, mehr Abstand)  -->
 <!--
@@ -36,7 +33,6 @@ TargetType="Border">
 <Setter Property="CornerRadius" Value="8" />
 <Setter Property="Padding" Value="4" />
 </Style>
-
 -->
 <!--  ATIS: Card Style (für Panels, Sections, Gruppen)  -->
 <!--
@@ -47,7 +43,6 @@ TargetType="Border">
 <Setter Property="Padding" Value="16" />
 <Setter Property="BorderBrush" Value="{StaticResource AtisBorderBrushStrong}" />
 </Style>
-
 -->
 <!--  ATIS: Trennlinie (Bottom Border)  -->
 <!--
@@ -71,6 +66,43 @@ TargetType="Border">
 
                     <Grid x:Name="RootGrid">
 
+                        <VisualStateManager.VisualStateGroups>
+
+                            <VisualStateGroup x:Name="CommonStates">
+
+                                <VisualState x:Name="Normal" />
+
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundBorder.Background" Value="{ThemeResource ControlHoverBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundBorder.Background" Value="{ThemeResource ControlPressedBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundBorder.Background" Value="{ThemeResource ControlPressedBrush}" />
+                                        <Setter Target="BackgroundBorder.BorderBrush" Value="{ThemeResource BrandAccentBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="BackgroundBorder.Background" Value="{ThemeResource ControlDisabledBrush}" />
+                                        <Setter Target="BackgroundBorder.BorderBrush" Value="{ThemeResource ControlDisabledBorderBrush}" />
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource TextSecondaryBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+
+                        </VisualStateManager.VisualStateGroups>
+
                         <Border x:Name="BackgroundBorder"
                                 Background="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"
                                 BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"
@@ -81,50 +113,6 @@ TargetType="Border">
                                           Margin="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}}"
                                           HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}"
                                           VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource TemplatedParent}}" />
-
-                        <VisualStateManager.VisualStateGroups>
-
-                            <VisualStateGroup x:Name="CommonStates">
-
-                                <VisualState x:Name="Normal" />
-
-                                <VisualState x:Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Target="BackgroundBorder.Background"
-                                                Value="{ThemeResource ControlHoverBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-
-                                <VisualState x:Name="Pressed">
-                                    <VisualState.Setters>
-                                        <Setter Target="BackgroundBorder.Background"
-                                                Value="{ThemeResource ControlPressedBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-
-                                <VisualState x:Name="Selected">
-                                    <VisualState.Setters>
-                                        <Setter Target="BackgroundBorder.Background"
-                                                Value="{ThemeResource ControlPressedBrush}" />
-                                        <Setter Target="BackgroundBorder.BorderBrush"
-                                                Value="{ThemeResource BrandAccentBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-
-                                <VisualState x:Name="Disabled">
-                                    <VisualState.Setters>
-                                        <Setter Target="BackgroundBorder.Background"
-                                                Value="{ThemeResource ControlDisabledBrush}" />
-                                        <Setter Target="BackgroundBorder.BorderBrush"
-                                                Value="{ThemeResource ControlDisabledBorderBrush}" />
-                                        <Setter Target="ContentPresenter.Foreground"
-                                                Value="{ThemeResource TextSecondaryBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-
-                            </VisualStateGroup>
-
-                        </VisualStateManager.VisualStateGroups>
 
                     </Grid>
 

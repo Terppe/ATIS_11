@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid
+    x:Class="ATIS.DesignSystem.Controls.ListHeader.TwoColumnHeaderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="80"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <ContentPresenter x:Name="LeftContent" Grid.Column="0"/>
+    <ContentPresenter x:Name="RightContent" Grid.Column="1"/>
+
+</Grid>

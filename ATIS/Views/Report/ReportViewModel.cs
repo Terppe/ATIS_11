@@ -309,7 +309,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl63InfratribussesAllList ??= [];
-                Tbl63InfratribussesAllList = _dataService.GetInfratribusAsync();
+                Tbl63InfratribussesAllList = _dataService.GetInfratribusAsyncAlt();
                 GenussesCollection = _dataService.GetTbl66GenussesCollectionOrderByGenusNameFromFilterText(FilterText);
                 DataSetCount = GenussesCollection.Count;
                 RefreshGenusItems();

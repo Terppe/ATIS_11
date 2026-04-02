@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:database="using:ATIS.Views.Database"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tbl90RefSource="using:ATIS.Views.Modules.Tbl90RefSource"
       NavigationCacheMode="Required"
       mc:Ignorable="d">
 
@@ -35,12 +36,12 @@
                     <database:Tbl90RefAuthorListPage />
                 </TabViewItem>
                 <!--<TabViewItem x:Uid="TabViewItem_RefExperts"
-                             IsClosable="False">
-                    <database:Tbl90RefExpertListPage />
+                IsClosable="False">
+                <database:Tbl90RefExpertListPage />
                 </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_RefSources"
                              IsClosable="False">
-                    <database:Tbl90RefSourceListPage />
+                    <tbl90RefSource:Tbl90RefSourcePage />
                 </TabViewItem>
                 <TabViewItem x:Uid="TabViewItem_References"
                              IsClosable="False">

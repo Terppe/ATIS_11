@@ -127,14 +127,12 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
             if (!dbExists)
             {
                 // MessageBox.Show(CultRes.StringsRes.NoConnectServer + " " + db, $"CultRes.StringsRes.NoConnectServer: {db}");
-              //  _dialogService.ShowYesNoAsync("Delete_Title", "Delete_Message");
-
                 if (db != null)
                 {
-                    _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
+                    _dialogService.ShowErrorAsync("Server_Connect_Title", "Server_Connect_Message");
+          //          _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
                 }
-             //   _dialogService.ShowYesNoAsync("Delete_Title", "Delete_Message");
-
+                _dialogService.ShowYesNoAsync("Server_Exist_Title", "Server_Exist_Question");
                 //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
                 //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
                 if (true)
@@ -154,9 +152,10 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         {
             _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
 
-            _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
+          //  _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
             //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,
             //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            _dialogService.ShowYesNoAsync("Server_Exist_Title", "Server_Exist_Question");
 
             SimpleLog.Error($"Server not connected: {db}");
             ret = false;

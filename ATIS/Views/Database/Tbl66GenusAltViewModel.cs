@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -9,32 +8,31 @@ using Microsoft.EntityFrameworkCore;
 using Windows.System;
 using ATIS.Infrastructure;
 
-//    Tbl60SubtribusViewModel Skriptdatum:  30.12.2024  10:32    
+//    Tbl66GenusViewModel Skriptdatum:  13.06.2024  10:32    
 
 namespace ATIS.Views.Database;
 
-public partial class Tbl60SubtribusViewModel : ObservableObject
+public partial class Tbl66GenusViewModel : ObservableObject
 {
-
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
     private readonly IDataService _data;
-    public ObservableCollection<Tbl60Subtribus> SubtribusItems { get; } = [];
-
+    public ObservableCollection<Tbl66Genus> GenusItems { get; } = [];
+    public ObservableCollection<Tbl75Species> SpeciesItems { get; } = [];
     public ObservableCollection<Tbl63Infratribus> InfratribusItems { get; } = [];
-    public ObservableCollection<Tbl57Tribus> TribusItems { get; } = [];
 
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
+
     #endregion [Private Data Members]      
 
     #region [Constructor]
-    public Tbl60SubtribusViewModel(IDataService dataService)
+    public Tbl66GenusViewModel(IDataService dataService)
     {
         _dataService = dataService;
         GetAllCollections();
@@ -42,71 +40,74 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
     private void GetAllCollections()
     {
-        Tbl57TribussesAllList ??= [];
-        Tbl57TribussesAllList = [.. _dataService.GetTribusAsync()];
-        Tbl60SubtribussesAllList ??= [];
-        Tbl60SubtribussesAllList = [.. _dataService.GetSubtribusAsync()];
+        Tbl63InfratribussesAllList ??= [];
+        Tbl63InfratribussesAllList = [.. _dataService.GetInfratribusAsyncAlt()];
+        Tbl66GenussesAllList ??= [];
+        Tbl66GenussesAllList = [.. _dataService.GetGenusAsync()];
+
+        Tbl68SpeciesgroupsAllList ??= [];
+        Tbl68SpeciesgroupsAllList = [.. _dataService.GetSpeciesgroupAsync()];
+
         Tbl90ExpertsAllList ??= [];
         Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
-        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
         Tbl90AuthorsAllList ??= [];
-        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
     }
-    public Tbl60SubtribusViewModel()
+    public Tbl66GenusViewModel()
     {
 
     }
 
     #endregion [Constructor]  
 
-
     //    Part 1    
 
+    #region [Methods Genus]
 
-    #region [Methods Subtribus]
-
-    public async Task AddSubtribusAsync()
+    public async Task AddGenusAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            IsInEditSubtribus = true;
-            IsNewSubtribus = true;
+            IsInEditGenus = true;
+            IsNewGenus = true;
 
-            Tbl57TribussesAllList ??= [];
-            Tbl57TribussesAllList = [.. _dataService.GetTribusAsync()];
+            Tbl63InfratribussesAllList ??= [];
+            Tbl63InfratribussesAllList = [.. _dataService.GetInfratribusAsyncAlt()];
 
-            var tribusId = Tbl57TribussesAllList.First().TribusId;
+            var infratribusId = Tbl63InfratribussesAllList.First().InfratribusId;
 
-            Tbl60SubtribussesList ??= [];
-            Tbl60SubtribussesList.Insert(index: 0, item: new Tbl60Subtribus { TribusId = tribusId });
+            Tbl66GenussesList ??= [];
+            Tbl66GenussesList.Insert(index: 0, item: new Tbl66Genus { InfratribusId = infratribusId });
         });
     }
 
-    public async Task SaveSubtribusAsync(Tbl60Subtribus viewModelSubtribusSelected)
+    public async Task SaveGenusAsync(Tbl66Genus viewModelGenusSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            if (IsNewSubtribus)
+            if (IsNewGenus)
             {
-                IsNewSubtribus = false;
+                IsNewGenus = false;
             }
         });
 
-        Tbl60Subtribus result = null;
+        Tbl66Genus result = null;
         try
         {
-            if (IsModifiedSubtribus)
+            if (IsModifiedGenus)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertSubtribusAsync(viewModelSubtribusSelected);
-                    IsModifiedSubtribus = false;
+
+                    result = await _dataService.UpsertGenusAsync(viewModelGenusSelected);
+                    IsModifiedGenus = false;
                 });
             }
             else
             {
-                IsModifiedSubtribus = true;
+                IsModifiedGenus = true;
             }
         }
         catch (DbUpdateException e)
@@ -127,9 +128,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
         if (result != null)
         {
-            IsInEditSubtribus = false;
-            IsModifiedSubtribus = false;
-            IsExistingSubtribus = true;
+            IsInEditGenus = false;
+            IsModifiedGenus = false;
+            IsExistingGenus = true;
         }
         else
         {
@@ -137,15 +138,15 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         }
     }
 
-    public async Task DeleteSubtribusAsync(Tbl60Subtribus viewModelSubtribusSelected)
+    public async Task DeleteGenusAsync(Tbl66Genus viewModelGenusSelected)
     {
-        Tbl60Subtribus result = null;
+        Tbl66Genus result = null;
         try
         {
-            var deleteSubtribusId = viewModelSubtribusSelected.SubtribusId;
-            await DeleteSubtribus(deleteSubtribusId);
+            var deleteGenusId = viewModelGenusSelected.GenusId;
+            await DeleteGenus(deleteGenusId);
 
-            result = viewModelSubtribusSelected;
+            result = viewModelGenusSelected;
         }
         catch (DbUpdateException e)
         {
@@ -165,10 +166,10 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
         if (result != null)
         {
-            IsInEditSubtribus = false;
-            IsModifiedSubtribus = false;
-            IsExistingSubtribus = true;
-            IsDeletingSubtribus = true;
+            IsInEditGenus = false;
+            IsModifiedGenus = false;
+            IsExistingGenus = true;
+            IsDeletingGenus = true;
         }
         else
         {
@@ -176,35 +177,32 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         }
     }
 
-    private async Task DeleteSubtribus(int subtribusid)
+    private async Task DeleteGenus(int genusid)
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
             var arrSpecies = new List<Tbl75Species>();
-            var arrGenus = new List<Tbl66Genus>();
-            var arrInfratribus = new List<Tbl63Infratribus>();
-            var subtribus = await AppData.Data.Tbl60Subtribusses.FirstOrDefaultAsync(b => b.SubtribusId == subtribusid);
-            if (subtribus != null)
+            var genus = await AppData.Data.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
+            if (genus != null)
             {
                 //SaveToArray
-                await RemoveExtras.SaveToArrayTbl63Infratribusses(subtribusid, arrInfratribus, arrGenus, arrSpecies);
+                await RemoveExtras.SaveToArrayTbl75Speciesses(genusid, arrSpecies);
 
-                // remove Tbl75Speciesses
-                await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
-                // remove Tbl66Genusses
-                await RemoveExtras.RemoveArrGenusByGenusId(arrGenus);
-                // remove Tbl63Infratribusses
-                await RemoveExtras.RemoveArrInfratribusByInfratribusId(arrInfratribus);
+                if (arrSpecies.Count != 0)
+                {
+                    // remove Tbl75Speciesses
+                    await RemoveExtras.RemoveArrSpeciesBySpeciesId(arrSpecies);
+                }
 
-                await RemoveExtras.RemoveReferencesBySubtribusId(subtribusid);
-                await RemoveExtras.RemoveCommentsBySubtribusId(subtribusid);
-                //AppData.Data.Tbl60Subtribusses.Remove(subtribus);
+                await RemoveExtras.RemoveReferencesByGenusId(genusid);
+                await RemoveExtras.RemoveCommentsByGenusId(genusid);
+                //AppData.Data.Tbl66Genusses.Remove(genus);
                 //await AppData.Data.SaveChangesAsync();
             }
         });
     }
 
-    #endregion [Methods Subtribus ]  
+    #endregion [Methods Genus]
 
     #region [Methods Reference]
 
@@ -219,10 +217,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
-            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, SubtribusId = SubtribusSelected.SubtribusId });
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefExpertId = null, GenusId = GenusSelected.GenusId });
         });
     }
-
     public async Task AddReferenceSourceAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
@@ -231,10 +228,10 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90SourcesAllList ??= [];
-            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
-            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, SubtribusId = SubtribusSelected.SubtribusId });
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, GenusId = GenusSelected.GenusId });
         });
     }
     public async Task AddReferenceAuthorAsync()
@@ -245,10 +242,10 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90AuthorsAllList ??= [];
-            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
-            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, SubtribusId = SubtribusSelected.SubtribusId });
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, GenusId = GenusSelected.GenusId });
         });
     }
 
@@ -350,7 +347,6 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             _ = new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2);
         }
     }
-
     private async Task DeleteReference(int referenceid)
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
@@ -373,10 +369,10 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             IsInEditComment = true;
             IsNewComment = true;
 
-            var id = SubtribusSelected.SubtribusId;
+            var id = GenusSelected.GenusId;
 
             Tbl93CommentsList ??= [];
-            Tbl93CommentsList.Insert(index: 0, item: new Tbl93Comment() { SubtribusId = id });
+            Tbl93CommentsList.Insert(index: 0, item: new Tbl93Comment() { GenusId = id });
         });
     }
 
@@ -491,31 +487,32 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
     #endregion [Methods Comment] 
 
-    #region [Methods Infratribus]             
-    public async Task SaveInfratribusAsync(Tbl63Infratribus viewModelInfratribusSelected)
+    #region [Methods Species]
+
+    public async Task SaveSpeciesAsync(Tbl75Species viewModelSpeciesSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            if (IsNewInfratribus)
+            if (IsNewSpecies)
             {
-                IsNewInfratribus = false;
+                IsNewSpecies = false;
             }
         });
 
-        Tbl63Infratribus result = null;
+        Tbl75Species result = null;
         try
         {
-            if (IsModifiedInfratribus)
+            if (IsModifiedSpecies)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertInfratribusAsync(viewModelInfratribusSelected);
-                    IsModifiedInfratribus = false;
+                    result = await _dataService.UpsertSpeciesAsync(viewModelSpeciesSelected);
+                    IsModifiedSpecies = false;
                 });
             }
             else
             {
-                IsModifiedInfratribus = true;
+                IsModifiedSpecies = true;
             }
         }
         catch (DbUpdateException e)
@@ -535,9 +532,9 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         }
         if (result != null)
         {
-            IsInEditInfratribus = false;
-            IsModifiedInfratribus = false;
-            IsExistingInfratribus = true;
+            IsInEditSpecies = false;
+            IsModifiedSpecies = false;
+            IsExistingSpecies = true;
         }
         else
         {
@@ -545,8 +542,7 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         }
     }
 
-    #endregion [Methods Infratribus]   
-
+    #endregion [Methods Species]
 
 
     //    Part 2    
@@ -556,17 +552,18 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
     #region [Propertys]
 
-    //------------IsModified--------------------------------------                 
-    public bool IsModifiedSubtribus { get; set; }
+    //------------IsModified--------------------------------------
+    public bool IsModifiedGenus { get; set; }
     public bool IsModifiedReference { get; set; }
     public bool IsModifiedReferenceExpert { get; set; }
     public bool IsModifiedReferenceSource { get; set; }
     public bool IsModifiedReferenceAuthor { get; set; }
     public bool IsModifiedComment { get; set; }
-    public bool IsModifiedInfratribus { get; set; }
+    public bool IsModifiedSpecies { get; set; }
     //------------Load--------------------------------------
-    private bool IsLoaded => SubtribusItems != null;
+    private bool IsLoaded => GenusItems != null;
     public bool IsNotLoaded => !IsLoaded;
+
     private bool _isLoading;
     public bool IsLoading
     {
@@ -574,11 +571,11 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
     //----------IsDeleting-----------------------------------------
-    private bool _isDeletingSubtribus;
-    public bool IsDeletingSubtribus
+    private bool _isDeletingGenus;
+    public bool IsDeletingGenus
     {
-        get => _isDeletingSubtribus;
-        set => SetProperty(ref _isDeletingSubtribus, value);
+        get => _isDeletingGenus;
+        set => SetProperty(ref _isDeletingGenus, value);
     }
     private bool _isDeletingReference;
     public bool IsDeletingReference
@@ -592,18 +589,18 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _isDeletingComment;
         set => SetProperty(ref _isDeletingComment, value);
     }
-    private bool _isDeletingInfratribus;
-    public bool IsDeletingInfratribus
+    private bool _isDeletingSpecies;
+    public bool IsDeletingSpecies
     {
-        get => _isDeletingInfratribus;
-        set => SetProperty(ref _isDeletingInfratribus, value);
+        get => _isDeletingSpecies;
+        set => SetProperty(ref _isDeletingSpecies, value);
     }
     //------------IsNew---------------------------------------
-    private bool _isNewSubtribus;
-    public bool IsNewSubtribus
+    private bool _isNewGenus;
+    public bool IsNewGenus
     {
-        get => _isNewSubtribus;
-        set => SetProperty(ref _isNewSubtribus, value);
+        get => _isNewGenus;
+        set => SetProperty(ref _isNewGenus, value);
     }
     private bool _isNewReference;
     public bool IsNewReference
@@ -631,24 +628,25 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _isNewReferenceAuthor;
         set => SetProperty(ref _isNewReferenceAuthor, value);
     }
+
     private bool _isNewComment;
     public bool IsNewComment
     {
         get => _isNewComment;
         set => SetProperty(ref _isNewComment, value);
     }
-    private bool _isNewInfratribus;
-    public bool IsNewInfratribus
+    private bool _isNewSpecies;
+    public bool IsNewSpecies
     {
-        get => _isNewInfratribus;
-        set => SetProperty(ref _isNewInfratribus, value);
+        get => _isNewSpecies;
+        set => SetProperty(ref _isNewSpecies, value);
     }
     //----------IsExisting-----------------------------------------
-    private bool _isExistingSubtribus;
-    public bool IsExistingSubtribus
+    private bool _isExistingGenus;
+    public bool IsExistingGenus
     {
-        get => _isExistingSubtribus;
-        set => SetProperty(ref _isExistingSubtribus, value);
+        get => _isExistingGenus;
+        set => SetProperty(ref _isExistingGenus, value);
     }
     private bool _isExistingReference;
 
@@ -664,19 +662,18 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _isExistingComment;
         set => SetProperty(ref _isExistingComment, value);
     }
-    private bool _isExistingInfratribus;
-    public bool IsExistingInfratribus
+    private bool _isExistingSpecies;
+    public bool IsExistingSpecies
     {
-        get => _isExistingInfratribus;
-        set => SetProperty(ref _isExistingInfratribus, value);
+        get => _isExistingSpecies;
+        set => SetProperty(ref _isExistingSpecies, value);
     }
-
-    //-----------IsInEdit----------------------------------------                      
-    private bool _isInEditSubtribus = false;
-    public bool IsInEditSubtribus
+    //-----------IsInEdit----------------------------------------
+    private bool _isInEditGenus = false;
+    public bool IsInEditGenus
     {
-        get => _isInEditSubtribus;
-        set => SetProperty(ref _isInEditSubtribus, value);
+        get => _isInEditGenus;
+        set => SetProperty(ref _isInEditGenus, value);
     }
     private bool _isInEditReference = false;
     public bool IsInEditReference
@@ -702,23 +699,24 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _isInEditReferenceAuthor;
         set => SetProperty(ref _isInEditReferenceAuthor, value);
     }
+
     private bool _isInEditComment = false;
     public bool IsInEditComment
     {
         get => _isInEditComment;
         set => SetProperty(ref _isInEditComment, value);
     }
-    private bool _isInEditInfratribus = false;
-    public bool IsInEditInfratribus
+    private bool _isInEditSpecies = false;
+    public bool IsInEditSpecies
     {
-        get => _isInEditInfratribus;
-        set => SetProperty(ref _isInEditInfratribus, value);
+        get => _isInEditSpecies;
+        set => SetProperty(ref _isInEditSpecies, value);
     }
     //----------StartEdit-----------------------------------------
-    public void StartEditSubtribus()
+    public void StartEditGenus()
     {
-        IsInEditSubtribus = true;
-        IsModifiedSubtribus = false;
+        IsInEditGenus = true;
+        IsModifiedGenus = false;
     }
     public void StartEditReferenceExpert()
     {
@@ -740,47 +738,47 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         IsInEditComment = true;
         IsModifiedComment = false;
     }
-    public void StartEditInfratribus()
+    public void StartEditSpecies()
     {
-        IsInEditInfratribus = true;
-        IsModifiedInfratribus = false;
+        IsInEditSpecies = true;
+        IsModifiedSpecies = false;
     }
     //------------BeginEdit---------------------------------------
     public static void BeginEdit()
     {
         // Not used.
     }
-    //---------------EndEdit------------------------------------                                      
-    public async void EndEditSubtribus() => await SaveSubtribusAsync(SubtribusSelected);
+    //---------------EndEdit------------------------------------
+    public async void EndEditGenus() => await SaveGenusAsync(GenusSelected);
     public async void EndEditReferenceExpert() => await SaveReferenceAsync(ReferenceSelected);
     public async void EndEditReferenceSource() => await SaveReferenceAsync(ReferenceSelected);
     public async void EndEditReferenceAuthor() => await SaveReferenceAsync(ReferenceSelected);
     public async void EndEditComment() => await SaveCommentAsync(CommentSelected);
-    public async void EndEditInfratribus() => await SaveInfratribusAsync(InfratribusSelected);
+    public async void EndEditSpecies() => await SaveSpeciesAsync(SpeciesSelected);
     //-------------CanRefresh--------------------------------------
-    public bool CanRefreshSubtribus => !IsModifiedSubtribus && IsExistingSubtribus;
+    public bool CanRefreshGenus => !IsModifiedGenus && IsExistingGenus;
     public bool CanRefreshReferenceExpert => !IsModifiedReferenceExpert && IsExistingReference;
     public bool CanRefreshReferenceSource => !IsModifiedReferenceSource && IsExistingReference;
     public bool CanRefreshReferenceAuthor => !IsModifiedReferenceAuthor && IsExistingReference;
     public bool CanRefreshComment => !IsModifiedComment && IsExistingComment;
-    public bool CanRefreshInfratribus => !IsModifiedInfratribus && IsExistingInfratribus;
+    public bool CanRefreshSpecies => !IsModifiedSpecies && IsExistingSpecies;
     //--------------CanRevert-------------------------------------
-    public bool CanRevertSubtribus => IsModifiedSubtribus && IsExistingSubtribus;
+    public bool CanRevertGenus => IsModifiedGenus && IsExistingGenus;
     public bool CanRevertReferenceExpert => IsModifiedReferenceExpert && IsExistingReference;
     public bool CanRevertReferenceSource => IsModifiedReferenceSource && IsExistingReference;
     public bool CanRevertReferenceAuthor => IsModifiedReferenceAuthor && IsExistingReference;
     public bool CanRevertComment => IsModifiedComment && IsExistingComment;
-    public bool CanRevertInfratribus => IsModifiedInfratribus && IsExistingInfratribus;
+    public bool CanRevertSpecies => IsModifiedSpecies && IsExistingSpecies;
 
     #endregion [Propertys]     
 
     #region Selected Properties
 
-    private Tbl60Subtribus _subtribusSelected;
-    public Tbl60Subtribus SubtribusSelected
+    private Tbl66Genus _genusSelected;
+    public Tbl66Genus GenusSelected
     {
-         get => _subtribusSelected;
-         set => SetProperty(ref _subtribusSelected, value);
+        get => _genusSelected;
+        set => SetProperty(ref _genusSelected, value);
     }
 
     private Tbl90Reference _referenceSelected;
@@ -796,12 +794,13 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         get => _commentSelected;
         set => SetProperty(ref _commentSelected, value);
     }
-    private Tbl63Infratribus _infratribusSelected;
-    public Tbl63Infratribus InfratribusSelected
+    private Tbl75Species _speciesSelected;
+    public Tbl75Species SpeciesSelected
     {
-         get => _infratribusSelected;
-         set => SetProperty(ref _infratribusSelected, value);
+        get => _speciesSelected;
+        set => SetProperty(ref _speciesSelected, value);
     }
+
     private Tbl90Reference _referenceExpertSelected;
     public Tbl90Reference ReferenceExpertSelected
     {
@@ -825,14 +824,14 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
     #region Public Properties
 
-    private int _subtribusDataSetCount;
+    private int _genusDataSetCount;
 
-    public int SubtribusDataSetCount
+    public int GenusDataSetCount
     {
-        get => _subtribusDataSetCount;
+        get => _genusDataSetCount;
         set
         {
-            _subtribusDataSetCount = value; OnPropertyChanged();
+            _genusDataSetCount = value; OnPropertyChanged();
         }
     }
     private int _referenceDataSetCount;
@@ -854,43 +853,44 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             _commentDataSetCount = value; OnPropertyChanged();
         }
     }
-    private int _infratribusDataSetCount;
-    public int InfratribusDataSetCount
+    private int _speciesDataSetCount;
+    public int SpeciesDataSetCount
     {
-        get => _infratribusDataSetCount;
+        get => _speciesDataSetCount;
         set
         {
-            _infratribusDataSetCount = value; OnPropertyChanged();
+            _speciesDataSetCount = value; OnPropertyChanged();
         }
     }
+
     //---------------------------------------------------
-    private ObservableCollection<Tbl57Tribus> _tbl57TribussesAllList;
-    public ObservableCollection<Tbl57Tribus> Tbl57TribussesAllList
+    private ObservableCollection<Tbl66Genus> _tbl66GenussesList;
+    public ObservableCollection<Tbl66Genus> Tbl66GenussesList
     {
-        get => _tbl57TribussesAllList;
+        get => _tbl66GenussesList;
         set
         {
-            _tbl57TribussesAllList = value; OnPropertyChanged();
+            _tbl66GenussesList = value; OnPropertyChanged();
         }
     }
 
-    private ObservableCollection<Tbl60Subtribus> _tbl60SubtribussesList;
-    public ObservableCollection<Tbl60Subtribus> Tbl60SubtribussesList
+    private ObservableCollection<Tbl66Genus> _tbl66GenussesAllList;
+    public ObservableCollection<Tbl66Genus> Tbl66GenussesAllList
     {
-        get => _tbl60SubtribussesList;
+        get => _tbl66GenussesAllList;
         set
         {
-            _tbl60SubtribussesList = value; OnPropertyChanged();
+            _tbl66GenussesAllList = value; OnPropertyChanged();
         }
     }
 
-    private ObservableCollection<Tbl60Subtribus> _tbl60SubtribussesAllList;
-    public ObservableCollection<Tbl60Subtribus> Tbl60SubtribussesAllList
+    private ObservableCollection<Tbl68Speciesgroup> _tbl68SpeciesgroupsAllList;
+    public ObservableCollection<Tbl68Speciesgroup> Tbl68SpeciesgroupsAllList
     {
-        get => _tbl60SubtribussesAllList;
+        get => _tbl68SpeciesgroupsAllList;
         set
         {
-            _tbl60SubtribussesAllList = value; OnPropertyChanged();
+            _tbl68SpeciesgroupsAllList = value; OnPropertyChanged();
         }
     }
 
@@ -933,6 +933,7 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             _tbl90AuthorsAllList = value; OnPropertyChanged();
         }
     }
+
     private ObservableCollection<Tbl90Reference> _tbl90ReferenceAuthorsList = null!;
     public ObservableCollection<Tbl90Reference> Tbl90ReferenceAuthorsList
     {
@@ -974,14 +975,24 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl63Infratribus> _tbl63InfratribusList;
-
-    public ObservableCollection<Tbl63Infratribus> Tbl63InfratribussesList
+    private ObservableCollection<Tbl63Infratribus> _tbl63InfratribussesAllList;
+    public ObservableCollection<Tbl63Infratribus> Tbl63InfratribussesAllList
     {
-        get => _tbl63InfratribusList;
+        get => _tbl63InfratribussesAllList;
         set
         {
-            _tbl63InfratribusList = value; OnPropertyChanged();
+            _tbl63InfratribussesAllList = value; OnPropertyChanged();
+        }
+    }
+
+    private ObservableCollection<Tbl75Species> _tbl75SpeciesList;
+
+    public ObservableCollection<Tbl75Species> Tbl75SpeciessesList
+    {
+        get => _tbl75SpeciesList;
+        set
+        {
+            _tbl75SpeciesList = value; OnPropertyChanged();
         }
     }
 
@@ -989,24 +1000,24 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
 
     #region Refresh Methods
 
-    public void RefreshSubtribusItems()
+    public void RefreshGenusItems()
     {
-        SubtribusItems.Clear();
-        if (Tbl60SubtribussesList != null)
+        GenusItems.Clear();
+        if (Tbl66GenussesList != null)
         {
-            foreach (var item in Tbl60SubtribussesList)
+            foreach (var item in Tbl66GenussesList)
             {
-                SubtribusItems.Add(item);
+                GenusItems.Add(item);
             }
 
-            if (Tbl60SubtribussesList.Count == 0)
+            if (Tbl66GenussesList.Count == 0)
             {
                 return;
             }
 
-            if (SubtribusSelected == null && Tbl60SubtribussesList.Count != 0)
+            if (GenusSelected == null && Tbl66GenussesList.Count != 0)
             {
-                SubtribusSelected = SubtribusItems.FirstOrDefault()!;
+                GenusSelected = GenusItems.FirstOrDefault()!;
             }
         }
     }
@@ -1032,7 +1043,6 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             }
         }
     }
-
     public void RefreshCommentItems()
     {
         CommentItems.Clear();
@@ -1054,24 +1064,25 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
             }
         }
     }
-    public void RefreshInfratribusItems()
+
+    public void RefreshSpeciesItems()
     {
-        InfratribusItems.Clear();
-        if (Tbl63InfratribussesList != null)
+        SpeciesItems.Clear();
+        if (Tbl75SpeciessesList != null)
         {
-            foreach (var item in Tbl63InfratribussesList)
+            foreach (var item in Tbl75SpeciessesList)
             {
-                InfratribusItems.Add(item);
+                SpeciesItems.Add(item);
             }
 
-            if (Tbl63InfratribussesList.Count == 0)
+            if (Tbl75SpeciessesList.Count == 0)
             {
                 return;
             }
 
-            if (InfratribusSelected == null && Tbl63InfratribussesList.Count != 0)
+            if (SpeciesSelected == null && Tbl75SpeciessesList.Count != 0)
             {
-                InfratribusSelected = InfratribusItems.FirstOrDefault()!;
+                SpeciesSelected = SpeciesItems.FirstOrDefault()!;
             }
         }
     }
@@ -1079,6 +1090,5 @@ public partial class Tbl60SubtribusViewModel : ObservableObject
     #endregion Refresh Methods
 
     #endregion All Properties 
-
 
 }

@@ -49,9 +49,9 @@ public partial class Tbl24SubclassViewModel : ObservableObject
         Tbl90ExpertsAllList ??= [];
         Tbl90ExpertsAllList = [.. _dataService.GetRefExpertAsyncAlt()];
         Tbl90SourcesAllList ??= [];
-        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+        Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
         Tbl90AuthorsAllList ??= [];
-        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+        Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
     }
     public Tbl24SubclassViewModel()
     {
@@ -269,7 +269,7 @@ public partial class Tbl24SubclassViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90SourcesAllList ??= [];
-            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsync()];
+            Tbl90SourcesAllList = [.. _dataService.GetRefSourceAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefSourceId = null, SubclassId = SubclassSelected.SubclassId });
@@ -283,7 +283,7 @@ public partial class Tbl24SubclassViewModel : ObservableObject
             IsNewReference = true;
 
             Tbl90AuthorsAllList ??= [];
-            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsync()];
+            Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
 
             Tbl90ReferencesList ??= [];
             Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference { RefAuthorId = null, SubclassId = SubclassSelected.SubclassId });

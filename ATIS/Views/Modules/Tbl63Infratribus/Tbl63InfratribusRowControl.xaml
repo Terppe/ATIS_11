@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusRowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:WinUI3Localizer" IsTabStop="False" UseSystemFocusVisuals="False"
+             x:Name="ThisControl">
+
+
+    <Grid x:Name="Root" IsTabStop="False" 
+          MinHeight="24"
+          Padding="2"
+          Background="#F2F2F2"
+          BorderBrush="#CCCCCC"
+          BorderThickness="1"
+          CornerRadius="4"
+          PointerEntered="Root_PointerEntered"
+          PointerExited="Root_PointerExited"
+          Tapped="Root_Tapped">
+
+        <!--  WICHTIG: ColumnDefinitions müssen hier rein  -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding DataContext.IdWidth, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra1Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra2Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra3Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra4Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra5Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra6Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra7Width, ElementName=ThisControl}" />
+            <ColumnDefinition Width="{Binding DataContext.Extra8Width, ElementName=ThisControl}" />
+        </Grid.ColumnDefinitions>
+
+        <!--  VISUAL STATES  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="RowStates">
+
+                <VisualState x:Name="Normal">
+                    <VisualState.Setters>
+                        <Setter Target="Root.Background" Value="#F2F2F2" />
+                        <Setter Target="Root.BorderBrush" Value="#CCCCCC" />
+                        <Setter Target="Root.BorderThickness" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Hover">
+                    <VisualState.Setters>
+                        <Setter Target="Root.Background" Value="#E5E5E5" />
+                        <Setter Target="Root.BorderBrush" Value="#BBBBBB" />
+                        <Setter Target="Root.BorderThickness" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Selected">
+                    <VisualState.Setters>
+                        <Setter Target="Root.Background" Value="#CCE0FF" />
+                        <Setter Target="Root.BorderBrush" Value="#6699FF" />
+                        <Setter Target="Root.BorderThickness" Value="2" />
+                    </VisualState.Setters>
+                </VisualState>
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!--  SPALTEN  -->
+        <TextBlock Grid.Column="0"
+                   VerticalAlignment="Center" IsTabStop="False"
+                   loc:Uids.Uid="TextBlock_InfratribusId"
+                   Text="{Binding InfratribusId}" />
+
+        <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center"
+                   loc:Uids.Uid="TextBlock_InfratribusName" IsTabStop="False"
+                   Text="{Binding InfratribusName}" />
+
+        <TextBlock Grid.Column="2"
+                   VerticalAlignment="Center"
+                   loc:Uids.Uid="TextBlock_SubtribusId" IsTabStop="False"
+                   Text="{Binding SubtribusName}" />
+
+        <CheckBox Grid.Column="3"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding Valid}" IsTabStop="False"
+                  Style="{StaticResource AtisCheckBox}" />
+
+        <TextBlock Grid.Column="4"
+                   VerticalAlignment="Center"
+                   loc:Uids.Uid="TextBlock_ValidYear" IsTabStop="False"
+                   Text="{Binding ValidYear}" />
+
+        <TextBlock Grid.Column="5"
+                   VerticalAlignment="Center" IsTabStop="False"
+                   loc:Uids.Uid="TextBlock_Author"
+                   Text="{Binding Author}" />
+
+        <TextBlock Grid.Column="6"
+                   VerticalAlignment="Center" IsTabStop="False"
+                   loc:Uids.Uid="TextBlock_AuthorYear"
+                   Text="{Binding AuthorYear}" />
+
+        <TextBlock Grid.Column="7"
+                   VerticalAlignment="Center" IsTabStop="False"
+                   loc:Uids.Uid="TextBlock_Info"
+                   Text="{Binding Info}" />
+
+    </Grid>
+</UserControl>

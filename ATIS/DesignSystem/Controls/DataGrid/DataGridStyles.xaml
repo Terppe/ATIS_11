@@ -38,14 +38,18 @@
     <!--<DataTemplate x:Key="AtisDataGridHeaderTemplate">
         <Grid ColumnDefinitions="*,Auto">
 
-            --><!--  Header Text  --><!--
+    -->
+    <!--  Header Text  -->
+    <!--
             <TextBlock VerticalAlignment="Center"
                        FontWeight="SemiBold"
                        Foreground="{ThemeResource DataGridHeaderForegroundBrush}"
                        Text="{Binding Header, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                        TextTrimming="CharacterEllipsis" />
 
-            --><!--  Sort Indicator  --><!--
+    -->
+    <!--  Sort Indicator  -->
+    <!--
             <ContentPresenter Grid.Column="1"
                               Margin="8,0,0,0"
                               VerticalAlignment="Center"
@@ -114,42 +118,42 @@
     </Style>
     <DataTemplate x:Key="AtisDataGridSortIndicatorTemplate">
         <Grid>
-            <FontIcon x:Name="SortIcon"
-                      Glyph="&#xE74A;"
-                      FontSize="12"
-                      Foreground="{ThemeResource DataGridHeaderForegroundBrush}"
-                      Visibility="Collapsed" />
 
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="SortStates">
 
-                    <!-- Not sorted -->
+                    <!--  Not sorted  -->
                     <VisualState x:Name="Unsorted">
                         <VisualState.Setters>
                             <Setter Target="SortIcon.Visibility" Value="Collapsed" />
                         </VisualState.Setters>
                     </VisualState>
 
-                    <!-- Ascending -->
+                    <!--  Ascending  -->
                     <VisualState x:Name="Ascending">
                         <VisualState.Setters>
                             <Setter Target="SortIcon.Visibility" Value="Visible" />
                             <Setter Target="SortIcon.Glyph" Value="&#xE74A;" />
-                            <!-- Up -->
+                            <!--  Up  -->
                         </VisualState.Setters>
                     </VisualState>
 
-                    <!-- Descending -->
+                    <!--  Descending  -->
                     <VisualState x:Name="Descending">
                         <VisualState.Setters>
                             <Setter Target="SortIcon.Visibility" Value="Visible" />
                             <Setter Target="SortIcon.Glyph" Value="&#xE74B;" />
-                            <!-- Down -->
+                            <!--  Down  -->
                         </VisualState.Setters>
                     </VisualState>
 
                 </VisualStateGroup>
             </VisualStateManager.VisualStateGroups>
+            <FontIcon x:Name="SortIcon"
+                      FontSize="12"
+                      Foreground="{ThemeResource DataGridHeaderForegroundBrush}"
+                      Glyph="&#xE74A;"
+                      Visibility="Collapsed" />
         </Grid>
     </DataTemplate>
 

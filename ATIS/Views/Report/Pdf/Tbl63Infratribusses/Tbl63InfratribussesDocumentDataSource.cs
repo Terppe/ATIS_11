@@ -164,7 +164,7 @@ public abstract class Tbl63InfratribussesDocumentDataSource : ObservableObject
             Author = _infratribusSingle.Author,
             AuthorYear = _infratribusSingle.AuthorYear,
             Info = _infratribusSingle.Info,
-            Valid = _infratribusSingle.Valid,
+            Valid = (bool)_infratribusSingle.Valid,
             ValidYear = _infratribusSingle.ValidYear,
             EngName = _infratribusSingle.EngName,
             GerName = _infratribusSingle.GerName,

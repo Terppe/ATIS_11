@@ -21,6 +21,7 @@
             <!--  Rows  -->
             <SolidColorBrush x:Key="DataGridRowBackgroundBrush"
                              Color="#FFFFFF" />
+
             <SolidColorBrush x:Key="DataGridRowForegroundBrush"
                              Color="#333333" />
             <SolidColorBrush x:Key="DataGridAlternatingRowBackgroundBrush"

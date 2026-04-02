@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Window
-    x:Class="ATIS.Views.Main.SplashWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Window x:Class="ATIS.Views.Main.SplashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid>
         <StackPanel>
@@ -65,11 +64,13 @@
         </StackPanel>
 
         <StackPanel VerticalAlignment="Bottom">
-            --><!--<TextBlock Margin="0,0,0,10"
+-->
+<!--<TextBlock Margin="0,0,0,10"
                        HorizontalAlignment="Center"
                        FontSize="50"
                        Foreground="Black"
-                       Text="ATIS" />--><!--
+                       Text="ATIS" />-->
+<!--
             <TextBlock x:Name="Status"
                        Margin="0,0,0,10"
                        HorizontalAlignment="Center"

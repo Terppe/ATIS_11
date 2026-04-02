@@ -5,7 +5,7 @@
                xmlns:loca="using:WinUI3Localizer"
                loca:Uids.Uid="ContentDialog_Save"
                CloseButtonText="Abbrechen"
-               DefaultButton="Primary" 
+               DefaultButton="Primary"
                PrimaryButtonStyle="{StaticResource AtisButtonPrimary}"
                PrimaryButtonText="Speichern"
                SecondaryButtonStyle="{StaticResource DangerButtonStyle}"

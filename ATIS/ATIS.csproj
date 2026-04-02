@@ -23,7 +23,7 @@
 
 		<IsAotCompatible>False</IsAotCompatible>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-	<Version>10.5.0.2609</Version>
+	<Version>10.6.0.2610</Version>
 
 		<!--Remove git hash from assembly informational version in .NET >= 8, Example: false = 1.0.0, true = 1.0.0+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
@@ -43,23 +43,24 @@
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Common" Version="8.4.0" />
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="log4net" Version="3.3.0" />
-		<PackageReference Include="MailKit" Version="4.15.0" />
+		<PackageReference Include="MailKit" Version="4.15.1" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.3" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260209005" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260317003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
+		<PackageReference Include="MimeKit" Version="4.15.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2026.2.1" />
+		<PackageReference Include="QuestPDF" Version="2026.2.4" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -74,7 +75,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3800.47" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3856.49" ExcludeAssets="buildTransitive" />
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
 	</ItemGroup>
 
@@ -159,12 +160,6 @@
 	</Page>
 	<Page Update="DesignSystem\AtisResources.xaml">
 		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="DesignSystem\Themes\AtisDesignTokens.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="DesignSystem\Themes\AtisElevation.xaml">
-		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\UserControls\AtisDetailHeader.xaml">
 		<SubType>Designer</SubType>
@@ -310,9 +305,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Database\Tbl93CommentListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl90RefSourceListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Database\Tbl90ReferenceListPage.xaml">
@@ -702,7 +694,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Strings\StringsRes.Designer.cs" />
+		<Compile Remove="Strings\StringsRes.Designer.cs" />
 	</ItemGroup>
 
 
@@ -720,10 +712,10 @@
 
 
 	<ItemGroup>
-	  <EmbeddedResource Remove="Strings\StringsRes.de-DE.resx" />
-	  <EmbeddedResource Remove="Strings\StringsRes.es-ES.resx" />
-	  <EmbeddedResource Remove="Strings\StringsRes.fr-FR.resx" />
-	  <EmbeddedResource Remove="Strings\StringsRes.resx" />
+		<EmbeddedResource Remove="Strings\StringsRes.de-DE.resx" />
+		<EmbeddedResource Remove="Strings\StringsRes.es-ES.resx" />
+		<EmbeddedResource Remove="Strings\StringsRes.fr-FR.resx" />
+		<EmbeddedResource Remove="Strings\StringsRes.resx" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -741,7 +733,11 @@
 		<None Remove="Assets\Usa.png" />
 		<None Remove="DesignSystem\Components\AtisCard.xaml" />
 		<None Remove="DesignSystem\Components\Base1List1DetailPageLayout.xaml" />
+		<None Remove="DesignSystem\Components\Base4List4DetailPageLayout.xaml" />
 		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
+		<None Remove="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml" />
+		<None Remove="DesignSystem\Layout\BaseBossPageLayout.xaml" />
+		<None Remove="DesignSystem\Layout\BaseFkPageLayout.xaml" />
 		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
@@ -775,7 +771,6 @@
 		<None Remove="Views\Database\Tbl87GeographicListPage.xaml" />
 		<None Remove="Views\Database\Tbl90RefAuthorListPage.xaml" />
 		<None Remove="Views\Database\Tbl90ReferenceListPage.xaml" />
-		<None Remove="Views\Database\Tbl90RefSourceListPage.xaml" />
 		<None Remove="Views\Database\Tbl93CommentListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListTestPage.xaml" />
@@ -791,7 +786,18 @@
 		<None Remove="Views\Main\SpeciesPage.xaml" />
 		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Main\UtilityPage.xaml" />
+		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusControl.xaml" />
+		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusPage.xaml" />
+		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusRowControl.xaml" />
+		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml" />
+		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
+		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentControl.xaml" />
+		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentRowControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl.xaml" />
@@ -931,12 +937,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	<Folder Include="DesignSystem\Layout\" />
+	<Folder Include="DesignSystem\Themes\" />
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
-	<Folder Include="Views\Modules\Tbl90RefSource\" />
-	<Folder Include="Views\Modules\Tbl90RefAuthor\" />
 	<Folder Include="Views\Modules\TblCountry\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
@@ -963,11 +967,11 @@
 	<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
 	<ItemGroup>
-	  <None Include="Strings\StringsRes.de-DE.resx" />
-	  <None Include="Strings\StringsRes.Designer.cs" />
-	  <None Include="Strings\StringsRes.es-ES.resx" />
-	  <None Include="Strings\StringsRes.fr-FR.resx" />
-	  <None Include="Strings\StringsRes.resx" />
+		<None Include="Strings\StringsRes.de-DE.resx" />
+		<None Include="Strings\StringsRes.Designer.cs" />
+		<None Include="Strings\StringsRes.es-ES.resx" />
+		<None Include="Strings\StringsRes.fr-FR.resx" />
+		<None Include="Strings\StringsRes.resx" />
 	</ItemGroup>
 
 <ItemGroup>
@@ -977,27 +981,135 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Components\Base1List1DetailPageLayout.xaml">
+  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusEditControl.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml">
+  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusPage.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Base\Base1List1DetailPage.xaml">
+  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusRowControl.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Database\TblCountryListTestPage.xaml">
+  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusControl.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Layout\BaseFkPageLayout.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Layout\BaseBossPageLayout.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentRowControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusRowControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPreviewControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Components\Base4List4DetailPageLayout.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="DesignSystem\Components\Base1List1DetailPageLayout.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="Views\Base\Base1List1DetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="Views\Database\TblCountryListTestPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
@@ -1023,4 +1135,7 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 </ItemGroup>
+
+
+
 </Project>

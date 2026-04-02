@@ -26,6 +26,12 @@
     <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
     <converters:PageWidthFractionConverter x:Key="PageWidthFractionConverter" />
     <converters:FractionConverter x:Key="FractionConverter" />
+    <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+    <converters:ReferenceEqualsConverter x:Key="ReferenceEqualsConverter" />
+    <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
+    <converters:IdToNameConverter x:Key="IdToNameConverter" />
+    <converters:NeutralLookupConverter x:Key="NeutralLookupConverter" />
 
 </ResourceDictionary>
 

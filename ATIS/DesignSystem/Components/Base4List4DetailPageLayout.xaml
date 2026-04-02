@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="ATIS.DesignSystem.Components.Base4List4DetailPageLayout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+          RowSpacing="0">
+
+        <Grid.RowDefinitions>
+            <!-- Header + AppBar -->
+            <RowDefinition Height="Auto" />
+
+            <!-- LISTENBEREICH (4 Listen nebeneinander) -->
+            <RowDefinition Height="*" />
+
+            <!-- DETAILBEREICH (4 Details untereinander) -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- HEADER + APPBAR -->
+        <Grid Grid.Row="0"
+              VerticalAlignment="Center"
+              ColumnSpacing="12">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ContentPresenter x:Name="HeaderPresenter"
+                              Grid.Column="0"
+                              VerticalAlignment="Center" />
+
+            <ContentPresenter x:Name="AppBarPresenter"
+                              Grid.Column="1"
+                              VerticalAlignment="Center" />
+        </Grid>
+
+        <!-- LISTENBEREICH (4 Spalten) -->
+        <Grid Grid.Row="1"
+              ColumnSpacing="12">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ContentPresenter x:Name="List1Presenter"
+                              Grid.Column="0" />
+
+            <ContentPresenter x:Name="List2Presenter"
+                              Grid.Column="1" />
+
+            <ContentPresenter x:Name="List3Presenter"
+                              Grid.Column="2" />
+
+            <ContentPresenter x:Name="List4Presenter"
+                              Grid.Column="3" />
+        </Grid>
+
+        <!-- DETAILBEREICH (4 Zeilen) -->
+        <Grid Grid.Row="2"
+              RowSpacing="12">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ContentPresenter x:Name="Detail1Presenter"
+                              Grid.Row="0" />
+
+            <ContentPresenter x:Name="Detail2Presenter"
+                              Grid.Row="1" />
+
+            <ContentPresenter x:Name="Detail3Presenter"
+                              Grid.Row="2" />
+
+            <ContentPresenter x:Name="Detail4Presenter"
+                              Grid.Row="3" />
+        </Grid>
+
+    </Grid>
+</UserControl>

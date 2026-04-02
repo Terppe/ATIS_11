@@ -1,20 +1,242 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="using:ATIS">
+                    xmlns:textBox="using:ATIS.DesignSystem.Controls.TextBox">
 
-    <!--<Style TargetType="local2:Tbl21ClassListPage" xmlns:local2="using:ATIS.Views.Database">
+    <!--  Flaches Template für die innere TextBox  -->
+    <Style x:Key="FlatInnerTextBoxStyle"
+           TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Grid.ColumnSpan" Value="999" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <ScrollViewer x:Name="ContentElement"
+                                  Padding="{TemplateBinding Padding}"
+                                  Background="{TemplateBinding Background}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="textBox:LabeledTextBoxWithError">
+        <Setter Property="BoxBackground" Value="{ThemeResource AtisTextBoxBackgroundBrush}" />
+        <Setter Property="Grid.ColumnSpan" Value="999" />
+        <Setter Property="BoxBorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+        <Setter Property="BoxBorderThickness" Value="1" />
+        <Setter Property="BoxCornerRadius" Value="6" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="textBox:LabeledTextBoxWithError">
+
+                    <Grid Background="Transparent"
+                          BorderBrush="Transparent"
+                          BorderThickness="0"
+                          RowDefinitions="Auto,Auto,Auto">
+
+                        <!--  Header  -->
+                        <TextBlock x:Name="HeaderBlock"
+                                   Grid.Row="0"
+                                   Margin="0,0,0,4"
+                                   FontSize="12"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                   Text="{TemplateBinding Header}" />
+
+                        <!--  Box  -->
+                        <Border x:Name="BorderElement"
+                                Grid.Row="1"
+                                Background="{TemplateBinding BoxBackground}"
+                                BorderBrush="{TemplateBinding BoxBorderBrush}"
+                                BorderThickness="{TemplateBinding BoxBorderThickness}"
+                                CornerRadius="{TemplateBinding BoxCornerRadius}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="BorderElement.Background" Value="#FFEDEDED" />
+                                            <Setter Target="BorderElement.BorderBrush" Value="#FFD0D0D0" />
+                                            <Setter Target="InputElement.Foreground" Value="#FF8A8A8A" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <!--  Innere TextBox  -->
+                            <TextBox x:Name="InputElement"
+                                     MinHeight="32"
+                                     Margin="4,4,4,0"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     MaxLength="{TemplateBinding MaxLength}"
+                                     Style="{StaticResource FlatInnerTextBoxStyle}"
+                                     Text="{TemplateBinding Text}" />
+
+                        </Border>
+
+                        <!--  Fehler  -->
+                        <TextBlock x:Name="ErrorBlock"
+                                   Grid.Row="2"
+                                   Foreground="Red"
+                                   Text="{TemplateBinding ErrorText}"
+                                   Visibility="Collapsed" />
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="NeutralInnerTextBoxStyle"
+           TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="AllowFocusOnInteraction" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
+    </Style>
+
+    <Style x:Key="EditableInnerTextBoxStyle"
+           TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="IsTabStop" Value="True" />
+        <Setter Property="AllowFocusOnInteraction" Value="True" />
+        <Setter Property="Foreground" Value="{ThemeResource TextFillColorPrimaryBrush}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <!--  Normal  -->
+                            <VisualState x:Name="Normal" />
+
+                            <!--  Focused: wir überschreiben den WinUI-Standard  -->
+                            <VisualState x:Name="Focused">
+                                <VisualState.Setters>
+                                    <Setter Target="ContentElement.Background" Value="Transparent" />
+                                    <Setter Target="ContentElement.BorderBrush" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <!--  Disabled  -->
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Target="ContentElement.Foreground" Value="#FF8A8A8A" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                    <Grid>
+                        <ScrollViewer x:Name="ContentElement"
+                                      Padding="0"
+                                      Background="Transparent"
+                                      BorderThickness="0" />
+                    </Grid>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="textBox:LabeledTextBox">
+        <Setter Property="Grid.ColumnSpan" Value="999" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="textBox:LabeledTextBox">
+                    <Grid RowDefinitions="Auto,Auto">
+
+                        <!--  Header  -->
+                        <TextBlock x:Name="HeaderBlock"
+                                   Grid.Row="0"
+                                   Margin="0,0,0,4"
+                                   FontSize="12"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                   Text="{TemplateBinding Header}" />
+
+                        <!--  Border + TextBox  -->
+                        <Border x:Name="BorderElement"
+                                Grid.Row="1"
+                                Padding="4,0"
+                                Background="{StaticResource AtisTextBoxBackgroundBrush}"
+                                BorderBrush="{StaticResource AtisTextBoxBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6">
+
+                            <TextBox x:Name="InputElement"
+                                     MinHeight="32"
+                                     Margin="4,6,4,0"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     MaxLength="{TemplateBinding MaxLength}"
+                                     Style="{StaticResource EditableInnerTextBoxStyle}"
+                                     Text="{TemplateBinding Text}" />
+
+                        </Border>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!--<Style TargetType="textBox:LabeledTextBox">
+    Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+
     <Setter Property="Template">
     <Setter.Value>
-    <ControlTemplate TargetType="local2:Tbl21ClassListPage">
-    <Border
-    Background="{TemplateBinding Background}"
-    BorderBrush="{TemplateBinding BorderBrush}"
-    BorderThickness="{TemplateBinding BorderThickness}">
+    <ControlTemplate TargetType="textBox:LabeledTextBox">
+    <Grid RowDefinitions="Auto,Auto">
+
+    -->
+    <!--  Header  -->
+    <!--
+    <TextBlock Grid.Row="0"
+    Margin="0,0,0,4"
+    Text="{TemplateBinding Header}"
+    FontSize="12"
+    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+
+    -->
+    <!--  Border + TextBox  -->
+    <!--
+    <Border Grid.Row="1"
+    Background="{ThemeResource ControlFillColorDefaultBrush}"
+    BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+    BorderThickness="1"
+    CornerRadius="6"
+    Padding="4,0">
+    <TextBox Text="{TemplateBinding Text}"
+    MaxLength="{TemplateBinding MaxLength}"
+    IsReadOnly="{TemplateBinding IsReadOnly}"
+    BorderThickness="0"
+    Background="Transparent"
+    VerticalAlignment="Center" />
     </Border>
+
+    </Grid>
     </ControlTemplate>
     </Setter.Value>
     </Setter>
     </Style>-->
+
 
 
 </ResourceDictionary>

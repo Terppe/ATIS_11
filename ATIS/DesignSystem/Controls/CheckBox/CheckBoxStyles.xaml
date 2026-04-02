@@ -7,32 +7,32 @@
 
     <Style x:Key="AtisCheckBox"
            TargetType="CheckBox">
-        <Setter Property="Margin" Value="8,18,8,0" />
+        <Setter Property="Margin" Value="0" />
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
 
-                    <Grid ColumnSpacing="8">
+                    <Grid ColumnSpacing="4">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <!--  Box  -->
-                        <Border Width="20"
-                                Height="20"
+                        <Border Width="16"
+                                Height="16"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Background="{ThemeResource AtisTextBoxBackgroundBrush}"
                                 BorderBrush="{ThemeResource AtisTextBoxBorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="4" />
+                                CornerRadius="3" />
 
                         <!--  Haken  -->
                         <FontIcon HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
-                                  FontSize="14"
+                                  FontSize="12"
                                   Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
                                   Glyph="&#xE73E;">
                             <FontIcon.Opacity>
@@ -42,10 +42,8 @@
                             </FontIcon.Opacity>
                         </FontIcon>
 
-                        <!--  Label  -->
                         <ContentPresenter Grid.Column="1"
-                                          VerticalAlignment="Center"
-                                          Foreground="{ThemeResource AtisTextBoxForegroundBrush}" />
+                                          VerticalAlignment="Center" />
                     </Grid>
 
                 </ControlTemplate>

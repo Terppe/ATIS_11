@@ -373,24 +373,19 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <MenuFlyout
-            x:Key="DiseaseDataContextMenu">
-            <MenuFlyoutItem
-                x:Uid="MenuFlyout_Select"
-                Click="DiseaseSelect_Click">
+        <MenuFlyout x:Key="DiseaseDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="DiseaseSelect_Click">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon
-                        ShowAsMonochrome="False"
-                        UriSource="/Assets/Fluent/select.png" />
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem
-                x:Uid="MenuFlyout_Print"
-                Command="{x:Bind PdfDiseaseCommand}">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfDiseaseCommand}">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon
-                        ShowAsMonochrome="False"
-                        UriSource="/Assets/Fluent/pdf.png" />
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
@@ -412,24 +407,19 @@
             </MenuFlyoutItem>
         </MenuFlyout>
 
-        <MenuFlyout
-            x:Key="MiscellaneousDataContextMenu">
-            <MenuFlyoutItem
-                x:Uid="MenuFlyout_Select"
-                Click="MiscellaneousSelect_Click">
+        <MenuFlyout x:Key="MiscellaneousDataContextMenu">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Select"
+                            Click="MiscellaneousSelect_Click">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon
-                        ShowAsMonochrome="False"
-                        UriSource="/Assets/Fluent/select.png" />
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/select.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem
-                x:Uid="MenuFlyout_Print"
-                Command="{x:Bind PdfMiscellaneousCommand}">
+            <MenuFlyoutItem x:Uid="MenuFlyout_Print"
+                            Command="{x:Bind PdfMiscellaneousCommand}">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon
-                        ShowAsMonochrome="False"
-                        UriSource="/Assets/Fluent/pdf.png" />
+                    <BitmapIcon ShowAsMonochrome="False"
+                                UriSource="/Assets/Fluent/pdf.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
@@ -521,19 +511,16 @@
                       x:DataType="models:Tbl75Species">
             <dataTemplates:SearchItemTemplateTbl75SpeciesControl />
         </DataTemplate>
-        <DataTemplate
-            x:Key="SearchItemTemplateTblDisease"
-            x:DataType="models:TblDisease">
+        <DataTemplate x:Key="SearchItemTemplateTblDisease"
+                      x:DataType="models:TblDisease">
             <dataTemplates:SearchItemTemplateTblDiseaseControl />
         </DataTemplate>
-        <DataTemplate
-            x:Key="SearchItemTemplateTblFood"
-            x:DataType="models:TblFood">
+        <DataTemplate x:Key="SearchItemTemplateTblFood"
+                      x:DataType="models:TblFood">
             <dataTemplates:SearchItemTemplateTblFoodControl />
         </DataTemplate>
-        <DataTemplate
-            x:Key="SearchItemTemplateTblMiscellaneous"
-            x:DataType="models:TblMiscellaneous">
+        <DataTemplate x:Key="SearchItemTemplateTblMiscellaneous"
+                      x:DataType="models:TblMiscellaneous">
             <dataTemplates:SearchItemTemplateTblMiscellaneousControl />
         </DataTemplate>
 

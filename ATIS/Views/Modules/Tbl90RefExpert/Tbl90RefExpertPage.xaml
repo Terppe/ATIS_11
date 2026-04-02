@@ -5,11 +5,12 @@
       xmlns:atis="using:ATIS.DesignSystem.Components"
       xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:helpers="using:ATIS.Helpers"
       xmlns:loc="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:helpers="using:ATIS.Helpers"
       x:Name="RootPage"
       mc:Ignorable="d">
+
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -109,6 +110,7 @@
                                                AreRowDetailsFrozen="True"
                                                CanUserSortColumns="True"
                                                GridLinesVisibility="Vertical"
+                                               IsEnabled="{Binding IsInEdit, Converter={StaticResource InverseBoolConverter}}"
                                                ItemsSource="{Binding Items}"
                                                RowBackground="{ThemeResource AtisGridRowBackground}"
                                                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
@@ -171,14 +173,13 @@
                                                                      Binding="{Binding Valid}"
                                                                      CanUserSort="True"
                                                                      Tag="Valid" />
-                                    <!--<controls:DataGridTextColumn loc:Uids.Uid="DataGridTextColumn_Valid"
-                                    Binding="{Binding Valid}"
-                                    CanUserSort="True"
-                                    Tag="Valid" />-->
-
                                 </controls:DataGrid.Columns>
 
                             </controls:DataGrid>
+
+                            <!-- Overlay blockiert Klicks im Edit-Modus -->
+                            <Border Background="#40FFFFFF"
+                                    Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}" />
                         </Grid>
                     </Border>
                 </atis:Base1List1DetailPageLayout.ListContent>
@@ -250,57 +251,70 @@
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
-                                <!--  Row 0  -->
-                                <Grid ColumnDefinitions="Auto,Auto">
+                                <Grid RowDefinitions="Auto,Auto,Auto">
                                     <!--  Header kommt automatisch über UID  -->
-                                    <TextBox Grid.Column="1"
-                                             helpers:FocusHelper.IsFocused="{Binding ShouldFocusRefExpertName}"
+                                    <TextBox x:Name="RefExpertName"
+                                             Grid.Row="1"
+                                             MinWidth="600"
+                                             HorizontalAlignment="Left"
                                              loc:Uids.Uid="TextBox_RefExpertName"
                                              IsEnabled="{Binding IsInEdit}"
                                              MaxLength="300"
-                                             Style="{StaticResource AtisTextBoxLarge}"
-                                             Text="{Binding EditItem.RefExpertName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock Grid.Column="2"
-                                               FontSize="12"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding EditItem.RefExpertName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             helpers:ValidationHelper.HasError="{Binding EditItem.HasRefExpertNameError}" />
+
+                                    <TextBlock Grid.Row="2"
                                                Foreground="Red"
-                                               Text="{Binding EditItem.ErrorsString}"
-                                               TextWrapping="Wrap" />
+                                               Text="{Binding EditItem.RefExpertNameError}"
+                                               Visibility="{Binding EditItem.HasRefExpertNameError, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
 
                                 <!--  Row 1  -->
+
                                 <Grid Grid.Row="1"
-                                      ColumnDefinitions="Auto,Auto,*">
+                                      ColumnDefinitions="Auto,Auto"
+                                      RowDefinitions="Auto,Auto,Auto">
                                     <!--  Header kommt automatisch über UID  -->
-                                    <TextBox Grid.Column="1"
+                                    <TextBox Grid.Row="1"
+                                             Grid.Column="0"
                                              loc:Uids.Uid="TextBox_ValidYear"
                                              IsEnabled="{Binding IsInEdit}"
                                              MaxLength="4"
-                                             Style="{StaticResource AtisTextBoxYear}"
-                                             Text="{Binding EditItem.ValidYear}" />
-                                    <!--<TextBlock Grid.Column="2"
-                                    FontSize="12"
-                                    Foreground="Red"
-                                    Text="{Binding EditItem.ErrorsString}"
-                                    TextWrapping="Wrap" />-->
+                                             Style="{StaticResource AtisTextBox}"
+                                             helpers:ValidationHelper.HasError="{Binding EditItem.HasValidYearError}"
+                                             Text="{Binding EditItem.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <!--  Header kommt automatisch über UID  -->
-                                    <CheckBox Grid.Column="3"
+                                    <CheckBox Grid.Row="1"
+                                              Grid.Column="1"
+                                              Margin="12,0,0,0"
+                                              VerticalAlignment="Bottom"
                                               loc:Uids.Uid="CheckBox_Valid"
                                               IsChecked="{Binding EditItem.Valid, Mode=TwoWay}"
                                               IsEnabled="{Binding IsInEdit}"
                                               Style="{StaticResource AtisCheckBox}" />
+
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Foreground="Red"
+                                               Text="{Binding EditItem.ValidYearError}"
+                                               Visibility="{Binding EditItem.HasValidYearError, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
 
                                 <!--  Row 2  -->
                                 <Grid Grid.Row="2"
-                                      ColumnDefinitions="Auto,*">
+                                      ColumnDefinitions="Auto">
                                     <!--  Header kommt automatisch über UID  -->
-                                    <TextBox Grid.Column="1"
+                                    <TextBox x:Name="Info"
+                                             MinWidth="300"
+                                             HorizontalAlignment="Left"
                                              loc:Uids.Uid="TextBox_Info"
                                              IsEnabled="{Binding IsInEdit}"
                                              MaxLength="100"
-                                             Style="{StaticResource AtisTextBoxMedium}"
-                                             Text="{Binding EditItem.Info}" />
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding EditItem.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                 </Grid>
 
                                 <!--  Row 3  -->
@@ -313,24 +327,9 @@
                                              AcceptsReturn="True"
                                              IsEnabled="{Binding IsInEdit}"
                                              Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.Notes, Mode=TwoWay}"
+                                             Text="{Binding EditItem.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              TextWrapping="Wrap" />
                                 </Grid>
-
-                                <!--<Grid Grid.Row="3"
-                                ColumnSpacing="8">
-                                <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox Height="80"
-                                loc:Uids.Uid="TextBox_Notes"
-                                AcceptsReturn="True"
-                                IsEnabled="{Binding IsInEdit}"
-                                Style="{StaticResource AtisTextBox}"
-                                Text="{Binding EditItem.Notes, Mode=TwoWay}"
-                                TextWrapping="Wrap" />
-                                </Grid>-->
 
                                 <!--  Row 4  -->
                                 <Grid Grid.Row="4"
@@ -342,24 +341,10 @@
                                              AcceptsReturn="True"
                                              IsEnabled="{Binding IsInEdit}"
                                              Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.Memo, Mode=TwoWay}"
+                                             Text="{Binding EditItem.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                              TextWrapping="Wrap" />
                                 </Grid>
 
-                                <!--<Grid Grid.Row="4"
-                                ColumnSpacing="8">
-                                <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox Height="100"
-                                loc:Uids.Uid="TextBox_Memo"
-                                AcceptsReturn="True"
-                                IsEnabled="{Binding IsInEdit}"
-                                Style="{StaticResource AtisTextBox}"
-                                Text="{Binding EditItem.Memo, Mode=TwoWay}"
-                                TextWrapping="Wrap" />
-                                </Grid>-->
                             </Grid>
                         </StackPanel>
                     </Border>

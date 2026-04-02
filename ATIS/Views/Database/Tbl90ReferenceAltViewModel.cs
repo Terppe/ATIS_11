@@ -8,24 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using Windows.System;
 using ATIS.Infrastructure;
 
-//    Tbl93CommentViewModel Skriptdatum:  06.01.2025  10:32    
+//    Tbl90ReferenceViewModel Skriptdatum:  06.01.2025  10:32    
 
 namespace ATIS.Views.Database;
 
-public partial class Tbl93CommentViewModel : ObservableObject
+public partial class Tbl90ReferenceViewModel : ObservableObject
 {
-
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
     private readonly IDataService _data;
-    public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-
-    #endregion [Private Data Members]           
+    public ObservableCollection<Tbl90Reference> ReferenceItems { get; } = [];
+    public int ZRef;
+    public int ZCom;
+    #endregion [Private Data Members]
 
     #region [Constructor]
-    public Tbl93CommentViewModel(IDataService dataService)
+    public Tbl90ReferenceViewModel(IDataService dataService)
     {
         _dataService = dataService;
         GetAllCollections();
@@ -87,7 +87,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         Tbl60SubtribussesAllList = _dataService.GetSubtribusAsync();
 
         Tbl63InfratribussesAllList ??= [];
-        Tbl63InfratribussesAllList = _dataService.GetInfratribusAsync();
+        Tbl63InfratribussesAllList = _dataService.GetInfratribusAsyncAlt();
 
         Tbl66GenussesAllList ??= [];
         Tbl66GenussesAllList = _dataService.GetGenusAsync();
@@ -95,50 +95,55 @@ public partial class Tbl93CommentViewModel : ObservableObject
         Tbl75SpeciessesAllList ??= [];
         Tbl75SpeciessesAllList = _dataService.GetSpeciesAsync();
 
-
+        Tbl90ExpertsAllList ??= [];
+        Tbl90ExpertsAllList = _dataService.GetRefExpertAsyncAlt();
+        Tbl90SourcesAllList ??= [];
+        Tbl90SourcesAllList = _dataService.GetRefSourceAsyncAlt();
+        Tbl90AuthorsAllList ??= [];
+        Tbl90AuthorsAllList = _dataService.GetRefAuthorAsyncAlt();
     }
 
     #endregion [Constructor]
 
     //    Part 1    
 
-    #region [Methods Comment]
-    public async Task AddCommentAsync()
+    #region [Methods Reference]
+    public async Task AddReferenceAsync()
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            IsInEditComment = true;
-            IsNewComment = true;
+            IsInEditReference = true;
+            IsNewReference = true;
 
-            Tbl93CommentsList ??= [];
-            Tbl93CommentsList.Insert(index: 0, item: new Tbl93Comment {});
+            Tbl90ReferencesList ??= [];
+            Tbl90ReferencesList.Insert(index: 0, item: new Tbl90Reference {});
         });
     }
 
-    public async Task SaveCommentAsync(Tbl93Comment viewModelCommentSelected)
+    public async Task SaveReferenceAsync(Tbl90Reference viewModelReferenceSelected)
     {
         await _dispatcherQueue.EnqueueAsync(() =>
         {
-            if (IsNewComment)
+            if (IsNewReference)
             {
-                IsNewComment = false;
+                IsNewReference = false;
             }
         });
 
-        Tbl93Comment result = null;
+        Tbl90Reference result = null;
         try
         {
-            if (IsModifiedComment)
+            if (IsModifiedReference)
             {
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    result = await _dataService.UpsertCommentAsync(viewModelCommentSelected);
-                    IsModifiedComment = false;
+                    result = await _dataService.UpsertReferenceAsync(viewModelReferenceSelected);
+                    IsModifiedReference = false;
                 });
             }
             else
             {
-                IsModifiedComment = true;
+                IsModifiedReference = true;
             }
         }
         catch (DbUpdateException e)
@@ -159,24 +164,24 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
         if (result != null)
         {
-            IsInEditComment = false;
-            IsModifiedComment = false;
-            IsExistingComment = true;
+            IsInEditReference = false;
+            IsModifiedReference = false;
+            IsExistingReference = true;
         }
         else
         {
             _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
         }
     }
-    public async Task DeleteCommentAsync(Tbl93Comment viewModelCommentSelected)
+    public async Task DeleteReferenceAsync(Tbl90Reference viewModelReferenceSelected)
     {
-        Tbl93Comment result = null;
+        Tbl90Reference result = null;
         try
         {
-            var deleteCommentId = viewModelCommentSelected.CommentId;
-            await DeleteComment(deleteCommentId);
+            var deleteReferenceId = viewModelReferenceSelected.ReferenceId;
+            await DeleteReference(deleteReferenceId);
 
-            result = viewModelCommentSelected;
+            result = viewModelReferenceSelected;
         }
         catch (DbUpdateException e)
         {
@@ -196,10 +201,10 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
         if (result != null)
         {
-            IsInEditComment = false;
-            IsModifiedComment = false;
-            IsExistingComment = true;
-            IsDeletingComment = true;
+            IsInEditReference = false;
+            IsModifiedReference = false;
+            IsExistingReference = true;
+            IsDeletingReference = true;
         }
         else
         {
@@ -207,30 +212,31 @@ public partial class Tbl93CommentViewModel : ObservableObject
         }
     }
 
-    private async Task DeleteComment(int commentid)
+    private async Task DeleteReference(int referenceid)
     {
         await _dispatcherQueue.EnqueueAsync(async () =>
         {
-            var comment = await AppData.Data.Tbl93Comments.FirstOrDefaultAsync(b => b.CommentId == commentid);
-            if (comment != null)
+            var reference = await AppData.Data.Tbl90References.FirstOrDefaultAsync(b => b.ReferenceId == referenceid);
+            if (reference != null)
             {
-                //AppData.Data.Tbl93Comments.Remove(comment);
+                //AppData.Data.Tbl90References.Remove(reference);
                 //await AppData.Data.SaveChangesAsync();
             }
         });
     }
 
-    #endregion [Methods Comment ]
+    #endregion [Methods Reference]
 
     //    Part 2    
 
     #region All Properties
 
     #region [Propertys]
+
     //------------IsModified--------------------------------------
-    public bool IsModifiedComment { get; set; }
+    public bool IsModifiedReference { get; set; }
     //------------Load--------------------------------------
-    private bool IsLoaded => CommentItems != null;
+    private bool IsLoaded => ReferenceItems != null;
     public bool IsNotLoaded => !IsLoaded;
 
     private bool _isLoading;
@@ -240,40 +246,42 @@ public partial class Tbl93CommentViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
     //----------IsDeleting-----------------------------------------
-    private bool _isDeletingComment;
-    public bool IsDeletingComment
+    private bool _isDeletingReference;
+    public bool IsDeletingReference
     {
-        get => _isDeletingComment;
-        set => SetProperty(ref _isDeletingComment, value);
+        get => _isDeletingReference;
+        set => SetProperty(ref _isDeletingReference, value);
     }
+
     //------------IsNew---------------------------------------
-    private bool _isNewComment;
-    public bool IsNewComment
+    private bool _isNewReference;
+    public bool IsNewReference
     {
-        get => _isNewComment;
-        set => SetProperty(ref _isNewComment, value);
+        get => _isNewReference;
+        set => SetProperty(ref _isNewReference, value);
     }
 
     //----------IsExisting-----------------------------------------
-    private bool _isExistingComment;
-    public bool IsExistingComment
+    private bool _isExistingReference;
+    public bool IsExistingReference
     {
-        get => _isExistingComment;
-        set => SetProperty(ref _isExistingComment, value);
+        get => _isExistingReference;
+        set => SetProperty(ref _isExistingReference, value);
     }
 
+
     //-----------IsInEdit----------------------------------------
-    private bool _isInEditComment = false;
-    public bool IsInEditComment
+    private bool _isInEditReference = false;
+    public bool IsInEditReference
     {
-        get => _isInEditComment;
-        set => SetProperty(ref _isInEditComment, value);
+        get => _isInEditReference;
+        set => SetProperty(ref _isInEditReference, value);
     }
     //----------StartEdit-----------------------------------------
-    public void StartEditComment()
+    public void StartEditReference()
     {
-        IsInEditComment = true;
-        IsModifiedComment = false;
+        IsInEditReference = true;
+        IsModifiedReference = false;
     }
     //------------BeginEdit---------------------------------------
     public static void BeginEdit()
@@ -281,56 +289,83 @@ public partial class Tbl93CommentViewModel : ObservableObject
         // Not used.
     }
     //---------------EndEdit------------------------------------
-    public async void EndEditComment() => await SaveCommentAsync(CommentSelected);
+    public async void EndEditReference() => await SaveReferenceAsync(ReferenceSelected);
     //-------------CanRefresh--------------------------------------
-    public bool CanRefreshComment => !IsModifiedComment && IsExistingComment;
+    public bool CanRefreshReference => !IsModifiedReference && IsExistingReference;
     //--------------CanRevert-------------------------------------
-    public bool CanRevertComment => IsModifiedComment && IsExistingComment;
+    public bool CanRevertReference => IsModifiedReference && IsExistingReference;
 
-    #endregion [Propertys]
+    #endregion [Propertys]           
 
     #region Selected Properties
 
-    private Tbl93Comment _commentSelected;
-    public Tbl93Comment CommentSelected
+    private Tbl90Reference _referenceSelected;
+    public Tbl90Reference ReferenceSelected
     {
-        get => _commentSelected;
-        set => SetProperty(ref _commentSelected, value);
+         get => _referenceSelected;
+         set => SetProperty(ref _referenceSelected, value);
     }
 
-    #endregion Selected Properties     
+    #endregion Selected Properties             
 
     #region Public Properties
 
-    private int _commentDataSetCount;
-    public int CommentDataSetCount
+    private int _referenceDataSetCount;
+    public int ReferenceDataSetCount
     {
-        get => _commentDataSetCount;
+        get => _referenceDataSetCount;
         set
         {
-            _commentDataSetCount = value; OnPropertyChanged();
+            _referenceDataSetCount = value; OnPropertyChanged();
+        }
+    }
+    private int _referenceExpertDataSetCount;
+    public int ReferenceExpertDataSetCount
+    {
+        get => _referenceExpertDataSetCount;
+        set
+        {
+            _referenceExpertDataSetCount = value; OnPropertyChanged();
+        }
+    }
+    private int _referenceSourceDataSetCount;
+    public int ReferenceSourceDataSetCount
+    {
+        get => _referenceSourceDataSetCount;
+        set
+        {
+            _referenceSourceDataSetCount = value; OnPropertyChanged();
+        }
+    }
+    private int _referenceAuthorDataSetCount;
+    public int ReferenceAuthorDataSetCount
+    {
+        get => _referenceAuthorDataSetCount;
+        set
+        {
+            _referenceAuthorDataSetCount = value; OnPropertyChanged();
         }
     }
 
-    private string _searchCommentInfoOrId = "";
+    private string _searchReferenceInfoOrId = "";
 
-    public string SearchCommentInfoOrId
+    public string SearchReferenceInfoOrId
     {
-        get => _searchCommentInfoOrId;
+        get => _searchReferenceInfoOrId;
         set
         {
-            _searchCommentInfoOrId = value; OnPropertyChanged();
+            _searchReferenceInfoOrId = value; OnPropertyChanged();
         }
     }
 
-    private ObservableCollection<Tbl93Comment> _tbl93CommentsList;
+    private ObservableCollection<Tbl90Reference> _tbl90ReferencesList;
 
-    public ObservableCollection<Tbl93Comment> Tbl93CommentsList
+    public ObservableCollection<Tbl90Reference> Tbl90ReferencesList
     {
-        get => _tbl93CommentsList;
+        get => _tbl90ReferencesList;
         set
         {
-            _tbl93CommentsList = value; OnPropertyChanged();
+            _tbl90ReferencesList = value; OnPropertyChanged();
         }
     }
 
@@ -480,7 +515,7 @@ public partial class Tbl93CommentViewModel : ObservableObject
         get => _tbl45FamiliesAllList;
         set
         {
-            _tbl45FamiliesAllList = value; OnPropertyChanged(   );
+            _tbl45FamiliesAllList = value; OnPropertyChanged();
         }
     }
 
@@ -564,29 +599,87 @@ public partial class Tbl93CommentViewModel : ObservableObject
         }
     }
 
+    private ObservableCollection<Tbl90RefExpert> _tbl90ExpertsAllList = null!;
+    public ObservableCollection<Tbl90RefExpert> Tbl90ExpertsAllList
+    {
+        get => _tbl90ExpertsAllList;
+        set
+        {
+            _tbl90ExpertsAllList = value; OnPropertyChanged();
+        }
+    }
+
+    private ObservableCollection<Tbl90RefSource> _tbl90SourcesAllList = null!;
+    public ObservableCollection<Tbl90RefSource> Tbl90SourcesAllList
+    {
+        get => _tbl90SourcesAllList;
+        set
+        {
+            _tbl90SourcesAllList = value; OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<Tbl90RefAuthor> _tbl90AuthorsAllList = null!;
+    public ObservableCollection<Tbl90RefAuthor> Tbl90AuthorsAllList
+    {
+        get => _tbl90AuthorsAllList;
+        set
+        {
+            _tbl90AuthorsAllList = value; OnPropertyChanged();
+        }
+    }
+    private ObservableCollection<Tbl90RefExpert> _tbl90RefExpertsList = null!;
+    public ObservableCollection<Tbl90RefExpert> Tbl90RefExpertsList
+    {
+        get => _tbl90RefExpertsList;
+        set
+        {
+            _tbl90RefExpertsList = value; OnPropertyChanged();
+        }
+    }
+
+
+    private ObservableCollection<Tbl90RefSource> _tbl90RefSourcesList = null!;
+    public ObservableCollection<Tbl90RefSource> Tbl90RefSourcesList
+    {
+        get => _tbl90RefSourcesList;
+        set
+        {
+            _tbl90RefSourcesList = value; OnPropertyChanged();
+        }
+    }
+
+    private ObservableCollection<Tbl90RefAuthor> _tbl90RefAuthorsList = null!;
+    public ObservableCollection<Tbl90RefAuthor> Tbl90RefAuthorsList
+    {
+        get => _tbl90RefAuthorsList;
+        set
+        {
+            _tbl90RefAuthorsList = value; OnPropertyChanged();
+        }
+    }
 
     #endregion Public Properties  
 
     #region Refresh Methods
 
-    public void RefreshCommentItems()
+    public void RefreshReferenceItems()
     {
-        CommentItems.Clear();
-        if (Tbl93CommentsList != null)
+        ReferenceItems.Clear();
+        if (Tbl90ReferencesList != null)
         {
-            foreach (var item in Tbl93CommentsList)
+            foreach (var item in Tbl90ReferencesList)
             {
-                CommentItems.Add(item);
+                ReferenceItems.Add(item);
             }
 
-            if (Tbl93CommentsList.Count == 0)
+            if (Tbl90ReferencesList.Count == 0)
             {
                 return;
             }
 
-            if (CommentSelected == null && Tbl93CommentsList.Count != 0)
+            if (ReferenceSelected == null && Tbl90ReferencesList.Count != 0)
             {
-                CommentSelected = CommentItems.FirstOrDefault();
+                ReferenceSelected = ReferenceItems.FirstOrDefault();
             }
         }
     }
@@ -595,4 +688,5 @@ public partial class Tbl93CommentViewModel : ObservableObject
 
 
     #endregion All Properties
+
 }

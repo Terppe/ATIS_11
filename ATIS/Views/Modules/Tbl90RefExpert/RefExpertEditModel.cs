@@ -1,5 +1,5 @@
 ﻿using ATIS.Views.Base;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Modules.Tbl90RefExpert;
 
@@ -72,6 +72,35 @@ public class RefExpertEditModel : BaseEditModel
             OnPropertyChanged(nameof(Memo));
         }
     }
+    //-----------------------------------------
+
+
+    public bool HasRefExpertNameError => HasPropertyErrors(nameof(RefExpertName));
+
+    public string? RefExpertNameError
+    {
+        get
+        {
+            if (_errors.ContainsKey(nameof(RefExpertName)))
+                return _errors[nameof(RefExpertName)].FirstOrDefault();
+
+            return null;
+        }
+    }
+    public bool HasValidYearError => HasPropertyErrors(nameof(ValidYear));
+
+    public string? ValidYearError
+    {
+        get
+        {
+            if (_errors.ContainsKey(nameof(ValidYear)))
+                return _errors[nameof(ValidYear)].FirstOrDefault();
+
+            return null;
+        }
+    }
+
+
 
     public int CountId { get; set; }
 
@@ -83,19 +112,48 @@ public class RefExpertEditModel : BaseEditModel
     {
         ClearErrors(nameof(RefExpertName));
 
+        var loc = Localizer.Get();
+
         if (string.IsNullOrWhiteSpace(RefExpertName))
-            AddError(nameof(RefExpertName), "Name darf nicht leer sein.");
+            AddError(nameof(RefExpertName), loc.GetLocalizedString("Error_RefExpertName_Empty"));
 
         if (RefExpertName?.Length < 3)
-            AddError(nameof(RefExpertName), "Name muss mindestens 3 Zeichen lang sein.");
+            AddError(nameof(RefExpertName), loc.GetLocalizedString("Error_RefExpertName_TooShort"));
 
+        OnPropertyChanged(nameof(RefExpertNameError));
+        OnPropertyChanged(nameof(HasRefExpertNameError));
     }
-
     private void ValidateValidYear()
     {
         ClearErrors(nameof(ValidYear));
 
-        if (!string.IsNullOrWhiteSpace(ValidYear) && !int.TryParse(ValidYear, out _))
-            AddError(nameof(ValidYear), "Jahr muss eine Zahl sein.");
+        var loc = Localizer.Get();
+
+        if (string.IsNullOrWhiteSpace(ValidYear))
+        {
+            // Kein Fehler, leeres Feld ist erlaubt
+            goto Notify;
+        }
+
+        if (ValidYear!.Length != 4)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(ValidYear, out var year))
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
+        }
+
+        Notify:
+        OnPropertyChanged(nameof(ValidYearError));
+        OnPropertyChanged(nameof(HasValidYearError));
     }
 }

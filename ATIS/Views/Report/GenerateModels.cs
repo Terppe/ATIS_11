@@ -522,7 +522,7 @@ public abstract class GenrateModels
                 EngName = single.EngName,
                 FraName = single.FraName,
                 PorName = single.PorName,
-                Valid = single.Valid,
+                Valid = (bool)single.Valid,
                 ValidYear = single.ValidYear,
                 Info = single.Info,
                 Memo = single.Memo

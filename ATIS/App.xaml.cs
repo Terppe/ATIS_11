@@ -15,6 +15,7 @@ using ATIS.Views.Main.Disease;
 using ATIS.Views.Main.Food;
 using ATIS.Views.Main.Miscellaneous;
 using ATIS.Views.Modules.Tbl90RefExpert;
+using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
@@ -28,6 +29,10 @@ using WinUIEx;
 using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
 using FoodPage = ATIS.Views.Main.Food.FoodPage;
 using MiscellaneousPage = ATIS.Views.Main.Miscellaneous.MiscellaneousPage;
+using Tbl60SubtribusViewModel = ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusViewModel;
+using Tbl63InfratribusViewModel = ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusViewModel;
+using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorViewModel;
+using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
 using TblCountryViewModel = ATIS.ViewModels.TblCountryViewModel;
 
 namespace ATIS;
@@ -107,6 +112,12 @@ public partial class App : Application
 
         var customPrincipal = new CustomPrincipal();
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
+
+        DebugSettings.BindingFailed += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine("BINDING FAILED: " + e.Message);
+        };
+
     }
 
     //---------------------------------------------------------
@@ -217,8 +228,7 @@ public partial class App : Application
         // THEME SERVICE (KORREKT)
         services.AddSingleton<WinUICommunity.IThemeService, WinUICommunity.ThemeService>();
 
-        // LOCALIZER + DATABASE + DATA SERVICE
-        //services.AddSingleton<ILocalizer, Localizer>();
+        // DATABASE + DATA SERVICE
         services.AddDbContext<AtisDbContext>();
 
         // DATA SERVICE
@@ -264,7 +274,9 @@ public partial class App : Application
         services.AddTransient<Tbl54SupertribusViewModel>();
         services.AddTransient<Tbl57TribusViewModel>();
         services.AddTransient<Tbl60SubtribusViewModel>();
+
         services.AddTransient<Tbl63InfratribusViewModel>();
+
         services.AddTransient<Tbl66GenusViewModel>();
         services.AddTransient<Tbl68SpeciesgroupViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
@@ -273,12 +285,13 @@ public partial class App : Application
         services.AddTransient<Tbl84SynonymViewModel>();
         services.AddTransient<Tbl87GeographicViewModel>();
         services.AddTransient<Tbl90ReferenceViewModel>();
+
         services.AddTransient<Tbl90RefAuthorViewModel>();
-
         services.AddTransient<Tbl90RefExpertViewModel>();
-
         services.AddTransient<Tbl90RefSourceViewModel>();
+
         services.AddTransient<Tbl93CommentViewModel>();
+
         services.AddTransient<TblCountryViewModel>();
         services.AddTransient<TblUserProfileViewModel>();
         services.AddTransient<FoodViewModel>();
@@ -442,11 +455,11 @@ public partial class App : Application
         System.Diagnostics.Debug.WriteLine("UNHANDLED: " + e.Exception);
     }
 
-    // ---------------------------------------------------------
-    // 10. Helper
-    // ---------------------------------------------------------
+// ---------------------------------------------------------
+// 10. Helper
+// ---------------------------------------------------------
 
-    public static T GetService<T>() where T : class
+public static T GetService<T>() where T : class
     {
         return Services.GetRequiredService<T>();
     }

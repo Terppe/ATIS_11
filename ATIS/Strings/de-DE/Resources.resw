@@ -174,6 +174,9 @@
   <data name="AppBarButtonAdd.Label" xml:space="preserve">
     <value>Neu</value>
   </data>
+  <data name="AppBarButtonAdd.Label3" xml:space="preserve">
+    <value>Neu</value>
+  </data>
   <data name="AppBarButtonAdd.Label2" xml:space="preserve">
     <value>Neu</value>
   </data>
@@ -1970,6 +1973,9 @@
   </data>
   <data name="TextBlock_Infratribusses.Text" xml:space="preserve">
     <value>Infratribusse</value>
+  </data>
+  <data name="TextBlock_InfratribusDetail.Text" xml:space="preserve">
+    <value>Infratribus Detail</value>
   </data>
   <data name="TextBlock_Isbn.Text" xml:space="preserve">
     <value>ISBN/ISSN</value>
@@ -4161,8 +4167,56 @@
   <data name="Error_Name_Required" xml:space="preserve">
     <value>Name muss zwischen {0} und {1} Zeichen lang sein.</value>
   </data>
+  <data name="Error_PublicationYear_Length" xml:space="preserve">
+    <value>Das Publikationsjahr muss genau 4 Zeichen haben.</value>
+  </data>
+  <data name="Error_PublicationYear_NotNumber" xml:space="preserve">
+    <value>Das Publikationsjahr muss eine Zahl sein.</value>
+  </data>
+  <data name="Error_PublicationYear_Range" xml:space="preserve">
+    <value>Das Publikationsjahr muss zwischen 1500 und 2100 liegen.</value>
+  </data>
+  <data name="Error_ISBN_TooShort" xml:space="preserve">
+    <value>Die ISBN ist zu kurz</value>
+  </data>
   <data name="Error_Regex_Invalid" xml:space="preserve">
     <value>Der Regex-Ausdruck ist ungültig.</value>
+  </data>
+  <data name="Error_RefExpertName_Empty" xml:space="preserve">
+    <value>Der Expertenname darf nicht leer sein.</value>
+  </data>
+  <data name="Error_InfratribusName_Empty" xml:space="preserve">
+    <value>Der Infratribus-Name darf nicht leer sein.</value>
+  </data>
+  <data name="Error_RefAuthorName_Empty" xml:space="preserve">
+    <value>Der Autorenname darf nicht leer sein</value>
+  </data>
+  <data name="Error_RefExpertName_TooShort" xml:space="preserve">
+    <value>Name muss mindestens 3 Zeichen lang sein.</value>
+  </data>
+  <data name="Error_RefAuthorName_TooShort" xml:space="preserve">
+    <value>Der Autorenname ist zu kurz.</value>
+  </data>
+  <data name="Error_InfratribusName_TooShort" xml:space="preserve">
+    <value>Der Infratribus-Name ist zu kurz.</value>
+  </data>
+  <data name="Error_RefSourceName_TooShort" xml:space="preserve">
+    <value>Name muss mindestens 3 Zeichen lang sein.</value>
+  </data>
+  <data name="Error_RefSourceName_Empty" xml:space="preserve">
+    <value>Der Sourcename darf nicht leer sein.</value>
+  </data>
+  <data name="Error_ValidYear_Length" xml:space="preserve">
+    <value>Jahr muss genau 4 Zeichen haben.</value>
+  </data>
+  <data name="Error_SourceYear_Length" xml:space="preserve">
+    <value>Jahr muss genau 4 Zeichen haben.</value>
+  </data>
+  <data name="Error_ValidYear_NotNumber" xml:space="preserve">
+    <value>Jahr muss eine Zahl sein.</value>
+  </data>
+  <data name="Error_ValidYear_Range" xml:space="preserve">
+    <value>Jahr muss zwischen 1500 und 2100 liegen.</value>
   </data>
   <data name="Error_RecordExists_Title" xml:space="preserve">
     <value>Datensatz existiert bereits</value>
@@ -4190,6 +4244,18 @@
   </data>
   <data name="ErrorDuplicate" xml:space="preserve">
     <value>Ein identischer Datensatz existiert bereits.</value>
+  </data>
+  <data name="Error_Author_TooShort" xml:space="preserve">
+    <value>Name muss mindestens 3 Zeichen lang sein.</value>
+  </data>
+  <data name="Error_AuthorYear_Range" xml:space="preserve">
+    <value>Das Autorenjahr muss zwischen 1500 und 2100 liegen.</value>
+  </data>
+  <data name="Error_AuthorYear_Length" xml:space="preserve">
+    <value>Das Autorenjahr muss genau 4 Zeichen haben.</value>
+  </data>
+  <data name="Error_AuthorYear_NotNumber" xml:space="preserve">
+    <value>Das Autorenjahr muss eine Zahl sein.</value>
   </data>
   <data name="ErrorFixBeforeSave" xml:space="preserve">
     <value>Bitte korrigiere die Fehler, bevor du speicherst.</value>
