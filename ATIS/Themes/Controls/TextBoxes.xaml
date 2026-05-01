@@ -3,94 +3,115 @@
 
 
 <!--<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style TargetType="TextBox">
-        <Setter Property="Background" Value="{ThemeResource AppSurfaceBrush}" />
-        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
-        <Setter Property="BorderBrush" Value="{ThemeResource CardBorderBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Padding" Value="8,4" />
-    </Style>
+<Style TargetType="TextBox">
+<Setter Property="Background" Value="{ThemeResource AppSurfaceBrush}" />
+<Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
+<Setter Property="BorderBrush" Value="{ThemeResource CardBorderBrush}" />
+<Setter Property="BorderThickness" Value="1" />
+<Setter Property="CornerRadius" Value="6" />
+<Setter Property="Padding" Value="8,4" />
+</Style>
 
 </ResourceDictionary>-->
 
 <!--  Anwendung  -->
 <!--<Style TargetType="TextBox"
-       BasedOn="{StaticResource UniversalBorderStyle}" />-->
+BasedOn="{StaticResource UniversalBorderStyle}" />-->
 
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <Style TargetType="TextBox">
+    <!--<Style x:Key="AtisTextBox"
+    BasedOn="{x:Null}"
+    TargetType="TextBox">
 
-        <Setter Property="Background" Value="{ThemeResource AppSurfaceBrush}" />
-        <Setter Property="Foreground" Value="{ThemeResource TextPrimaryBrush}" />
-        <Setter Property="BorderBrush" Value="{ThemeResource CardBorderBrush}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="Padding" Value="10,6" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
-        <Setter Property="UseSystemFocusVisuals" Value="False" />
+    <Setter Property="Background" Value="White" />
+    <Setter Property="Foreground" Value="Black" />
+    <Setter Property="BorderBrush" Value="Gray" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Padding" Value="8,4" />
+    <Setter Property="MinHeight" Value="32" />
 
+    <Setter Property="Template">
+    <Setter.Value>
+    <ControlTemplate TargetType="TextBox">
 
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Grid>
+    <Grid x:Name="RootGrid">
 
-                        <VisualStateManager.VisualStateGroups>
+    <VisualStateManager.VisualStateGroups>
 
-                            <VisualStateGroup x:Name="CommonStates">
+    --><!--  COMMON STATES  --><!--
+    <VisualStateGroup x:Name="CommonStates">
 
-                                <VisualState x:Name="Normal" />
+    <VisualState x:Name="Normal" />
 
-                                <VisualState x:Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.Background" Value="{ThemeResource ControlHoverBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
+    <VisualState x:Name="PointerOver">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="DarkGray" />
+    </VisualState.Setters>
+    </VisualState>
 
-                                <VisualState x:Name="Focused">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource BrandAccentBrush}" />
-                                        <Setter Target="BorderElement.BorderThickness" Value="2" />
-                                    </VisualState.Setters>
-                                </VisualState>
+    <VisualState x:Name="Focused">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="#0067C0" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    </VisualState.Setters>
+    </VisualState>
 
-                                <VisualState x:Name="Disabled">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.Background" Value="{ThemeResource ControlDisabledBrush}" />
-                                        <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource ControlDisabledBorderBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
+    <VisualState x:Name="InvalidFocused">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="Red" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    <Setter Target="this.Foreground" Value="Red" />
+    </VisualState.Setters>
+    </VisualState>
 
-                            </VisualStateGroup>
+    </VisualStateGroup>
 
-                        </VisualStateManager.VisualStateGroups>
+    --><!--  VALIDATION STATES  --><!--
+    <VisualStateGroup x:Name="ValidationStates">
 
-                        <Border x:Name="BorderElement"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{TemplateBinding CornerRadius}" />
+    <VisualState x:Name="Valid" />
 
-                        <ScrollViewer x:Name="ContentElement"
-                                      Margin="{TemplateBinding Padding}"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      IsTabStop="False"
-                                      VerticalScrollBarVisibility="Hidden" />
+    <VisualState x:Name="Invalid">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="Red" />
+    <Setter Target="BorderElement.BorderThickness" Value="4" />
+    <Setter Target="this.Foreground" Value="Red" />
+    </VisualState.Setters>
+    </VisualState>
 
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    </VisualStateGroup>
 
-    </Style>
+    </VisualStateManager.VisualStateGroups>
+
+    --><!--  BORDER + CONTENT  --><!--
+    <Border x:Name="BorderElement"
+    Background="{TemplateBinding Background}"
+    BorderBrush="{TemplateBinding BorderBrush}"
+    BorderThickness="{TemplateBinding BorderThickness}"
+    CornerRadius="6">
+
+    <ScrollViewer x:Name="ContentElement"
+    Padding="0"
+    Background="{x:Null}"
+    BorderThickness="0"
+    VerticalScrollBarVisibility="Hidden">
+    <ContentPresenter />
+    </ScrollViewer>
+
+    </Border>
+
+    </Grid>
+
+    </ControlTemplate>
+    </Setter.Value>
+    </Setter>
+
+    </Style>-->
 
 </ResourceDictionary>
 

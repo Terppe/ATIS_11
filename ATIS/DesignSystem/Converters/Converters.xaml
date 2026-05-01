@@ -32,6 +32,11 @@
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:IdToNameConverter x:Key="IdToNameConverter" />
     <converters:NeutralLookupConverter x:Key="NeutralLookupConverter" />
+    <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+    <converters:ValidationBorderBrushConverter x:Key="ValidationBorderBrushConverter" />
+    <converters:ValidationBorderThicknessConverter x:Key="ValidationBorderThicknessConverter" />
+    <converters:BoolToBorderThicknessConverter x:Key="BoolToBorderThicknessConverter" />
+    <converters:BoolToRedBrushConverter x:Key="BoolToRedBrushConverter" />
 
 </ResourceDictionary>
 

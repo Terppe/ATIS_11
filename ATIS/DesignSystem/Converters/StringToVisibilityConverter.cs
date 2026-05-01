@@ -5,9 +5,11 @@ namespace ATIS.DesignSystem.Converters;
 public class StringToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
-        => string.IsNullOrWhiteSpace(value as string)
-            ? Visibility.Collapsed
-            : Visibility.Visible;
+    {
+        return (value is string str && !string.IsNullOrEmpty(str))
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
         => throw new NotImplementedException();

@@ -7,13 +7,18 @@
 
     <Style x:Key="AtisCheckBox"
            TargetType="CheckBox">
+
         <Setter Property="Margin" Value="0" />
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
 
-                    <Grid ColumnSpacing="4">
+                    <Grid
+                        MinHeight="32"
+                        VerticalAlignment="Center"
+                        ColumnSpacing="4">
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="16" />
                             <ColumnDefinition Width="*" />
@@ -30,7 +35,8 @@
                                 CornerRadius="3" />
 
                         <!--  Haken  -->
-                        <FontIcon HorizontalAlignment="Center"
+                        <FontIcon Grid.Column="0"
+                                  HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
                                   FontSize="12"
                                   Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
@@ -42,14 +48,69 @@
                             </FontIcon.Opacity>
                         </FontIcon>
 
+                        <!--  EINZIGER ContentPresenter  -->
                         <ContentPresenter Grid.Column="1"
-                                          VerticalAlignment="Center" />
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+
                     </Grid>
 
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <!--<Style x:Key="AtisCheckBox"
+    TargetType="CheckBox">
+    <Setter Property="Margin" Value="0" />
+
+    <Setter Property="Template">
+    <Setter.Value>
+    <ControlTemplate TargetType="CheckBox">
+
+    <Grid ColumnSpacing="4">
+    <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="16" />
+    <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    -->
+    <!--  Box  -->
+    <!--
+    <Border Width="16"
+    Height="16"
+    HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    Background="{ThemeResource AtisTextBoxBackgroundBrush}"
+    BorderBrush="{ThemeResource AtisTextBoxBorderBrush}"
+    BorderThickness="1"
+    CornerRadius="3" />
+
+    -->
+    <!--  Haken  -->
+    <!--
+    <FontIcon HorizontalAlignment="Center"
+    VerticalAlignment="Center"
+    FontSize="12"
+    Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
+    Glyph="&#xE73E;">
+    <FontIcon.Opacity>
+    <Binding Converter="{StaticResource BoolToOpacityConverter}"
+    Path="IsChecked"
+    RelativeSource="{RelativeSource TemplatedParent}" />
+    </FontIcon.Opacity>
+    </FontIcon>
+
+    <ContentPresenter Grid.Column="1"
+    VerticalAlignment="Center" />
+    </Grid>
+
+    </ControlTemplate>
+    </Setter.Value>
+    </Setter>
+    </Style>-->
 
 </ResourceDictionary>
 

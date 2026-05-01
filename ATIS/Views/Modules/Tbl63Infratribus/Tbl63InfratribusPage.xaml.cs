@@ -45,7 +45,7 @@ public sealed partial class Tbl63InfratribusPage : Page
         {
             SearchBox.Text = "";
             await ViewModel.ApplyFilterAsync("");
-            ViewModel.SelectItem(null);
+     //       ViewModel.SelectItem(null);
            // UpdateRowSelection();
         }
     }

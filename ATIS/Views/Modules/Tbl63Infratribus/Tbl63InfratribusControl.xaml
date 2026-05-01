@@ -100,7 +100,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--  Header content wie bisher  -->
-                        <Button Grid.Column="0"
+                        <!--<Button Grid.Column="0"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Command="{x:Bind ViewModel.SortCommand}"
@@ -108,9 +108,9 @@
                             <TextBlock FontWeight="SemiBold"
                                        Foreground="#333"
                                        Text="ID" />
-                        </Button>
+                        </Button>-->
 
-                        <Button Grid.Column="1"
+                        <!--<Button Grid.Column="1"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Command="{x:Bind ViewModel.SortCommand}"
@@ -118,7 +118,7 @@
                             <TextBlock FontWeight="SemiBold"
                                        Foreground="#333"
                                        Text="Name" />
-                        </Button>
+                        </Button>-->
 
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"

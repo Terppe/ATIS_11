@@ -29,7 +29,6 @@ using WinUIEx;
 using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
 using FoodPage = ATIS.Views.Main.Food.FoodPage;
 using MiscellaneousPage = ATIS.Views.Main.Miscellaneous.MiscellaneousPage;
-using Tbl60SubtribusViewModel = ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusViewModel;
 using Tbl63InfratribusViewModel = ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusViewModel;
 using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorViewModel;
 using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
@@ -272,12 +271,12 @@ public partial class App : Application
         services.AddTransient<Tbl48SubfamilyViewModel>();
         services.AddTransient<Tbl51InfrafamilyViewModel>();
         services.AddTransient<Tbl54SupertribusViewModel>();
-        services.AddTransient<Tbl57TribusViewModel>();
-        services.AddTransient<Tbl60SubtribusViewModel>();
+        services.AddTransient<Tbl57TribusAltViewModel>();
 
+        services.AddTransient<Tbl60SubtribusViewModel>();
         services.AddTransient<Tbl63InfratribusViewModel>();
 
-        services.AddTransient<Tbl66GenusViewModel>();
+        services.AddTransient<Tbl66GenusAltViewModel>();
         services.AddTransient<Tbl68SpeciesgroupViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
         services.AddTransient<Tbl78NameViewModel>();
@@ -397,6 +396,15 @@ public partial class App : Application
                             target.Inlines.Add(new Run() { Text = arguments.Value });
                         }
                     }))
+            //.AddLocalizationAction(new LocalizationActions.ActionItem(
+            //    typeof(ComboBox),
+            //    arguments =>
+            //    {
+            //        if (arguments.DependencyObject is ComboBox target)
+            //        {
+            //            target.Header = arguments.Value;
+            //        }
+            //    }))
             .SetOptions(options =>
             {
                 //    options.DefaultLanguage = "de-DE";
@@ -449,17 +457,40 @@ public partial class App : Application
     {
         e.Handled = true;
 
-        Debug.WriteLine("🔥 UNHANDLED EXCEPTION:");
-        Debug.WriteLine(e.Exception?.Message);
-        Debug.WriteLine(e.Exception?.StackTrace);
-        System.Diagnostics.Debug.WriteLine("UNHANDLED: " + e.Exception);
+        if (e.Exception is Exception ex)
+        {
+            Debug.WriteLine("🔥 UNHANDLED EXCEPTION:");
+            Debug.WriteLine(ex.Message);
+            Debug.WriteLine(ex.StackTrace);
+
+            if (ex.InnerException != null)
+            {
+                Debug.WriteLine("➡ INNER EXCEPTION:");
+                Debug.WriteLine(ex.InnerException.Message);
+                Debug.WriteLine(ex.InnerException.StackTrace);
+            }
+            Debug.WriteLine($"[{DateTime.Now:HH:mm:ss}] 🔥 {ex.Message}");
+            LogException(ex);
+        }
+
+    }
+    private void LogException(Exception ex)
+    {
+        while (ex != null)
+        {
+            Debug.WriteLine($"[{DateTime.Now:HH:mm:ss}] 🔥 {ex.GetType().Name}: {ex.Message}");
+            Debug.WriteLine(ex.StackTrace);
+            ex = ex.InnerException;
+            if (ex != null)
+                Debug.WriteLine("➡ INNER EXCEPTION:");
+        }
     }
 
-// ---------------------------------------------------------
-// 10. Helper
-// ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // 10. Helper
+    // ---------------------------------------------------------
 
-public static T GetService<T>() where T : class
+    public static T GetService<T>() where T : class
     {
         return Services.GetRequiredService<T>();
     }
@@ -479,7 +510,7 @@ public static T GetService<T>() where T : class
         Localizer.Get().SetLanguage(culture);
     }
 
-
+    // MainWindow.xaml.cs
 
     public static string AppConfigFolderPath { get; private set; } = string.Empty;
     public static string StringsFolderPath { get; private set; } = string.Empty;

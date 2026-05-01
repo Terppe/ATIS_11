@@ -174,6 +174,9 @@
   <data name="AppBarButtonAdd.Label" xml:space="preserve">
     <value>Neu</value>
   </data>
+  <data name="AppBarButtonAdd.Label4" xml:space="preserve">
+    <value>Neu</value>
+  </data>
   <data name="AppBarButtonAdd.Label3" xml:space="preserve">
     <value>Neu</value>
   </data>
@@ -245,6 +248,9 @@
   </data>
   <data name="ConfirmExitMessage" xml:space="preserve">
     <value>Wollen Sie die Anwendung beenden ?</value>
+  </data>
+  <data name="Confirm_Delete_Title" xml:space="preserve">
+    <value>Datensatz löschen</value>
   </data>
   <data name="ComboBox_ClassName.Header" xml:space="preserve">
     <value>Klasse Name</value>
@@ -363,8 +369,17 @@
   <data name="Confirm_Title" xml:space="preserve">
     <value>Bestätigung</value>
   </data>
+  <data name="Confirm_Save_Title" xml:space="preserve">
+    <value>Änderungen speichern</value>
+  </data>
   <data name="Confirm_Message" xml:space="preserve">
     <value>Möchten Sie fortfahren?</value>
+  </data>
+  <data name="Confirm_Delete_Message" xml:space="preserve">
+    <value>Soll der ausgewählte Datensatz wirklich gelöscht werden?</value>
+  </data>
+  <data name="Confirm_Save_Message" xml:space="preserve">
+    <value>Möchten Sie die Änderungen wirklich speichern?</value>
   </data>
   <data name="Country_ZoomLevel_Placeholder" xml:space="preserve">
     <value>Zoomstufe…</value>
@@ -2421,6 +2436,15 @@
   <data name="TextBlock_Valid_Year.Text" xml:space="preserve">
     <value>Gültig/Jahr</value>
   </data>
+  <data name="TextBlock_Year.Text" xml:space="preserve">
+    <value>Jahr</value>
+  </data>
+  <data name="Year.Text1" xml:space="preserve">
+    <value>Gültig/Jahr</value>
+  </data>
+  <data name="TextBlock_Valid.Text" xml:space="preserve">
+    <value>Gültig</value>
+  </data>
   <data name="TextBlock_Valid_Year_Isbn.Text" xml:space="preserve">
     <value>Gültig/Jahr/ISBN</value>
   </data>
@@ -4116,6 +4140,12 @@
   <data name="Delete_Success_Message" xml:space="preserve">
     <value>Der Datensatz wurde erfolgreich gelöscht.</value>
   </data>
+  <data name="Error_NotPossible_Title" xml:space="preserve">
+    <value>Löschen nicht möglich.</value>
+  </data>
+  <data name="Error_NotPossible_Message" xml:space="preserve">
+    <value>Es existieren noch abhängige Datensätze.</value>
+  </data>
   <data name="Delete_Success_Title" xml:space="preserve">
     <value>Gelöscht</value>
   </data>
@@ -4187,6 +4217,15 @@
   </data>
   <data name="Error_InfratribusName_Empty" xml:space="preserve">
     <value>Der Infratribus-Name darf nicht leer sein.</value>
+  </data>
+  <data name="Error_SubtribusName_Empty" xml:space="preserve">
+    <value>Der Infratribus-Name darf nicht leer sein.</value>
+  </data>
+  <data name="Error_SubtribusName_TooLong" xml:space="preserve">
+    <value>Der Infratribus-Name darf nicht länger als 100 Zeichen sein.</value>
+  </data>
+  <data name="Error_Info_TooLong" xml:space="preserve">
+    <value>Die Info darf nicht länger als 100 Zeichen sein.</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Der Autorenname darf nicht leer sein</value>

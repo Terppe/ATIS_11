@@ -9,9 +9,9 @@ using Microsoft.UI.Xaml.Input;
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
 public class Tbl63InfratribusViewModel
-    : BaseBossSortableViewModel<Models.Tbl63Infratribus>
+    : BaseListViewModel<Models.Tbl63Infratribus>
 {
-    private readonly IDataService _data;
+    private new readonly IDataService _data;
     private readonly IUserService _user;
 
     public IAsyncRelayCommand SaveCommentCommand { get; }
@@ -23,22 +23,22 @@ public class Tbl63InfratribusViewModel
     // ---------------------------------------------------------
     public Tbl93CommentViewModel CommentViewModel { get; }
 
-    public Tbl63InfratribusViewModel(IDataService data, IUserService user)
+    public Tbl63InfratribusViewModel(IDataService data, IUserService user) : base(data)
     {
         _data = data;
         _user = user;
 
-        CommentViewModel = new Tbl93CommentViewModel(data);
-        CommentViewModel.Parent = this;
+        //CommentViewModel = new Tbl93CommentViewModel(data);
+        //CommentViewModel.Parent = this;
 
-        SaveCommentCommand = new AsyncRelayCommand(
-            SaveCommentAsync,
-            () => CommentViewModel.SelectedComment != null
-        );
-        DeleteCommentCommand = new AsyncRelayCommand(
-            DeleteCommentAsync,
-            () => CommentViewModel.SelectedComment != null
-        );
+        //SaveCommentCommand = new AsyncRelayCommand(
+        //    SaveCommentAsync,
+        //    () => CommentViewModel.SelectedComment != null
+        //);
+        //DeleteCommentCommand = new AsyncRelayCommand(
+        //    DeleteCommentAsync,
+        //    () => CommentViewModel.SelectedComment != null
+        //);
         NewCommentCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(
             NewComment,
             () => SelectedItem != null
@@ -91,9 +91,9 @@ public class Tbl63InfratribusViewModel
     // ---------------------------------------------------------
     public  async Task LoadAsync()
     {
-        await base.LoadAsync();
+ //       await base.LoadAsync();
 
-        CommentViewModel.Reset();
+   //     CommentViewModel.Reset();
 
         await LoadSubtribusAsync();
 
@@ -102,22 +102,22 @@ public class Tbl63InfratribusViewModel
     //----------------------------------------------------------
     // SEARCH (serverseitig)
     //----------------------------------------------------------
-    public async Task ApplyFilterAsync(string search)
+    public override async Task ApplyFilterAsync(string search)
     {
-        _currentFilter = search ?? "";
+   //     _currentFilter = search ?? "";
 
-        if (string.IsNullOrWhiteSpace(_currentFilter))
-        {
-            Items.Clear();
-   //         DataSetCount = 0;
-            return;
-        }
+   //     if (string.IsNullOrWhiteSpace(_currentFilter))
+   //     {
+   //         Items.Clear();
+   ////         DataSetCount = 0;
+   //         return;
+   //     }
 
-        var result = await _data.SearchInfratribusAsync(_currentFilter);
+   //     var result = await _data.SearchInfratribusAsync(_currentFilter);
 
-        Items.Clear();
-        foreach (var item in result)
-            Items.Add(item);
+        //Items.Clear();
+        //foreach (var item in result)
+        //    Items.Add(item);
 
     //    DataSetCount = Items.Count;
     }
@@ -135,15 +135,15 @@ public class Tbl63InfratribusViewModel
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-    protected override Models.Tbl63Infratribus CreateNewDomain()
-    {
-        return new Models.Tbl63Infratribus
-        {
-            Valid = false,
-            ValidYear = DateTime.Now.Year.ToString(),
-            SubtribusId = 0
-        };
-    }
+    //protected override Models.Tbl63Infratribus CreateNewDomain()
+    //{
+    //    return new Models.Tbl63Infratribus
+    //    {
+    //        Valid = false,
+    //        ValidYear = DateTime.Now.Year.ToString(),
+    //        SubtribusId = 0
+    //    };
+    //}
     private void NewComment()
     {
         Debug.WriteLine("NewComment");
@@ -157,42 +157,42 @@ public class Tbl63InfratribusViewModel
             ValidYear = DateTime.Now.Year.ToString()
         };
 
-        CommentViewModel.Comments.Add(newComment);
-        CommentViewModel.SelectedComment = newComment;
+        //CommentViewModel.Comments.Add(newComment);
+        //CommentViewModel.SelectedComment = newComment;
     }
 
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-    protected override Task<Models.Tbl63Infratribus> SaveDomainAsync(Models.Tbl63Infratribus domain)
-    {
-        return _data.UpsertInfratribusAsync(domain);
-      //  RestoreRowFocusToSelected();
-    }
+    //protected override Task<Models.Tbl63Infratribus> SaveDomainAsync(Models.Tbl63Infratribus domain)
+    //{
+    //    return _data.UpsertInfratribusAsync(domain);
+    //  //  RestoreRowFocusToSelected();
+    //}
 
     private async Task SaveCommentAsync()
     {
-        if (CommentViewModel.SelectedComment == null)
-            return;
+        //if (CommentViewModel.SelectedComment == null)
+        //    return;
 
-        await _data.UpsertCommentAsync(CommentViewModel.SelectedComment);
+        //await _data.UpsertCommentAsync(CommentViewModel.SelectedComment);
     }
 
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-    protected override async Task DeleteDomainAsync(Models.Tbl63Infratribus domain)
-    {
-        if (await _data.HasGenusAsync(domain.InfratribusId))
-        {
-            await ShowErrorAsync("Löschen nicht möglich. Es existieren abhängige Genus-Datensätze.");
-            return;
-        }
+    //protected override async Task DeleteDomainAsync(Models.Tbl63Infratribus domain)
+    //{
+    //    if (await _data.HasGenusAsync(domain.InfratribusId))
+    //    {
+    //        await ShowErrorAsync("Löschen nicht möglich. Es existieren abhängige Genus-Datensätze.");
+    //        return;
+    //    }
 
-        await _data.DeleteCommentsAsync(domain.InfratribusId);
-        await _data.DeleteReferencesAsync(domain.InfratribusId);
-        await _data.DeleteInfratribusAsync(domain.InfratribusId);
-    }
+    //    await _data.DeleteCommentsAsync(domain.InfratribusId);
+    //    await _data.DeleteReferencesAsync(domain.InfratribusId);
+    //    await _data.DeleteInfratribusAsync(domain.InfratribusId);
+    //}
 
     private Task ShowErrorAsync(string message)
     {
@@ -201,36 +201,71 @@ public class Tbl63InfratribusViewModel
     }
     private async Task DeleteCommentAsync()
     {
-        if (CommentViewModel.SelectedComment == null)
-            return;
+        //if (CommentViewModel.SelectedComment == null)
+        //    return;
 
-        var comment = CommentViewModel.SelectedComment;
+        //var comment = CommentViewModel.SelectedComment;
 
-        await _data.DeleteCommentAsync(comment.CommentId);
+        //await _data.DeleteCommentAsync(comment.CommentId);
 
-        CommentViewModel.Comments.Remove(comment);
-        CommentViewModel.SelectedComment =
-            CommentViewModel.Comments.FirstOrDefault();
+        //CommentViewModel.Comments.Remove(comment);
+        //CommentViewModel.SelectedComment =
+        //    CommentViewModel.Comments.FirstOrDefault();
     }
 
     // ---------------------------------------------------------
     // LOAD (für ReloadAndSelectAsync)
     // ---------------------------------------------------------
-    protected override Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
-        => _data.GetAllInfratribusAsync();
+    //protected  Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
+    //    => _data.GetAllInfratribusAsync();
 
-    protected override Task<IEnumerable<Models.Tbl63Infratribus>> SearchAsync(string filter)
-        => _data.SearchInfratribusAsync(filter);
+    protected   async Task<IEnumerable<Models.Tbl63Infratribus>> LoadAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected async Task<IEnumerable<Models.Tbl63Infratribus>> SearchAsync(string filter)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected int GetId(Models.Tbl63Infratribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override Models.Tbl63Infratribus CreateNewItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<Models.Tbl63Infratribus> SaveItemAsync(Models.Tbl63Infratribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl63Infratribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    //protected override Task<IEnumerable<Models.Tbl63Infratribus>> SearchAsync(string filter)
+    //    => _data.SearchInfratribusAsync(filter);
 
     // ---------------------------------------------------------
     // SELECTION CHANGED
     // ---------------------------------------------------------
-    protected override async Task OnSelectedItemChangedAsync()
+    public override async Task OnSelectedItemChangedAsync()
     {
-        if (SelectedItem != null)
-            await CommentViewModel.LoadCommentsAsync(SelectedItem.InfratribusId);
-        else
-            CommentViewModel.Reset();
+        //if (SelectedItem != null)
+        //    await CommentViewModel.LoadCommentsAsync(SelectedItem.InfratribusId);
+        //else
+        //    CommentViewModel.Reset();
 
 
         SaveCommentCommand.NotifyCanExecuteChanged();
@@ -242,26 +277,26 @@ public class Tbl63InfratribusViewModel
     // ---------------------------------------------------------
     // ID COMPARISON
     // ---------------------------------------------------------
-    protected override int GetId(Models.Tbl63Infratribus domain)
-        => domain.InfratribusId;
+    //protected override int GetId(Models.Tbl63Infratribus domain)
+    //    => domain.InfratribusId;
 
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-    protected override IEnumerable<Models.Tbl63Infratribus> SortItems(string column, bool ascending)
-    {
-        return column switch
-        {
-            "Id" => ascending ? Items.OrderBy(x => x.InfratribusId) : Items.OrderByDescending(x => x.InfratribusId),
-            "Extra1" => ascending ? Items.OrderBy(x => x.InfratribusName) : Items.OrderByDescending(x => x.InfratribusName),
-            "Extra2" => ascending ? Items.OrderBy(x => x.SubtribusId) : Items.OrderByDescending(x => x.SubtribusId),
-            "Extra3" => ascending ? Items.OrderBy(x => x.Valid) : Items.OrderByDescending(x => x.Valid),
-            "Extra4" => ascending ? Items.OrderBy(x => x.ValidYear) : Items.OrderByDescending(x => x.ValidYear),
-            "Extra5" => ascending ? Items.OrderBy(x => x.Author) : Items.OrderByDescending(x => x.Author),
-            "Extra6" => ascending ? Items.OrderBy(x => x.AuthorYear) : Items.OrderByDescending(x => x.AuthorYear),
-            _ => Items
-        };
-    }
+    //protected override IEnumerable<Models.Tbl63Infratribus> SortItems(string column, bool ascending)
+    //{
+    //    return column switch
+    //    {
+    //        "Id" => ascending ? Items.OrderBy(x => x.InfratribusId) : Items.OrderByDescending(x => x.InfratribusId),
+    //        "Extra1" => ascending ? Items.OrderBy(x => x.InfratribusName) : Items.OrderByDescending(x => x.InfratribusName),
+    //        "Extra2" => ascending ? Items.OrderBy(x => x.SubtribusId) : Items.OrderByDescending(x => x.SubtribusId),
+    //        "Extra3" => ascending ? Items.OrderBy(x => x.Valid) : Items.OrderByDescending(x => x.Valid),
+    //        "Extra4" => ascending ? Items.OrderBy(x => x.ValidYear) : Items.OrderByDescending(x => x.ValidYear),
+    //        "Extra5" => ascending ? Items.OrderBy(x => x.Author) : Items.OrderByDescending(x => x.Author),
+    //        "Extra6" => ascending ? Items.OrderBy(x => x.AuthorYear) : Items.OrderByDescending(x => x.AuthorYear),
+    //        _ => Items
+    //    };
+    //}
 
 
 //// ---------------------------------------------------------

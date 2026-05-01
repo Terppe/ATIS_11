@@ -5,7 +5,7 @@ using ATIS.Interfaces;
 
 namespace ATIS.Models;
 
-public class Tbl63Infratribus : ObservableObject, ICopyable<Tbl63Infratribus>, IDataService.IAuditable
+public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, ICopyable<Tbl63Infratribus>
 {
     // ---------------------------------------------------------
     // PRIMARY KEY
@@ -35,7 +35,7 @@ public class Tbl63Infratribus : ObservableObject, ICopyable<Tbl63Infratribus>, I
     }
 
     // ---------------------------------------------------------
-    // Navigation: Subtribus
+    // Navigation: Subtribus andere Lösung suchen
     // ---------------------------------------------------------
     public Tbl60Subtribus? Subtribus { get; set; }
 

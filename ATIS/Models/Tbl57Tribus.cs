@@ -1,46 +1,111 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using ATIS.Interfaces;
 
 namespace ATIS.Models;
 
-public class Tbl57Tribus
+public class Tbl57Tribus : ObservableObject, IDataService.IAuditable
 {
+    // ---------------------------------------------------------
+    // PRIMARY KEY
+    // ---------------------------------------------------------
     [Key]
-
     public int TribusId { get; set; }
-    [Required(ErrorMessageResourceName = "RequiredTribusName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    //  [MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    // [MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string TribusName { get; set; }
+
+    // ---------------------------------------------------------
+    // TribusName (Pflicht)
+    // ---------------------------------------------------------
+    [Required]
+    [StringLength(100)]
+    public string? TribusName { get; set; }
+
+    // ---------------------------------------------------------
+    // SupertribusId (FK, Pflicht)
+    // ---------------------------------------------------------
     [Required]
     public int SupertribusId { get; set; }
+
+    // ---------------------------------------------------------
+    // CountId (Pflicht)
+    // ---------------------------------------------------------
     [Required]
     public int CountId { get; set; }
-    public bool Valid { get; set; }
-    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string ValidYear { get; set; }
-    public string Synonym { get; set; }
-    [StringLength(60, ErrorMessageResourceName = "StringLength_60", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Author { get; set; }
-    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string AuthorYear { get; set; }
-    public string Info { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string EngName { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string GerName { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string FraName { get; set; }
-    [StringLength(200, ErrorMessageResourceName = "StringLength_200", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string PorName { get; set; }
-    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Writer { get; set; }
-    public DateTime WriterDate { get; set; }
-    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-    public string Updater { get; set; }
-    public DateTime UpdaterDate { get; set; }
-    public string Memo { get; set; }
-    //    public byte[] RowVersion { get; set; }
 
+    // ---------------------------------------------------------
+    // Valid
+    // ---------------------------------------------------------
+    public bool Valid { get; set; }
+
+    // ---------------------------------------------------------
+    // ValidYear
+    // ---------------------------------------------------------
+    [StringLength(4)]
+    public string? ValidYear { get; set; }
+
+    // ---------------------------------------------------------
+    // Synonym
+    // ---------------------------------------------------------
+    public string? Synonym { get; set; }
+
+    // ---------------------------------------------------------
+    // Author
+    // ---------------------------------------------------------
+    [StringLength(60)]
+    public string? Author { get; set; }
+
+    // ---------------------------------------------------------
+    // AuthorYear
+    // ---------------------------------------------------------
+    [StringLength(4)]
+    public string? AuthorYear { get; set; }
+
+    // ---------------------------------------------------------
+    // Info
+    // ---------------------------------------------------------
+    public string? Info { get; set; }
+
+    // ---------------------------------------------------------
+    // EngName
+    // ---------------------------------------------------------
+    [StringLength(200)]
+    public string? EngName { get; set; }
+
+    // ---------------------------------------------------------
+    // GerName
+    // ---------------------------------------------------------
+    [StringLength(200)]
+    public string? GerName { get; set; }
+
+    // ---------------------------------------------------------
+    // FraName
+    // ---------------------------------------------------------
+    [StringLength(200)]
+    public string? FraName { get; set; }
+
+    // ---------------------------------------------------------
+    // PorName
+    // ---------------------------------------------------------
+    [StringLength(200)]
+    public string? PorName { get; set; }
+
+    // ---------------------------------------------------------
+    // Writer
+    // ---------------------------------------------------------
+    [StringLength(50)]
+    public string? Writer { get; set; }
+
+    public DateTime WriterDate { get; set; }
+
+    // ---------------------------------------------------------
+    // Updater
+    // ---------------------------------------------------------
+    [StringLength(50)]
+    public string? Updater { get; set; }
+
+    public DateTime UpdaterDate { get; set; }
+
+    // ---------------------------------------------------------
+    // Memo
+    // ---------------------------------------------------------
+    public string? Memo { get; set; }
 }
+

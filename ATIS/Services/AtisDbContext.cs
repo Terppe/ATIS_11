@@ -1,7 +1,9 @@
-﻿using System.Configuration;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.Reflection;
 using ATIS.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace ATIS.Services;
 
@@ -46,11 +48,28 @@ public partial class AtisDbContext : DbContext
             });
     }
 
+    //protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //{
+    //    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    //}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    }
 
+        // Ignoriere alle [NotMapped] Properties
+        foreach (var entity in modelBuilder.Model.GetEntityTypes())
+        {
+            foreach (var property in entity.GetProperties())
+            {
+                if (property.PropertyInfo?.GetCustomAttribute<NotMappedAttribute>() != null)
+                {
+                    modelBuilder.Entity(entity.ClrType)
+                        .Ignore(property.PropertyInfo.Name);
+                }
+            }
+        }
+    }
     public DbSet<Tbl03Regnum> Tbl03Regnums
     {
         get; set;

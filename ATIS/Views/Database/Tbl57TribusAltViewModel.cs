@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Windows.System;
 using ATIS.Infrastructure;
 
-//    Tbl57TribusViewModel Skriptdatum:  22.01.2025  10:32    
+//    Tbl57TribusAltViewModel Skriptdatum:  22.01.2025  10:32    
 
 namespace ATIS.Views.Database;
 
-public partial class Tbl57TribusViewModel : ObservableObject
+public partial class Tbl57TribusAltViewModel : ObservableObject
 {
 
     #region [Private Data Members]
@@ -35,7 +35,7 @@ public partial class Tbl57TribusViewModel : ObservableObject
     #endregion [Private Data Members]      
 
     #region [Constructor]
-    public Tbl57TribusViewModel(IDataService dataService)
+    public Tbl57TribusAltViewModel(IDataService dataService)
     {
         _dataService = dataService;
         GetAllCollections();
@@ -54,7 +54,7 @@ public partial class Tbl57TribusViewModel : ObservableObject
         Tbl90AuthorsAllList ??= [];
         Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
     }
-    public Tbl57TribusViewModel()
+    public Tbl57TribusAltViewModel()
     {
 
     }

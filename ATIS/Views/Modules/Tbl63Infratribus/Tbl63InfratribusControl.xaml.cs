@@ -28,12 +28,12 @@ public sealed partial class Tbl63InfratribusControl : UserControl
         {
             vm.PropertyChanged += ViewModel_PropertyChanged;
 
-            vm.ReloadCompleted = async () =>
-            {
-                await Task.Yield();
-                FocusManager.TryFocusAsync(FocusSink, FocusState.Programmatic);
-                BodyScroll.ChangeView(_lastHorizontalOffset, _lastVerticalOffset, null, true);
-            };
+         ////   vm.ReloadCompleted = async () =>
+         //   {
+         //       await Task.Yield();
+         //       FocusManager.TryFocusAsync(FocusSink, FocusState.Programmatic);
+         //       BodyScroll.ChangeView(_lastHorizontalOffset, _lastVerticalOffset, null, true);
+         //   };
 
             UpdateRowSelection();
         }

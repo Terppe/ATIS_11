@@ -299,3 +299,104 @@ Tbl60SubtribusControl.xaml	ListView‑UI
 Tbl60SubtribusPage.xaml	Page‑Layout.
 Läuft mit Searchbox a Enter. Umstellen auf Dataservice und loc:Uids.Uid und evtl. BaseBossPageLayout wie bei Infratribus
 -------------------------------------------------------------
+03.04.2026 18:00 Uhr GridLength nur in Tbl60SubtribusControl für Header und Listview. Blauer Rahmen bei Focus im Listview.. Save, new, delete fehlt.
+-------------------------------------------------------------
+05.04.2026 10:00 Uhr Save, new, delete eingefügt. reload funktioniert nicht nicht verwendbar. mit Infratribus durcheinandergebracht.
+-------------------------------------------------------------
+06.04.2026 14:00 Uhr aus Version 004 zurück. schlanke Base und Viewmodel. funktioniert neu, delete und save. aber Reload nicht. erst wenn in SearchBox hinter "a" Enter gemacht wird ,
+erscheint der neue datensatz. Also muss ReloadAsync geändert werden. Upsert-Methode geändert. alle CRUD-Funktionen funktionieren
+--------------------------------------------------
+07.04.2026 14:00 Uhr Subtribus mit Combobox und CRUD ok. Änderung evtl bei     [NotMapped]
+    public string? TribusName => Tribus?.TribusName;
+    um den Namen im Listview von Tribus anzuzeigen. nicht gelöst. bei Git versuchen. Sort für Listview eingefügt mit Pfeilen bei ID und Name.
+    Weiter jetzt mit Comment. völliges durcheinander.
+-----------------------------------------------------
+08.04.2026 14:00 Uhr CommentViewmodel wie SubtribusViewmodel mit etwas weniger Funktionen.
+SubtribusBossControl
+ ├── SubtribusEditControl
+ ├── CommentParentControl
+ ├── CommentEditControl
+ ├── ReferenceParentControl
+ ├── ReferenceEditControl
+ ├── InfratribusParentControl
+ └── InfratribusEditControl
+ Funktion für Comment im Subtribus fast ok. Optik von listview verbessern. am ListViewstyle verändert fokus bei Subtribus geht jetzt nicht mehr.
+ -------------------------------------------------
+ 10.04.2026 14:00 Uhr einfügen Confirm_Save_Title → Enregistrer les modifications
+Confirm_Save_Message → Voulez-vous vraiment enregistrer ces modifications ?
+
+Confirm_Delete_Title → Supprimer l’enregistrement
+Confirm_Delete_Message → Voulez-vous vraiment supprimer l’enregistrement sélectionné ?
+
+Confirm_Save_Title → Guardar cambios
+Confirm_Save_Message → ¿Desea realmente guardar estos cambios?
+
+Confirm_Delete_Title → Eliminar registro
+Confirm_Delete_Message → ¿Desea realmente eliminar el registro seleccionado?
+
+Crud bei Subtribus und Comment ok.         <!--  2. 🔥 Modernes Lade Overlay  -->
+        <atis:LoadingOverlayControl Grid.RowSpan="1"
+                                    IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+in Page.jetzt fehlt noch validation
+------------------------------------------------------------
+Bei Git Comment überarbeitet bis hierher ok light und dark-Mode für Listview im Listviewstyle geändert. jetzt im Darm-mode ok
+--------------------------------------------------------------
+11.04.2026 19:00 Uhr Version ohne AtisListViewZebraHelper , weil er die Listview im darkmode überschreibt. im Light-Mode so ok, aber im Dark-Mode bleibt es auch weiss
+--------------------------------------------------------------
+12.04.2026 12:00 Uhr header von ComboBox in Edit klappt nicht habe Entwickler angeschrieben. diese Version läuft ok ohne Alternate im Listview.
+aufgeräumt und noch ohne validation, spaltenbreite verschieben im listview und die optik vielleicht im listview. jetzt nur weisse fläche
+----------------------------------------------------------------
+21.04.2026 17:00 Uhr Nuget aktualisiert zurückgesetzt, da TribusName aus TribusID klappt .
+[NotMapped]
+    private string? _tribusName;
+[NotMapped]  // ← WICHTIG!
+    public string? TribusName
+    {
+        get => _tribusName;
+        set => SetProperty(ref _tribusName, value);
+    }
+[NotMapped] mus s 2x sein. als nächstes die Validierung einbauen.
+--------------------------------------------------------------
+22.04.2026 17:00 Uhr Validation bei subtribus aber noch nicht ganz fehlerfrei bei Github
+--------------------------------------------------------------
+23.04.2026 16:00 Uhr Validation funktioniert, aber Validierung und Fehler‑Properties gehören ins Viewmodel. Ein Versuch das zu lösen ist gescheitert
+neu ergibt fehler , kein grauer rahmen combobox und checkbox sind höher als der rest der felder
+--------------------------------------------------------------
+24.04.2026 19:00 Uhr durch einfügen eines Textblock´s wird in den validationfeldern text angezeigt. nur noch kein roter rahmen
+--------------------------------------------------------------
+25.04.2026 9:30 Uhr Validation rot und blauer border kommt noch nicht ok
+--------------------------------------------------------------
+26.04.2026 10:30 Uhr funktioniert jetzt mit rotem Text und blauer Border. Aber viel im codebehind nicht so gut . entweder roten border oder blauen border.
+am besten mit blauem border und rotem Fehlertext. sonst ist die Funktion ok. Hoover macht probleme
+--------------------------------------------------------------
+28.04.2026 10:30 Uhr Validierung funktioniert mit rotem Text. kein roter border und wird komplett vom Model Tbl60Subtribus gesteuert.
+--------------------------------------------------------------
+28.04.2026 11:30 Uhr bis auf roten border bei Fehler ok als nächstes bei comment die Validation einbauen. nur valid und validYear
+--------------------------------------------------------------
+28.04.2026 18:30 Uhr Bei comment validierung eingefügt. Info mit 100 zeichen soll sich verhalten wie Subtribusname aber noch die längenanzeige und fehlermeldung falsch.
+--------------------------------------------------------------
+29.04.2026 17:30 Uhr Tabview unsichtbar am start, Nuget auf neuesten stand gebracht. DetailTabview wird erst angezeigt wenn datensatz gewählt wurde und
+bei Neu gleich angezeigt im Listview.
+--------------------------------------------
+30.04.2026 17:00 Uhr Roter Border geht bei Subtribus  und bei verbundenem Comment auch. Dann probleme mit BaseEditControl und Schwierigkeiten beim zurücksetzten.
+Wie du die generierten Dateien findest
+WinUI 3 erzeugt automatisch Dateien wie:
+
+*.g.cs
+
+*.g.i.cs
+
+*.xaml.g.cs
+
+*.xaml.g.i.cs
+obj\Debug\net8.0-windows10.0.22621.0\
+Version funktioniert mit rotem border bei error nur bei Subtribus. Bei Verbundener Comment nur Blauer Border und roter Text.
+---------------------------------------------
+01.05.2026 9:30 Uhr Roter Border und roter Text funktionieren bei Subtribus und verbundenem Comment. es wird nur bei aufruf von EditCommendControl
+die Liste gezeigt mit den  Comments und gleichzeitig ein leerer Datensatz. das soll nicht sein. ich will aus der liste auswählen.
+Gelöst blauer Border und Roter Border ok
+----------------------------------------------
+01.05.2026 14:30 Uhr Listview und Tabview etwas hübscher machen und dann roter Border bei fehler. App_UnhandledException erweitert. alles erledigt.
+jetzt folgt References einfügen
+---------------------------------------------
+01.05.2026 16:30 Uhr

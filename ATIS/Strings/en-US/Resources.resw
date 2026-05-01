@@ -174,6 +174,9 @@
   <data name="AppBarButtonAdd.Label" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AppBarButtonAdd.Label4" xml:space="preserve">
+    <value>Add</value>
+  </data>
   <data name="AppBarButtonAdd.Label3" xml:space="preserve">
     <value>Add</value>
   </data>
@@ -245,6 +248,9 @@
   </data>
   <data name="ConfirmExitMessage" xml:space="preserve">
     <value>Would you like to close your application?</value>
+  </data>
+  <data name="Confirm_Delete_Title" xml:space="preserve">
+    <value>Delete record</value>
   </data>
   <data name="ComboBox_ClassName.Header" xml:space="preserve">
     <value>Class Name</value>
@@ -363,8 +369,17 @@
   <data name="Confirm_Title" xml:space="preserve">
     <value>Confirmation</value>
   </data>
+  <data name="Confirm_Save_Title" xml:space="preserve">
+    <value>Save changes</value>
+  </data>
   <data name="Confirm_Message" xml:space="preserve">
     <value>Do you want to continue?</value>
+  </data>
+  <data name="Confirm_Delete_Message" xml:space="preserve">
+    <value>Do you really want to delete the selected record?</value>
+  </data>
+  <data name="Confirm_Save_Message" xml:space="preserve">
+    <value>Do you really want to save these changes?</value>
   </data>
   <data name="Country_ZoomLevel_Placeholder" xml:space="preserve">
     <value>Zoom level…</value>
@@ -2421,6 +2436,15 @@
   <data name="TextBlock_Valid_Year.Text" xml:space="preserve">
     <value>Valid/Year</value>
   </data>
+  <data name="TextBlock_Year.Text" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Year.Text1" xml:space="preserve">
+    <value>Valid/Year</value>
+  </data>
+  <data name="TextBlock_Valid.Text" xml:space="preserve">
+    <value>Valid</value>
+  </data>
   <data name="TextBlock_Valid_Year_Isbn.Text" xml:space="preserve">
     <value>Valid/Year/ISBN</value>
   </data>
@@ -4116,6 +4140,12 @@
   <data name="Delete_Success_Message" xml:space="preserve">
     <value>The dataset was successful deleted</value>
   </data>
+  <data name="Error_NotPossible_Title" xml:space="preserve">
+    <value>Not possible to delete.</value>
+  </data>
+  <data name="Error_NotPossible_Message" xml:space="preserve">
+    <value>Dependent datasets exist.</value>
+  </data>
   <data name="Delete_Success_Title" xml:space="preserve">
     <value>Deleted</value>
   </data>
@@ -4187,6 +4217,15 @@
   </data>
   <data name="Error_InfratribusName_Empty" xml:space="preserve">
     <value>The infratribus name must not be empty.</value>
+  </data>
+  <data name="Error_SubtribusName_Empty" xml:space="preserve">
+    <value>SubtribusName is required</value>
+  </data>
+  <data name="Error_SubtribusName_TooLong" xml:space="preserve">
+    <value>SubtribusName must not exceed 100 characters</value>
+  </data>
+  <data name="Error_Info_TooLong" xml:space="preserve">
+    <value>Info must not exceed 100 characters</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Author name must not be empty.</value>

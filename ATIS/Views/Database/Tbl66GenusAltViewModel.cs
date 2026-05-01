@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Windows.System;
 using ATIS.Infrastructure;
 
-//    Tbl66GenusViewModel Skriptdatum:  13.06.2024  10:32    
+//    Tbl66GenusAltViewModel Skriptdatum:  13.06.2024  10:32    
 
 namespace ATIS.Views.Database;
 
-public partial class Tbl66GenusViewModel : ObservableObject
+public partial class Tbl66GenusAltViewModel : ObservableObject
 {
     #region [Private Data Members]
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -32,7 +32,7 @@ public partial class Tbl66GenusViewModel : ObservableObject
     #endregion [Private Data Members]      
 
     #region [Constructor]
-    public Tbl66GenusViewModel(IDataService dataService)
+    public Tbl66GenusAltViewModel(IDataService dataService)
     {
         _dataService = dataService;
         GetAllCollections();
@@ -55,7 +55,7 @@ public partial class Tbl66GenusViewModel : ObservableObject
         Tbl90AuthorsAllList ??= [];
         Tbl90AuthorsAllList = [.. _dataService.GetRefAuthorAsyncAlt()];
     }
-    public Tbl66GenusViewModel()
+    public Tbl66GenusAltViewModel()
     {
 
     }

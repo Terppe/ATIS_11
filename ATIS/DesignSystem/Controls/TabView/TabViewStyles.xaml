@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  TabViewItem Style  -->
+    <Style TargetType="TabViewItem">
+        <Setter Property="Padding" Value="24,12" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource TabViewForeground}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!--  TabView Style  -->
+    <Style TargetType="TabView">
+        <Setter Property="Background" Value="{ThemeResource TabViewBackground}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource TabViewBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+    </Style>
+
+    <!--<Style TargetType="TabViewItem">
+    <Setter Property="Padding" Value="20,10" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>-->
+
+
+</ResourceDictionary>

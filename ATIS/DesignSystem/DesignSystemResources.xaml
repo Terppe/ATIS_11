@@ -34,6 +34,14 @@
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ContentDialog/ContentDialogBrushes.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ContentDialog/ContentDialogStyles.xaml" />
 
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ListView/ListView.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ListView/ListViewBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ListView/ListViewStyles.xaml" />
+
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TabView/TabView.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TabView/TabViewBrushes.xaml" />
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TabView/TabViewStyles.xaml" />
+
         <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DataGrid/DataGrid.xaml" />-->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DataGrid/DataGridBrushes.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DataGrid/DataGridStyles.xaml" />
@@ -56,6 +64,7 @@
         <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButton.xaml" />-->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButtonBrushes.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButtonStyles.xaml" />
+
 
         <!--  4) Components  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Components/AtisCard.xaml" />

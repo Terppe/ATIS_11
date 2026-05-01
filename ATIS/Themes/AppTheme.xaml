@@ -6,7 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="ms-appx:///Themes/Border.xaml" />
+        <!--<ResourceDictionary Source="ms-appx:///Themes/Border.xaml" />
         <ResourceDictionary Source="ms-appx:///Themes/ThemeResources.xaml" />
         <ResourceDictionary Source="ms-appx:///Themes/Button.xaml" />
         <ResourceDictionary Source="ms-appx:///Themes/Controls/Buttons.xaml" />
@@ -15,7 +15,7 @@
         <ResourceDictionary Source="ms-appx:///Themes/Fonts.xaml" />
         <ResourceDictionary Source="ms-appx:///Themes/Converters.xaml" />
         <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml" />
-        <ResourceDictionary Source="ms-appx:///Themes/Thickness.xaml" />
+        <ResourceDictionary Source="ms-appx:///Themes/Thickness.xaml" />-->
 
         <!--  1. Basis-Farben (müssen ganz oben stehen)  -->
         <!--

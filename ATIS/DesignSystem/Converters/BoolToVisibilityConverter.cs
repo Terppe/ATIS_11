@@ -1,16 +1,11 @@
 ﻿using Microsoft.UI.Xaml.Data;
 
 namespace ATIS.DesignSystem.Converters;
-
 public class BoolToVisibilityConverter : IValueConverter
 {
-    public bool Invert { get; set; }
-
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        bool flag = value is bool b && b;
-        if (Invert) flag = !flag;
-        return flag ? Visibility.Visible : Visibility.Collapsed;
+        return (value is bool visible && visible) ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

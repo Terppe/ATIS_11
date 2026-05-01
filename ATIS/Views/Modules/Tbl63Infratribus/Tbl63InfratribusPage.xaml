@@ -110,12 +110,12 @@
                     </TabViewItem>
 
                     <!--  COMMENTS  -->
-                    <TabViewItem Header="Comments">
+                    <!--<TabViewItem Header="Comments">
                         <ScrollViewer Padding="12">
                             <tbl93Comment:Tbl93CommentControl DataContext="{x:Bind ViewModel.CommentViewModel}"
                                                               ParentViewModel="{x:Bind ViewModel}"  />
                         </ScrollViewer>
-                    </TabViewItem>
+                    </TabViewItem>-->
 
                     <!--  REFERENCES  -->
                     <TabViewItem Header="References">

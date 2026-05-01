@@ -6,26 +6,26 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           RowDefinitions="Auto,Auto,*,Auto">
 
-        <!-- HEADER + APPBAR in einer Zeile -->
+        <!--  HEADER + APPBAR in einer Zeile  -->
         <Grid Grid.Row="0"
-              ColumnDefinitions="*,Auto"
               Padding="8"
-              VerticalAlignment="Center">
+              VerticalAlignment="Center"
+              ColumnDefinitions="*,Auto">
 
-            <!-- HEADER LEFT -->
+            <!--  HEADER LEFT  -->
             <ContentPresenter Grid.Column="0"
                               Content="{x:Bind Header, Mode=OneWay}" />
 
-            <!-- APPBAR RIGHT -->
+            <!--  APPBAR RIGHT  -->
             <ContentPresenter Grid.Column="1"
                               Content="{x:Bind AppBar, Mode=OneWay}" />
         </Grid>
 
-        <!-- LIST -->
+        <!--  LIST  -->
         <ContentPresenter Grid.Row="1"
                           Content="{x:Bind ListContent, Mode=OneWay}" />
 
-        <!-- DETAILS -->
+        <!--  DETAILS  -->
         <ContentPresenter Grid.Row="2"
                           Content="{x:Bind DetailContent, Mode=OneWay}" />
 

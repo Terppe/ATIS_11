@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  =========================================================  -->
+    <!--  1) THEME COLORS (Light + Dark)  -->
+    <!--  =========================================================  -->
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <!--  LIGHT THEME  -->
+        <ResourceDictionary x:Key="Light">
+
+            <SolidColorBrush x:Key="AtisListViewRowBackgroundBrush"
+                             Color="#FFFFFF" />
+
+            <SolidColorBrush x:Key="AtisListViewRowAlternateBackgroundBrush"
+                             Color="#FAFAFA" />
+
+            <SolidColorBrush x:Key="AtisListViewRowHoverBrush"
+                             Color="#11000000" />
+
+            <SolidColorBrush x:Key="AtisListViewRowSelectedBrush"
+                             Color="#CCE5FF" />
+
+        </ResourceDictionary>
+        <!--  DARK THEME  -->
+        <ResourceDictionary x:Key="Dark">
+
+            <SolidColorBrush x:Key="AtisListViewRowBackgroundBrush"
+                             Color="#1E1E1E" />
+
+            <SolidColorBrush x:Key="AtisListViewRowAlternateBackgroundBrush"
+                             Color="#262626" />
+
+            <SolidColorBrush x:Key="AtisListViewRowHoverBrush"
+                             Color="#22FFFFFF" />
+
+            <SolidColorBrush x:Key="AtisListViewRowSelectedBrush"
+                             Color="#3399FF" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>
+
+
+
+

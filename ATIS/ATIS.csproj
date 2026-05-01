@@ -46,17 +46,17 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-		<PackageReference Include="log4net" Version="3.3.0" />
-		<PackageReference Include="MailKit" Version="4.15.1" />
+		<PackageReference Include="log4net" Version="3.3.1" />
+		<PackageReference Include="MailKit" Version="4.16.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.5" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7705" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260317003" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.7" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1721" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260416003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
-		<PackageReference Include="MimeKit" Version="4.15.1" />
+		<PackageReference Include="MimeKit" Version="4.16.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
@@ -75,7 +75,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3856.49" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3912.50" ExcludeAssets="buildTransitive" />
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
 	</ItemGroup>
 
@@ -139,6 +139,21 @@
 	</Page>
 	<Page Update="DesignSystem\Controls\Flyout\MenuFlyoutStyles.xaml">
 		<SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\ListView\ListViewBrushes.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\ListView\ListViewStyles.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\TabView\TabView.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\TabView\TabViewStyles.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
+	<Page Update="DesignSystem\Controls\TabView\TabViewBrushes.xaml">
+	  <SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ToggleButton.xaml">
 		<SubType>Designer</SubType>
@@ -737,7 +752,6 @@
 		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
 		<None Remove="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml" />
 		<None Remove="DesignSystem\Layout\BaseBossPageLayout.xaml" />
-		<None Remove="DesignSystem\Layout\BaseFkPageLayout.xaml" />
 		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
@@ -786,18 +800,14 @@
 		<None Remove="Views\Main\SpeciesPage.xaml" />
 		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Main\UtilityPage.xaml" />
-		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusControl.xaml" />
 		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusPage.xaml" />
-		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusRowControl.xaml" />
 		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml" />
 		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
-		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentControl.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
-		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentRowControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl.xaml" />
@@ -937,6 +947,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	<Folder Include="Core\" />
 	<Folder Include="DesignSystem\Themes\" />
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
@@ -981,111 +992,93 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusRowControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="DesignSystem\Layout\BaseFkPageLayout.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
   <Page Update="DesignSystem\Layout\BaseBossPageLayout.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentRowControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusRowControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl93Comment\Tbl93CommentParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPreviewControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusRowControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Components\Base4List4DetailPageLayout.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPreviewControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="DesignSystem\Components\Base4List4DetailPageLayout.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
+</ItemGroup>
+
+<ItemGroup>
+	<Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>

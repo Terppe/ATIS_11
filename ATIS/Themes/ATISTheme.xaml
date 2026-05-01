@@ -18,11 +18,11 @@
 
         <!--Colors
         <ResourceDictionary Source="ms-appx:///Themes/Colors/DataGridColors.xaml" />
-         Templates (enthält DataGridRowStyle!)
+        Templates (enthält DataGridRowStyle!)
         <ResourceDictionary Source="ms-appx:///Themes/Templates/DataGridTemplates.xaml" />
-         Styles (verwendet DataGridRowStyle)
+        Styles (verwendet DataGridRowStyle)
         <ResourceDictionary Source="ms-appx:///Themes/Styles/DataGridStyles.xaml" />
-         Controls (verwendet DataGridRowStyle und DataGridStyles)
+        Controls (verwendet DataGridRowStyle und DataGridStyles)
         <ResourceDictionary Source="ms-appx:///Themes/Controls/DataGrid.xaml" />-->
 
 

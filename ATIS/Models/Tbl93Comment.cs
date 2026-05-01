@@ -1,12 +1,15 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using ATIS.Interfaces;
+using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl93Comment : ObservableObject, ICopyable<Tbl93Comment>, IDataService.IAuditable
+public class Tbl93Comment : ObservableObject,  IDataService.IAuditable  
 {
+    private readonly Dictionary<string, List<string>> _errors = new();
+
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
@@ -61,14 +64,36 @@ public class Tbl93Comment : ObservableObject, ICopyable<Tbl93Comment>, IDataServ
     }
 
     // ---------------------------------------------------------
-    // ValidYear (optional)
+    // ValidYear
     // ---------------------------------------------------------
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
     {
         get => _validYear;
-        set => SetProperty(ref _validYear, value);
+        set
+        {
+            if (SetProperty(ref _validYear, value))
+            {
+                ValidateValidYear();
+            }
+        }
+    }
+
+    private string? _validYearError;
+    [NotMapped]
+    public string? ValidYearError
+    {
+        get => _validYearError;
+        set => SetProperty(ref _validYearError, value);
+    }
+
+    private bool _hasValidYearError;
+    [NotMapped]
+    public bool HasValidYearError
+    {
+        get => _hasValidYearError;
+        set => SetProperty(ref _hasValidYearError, value);
     }
 
     // ---------------------------------------------------------
@@ -79,7 +104,26 @@ public class Tbl93Comment : ObservableObject, ICopyable<Tbl93Comment>, IDataServ
     public string? Info
     {
         get => _info;
-        set => SetProperty(ref _info, value);
+        set
+        {
+            SetProperty(ref _info, value);
+            ValidateInfo();
+        }
+    }
+    private string? _infoError;
+    [NotMapped]
+    public string? InfoError
+    {
+        get => _infoError;
+        set => SetProperty(ref _infoError, value);
+    }
+
+    private bool _hasInfoError;
+    [NotMapped]
+    public bool HasInfoError
+    {
+        get => _hasInfoError;
+        set => SetProperty(ref _hasInfoError, value);
     }
 
     // ---------------------------------------------------------
@@ -136,90 +180,89 @@ public class Tbl93Comment : ObservableObject, ICopyable<Tbl93Comment>, IDataServ
     }
 
     // ---------------------------------------------------------
-    // Navigation (optional)
+    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
     // ---------------------------------------------------------
-    [ForeignKey("SpeciesId")]
-    public virtual Tbl75Species? Tbl75Speciesses { get; set; }
 
-    // ---------------------------------------------------------
-    // CLONE
-    // ---------------------------------------------------------
-    public Tbl93Comment Clone()
+    private void ClearErrors(string propertyName)
     {
-        return new Tbl93Comment
-        {
-            CommentId = CommentId,
-            SpeciesId = SpeciesId,
-            GenusId = GenusId,
-            InfratribusId = InfratribusId,
-            SubtribusId = SubtribusId,
-            TribusId = TribusId,
-            SupertribusId = SupertribusId,
-            InfrafamilyId = InfrafamilyId,
-            SubfamilyId = SubfamilyId,
-            FamilyId = FamilyId,
-            SuperfamilyId = SuperfamilyId,
-            InfraordoId = InfraordoId,
-            SubordoId = SubordoId,
-            OrdoId = OrdoId,
-            LegioId = LegioId,
-            InfraclassId = InfraclassId,
-            SubclassId = SubclassId,
-            ClassId = ClassId,
-            SuperclassId = SuperclassId,
-            SubdivisionId = SubdivisionId,
-            SubphylumId = SubphylumId,
-            DivisionId = DivisionId,
-            PhylumId = PhylumId,
-            RegnumId = RegnumId,
-            CountId = CountId,
-            Valid = Valid,
-            ValidYear = ValidYear,
-            Info = Info,
-            Writer = Writer,
-            WriterDate = WriterDate,
-            Updater = Updater,
-            UpdaterDate = UpdaterDate,
-            Memo = Memo
-        };
+        if (_errors.ContainsKey(propertyName))
+            _errors[propertyName].Clear();
     }
 
-    // ---------------------------------------------------------
-    // COPYFROM
-    // ---------------------------------------------------------
-    public void CopyFrom(Tbl93Comment other)
+    private void AddError(string propertyName, string errorMessage)
     {
-        SpeciesId = other.SpeciesId;
-        GenusId = other.GenusId;
-        InfratribusId = other.InfratribusId;
-        SubtribusId = other.SubtribusId;
-        TribusId = other.TribusId;
-        SupertribusId = other.SupertribusId;
-        InfrafamilyId = other.InfrafamilyId;
-        SubfamilyId = other.SubfamilyId;
-        FamilyId = other.FamilyId;
-        SuperfamilyId = other.SuperfamilyId;
-        InfraordoId = other.InfraordoId;
-        SubordoId = other.SubordoId;
-        OrdoId = other.OrdoId;
-        LegioId = other.LegioId;
-        InfraclassId = other.InfraclassId;
-        SubclassId = other.SubclassId;
-        ClassId = other.ClassId;
-        SuperclassId = other.SuperclassId;
-        SubdivisionId = other.SubdivisionId;
-        SubphylumId = other.SubphylumId;
-        DivisionId = other.DivisionId;
-        PhylumId = other.PhylumId;
-        RegnumId = other.RegnumId;
-        CountId = other.CountId;
-        Valid = other.Valid;
-        ValidYear = other.ValidYear;
-        Info = other.Info;
-        Writer = other.Writer;
-        WriterDate = other.WriterDate;
-        Updater = other.Updater;
-        UpdaterDate = other.UpdaterDate;
-        Memo = other.Memo;
+        if (!_errors.ContainsKey(propertyName))
+            _errors[propertyName] = new List<string>();
+
+        if (!_errors[propertyName].Contains(errorMessage))
+            _errors[propertyName].Add(errorMessage);
+    }
+
+    private void UpdateErrorProperty(string propertyName)
+    {
+        var hasErrors = _errors.ContainsKey(propertyName) && _errors[propertyName].Count > 0;
+        var errorMessage = hasErrors ? string.Join(" | ", _errors[propertyName]) : "";
+
+        switch (propertyName)
+        {
+            case nameof(ValidYear):
+                ValidYearError = errorMessage;
+                HasValidYearError = hasErrors;
+                break;
+            case nameof(Info):
+                InfoError = errorMessage;
+                HasInfoError = hasErrors;
+                break;
+        }
+
+        OnPropertyChanged($"{propertyName}Error");
+        OnPropertyChanged($"Has{propertyName}Error");
+    }
+
+    private void ValidateValidYear()
+    {
+        Debug.WriteLine($"ValidateValidYear() called with '{ValidYear}'");
+
+        ClearErrors(nameof(ValidYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
+
+        if (string.IsNullOrWhiteSpace(ValidYear))
+            goto Notify;
+
+        if (ValidYear!.Length != 4)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(ValidYear, out var year))
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
+
+        Notify:
+        UpdateErrorProperty(nameof(ValidYear));
+    }
+    private void ValidateInfo()
+    {
+        ClearErrors(nameof(Info));
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
+
+        if (_info?.Length > 100)
+            AddError(nameof(Info), loc.GetLocalizedString("Error_Info_TooLong"));
+
+        UpdateErrorProperty(nameof(Info));
+    }
+
+    public bool IsValid()
+    {
+        ValidateValidYear();
+        ValidateInfo();
+
+        return !HasValidYearError && !HasInfoError;
     }
 }

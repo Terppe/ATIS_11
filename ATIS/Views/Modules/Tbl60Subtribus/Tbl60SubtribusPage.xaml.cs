@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 
@@ -20,21 +21,43 @@ public sealed partial class Tbl60SubtribusPage : Page
 
     private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
     {
+        await ViewModel.LoadAsync();
+
+        ViewModel.SuppressFilter = true;
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
+        ViewModel.SuppressFilter = false;
     }
 
-    private async void SearchBox_OnKeyUp(object sender, KeyRoutedEventArgs e)
+    //private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
+    //{
+    //    await Task.Delay(50);
+    //    SearchBox.Focus(FocusState.Programmatic);
+    //}
+    //private async void SearchBox_OnLostFocus(object sender, RoutedEventArgs e)
+    //{
+    //    var box = (AutoSuggestBox)sender;
+    //    await ViewModel.ApplyFilterAsync(box.Text);
+    //}
+
+    private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        if (e.Key == VirtualKey.Enter)
-        {
-            await ViewModel.ApplyFilterAsync(SearchBox.Text);
-        }
-        else if (e.Key == VirtualKey.Escape)
-        {
-            SearchBox.Text = "";
-            await ViewModel.ApplyFilterAsync("");
-            ViewModel.SelectItem(null);
-        }
+        Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
+
+        await ViewModel.ApplyFilterAsync(sender.Text);
     }
+
+    //private async void SearchBox_OnKeyUp(object sender, KeyRoutedEventArgs e)
+    //{
+    //    if (e.Key == VirtualKey.Enter)
+    //    {
+    //        await ViewModel.ApplyFilterAsync(SearchBox.Text);
+    //    }
+    //    else if (e.Key == VirtualKey.Escape)
+    //    {
+    //        SearchBox.Text = "";
+    //        await ViewModel.ApplyFilterAsync("");
+    //        ViewModel.SelectItem(null);
+    //    }
+    //}
 }
