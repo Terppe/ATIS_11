@@ -6,6 +6,8 @@
       xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
       xmlns:local="using:ATIS.Views.Modules.Tbl60Subtribus"
+      xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
+      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       x:Name="RootPage">
 
@@ -86,7 +88,8 @@
 
                 <!--  LIST CONTENT  -->
                 <layout:BaseBossPageLayout.ListContent>
-                    <local:Tbl60SubtribusBossControl DataContext="{Binding}" />
+                    <local:Tbl60SubtribusBossControl Margin="0,0,10,0"
+                                                     DataContext="{Binding}" />
                 </layout:BaseBossPageLayout.ListContent>
 
                 <!--  DETAIL CONTENT  -->
@@ -96,41 +99,115 @@
                              Margin="0"
                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <!--  EDIT  -->
-                        <TabViewItem Header="Edit">
+                        <!--  EDIT SUBTRIBUS  -->
+                        <TabViewItem Header="Edit Subtribus">
                             <ScrollViewer Padding="1">
                                 <local:Tbl60SubtribusEditControl DataContext="{x:Bind ViewModel}"
                                                                  Item="{x:Bind ViewModel.SelectedItem, Mode=OneWay}" />
                             </ScrollViewer>
                         </TabViewItem>
 
-                        <!--  COMMENTS DataContext="{x:Bind ViewModel.CommentViewModel}" Item="{x:Bind ViewModel.CommentViewModel.SelectedItem, Mode=OneWay}"  -->
-                        <TabViewItem Header="Comments">
+                        <!--  COMMENTS SUBTRIBUS  -->
+                        <TabViewItem Header="Comments Subtribus">
                             <ScrollViewer Padding="1">
                                 <Grid RowDefinitions="Auto,*">
                                     <!--  LISTE  -->
                                     <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
                                                                             DataContext="{x:Bind ViewModel.CommentViewModel}" />
 
+                                    <!--  EDITOR  -->
                                     <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
                                                                           DataContext="{x:Bind ViewModel.CommentViewModel}"
-                                                                          Item="{x:Bind ViewModel.CommentViewModel.SelectedItem, Mode=OneWay}"
+                                                                          Item="{Binding SelectedItem, Mode=TwoWay}"
                                                                           Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
                                 </Grid>
                             </ScrollViewer>
                         </TabViewItem>
 
-                        <!--  REFERENCES  -->
-                        <TabViewItem Header="References">
+                        <!--  REFERENCES SUBTRIBUS  -->
+                        <TabViewItem Header="References Subtribus">
+
                             <ScrollViewer Padding="1">
-                                <TextBlock Text="References kommen später hier rein." />
+                                <Grid RowDefinitions="Auto,*">
+
+                                    <!--  LISTE  -->
+                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
+                                                                                DataContext="{x:Bind ViewModel.ReferenceViewModel}" />
+
+                                    <!--  EDITOR  -->
+                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                              DataContext="{x:Bind ViewModel.ReferenceViewModel}"
+                                                                              Item="{Binding SelectedItem, Mode=TwoWay}"
+                                                                              Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                </Grid>
                             </ScrollViewer>
+
                         </TabViewItem>
 
-                        <!--  REFERENCES  -->
+                        <!--  INFRATRIBUS  -->
                         <TabViewItem Header="Infratribus">
                             <ScrollViewer Padding="1">
-                                <TextBlock Text="Infratribus kommen später hier rein." />
+                                <TabView>
+                                    <!--  EDIT INFRATRIBUS  -->
+                                    <TabViewItem Header="Edit Infratribus">
+                                        <ScrollViewer Padding="1">
+                                            <Grid RowDefinitions="Auto,*">
+
+                                                <!--  LISTE  -->
+                                                <tbl63Infratribus:Tbl63InfratribusParentControl Grid.Row="0"
+                                                                                                DataContext="{x:Bind ViewModel.InfratribusViewModel}" />
+
+                                                <!--  EDITOR  -->
+                                                <tbl63Infratribus:Tbl63InfratribusEditControl Grid.Row="1"
+                                                                                              DataContext="{x:Bind ViewModel.InfratribusViewModel}"
+                                                                                              Item="{Binding SelectedItem, Mode=TwoWay}"
+                                                                                              Visibility="{Binding IsInfratribusEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </TabViewItem>
+
+                                    <!--  COMMENTS INFRATRIBUS  -->
+                                    <TabViewItem Header="Comments Infratribus">
+                                        <ScrollViewer Padding="1">
+                                            <Grid RowDefinitions="Auto,*">
+
+                                                <!--  LISTE  -->
+                                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
+                                                                                        DataContext="{x:Bind ViewModel.InfratribusViewModel.CommentViewModel}" />
+
+                                                <!--  EDITOR  -->
+                                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                                      DataContext="{x:Bind ViewModel.InfratribusViewModel.CommentViewModel}"
+                                                                                      Item="{Binding SelectedItem, Mode=TwoWay}"
+                                                                                      Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </TabViewItem>
+
+                                    <!--  REFERENCES INFRATRIBUS  -->
+                                    <TabViewItem Header="References Infratribus">
+                                        <ScrollViewer Padding="1">
+                                            <Grid RowDefinitions="Auto,*">
+
+                                                <!--  LISTE  -->
+                                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
+                                                                                            DataContext="{x:Bind ViewModel.InfratribusViewModel.ReferenceViewModel}" />
+
+                                                <!--  EDITOR  -->
+                                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                                          DataContext="{x:Bind ViewModel.InfratribusViewModel.ReferenceViewModel}"
+                                                                                          Item="{Binding SelectedItem, Mode=TwoWay}"
+                                                                                          Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </TabViewItem>
+                                </TabView>
+
                             </ScrollViewer>
                         </TabViewItem>
 

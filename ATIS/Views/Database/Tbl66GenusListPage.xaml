@@ -763,7 +763,7 @@
                                                                          IsReadOnly="True"
                                                                          RelativePanel.RightOf="ReferenceIdExpert"
                                                                          Text="{x:Bind ViewModel.ReferenceSelected.RefExpertId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                <ComboBox x:Name="ReferenceExpertCombo"
+                                                                <!--<ComboBox x:Name="ReferenceExpertCombo"
                                                                           MinWidth="200"
                                                                           Margin="{StaticResource XSmallRightComboBoxMargin}"
                                                                           loca:Uids.Uid="ComboBox_RefExpertName"
@@ -772,7 +772,7 @@
                                                                           ItemsSource="{x:Bind ViewModel.Tbl90ExpertsAllList, Mode=OneWay}"
                                                                           RelativePanel.RightOf="ReferenceExpertId"
                                                                           SelectedValue="{x:Bind helpers:CastHelper.NullableIntToObjCast(ViewModel.ReferenceSelected.RefExpertId), BindBack=ViewModel.ReferenceSelected.SetRefExpertId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                          SelectedValuePath="RefExpertId" />
+                                                                          SelectedValuePath="RefExpertId" />-->
                                                                 <TextBox x:Name="InfoReferenceExpert"
                                                                          MinWidth="1120"
                                                                          Margin="{StaticResource XSmallRightMargin}"
@@ -956,7 +956,7 @@
                                                                          RelativePanel.RightOf="ValidCheckReferenceSource"
                                                                          Style="{StaticResource BodyTextBoxStyle}"
                                                                          Text="{x:Bind ViewModel.ReferenceSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                <ComboBox x:Name="ReferenceSourceCombo"
+                                                                <!--<ComboBox x:Name="ReferenceSourceCombo"
                                                                           MinWidth="500"
                                                                           Margin="{StaticResource XSmallRightComboBoxMargin}"
                                                                           loca:Uids.Uid="ComboBox_RefSourceName"
@@ -966,7 +966,7 @@
                                                                           RelativePanel.AlignLeftWithPanel="True"
                                                                           RelativePanel.Below="ReferenceIdSource"
                                                                           SelectedValue="{x:Bind helpers:CastHelper.NullableIntToObjCast(ViewModel.ReferenceSelected.RefSourceId), BindBack=ViewModel.ReferenceSelected.SetRefSourceId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                          SelectedValuePath="RefSourceId" />
+                                                                          SelectedValuePath="RefSourceId" />-->
                                                                 <TextBox x:Name="InfoReferenceSource"
                                                                          MinWidth="1120"
                                                                          Margin="{StaticResource XSmallRightMargin}"
@@ -1131,7 +1131,7 @@
                                                              RelativePanel.RightOf="ValidCheckReferenceAuthor"
                                                              Style="{StaticResource BodyTextBoxStyle}"
                                                              Text="{x:Bind ViewModel.ReferenceSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <ComboBox x:Name="ReferenceAuthorCombo"
+                                                    <!--<ComboBox x:Name="ReferenceAuthorCombo"
                                                               MinWidth="800"
                                                               Margin="{StaticResource XSmallRightComboBoxMargin}"
                                                               loca:Uids.Uid="ComboBox_RefAuthorName"
@@ -1141,7 +1141,7 @@
                                                               RelativePanel.AlignLeftWithPanel="True"
                                                               RelativePanel.Below="ReferenceIdAuthor"
                                                               SelectedValue="{x:Bind helpers:CastHelper.NullableIntToObjCast(ViewModel.ReferenceSelected.RefAuthorId), BindBack=ViewModel.ReferenceSelected.SetRefAuthorId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              SelectedValuePath="RefAuthorId" />
+                                                              SelectedValuePath="RefAuthorId" />-->
                                                     <TextBox x:Name="InfoReferenceAuthor"
                                                              MinWidth="1120"
                                                              Margin="{StaticResource XSmallRightMargin}"

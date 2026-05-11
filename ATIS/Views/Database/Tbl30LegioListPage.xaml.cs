@@ -875,7 +875,7 @@ public sealed partial class Tbl30LegioListPage : Page
         ViewModel.IsInEditReferenceExpert = true;
         ViewModel.IsNewReferenceExpert = true;
 
-        ReferenceExpertCombo.PlaceholderText = StringsRes.SelectPlease;
+        //ReferenceExpertCombo.PlaceholderText = StringsRes.SelectPlease;
 
         await ViewModel.AddReferenceExpertAsync();
 
@@ -983,7 +983,7 @@ public sealed partial class Tbl30LegioListPage : Page
         ViewModel.IsInEditReferenceSource = true;
         ViewModel.IsNewReferenceSource = true;
 
-        ReferenceSourceCombo.PlaceholderText = StringsRes.SelectPlease;
+        //ReferenceSourceCombo.PlaceholderText = StringsRes.SelectPlease;
 
         await ViewModel.AddReferenceSourceAsync();
 
@@ -1091,7 +1091,7 @@ public sealed partial class Tbl30LegioListPage : Page
         ViewModel.IsInEditReferenceAuthor = true;
         ViewModel.IsNewReferenceAuthor = true;
 
-        ReferenceAuthorCombo.PlaceholderText = StringsRes.SelectPlease;
+        //ReferenceAuthorCombo.PlaceholderText = StringsRes.SelectPlease;
 
         await ViewModel.AddReferenceAuthorAsync();
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 
@@ -21,11 +22,17 @@ public sealed partial class Tbl63InfratribusPage : Page
     {
         await ViewModel.LoadAsync();
 
-        // KEINE automatische Auswahl
-        // KEIN automatisches Laden von Comments
-
+        ViewModel.SuppressFilter = true;
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
+        ViewModel.SuppressFilter = false;
+    }
+
+    private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
+
+        await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
     private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)

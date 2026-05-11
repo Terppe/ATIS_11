@@ -1956,6 +1956,7 @@ public partial class DataService : ObservableObject, IDataService
         var tribus = await GetTribusByTribusIdAsync(tribusId);
         return tribus?.TribusName ?? "Unknown";  // ✓ Null-safe
     }
+
     //alt
     public ObservableCollection<Tbl57Tribus> GetTribusAsync()
     {
@@ -2066,7 +2067,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Subtribus                
     //neu
-
     public async Task<IEnumerable<Tbl60Subtribus>> GetAllSubtribusAsync()
     {
         return await _context.Tbl60Subtribusses
@@ -2074,36 +2074,64 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
+
+    //public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
+    //{
+    //    if (string.IsNullOrWhiteSpace(search))
+    //        return Enumerable.Empty<Tbl60Subtribus>();
+
+    //    var result = await _context.Tbl60Subtribusses
+    //        .Where(e =>
+    //            e.SubtribusName.StartsWith(search) ||
+    //            e.SubtribusId.ToString() == search)
+    //        .OrderBy(e => e.SubtribusName)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+
+    //    //TribusName dem Model Subtribus hinzufügen
+    //    foreach (var item in result)
+    //    {
+    //        item.Tribus = await _context.Tbl57Tribusses
+    //            .FirstOrDefaultAsync(x => x.TribusId == item.TribusId);
+    //    }
+
+    //    //foreach (var item in result)
+    //    //{
+    //    //    item.TribusName = await GetTribusNameByTribusId(item.TribusId);
+    //    //}
+
+    //    return result;
+    //}
+
     public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl60Subtribus>();
 
-        //return await _context.Tbl60Subtribusses
-        //    .AsNoTracking()
-        //    .Where(e =>
-        //        e.SubtribusName.StartsWith(search) ||
-        //        e.SubtribusId.ToString() == search)
-        //    .OrderBy(e => e.SubtribusName)
-        //    .ToListAsync();
-        var result = await _context.Tbl60Subtribusses
+        return await _context.Tbl60Subtribusses
             .Where(e =>
-                e.SubtribusName.StartsWith(search) ||
+                (e.SubtribusName ?? "").StartsWith(search) ||
                 e.SubtribusId.ToString() == search)
+            .Include(e => e.Tribus)
             .OrderBy(e => e.SubtribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        //TribusName dem Model Subtribus hinzufügen
-        foreach (var item in result)
-        {
-            item.TribusName = await GetTribusNameByTribusId(item.TribusId);
-        }
-
-        return result;
-
-
     }
+
+    //public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
+    //{
+    //    if (string.IsNullOrWhiteSpace(search))
+    //        return Enumerable.Empty<Tbl60Subtribus>();
+
+    //    return await _context.Tbl60Subtribusses
+    //        .Where(e =>
+    //            EF.Functions.Like(e.SubtribusName, search + "%") ||
+    //            e.SubtribusId.ToString() == search)
+    //        .Include(e => e.Tribus)
+    //        .OrderBy(e => e.SubtribusName)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
     public async Task<Tbl60Subtribus> GetSubtribusByIdAsync(int id)
     {
         return await _context.Tbl60Subtribusses
@@ -2175,24 +2203,24 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-    public async Task<bool> HasInfratribusAsync(int subtribusId)
+    public async Task<bool> SubtribusHasInfratribusAsync(int subtribusId)
     {
         return await _context.Tbl63Infratribusses.AnyAsync(x => x.SubtribusId == subtribusId);
     }
-    public async Task<bool> HasReferenceAsync(int subtribusId)
+    public async Task<bool> SubtribusHasReferenceAsync(int subtribusId)
     {
         return await _context.Tbl90References.AnyAsync(x => x.SubtribusId == subtribusId);
     }
-    public async Task<bool> HasCommentAsync(int subtribusId)
+    public async Task<bool> SubtribusHasCommentAsync(int subtribusId)
     {
         return await _context.Tbl93Comments.AnyAsync(x => x.SubtribusId == subtribusId);
     }
 
-    public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int subtribusId)
+    public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int? subtribusId)
     {
         return await _context.Tbl63Infratribusses
             .Where(e => e.SubtribusId == subtribusId)
-            .OrderBy(e => e.SubtribusName)
+            .OrderBy(e => e.InfratribusName)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubtribusAsync(int subtribusId)
@@ -2213,21 +2241,6 @@ public partial class DataService : ObservableObject, IDataService
     //----------------
 
     //alt
-
-    //public async Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus entity)
-    //{
-    //    bool isNew = entity.SubtribusId == 0;
-
-    //    ApplyAuditInfo(entity, isNew);
-
-    //    if (isNew)
-    //        _context.Tbl60Subtribusses.Add(entity);
-    //    else
-    //        _context.Tbl60Subtribusses.Update(entity);
-
-    //    await _context.SaveChangesAsync();
-    //    return entity;
-    //}
 
     public ObservableCollection<Tbl60Subtribus> GetSubtribusAsync()
     {
@@ -2273,6 +2286,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Subtribus                       
 
     #region Infratribus
+    //neu
     public async Task<IEnumerable<Tbl63Infratribus>> GetAllInfratribusAsync()
     {
         return await _context.Tbl63Infratribusses
@@ -2285,33 +2299,39 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl63Infratribus>();
 
-        return await _context.Tbl63Infratribusses
-            .AsNoTracking()
+        var result = await _context.Tbl63Infratribusses
             .Where(e =>
                 e.InfratribusName.StartsWith(search) ||
                 e.InfratribusId.ToString() == search)
             .OrderBy(e => e.InfratribusName)
+            .AsNoTracking()
             .ToListAsync();
+
+        // SubtribusName ergänzen
+        foreach (var item in result)
+        {
+            item.Subtribus = await _context.Tbl60Subtribusses
+                .FirstOrDefaultAsync(x => x.SubtribusId == item.SubtribusId);
+        }
+
+        return result;
     }
     public async Task<Tbl63Infratribus> GetInfratribusByIdAsync(int id)
     {
         return await _context.Tbl63Infratribusses
             .FirstOrDefaultAsync(x => x.InfratribusId == id);
     }
-
     public async Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus uiEntity)
     {
         Tbl63Infratribus dbEntity;
 
         if (uiEntity.InfratribusId == 0)
         {
-            // NEU → frische DB-Instanz erzeugen
             dbEntity = new Tbl63Infratribus();
             _context.Tbl63Infratribusses.Add(dbEntity);
         }
         else
         {
-            // UPDATE → bestehende DB-Instanz laden
             dbEntity = await _context.Tbl63Infratribusses
                 .FirstOrDefaultAsync(x => x.InfratribusId == uiEntity.InfratribusId);
 
@@ -2319,7 +2339,6 @@ public partial class DataService : ObservableObject, IDataService
                 throw new InvalidOperationException("Entity not found in database.");
         }
 
-        // 🔥 Automatische Kopie aller relevanten Felder
         CopyProperties(uiEntity, dbEntity,
             nameof(Tbl63Infratribus.InfratribusId),
             nameof(Tbl63Infratribus.Writer),
@@ -2336,22 +2355,6 @@ public partial class DataService : ObservableObject, IDataService
 
         return dbEntity;
     }
-
-
-    //public async Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus model)
-    //{
-    //    bool isNew = model.InfratribusId == 0;
-
-    //    ApplyAuditInfo(model, isNew);
-
-    //    if (isNew)
-    //        _context.Tbl63Infratribusses.Add(model);
-    //    else
-    //        _context.Tbl63Infratribusses.Update(model);
-
-    //    await _context.SaveChangesAsync();
-    //    return model;
-    //}
     public async Task DeleteInfratribusAsync(int id)
     {
         var entity = await _context.Tbl63Infratribusses.FindAsync(id);
@@ -2361,29 +2364,71 @@ public partial class DataService : ObservableObject, IDataService
             await _context.SaveChangesAsync();
         }
     }
+    public async Task<bool> InfratribusExistsAsync(Tbl63Infratribus entity)
+    {
+        return await _context.Tbl63Infratribusses.AnyAsync(x =>
+            x.InfratribusName == entity.InfratribusName &&
+            x.SubtribusId == entity.SubtribusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.InfratribusId != entity.InfratribusId
+        );
+    }
+
+    public async Task<bool> InfratribusHasGenusAsync(int infratribusId)
+    {
+        return await _context.Tbl66Genusses.AnyAsync(x => x.InfratribusId == infratribusId);
+    }
+    public async Task<bool> InfratribusHasReferenceAsync(int infratribusId)
+    {
+        return await _context.Tbl90References.AnyAsync(x => x.InfratribusId == infratribusId);
+    }
+    public async Task<bool> InfratribusHasCommentAsync(int infratribusId)
+    {
+        return await _context.Tbl93Comments.AnyAsync(x => x.InfratribusId == infratribusId);
+    }
+
+    public async Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId)
+    {
+        return await _context.Tbl66Genusses
+            .Where(e => e.InfratribusId == infratribusId)
+            .OrderBy(e => e.GenusName)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int infratribusId)
+    {
+        return await _context.Tbl90References
+            .Where(e => e.InfratribusId == infratribusId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfratribusAsync(int infratribusId)
+    {
+        return await _context.Tbl93Comments
+            .Where(e => e.InfratribusId == infratribusId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+
+    //-------------------------
+
+
     public async Task<bool> HasGenusAsync(int infratribusId)
     {
         return await _context.Tbl66Genusses.AnyAsync(g => g.InfratribusId == infratribusId);
     }
 //-------------------
-    public async Task<bool> InfratribusExistsAsync(Tbl63Infratribus entity)
-    {
-        return await _context.Tbl63Infratribusses.AnyAsync(c =>
-            c.InfratribusName == entity.InfratribusName &&
-            c.SubtribusId == entity.SubtribusId &&
-            c.Synonym == entity.Synonym &&
-            c.Author == entity.Author &&
-            c.AuthorYear == entity.AuthorYear &&
-            c.EngName == entity.EngName &&
-            c.GerName == entity.GerName &&
-            c.FraName == entity.FraName &&
-            c.PorName == entity.PorName &&
-            c.Valid == entity.Valid &&
-            c.ValidYear == entity.ValidYear &&
-            c.Info == entity.Info &&
-            c.Memo == entity.Memo &&
-            c.InfratribusId != entity.InfratribusId); // wichtig für Update     );
-    }
 
     public async Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId)
     {
@@ -2394,33 +2439,6 @@ public partial class DataService : ObservableObject, IDataService
 
         return new ObservableCollection<Tbl63Infratribus>(list);
     }
-
-    public async Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId)
-    {
-        return await _context.Tbl66Genusses
-            .Where(e => e.InfratribusId == infratribusId)
-            .OrderBy(e => e.GenusName)
-            .ToListAsync();
-    }
-    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int infratribusId)
-    {
-        return await _context.Tbl90References
-            .Where(e => e.InfratribusId == infratribusId)
-            .OrderBy(e => e.Info)
-            .ToListAsync();
-    }
-    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfratribusAsync(int infratribusId)
-    {
-        return await _context.Tbl93Comments
-            .Where(e => e.InfratribusId == infratribusId)
-            .OrderBy(e => e.Info)
-            .ToListAsync();
-    }
-    //public async Task<bool> HasGenusAsync(int infratribusId)
-    //{
-    //    return await _context.Tbl66Genusses
-    //        .AnyAsync(g => g.InfratribusId == infratribusId);
-    //}
 
     public async Task DeleteCommentsAsync(int infratribusId)
     {
@@ -2557,7 +2575,148 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Infratribus                       
 
     #region Genus                
+    //Neu
+    public async Task<IEnumerable<Tbl66Genus>> GetAllGenusAsync()
+    {
+        return await _context.Tbl66Genusses
+            .AsNoTracking()
+            .OrderBy(e => e.GenusName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl66Genus>();
 
+        var result = await _context.Tbl66Genusses
+            .Where(e =>
+                e.GenusName.StartsWith(search) ||
+                e.GenusId.ToString() == search)
+            .OrderBy(e => e.GenusName)
+            .AsNoTracking()
+            .ToListAsync();
+
+        // InfratribusName ergänzen
+        foreach (var item in result)
+        {
+            item.Infratribus = await _context.Tbl63Infratribusses
+                .FirstOrDefaultAsync(x => x.InfratribusId == item.InfratribusId);
+        }
+
+        return result;
+    }
+    public async Task<Tbl66Genus> GetGenusByIdAsync(int id)
+    {
+        return await _context.Tbl66Genusses
+            .FirstOrDefaultAsync(x => x.GenusId == id);
+    }
+    public async Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus uiEntity)
+    {
+        Tbl66Genus dbEntity;
+
+        if (uiEntity.InfratribusId == 0)
+        {
+            dbEntity = new Tbl66Genus();
+            _context.Tbl66Genusses.Add(dbEntity);
+        }
+        else
+        {
+            dbEntity = await _context.Tbl66Genusses
+                .FirstOrDefaultAsync(x => x.GenusId == uiEntity.GenusId);
+
+            if (dbEntity == null)
+                throw new InvalidOperationException("Entity not found in database.");
+        }
+
+        CopyProperties(uiEntity, dbEntity,
+            nameof(Tbl66Genus.GenusId),
+            nameof(Tbl66Genus.Writer),
+            nameof(Tbl66Genus.WriterDate),
+            nameof(Tbl66Genus.Updater),
+            nameof(Tbl66Genus.UpdaterDate),
+            nameof(Tbl66Genus.CountId)
+        );
+
+        var isNew = dbEntity.GenusId == 0;
+        ApplyAuditInfo(dbEntity, isNew);
+
+        await _context.SaveChangesAsync();
+
+        return dbEntity;
+    }
+    public async Task DeleteGenusAsync(int id)
+    {
+        var entity = await _context.Tbl66Genusses.FindAsync(id);
+        if (entity != null)
+        {
+            _context.Tbl66Genusses.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+    }
+    public async Task<bool> GenusExistsAsync(Tbl66Genus entity)
+    {
+        return await _context.Tbl66Genusses.AnyAsync(x =>
+            x.GenusName == entity.GenusName &&
+            x.InfratribusId == entity.InfratribusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.GenusId != entity.GenusId
+        );
+    }
+
+    public async Task<bool> GenusHasSpeciesAsync(int genusId)
+    {
+        return await _context.Tbl75Speciesses.AnyAsync(x => x.GenusId == genusId);
+    }
+    public async Task<bool> GenusHasReferenceAsync(int genusId)
+    {
+        return await _context.Tbl90References.AnyAsync(x => x.GenusId == genusId);
+    }
+    public async Task<bool> GenusHasCommentAsync(int genusId)
+    {
+        return await _context.Tbl93Comments.AnyAsync(x => x.GenusId == genusId);
+    }
+
+    public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
+    {
+        return await _context.Tbl75Speciesses
+            .Where(e => e.GenusId == genusId)
+            .OrderBy(e => e.SpeciesName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusForTribusAsync(int tribusId)
+    {
+        return await _context.Tbl60Subtribusses
+            .Where(e => e.TribusId == tribusId)
+            .OrderBy(e => e.TribusName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForGenusAsync(int genusId)
+    {
+        return await _context.Tbl90References
+            .Where(e => e.GenusId == genusId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForGenusAsync(int genusId)
+    {
+        return await _context.Tbl93Comments
+            .Where(e => e.GenusId == genusId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+
+    //---------------------------------------
+    //Alt
     public ObservableCollection<Tbl66Genus> GetGenusAsync()
     {
         var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
@@ -2598,70 +2757,70 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus)
-    {
-        var current = await _context.Tbl66Genusses.FirstOrDefaultAsync(c => c.GenusId == genus.GenusId);
-        if (null == current)
-        {
-            genus.CountId = RandomHelper.Randomnumber();
-            genus.Writer = Environment.UserName;
-            genus.WriterDate = DateTime.Now;
-            genus.Updater = Environment.UserName;
-            genus.UpdaterDate = DateTime.Now;
-            _context.Tbl66Genusses.Add(genus);
-        }
-        else
-        {
-            genus.Updater = Environment.UserName;
-            genus.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(genus);
-        }
-        await _context.SaveChangesAsync();
-        return genus;
-    }
+    //public async Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus)
+    //{
+    //    var current = await _context.Tbl66Genusses.FirstOrDefaultAsync(c => c.GenusId == genus.GenusId);
+    //    if (null == current)
+    //    {
+    //        genus.CountId = RandomHelper.Randomnumber();
+    //        genus.Writer = Environment.UserName;
+    //        genus.WriterDate = DateTime.Now;
+    //        genus.Updater = Environment.UserName;
+    //        genus.UpdaterDate = DateTime.Now;
+    //        _context.Tbl66Genusses.Add(genus);
+    //    }
+    //    else
+    //    {
+    //        genus.Updater = Environment.UserName;
+    //        genus.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(genus);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return genus;
+    //}
 
-    public async Task DeleteGenusAsync(int genusid)
-    {
-        var genus = await _context.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
-        if (genus != null)
-        {
-            //necessary to delete before
-            //------ Species -------------
-            var speciess = await _context.Tbl75Speciesses.Where(a => a.GenusId == genusid).ToListAsync();
-            foreach (var species in speciess)
-            {
-                for (var i = 0; i <= speciess.Count; i++)
-                {
-                    var speciesid = species.SpeciesId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.SpeciesId == speciesid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SpeciesId == speciesid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            _context.Tbl75Speciesses.RemoveRange(speciess);
-            await _context.SaveChangesAsync();
-            //---------------------------------------------------------
-            var references = await _context.Tbl90References.Where(reference => reference.GenusId == genusid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
+    //public async Task DeleteGenusAsync(int genusid)
+    //{
+    //    var genus = await _context.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
+    //    if (genus != null)
+    //    {
+    //        //necessary to delete before
+    //        //------ Species -------------
+    //        var speciess = await _context.Tbl75Speciesses.Where(a => a.GenusId == genusid).ToListAsync();
+    //        foreach (var species in speciess)
+    //        {
+    //            for (var i = 0; i <= speciess.Count; i++)
+    //            {
+    //                var speciesid = species.SpeciesId;
+    //                var singleref = _context.Tbl90References.SingleOrDefault(a => a.SpeciesId == speciesid);
+    //                if (singleref != null)
+    //                {
+    //                    _context.Tbl90References.Remove(singleref);
+    //                    await _context.SaveChangesAsync();
+    //                }
+    //                var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SpeciesId == speciesid);
+    //                if (singlecom != null)
+    //                {
+    //                    _context.Tbl93Comments.Remove(singlecom);
+    //                    await _context.SaveChangesAsync();
+    //                }
+    //            }
+    //        }
+    //        _context.Tbl75Speciesses.RemoveRange(speciess);
+    //        await _context.SaveChangesAsync();
+    //        //---------------------------------------------------------
+    //        var references = await _context.Tbl90References.Where(reference => reference.GenusId == genusid).ToListAsync();
+    //        _context.Tbl90References.RemoveRange(references);
+    //        await _context.SaveChangesAsync();
 
-            var comments = await _context.Tbl93Comments.Where(comment => comment.GenusId == genusid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
+    //        var comments = await _context.Tbl93Comments.Where(comment => comment.GenusId == genusid).ToListAsync();
+    //        _context.Tbl93Comments.RemoveRange(comments);
+    //        await _context.SaveChangesAsync();
 
-            _context.Tbl66Genusses.Remove(genus);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //        _context.Tbl66Genusses.Remove(genus);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Genus
 
@@ -3225,7 +3384,97 @@ public partial class DataService : ObservableObject, IDataService
 
 
     #region Reference
+    //Neu
+    public async Task<IEnumerable<Tbl90Reference>> GetAllReferenceAsync()
+    {
+        return await _context.Tbl90References
+            .AsNoTracking()
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
 
+    public async Task<IEnumerable<Tbl90Reference>> SearchReferenceAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl90Reference>();
+
+        return await _context.Tbl90References
+            .AsNoTracking()
+            .Where(e =>
+                e.Info!.StartsWith(search) ||
+                e.ReferenceId.ToString() == search)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+
+    public async Task<Tbl90Reference> GetReferenceByIdAsync(int id)
+    {
+        return await _context.Tbl90References
+            .FirstOrDefaultAsync(x => x.ReferenceId == id);
+    }
+
+    public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference uiEntity)
+    {
+        Tbl90Reference dbEntity;
+
+        if (uiEntity.ReferenceId == 0)
+        {
+            // NEU
+            dbEntity = new Tbl90Reference();
+            _context.Tbl90References.Add(dbEntity);
+        }
+        else
+        {
+            // UPDATE
+            dbEntity = await _context.Tbl90References
+                .FirstOrDefaultAsync(x => x.ReferenceId == uiEntity.ReferenceId);
+
+            if (dbEntity == null)
+                throw new InvalidOperationException("Entity not found in database.");
+        }
+
+        // 🔥 Automatische Kopie aller relevanten Felder
+        CopyProperties(uiEntity, dbEntity,
+            nameof(Tbl90Reference.ReferenceId),
+            nameof(Tbl90Reference.Writer),
+            nameof(Tbl90Reference.WriterDate),
+            nameof(Tbl90Reference.Updater),
+            nameof(Tbl90Reference.UpdaterDate),
+            nameof(Tbl90Reference.CountId)
+        );
+
+        var isNew = dbEntity.ReferenceId == 0;
+        ApplyAuditInfo(dbEntity, isNew);
+
+        await _context.SaveChangesAsync();
+
+        return dbEntity;
+    }
+
+    public async Task DeleteReferenceAsync(int id)
+    {
+        var entity = await _context.Tbl90References.FindAsync(id);
+        if (entity != null)
+        {
+            _context.Tbl90References.Remove(entity);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<bool> ReferenceExistsAsync(Tbl90Reference entity)
+    {
+        return await _context.Tbl90References.AnyAsync(x =>
+                x.Info == entity.Info &&
+                x.SubtribusId == entity.SubtribusId &&
+                x.Valid == entity.Valid &&
+                x.ValidYear == entity.ValidYear &&
+                x.Memo == entity.Memo &&
+                x.ReferenceId != entity.ReferenceId
+        );
+    }
+
+
+    //----------------------------------------------
     public ObservableCollection<Tbl90Reference> GetReferenceAsync()
     {
         var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
@@ -3253,41 +3502,52 @@ public partial class DataService : ObservableObject, IDataService
 
         return Task.FromResult(collection);
     }
-    public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference reference)
-    {
-        var current = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == reference.ReferenceId);
-        if (null == current)
-        {
-            reference.CountId = RandomHelper.Randomnumber();
-            reference.Writer = Environment.UserName;
-            reference.WriterDate = DateTime.Now;
-            reference.Updater = Environment.UserName;
-            reference.UpdaterDate = DateTime.Now;
-            _context.Tbl90References.Add(reference);
-        }
-        else
-        {
-            reference.Updater = Environment.UserName;
-            reference.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(reference);
-        }
-        await _context.SaveChangesAsync();
-        return reference;
-    }
-    public async Task DeleteReferenceAsync(int referenceid)
-    {
-        var reference = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == referenceid);
-        if (null != reference)
-        {
-            _context.Tbl90References.Remove(reference);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference reference)
+    //{
+    //    var current = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == reference.ReferenceId);
+    //    if (null == current)
+    //    {
+    //        reference.CountId = RandomHelper.Randomnumber();
+    //        reference.Writer = Environment.UserName;
+    //        reference.WriterDate = DateTime.Now;
+    //        reference.Updater = Environment.UserName;
+    //        reference.UpdaterDate = DateTime.Now;
+    //        _context.Tbl90References.Add(reference);
+    //    }
+    //    else
+    //    {
+    //        reference.Updater = Environment.UserName;
+    //        reference.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(reference);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return reference;
+    //}
+    //public async Task DeleteReferenceAsync(int referenceid)
+    //{
+    //    var reference = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == referenceid);
+    //    if (null != reference)
+    //    {
+    //        _context.Tbl90References.Remove(reference);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Reference
 
     #region RefAuthor
+    //Neu
+    public async Task<IEnumerable<Tbl90RefAuthor>> GetAllRefAuthorsAsync()
+    {
+        return await _context.Tbl90RefAuthors
+            .AsNoTracking()
+            .OrderBy(e => e.RefAuthorName)
+            .ThenBy(a => a.BookName)
+            .ThenBy(a => a.Page1)
+            .ToListAsync();
+    }
 
+    //---------------------------
     public async Task<IEnumerable<Tbl90RefAuthor>> SearchRefAuthorAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -3439,7 +3699,15 @@ public partial class DataService : ObservableObject, IDataService
     #endregion RefAuthor
 
     #region RefSource
-
+    //Neu
+    public async Task<IEnumerable<Tbl90RefSource>> GetAllRefSourcesAsync()
+    {
+        return await _context.Tbl90RefSources
+            .AsNoTracking()
+            .OrderBy(e => e.RefSourceName)
+            .ToListAsync();
+    }
+    //---------------------------
     public async Task<IEnumerable<Tbl90RefSource>> SearchRefSourceAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -3502,6 +3770,15 @@ public partial class DataService : ObservableObject, IDataService
     #endregion
 
     #region RefExpert
+    //Neu
+    public async Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertsAsync()
+    {
+        return await _context.Tbl90RefExperts
+            .AsNoTracking()
+            .OrderBy(e => e.RefExpertName)
+            .ToListAsync();
+    }
+    //---------------------------
 
     public async Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search)
     {

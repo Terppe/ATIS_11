@@ -29,35 +29,10 @@ public sealed partial class Tbl60SubtribusPage : Page
         ViewModel.SuppressFilter = false;
     }
 
-    //private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
-    //{
-    //    await Task.Delay(50);
-    //    SearchBox.Focus(FocusState.Programmatic);
-    //}
-    //private async void SearchBox_OnLostFocus(object sender, RoutedEventArgs e)
-    //{
-    //    var box = (AutoSuggestBox)sender;
-    //    await ViewModel.ApplyFilterAsync(box.Text);
-    //}
-
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
-
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    //private async void SearchBox_OnKeyUp(object sender, KeyRoutedEventArgs e)
-    //{
-    //    if (e.Key == VirtualKey.Enter)
-    //    {
-    //        await ViewModel.ApplyFilterAsync(SearchBox.Text);
-    //    }
-    //    else if (e.Key == VirtualKey.Escape)
-    //    {
-    //        SearchBox.Text = "";
-    //        await ViewModel.ApplyFilterAsync("");
-    //        ViewModel.SelectItem(null);
-    //    }
-    //}
 }

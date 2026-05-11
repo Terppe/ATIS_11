@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Models;
+using static ATIS.Views.Report.PdfModels;
 
 namespace ATIS.Interfaces;
 
@@ -410,13 +411,14 @@ public interface IDataService
     Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus entity);
     Task DeleteSubtribusAsync(int id);
     Task<bool> SubtribusExistsAsync(Tbl60Subtribus entity);
-    Task<bool> HasInfratribusAsync(int subtribusId);
-    Task<bool> HasReferenceAsync(int subtribusId);
-    Task<bool> HasCommentAsync(int subtribusId);
-    Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int subtribusId);
+
+    Task<bool> SubtribusHasInfratribusAsync(int subtribusId);
+    Task<bool> SubtribusHasReferenceAsync(int subtribusId);
+    Task<bool> SubtribusHasCommentAsync(int subtribusId);
+
+    Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int? subtribusId);
     Task<IEnumerable<Tbl90Reference>> GetReferencesForSubtribusAsync(int subtribusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForSubtribusAsync(int subtribusId);
-
 
     //alt
     ObservableCollection<Tbl60Subtribus> GetSubtribusAsync();
@@ -427,18 +429,23 @@ public interface IDataService
     #endregion Subtribus
 
     #region Infratribus
-
+    //neu
     Task<IEnumerable<Tbl63Infratribus>> GetAllInfratribusAsync();
     Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusAsync(string? search);
-    Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus model);
+    Task<Tbl63Infratribus> GetInfratribusByIdAsync(int id);
+    Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus entity);
     Task DeleteInfratribusAsync(int id);
     Task<bool> InfratribusExistsAsync(Tbl63Infratribus entity);
-    Task<bool> HasGenusAsync(int infratribusId);
-    Task<Tbl63Infratribus?> GetInfratribusByIdAsync(int id);
-    Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId);
+
+    Task<bool> InfratribusHasGenusAsync(int infratribusId);
+    Task<bool> InfratribusHasReferenceAsync(int infratribusId);
+    Task<bool> InfratribusHasCommentAsync(int infratribusId);
+
     Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId);
     Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int infratribusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForInfratribusAsync(int infratribusId);
+    //----------------------------
+    Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId);
 
     Task DeleteCommentsAsync(int infratribusId);
     Task DeleteReferencesAsync(int infratribusId);
@@ -446,7 +453,7 @@ public interface IDataService
     ObservableCollection<Tbl63Infratribus> GetInfratribusAsyncAlt();
 
 
-   // ObservableCollection<Tbl63Infratribus> GetInfratribusAsync();
+    // ObservableCollection<Tbl63Infratribus> GetInfratribusAsync();
     //ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(int infratribusid);
     //ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(string search);
     //ObservableCollection<Tbl63Infratribus> GetInfratribusFromSubtribusIdAsync(int subtribusid);
@@ -456,13 +463,32 @@ public interface IDataService
     #endregion Infratribus
 
     #region Genus                  
+    //Neu
+    Task<IEnumerable<Tbl66Genus>> GetAllGenusAsync();
+    Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search);
+    Task<Tbl66Genus> GetGenusByIdAsync(int id);
+    Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus entity);
+    Task DeleteGenusAsync(int id);
+    Task<bool> GenusExistsAsync(Tbl66Genus entity);
 
+    Task<bool> GenusHasSpeciesAsync(int genusId);
+    Task<bool> GenusHasReferenceAsync(int genusId);
+    Task<bool> GenusHasCommentAsync(int genusId);
+
+    Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId);
+    Task<IEnumerable<Tbl60Subtribus>> GetSubtribusForTribusAsync(int tribusId);
+    Task<IEnumerable<Tbl90Reference>> GetReferencesForGenusAsync(int genusId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsForGenusAsync(int genusId);
+
+
+    //--------------------------
+    //alt
     ObservableCollection<Tbl66Genus> GetGenusAsync();
     ObservableCollection<Tbl66Genus> GetGenusAsync(int genusid);
     ObservableCollection<Tbl66Genus> GetGenusAsync(string search);
     ObservableCollection<Tbl66Genus> GetGenusFromInfratribusIdAsync(int infratribusid);
-    Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus);
-    Task DeleteGenusAsync(int genusid);
+ //   Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus);
+ //   Task DeleteGenusAsync(int genusid);
 
     #endregion Genus
 
@@ -538,11 +564,21 @@ public interface IDataService
 
 
     #region Reference
+    //Neu
+
+    Task<IEnumerable<Tbl90Reference>> GetAllReferenceAsync();
+    Task<IEnumerable<Tbl90Reference>> SearchReferenceAsync(string? search);
+    Task<bool> ReferenceExistsAsync(Tbl90Reference entity);
+    Task<Tbl90Reference> GetReferenceByIdAsync(int id);
+    Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference model);
+    Task DeleteReferenceAsync(int id);
+
+    //----------------------------------------
     ObservableCollection<Tbl90Reference> GetReferenceAsync();
     ObservableCollection<Tbl90Reference> GetReferenceAsync(int referenceid);
     Task<ObservableCollection<Tbl90Reference>> GetReferenceAsync(string search);
-    Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference reference);
-    Task DeleteReferenceAsync(int referenceid);
+    //Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference reference);
+    //Task DeleteReferenceAsync(int referenceid);
 
     //-----------------------------------------------------------
     ObservableCollection<Tbl90Reference> GetTbl90ReferenceAuthorsCollectionOrderByInfoFromGenusIdAndRefSourceIdIsNullAndRefExpertIdIsNull(int? genusId);
@@ -552,6 +588,7 @@ public interface IDataService
     #endregion Reference
 
     #region RefAuthor
+    Task<IEnumerable<Tbl90RefAuthor>> GetAllRefAuthorsAsync();
 
     Task<IEnumerable<Tbl90RefAuthor>> SearchRefAuthorAsync(string? search);
     Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor model);
@@ -569,6 +606,8 @@ public interface IDataService
     #endregion RefAuthor
 
     #region RefSource
+    Task<IEnumerable<Tbl90RefSource>> GetAllRefSourcesAsync();
+
     Task<IEnumerable<Tbl90RefSource>> SearchRefSourceAsync(string? search);
     Task<Tbl90RefSource> UpsertRefSourceAsync(Tbl90RefSource model);
     Task DeleteRefSourceAsync(int id);
@@ -579,6 +618,8 @@ public interface IDataService
     #endregion
 
     #region RefExpert
+    Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertsAsync();
+
     Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search);
     Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model);
     Task DeleteRefExpertAsync(int id);

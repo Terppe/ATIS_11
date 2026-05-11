@@ -32,29 +32,117 @@ public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
     // ---------------------------------------------------------
     // FK: aktueller Subtribus
     // ---------------------------------------------------------
-    public int CurrentSubtribusId { get; private set; }
+    public int? CurrentSubtribusId { get; private set; }
+    public int? CurrentInfratribusId { get; private set; }
+    public int? CurrentGenusId { get; private set; }
 
     public async Task LoadForSubtribusAsync(int subtribusId)
     {
+        if (subtribusId <= 0)
+        {
+            Items = new ObservableCollection<Models.Tbl93Comment>();
+            SelectedItem = null;
+            IsCommentEditVisible = false;
+            return;
+        }
+
         CurrentSubtribusId = subtribusId;
+        CurrentInfratribusId = null;
 
         Items = new ObservableCollection<Models.Tbl93Comment>(
-            await _data.GetCommentsForSubtribusAsync(subtribusId)
+            await _data.GetCommentsForSubtribusAsync(subtribusId));
+
+        SelectedItem = null;
+        IsCommentEditVisible = false;
+    }
+
+    //public async Task LoadForSubtribusAsync(int subtribusId)
+    //{
+    //    CurrentSubtribusId = subtribusId;
+    //    CurrentInfratribusId = null;
+
+    //    Items = new ObservableCollection<Models.Tbl93Comment>(
+    //        await _data.GetCommentsForSubtribusAsync(subtribusId));
+
+    //    SelectedItem = null;
+    //    IsCommentEditVisible = false;
+    //}
+    public async Task LoadForInfratribusAsync(int infratribusId)
+    {
+        // Modus setzen
+        CurrentInfratribusId = infratribusId;
+        CurrentSubtribusId = null;
+
+        // Laden
+        Items = new ObservableCollection<Models.Tbl93Comment>(
+            await _data.GetCommentsForInfratribusAsync(infratribusId)
         );
 
         DataSetCount = Items.Count;
 
-        // optional: Editor schließen wenn Kontext wechselt
-        IsCommentEditVisible = false;
+        // Auswahl zurücksetzen
         SelectItemSilently(null);
+        SelectedItem = null;
+
+        // Editor schließen
+        IsCommentEditVisible = false;
+
+        // Detailbereich schließen, wenn keine Items
+        IsDetailVisible = false;
     }
+    public async Task LoadForGenusAsync(int genusId)
+    {
+        // Modus setzen
+        CurrentGenusId = genusId;
+        CurrentInfratribusId = null;
+
+        // Laden
+        Items = new ObservableCollection<Models.Tbl93Comment>(
+            await _data.GetCommentsForGenusAsync(genusId)
+        );
+
+        DataSetCount = Items.Count;
+
+        // Auswahl zurücksetzen
+        SelectItemSilently(null);
+        SelectedItem = null;
+
+        // Editor schließen
+        IsCommentEditVisible = false;
+
+        // Detailbereich schließen, wenn keine Items
+        IsDetailVisible = false;
+    }
+
+    //public async Task LoadForInfratribusAsync(int infratribusId)
+    //{
+    //    CurrentInfratribusId = infratribusId;
+    //    CurrentSubtribusId = null; // ← Modus zurücksetzen
+
+    //    Items = new ObservableCollection<Models.Tbl93Comment>(
+    //        await _data.GetCommentsForInfratribusAsync(infratribusId)
+    //    );
+
+    //    DataSetCount = Items.Count;
+
+    //    IsCommentEditVisible = false;
+    //    SelectItemSilently(null);
+    //}
 
     // FK-Module werden nicht über Base-LoadItems geladen
     protected override Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
         => Task.FromResult<IEnumerable<Models.Tbl93Comment>>(Enumerable.Empty<Models.Tbl93Comment>());
 
     protected override Models.Tbl93Comment CreateNewItem()
-        => new Models.Tbl93Comment { SubtribusId = CurrentSubtribusId };
+    {
+        if (CurrentSubtribusId != null)
+            return new Models.Tbl93Comment { SubtribusId = CurrentSubtribusId.Value };
+
+        if (CurrentInfratribusId != null)
+            return new Models.Tbl93Comment { InfratribusId = CurrentInfratribusId.Value };
+
+        throw new InvalidOperationException("No parent context set.");
+    }
 
     protected override Task<bool> ConfirmSaveAsync(Models.Tbl93Comment item)
         => _dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
@@ -64,6 +152,20 @@ public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
 
     protected override async Task<Models.Tbl93Comment?> SaveItemAsync(Models.Tbl93Comment item)
     {
+        // FK korrekt setzen
+        if (CurrentSubtribusId != null)
+        {
+            item.SubtribusId = CurrentSubtribusId.Value;
+            item.InfratribusId = null;
+        }
+
+        if (CurrentInfratribusId != null)
+        {
+            item.InfratribusId = CurrentInfratribusId.Value;
+            item.SubtribusId = null;
+        }
+
+        // Duplicate check
         if (await _data.CommentExistsAsync(item))
         {
             await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
@@ -108,6 +210,13 @@ public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
     // ---------------------------------------------------------
     // Edit visibility
     // ---------------------------------------------------------
+    public bool IsDetailVisible
+    {
+        get => _isDetailVisible;
+        set { _isDetailVisible = value; OnPropertyChanged(); }
+    }
+    private bool _isDetailVisible;
+
     private bool _isCommentEditVisible;
     public bool IsCommentEditVisible
     {
@@ -126,6 +235,19 @@ public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
         IsCommentEditVisible = false;
         SelectedItem = null;
     }
+    public bool IsInfratribusEditVisible
+    {
+        get => _isInfratribusEditVisible;
+        set { _isInfratribusEditVisible = value; OnPropertyChanged(); }
+    }
+    private bool _isInfratribusEditVisible;
+
+    public bool IsReferenceEditVisible
+    {
+        get => _isReferenceEditVisible;
+        set { _isReferenceEditVisible = value; OnPropertyChanged(); }
+    }
+    private bool _isReferenceEditVisible;
 
     // ---------------------------------------------------------
     // Reload (FK)
@@ -139,20 +261,32 @@ public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
 
             IsCommentEditVisible = false;
 
-            // lädt Items neu für FK
-            Items = new ObservableCollection<Models.Tbl93Comment>(
-                await _data.GetCommentsForSubtribusAsync(CurrentSubtribusId)
-            );
-            DataSetCount = Items.Count;
-
-            if (!autoSelect)
+            // 1. Items laden je nach Parent-Modus
+            if (CurrentSubtribusId != null)
             {
-                SelectItemSilently(null);
-                return;
+                Items = new ObservableCollection<Models.Tbl93Comment>(
+                    await _data.GetCommentsForSubtribusAsync(CurrentSubtribusId.Value)
+                );
             }
+            else if (CurrentInfratribusId != null)
+            {
+                Items = new ObservableCollection<Models.Tbl93Comment>(
+                    await _data.GetCommentsForInfratribusAsync(CurrentInfratribusId.Value)
+                );
+            }
+            else
+            {
+                Items = new ObservableCollection<Models.Tbl93Comment>();
+            }
+
+            DataSetCount = Items.Count;
 
             SelectItemSilently(null);
 
+            if (!autoSelect)
+                return;
+
+            // 2. Auswahl wiederherstellen
             if (saved != null)
                 SelectedItem = Items.FirstOrDefault(x => x.CommentId == saved.CommentId);
             else if (old != null && old.CommentId != 0)

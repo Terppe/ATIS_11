@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using WinUI3Localizer;
 
 namespace ATIS.Models;
@@ -64,13 +63,10 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
         set => SetProperty(ref _tribusId, value);
     }
 
-    private string? _tribusName;
+    public Tbl57Tribus? Tribus { get; set; }
+
     [NotMapped]
-    public string? TribusName
-    {
-        get => _tribusName;
-        set => SetProperty(ref _tribusName, value);
-    }
+    public string? TribusName => Tribus?.TribusName;
 
     // ---------------------------------------------------------
     // CountId

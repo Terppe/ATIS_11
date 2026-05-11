@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
+using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl66Genus : ObservableObject, ICopyable<Tbl66Genus>, IDataService.IAuditable
+public class Tbl66Genus : ObservableObject, IDataService.IAuditable
 {
+    private Dictionary<string, List<string>> _errors = new();
+
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
@@ -23,6 +27,23 @@ public class Tbl66Genus : ObservableObject, ICopyable<Tbl66Genus>, IDataService.
         set => SetProperty(ref _genusName, value);
     }
 
+    // Validierung GenusName
+    private string? _genusNameError;
+    [NotMapped]
+    public string? GenusNameError
+    {
+        get => _genusNameError;
+        set => SetProperty(ref _genusNameError, value);
+    }
+
+    private bool _hasGenusNameError;
+    [NotMapped]
+    public bool HasGenusNameError
+    {
+        get => _hasGenusNameError;
+        set => SetProperty(ref _hasGenusNameError, value);
+    }
+
     // ---------------------------------------------------------
     // InfratribusId (Pflicht)
     // ---------------------------------------------------------
@@ -32,6 +53,10 @@ public class Tbl66Genus : ObservableObject, ICopyable<Tbl66Genus>, IDataService.
         get => _infratribusId;
         set => SetProperty(ref _infratribusId, value);
     }
+    public Tbl63Infratribus? Infratribus { get; set; }
+
+    [NotMapped]
+    public string? InfratribusName => Infratribus?.InfratribusName;
 
     // ---------------------------------------------------------
     // CountId (Pflicht)
@@ -62,6 +87,22 @@ public class Tbl66Genus : ObservableObject, ICopyable<Tbl66Genus>, IDataService.
     {
         get => _validYear;
         set => SetProperty(ref _validYear, value);
+    }
+
+    private string? _validYearError;
+    [NotMapped]
+    public string? ValidYearError
+    {
+        get => _validYearError;
+        set => SetProperty(ref _validYearError, value);
+    }
+
+    private bool _hasValidYearError;
+    [NotMapped]
+    public bool HasValidYearError
+    {
+        get => _hasValidYearError;
+        set => SetProperty(ref _hasValidYearError, value);
     }
 
     // ---------------------------------------------------------
@@ -95,6 +136,22 @@ public class Tbl66Genus : ObservableObject, ICopyable<Tbl66Genus>, IDataService.
     {
         get => _authorYear;
         set => SetProperty(ref _authorYear, value);
+    }
+
+    private string? _authorYearError;
+    [NotMapped]
+    public string? AuthorYearError
+    {
+        get => _authorYearError;
+        set => SetProperty(ref _authorYearError, value);
+    }
+
+    private bool _hasAuthorYearError;
+    [NotMapped]
+    public bool HasAuthorYearError
+    {
+        get => _hasAuthorYearError;
+        set => SetProperty(ref _hasAuthorYearError, value);
     }
 
     // ---------------------------------------------------------
@@ -204,58 +261,124 @@ public class Tbl66Genus : ObservableObject, ICopyable<Tbl66Genus>, IDataService.
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+    // ---------------------------------------------------------
+    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
+    // ---------------------------------------------------------
 
-    // ---------------------------------------------------------
-    // CLONE
-    // ---------------------------------------------------------
-    public Tbl66Genus Clone()
+    private void ClearErrors(string propertyName)
     {
-        return new Tbl66Genus
+        if (_errors.ContainsKey(propertyName))
+            _errors[propertyName].Clear();
+    }
+
+    private void AddError(string propertyName, string errorMessage)
+    {
+        if (!_errors.ContainsKey(propertyName))
+            _errors[propertyName] = new List<string>();
+
+        if (!_errors[propertyName].Contains(errorMessage))
+            _errors[propertyName].Add(errorMessage);
+    }
+
+    private void UpdateErrorProperty(string propertyName)
+    {
+        var hasErrors = _errors.ContainsKey(propertyName) && _errors[propertyName].Count > 0;
+        var errorMessage = hasErrors ? string.Join(" | ", _errors[propertyName]) : "";
+
+        switch (propertyName)
         {
-            GenusId = GenusId,
-            GenusName = GenusName,
-            InfratribusId = InfratribusId,
-            CountId = CountId,
-            Valid = Valid,
-            ValidYear = ValidYear,
-            Synonym = Synonym,
-            Author = Author,
-            AuthorYear = AuthorYear,
-            Info = Info,
-            EngName = EngName,
-            GerName = GerName,
-            FraName = FraName,
-            PorName = PorName,
-            Writer = Writer,
-            WriterDate = WriterDate,
-            Updater = Updater,
-            UpdaterDate = UpdaterDate,
-            Memo = Memo
-        };
+            case nameof(GenusName):
+                GenusNameError = errorMessage;
+                HasGenusNameError = hasErrors;
+                break;
+            case nameof(ValidYear):
+                ValidYearError = errorMessage;
+                HasValidYearError = hasErrors;
+                break;
+            case nameof(AuthorYear):
+                AuthorYearError = errorMessage;
+                HasAuthorYearError = hasErrors;
+                break;
+        }
+
+        OnPropertyChanged($"{propertyName}Error");
+        OnPropertyChanged($"Has{propertyName}Error");
     }
 
-    // ---------------------------------------------------------
-    // COPYFROM
-    // ---------------------------------------------------------
-    public void CopyFrom(Tbl66Genus other)
+    private void ValidateGenusName()
     {
-        GenusName = other.GenusName;
-        InfratribusId = other.InfratribusId;
-        CountId = other.CountId;
-        Valid = other.Valid;
-        ValidYear = other.ValidYear;
-        Synonym = other.Synonym;
-        Author = other.Author;
-        AuthorYear = other.AuthorYear;
-        Info = other.Info;
-        EngName = other.EngName;
-        GerName = other.GerName;
-        FraName = other.FraName;
-        PorName = other.PorName;
-        Writer = other.Writer;
-        WriterDate = other.WriterDate;
-        Updater = other.Updater;
-        UpdaterDate = other.UpdaterDate;
-        Memo = other.Memo;
+        ClearErrors(nameof(GenusName));
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
+
+        if (string.IsNullOrWhiteSpace(_genusName))
+            AddError(nameof(GenusName), loc.GetLocalizedString("Error_GenusName_Empty"));
+
+        if (_genusName?.Length > 100)
+            AddError(nameof(GenusName), loc.GetLocalizedString("Error_GenusName_TooLong"));
+        UpdateErrorProperty(nameof(GenusName));
     }
+
+    private void ValidateValidYear()
+    {
+        ClearErrors(nameof(ValidYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
+
+        if (string.IsNullOrWhiteSpace(ValidYear))
+            goto Notify;
+
+        if (ValidYear!.Length != 4)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(ValidYear, out var year))
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
+
+        Notify:
+        UpdateErrorProperty(nameof(ValidYear));
+    }
+
+    private void ValidateAuthorYear()
+    {
+        ClearErrors(nameof(AuthorYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
+
+        if (string.IsNullOrWhiteSpace(AuthorYear))
+            goto Notify;
+
+        if (AuthorYear!.Length != 4)
+        {
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(AuthorYear, out var year))
+        {
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
+
+        Notify:
+        UpdateErrorProperty(nameof(AuthorYear));
+    }
+
+    public bool IsValid()
+    {
+        ValidateGenusName();
+        ValidateValidYear();
+        ValidateAuthorYear();
+
+        return !HasGenusNameError && !HasValidYearError && !HasAuthorYearError;
+    }
+
 }

@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ATIS.Views.Modules.Tbl66Genus.Tbl66GenusPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:components="using:ATIS.DesignSystem.Components"
+      xmlns:layout="using:ATIS.DesignSystem.Layout"
+      xmlns:loc="using:WinUI3Localizer"
+      xmlns:local="using:ATIS.Views.Modules.Tbl66Genus"
+      xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
+      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
+      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+      x:Name="RootPage">
+
+    <Grid x:Name="RootGrid">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+
+            <layout:BaseBossPageLayout>
+
+                <!--  HEADER LEFT  -->
+                <layout:BaseBossPageLayout.Header>
+                    <StackPanel Margin="8,0,0,8"
+                                Orientation="Horizontal"
+                                Spacing="10">
+
+                        <TextBlock Margin="0,4,0,0"
+                                   loc:Uids.Uid="TextBlock_Genusses"
+                                   Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                        <TextBlock Margin="0,12,0,0"
+                                   loc:Uids.Uid="TextBlock_DataSetCount"
+                                   Style="{StaticResource AtisBodyTextStyle}" />
+
+                        <TextBlock Margin="0,12,0,0"
+                                   Style="{StaticResource AtisBodyTextStyle}"
+                                   Text="{Binding DataSetCount}" />
+                    </StackPanel>
+                </layout:BaseBossPageLayout.Header>
+
+                <!--  APPBAR RIGHT  -->
+                <layout:BaseBossPageLayout.AppBar>
+                    <Grid ColumnSpacing="8">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0"
+                                    Margin="8"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding NewCommand}"
+                                    Style="{StaticResource AtisPrimaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE710;" />
+                                    <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding RefreshCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE72C;" />
+                                    <TextBlock loc:Uids.Uid="TextBlock_Refresh" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+
+                        <!--  SEARCH  -->
+                        <AutoSuggestBox x:Name="SearchBox"
+                                        Grid.Column="1"
+                                        Width="260"
+                                        Height="32"
+                                        Margin="12,0"
+                                        VerticalAlignment="Center"
+                                        PlaceholderText="Suchen..."
+                                        QueryIcon="Find"
+                                        QuerySubmitted="SearchBox_OnQuerySubmitted"
+                                        Text="{Binding SearchText, Mode=TwoWay}" />
+                    </Grid>
+                </layout:BaseBossPageLayout.AppBar>
+
+                <!--  LIST CONTENT  -->
+                <layout:BaseBossPageLayout.ListContent>
+                    <local:Tbl66GenusBossControl Margin="0,0,10,0"
+                                                 DataContext="{Binding}" />
+                </layout:BaseBossPageLayout.ListContent>
+
+                <!--  DETAIL CONTENT  -->
+                <layout:BaseBossPageLayout.DetailContent>
+
+                    <TabView x:Name="TabViewBase"
+                             Margin="0"
+                             Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                        <!--  EDIT  -->
+                        <TabViewItem Header="Edit Genus">
+                            <ScrollViewer Padding="1">
+                                <local:Tbl66GenusEditControl DataContext="{x:Bind ViewModel}"
+                                                             Item="{x:Bind ViewModel.SelectedItem, Mode=OneWay}" />
+                            </ScrollViewer>
+                        </TabViewItem>
+
+                        <!--  COMMENTS  -->
+                        <TabViewItem Header="Comments Genus">
+                            <ScrollViewer Padding="1">
+                                <Grid RowDefinitions="Auto,*">
+                                    <!--  LISTE  -->
+                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
+                                                                            DataContext="{x:Bind ViewModel.CommentViewModel}" />
+
+                                    <!--  EDITOR  -->
+                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                          DataContext="{x:Bind ViewModel.CommentViewModel}"
+                                                                          Item="{Binding SelectedItem, Mode=TwoWay}"
+                                                                          Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                </Grid>
+                            </ScrollViewer>
+                        </TabViewItem>
+
+                        <!--  REFERENCES  -->
+                        <TabViewItem Header="References Genus">
+
+                            <ScrollViewer Padding="1">
+                                <Grid RowDefinitions="Auto,*">
+
+                                    <!--  LISTE  -->
+                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
+                                                                                DataContext="{x:Bind ViewModel.ReferenceViewModel}" />
+
+                                    <!--  EDITOR  -->
+                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                              DataContext="{x:Bind ViewModel.ReferenceViewModel}"
+                                                                              Item="{Binding SelectedItem, Mode=TwoWay}"
+                                                                              Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                </Grid>
+                            </ScrollViewer>
+
+                        </TabViewItem>
+
+                        <!--  SPECIES  -->
+                        <!--<TabViewItem Header="Species">
+                        <ScrollViewer Padding="1">
+                        <TabView>
+
+                        --><!--  EDIT SPECIES  --><!--
+                        <TabViewItem Header="Edit Species">
+                        <ScrollViewer Padding="1">
+                        <Grid RowDefinitions="Auto,*">
+
+                        --><!--  LISTE  --><!--
+                        <tbl75Species:Tbl75SpeciesParentControl Grid.Row="0"
+                        DataContext="{x:Bind ViewModel.SpeciesViewModel}" />
+
+                        --><!--  EDITOR  --><!--
+                        <tbl75Species:Tbl75SpeciesEditControl Grid.Row="1"
+                        DataContext="{x:Bind ViewModel.SpeciesViewModel}"
+                        Item="{Binding SelectedItem, Mode=TwoWay}"
+                        Visibility="{Binding IsGenusEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        </Grid>
+                        </ScrollViewer>
+                        </TabViewItem>
+
+                        --><!--  COMMENTS SPECIES  --><!--
+                        <TabViewItem Header="Comments Species">
+                        <ScrollViewer Padding="1">
+                        <Grid RowDefinitions="Auto,*">
+
+                        --><!--  LISTE  --><!--
+                        <tbl93Comment:Tbl93CommentParentControl
+                        Grid.Row="0"
+                        DataContext="{x:Bind ViewModel.SpeciesViewModel.CommentViewModel}" />
+                        --><!--  EDITOR  --><!--
+                        <tbl93Comment:Tbl93CommentEditControl
+                        Grid.Row="1"
+                        DataContext="{x:Bind ViewModel.SpeciesViewModel.CommentViewModel}"
+                        Item="{Binding SelectedItem, Mode=TwoWay}"
+                        Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </Grid>
+                        </ScrollViewer>
+                        </TabViewItem>
+
+                        --><!--  REFERENCES SPECIES  --><!--
+                        <TabViewItem Header="References Species">
+                        <ScrollViewer Padding="1">
+                        <Grid RowDefinitions="Auto,*">
+
+                        --><!--  LISTE  --><!--
+                        <tbl90Reference:Tbl90ReferenceParentControl
+                        Grid.Row="0"
+                        DataContext="{x:Bind ViewModel.SpeciesViewModel.ReferenceViewModel}" />
+                        --><!--  EDITOR  --><!--
+                        <tbl90Reference:Tbl90ReferenceEditControl
+                        Grid.Row="1"
+                        DataContext="{x:Bind ViewModel.SpeciesViewModel.ReferenceViewModel}"
+                        Item="{Binding SelectedItem, Mode=TwoWay}"
+                        Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </Grid>
+                        </ScrollViewer>
+                        </TabViewItem>
+
+                        </TabView>
+
+                        </ScrollViewer>
+                        </TabViewItem>-->
+
+                    </TabView>
+
+                </layout:BaseBossPageLayout.DetailContent>
+
+            </layout:BaseBossPageLayout>
+
+        </ScrollViewer>
+
+        <!--  2. 🔥 Modernes Lade Overlay  -->
+        <components:LoadingOverlayControl Grid.RowSpan="1"
+                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
+    </Grid>
+</Page>

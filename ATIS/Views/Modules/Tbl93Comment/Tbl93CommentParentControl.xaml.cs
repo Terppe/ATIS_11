@@ -17,9 +17,6 @@ public sealed partial class Tbl93CommentParentControl : UserControl
 
     private void CommentListView_ItemClick(object sender, ItemClickEventArgs e)
     {
-        // SelectedItem ist durch TwoWay Binding in der Regel schon gesetzt,
-        // aber zur Sicherheit:
-
         if (DataContext is Tbl93CommentViewModel vm)
         {
             vm.SelectedItem = (Models.Tbl93Comment)e.ClickedItem;

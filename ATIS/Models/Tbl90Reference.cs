@@ -1,12 +1,13 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
+using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IDataService.IAuditable
+public class Tbl90Reference : ObservableObject, IDataService.IAuditable
 {
+    private readonly Dictionary<string, List<string>> _errors = new();
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
@@ -41,16 +42,11 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
     public int? RegnumId { get; set; }
 
     // ---------------------------------------------------------
-    // RefExpertId / RefSourceId / RefAuthorId (optional)
+    // RefExpertId / RefSourceId / RefAuthorId
     // ---------------------------------------------------------
     public int? RefExpertId { get; set; }
-    public void SetRefExpertId(object obj) => RefExpertId = (int)obj;
-
     public int? RefSourceId { get; set; }
-    public void SetRefSourceId(object obj) => RefSourceId = (int)obj;
-
     public int? RefAuthorId { get; set; }
-    public void SetRefAuthorId(object obj) => RefAuthorId = (int)obj;
 
     // ---------------------------------------------------------
     // CountId (Pflicht)
@@ -73,29 +69,69 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
     }
 
     // ---------------------------------------------------------
-    // ValidYear (optional)
+    // ValidYear (mit Validierung)
     // ---------------------------------------------------------
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
     {
         get => _validYear;
-        set => SetProperty(ref _validYear, value);
+        set
+        {
+            if (SetProperty(ref _validYear, value))
+                ValidateValidYear();
+        }
+    }
+
+    private string? _validYearError;
+    [NotMapped]
+    public string? ValidYearError
+    {
+        get => _validYearError;
+        set => SetProperty(ref _validYearError, value);
+    }
+
+    private bool _hasValidYearError;
+    [NotMapped]
+    public bool HasValidYearError
+    {
+        get => _hasValidYearError;
+        set => SetProperty(ref _hasValidYearError, value);
     }
 
     // ---------------------------------------------------------
-    // Info (optional)
+    // Info (mit Validierung)
     // ---------------------------------------------------------
     [StringLength(100)]
     private string? _info;
     public string? Info
     {
         get => _info;
-        set => SetProperty(ref _info, value);
+        set
+        {
+            SetProperty(ref _info, value);
+            ValidateInfo();
+        }
+    }
+
+    private string? _infoError;
+    [NotMapped]
+    public string? InfoError
+    {
+        get => _infoError;
+        set => SetProperty(ref _infoError, value);
+    }
+
+    private bool _hasInfoError;
+    [NotMapped]
+    public bool HasInfoError
+    {
+        get => _hasInfoError;
+        set => SetProperty(ref _hasInfoError, value);
     }
 
     // ---------------------------------------------------------
-    // Writer (Pflicht)
+    // Writer / WriterDate
     // ---------------------------------------------------------
     [StringLength(50)]
     private string _writer = string.Empty;
@@ -105,9 +141,6 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
         set => SetProperty(ref _writer, value);
     }
 
-    // ---------------------------------------------------------
-    // WriterDate (Pflicht)
-    // ---------------------------------------------------------
     private DateTime _writerDate;
     public DateTime WriterDate
     {
@@ -116,7 +149,7 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
     }
 
     // ---------------------------------------------------------
-    // Updater (Pflicht)
+    // Updater / UpdaterDate
     // ---------------------------------------------------------
     [StringLength(50)]
     private string _updater = string.Empty;
@@ -126,9 +159,6 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
         set => SetProperty(ref _updater, value);
     }
 
-    // ---------------------------------------------------------
-    // UpdaterDate (Pflicht)
-    // ---------------------------------------------------------
     private DateTime _updaterDate;
     public DateTime UpdaterDate
     {
@@ -137,7 +167,7 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
     }
 
     // ---------------------------------------------------------
-    // Memo (optional)
+    // Memo
     // ---------------------------------------------------------
     [StringLength(1000)]
     private string? _memo;
@@ -148,7 +178,7 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
     }
 
     // ---------------------------------------------------------
-    // Navigation Properties (alle optional)
+    // Navigation Properties
     // ---------------------------------------------------------
     [ForeignKey("SpeciesId")]
     public virtual Tbl75Species? Tbl75Speciesses { get; set; }
@@ -163,90 +193,90 @@ public class Tbl90Reference : ObservableObject, ICopyable<Tbl90Reference>, IData
     public virtual Tbl90RefSource? Tbl90RefSources { get; set; }
 
     // ---------------------------------------------------------
-    // CLONE
+    // VALIDIERUNG (wie bei Comment)
     // ---------------------------------------------------------
-    public Tbl90Reference Clone()
+    private void ClearErrors(string propertyName)
     {
-        return new Tbl90Reference
-        {
-            ReferenceId = ReferenceId,
-            SpeciesId = SpeciesId,
-            GenusId = GenusId,
-            InfratribusId = InfratribusId,
-            SubtribusId = SubtribusId,
-            TribusId = TribusId,
-            SupertribusId = SupertribusId,
-            InfrafamilyId = InfrafamilyId,
-            SubfamilyId = SubfamilyId,
-            FamilyId = FamilyId,
-            SuperfamilyId = SuperfamilyId,
-            InfraordoId = InfraordoId,
-            SubordoId = SubordoId,
-            OrdoId = OrdoId,
-            LegioId = LegioId,
-            InfraclassId = InfraclassId,
-            SubclassId = SubclassId,
-            ClassId = ClassId,
-            SuperclassId = SuperclassId,
-            SubdivisionId = SubdivisionId,
-            SubphylumId = SubphylumId,
-            DivisionId = DivisionId,
-            PhylumId = PhylumId,
-            RegnumId = RegnumId,
-            RefExpertId = RefExpertId,
-            RefSourceId = RefSourceId,
-            RefAuthorId = RefAuthorId,
-            CountId = CountId,
-            Valid = Valid,
-            ValidYear = ValidYear,
-            Info = Info,
-            Writer = Writer,
-            WriterDate = WriterDate,
-            Updater = Updater,
-            UpdaterDate = UpdaterDate,
-            Memo = Memo
-        };
+        if (_errors.ContainsKey(propertyName))
+            _errors[propertyName].Clear();
     }
 
-    // ---------------------------------------------------------
-    // COPYFROM
-    // ---------------------------------------------------------
-    public void CopyFrom(Tbl90Reference other)
+    private void AddError(string propertyName, string errorMessage)
     {
-        SpeciesId = other.SpeciesId;
-        GenusId = other.GenusId;
-        InfratribusId = other.InfratribusId;
-        SubtribusId = other.SubtribusId;
-        TribusId = other.TribusId;
-        SupertribusId = other.SupertribusId;
-        InfrafamilyId = other.InfrafamilyId;
-        SubfamilyId = other.SubfamilyId;
-        FamilyId = other.FamilyId;
-        SuperfamilyId = other.SuperfamilyId;
-        InfraordoId = other.InfraordoId;
-        SubordoId = other.SubordoId;
-        OrdoId = other.OrdoId;
-        LegioId = other.LegioId;
-        InfraclassId = other.InfraclassId;
-        SubclassId = other.SubclassId;
-        ClassId = other.ClassId;
-        SuperclassId = other.SuperclassId;
-        SubdivisionId = other.SubdivisionId;
-        SubphylumId = other.SubphylumId;
-        DivisionId = other.DivisionId;
-        PhylumId = other.PhylumId;
-        RegnumId = other.RegnumId;
-        RefExpertId = other.RefExpertId;
-        RefSourceId = other.RefSourceId;
-        RefAuthorId = other.RefAuthorId;
-        CountId = other.CountId;
-        Valid = other.Valid;
-        ValidYear = other.ValidYear;
-        Info = other.Info;
-        Writer = other.Writer;
-        WriterDate = other.WriterDate;
-        Updater = other.Updater;
-        UpdaterDate = other.UpdaterDate;
-        Memo = other.Memo;
+        if (!_errors.ContainsKey(propertyName))
+            _errors[propertyName] = new List<string>();
+
+        if (!_errors[propertyName].Contains(errorMessage))
+            _errors[propertyName].Add(errorMessage);
     }
+
+    private void UpdateErrorProperty(string propertyName)
+    {
+        var hasErrors = _errors.ContainsKey(propertyName) && _errors[propertyName].Count > 0;
+        var errorMessage = hasErrors ? string.Join(" | ", _errors[propertyName]) : "";
+
+        switch (propertyName)
+        {
+            case nameof(ValidYear):
+                ValidYearError = errorMessage;
+                HasValidYearError = hasErrors;
+                break;
+
+            case nameof(Info):
+                InfoError = errorMessage;
+                HasInfoError = hasErrors;
+                break;
+        }
+
+        OnPropertyChanged($"{propertyName}Error");
+        OnPropertyChanged($"Has{propertyName}Error");
+    }
+
+    private void ValidateValidYear()
+    {
+        ClearErrors(nameof(ValidYear));
+        var loc = Localizer.Get();
+
+        if (string.IsNullOrWhiteSpace(ValidYear))
+            goto Notify;
+
+        if (ValidYear!.Length != 4)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(ValidYear, out var year))
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
+
+        Notify:
+        UpdateErrorProperty(nameof(ValidYear));
+    }
+
+    private void ValidateInfo()
+    {
+        ClearErrors(nameof(Info));
+        var loc = Localizer.Get();
+
+        if (_info?.Length > 100)
+            AddError(nameof(Info), loc.GetLocalizedString("Error_Info_TooLong"));
+
+        UpdateErrorProperty(nameof(Info));
+    }
+
+    public bool IsValid()
+    {
+        ValidateValidYear();
+        ValidateInfo();
+
+        return !HasValidYearError && !HasInfoError;
+    }
+
+
 }

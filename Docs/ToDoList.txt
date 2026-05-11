@@ -399,4 +399,73 @@ Gelöst blauer Border und Roter Border ok
 01.05.2026 14:30 Uhr Listview und Tabview etwas hübscher machen und dann roter Border bei fehler. App_UnhandledException erweitert. alles erledigt.
 jetzt folgt References einfügen
 ---------------------------------------------
-01.05.2026 16:30 Uhr
+01.05.2026 16:30 Uhr  Start mit References einfügen.
+1. Model
+2. IDataService + DataService
+3. ReferenceViewModel  und alle Comboboxen gelöscht die mit Tbl90RefAuthor, .Expert und..Source zu tun haben in allen Pages.xaml.cs
+Zwischensicherung
+---------------------------------------------
+01.05.2026 17:30 Uhr
+4. Tbl90ReferenceEditControl.xaml+ .cs
+5. Tbl90ReferenceParentControl.xaml + .cs
+6. Anpassung in Subtribus
+Ein datensatz erzeugt ohne die Comboboxen., aber lauffähig
+-------------------------------------------------------
+02.05.2026 12:30 Uhr Tbl90RefAuthor, .Expert und..Source comboboxen alle angezeigt. Funktion ok.
+-------------------------------------------------------
+02.05.2026 12:30 Uhr modifizieren funktioniert bei reference nicht suber mit den comboboxen. alle drei comboboxen werden angezeigt
+-------------------------------------------------------
+03.05.2026 11:30 Uhr Tbl90RefAuthor, .Expert und..Source comboboxen richtig gelöst.
+erstmal save und prüfen ob eine Combox mindstens ausgewählt wurde.
+-------------------------------------------------------
+03.05.2026 15:30 Uhr Infratribus als Parent. Struktur von
+
+ Tbl57Tribus (Boss)
+ └── Tbl60Subtribus (Parent)
+ │     ├── Tbl90Reference (Child)
+ │     └── Tbl93Comment (Child)
+ ├── Tbl90Reference (Parent)
+ └── Tbl93Comment (Parent)
+
+ Tbl60Subtribus (BOSS)
+ └──  Tbl63Infratribus (Parent)
+ │     ├── Tbl90Reference (Child)
+ │     └── Tbl93Comment (Child)
+ ├── Tbl90Reference (Parent)
+ └── Tbl93Comment (Parent)
+
+ Tbl63Infratribus (BOSS)
+ └──  Tbl66Genus (Parent)
+ │     ├── Tbl90Reference (Child)
+ │     └── Tbl93Comment (Child)
+ ├── Tbl90Reference (Parent)
+ └── Tbl93Comment (Parent)
+
+  Tbl66Genus (BOSS)
+ └──  Tbl75Species (Parent)
+ │     ├── Tbl78Name (Child)
+ │     └── Tbl81Image (Child)
+ │     ├── Tbl84Synonym (Child)
+ │     └── Tbl87Geographic (Child)
+ │     ├── Tbl90Reference (Child)
+ │     └── Tbl93Comment (Child)
+ │     ├── Tbl90Reference (Child)
+ │     └── Tbl93Comment (Child)
+ ├── Tbl90Reference (Parent)
+ └── Tbl93Comment (Parent)
+
+ Tbl63Infratribus parent eingebaut, aber noch nicht wie ein parent sondern wie ein BossControl. werden noch keine Daten angezeigt
+ ------------------------------------------------
+ 06.05.2026 19:30 Uhr Infratribus VB wird von SubtribusParentControl aufgerufen. nur SubtribusAll wird nicht im Combobox .SubtribusList nicht ok. InfratribusBoss fast ok
+ ------------------------------------------------
+ 07.05.2026 15:30 Uhr Genus mit eingefügt noch mit Fehlern. Und Subtribus erweitert im comment und reference
+ ------------------------------------------------
+ 08.05.2026 14:30 Uhr Bei Fokus im Listview wird Editcontrol wieder angezeigt. In den Comboboxen keine Daten. Infratribus scheint zu laufen.
+ Subtribus und genus noch nicht. Fehler suchen, da nach eingabe von "a" abbruch
+ ------------------------------------------------
+ 09.05.2026 14:30 Uhr fehler nicht zu findn. aus Version 39 wieder aufbauen.
+ ------------------------------------------------
+ 11.05.2026 14:00 Uhr SubtribusViewModel uas Version 39 reinkopiert. Subtribus und Infratribus lassen sich wieder aufrufen.
+ Aber beide Viewmodels sind völlig unterschiedlich. Ich werde jetzt noch einmal aus Version 39 a
+uch Infratribus copieren und wenn es auch noch läuft. beide wieder aufbauen. Funktionieren beide aber in denComboboxen
+wird z.t. keine tabelle angezeigt bei Infratribus. Version sichern, da lauffähig. Jetzt in kleinen schritten weiter

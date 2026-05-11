@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.Tbl90Reference.Tbl90ReferenceEditControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="using:WinUI3Localizer"
+             x:Name="DataRoot">
+
+    <Border Padding="4"
+            Background="{ThemeResource ControlFillColorSecondaryBrush}"
+            BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="6">
+
+        <StackPanel Spacing="4">
+
+            <!--  HEADER  -->
+            <Grid Margin="0,0,0,4"
+                  ColumnDefinitions="*,Auto">
+
+                <!--  Titel links  -->
+                <TextBlock Grid.Column="0"
+                           Margin="8,0,0,0"
+                           loc:Uids.Uid="TextBlock_Reference"
+                           Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                <!--  Buttons rechts  -->
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
+
+                    <Button Command="{Binding NewCommand}"
+                            Style="{StaticResource AtisPrimaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE710;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding SaveCommand}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74E;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Save" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding DeleteCommand}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74D;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Delete" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+
+                <!--  ReferenceId  -->
+                <TextBox Width="120"
+                         loc:Uids.Uid="TextBox_ReferenceId"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{x:Bind Item.ReferenceId, Mode=OneWay}" />
+
+                <!--  Valid  -->
+                <CheckBox MinWidth="60"
+                          VerticalAlignment="Bottom"
+                          loc:Uids.Uid="CheckBox_Valid"
+                          IsChecked="{x:Bind Item.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource AtisCheckBox}" />
+
+                <!--  ValidYear  -->
+                <StackPanel MinWidth="60"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="ValidYearBox"
+                             loc:Uids.Uid="TextBox_ValidYear"
+                             Loaded="ValidYearBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{x:Bind Item.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="ValidYearBox_OnTextChanged" />
+                    <TextBlock Height="16"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{x:Bind Item.ValidYearError, Mode=OneWay}"
+                               Visibility="{x:Bind Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--  RefExpertId  + ComboRefExpert Visibility="{x:Bind Item.ShowExpertCombo, Converter={StaticResource BoolToVisibilityConverter}}" Visibility="{x:Bind Item.ShowExpertCombo()}"  -->
+            <StackPanel x:Name="ExpertPanel"
+                        Orientation="Horizontal"
+                        Spacing="4">
+
+                <!--  RefExpertId  -->
+                <TextBox Width="120"
+                         loc:Uids.Uid="TextBox_ReferenceExpertId"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{x:Bind Item.RefExpertId, Mode=OneWay}" />
+
+                <!--  Combo  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+                    <ComboBox x:Name="RefExpertCombo"
+                              MinWidth="200"
+                              loc:Uids.Uid="ComboBox_RefExpertName"
+                              DisplayMemberPath="RefExpertName"
+                              ItemsSource="{Binding RefExpertsList}"
+                              SelectedValue="{x:Bind Item.RefExpertId, Mode=TwoWay}"
+                              SelectedValuePath="RefExpertId"
+                              SelectionChanged="OnRefExpertChanged"
+                              Style="{StaticResource AtisComboBox}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--  RefSourceId  + ComboRefSource Visibility="{x:Bind Item.ShowSourceCombo, Converter={StaticResource BoolToVisibilityConverter}}" Visibility="{x:Bind Item.ShowSourceCombo()}"  -->
+            <StackPanel x:Name="SourcePanel"
+                        Orientation="Horizontal"
+                        Spacing="4">
+                <!--  RefSourceId  -->
+                <TextBox Width="120"
+                         loc:Uids.Uid="TextBox_ReferenceSourceId"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{x:Bind Item.RefSourceId, Mode=OneWay}" />
+
+                <!--  RefSource  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+                    <ComboBox x:Name="RefSourceCombo"
+                              MinWidth="400"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_RefSourceName"
+                              DisplayMemberPath="RefSourceName"
+                              ItemsSource="{Binding RefSourcesList}"
+                              SelectedValue="{x:Bind Item.RefSourceId, Mode=TwoWay}"
+                              SelectedValuePath="RefSourceId"
+                              SelectionChanged="OnRefSourceChanged"
+                              Style="{StaticResource AtisComboBox}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--  RefAuthorId  + ComboRefAuthor Visibility="{x:Bind Item.ShowAuthorCombo, Converter={StaticResource BoolToVisibilityConverter}}" Visibility="{x:Bind Item.ShowAuthorCombo()}"  -->
+            <StackPanel x:Name="AuthorPanel"
+                        Orientation="Horizontal"
+                        Spacing="4">
+                <!--  RefAuthorId  -->
+                <TextBox Width="120"
+                         loc:Uids.Uid="TextBox_ReferenceAuthorId"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{x:Bind Item.RefAuthorId, Mode=OneWay}" />
+
+                <!--  RefAuthor  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+                    <ComboBox x:Name="RefAuthorCombo"
+                              MinWidth="600"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_RefAuthorName"
+                              DisplayMemberPath="RefAuthorName"
+                              ItemsSource="{Binding RefAuthorsList}"
+                              SelectedValue="{x:Bind Item.RefAuthorId, Mode=TwoWay}"
+                              SelectedValuePath="RefAuthorId"
+                              SelectionChanged="OnRefAuthorChanged"
+                              Style="{StaticResource AtisComboBox}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--  Info mit Validierung  -->
+            <StackPanel MinWidth="300"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Spacing="2">
+
+                <TextBox x:Name="InfoBox"
+                         loc:Uids.Uid="TextBox_Info"
+                         Loaded="InfoBox_OnLoaded"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{x:Bind Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         TextChanged="InfoBox_OnTextChanged" />
+
+                <TextBlock Height="16"
+                           FontSize="10"
+                           Foreground="Red"
+                           Text="{x:Bind Item.InfoError, Mode=OneWay}"
+                           Visibility="{x:Bind Item.HasInfoError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+            </StackPanel>
+
+            <!--  Memo  -->
+            <TextBox MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Memo"
+                     AcceptsReturn="True"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{x:Bind Item.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -4,14 +4,6 @@
              xmlns:loc="using:WinUI3Localizer"
              x:Name="EditRoot">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/TextBoxStyles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
@@ -75,7 +67,6 @@
                 </StackPanel>
             </Grid>
             <!--  ID + Valid + Year  -->
-
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
                 <TextBox Width="120"

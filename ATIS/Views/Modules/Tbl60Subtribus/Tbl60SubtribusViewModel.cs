@@ -3,22 +3,32 @@ using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Views.Base;
+using ATIS.Views.Modules.Tbl63Infratribus;
+using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 
-public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
+namespace ATIS.Views.Modules.Tbl60Subtribus;
+
+public class Tbl60SubtribusViewModel : BaseListViewModel<Models.Tbl60Subtribus>
 {
     public Tbl93CommentViewModel CommentViewModel { get; }
+    public Tbl90ReferenceViewModel ReferenceViewModel { get; }
+    public Tbl63InfratribusViewModel InfratribusViewModel { get; }
 
     private readonly IDialogService _dialog;
 
     public Tbl60SubtribusViewModel(
         IDataService data,
         IDialogService dialog,
-        Tbl93CommentViewModel commentViewModel
+        Tbl93CommentViewModel commentViewModel,
+        Tbl90ReferenceViewModel referenceViewModel,
+        Tbl63InfratribusViewModel infratribusViewModel
     ) : base(data)
     {
         _dialog = dialog;
         CommentViewModel = commentViewModel;
+        ReferenceViewModel = referenceViewModel;
+        InfratribusViewModel = infratribusViewModel;
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
     }
@@ -72,14 +82,36 @@ public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
         await LoadTribusAsync();
         await ReloadAndSelectAsync(saved: default, autoSelect: false);
     }
+    // ---------------------------------------------------------
+    // Reload (FK)
+    // ---------------------------------------------------------
 
-    protected override async Task<IEnumerable<Tbl60Subtribus>> LoadItemsAsync()
+    public int? CurrentTribusId { get; private set; }
+    public int? CurrentSubtribusId { get; private set; }
+
+    public async Task LoadForTribusAsync(int tribusId)
+    {
+        //Debug.WriteLine($"[TribusVM] LoadForTribusAsync({tribusId})");
+
+        //CurrentTribusId = tribusId;
+        //CurrentSubtribusId = null; // ← Modus zurücksetzen
+
+        //Items = new ObservableCollection<Models.Tbl60Subtribus>(await _data.GetSubtribusForTribusAsync(tribusId));
+
+        //DataSetCount = Items.Count;
+
+        //IsSubtribusEditVisible = false;
+        //SelectItemSilently(null);
+    }
+
+    protected override async Task<IEnumerable<Models.Tbl60Subtribus>> LoadItemsAsync()
     {
         if (string.IsNullOrWhiteSpace(CurrentFilter))
-            return Enumerable.Empty<Tbl60Subtribus>();
+            return Enumerable.Empty<Models.Tbl60Subtribus>();
 
         return await _data.SearchSubtribusAsync(CurrentFilter);
     }
+
     private string _searchText = string.Empty;
     public string? SearchText
     {
@@ -99,58 +131,87 @@ public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
         get => _isDetailVisible;
         set => SetProperty(ref _isDetailVisible, value);
     }
+    private bool _isSubtribusEditVisible;
+    public bool IsSubtribusEditVisible
+    {
+        get => _isSubtribusEditVisible;
+        set { _isSubtribusEditVisible = value; OnPropertyChanged(); }
+    }
 
     // ---------------------------------------------------------
-    // Selection -> load comments for FK
+    // Selection -> load comments, refernces, infratribusses for FK
     // ---------------------------------------------------------
+
     public override async Task OnSelectedItemChangedAsync()
     {
         if (SelectedItem == null)
+        {
+            await ReferenceViewModel.LoadForSubtribusAsync(0);
+            await CommentViewModel.LoadForSubtribusAsync(0);
+            await InfratribusViewModel.LoadForSubtribusAsync(0);
             return;
+        }
 
         await CommentViewModel.LoadForSubtribusAsync(SelectedItem.SubtribusId);
+        await ReferenceViewModel.LoadForSubtribusAsync(SelectedItem.SubtribusId);
+        await InfratribusViewModel.LoadForSubtribusAsync(SelectedItem.SubtribusId);
     }
 
-    private Tbl93Comment? _selectedComment;
+    private Models.Tbl93Comment? _selectedComment;
 
-    public Tbl93Comment? SelectedComment
+    public Models.Tbl93Comment? SelectedComment
     {
         get => _selectedComment;
         set => SetProperty(ref _selectedComment, value);
+    }
+    private Models.Tbl90Reference? _selectedReference;
+
+    public Models.Tbl90Reference? SelectedReference
+    {
+        get => _selectedReference;
+        set => SetProperty(ref _selectedReference, value);
+    }
+    private Models.Tbl63Infratribus? _selectedInfratribus;
+
+    public Models.Tbl63Infratribus? SelectedInfratribus
+    {
+        get => _selectedInfratribus;
+        set => SetProperty(ref _selectedInfratribus, value);
     }
 
     // ---------------------------------------------------------
     // New
     // ---------------------------------------------------------
-    protected override Tbl60Subtribus CreateNewItem()
+    protected override Models.Tbl60Subtribus CreateNewItem()
         => new()
         {
             TribusId = TribusList.First().TribusId,   // ← gültiger Wert
             SubtribusId = 0
         };
 
-    protected override void OnAfterNew(Tbl60Subtribus item)
+
+    protected override void OnAfterNew(Models.Tbl60Subtribus item)
     {
         // 2. Detailbereich öffnen
         IsDetailVisible = true;
     }
 
-    protected override bool IsUnsavedNewItem(Tbl60Subtribus item)
+    protected override bool IsUnsavedNewItem(Models.Tbl60Subtribus item)
         => item.SubtribusId == 0;
 
     // ---------------------------------------------------------
     // Confirm dialogs from base hooks
     // ---------------------------------------------------------
-    protected override Task<bool> ConfirmSaveAsync(Tbl60Subtribus item)
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl60Subtribus item)
         => _dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
 
-    protected override Task<bool> ConfirmDeleteAsync(Tbl60Subtribus item)
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl60Subtribus item)
         => _dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
 
     // ---------------------------------------------------------
     // Save/Delete
     // ---------------------------------------------------------
-    protected override async Task OnBeforeReloadAfterSaveAsync(Tbl60Subtribus item)
+    protected override async Task OnBeforeReloadAfterSaveAsync(Models.Tbl60Subtribus item)
     {
         // Wenn SearchBox leer ist → Filter automatisch setzen
         if (string.IsNullOrWhiteSpace(SearchText))
@@ -161,7 +222,7 @@ public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
         }
     }
 
-    protected override async Task<Tbl60Subtribus?> SaveItemAsync(Tbl60Subtribus item)
+    protected override async Task<Models.Tbl60Subtribus?> SaveItemAsync(Models.Tbl60Subtribus item)
     {
         if (await _data.SubtribusExistsAsync(item))
         {
@@ -173,30 +234,28 @@ public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
         return await _data.GetSubtribusByIdAsync(saved.SubtribusId);
     }
 
-    protected override async Task<bool> DeleteItemAsync(Tbl60Subtribus item)
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl60Subtribus item)
     {
-        // Unsaved -> verwerfen, kein reload
+        // Neu/unsaved → verwerfen
         if (item.SubtribusId == 0)
         {
-            SelectedItem = default;
+            SelectedItem = null;
             return false;
         }
 
-        if (await _data.HasInfratribusAsync(item.SubtribusId))
-        {
-            await _dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
-            return false;
-        }
-
-        if (await _data.HasCommentAsync(item.SubtribusId))
+        // FK-Prüfungen
+        if (await _data.SubtribusHasInfratribusAsync(item.SubtribusId) ||
+            await _data.SubtribusHasReferenceAsync(item.SubtribusId) ||
+            await _data.SubtribusHasCommentAsync(item.SubtribusId))
         {
             await _dialog.ShowErrorAsync(
                 "Error_DeleteNotAllowed_Title",
-                "Subtribus kann nicht gelöscht werden, weil Comments vorhanden sind."
+                "Error_DeleteNotAllowed_Message"
             );
             return false;
         }
 
+        // Löschen
         await _data.DeleteSubtribusAsync(item.SubtribusId);
         return true;
     }
@@ -234,7 +293,7 @@ public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
             _sortAscending = true;
         }
 
-        IEnumerable<Tbl60Subtribus> sorted = column switch
+        IEnumerable<Models.Tbl60Subtribus> sorted = column switch
         {
             "Id" => _sortAscending ? Items.OrderBy(x => x.SubtribusId)
                                    : Items.OrderByDescending(x => x.SubtribusId),
@@ -245,7 +304,7 @@ public class Tbl60SubtribusViewModel : BaseListViewModel<Tbl60Subtribus>
             _ => Items
         };
 
-        Items = new ObservableCollection<Tbl60Subtribus>(sorted);
+        Items = new ObservableCollection<Models.Tbl60Subtribus>(sorted);
 
         // Selection bewusst auf null setzen (wie vorher)
         SelectedItem = null;

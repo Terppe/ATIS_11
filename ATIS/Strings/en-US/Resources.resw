@@ -4143,6 +4143,12 @@
   <data name="Error_NotPossible_Title" xml:space="preserve">
     <value>Not possible to delete.</value>
   </data>
+  <data name="Error_NoRefComboBoxSelected_Title" xml:space="preserve">
+    <value>No ComboBox selected</value>
+  </data>
+  <data name="Error_NoRefComboBoxSelected_Message" xml:space="preserve">
+    <value>Please select at least one Expert, one Source or one Author.</value>
+  </data>
   <data name="Error_NotPossible_Message" xml:space="preserve">
     <value>Dependent datasets exist.</value>
   </data>

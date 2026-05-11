@@ -81,6 +81,7 @@
         </Grid>
 
         <ListView x:Name="CommentListView"
+                  Margin="0,0,10,0"
                   Grid.Row="2"
                   MaxHeight="112.5"
                   BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
@@ -102,30 +103,18 @@
                             <MenuFlyout>
                                 <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Add_Comment"
                                                 Command="{Binding DataContext.NewCommand, ElementName=CommentListView}">
-                                    <!--<MenuFlyoutItem.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                    UriSource="/Assets/Fluent/add.png" />
-                                    </MenuFlyoutItem.Icon>-->
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Add" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Save_Comment"
                                                 Command="{Binding DataContext.SaveCommand, ElementName=CommentListView}">
-                                    <!--<MenuFlyoutItem.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                    UriSource="/Assets/Fluent/add.png" />
-                                    </MenuFlyoutItem.Icon>-->
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Save" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Delete_Comment"
                                                 Command="{Binding DataContext.DeleteCommand, ElementName=CommentListView}">
-                                    <!--<MenuFlyoutItem.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                    UriSource="/Assets/Fluent/delete.png" />
-                                    </MenuFlyoutItem.Icon>-->
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Delete" />
                                     </MenuFlyoutItem.Icon>

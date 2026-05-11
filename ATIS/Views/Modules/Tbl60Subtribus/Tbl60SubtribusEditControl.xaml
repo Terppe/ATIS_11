@@ -99,8 +99,7 @@
                               loc:Uids.Uid="ComboBox_TribusName"
                               DisplayMemberPath="TribusName"
                               ItemsSource="{Binding TribusList}"
-                              PlaceholderText="Select"
-                              SelectedValue="{x:Bind Item.TribusId, Mode=OneWay}"
+                              SelectedValue="{x:Bind Item.TribusId, Mode=TwoWay}"
                               SelectedValuePath="TribusId"
                               SelectionChanged="OnTribusChanged"
                               Style="{StaticResource AtisComboBox}" />
@@ -130,6 +129,7 @@
                                Visibility="{x:Bind Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
+
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
                 <TextBox MinWidth="150"
@@ -155,7 +155,6 @@
                                Text="{x:Bind Item.AuthorYearError, Mode=OneWay}"
                                Visibility="{x:Bind Item.HasAuthorYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
-
             </StackPanel>
 
             <!--  Info  -->

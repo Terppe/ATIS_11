@@ -12,8 +12,6 @@ public sealed partial class Tbl60SubtribusBossControl : UserControl
     public Tbl60SubtribusBossControl()
     {
         InitializeComponent();
-        // AtisListViewZebraHelper.EnableZebra(SubtribusListView);
-
     }
 
     private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)

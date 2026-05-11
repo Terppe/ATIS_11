@@ -14,6 +14,7 @@ using ATIS.Views.Main;
 using ATIS.Views.Main.Disease;
 using ATIS.Views.Main.Food;
 using ATIS.Views.Main.Miscellaneous;
+using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl90RefExpert;
 using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Report;
@@ -29,8 +30,10 @@ using WinUIEx;
 using DiseasePage = ATIS.Views.Main.Disease.DiseasePage;
 using FoodPage = ATIS.Views.Main.Food.FoodPage;
 using MiscellaneousPage = ATIS.Views.Main.Miscellaneous.MiscellaneousPage;
+using Tbl60SubtribusViewModel = ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusViewModel;
 using Tbl63InfratribusViewModel = ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusViewModel;
 using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorViewModel;
+using Tbl90ReferenceViewModel = ATIS.Views.Modules.Tbl90Reference.Tbl90ReferenceViewModel;
 using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
 using TblCountryViewModel = ATIS.ViewModels.TblCountryViewModel;
 
@@ -60,17 +63,25 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+
+        UnhandledException += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine("UNHANDLED EXCEPTION: " + e.Exception);
+            System.Diagnostics.Debug.WriteLine("STACKTRACE: " + e.Exception.StackTrace);
+        };
         Services = ConfigureServices();
         QuestPDF.Settings.License = LicenseType.Community;
         UnhandledException += App_UnhandledException;
+
+    
     }
 
-    // ---------------------------------------------------------
-    // 3. ONLAUNCHED – HAUPTSTART
-    // ---------------------------------------------------------
+// ---------------------------------------------------------
+// 3. ONLAUNCHED – HAUPTSTART
+// ---------------------------------------------------------
 
-    // Window erstellen
-    protected override async void OnLaunched(LaunchActivatedEventArgs args)
+// Window erstellen
+protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         // 1. Localizer EINMAL initialisieren
         await InitializeLocalizer();
@@ -275,6 +286,7 @@ public partial class App : Application
 
         services.AddTransient<Tbl60SubtribusViewModel>();
         services.AddTransient<Tbl63InfratribusViewModel>();
+        services.AddTransient<Tbl66GenusViewModel>();
 
         services.AddTransient<Tbl66GenusAltViewModel>();
         services.AddTransient<Tbl68SpeciesgroupViewModel>();
@@ -456,9 +468,19 @@ public partial class App : Application
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
         e.Handled = true;
-
+#if DEBUG && !DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
+        //UnhandledException += (sender, e) =>
+        //{
+        //    if (Debugger.IsAttached) Debugger.Break();
+        //};
+#endif
+        UnhandledException += (s, e) =>
+        {
+            Debug.WriteLine("UNHANDLED EXCEPTION: " + e.Exception);
+        };
         if (e.Exception is Exception ex)
         {
+            Debug.WriteLine("🔥 APP LEVEL EXCEPTION: " + e.Exception);
             Debug.WriteLine("🔥 UNHANDLED EXCEPTION:");
             Debug.WriteLine(ex.Message);
             Debug.WriteLine(ex.StackTrace);
@@ -474,7 +496,8 @@ public partial class App : Application
         }
 
     }
-    private void LogException(Exception ex)
+
+private void LogException(Exception ex)
     {
         while (ex != null)
         {
@@ -485,12 +508,11 @@ public partial class App : Application
                 Debug.WriteLine("➡ INNER EXCEPTION:");
         }
     }
+// ---------------------------------------------------------
+// 10. Helper
+// ---------------------------------------------------------
 
-    // ---------------------------------------------------------
-    // 10. Helper
-    // ---------------------------------------------------------
-
-    public static T GetService<T>() where T : class
+public static T GetService<T>() where T : class
     {
         return Services.GetRequiredService<T>();
     }

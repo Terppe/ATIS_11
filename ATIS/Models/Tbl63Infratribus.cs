@@ -2,11 +2,15 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using ATIS.Interfaces;
+using WinUI3Localizer;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ATIS.Models;
 
-public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, ICopyable<Tbl63Infratribus>
+public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  
 {
+    private Dictionary<string, List<string>> _errors = new();
+
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
@@ -21,7 +25,34 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, I
     public string? InfratribusName
     {
         get => _infratribusName;
-        set => SetProperty(ref _infratribusName, value);
+        set
+        {
+            SetProperty(ref _infratribusName, value);
+            ValidateInfratribusName();
+        }
+    }
+    private string? _infratribusNameError;
+    [NotMapped]
+    public string? InfratribusNameError
+    {
+        get => _infratribusNameError;
+        set => SetProperty(ref _infratribusNameError, value);
+    }
+
+    private bool _hasInfratribusNameError;
+    [NotMapped]
+    public bool HasInfratribusNameError
+    {
+        get => _hasInfratribusNameError;
+        set
+        {
+            if (_hasInfratribusNameError != value)
+            {
+                _hasInfratribusNameError = value;
+                OnPropertyChanged(); // WICHTIG!
+
+            }
+        }
     }
 
     // ---------------------------------------------------------
@@ -34,14 +65,11 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, I
         set => SetProperty(ref _subtribusId, value);
     }
 
-    // ---------------------------------------------------------
-    // Navigation: Subtribus andere Lösung suchen
-    // ---------------------------------------------------------
     public Tbl60Subtribus? Subtribus { get; set; }
 
     [NotMapped]
     public string? SubtribusName => Subtribus?.SubtribusName;
-
+    
     // ---------------------------------------------------------
     // CountId
     // ---------------------------------------------------------
@@ -70,7 +98,28 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, I
     public string? ValidYear
     {
         get => _validYear;
-        set => SetProperty(ref _validYear, value);
+        set
+        {
+            if (SetProperty(ref _validYear, value))
+            {
+                ValidateValidYear();
+            }
+        }
+    }
+    private string? _validYearError;
+    [NotMapped]
+    public string? ValidYearError
+    {
+        get => _validYearError;
+        set => SetProperty(ref _validYearError, value);
+    }
+
+    private bool _hasValidYearError;
+    [NotMapped]
+    public bool HasValidYearError
+    {
+        get => _hasValidYearError;
+        set => SetProperty(ref _hasValidYearError, value);
     }
 
     // ---------------------------------------------------------
@@ -103,7 +152,29 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, I
     public string? AuthorYear
     {
         get => _authorYear;
-        set => SetProperty(ref _authorYear, value);
+        set
+        {
+            if (SetProperty(ref _authorYear, value))
+            {
+                ValidateAuthorYear();
+            }
+        }
+    }
+
+    private string? _authorYearError;
+    [NotMapped]
+    public string? AuthorYearError
+    {
+        get => _authorYearError;
+        set => SetProperty(ref _authorYearError, value);
+    }
+
+    private bool _hasAuthorYearError;
+    [NotMapped]
+    public bool HasAuthorYearError
+    {
+        get => _hasAuthorYearError;
+        set => SetProperty(ref _hasAuthorYearError, value);
     }
 
     // ---------------------------------------------------------
@@ -207,70 +278,126 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  //, I
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+    // ---------------------------------------------------------
+    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
+    // ---------------------------------------------------------
 
-    // ---------------------------------------------------------
-    // CLONE
-    // ---------------------------------------------------------
-    public Tbl63Infratribus Clone()
+    private void ClearErrors(string propertyName)
     {
-        return new Tbl63Infratribus
+        if (_errors.ContainsKey(propertyName))
+            _errors[propertyName].Clear();
+    }
+
+    private void AddError(string propertyName, string errorMessage)
+    {
+        if (!_errors.ContainsKey(propertyName))
+            _errors[propertyName] = new List<string>();
+
+        if (!_errors[propertyName].Contains(errorMessage))
+            _errors[propertyName].Add(errorMessage);
+    }
+
+    private void UpdateErrorProperty(string propertyName)
+    {
+        var hasErrors = _errors.ContainsKey(propertyName) && _errors[propertyName].Count > 0;
+        var errorMessage = hasErrors ? string.Join(" | ", _errors[propertyName]) : "";
+
+        switch (propertyName)
         {
-            InfratribusId = InfratribusId,
-            InfratribusName = InfratribusName,
-            SubtribusId = SubtribusId,
-            CountId = CountId,
-            Valid = Valid,
-            ValidYear = ValidYear,
-            Synonym = Synonym,
-            Author = Author,
-            AuthorYear = AuthorYear,
-            Info = Info,
-            EngName = EngName,
-            GerName = GerName,
-            FraName = FraName,
-            PorName = PorName,
-            Writer = Writer,
-            WriterDate = WriterDate,
-            Updater = Updater,
-            UpdaterDate = UpdaterDate,
-            Memo = Memo
-        };
+            case nameof(InfratribusName):
+                InfratribusNameError = errorMessage;
+                HasInfratribusNameError = hasErrors;
+                break;
+            case nameof(ValidYear):
+                ValidYearError = errorMessage;
+                HasValidYearError = hasErrors;
+                break;
+            case nameof(AuthorYear):
+                AuthorYearError = errorMessage;
+                HasAuthorYearError = hasErrors;
+                break;
+        }
+
+        OnPropertyChanged($"{propertyName}Error");
+        OnPropertyChanged($"Has{propertyName}Error");
     }
 
-    // ---------------------------------------------------------
-    // COPYFROM
-    // ---------------------------------------------------------
-    public void CopyFrom(Tbl63Infratribus other)
+    private void ValidateInfratribusName()
     {
-        Debug.WriteLine($"[COPYFROM] {InfratribusName} → {other.InfratribusName}");
+        ClearErrors(nameof(InfratribusName));
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
 
-        InfratribusName = other.InfratribusName;
-        SubtribusId = other.SubtribusId;
-        CountId = other.CountId;
-        Valid = other.Valid;
-        ValidYear = other.ValidYear;
-        Synonym = other.Synonym;
-        Author = other.Author;
-        AuthorYear = other.AuthorYear;
-        Info = other.Info;
-        EngName = other.EngName;
-        GerName = other.GerName;
-        FraName = other.FraName;
-        PorName = other.PorName;
-        Writer = other.Writer;
-        WriterDate = other.WriterDate;
-        Updater = other.Updater;
-        UpdaterDate = other.UpdaterDate;
-        Memo = other.Memo;
+        if (string.IsNullOrWhiteSpace(_infratribusName))
+            AddError(nameof(InfratribusName), loc.GetLocalizedString("Error_InfratribusName_Empty"));
+
+        if (_infratribusName?.Length > 100)
+            AddError(nameof(InfratribusName), loc.GetLocalizedString("Error_InfratribusName_TooLong"));
+
+        UpdateErrorProperty(nameof(InfratribusName));
     }
 
-    [NotMapped]
-    public List<Tbl66Genus>? GenusPreview { get; set; }
+    private void ValidateValidYear()
+    {
+        ClearErrors(nameof(ValidYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
-    [NotMapped]
-    public List<Tbl90Reference>? ReferencePreview { get; set; }
+        if (string.IsNullOrWhiteSpace(ValidYear))
+            goto Notify;
 
-    [NotMapped]
-    public List<Tbl93Comment>? CommentPreview { get; set; }
+        if (ValidYear!.Length != 4)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(ValidYear, out var year))
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
+
+        Notify:
+        UpdateErrorProperty(nameof(ValidYear));
+    }
+
+    private void ValidateAuthorYear()
+    {
+        ClearErrors(nameof(AuthorYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
+
+        if (string.IsNullOrWhiteSpace(AuthorYear))
+            goto Notify;
+
+        if (AuthorYear!.Length != 4)
+        {
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(AuthorYear, out var year))
+        {
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
+
+        Notify:
+        UpdateErrorProperty(nameof(AuthorYear));
+    }
+
+    public bool IsValid()
+    {
+        ValidateInfratribusName();
+        ValidateValidYear();
+        ValidateAuthorYear();
+
+        return !HasInfratribusNameError && !HasValidYearError && !HasAuthorYearError;
+    }
+
 
 }

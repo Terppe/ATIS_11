@@ -14,10 +14,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
 
-                    <Grid
-                        MinHeight="32"
-                        VerticalAlignment="Center"
-                        ColumnSpacing="4">
+                    <Grid MinHeight="32"
+                          VerticalAlignment="Center"
+                          ColumnSpacing="4">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="16" />

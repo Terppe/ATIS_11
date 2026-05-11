@@ -802,9 +802,18 @@
 		<None Remove="Views\Main\UtilityPage.xaml" />
 		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusPage.xaml" />
-		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml" />
+		<None Remove="Views\Modules\Tbl60Subtribus\Tbl60SubtribusParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPage.xaml" />
+		<None Remove="Views\Modules\Tbl63Infratribus\Tbl63InfratribusParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusPage.xaml" />
+		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml" />
+		<None Remove="Views\Modules\Tbl90Reference\Tbl90ReferenceEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl90Reference\Tbl90ReferenceParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
@@ -952,6 +961,7 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
+	<Folder Include="Views\Modules\Tbl57Tribus\" />
 	<Folder Include="Views\Modules\TblCountry\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
@@ -992,6 +1002,66 @@
 </ItemGroup>
 
 <ItemGroup>
+  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
   <Page Update="DesignSystem\Layout\BaseBossPageLayout.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -1022,7 +1092,7 @@
 </ItemGroup>
 
 <ItemGroup>
-	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusControl.xaml">
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusBossControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 </ItemGroup>
@@ -1040,19 +1110,7 @@
 </ItemGroup>
 
 <ItemGroup>
-	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusRowControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-</ItemGroup>
-
-<ItemGroup>
 	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusEditControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-</ItemGroup>
-
-<ItemGroup>
-	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusPreviewControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 </ItemGroup>

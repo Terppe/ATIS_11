@@ -294,7 +294,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavGenus"
                                             loc:Uids.Uid="Nav_Genus"
-                                            Tag="ATIS.Views.Database.Tbl66GenusListPage">
+                            Tag="ATIS.Views.Modules.Tbl66Genus.Tbl66GenusPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
