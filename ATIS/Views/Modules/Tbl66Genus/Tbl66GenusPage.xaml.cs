@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Navigation;
+﻿using Microsoft.UI.Xaml.Input;
 using System.Diagnostics;
 using Windows.System;
 
@@ -43,32 +40,4 @@ public sealed partial class Tbl66GenusPage : Page
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    // ---------------------------------------------------------
-    //  SEARCH KEY HANDLING
-    // ---------------------------------------------------------
-    private async void SearchBox_OnKeyUp(object sender, KeyRoutedEventArgs e)
-    {
-        if (e.Key == VirtualKey.Enter)
-        {
-            await ViewModel.ApplyFilterAsync(SearchBox.Text);
-        }
-        else if (e.Key == VirtualKey.Escape)
-        {
-            SearchBox.Text = "";
-            await ViewModel.ApplyFilterAsync("");
-        }
-    }
-
-    // ---------------------------------------------------------
-    //  OPTIONAL HOVER EVENTS
-    // ---------------------------------------------------------
-    private void Row_PointerEntered(object sender, PointerRoutedEventArgs e)
-    {
-        // optional: Hover-Effekt
-    }
-
-    private void Row_PointerExited(object sender, PointerRoutedEventArgs e)
-    {
-        // optional: Hover-Effekt
-    }
 }

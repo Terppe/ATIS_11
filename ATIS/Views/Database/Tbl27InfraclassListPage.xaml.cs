@@ -21,7 +21,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl27InfraclassViewModel ViewModel { get; set; }
+    public Tbl27InfraclassAltViewModel ViewModel { get; set; }
     private Tbl27Infraclass SingleInfraclass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl27InfraclassListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl27InfraclassViewModel>();
+            ViewModel = App.GetService<Tbl27InfraclassAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

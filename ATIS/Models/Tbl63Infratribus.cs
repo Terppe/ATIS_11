@@ -2,12 +2,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using ATIS.Interfaces;
+using ATIS.Views.Base;
 using WinUI3Localizer;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ATIS.Models;
 
-public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable  
+public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     private Dictionary<string, List<string>> _errors = new();
 
@@ -278,6 +279,12 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+    // ---------------------------------------------------------
+    // IHierarchicalEntity IMPLEMENTATION
+    // ---------------------------------------------------------
+    public int GetEntityId() => InfratribusId;
+    public string GetDisplayName() => InfratribusName ?? $"Infratribus {InfratribusId}";
+
     // ---------------------------------------------------------
     // VALIDIERUNGSMETHODEN MIT LOCALIZATION
     // ---------------------------------------------------------

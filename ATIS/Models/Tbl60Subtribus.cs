@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
+using ATIS.Views.Base;
 using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
+public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     private Dictionary<string, List<string>> _errors = new();
 
@@ -49,15 +50,15 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
             {
                 _hasSubtribusNameError = value;
                 OnPropertyChanged(); // WICHTIG!
-
             }
         }
     }
+
     // ---------------------------------------------------------
     // TribusId (FK)
     // ---------------------------------------------------------
-    private int _tribusId;
-    public int TribusId
+    private int? _tribusId;
+    public int? TribusId
     {
         get => _tribusId;
         set => SetProperty(ref _tribusId, value);
@@ -279,6 +280,12 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
+    // IHierarchicalEntity IMPLEMENTATION
+    // ---------------------------------------------------------
+    public int GetEntityId() => SubtribusId;
+    public string GetDisplayName() => SubtribusName ?? $"Subtribus {SubtribusId}";
+
+    // ---------------------------------------------------------
     // VALIDIERUNGSMETHODEN MIT LOCALIZATION
     // ---------------------------------------------------------
 
@@ -359,7 +366,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
         if (year < 1500 || year > 2100)
             AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
 
@@ -386,7 +393,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 
@@ -398,6 +405,4 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable
 
         return !HasSubtribusNameError && !HasValidYearError && !HasAuthorYearError;
     }
-
-
 }

@@ -4134,8 +4134,14 @@
   <data name="Delete_Title" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Delete_Confirm_Title" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="Delete_Message" xml:space="preserve">
     <value>Do you really want to delete the selected record?</value>
+  </data>
+  <data name="Delete_Confirm_Message" xml:space="preserve">
+    <value>Do you really want to delete this record?</value>
   </data>
   <data name="Delete_Success_Message" xml:space="preserve">
     <value>The dataset was successful deleted</value>

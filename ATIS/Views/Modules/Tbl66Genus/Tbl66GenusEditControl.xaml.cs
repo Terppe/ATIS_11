@@ -11,9 +11,6 @@ public sealed partial class Tbl66GenusEditControl : UserControl
         InitializeComponent();
     }
 
-    // ---------------------------------------------------------
-    //  DependencyProperty: Item
-    // ---------------------------------------------------------
 
     public Models.Tbl66Genus? Item
     {
@@ -28,9 +25,6 @@ public sealed partial class Tbl66GenusEditControl : UserControl
             typeof(Tbl66GenusEditControl),
             new PropertyMetadata(null));
 
-    // ---------------------------------------------------------
-    //  ComboBox: Infratribus
-    // ---------------------------------------------------------
 
     private void OnInfratribusChanged(object sender, SelectionChangedEventArgs e)
     {

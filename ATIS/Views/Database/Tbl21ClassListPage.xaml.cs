@@ -21,7 +21,7 @@ public sealed partial class Tbl21ClassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl21ClassViewModel ViewModel { get; set; }
+    public Tbl21ClassAltViewModel ViewModel { get; set; }
     private Tbl21Class SingleClass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl21ClassListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl21ClassViewModel>();
+            ViewModel = App.GetService<Tbl21ClassAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

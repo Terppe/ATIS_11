@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using ATIS.Views.Modules.Tbl66Genus;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -24,4 +25,18 @@ public sealed partial class Tbl75SpeciesEditControl : UserControl
     {
         InitializeComponent();
     }
+
+    public Models.Tbl75Species? Item
+    {
+        get => (Models.Tbl75Species?)GetValue(ItemProperty);
+        set => SetValue(ItemProperty, value);
+    }
+
+    public static readonly DependencyProperty ItemProperty =
+        DependencyProperty.Register(
+            nameof(Item),
+            typeof(Models.Tbl75Species),
+            typeof(Tbl75SpeciesEditControl),
+            new PropertyMetadata(null));
+
 }

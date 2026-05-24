@@ -21,7 +21,7 @@ public sealed partial class Tbl84SynonymListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl84SynonymViewModel ViewModel { get; set; }
+    public Tbl84SynonymAltViewModel ViewModel { get; set; }
     private Tbl84Synonym SingleSynonym { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     //private static readonly AtisDbContext Context = new();
@@ -42,7 +42,7 @@ public sealed partial class Tbl84SynonymListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl84SynonymViewModel>();
+            ViewModel = App.GetService<Tbl84SynonymAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

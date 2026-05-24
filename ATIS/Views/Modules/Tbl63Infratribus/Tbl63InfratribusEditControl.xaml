@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusEditControl"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusEditControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -30,6 +31,7 @@
                             Orientation="Horizontal"
                             Spacing="8">
 
+                    <!--  NEW  -->
                     <Button Command="{Binding NewCommand}"
                             Style="{StaticResource AtisPrimaryButton}">
                         <StackPanel Orientation="Horizontal"
@@ -39,6 +41,7 @@
                         </StackPanel>
                     </Button>
 
+                    <!--  SAVE  -->
                     <Button Command="{Binding SaveCommand}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
@@ -48,6 +51,7 @@
                         </StackPanel>
                     </Button>
 
+                    <!--  DELETE  -->
                     <Button Command="{Binding DeleteCommand}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
@@ -89,21 +93,32 @@
                                Visibility="{x:Bind Item.HasInfratribusNameError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  TribusName  -->
+                <!--  TribusName Combo  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
                     <TextBlock Visibility="Collapsed" />
-                    <ComboBox x:Name="SubtribusCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_SubtribusName"
-                              DisplayMemberPath="SubtribusName"
-                              ItemsSource="{Binding SubtribusList}"
-                              SelectedValue="{x:Bind Item.SubtribusId, Mode=TwoWay}"
-                              SelectedValuePath="SubtribusId"
-                              SelectionChanged="OnSubtribusChanged"
-                              Style="{StaticResource AtisComboBox}" />
+                    <!--<ComboBox x:Name="SubtribusCombo"
+                    MinWidth="200"
+                    VerticalAlignment="Center"
+                    loc:Uids.Uid="ComboBox_SubtribusName"
+                    DisplayMemberPath="SubtribusName"
+                    ItemsSource="{Binding SubtribusList}"
+                    SelectedValue="{x:Bind Item.SubtribusId, Mode=TwoWay}"
+                    SelectedValuePath="SubtribusId"
+                    SelectionChanged="OnSubtribusChanged"
+                    Style="{StaticResource AtisComboBox}" />-->
+                    <!-- NUR diese eine ComboBox verwenden -->
+                    <ComboBox
+                        x:Name="SubtribusCombo"
+                        MinWidth="200"
+                        VerticalAlignment="Center"
+                        DisplayMemberPath="SubtribusName"
+                        ItemsSource="{Binding SubtribusList}"
+                        SelectedValuePath="SubtribusId"
+                        SelectedValue="{Binding SelectedItem.SubtribusId, Mode=TwoWay}"
+                        PlaceholderText="Subtribus auswählen"
+                        Style="{StaticResource AtisComboBox}" />
                 </StackPanel>
 
                 <!--  CheckBox  -->

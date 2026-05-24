@@ -17,11 +17,15 @@ public sealed partial class Tbl60SubtribusPage : Page
         DataContext = ViewModel;
 
         Loaded += SubtribusPage_Loaded;
+       // ViewModel.NewRequested += OnNewRequested;
     }
 
     private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
     {
         await ViewModel.LoadAsync();
+        Loaded -= SubtribusPage_Loaded; // Unsubscribe!
+
+          TabViewBase.SelectedIndex = 0; // Tab „Edit Subtribus“
 
         ViewModel.SuppressFilter = true;
         await Task.Delay(50);
@@ -34,5 +38,11 @@ public sealed partial class Tbl60SubtribusPage : Page
         Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
+
+    //private void OnNewRequested(object? sender, EventArgs e)
+    //{
+    //    TabViewBase.SelectedIndex = 0; // Edit-Tab aktivieren
+    //}
+
 
 }

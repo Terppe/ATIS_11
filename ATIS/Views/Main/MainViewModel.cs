@@ -1,23 +1,194 @@
 ﻿using System.Configuration;
 using System.Net.Sockets;
+using ATIS.Core.Taxonomy;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl03Regnum;
+using ATIS.Views.Modules.Tbl06Phylum;
+using ATIS.Views.Modules.Tbl12Subphylum;
+using ATIS.Views.Modules.Tbl18Superclass;
+using ATIS.Views.Modules.Tbl21Class;
+using ATIS.Views.Modules.Tbl24Subclass;
+using ATIS.Views.Modules.Tbl27Infraclass;
+using ATIS.Views.Modules.Tbl30Legio;
+using ATIS.Views.Modules.Tbl33Ordo;
+using ATIS.Views.Modules.Tbl36Subordo;
+using ATIS.Views.Modules.Tbl39Infraordo;
+using ATIS.Views.Modules.Tbl42Superfamily;
+using ATIS.Views.Modules.Tbl45Family;
+using ATIS.Views.Modules.Tbl48Subfamily;
+using ATIS.Views.Modules.Tbl51Infrafamily;
+using ATIS.Views.Modules.Tbl54Supertribus;
+using ATIS.Views.Modules.Tbl57Tribus;
+using ATIS.Views.Modules.Tbl60Subtribus;
+using ATIS.Views.Modules.Tbl63Infratribus;
+using ATIS.Views.Modules.Tbl66Genus;
+using ATIS.Views.Modules.Tbl75Species;
+using ATIS.Views.Modules.Tbl78Name;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.Data.SqlClient;
 
 namespace ATIS.Views.Main;
 public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAware
 {
-    private readonly IDataService _dataService;
+    protected readonly IDataService _dataService;
     protected readonly IDialogService _dialogService;
+    protected readonly LookupService _lookupService;
 
-    public MainViewModel(IDataService dataService, IDialogService dialogService)
+    // -----------------------------
+    // Taxonomie-ViewModels
+    // -----------------------------
+    public Tbl03RegnumViewModel RegnumVM { get; }
+    public Tbl06PhylumViewModel PhylumVM { get; }
+    public Tbl12SubphylumViewModel SubphylumVM { get; }
+    public Tbl18SuperclassViewModel SuperclassVM { get; }
+    public Tbl21ClassViewModel ClassVM { get; }
+    public Tbl24SubclassViewModel SubclassVM { get; }
+    public Tbl27InfraclassViewModel InfraclassVM { get; }
+    public Tbl30LegioViewModel LegioVM { get; }
+    public Tbl33OrdoViewModel OrdoVM { get; }
+    public Tbl36SubordoViewModel SubordoVM { get; }
+    public Tbl39InfraordoViewModel InfraordoVM { get; }
+    public Tbl42SuperfamilyViewModel SuperfamilyVM { get; }
+    public Tbl45FamilyViewModel FamilyVM { get; }
+    public Tbl48SubfamilyViewModel SubfamilyVM { get; }
+    public Tbl51InfrafamilyViewModel InfrafamilyVM { get; }
+
+    public Tbl90ReferenceViewModel ReferenceVM { get; }
+    public Tbl93CommentViewModel CommentVM { get; }
+
+    public Tbl78NameViewModel NameVM { get; }
+    public Tbl75SpeciesViewModel SpeciesVM { get; }
+    public Tbl66GenusViewModel GenusVM { get; }
+    public Tbl63InfratribusViewModel InfratribusVM { get; }
+    public Tbl60SubtribusViewModel SubtribusVM { get; }
+    public Tbl57TribusViewModel TribusVM { get; }
+    public Tbl54SupertribusViewModel SupertribusVM { get; }
+
+    public MainViewModel(IDataService dataService, IDialogService dialogService, LookupService lookupService)
     {
         _dataService = dataService;
         _dialogService = dialogService;
+        _lookupService = lookupService;
+
+        // Basis-VMs
+        ReferenceVM = new Tbl90ReferenceViewModel(
+            _dataService,
+            _dialogService,
+            _lookupService,
+            new HierarchyCoordinator());
+
+        CommentVM = new Tbl93CommentViewModel(
+            _dataService, 
+            _dialogService,
+            _lookupService,
+            new HierarchyCoordinator());
+
+        // 1. Species
+        SpeciesVM = new Tbl75SpeciesViewModel(
+            _dataService,
+            _dialogService,
+            NameVM,
+            ReferenceVM,
+            CommentVM,
+            new HierarchyCoordinator()
+        );
+
+        // 1. Genus
+        GenusVM = new Tbl66GenusViewModel(
+            _dataService,
+            _dialogService,
+            SpeciesVM,
+            ReferenceVM,
+            CommentVM,
+            new HierarchyCoordinator()
+        );
+
+        // 2. Infratribus
+        InfratribusVM = new Tbl63InfratribusViewModel(
+            _dataService,
+            _dialogService,
+            _lookupService,
+            GenusVM,
+            ReferenceVM,
+            CommentVM,
+            new HierarchyCoordinator()
+        );
+
+        // 3. Subtribus
+        SubtribusVM = new Tbl60SubtribusViewModel(
+            _dataService,
+            _dialogService,
+            _lookupService,
+            InfratribusVM,
+            ReferenceVM,
+            CommentVM,
+            new HierarchyCoordinator()
+        );
+
+        // 4. Tribus
+        TribusVM = new Tbl57TribusViewModel(
+            _dataService,
+            _dialogService,
+            _lookupService,
+            SubtribusVM,
+            ReferenceVM,
+            CommentVM,
+            new HierarchyCoordinator()
+        );
+
+        // 5. Supertribus
+        SupertribusVM = new Tbl54SupertribusViewModel(
+            _dataService,
+            _dialogService,
+            _lookupService,
+            TribusVM,
+            ReferenceVM,
+            CommentVM,
+            new HierarchyCoordinator()
+        );
+
+        // Taxonomie-Aufbau
+        TaxonomyBuilder.Build(
+            SupertribusVM,
+            TribusVM,
+            SubtribusVM,
+            InfratribusVM,
+            GenusVM
+        );
+        // -----------------------------
+        // Taxonomie einmal aufbauen
+        // -----------------------------
+        //TaxonomyBuilder.Build(
+        //    RegnumVM,
+        //    PhylumVM,
+        //    SubphylumVM,
+        //    SuperclassVM,
+        //    ClassVM,
+        //    SubclassVM,
+        //    InfraclassVM,
+        //    LegioVM,
+        //    OrdoVM,
+        //    SubordoVM,
+        //    InfraordoVM,
+        //    SuperfamilyVM,
+        //    FamilyVM,
+        //    SubfamilyVM,
+        //    InfrafamilyVM,
+        //    SupertribusVM,
+        //    TribusVM,
+        //    SubtribusVM,
+        //    InfratribusVM,
+        //    GenusVM,
+        //    SpeciesVM
+        //);
     }
+
 
     private bool _isLoading;
     public bool IsLoading

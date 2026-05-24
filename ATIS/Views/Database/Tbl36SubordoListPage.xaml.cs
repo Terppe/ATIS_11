@@ -21,7 +21,7 @@ public sealed partial class Tbl36SubordoListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl36SubordoViewModel ViewModel { get; set; }
+    public Tbl36SubordoAltViewModel ViewModel { get; set; }
     private Tbl36Subordo SingleSubordo { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl36SubordoListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl36SubordoViewModel>();
+            ViewModel = App.GetService<Tbl36SubordoAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

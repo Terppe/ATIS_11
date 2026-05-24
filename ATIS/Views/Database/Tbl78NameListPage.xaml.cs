@@ -21,7 +21,7 @@ public sealed partial class Tbl78NameListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl78NameViewModel ViewModel { get; set; }
+    public Tbl78NameAltViewModel ViewModel { get; set; }
     private Tbl78Name SingleName { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     //private static readonly AtisDbContext Context = new();
@@ -41,7 +41,7 @@ public sealed partial class Tbl78NameListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl78NameViewModel>();
+            ViewModel = App.GetService<Tbl78NameAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

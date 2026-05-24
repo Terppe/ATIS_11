@@ -21,7 +21,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl18SuperclassViewModel ViewModel { get; set; }
+    public Tbl18SuperclassAltViewModel ViewModel { get; set; }
     private Tbl18Superclass SingleSuperclass { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl18SuperclassListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl18SuperclassViewModel>();
+            ViewModel = App.GetService<Tbl18SuperclassAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

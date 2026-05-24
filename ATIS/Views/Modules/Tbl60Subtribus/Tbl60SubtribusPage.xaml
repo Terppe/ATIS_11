@@ -88,8 +88,7 @@
 
                 <!--  LIST CONTENT  -->
                 <layout:BaseBossPageLayout.ListContent>
-                    <local:Tbl60SubtribusBossControl Margin="0,0,10,0"
-                                                     DataContext="{Binding}" />
+                    <local:Tbl60SubtribusBossControl DataContext="{Binding}" />
                 </layout:BaseBossPageLayout.ListContent>
 
                 <!--  DETAIL CONTENT  -->
@@ -97,13 +96,16 @@
 
                     <TabView x:Name="TabViewBase"
                              Margin="0"
+                             SelectedIndex="{x:Bind ViewModel.SelectedTabIndex, Mode=TwoWay}"
                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
                         <!--  EDIT SUBTRIBUS  -->
                         <TabViewItem Header="Edit Subtribus">
                             <ScrollViewer Padding="1">
-                                <local:Tbl60SubtribusEditControl DataContext="{x:Bind ViewModel}"
-                                                                 Item="{x:Bind ViewModel.SelectedItem, Mode=OneWay}" />
+                                <local:Tbl60SubtribusEditControl DataContext="{Binding}"
+                                                                 Item="{Binding SelectedItem, Mode=TwoWay}" />
+                                <!--<local:Tbl60SubtribusEditControl DataContext="{x:Bind ViewModel}"
+                                Item="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}" />-->
                             </ScrollViewer>
                         </TabViewItem>
 
@@ -149,7 +151,7 @@
                         <!--  INFRATRIBUS  -->
                         <TabViewItem Header="Infratribus">
                             <ScrollViewer Padding="1">
-                                <TabView>
+                                <TabView SelectedIndex="{x:Bind ViewModel.SelectedInnerTabIndex, Mode=TwoWay}">
                                     <!--  EDIT INFRATRIBUS  -->
                                     <TabViewItem Header="Edit Infratribus">
                                         <ScrollViewer Padding="1">

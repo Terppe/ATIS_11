@@ -24,7 +24,7 @@ public sealed partial class Tbl81ImageListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl81ImageViewModel ViewModel { get; set; }
+    public Tbl81ImageAltViewModel ViewModel { get; set; }
     private Tbl81Image SingleImage { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     //private static readonly AtisDbContext Context = new();
@@ -46,7 +46,7 @@ public sealed partial class Tbl81ImageListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl81ImageViewModel>();
+            ViewModel = App.GetService<Tbl81ImageAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

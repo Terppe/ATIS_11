@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using ATIS.Core.Taxonomy;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -14,7 +15,27 @@ using ATIS.Views.Main;
 using ATIS.Views.Main.Disease;
 using ATIS.Views.Main.Food;
 using ATIS.Views.Main.Miscellaneous;
+using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl03Regnum;
+using ATIS.Views.Modules.Tbl06Phylum;
+using ATIS.Views.Modules.Tbl12Subphylum;
+using ATIS.Views.Modules.Tbl18Superclass;
+using ATIS.Views.Modules.Tbl21Class;
+using ATIS.Views.Modules.Tbl24Subclass;
+using ATIS.Views.Modules.Tbl27Infraclass;
+using ATIS.Views.Modules.Tbl30Legio;
+using ATIS.Views.Modules.Tbl33Ordo;
+using ATIS.Views.Modules.Tbl36Subordo;
+using ATIS.Views.Modules.Tbl39Infraordo;
+using ATIS.Views.Modules.Tbl42Superfamily;
+using ATIS.Views.Modules.Tbl45Family;
+using ATIS.Views.Modules.Tbl48Subfamily;
+using ATIS.Views.Modules.Tbl51Infrafamily;
+using ATIS.Views.Modules.Tbl54Supertribus;
+using ATIS.Views.Modules.Tbl57Tribus;
 using ATIS.Views.Modules.Tbl66Genus;
+using ATIS.Views.Modules.Tbl75Species;
+using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl90RefExpert;
 using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Report;
@@ -35,7 +56,7 @@ using Tbl63InfratribusViewModel = ATIS.Views.Modules.Tbl63Infratribus.Tbl63Infra
 using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorViewModel;
 using Tbl90ReferenceViewModel = ATIS.Views.Modules.Tbl90Reference.Tbl90ReferenceViewModel;
 using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
-using TblCountryViewModel = ATIS.ViewModels.TblCountryViewModel;
+using TblCountryAltViewModel = ATIS.ViewModels.TblCountryAltViewModel;
 
 namespace ATIS;
 
@@ -73,15 +94,14 @@ public partial class App : Application
         QuestPDF.Settings.License = LicenseType.Community;
         UnhandledException += App_UnhandledException;
 
-    
     }
 
-// ---------------------------------------------------------
-// 3. ONLAUNCHED – HAUPTSTART
-// ---------------------------------------------------------
+    // ---------------------------------------------------------
+    // 3. ONLAUNCHED – HAUPTSTART
+    // ---------------------------------------------------------
 
-// Window erstellen
-protected override async void OnLaunched(LaunchActivatedEventArgs args)
+    // Window erstellen
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         // 1. Localizer EINMAL initialisieren
         await InitializeLocalizer();
@@ -127,6 +147,7 @@ protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             System.Diagnostics.Debug.WriteLine("BINDING FAILED: " + e.Message);
         };
+
 
     }
 
@@ -241,12 +262,17 @@ protected override async void OnLaunched(LaunchActivatedEventArgs args)
         // DATABASE + DATA SERVICE
         services.AddDbContext<AtisDbContext>();
 
+        // HIERARCHY COORDINATOR - SINGLETON!
+        services.AddSingleton<HierarchyCoordinator>();
+
         // DATA SERVICE
         services.AddScoped<IDataService, DataService>();
 
-        // DESIGN SYSTEM SERVICES
+        // DIALOG SYSTEM SERVICES
         services.AddSingleton<IDialogService, DialogService>();
 
+        // LOOKUP SERVICES
+        services.AddSingleton<LookupService>();
         // USER SERVICES
         services.AddSingleton<IUserService, UserService>();
 
@@ -266,6 +292,24 @@ protected override async void OnLaunched(LaunchActivatedEventArgs args)
         services.AddTransient<AboutUsSettingViewModel>();
         services.AddTransient<BreadCrumbBarViewModel>();
 
+        services.AddTransient<Tbl03RegnumAltViewModel>();
+        services.AddTransient<Tbl06PhylumAltViewModel>();
+        services.AddTransient<Tbl12SubphylumAltViewModel>();
+        services.AddTransient<Tbl18SuperclassAltViewModel>();
+        services.AddTransient<Tbl21ClassAltViewModel>();
+        services.AddTransient<Tbl24SubclassAltViewModel>();
+        services.AddTransient<Tbl27InfraclassAltViewModel>();
+        services.AddTransient<Tbl30LegioAltViewModel>();
+        services.AddTransient<Tbl33OrdoAltViewModel>();
+        services.AddTransient<Tbl36SubordoAltViewModel>();
+        services.AddTransient<Tbl39InfraordoAltViewModel>();
+        services.AddTransient<Tbl42SuperfamilyAltViewModel>();
+        services.AddTransient<Tbl45FamilyAltViewModel>();
+        services.AddTransient<Tbl48SubfamilyAltViewModel>();
+        services.AddTransient<Tbl51InfrafamilyAltViewModel>();
+        services.AddTransient<Tbl54SupertribusAltViewModel>();
+        services.AddTransient<Tbl57TribusAltViewModel>();
+
         services.AddTransient<Tbl03RegnumViewModel>();
         services.AddTransient<Tbl06PhylumViewModel>();
         services.AddTransient<Tbl12SubphylumViewModel>();
@@ -282,29 +326,29 @@ protected override async void OnLaunched(LaunchActivatedEventArgs args)
         services.AddTransient<Tbl48SubfamilyViewModel>();
         services.AddTransient<Tbl51InfrafamilyViewModel>();
         services.AddTransient<Tbl54SupertribusViewModel>();
-        services.AddTransient<Tbl57TribusAltViewModel>();
-
+        services.AddTransient<Tbl57TribusViewModel>();
         services.AddTransient<Tbl60SubtribusViewModel>();
         services.AddTransient<Tbl63InfratribusViewModel>();
         services.AddTransient<Tbl66GenusViewModel>();
-
-        services.AddTransient<Tbl66GenusAltViewModel>();
-        services.AddTransient<Tbl68SpeciesgroupViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
         services.AddTransient<Tbl78NameViewModel>();
-        services.AddTransient<Tbl81ImageViewModel>();
-        services.AddTransient<Tbl84SynonymViewModel>();
-        services.AddTransient<Tbl87GeographicViewModel>();
-        services.AddTransient<Tbl90ReferenceViewModel>();
 
+        services.AddTransient<Tbl66GenusAltViewModel>();
+        services.AddTransient<Tbl68SpeciesgroupAltViewModel>();
+        services.AddTransient<Tbl75SpeciesAltViewModel>();
+        services.AddTransient<Tbl78NameAltViewModel>();
+        services.AddTransient<Tbl81ImageAltViewModel>();
+        services.AddTransient<Tbl84SynonymAltViewModel>();
+        services.AddTransient<Tbl87GeographicAltViewModel>();
+
+        services.AddTransient<Tbl90ReferenceViewModel>();
         services.AddTransient<Tbl90RefAuthorViewModel>();
         services.AddTransient<Tbl90RefExpertViewModel>();
         services.AddTransient<Tbl90RefSourceViewModel>();
-
         services.AddTransient<Tbl93CommentViewModel>();
 
-        services.AddTransient<TblCountryViewModel>();
-        services.AddTransient<TblUserProfileViewModel>();
+        services.AddTransient<TblCountryAltViewModel>();
+        services.AddTransient<TblUserProfileAltViewModel>();
         services.AddTransient<FoodViewModel>();
         services.AddTransient<TblFoodViewModel>();
         services.AddTransient<TblDiseaseViewModel>();

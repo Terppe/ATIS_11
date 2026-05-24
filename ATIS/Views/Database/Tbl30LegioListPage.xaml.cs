@@ -21,7 +21,7 @@ public sealed partial class Tbl30LegioListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl30LegioViewModel ViewModel { get; set; }
+    public Tbl30LegioAltViewModel ViewModel { get; set; }
     private Tbl30Legio SingleLegio { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl30LegioListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl30LegioViewModel>();
+            ViewModel = App.GetService<Tbl30LegioAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

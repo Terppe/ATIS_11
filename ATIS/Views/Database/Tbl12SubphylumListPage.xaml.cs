@@ -21,7 +21,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl12SubphylumViewModel ViewModel { get; set; }
+    public Tbl12SubphylumAltViewModel ViewModel { get; set; }
     private Tbl12Subphylum SingleSubphylum { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl12SubphylumListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl12SubphylumViewModel>();
+            ViewModel = App.GetService<Tbl12SubphylumAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

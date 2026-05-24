@@ -469,3 +469,103 @@ erstmal save und prüfen ob eine Combox mindstens ausgewählt wurde.
  Aber beide Viewmodels sind völlig unterschiedlich. Ich werde jetzt noch einmal aus Version 39 a
 uch Infratribus copieren und wenn es auch noch läuft. beide wieder aufbauen. Funktionieren beide aber in denComboboxen
 wird z.t. keine tabelle angezeigt bei Infratribus. Version sichern, da lauffähig. Jetzt in kleinen schritten weiter
+-------------------------------------------------
+11.05.2026 14:30 Uhr Alle Viewmodels auf ...AltViewModel geändert und Nuget
+-------------------------------------------------
+11.05.2026 15:30 Uhr Nuget noch nicht auf SDK 2.0.1 umgestellt. startet die Anwendung nicht mehr.
+weiter gearbeitet mit Species und methoden angeglichen mit Vergleichssoftware
+-------------------------------------------------
+12.05.2026 15:30 Uhr Tribus complett machen fehlerhaft
+-------------------------------------------------
+13.05.2026 14:30 Uhr fehler beseitigen im subtribus und infratribus
+Regnum
+ └─ Phylum
+     └─ Subphylum
+            └─ Superclass
+                 └─ Class
+                     └─ Subclass
+                         └─ Infraclass
+                             └─ Legio
+                                 └─ Ordo
+                                     └─ Subordo
+                                         └─ Infraordo
+                                             └─ Superfamily
+                                                 └─ Family
+                                                     └─ Subfamily
+                                                         └─ Infrafamily
+                                                             └─ Supertribus
+                                                                 └─ Tribus
+                                                                     └─ Subtribus
+                                                                         └─ Infratribus
+                                                                             └─ Genus
+                                                                                 └─ Species
+LoadForAsync in BaseViewmodel eingefügt. und generisch ATIS.Core.Taxonomy.     //public static readonly IReadOnlyList<string> Levels =
+    //[
+    //    "Regnum",
+    //    "Phylum",
+    //    "Subphylum",
+    //    "Superclass",
+    //    "Class",
+    //    "Subclass",
+    //    "Infraclass",
+    //    "Legio",
+    //    "Ordo",
+    //    "Subordo",
+    //    "Infraordo",
+    //    "Superfamily",
+    //    "Family",
+    //    "Subfamily",
+    //    "Infrafamily",
+    //    "Supertribus",
+    //    "Tribus",
+    //    "Subtribus",
+    //    "Infratribus",
+    //    "Genus",
+    //    "Species"
+    //];
+------------------------------------------------- Pipeline noch nicht ganz fertig. Dataservice
+14.05.2026 14:00 Uhr Neue TaxonomyBuilder erzeugt. Comments und References müssen anders angesprochen werden.
+TabView in der page per SelectedTabIndex aufrufen. Grosser Umbau. Alle Ordner erzeugt und Im MainViewmodel die Taxonomie installert.
+alle Viewmodels angelegt und imApp.xaml.cs angemeldet.
+---------------------------------------------------
+15.05.2026 18:00 Uhr nicht eindeutig gelöst.Weiter mit SubtribusPage + SubtribusViewModel durch und stellen sicher:
+es funktioniert in SubtribusPage der Parent infratribus mit neu, Comment und Reference.
+Jetzt geht neu Subtribus, aber comment und reference noch nicht
+---------------------------------------------------
+17.05.2026 13:00 Uhr Kleine Änderungen gemacht, aber nur Neu bei Subtribus und neu beu Infratribus funktioniert.
+Ki von GitHub angefragt neue Struktur Regnum (0)
+  ↓ Phylum (1)
+    ↓ Subphylum (2)
+      ↓ Superclass (3)
+        ↓ Class (4)
+          ↓ Subclass (5)
+            ↓ Infraclass (6)
+              ↓ Legio (7)
+                ↓ Ordo (8)
+                  ↓ Subordo (9)
+                    ↓ Infraordo (10)
+                      ↓ Superfamily (11)
+                        ↓ Family (12)
+                          ↓ Subfamily (13)
+                            ↓ Infrafamily (14)
+                              ↓ Supertribus (15)
+                                ↓ Tribus (16)           ← Dein "Parent"
+                                  ↓ Subtribus (17)     ← Dein "CurrentLevel"
+                                    ↓ Infratribus (18) ← Child
+                                      ↓ Genus (19)     ← Kind von Infratribus
+                                        ↓ Species (20)
+    --------------------------------------------------- fehler
+    ---------------------------------------------------
+18.05.2026 19:00 Uhr Mit Git wieder weiter. Lauffähig genus - tribus. muss aber noch aufgeräumt werden und die comments, references und VK noch getestet und angepasst werden
+LookupService installiert zeigt die Tribusall in combobox nicht an. kein leeres fenster wird angezeigt
+-------------------------------------------------------
+21.05.2026 14:00 Uhr subtribus und infratribus und comment eine basis. Fehler noch bei Reference und MainViewmodel
+-------------------------------------------------------
+22.05.2026 18:00 Uhr Subtribus und infratribus wird datensatz angezeigt. 
+Aber neu geht. aber speichern nicht, durch kleine Änderungen
+-------------------------------------------------------
+23.05.2026 13:00 Uhr Subtribus => Save mit Abfrage, Delete mit Abfrage, refresh nach Save.ok
+Nur Neuer Datensatz klappt nur, wenn bereits ein Datensatz angezeigt wird.
+Muss funktionieren wenn kein Datensatz im Listview ist.
+-------------------------------------------------------
+24.05.2026 13:00 Uhr Neu, refresh und delete bei subtribus ok

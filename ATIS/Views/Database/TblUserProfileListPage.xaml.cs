@@ -22,7 +22,7 @@ public sealed partial class TblUserProfileListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public TblUserProfileViewModel ViewModel { get; set; }
+    public TblUserProfileAltViewModel ViewModel { get; set; }
 
     private TblUserProfile SingleUserProfile { get; set; }
     //private static readonly AtisDbContext Context = new();
@@ -45,7 +45,7 @@ public sealed partial class TblUserProfileListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<TblUserProfileViewModel>();
+            ViewModel = App.GetService<TblUserProfileAltViewModel>();
             SimpleLog.Info(" TblUserProfileListPage opended ");
             ButtonsNotVisible();
             ButtonsIconNotVisible();

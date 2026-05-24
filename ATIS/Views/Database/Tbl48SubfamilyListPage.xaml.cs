@@ -21,7 +21,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl48SubfamilyViewModel ViewModel { get; set; }
+    public Tbl48SubfamilyAltViewModel ViewModel { get; set; }
     private Tbl48Subfamily SingleSubfamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl48SubfamilyListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl48SubfamilyViewModel>();
+            ViewModel = App.GetService<Tbl48SubfamilyAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

@@ -23,7 +23,7 @@ public sealed partial class Tbl03RegnumListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl03RegnumViewModel ViewModel { get; set; }
+    public Tbl03RegnumAltViewModel ViewModel { get; set; }
     private Tbl03Regnum SingleRegnum { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -47,7 +47,7 @@ public sealed partial class Tbl03RegnumListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel ??= App.GetService<Tbl03RegnumViewModel>();
+            ViewModel ??= App.GetService<Tbl03RegnumAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

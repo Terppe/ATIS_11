@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
+using ATIS.Views.Base;
 using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl66Genus : ObservableObject, IDataService.IAuditable
+public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     private Dictionary<string, List<string>> _errors = new();
 
@@ -24,10 +25,13 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     public string GenusName
     {
         get => _genusName;
-        set => SetProperty(ref _genusName, value);
+        set
+        {
+            SetProperty(ref _genusName, value);
+            ValidateGenusName();
+        }
     }
 
-    // Validierung GenusName
     private string? _genusNameError;
     [NotMapped]
     public string? GenusNameError
@@ -41,11 +45,18 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     public bool HasGenusNameError
     {
         get => _hasGenusNameError;
-        set => SetProperty(ref _hasGenusNameError, value);
+        set
+        {
+            if (_hasGenusNameError != value)
+            {
+                _hasGenusNameError = value;
+                OnPropertyChanged();
+            }
+        }
     }
 
     // ---------------------------------------------------------
-    // InfratribusId (Pflicht)
+    // InfratribusId (FK)
     // ---------------------------------------------------------
     private int _infratribusId;
     public int InfratribusId
@@ -53,13 +64,14 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
         get => _infratribusId;
         set => SetProperty(ref _infratribusId, value);
     }
+
     public Tbl63Infratribus? Infratribus { get; set; }
 
     [NotMapped]
     public string? InfratribusName => Infratribus?.InfratribusName;
 
     // ---------------------------------------------------------
-    // CountId (Pflicht)
+    // CountId
     // ---------------------------------------------------------
     private int _countId;
     public int CountId
@@ -69,7 +81,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Valid (Pflicht)
+    // Valid
     // ---------------------------------------------------------
     private bool _valid;
     public bool Valid
@@ -79,14 +91,20 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // ValidYear (optional)
+    // ValidYear
     // ---------------------------------------------------------
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
     {
         get => _validYear;
-        set => SetProperty(ref _validYear, value);
+        set
+        {
+            if (SetProperty(ref _validYear, value))
+            {
+                ValidateValidYear();
+            }
+        }
     }
 
     private string? _validYearError;
@@ -106,7 +124,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Synonym (optional)
+    // Synonym
     // ---------------------------------------------------------
     [StringLength(1000)]
     private string? _synonym;
@@ -117,9 +135,9 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Author (optional)
+    // Author
     // ---------------------------------------------------------
-    [StringLength(100)]
+    [StringLength(60)]
     private string? _author;
     public string? Author
     {
@@ -128,14 +146,20 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // AuthorYear (optional)
+    // AuthorYear
     // ---------------------------------------------------------
     [StringLength(4)]
     private string? _authorYear;
     public string? AuthorYear
     {
         get => _authorYear;
-        set => SetProperty(ref _authorYear, value);
+        set
+        {
+            if (SetProperty(ref _authorYear, value))
+            {
+                ValidateAuthorYear();
+            }
+        }
     }
 
     private string? _authorYearError;
@@ -155,9 +179,9 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Info (optional)
+    // Info
     // ---------------------------------------------------------
-    [StringLength(100)]
+    [StringLength(1000)]
     private string? _info;
     public string? Info
     {
@@ -166,7 +190,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // EngName (optional)
+    // EngName
     // ---------------------------------------------------------
     [StringLength(200)]
     private string? _engName;
@@ -177,7 +201,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // GerName (optional)
+    // GerName
     // ---------------------------------------------------------
     [StringLength(200)]
     private string? _gerName;
@@ -188,7 +212,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // FraName (optional)
+    // FraName
     // ---------------------------------------------------------
     [StringLength(200)]
     private string? _fraName;
@@ -199,7 +223,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // PorName (optional)
+    // PorName
     // ---------------------------------------------------------
     [StringLength(200)]
     private string? _porName;
@@ -210,19 +234,16 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Writer (Pflicht)
+    // Writer
     // ---------------------------------------------------------
     [StringLength(50)]
-    private string _writer = string.Empty;
-    public string Writer
+    private string? _writer;
+    public string? Writer
     {
         get => _writer;
         set => SetProperty(ref _writer, value);
     }
 
-    // ---------------------------------------------------------
-    // WriterDate (Pflicht)
-    // ---------------------------------------------------------
     private DateTime _writerDate;
     public DateTime WriterDate
     {
@@ -231,19 +252,16 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Updater (Pflicht)
+    // Updater
     // ---------------------------------------------------------
     [StringLength(50)]
-    private string _updater = string.Empty;
-    public string Updater
+    private string? _updater;
+    public string? Updater
     {
         get => _updater;
         set => SetProperty(ref _updater, value);
     }
 
-    // ---------------------------------------------------------
-    // UpdaterDate (Pflicht)
-    // ---------------------------------------------------------
     private DateTime _updaterDate;
     public DateTime UpdaterDate
     {
@@ -252,7 +270,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     }
 
     // ---------------------------------------------------------
-    // Memo (optional)
+    // Memo
     // ---------------------------------------------------------
     [StringLength(1000)]
     private string? _memo;
@@ -261,8 +279,15 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+
     // ---------------------------------------------------------
-    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
+    // IHierarchicalEntity IMPLEMENTATION
+    // ---------------------------------------------------------
+    public int GetEntityId() => GenusId;
+    public string GetDisplayName() => GenusName ?? $"Genus {GenusId}";
+
+    // ---------------------------------------------------------
+    // VALIDIERUNGSMETHODEN
     // ---------------------------------------------------------
 
     private void ClearErrors(string propertyName)
@@ -308,20 +333,21 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
     private void ValidateGenusName()
     {
         ClearErrors(nameof(GenusName));
-        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
+        var loc = Localizer.Get();
 
         if (string.IsNullOrWhiteSpace(_genusName))
             AddError(nameof(GenusName), loc.GetLocalizedString("Error_GenusName_Empty"));
 
         if (_genusName?.Length > 100)
             AddError(nameof(GenusName), loc.GetLocalizedString("Error_GenusName_TooLong"));
+
         UpdateErrorProperty(nameof(GenusName));
     }
 
     private void ValidateValidYear()
     {
         ClearErrors(nameof(ValidYear));
-        var loc = Localizer.Get();  // ← Direkt verwenden
+        var loc = Localizer.Get();
 
         if (string.IsNullOrWhiteSpace(ValidYear))
             goto Notify;
@@ -341,14 +367,14 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
         if (year < 1500 || year > 2100)
             AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
 
     private void ValidateAuthorYear()
     {
         ClearErrors(nameof(AuthorYear));
-        var loc = Localizer.Get();  // ← Direkt verwenden
+        var loc = Localizer.Get();
 
         if (string.IsNullOrWhiteSpace(AuthorYear))
             goto Notify;
@@ -368,7 +394,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 
@@ -380,5 +406,4 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable
 
         return !HasGenusNameError && !HasValidYearError && !HasAuthorYearError;
     }
-
 }

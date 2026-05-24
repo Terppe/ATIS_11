@@ -21,7 +21,7 @@ public sealed partial class Tbl45FamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl45FamilyViewModel ViewModel { get; set; }
+    public Tbl45FamilyAltViewModel ViewModel { get; set; }
     private Tbl45Family SingleFamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl45FamilyListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl45FamilyViewModel>();
+            ViewModel = App.GetService<Tbl45FamilyAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

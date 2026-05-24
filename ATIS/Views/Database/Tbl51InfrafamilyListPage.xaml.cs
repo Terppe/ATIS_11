@@ -21,7 +21,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl51InfrafamilyViewModel ViewModel { get; set; }
+    public Tbl51InfrafamilyAltViewModel ViewModel { get; set; }
     private Tbl51Infrafamily SingleInfrafamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl51InfrafamilyListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl51InfrafamilyViewModel>();
+            ViewModel = App.GetService<Tbl51InfrafamilyAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

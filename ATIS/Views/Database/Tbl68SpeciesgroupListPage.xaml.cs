@@ -23,7 +23,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl68SpeciesgroupViewModel ViewModel { get; set; }
+    public Tbl68SpeciesgroupAltViewModel ViewModel { get; set; }
     private Tbl68Speciesgroup SingleSpeciesgroup { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     //private static readonly AtisDbContext Context = new();
@@ -44,7 +44,7 @@ public sealed partial class Tbl68SpeciesgroupListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl68SpeciesgroupViewModel>();
+            ViewModel = App.GetService<Tbl68SpeciesgroupAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

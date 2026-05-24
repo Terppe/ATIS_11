@@ -41,11 +41,19 @@
 
                                 <VisualState x:Name="PointerOver">
                                     <VisualState.Setters>
-                                        <Setter Target="RootBorder.Padding" Value="6,4" />
-                                        <Setter Target="RootBorder.BorderThickness" Value="1.5" />
-                                        <Setter Target="RootBorder.BorderBrush" Value="#808080" />
+                                        <Setter Target="RootBorder.Padding" Value="4,2" />
+                                        <Setter Target="RootBorder.BorderBrush" Value="#0067C0" />
+                                        <Setter Target="RootBorder.BorderThickness" Value="2" />
                                     </VisualState.Setters>
                                 </VisualState>
+
+                                <!--<VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                <Setter Target="RootBorder.Padding" Value="6,4" />
+                                <Setter Target="RootBorder.BorderThickness" Value="1.5" />
+                                <Setter Target="RootBorder.BorderBrush" Value="#808080" />
+                                </VisualState.Setters>
+                                </VisualState>-->
 
                                 <VisualState x:Name="Focused">
                                     <VisualState.Setters>

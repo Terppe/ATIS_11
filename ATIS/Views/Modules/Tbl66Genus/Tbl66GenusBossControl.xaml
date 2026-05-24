@@ -76,11 +76,12 @@
         <ListView x:Name="GenusListView"
                   Grid.Row="1"
                   MaxHeight="150"
+                  Margin="0,0,10,0"
                   BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                   BorderThickness="1"
                   CornerRadius="4"
                   IsItemClickEnabled="True"
-            ItemClick="GenusListView_ItemClick"
+                  ItemClick="GenusListView_ItemClick"
                   ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
                   ItemsSource="{Binding Items}"
                   RightTapped="GenusListView_RightTapped"
@@ -88,31 +89,27 @@
                   SelectionMode="Single">
 
             <ListView.ItemTemplate>
-                <DataTemplate
-                    x:DataType="models:Tbl66Genus">
+                <DataTemplate x:DataType="models:Tbl66Genus">
                     <Grid Style="{StaticResource AtisListRowGridStyle}">
 
                         <!--  Kontextmenü direkt am Row-Root  -->
                         <Grid.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem
-                                    loc:Uids.Uid="MenuFlyout_Add_Genus"
-                                    Command="{Binding DataContext.NewCommand, ElementName=GenusListView}">
+                                <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Add_Genus"
+                                                Command="{Binding DataContext.NewCommand, ElementName=GenusListView}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Add" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutItem
-                                    loc:Uids.Uid="MenuFlyout_Save_Genus"
-                                    Command="{Binding DataContext.SaveCommand, ElementName=GenusListView}"
+                                <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Save_Genus"
+                                                Command="{Binding DataContext.SaveCommand, ElementName=GenusListView}"
                                                 CommandParameter="{Binding}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Save" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutItem
-                                    loc:Uids.Uid="MenuFlyout_Delete_Genus"
-                                    Command="{Binding DataContext.DeleteCommand, ElementName=GenusListView}"
+                                <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Delete_Genus"
+                                                Command="{Binding DataContext.DeleteCommand, ElementName=GenusListView}"
                                                 CommandParameter="{Binding}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Delete" />
@@ -120,7 +117,7 @@
                                 </MenuFlyoutItem>
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Refresh"
-                                    Command="{Binding DataContext.RefreshCommand, ElementName=GenusListView}">
+                                                Command="{Binding DataContext.RefreshCommand, ElementName=GenusListView}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Refresh" />
                                     </MenuFlyoutItem.Icon>
@@ -141,10 +138,10 @@
                         <TextBlock Grid.Column="0"
                                    Margin="4,0,0,0"
                                    VerticalAlignment="Center"
-                            Text="{x:Bind GenusId}" />
+                                   Text="{x:Bind GenusId}" />
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
-                            Text="{x:Bind GenusName}" />
+                                   Text="{x:Bind GenusName}" />
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind InfratribusName}" />

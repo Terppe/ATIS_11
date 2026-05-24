@@ -21,7 +21,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl87GeographicViewModel ViewModel { get; set; }
+    public Tbl87GeographicAltViewModel ViewModel { get; set; }
     private Tbl87Geographic SingleGeographic { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     public TblCountry SingleCountry { get; set; }
@@ -47,7 +47,7 @@ public sealed partial class Tbl87GeographicListPage : Page, Maps
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl87GeographicViewModel>();
+            ViewModel = App.GetService<Tbl87GeographicAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

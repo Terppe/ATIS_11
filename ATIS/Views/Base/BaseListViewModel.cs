@@ -2,17 +2,29 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using ATIS.Interfaces;
+using ATIS.Services;
+using ATIS.Views.Modules.Hierarchy;
 
 namespace ATIS.Views.Base;
 
 public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
 {
+    private readonly SemaphoreSlim _loadLock = new(1, 1);
+    private readonly LookupService _lookupService;
     protected readonly IDataService _data;
+    protected BaseListViewModel(IDataService data, IDialogService dialog, HierarchyCoordinator coordinator)
+    {
+        _data = data;
+        InitCommands();
+    }
 
     protected BaseListViewModel(IDataService data)
     {
         _data = data;
-
+        InitCommands();
+    }
+    private void InitCommands()
+    {
         NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(New);
         SaveCommand = new AsyncRelayCommand(SaveAsync, () => SelectedItem != null);
         DeleteCommand = new AsyncRelayCommand(DeleteAsync, () => SelectedItem != null);
@@ -41,9 +53,9 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
     // Commands
     // ---------------------------------------------------------
     public IRelayCommand NewCommand { get; protected set; }
-    public IAsyncRelayCommand SaveCommand { get; }
-    public IAsyncRelayCommand DeleteCommand { get; }
-    public IAsyncRelayCommand RefreshCommand { get; }
+    public IAsyncRelayCommand SaveCommand { get; set; }
+    public IAsyncRelayCommand DeleteCommand { get; set; }
+    public IAsyncRelayCommand RefreshCommand { get; set; }
 
     // ---------------------------------------------------------
     // Filter
@@ -71,6 +83,12 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
         get => _items;
         protected set => SetProperty(ref _items, value);
     }
+    private TModel? _editItem;
+    public TModel? EditItem
+    {
+        get => _editItem;
+        set => SetProperty(ref _editItem, value);
+    }
 
     // ---------------------------------------------------------
     // Selection
@@ -86,11 +104,22 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
             if (!SetProperty(ref _selectedItem, value))
                 return;
 
-            SaveCommand.NotifyCanExecuteChanged();
-            DeleteCommand.NotifyCanExecuteChanged();
+            if (SaveCommand != null)
+            {
+                SaveCommand.NotifyCanExecuteChanged();
+            }
 
-            if (value != null && !_suppressSelectedItemChanged)
+            if (DeleteCommand != null)
+            {
+                DeleteCommand.NotifyCanExecuteChanged();
+            }
+
+            //if (value != null && !_suppressSelectedItemChanged)
+            //    _ = SafeOnSelectedItemChangedAsync();
+
+            if (!_suppressSelectedItemChanged)
                 _ = SafeOnSelectedItemChangedAsync();
+
         }
     }
 
@@ -136,6 +165,9 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
     }
 
     private int _dataSetCount;
+
+
+
     public int DataSetCount
     {
         get => _dataSetCount;
@@ -170,6 +202,7 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
     // ---------------------------------------------------------
     // CRUD
     // ---------------------------------------------------------
+
     public virtual void New()
     {
         var item = CreateNewItem();
@@ -178,6 +211,7 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
     }
     protected virtual Task OnBeforeReloadAfterSaveAsync(TModel item)
         => Task.CompletedTask;
+
 
     public virtual async Task SaveAsync()
     {
@@ -303,5 +337,41 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
             return 0;
 
         return (int)(idProp.GetValue(item) ?? 0);
+    }
+    // ---------------------------------------------------------
+    // Universal FK Loader (Schritt 1 der neuen Pipeline)
+    // ---------------------------------------------------------
+    protected virtual void OnEditClosed() { }
+
+    protected async Task LoadForAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<TModel>>> loader,
+        Action resetBelow,
+        Action? afterLoad = null)
+    {
+        await _loadLock.WaitAsync();
+        try
+        {
+            var list = await loader(parentId);
+            Items = new ObservableCollection<TModel>(list);
+        }
+        finally
+        {
+            _loadLock.Release();
+        }
+
+        DataSetCount = Items.Count;
+
+        // Auswahl zurücksetzen
+        SelectItemSilently(default);
+
+        // Edit schließen (ViewModel-spezifisch)
+        OnEditClosed();
+
+        // Tiefere Ebenen zurücksetzen
+        resetBelow();
+
+        // Optionaler Hook
+        afterLoad?.Invoke();
     }
 }

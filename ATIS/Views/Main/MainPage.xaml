@@ -235,8 +235,7 @@
                         ItemInvoked="NavigationView_ItemInvoked"
                         Loaded="NavigationView_Loaded"
                         OpenPaneLength="285"
-                        PaneDisplayMode="Left"
-                        >
+                        PaneDisplayMode="Left">
             <NavigationView.Header>
                 <!--<wuc:BreadcrumbNavigator x:Name="JsonBreadCrumbNavigator"   SelectionChanged="NavigationView_SelectionChanged"/>-->
             </NavigationView.Header>
@@ -286,7 +285,7 @@
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Name="NavSpecies"
                                             loc:Uids.Uid="Nav_FiSpecies"
-                                            Tag="ATIS.Views.Database.Tbl75SpeciesListPage">
+                                            Tag="ATIS.Views.Modules.Tbl75Species.Tbl75SpeciesPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -294,7 +293,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavGenus"
                                             loc:Uids.Uid="Nav_Genus"
-                            Tag="ATIS.Views.Modules.Tbl66Genus.Tbl66GenusPage">
+                                            Tag="ATIS.Views.Modules.Tbl66Genus.Tbl66GenusPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -332,7 +331,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavTribus"
                                                     loc:Uids.Uid="Nav_Tribus"
-                                                    Tag="ATIS.Views.Database.Tbl57TribusListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl57Tribus.Tbl57TribusPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />

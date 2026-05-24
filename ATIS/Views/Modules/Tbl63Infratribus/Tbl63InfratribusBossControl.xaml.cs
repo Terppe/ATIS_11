@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using Microsoft.UI.Xaml.Input;
+﻿using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
@@ -13,6 +11,10 @@ public sealed partial class Tbl63InfratribusBossControl : UserControl
     {
         InitializeComponent();
     }
+
+    // ---------------------------------------------------------
+    //  ItemClick → Select + Show Detail
+    // ---------------------------------------------------------
     private void InfratribusListView_ItemClick(object sender, ItemClickEventArgs e)
     {
         InfratribusListView.SelectedItem = e.ClickedItem;
@@ -21,6 +23,9 @@ public sealed partial class Tbl63InfratribusBossControl : UserControl
             ViewModel.IsDetailVisible = true;
     }
 
+    // ---------------------------------------------------------
+    //  RightTapped → Select row under cursor
+    // ---------------------------------------------------------
     private void InfratribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (sender is not ListView listView) return;
@@ -30,6 +35,10 @@ public sealed partial class Tbl63InfratribusBossControl : UserControl
 
         listView.SelectedItem = listView.ItemFromContainer(container);
     }
+
+    // ---------------------------------------------------------
+    //  Helper: Find ancestor of type T
+    // ---------------------------------------------------------
     private static T? FindAncestor<T>(DependencyObject? current) where T : DependencyObject
     {
         while (current != null)

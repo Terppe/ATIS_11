@@ -76,6 +76,7 @@
         <ListView x:Name="InfratribusListView"
                   Grid.Row="1"
                   MaxHeight="150"
+                  Margin="0,0,10,0"
                   BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                   BorderThickness="1"
                   CornerRadius="4"

@@ -1,6 +1,4 @@
-﻿
-using ATIS.DesignSystem.Layout;
-using Microsoft.UI.Xaml.Input;
+﻿using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
@@ -21,7 +19,6 @@ public sealed partial class Tbl60SubtribusBossControl : UserControl
         if (ViewModel != null)
             ViewModel.IsDetailVisible = true;
     }
-
     private void SubtribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (sender is not ListView listView) return;

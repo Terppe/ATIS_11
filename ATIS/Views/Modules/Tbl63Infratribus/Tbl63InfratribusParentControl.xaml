@@ -96,20 +96,20 @@
         </Grid>
 
         <!--  LIST  -->
-        <ListView
-            x:Name="InfratribusListView"
-            Grid.Row="2"
-            MaxHeight="112.5"
-            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="4"
-            IsItemClickEnabled="True"
-            ItemClick="InfratribusListView_ItemClick"
-            ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
-            ItemsSource="{Binding Items}"
-            RightTapped="InfratribusListView_RightTapped"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            SelectionMode="Single">
+        <ListView x:Name="InfratribusListView"
+                  Grid.Row="2"
+                  MaxHeight="112.5"
+                  Margin="0,0,10,0"
+                  BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                  BorderThickness="1"
+                  CornerRadius="4"
+                  IsItemClickEnabled="True"
+                  ItemClick="InfratribusListView_ItemClick"
+                  ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
+                  ItemsSource="{Binding Items}"
+                  RightTapped="InfratribusListView_RightTapped"
+            SelectedItem="{Binding SelectedInfratribus, Mode=TwoWay}"
+                  SelectionMode="Single">
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Tbl63Infratribus">

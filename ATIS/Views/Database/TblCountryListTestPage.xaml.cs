@@ -24,13 +24,13 @@ namespace ATIS.Views.Database;
 /// </summary>
 public sealed partial class TblCountryListTestPage : Page
 {
-    public TblCountryViewModel ViewModel { get; }
+    public TblCountryAltViewModel ViewModel { get; }
 
     public TblCountryListTestPage()
     {
         InitializeComponent();
 
-        ViewModel = App.GetService<TblCountryViewModel>();
+        ViewModel = App.GetService<TblCountryAltViewModel>();
         DataContext = ViewModel;
 
         Debug.WriteLine($"[TEST] VM={ViewModel.GetHashCode()}");

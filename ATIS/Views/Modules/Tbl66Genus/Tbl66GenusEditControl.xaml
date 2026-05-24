@@ -19,13 +19,13 @@
             <Grid Margin="0,0,0,4"
                   ColumnDefinitions="*,Auto">
 
-                <!--  Titel  -->
+                <!--  Titel links  -->
                 <TextBlock Grid.Column="0"
                            Margin="8,0,0,0"
                            loc:Uids.Uid="TextBlock_Genus"
                            Style="{StaticResource AtisSectionTitleTextStyle}" />
 
-                <!--  Buttons  -->
+                <!--  Buttons rechts  -->
                 <StackPanel Grid.Column="1"
                             VerticalAlignment="Center"
                             Orientation="Horizontal"
@@ -76,7 +76,7 @@
                          Style="{StaticResource AtisTextBox}"
                          Text="{x:Bind Item.GenusId, Mode=OneWay}" />
 
-                <!--  GenusName  -->
+                <!--  GenusName mit Validierung  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
@@ -114,13 +114,14 @@
                               Style="{StaticResource AtisComboBox}" />
                 </StackPanel>
 
+                <!--  CheckBox  -->
                 <CheckBox MinWidth="60"
                           VerticalAlignment="Bottom"
                           loc:Uids.Uid="CheckBox_Valid"
                           IsChecked="{x:Bind Item.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource AtisCheckBox}" />
 
-                <!--  ValidYear  -->
+                <!--  ValidYear mit Validierung  -->
                 <StackPanel MinWidth="60"
                             VerticalAlignment="Top"
                             Spacing="2">
@@ -138,96 +139,92 @@
                                Text="{x:Bind Item.ValidYearError, Mode=OneWay}"
                                Visibility="{x:Bind Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
-
-                <!--  Author + AuthorYear  -->
-                <StackPanel Orientation="Horizontal"
-                            Spacing="4">
-
-                    <!--  Author  -->
-                    <TextBox MinWidth="150"
-                             VerticalAlignment="Top"
-                             loc:Uids.Uid="TextBox_Author"
-                             CharacterCasing="Upper"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                    <!--  AuthorYear  -->
-                    <StackPanel MinWidth="60"
-                                VerticalAlignment="Top"
-                                Spacing="2">
-
-                        <TextBox x:Name="AuthorYearBox"
-                                 loc:Uids.Uid="TextBox_AuthorYear"
-                                 Loaded="AuthorYearBox_OnLoaded"
-                                 Style="{StaticResource AtisTextBox}"
-                                 Text="{x:Bind Item.AuthorYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 TextChanged="AuthorYearBox_OnTextChanged" />
-
-                        <TextBlock Height="16"
-                                   FontSize="10"
-                                   Foreground="Red"
-                                   Text="{x:Bind Item.AuthorYearError, Mode=OneWay}"
-                                   Visibility="{x:Bind Item.HasAuthorYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
-                    </StackPanel>
-                </StackPanel>
-
-                <!--  Info  -->
-                <TextBox MinWidth="200"
-                         MinHeight="75"
-                         MaxHeight="150"
-                         loc:Uids.Uid="TextBox_Info"
-                         AcceptsReturn="True"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="Wrap" />
-
-                <!--  Synonym  -->
-                <TextBox MinHeight="75"
-                         MaxHeight="150"
-                         loc:Uids.Uid="TextBox_Synonym"
-                         AcceptsReturn="True"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.Synonym, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="Wrap" />
-
-                <!--  Language Tabs  -->
-                <TabView>
-
-                    <TabViewItem loc:Uids.Uid="TabViewItem_EngName">
-                        <TextBox loc:Uids.Uid="TextBox_EngName"
-                                 Style="{StaticResource AtisTextBox}"
-                                 Text="{x:Bind Item.EngName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </TabViewItem>
-
-                    <TabViewItem loc:Uids.Uid="TabViewItem_GerName">
-                        <TextBox loc:Uids.Uid="TextBox_GerName"
-                                 Style="{StaticResource AtisTextBox}"
-                                 Text="{x:Bind Item.GerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </TabViewItem>
-
-                    <TabViewItem loc:Uids.Uid="TabViewItem_FraName">
-                        <TextBox loc:Uids.Uid="TextBox_FraName"
-                                 Style="{StaticResource AtisTextBox}"
-                                 Text="{x:Bind Item.FraName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </TabViewItem>
-
-                    <TabViewItem loc:Uids.Uid="TabViewItem_SpaName">
-                        <TextBox loc:Uids.Uid="TextBox_SpaName"
-                                 Style="{StaticResource AtisTextBox}"
-                                 Text="{x:Bind Item.PorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    </TabViewItem>
-
-                </TabView>
-
-                <!--  Memo  -->
-                <TextBox MinHeight="75"
-                         MaxHeight="150"
-                         loc:Uids.Uid="TextBox_Memo"
-                         AcceptsReturn="True"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="Wrap" />
             </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+                <TextBox MinWidth="150"
+                         VerticalAlignment="Top"
+                         loc:Uids.Uid="TextBox_Author"
+                         CharacterCasing="Upper"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{x:Bind Item.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!--  AuthorYear mit Validierung  -->
+                <StackPanel MinWidth="60"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="AuthorYearBox"
+                             loc:Uids.Uid="TextBox_AuthorYear"
+                             Loaded="AuthorYearBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{x:Bind Item.AuthorYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="AuthorYearBox_OnTextChanged" />
+                    <TextBlock Height="16"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{x:Bind Item.AuthorYearError, Mode=OneWay}"
+                               Visibility="{x:Bind Item.HasAuthorYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--  Info  -->
+            <TextBox MinWidth="200"
+                     MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Info"
+                     AcceptsReturn="True"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{x:Bind Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
+
+            <!--  Synonym  -->
+            <TextBox MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Synonym"
+                     AcceptsReturn="True"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{x:Bind Item.Synonym, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
+
+            <!--  Language Tabs  -->
+            <TabView>
+
+                <TabViewItem loc:Uids.Uid="TabViewItem_EngName">
+                    <TextBox loc:Uids.Uid="TextBox_EngName"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{x:Bind Item.EngName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TabViewItem>
+
+                <TabViewItem loc:Uids.Uid="TabViewItem_GerName">
+                    <TextBox loc:Uids.Uid="TextBox_GerName"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{x:Bind Item.GerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TabViewItem>
+
+                <TabViewItem loc:Uids.Uid="TabViewItem_FraName">
+                    <TextBox loc:Uids.Uid="TextBox_FraName"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{x:Bind Item.FraName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TabViewItem>
+
+                <TabViewItem loc:Uids.Uid="TabViewItem_SpaName">
+                    <TextBox loc:Uids.Uid="TextBox_SpaName"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{x:Bind Item.PorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </TabViewItem>
+
+            </TabView>
+
+            <!--  Memo  -->
+            <TextBox MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Memo"
+                     AcceptsReturn="True"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{x:Bind Item.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" />
         </StackPanel>
+
     </Border>
 </UserControl>

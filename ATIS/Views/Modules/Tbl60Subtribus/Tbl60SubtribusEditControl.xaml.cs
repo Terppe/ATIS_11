@@ -23,11 +23,29 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
             nameof(Item),
             typeof(Models.Tbl60Subtribus),
             typeof(Tbl60SubtribusEditControl),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnItemChanged));
+
+    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var control = (Tbl60SubtribusEditControl)d;
+        control.ApplyItem(e.NewValue as Models.Tbl60Subtribus);
+    }
+    private void ApplyItem(Models.Tbl60Subtribus? newItem)
+    {
+        // NICHT den DataContext des Controls überschreiben!
+        // Stattdessen nur das Item setzen.
+        // Die Bindings im XAML müssen auf Item.XXX zeigen.
+
+        // Falls du ein Root-Grid hast:
+        // ItemRoot.DataContext = newItem;
+
+        // Wenn du kein ItemRoot hast, lass ApplyItem LEER:
+    }
 
     private void OnTribusChanged(object sender, SelectionChangedEventArgs e)
     {
         if (Item == null) return;
+
         if (TribusCombo.SelectedValue is int id)
             Item.TribusId = id;
     }

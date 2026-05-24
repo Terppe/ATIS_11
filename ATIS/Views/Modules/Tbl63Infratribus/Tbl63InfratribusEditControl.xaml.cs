@@ -1,19 +1,16 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
+﻿
+using ATIS.Views.Authentication;
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
 public sealed partial class Tbl63InfratribusEditControl : UserControl
 {
+    public Tbl63InfratribusViewModel ViewModel { get; set; }
     public Tbl63InfratribusEditControl()
     {
         InitializeComponent();
+        ViewModel = App.GetService<Tbl63InfratribusViewModel>();
     }
-
-    // ---------------------------------------------------------
-    //  DependencyProperty: Item  (wie Subtribus / Comment)
-    // ---------------------------------------------------------
 
     public Models.Tbl63Infratribus? Item
     {
@@ -27,6 +24,7 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
             typeof(Models.Tbl63Infratribus),
             typeof(Tbl63InfratribusEditControl),
             new PropertyMetadata(null));
+
 
     private void OnSubtribusChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -85,14 +83,10 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
     //  AuthorYear
     // ---------------------------------------------------------
 
-    private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
-    {
-        UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
-    }
-
     private void AuthorYearBox_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
-    }
+        => UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
+
+    private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        => UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
 
 }

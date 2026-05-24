@@ -21,7 +21,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl75SpeciesViewModel ViewModel { get; set; }
+    public Tbl75SpeciesAltViewModel ViewModel { get; set; }
     private Tbl75Species SingleSpecies { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -54,7 +54,7 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl75SpeciesViewModel>();
+            ViewModel = App.GetService<Tbl75SpeciesAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

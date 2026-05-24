@@ -1,11 +1,17 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Core.Taxonomy;
 using ATIS.Models;
 using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
 using ATIS.Views.Main.Disease;
+using ATIS.Views.Modules.Tbl57Tribus;
+using ATIS.Views.Modules.Tbl60Subtribus;
+using ATIS.Views.Modules.Tbl63Infratribus;
+using ATIS.Views.Modules.Tbl66Genus;
+using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl90RefAuthor;
 using ATIS.Views.Modules.Tbl90RefExpert;
 using ATIS.Views.Modules.Tbl90RefSource;
@@ -17,9 +23,9 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
-using ATIS.Views.Modules.Tbl63Infratribus;
 using WinRT.Interop;
 using WinUI3Localizer;
+using static ATIS.Views.Report.PdfModels;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
 using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 
@@ -69,6 +75,7 @@ public sealed partial class MainPage : Page
         _appWindow.Closing += AppWindow_Closing;
 
         await ViewModel.InitAsync();
+
     }
 
     //--------------------------------------------------------------------
@@ -403,13 +410,13 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavSpecies.Content)
         {
-            NavFrame.Navigate(typeof(Tbl75SpeciesListPage));
+            NavFrame.Navigate(typeof(Tbl75SpeciesPage));
             return;
         }
 
         if ((string)args.ChosenSuggestion == (string)NavGenus.Content)
         {
-            NavFrame.Navigate(typeof(Tbl66GenusListPage));
+            NavFrame.Navigate(typeof(Tbl66GenusPage));
             return;
         }
 
@@ -427,12 +434,12 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavSubtribus.Content)
         {
-            NavFrame.Navigate(typeof(Tbl60SubtribusListPage));
+            NavFrame.Navigate(typeof(Tbl60SubtribusPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavTribus.Content)
         {
-            NavFrame.Navigate(typeof(Tbl57TribusListPage));
+            NavFrame.Navigate(typeof(Tbl57TribusPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSupertribus.Content)

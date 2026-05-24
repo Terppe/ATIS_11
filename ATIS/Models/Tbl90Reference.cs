@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
+using ATIS.Views.Base;
 using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl90Reference : ObservableObject, IDataService.IAuditable
+public class Tbl90Reference : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     private readonly Dictionary<string, List<string>> _errors = new();
     // ---------------------------------------------------------
@@ -191,6 +192,11 @@ public class Tbl90Reference : ObservableObject, IDataService.IAuditable
 
     [ForeignKey("RefSourceId")]
     public virtual Tbl90RefSource? Tbl90RefSources { get; set; }
+    // ---------------------------------------------------------
+    // IHierarchicalEntity IMPLEMENTATION
+    // ---------------------------------------------------------
+    public int GetEntityId() => ReferenceId;
+    public string GetDisplayName() => Info ?? $"Reference {ReferenceId}";
 
     // ---------------------------------------------------------
     // VALIDIERUNG (wie bei Comment)

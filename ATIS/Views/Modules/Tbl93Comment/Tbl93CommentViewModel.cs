@@ -1,171 +1,164 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Views.Base;
+using ATIS.Views.Modules.Hierarchy;
 
 namespace ATIS.Views.Modules.Tbl93Comment;
 
-public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
+public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 {
-    private readonly IDialogService _dialog;
+    private readonly IDataService _data;
+    private readonly LookupService _lookupService;
 
-    public Tbl93CommentViewModel(IDataService data, IDialogService dialog)
-        : base(data)
+    // ============================================
+    // CONSTRUCTOR
+    // ============================================
+    public Tbl93CommentViewModel(
+        IDataService data,
+        IDialogService dialog,
+        LookupService lookupService,
+        HierarchyCoordinator coordinator
+    ) : base(data, dialog, coordinator)
     {
-        _dialog = dialog;
-
-        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        OpenEditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(OpenEdit);
-        CloseEditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(CloseEdit);
-
-        // New muss async prüfen (Subtribus ausgewählt?)
-        NewCommand = new AsyncRelayCommand(NewAsync);
+        _data = data;
+        _lookupService = lookupService;
     }
 
-    // ---------------------------------------------------------
-    // Commands (zusätzlich zur Base)
-    // ---------------------------------------------------------
+    // ============================================
+    // HIERARCHIE-KONFIGURATION
+    // ============================================
+    // Comments sind LEAF-Level (haben keine Children)
+    // Sie können unter Infratribus oder Subtribus existieren
+    protected override HierarchyLevel CurrentLevel => HierarchyLevel.Comment;
+
+    protected override HierarchyLevel ParentLevel
+    {
+        get
+        {
+            // Nutze den höchsten/aktuellsten Parent-Level
+            if (CurrentInfratribusId.HasValue)
+                return HierarchyLevel.Infratribus;
+            if (CurrentSubtribusId.HasValue)
+                return HierarchyLevel.Subtribus;
+            if (CurrentGenusId.HasValue)
+                return HierarchyLevel.Genus;
+
+            return HierarchyLevel.Infratribus; // Default Fallback
+        }
+    }
     public ICommand SortCommand { get; }
     public ICommand OpenEditCommand { get; }
     public ICommand CloseEditCommand { get; }
 
-    // ---------------------------------------------------------
-    // FK: aktueller Subtribus
-    // ---------------------------------------------------------
-    public int? CurrentSubtribusId { get; private set; }
-    public int? CurrentInfratribusId { get; private set; }
-    public int? CurrentGenusId { get; private set; }
+    // ============================================
+    // PARENT-IDs (Kontexte für verschiedene Level)
+    // ============================================
+    public int? CurrentSupertribusId { get; set; }
+    public int? CurrentTribusId { get; set; }
+    public int? CurrentSubtribusId { get; set; }
+    public int? CurrentInfratribusId { get; set; }
+    public int? CurrentGenusId { get; set; }
+    public int? CurrentSpeciesId { get; set; }
+
+    // ============================================
+    // LOAD ITEMS
+    // ============================================
+    protected override async Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
+    {
+        if (string.IsNullOrWhiteSpace(CurrentFilter))
+            return Enumerable.Empty<Models.Tbl93Comment>();
+
+        return await _data.SearchCommentAsync(CurrentFilter);
+    }
+
+    protected override async Task LoadForParentAsync(int parentId)
+    {
+        // Comments können an verschiedenen Level hängen
+        // Primär: Infratribus
+        var items = await _data.GetCommentsForInfratribusAsync(parentId);
+        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+    }
 
     public async Task LoadForSubtribusAsync(int subtribusId)
     {
-        if (subtribusId <= 0)
+        if (subtribusId <= 0) return;
+
+        var items = await _data.GetCommentsForSubtribusAsync(subtribusId);
+        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+    }
+
+    public async Task LoadForInfratribusAsync(int infratribusId)
+    {
+        if (infratribusId <= 0) return;
+
+        var items = await _data.GetCommentsForInfratribusAsync(infratribusId);
+        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+    }
+
+    // ============================================
+    // NEW / CREATE
+    // ============================================
+    public override void New()
+    {
+        // Comments können an verschiedenen Kontexten erstellt werden
+        if (CurrentInfratribusId == null && CurrentSubtribusId == null)
         {
-            Items = new ObservableCollection<Models.Tbl93Comment>();
-            SelectedItem = null;
-            IsCommentEditVisible = false;
+            _ = _dialog.ShowErrorAsync(
+                "Error_NoParent_Title",
+                "Bitte wählen Sie zuerst ein Infratribus oder Subtribus."
+            );
             return;
         }
 
-        CurrentSubtribusId = subtribusId;
-        CurrentInfratribusId = null;
+        var item = CreateNewItem();
 
-        Items = new ObservableCollection<Models.Tbl93Comment>(
-            await _data.GetCommentsForSubtribusAsync(subtribusId));
+        Items ??= new ObservableCollection<Models.Tbl93Comment>();
+        Items.Add(item);
 
-        SelectedItem = null;
-        IsCommentEditVisible = false;
+        SelectedItem = item;
+        IsEditVisible = true;
     }
-
-    //public async Task LoadForSubtribusAsync(int subtribusId)
-    //{
-    //    CurrentSubtribusId = subtribusId;
-    //    CurrentInfratribusId = null;
-
-    //    Items = new ObservableCollection<Models.Tbl93Comment>(
-    //        await _data.GetCommentsForSubtribusAsync(subtribusId));
-
-    //    SelectedItem = null;
-    //    IsCommentEditVisible = false;
-    //}
-    public async Task LoadForInfratribusAsync(int infratribusId)
-    {
-        // Modus setzen
-        CurrentInfratribusId = infratribusId;
-        CurrentSubtribusId = null;
-
-        // Laden
-        Items = new ObservableCollection<Models.Tbl93Comment>(
-            await _data.GetCommentsForInfratribusAsync(infratribusId)
-        );
-
-        DataSetCount = Items.Count;
-
-        // Auswahl zurücksetzen
-        SelectItemSilently(null);
-        SelectedItem = null;
-
-        // Editor schließen
-        IsCommentEditVisible = false;
-
-        // Detailbereich schließen, wenn keine Items
-        IsDetailVisible = false;
-    }
-    public async Task LoadForGenusAsync(int genusId)
-    {
-        // Modus setzen
-        CurrentGenusId = genusId;
-        CurrentInfratribusId = null;
-
-        // Laden
-        Items = new ObservableCollection<Models.Tbl93Comment>(
-            await _data.GetCommentsForGenusAsync(genusId)
-        );
-
-        DataSetCount = Items.Count;
-
-        // Auswahl zurücksetzen
-        SelectItemSilently(null);
-        SelectedItem = null;
-
-        // Editor schließen
-        IsCommentEditVisible = false;
-
-        // Detailbereich schließen, wenn keine Items
-        IsDetailVisible = false;
-    }
-
-    //public async Task LoadForInfratribusAsync(int infratribusId)
-    //{
-    //    CurrentInfratribusId = infratribusId;
-    //    CurrentSubtribusId = null; // ← Modus zurücksetzen
-
-    //    Items = new ObservableCollection<Models.Tbl93Comment>(
-    //        await _data.GetCommentsForInfratribusAsync(infratribusId)
-    //    );
-
-    //    DataSetCount = Items.Count;
-
-    //    IsCommentEditVisible = false;
-    //    SelectItemSilently(null);
-    //}
-
-    // FK-Module werden nicht über Base-LoadItems geladen
-    protected override Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
-        => Task.FromResult<IEnumerable<Models.Tbl93Comment>>(Enumerable.Empty<Models.Tbl93Comment>());
 
     protected override Models.Tbl93Comment CreateNewItem()
     {
-        if (CurrentSubtribusId != null)
-            return new Models.Tbl93Comment { SubtribusId = CurrentSubtribusId.Value };
+        // Priorität: Infratribus > Subtribus
+        if (CurrentInfratribusId.HasValue && CurrentInfratribusId > 0)
+        {
+            return new Models.Tbl93Comment
+            {
+                InfratribusId = CurrentInfratribusId.Value,
+                CommentId = 0
+            };
+        }
 
-        if (CurrentInfratribusId != null)
-            return new Models.Tbl93Comment { InfratribusId = CurrentInfratribusId.Value };
+        if (CurrentSubtribusId.HasValue && CurrentSubtribusId > 0)
+        {
+            return new Models.Tbl93Comment
+            {
+                SubtribusId = CurrentSubtribusId.Value,
+                CommentId = 0
+            };
+        }
 
-        throw new InvalidOperationException("No parent context set.");
+        throw new InvalidOperationException("No parent context set (Infratribus or Subtribus).");
     }
 
-    protected override Task<bool> ConfirmSaveAsync(Models.Tbl93Comment item)
-        => _dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
-
-    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl93Comment item)
-        => _dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
-
+    // ============================================
+    // SAVE / DELETE
+    // ============================================
     protected override async Task<Models.Tbl93Comment?> SaveItemAsync(Models.Tbl93Comment item)
     {
-        // FK korrekt setzen
-        if (CurrentSubtribusId != null)
+        if (string.IsNullOrWhiteSpace(item.Info))
         {
-            item.SubtribusId = CurrentSubtribusId.Value;
-            item.InfratribusId = null;
+            await _dialog.ShowErrorAsync(
+                "Error_EmptyName",
+                "Comment-Text darf nicht leer sein."
+            );
+            return null;
         }
 
-        if (CurrentInfratribusId != null)
-        {
-            item.InfratribusId = CurrentInfratribusId.Value;
-            item.SubtribusId = null;
-        }
-
-        // Duplicate check
         if (await _data.CommentExistsAsync(item))
         {
             await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
@@ -178,158 +171,288 @@ public class Tbl93CommentViewModel : BaseListViewModel<Models.Tbl93Comment>
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl93Comment item)
     {
-        // Neu/unsaved => verwerfen
         if (item.CommentId == 0)
-        {
-            IsCommentEditVisible = false;
-            SelectItemSilently(null);
             return false;
-        }
 
         await _data.DeleteCommentAsync(item.CommentId);
         return true;
     }
 
-    protected override void OnAfterNew(Models.Tbl93Comment item)
-        => IsCommentEditVisible = true;
-
-    protected override bool IsUnsavedNewItem(Models.Tbl93Comment item)
-        => item.CommentId == 0;
-
-    private async Task NewAsync()
+    // ============================================
+    // CHILDREN (Comments haben keine Children)
+    // ============================================
+    protected override async Task ClearChildCollectionsAsync()
     {
-        if (CurrentSubtribusId <= 0)
+        await Task.CompletedTask; // Comments sind Leaf-Level
+    }
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        await Task.CompletedTask; // Comments sind Leaf-Level
+    }
+
+    // ============================================
+    // SORTING
+    // ============================================
+    private string _idHeaderText = "ID";
+    public string IdHeaderText
+    {
+        get => _idHeaderText;
+        set => SetProperty(ref _idHeaderText, value);
+    }
+
+    private string _nameHeaderText = "Comment";
+    public string NameHeaderText
+    {
+        get => _nameHeaderText;
+        set => SetProperty(ref _nameHeaderText, value);
+    }
+
+    protected override IEnumerable<Models.Tbl93Comment> SortItems(
+        IEnumerable<Models.Tbl93Comment> items, string column, bool ascending)
+    {
+        return column switch
         {
-            await _dialog.ShowErrorAsync("Hinweis", "Bitte zuerst einen Subtribus auswählen.");
-            return;
-        }
-
-        base.New();
+            "Id" => ascending
+                ? items.OrderBy(x => x.CommentId)
+                : items.OrderByDescending(x => x.CommentId),
+            "Name" => ascending
+                ? items.OrderBy(x => x.Info)
+                : items.OrderByDescending(x => x.Info),
+            _ => items
+        };
     }
 
-    // ---------------------------------------------------------
-    // Edit visibility
-    // ---------------------------------------------------------
-    public bool IsDetailVisible
+    protected override void UpdateHeaderTexts()
     {
-        get => _isDetailVisible;
-        set { _isDetailVisible = value; OnPropertyChanged(); }
+        IdHeaderText = "ID";
+        NameHeaderText = "Comment";
     }
-    private bool _isDetailVisible;
 
+    // ============================================
+    // EDIT VISIBILITY
+    // ============================================
     private bool _isCommentEditVisible;
     public bool IsCommentEditVisible
     {
         get => _isCommentEditVisible;
-        set { _isCommentEditVisible = value; OnPropertyChanged(); }
+        set => SetProperty(ref _isCommentEditVisible, value);
     }
 
-    private void OpenEdit()
+    private bool _isDetailVisible;
+    public bool IsDetailVisible
     {
-        if (SelectedItem != null)
-            IsCommentEditVisible = true;
+        get => _isDetailVisible;
+        set => SetProperty(ref _isDetailVisible, value);
     }
 
-    private void CloseEdit()
+    private string _searchText = string.Empty;
+
+
+    public string SearchText
     {
-        IsCommentEditVisible = false;
-        SelectedItem = null;
-    }
-    public bool IsInfratribusEditVisible
-    {
-        get => _isInfratribusEditVisible;
-        set { _isInfratribusEditVisible = value; OnPropertyChanged(); }
-    }
-    private bool _isInfratribusEditVisible;
-
-    public bool IsReferenceEditVisible
-    {
-        get => _isReferenceEditVisible;
-        set { _isReferenceEditVisible = value; OnPropertyChanged(); }
-    }
-    private bool _isReferenceEditVisible;
-
-    // ---------------------------------------------------------
-    // Reload (FK)
-    // ---------------------------------------------------------
-    public override async Task ReloadAndSelectAsync(Models.Tbl93Comment? saved, bool autoSelect)
-    {
-        IsLoading = true;
-        try
-        {
-            var old = SelectedItem;
-
-            IsCommentEditVisible = false;
-
-            // 1. Items laden je nach Parent-Modus
-            if (CurrentSubtribusId != null)
-            {
-                Items = new ObservableCollection<Models.Tbl93Comment>(
-                    await _data.GetCommentsForSubtribusAsync(CurrentSubtribusId.Value)
-                );
-            }
-            else if (CurrentInfratribusId != null)
-            {
-                Items = new ObservableCollection<Models.Tbl93Comment>(
-                    await _data.GetCommentsForInfratribusAsync(CurrentInfratribusId.Value)
-                );
-            }
-            else
-            {
-                Items = new ObservableCollection<Models.Tbl93Comment>();
-            }
-
-            DataSetCount = Items.Count;
-
-            SelectItemSilently(null);
-
-            if (!autoSelect)
-                return;
-
-            // 2. Auswahl wiederherstellen
-            if (saved != null)
-                SelectedItem = Items.FirstOrDefault(x => x.CommentId == saved.CommentId);
-            else if (old != null && old.CommentId != 0)
-                SelectedItem = Items.FirstOrDefault(x => x.CommentId == old.CommentId);
-            else
-                SelectedItem = Items.FirstOrDefault();
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
-
-    // ---------------------------------------------------------
-    // Sort
-    // ---------------------------------------------------------
-    private bool _sortAscending = true;
-    private string _currentSortColumn = "";
-
-    public void SortBy(string column)
-    {
-        if (Items.Count == 0)
-            return;
-
-        if (_currentSortColumn == column)
-            _sortAscending = !_sortAscending;
-        else
-        {
-            _currentSortColumn = column;
-            _sortAscending = true;
-        }
-
-        IEnumerable<Models.Tbl93Comment> sorted = column switch
-        {
-            "Id" => _sortAscending ? Items.OrderBy(x => x.CommentId)
-                                   : Items.OrderByDescending(x => x.CommentId),
-
-            "Info" => _sortAscending ? Items.OrderBy(x => x.Info)
-                                     : Items.OrderByDescending(x => x.Info),
-
-            _ => Items
-        };
-
-        Items = new ObservableCollection<Models.Tbl93Comment>(sorted);
+        get => _searchText;
+        set => SetProperty(ref _searchText, value);
     }
 }
+
+//public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
+//{
+//    private readonly IDataService _data;
+
+//    // Parent-IDs (werden zur Erstellung eines neuen Kommentars benötigt)
+//    public int? CurrentSupertribusId { get; set; }
+//    public int? CurrentTribusId { get; set; }
+//    public int? CurrentSubtribusId { get; set; }
+//    public int? CurrentInfratribusId { get; set; }
+//    public int? CurrentGenusId { get; set; }
+//    public int? CurrentSpeciesId { get; set; }
+//    public ICommand SortCommand { get; }
+//    public ICommand OpenEditCommand { get; }
+//    public ICommand CloseEditCommand { get; }
+
+//    // ======================================
+//    // KONSTRUKTOR
+//    // ======================================
+//    public Tbl93CommentViewModel(
+//        IDataService data,
+//        IDialogService dialog,
+//        HierarchyCoordinator coordinator
+//    ) : base(data, dialog, coordinator)
+//    {
+//        _data = data;
+
+//        // Subscribing zu Änderungen im Hierarchiekoordinator
+//        _coordinator.LevelChanged += OnHierarchyLevelChanged;
+//    }
+//    // ======================================
+//    // WIRD VON SUBTRIBUS AUFGERUFEN
+//    // ======================================
+//    public async Task LoadForSubtribusAsync(int subtribusId)
+//    {
+//        if (subtribusId <= 0) return;
+
+//        // Lade alle Kommentare für ein spezifisches Subtribus
+//        var items = await _data.GetCommentsForSubtribusAsync(subtribusId);
+//        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+//    }
+
+//    // ======================================
+//    // WIRD VON INFRATRIBUS AUFGERUFEN
+//    // ======================================
+//    public async Task LoadForInfratribusAsync(int infratribusId)
+//    {
+//        if (infratribusId <= 0) return;
+
+//        // Lade alle Kommentare für ein spezifisches Infratribus
+//        var items = await _data.GetCommentsForInfratribusAsync(infratribusId);
+//        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+//    }
+
+//    // ======================================
+//    // HANDLING HIERARCHIE-ÄNDERUNGEN
+//    // ======================================
+//    protected override HierarchyLevel CurrentLevel { get; }
+//    protected override HierarchyLevel ParentLevel { get; }
+
+//    private void OnHierarchyLevelChanged(object? sender, HierarchyLevelChangedArgs e)
+//    {
+//        // Wenn die Ebene Subtribus ist, aktualisiere `CurrentSubtribusId`.
+//        if (e.Level == HierarchyLevel.Subtribus)
+//        {
+//            CurrentSubtribusId = e.SelectedId;
+//        }
+
+//        // Wenn die Ebene Infratribus ist, aktualisiere `CurrentInfratribusId`.
+//        if (e.Level == HierarchyLevel.Infratribus)
+//        {
+//            CurrentInfratribusId = e.SelectedId;
+//        }
+//    }
+//    protected override async Task ClearChildCollectionsAsync()
+//    {
+//        // Keine Kindersammlungen zum Löschen im CommentViewModel
+//        await Task.CompletedTask;
+//    }
+//    protected override async Task LoadForParentAsync(int parentId)
+//    {
+//        throw new NotImplementedException();
+//    }
+
+
+//    protected override async Task LoadChildrenAsync(int entityId)
+//    {
+//        throw new NotImplementedException();
+//    }
+
+//    protected override IEnumerable<Models.Tbl93Comment> SortItems(IEnumerable<Models.Tbl93Comment> items, string column, bool ascending)
+//    {
+//        return column switch
+//        {
+//            "Id" => ascending
+//                ? items.OrderBy(x => x.CommentId)
+//                : items.OrderByDescending(x => x.CommentId),
+//            "Name" => ascending
+//                ? items.OrderBy(x => x.Info) // Falls ein "CommentText" existiert
+//                : items.OrderByDescending(x => x.Info),
+//            _ => items
+//        };
+//    }
+//    // ============================================
+//    // SORTING HEADERS
+//    // ============================================
+//    private string _idHeaderText = "ID";
+//    public string IdHeaderText
+//    {
+//        get => _idHeaderText;
+//        set => SetProperty(ref _idHeaderText, value);
+//    }
+
+//    private string _nameHeaderText = "Name";
+//    public string NameHeaderText
+//    {
+//        get => _nameHeaderText;
+//        set => SetProperty(ref _nameHeaderText, value);
+//    }
+
+//    protected override void UpdateHeaderTexts()
+//    {
+//        const string asc = " ▲";
+//        const string desc = " ▼";
+
+//        IdHeaderText = "Comment ID";
+//        NameHeaderText = "Comment Text";
+
+//        //if (CurrentSortColumn == "Id")
+//        //{
+//        //    IdHeaderText += CurrentSortAscending ? asc : desc;
+//        //}
+//        //else if (CurrentSortColumn == "Name") // Falls du andere Spalten unterstützt
+//        //{
+//        //    NameHeaderText += CurrentSortAscending ? asc : desc;
+//        //}
+//    }
+//    // ======================================
+//    // NEUES ITEM ERSTELLEN
+//    // ======================================
+//    protected override Models.Tbl93Comment CreateNewItem()
+//    {
+//        if (CurrentInfratribusId != null)
+//        {
+//            return new Models.Tbl93Comment
+//            {
+//                InfratribusId = CurrentInfratribusId.Value
+//            };
+//        }
+
+//        if (CurrentSubtribusId != null)
+//        {
+//            return new Models.Tbl93Comment
+//            {
+//                SubtribusId = CurrentSubtribusId.Value
+//            };
+//        }
+
+//        throw new InvalidOperationException("No parent context set.");
+//    }
+
+//    // ======================================
+//    // FILTERING / LADE-OPTIONEN
+//    // ======================================
+//    protected override async Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
+//    {
+//        if (CurrentInfratribusId != null)
+//        {
+//            // Lade Kommentare für aktuelles Infratribus-Item
+//            return await _data.GetCommentsForInfratribusAsync(CurrentInfratribusId.Value);
+//        }
+
+//        if (CurrentSubtribusId != null)
+//        {
+//            // Lade Kommentare für aktuelles Subtribus-Item
+//            return await _data.GetCommentsForSubtribusAsync(CurrentSubtribusId.Value);
+//        }
+
+//        return Enumerable.Empty<Models.Tbl93Comment>();
+//    }
+
+//    // ======================================
+//    // ENTWÜRFE SPEICHERN
+//    // ======================================
+//    protected override async Task<Models.Tbl93Comment?> SaveItemAsync(Models.Tbl93Comment item)
+//    {
+//        if (await _data.CommentExistsAsync(item))
+//        {
+//            await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+//            return null;
+//        }
+
+//        var saved = await _data.UpsertCommentAsync(item);
+//        return await _data.GetCommentByIdAsync(saved.CommentId);
+//    }
+
+//    protected override async Task<bool> DeleteItemAsync(Models.Tbl93Comment item)
+//    {
+//        throw new NotImplementedException();
+//    }
+//}

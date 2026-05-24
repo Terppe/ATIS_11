@@ -21,7 +21,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl42SuperfamilyViewModel ViewModel { get; set; }
+    public Tbl42SuperfamilyAltViewModel ViewModel { get; set; }
     private Tbl42Superfamily SingleSuperfamily { get; set; }
     private Tbl90Reference SingleReference { get; set; }
     private Tbl93Comment SingleComment { get; set; }
@@ -44,7 +44,7 @@ public sealed partial class Tbl42SuperfamilyListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl42SuperfamilyViewModel>();
+            ViewModel = App.GetService<Tbl42SuperfamilyAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

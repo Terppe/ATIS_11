@@ -21,7 +21,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     #region [Private Data Members]
 
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public Tbl90RefAuthorViewModel ViewModel { get; set; }
+    public Tbl90RefAuthorAltViewModel ViewModel { get; set; }
     private Tbl90RefAuthor SingleRefAuthor { get; set; }
     //private static readonly AtisDbContext Context = new();
     private string _search;
@@ -41,7 +41,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     {
         if (Permission.RolePermission())
         {
-            ViewModel = App.GetService<Tbl90RefAuthorViewModel>();
+            ViewModel = App.GetService<Tbl90RefAuthorAltViewModel>();
             ButtonsNotVisible();
             ButtonsIconNotVisible();
         }

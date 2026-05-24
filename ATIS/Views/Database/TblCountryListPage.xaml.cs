@@ -8,7 +8,7 @@ namespace ATIS.Views.Database;
 
 public sealed partial class TblCountryListPage : Page
 {
-    public TblCountryViewModel ViewModel { get; }
+    public TblCountryAltViewModel ViewModel { get; }
     public TblCountryListPage CommandProxy { get; set; }
 
     public TblCountryListPage()
@@ -16,7 +16,7 @@ public sealed partial class TblCountryListPage : Page
         try
         {
             InitializeComponent();
-            ViewModel = App.GetService<TblCountryViewModel>();
+            ViewModel = App.GetService<TblCountryAltViewModel>();
             Debug.WriteLine($"Page-Konstruktor, ViewModel-Instanz: {ViewModel.GetHashCode()}");
             this.DataContext = ViewModel;
             CommandProxy = this;
@@ -26,7 +26,7 @@ public sealed partial class TblCountryListPage : Page
 
             ViewModel.RequestFocusName += FocusCountryName;
 
-            var vm = (ViewModels.TblCountryViewModel)DataContext;
+            var vm = (ViewModels.TblCountryAltViewModel)DataContext;
             vm.ScrollToSelectedRequest = ScrollToSelected;
 
             Debug.WriteLine($"PAGE VM: {ViewModel.GetHashCode()}");
@@ -109,7 +109,7 @@ public sealed partial class TblCountryListPage : Page
 
     private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (DataContext is TblCountryViewModel vm)
+        if (DataContext is TblCountryAltViewModel vm)
             vm.CurrentPageWidth = e.NewSize.Width;
     }
 }

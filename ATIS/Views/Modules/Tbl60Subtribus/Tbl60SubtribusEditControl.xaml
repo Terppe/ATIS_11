@@ -99,10 +99,11 @@
                               loc:Uids.Uid="ComboBox_TribusName"
                               DisplayMemberPath="TribusName"
                               ItemsSource="{Binding TribusList}"
-                              SelectedValue="{x:Bind Item.TribusId, Mode=TwoWay}"
+                              SelectedValue="{x:Bind Item.TribusId, Mode=OneWay}"
                               SelectedValuePath="TribusId"
                               SelectionChanged="OnTribusChanged"
                               Style="{StaticResource AtisComboBox}" />
+
                 </StackPanel>
 
                 <!--  CheckBox  -->
@@ -131,7 +132,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal"
-                        Spacing="4">
+                        Spacing="2">
                 <TextBox MinWidth="150"
                          VerticalAlignment="Top"
                          loc:Uids.Uid="TextBox_Author"
@@ -142,7 +143,7 @@
                 <!--  AuthorYear mit Validierung  -->
                 <StackPanel MinWidth="60"
                             VerticalAlignment="Top"
-                            Spacing="2">
+                            Spacing="4">
                     <TextBox x:Name="AuthorYearBox"
                              loc:Uids.Uid="TextBox_AuthorYear"
                              Loaded="AuthorYearBox_OnLoaded"
@@ -168,7 +169,8 @@
                      TextWrapping="Wrap" />
 
             <!--  Synonym  -->
-            <TextBox MinHeight="75"
+            <TextBox MinWidth="200"
+                     MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Synonym"
                      AcceptsReturn="True"
@@ -205,7 +207,8 @@
             </TabView>
 
             <!--  Memo  -->
-            <TextBox MinHeight="75"
+            <TextBox MinWidth="200"
+                     MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Memo"
                      AcceptsReturn="True"
