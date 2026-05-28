@@ -39,10 +39,17 @@ public sealed partial class Tbl60SubtribusPage : Page
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    //private void OnNewRequested(object? sender, EventArgs e)
-    //{
-    //    TabViewBase.SelectedIndex = 0; // Edit-Tab aktivieren
-    //}
 
-
+    private void TabViewBase_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (TabViewBase.SelectedItem is TabViewItem tab &&
+            tab.Header?.ToString() == "Comments Subtribus")
+        {
+            if (ViewModel.SelectedItem != null)
+            {
+                int id = ViewModel.SelectedItem.SubtribusId;
+                _ = ViewModel.CommentViewModel.LoadForSubtribusAsync(id);
+            }
+        }
+    }
 }

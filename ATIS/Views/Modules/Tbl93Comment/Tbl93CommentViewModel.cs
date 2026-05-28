@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -24,6 +25,41 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     {
         _data = data;
         _lookupService = lookupService;
+        InitCommands();
+    }
+    // ============================================
+    // INIT
+    // ============================================
+
+    protected void InitCommands()
+    {
+        NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(New);
+
+        //SaveCommand = new AsyncRelayCommand(async () =>
+        //    {
+        //        if (!await ConfirmSaveAsync(SelectedItem))
+        //            return;
+
+        //        await SaveAsync();
+        //    },
+        //    () => SelectedItem != null);
+
+        //DeleteCommand = new AsyncRelayCommand(async () =>
+        //    {
+        //        if (!await ConfirmDeleteAsync(SelectedItem))
+        //            return;
+
+        //        await DeleteAsync();
+        //    },
+        //    () => SelectedItem != null);
+
+        RefreshCommand = new AsyncRelayCommand(ReloadAsync);
+
+        CloseEditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() =>
+        {
+            SelectedItem = null;          // Editor schließen
+            IsCommentEditVisible = false; // optional
+        });
     }
 
     // ============================================
@@ -48,9 +84,9 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
             return HierarchyLevel.Infratribus; // Default Fallback
         }
     }
+    public ICommand CloseEditCommand { get; private set; }
     public ICommand SortCommand { get; }
     public ICommand OpenEditCommand { get; }
-    public ICommand CloseEditCommand { get; }
 
     // ============================================
     // PARENT-IDs (Kontexte für verschiedene Level)
@@ -67,35 +103,47 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     // ============================================
     protected override async Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
     {
-        if (string.IsNullOrWhiteSpace(CurrentFilter))
+        if (CurrentSubtribusId == null)
             return Enumerable.Empty<Models.Tbl93Comment>();
 
-        return await _data.SearchCommentAsync(CurrentFilter);
+        return await _data.GetCommentsForSubtribusAsync(CurrentSubtribusId.Value);
     }
 
-    protected override async Task LoadForParentAsync(int parentId)
+    //protected override async Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
+    //{
+    //    if (string.IsNullOrWhiteSpace(CurrentFilter))
+    //        return Enumerable.Empty<Models.Tbl93Comment>();
+
+    //    return await _data.SearchCommentAsync(CurrentFilter);
+    //}
+
+    protected override Task LoadForParentAsync(int parentId)
     {
-        // Comments können an verschiedenen Level hängen
-        // Primär: Infratribus
-        var items = await _data.GetCommentsForInfratribusAsync(parentId);
-        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+        // Comments haben keinen generischen Parent
+        return Task.CompletedTask;
     }
 
     public async Task LoadForSubtribusAsync(int subtribusId)
     {
-        if (subtribusId <= 0) return;
+        CurrentSubtribusId = subtribusId;
 
         var items = await _data.GetCommentsForSubtribusAsync(subtribusId);
         Items = new ObservableCollection<Models.Tbl93Comment>(items);
+
+        // SelectedItem NICHT anfassen
+        IsCommentEditVisible = false;
     }
 
     public async Task LoadForInfratribusAsync(int infratribusId)
     {
-        if (infratribusId <= 0) return;
+        CurrentInfratribusId = infratribusId;
+        CurrentSubtribusId = null;
 
-        var items = await _data.GetCommentsForInfratribusAsync(infratribusId);
-        Items = new ObservableCollection<Models.Tbl93Comment>(items);
+        Items = new ObservableCollection<Models.Tbl93Comment>(await _data.GetCommentsForInfratribusAsync(infratribusId));
+
+        IsCommentEditVisible = false;
     }
+
 
     // ============================================
     // NEW / CREATE
@@ -103,22 +151,28 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     public override void New()
     {
         // Comments können an verschiedenen Kontexten erstellt werden
-        if (CurrentInfratribusId == null && CurrentSubtribusId == null)
-        {
-            _ = _dialog.ShowErrorAsync(
-                "Error_NoParent_Title",
-                "Bitte wählen Sie zuerst ein Infratribus oder Subtribus."
-            );
-            return;
-        }
+        //if (CurrentInfratribusId == null && CurrentSubtribusId == null)
+        //{
+        //    _ = _dialog.ShowErrorAsync(
+        //        "Error_NoParent_Title",
+        //        "Bitte wählen Sie zuerst ein Infratribus oder Subtribus."
+        //    );
+        //    return;
+        //}
 
         var item = CreateNewItem();
 
         Items ??= new ObservableCollection<Models.Tbl93Comment>();
         Items.Add(item);
 
-        SelectedItem = item;
-        IsEditVisible = true;
+        // Direkt nach dem Setzen von Items
+        if (Items.Any(c => c is null))
+        {
+            throw new InvalidOperationException("Items enthält null-Einträge.");
+        }
+
+        SelectedItem = item;   // aber im richtigen ViewModel!
+        IsCommentEditVisible = true;
     }
 
     protected override Models.Tbl93Comment CreateNewItem()
@@ -146,27 +200,41 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     }
 
     // ============================================
-    // SAVE / DELETE
+    // SAVE
     // ============================================
+    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl93Comment item)
+    {
+        return await _dialog.ShowConfirmAsync("Save_Confirm_Title", "Save_Confirm_Message");
+    }
+
     protected override async Task<Models.Tbl93Comment?> SaveItemAsync(Models.Tbl93Comment item)
     {
-        if (string.IsNullOrWhiteSpace(item.Info))
-        {
-            await _dialog.ShowErrorAsync(
-                "Error_EmptyName",
-                "Comment-Text darf nicht leer sein."
-            );
-            return null;
-        }
+        //if (string.IsNullOrWhiteSpace(item.Info))
+        //{
+        //    await _dialog.ShowErrorAsync("Dialog_Error_Empty_Title", "Dialog_Error_Empty_Message");
+        //    return null;
+        //}
 
-        if (await _data.CommentExistsAsync(item))
-        {
-            await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
-            return null;
-        }
+        //if (await _data.CommentExistsAsync(item))
+        //{
+        //    await _dialog.ShowErrorAsync("Dialog_Error_RecordExists_Title", "Dialog_Error_RecordExists_Message");
+        //    return null;
+        //}
 
         var saved = await _data.UpsertCommentAsync(item);
-        return await _data.GetCommentByIdAsync(saved.CommentId);
+        var reloaded = await _data.GetCommentByIdAsync(saved.CommentId);
+
+        await ReloadAndSelectAsync(reloaded);
+
+        return reloaded;
+    }
+
+    // ============================================
+    // DELETE
+    // ============================================
+    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl93Comment item)
+    {
+        return await _dialog.ShowConfirmAsync("Delete_Confirm_Title", "Delete_Confirm_Message");
     }
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl93Comment item)
@@ -185,11 +253,22 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     {
         await Task.CompletedTask; // Comments sind Leaf-Level
     }
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await Task.CompletedTask; // Comments sind Leaf-Level
     }
+    public override Task OnSelectedItemChangedAsync()
+    {
+        // Comments haben keine Children → nichts löschen, nichts laden
+        IsCommentEditVisible = SelectedItem != null;
+        return Task.CompletedTask;
+    }
+    protected void OnHierarchyLevelChanged(object? sender, HierarchyLevelChangedArgs args)
+    {
+        // Comments reagieren NICHT auf generische Hierarchie-Events
+    }
+
+
 
     // ============================================
     // SORTING

@@ -79,16 +79,21 @@
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
         </Grid>
+        <!--
+        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"                      SelectionChanged="CommentListView_OnSelectionChanged"
+        IsItemClickEnabled="True"
+        ItemClick="CommentListView_ItemClick"
+        -->
 
         <ListView x:Name="CommentListView"
-                  Margin="0,0,10,0"
                   Grid.Row="2"
                   MaxHeight="112.5"
+                  Margin="0,0,10,0"
                   BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                   BorderThickness="1"
                   CornerRadius="4"
                   IsItemClickEnabled="True"
-                  ItemClick="CommentListView_ItemClick"
+                  ItemClick="CommentListView_OnItemClick"
                   ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
                   ItemsSource="{Binding Items}"
                   RightTapped="CommentListView_RightTapped"

@@ -77,11 +77,24 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
     // ---------------------------------------------------------
     // Items
     // ---------------------------------------------------------
-    private ObservableCollection<TModel> _items = new();
-    public ObservableCollection<TModel> Items
+    private ObservableCollection<TModel>? _items;
+    public ObservableCollection<TModel>? Items
     {
         get => _items;
-        protected set => SetProperty(ref _items, value);
+        set
+        {
+            if (SetProperty(ref _items, value))
+            {
+                DataSetCount = _items?.Count ?? 0;
+            }
+        }
+    }
+
+    private int _dataSetCount;
+    public int DataSetCount
+    {
+        get => _dataSetCount;
+        protected set => SetProperty(ref _dataSetCount, value);
     }
     private TModel? _editItem;
     public TModel? EditItem
@@ -117,8 +130,11 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
             //if (value != null && !_suppressSelectedItemChanged)
             //    _ = SafeOnSelectedItemChangedAsync();
 
-            if (!_suppressSelectedItemChanged)
+            //if (!_suppressSelectedItemChanged)
+            //    _ = SafeOnSelectedItemChangedAsync();
+            if (!IsLoading && !_suppressSelectedItemChanged)
                 _ = SafeOnSelectedItemChangedAsync();
+
 
         }
     }
@@ -164,15 +180,6 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
         protected set => SetProperty(ref _isLoading, value);
     }
 
-    private int _dataSetCount;
-
-
-
-    public int DataSetCount
-    {
-        get => _dataSetCount;
-        protected set => SetProperty(ref _dataSetCount, value);
-    }
 
     // ---------------------------------------------------------
     // Abstract contract
@@ -209,9 +216,9 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
         SelectedItem = item;
         OnAfterNew(item);
     }
+
     protected virtual Task OnBeforeReloadAfterSaveAsync(TModel item)
         => Task.CompletedTask;
-
 
     public virtual async Task SaveAsync()
     {
@@ -274,7 +281,6 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
 
     public Task ReloadAndSelectAsync(TModel? saved)
         => ReloadAndSelectAsync(saved, autoSelect: true);
-
     public virtual async Task ReloadAndSelectAsync(TModel? saved, bool autoSelect)
     {
         IsLoading = true;
@@ -287,38 +293,77 @@ public abstract class BaseListViewModel<TModel> : INotifyPropertyChanged
             DataSetCount = Items.Count;
 
             if (!autoSelect)
-            {
-                SelectItemSilently(default);
                 return;
-            }
-
-            SelectItemSilently(default);
 
             if (saved != null)
             {
                 var savedId = GetId(saved);
                 SelectedItem = Items.FirstOrDefault(x => GetId(x) == savedId);
+                return;
             }
-            else if (old != null)
+
+            if (old != null)
             {
                 var oldId = GetId(old);
-
                 if (oldId > 0)
                     SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId);
 
-                if (SelectedItem == null)
-                    SelectedItem = Items.FirstOrDefault();
+                if (SelectedItem != null)
+                    return;
             }
-            else
-            {
-                SelectedItem = Items.FirstOrDefault();
-            }
+
+            SelectedItem = Items.FirstOrDefault();
         }
         finally
         {
             IsLoading = false;
         }
     }
+
+    //public virtual async Task ReloadAndSelectAsync(TModel? saved, bool autoSelect)
+    //{
+    //    IsLoading = true;
+    //    try
+    //    {
+    //        var old = SelectedItem;
+
+    //        var list = (await LoadItemsAsync()).ToList();
+    //        Items = new ObservableCollection<TModel>(list);
+    //        DataSetCount = Items.Count;
+
+    //        if (!autoSelect)
+    //        {
+    //            SelectItemSilently(default);
+    //            return;
+    //        }
+
+    //        SelectItemSilently(default);
+
+    //        if (saved != null)
+    //        {
+    //            var savedId = GetId(saved);
+    //            SelectedItem = Items.FirstOrDefault(x => GetId(x) == savedId);
+    //        }
+    //        else if (old != null)
+    //        {
+    //            var oldId = GetId(old);
+
+    //            if (oldId > 0)
+    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId);
+
+    //            if (SelectedItem == null)
+    //                SelectedItem = Items.FirstOrDefault();
+    //        }
+    //        else
+    //        {
+    //            SelectedItem = Items.FirstOrDefault();
+    //        }
+    //    }
+    //    finally
+    //    {
+    //        IsLoading = false;
+    //    }
+    //}
 
     private int GetId(TModel? item)
     {

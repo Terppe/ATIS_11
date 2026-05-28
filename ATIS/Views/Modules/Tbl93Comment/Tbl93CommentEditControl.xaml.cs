@@ -1,7 +1,8 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System.Diagnostics;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System.Diagnostics;
+using Windows.Media;
 
 namespace ATIS.Views.Modules.Tbl93Comment;
 
@@ -10,8 +11,13 @@ public sealed partial class Tbl93CommentEditControl : UserControl
     public Tbl93CommentEditControl()
     {
         InitializeComponent();
+        Debug.WriteLine(">>> EditControl Konstruktor, DataContext = " + this.DataContext);
     }
 
+    private void UserControl_DataContextChanged(object sender, DataContextChangedEventArgs e)
+    {
+        Debug.WriteLine(">>> EditControl DataContextChanged: " + e.NewValue);
+    }
     // ---------------------------------------------------------
     //  DependencyProperty: Item  (wie Subtribus)
     // ---------------------------------------------------------
@@ -27,8 +33,16 @@ public sealed partial class Tbl93CommentEditControl : UserControl
             nameof(Item),
             typeof(Models.Tbl93Comment),
             typeof(Tbl93CommentEditControl),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnItemChanged));
 
+    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var item = e.NewValue as Models.Tbl93Comment;
+
+        Debug.WriteLine(
+            $"CommentEditControl.Item changed: Id={item?.CommentId}, " +
+            $"Info='{item?.Info}', Memo='{item?.Memo}', Year='{item?.ValidYear}', Valid={item?.Valid}");
+    }
     // ---------------------------------------------------------
     //  VisualState-Update (wie Subtribus)
     // ---------------------------------------------------------

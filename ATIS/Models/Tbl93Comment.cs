@@ -22,7 +22,7 @@ public class Tbl93Comment : ObservableObject,  IDataService.IAuditable
     public int? SpeciesId { get; set; }
     public int? GenusId { get; set; }
     public int? InfratribusId { get; set; }
-    public int? SubtribusId { get; set; }
+    public int SubtribusId { get; set; }
     public int? TribusId { get; set; }
     public int? SupertribusId { get; set; }
     public int? InfrafamilyId { get; set; }

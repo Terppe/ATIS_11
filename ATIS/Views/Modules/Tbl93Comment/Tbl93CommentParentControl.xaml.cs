@@ -1,7 +1,10 @@
-﻿using ATIS.Helpers;
+﻿using System.Diagnostics;
+using ATIS.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+using Windows.Media;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Modules.Tbl93Comment;
 
@@ -12,17 +15,25 @@ public sealed partial class Tbl93CommentParentControl : UserControl
     public Tbl93CommentParentControl()
     {
         InitializeComponent();
-       // AtisListViewZebraHelper.EnableZebra(CommentListView);
+    }
+    private void CommentListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var vm = (Tbl93CommentViewModel)DataContext;
+
+        vm.IsCommentEditVisible = true;
+        vm.SelectedItem = (Models.Tbl93Comment)((ListView)sender).SelectedItem;
     }
 
-    private void CommentListView_ItemClick(object sender, ItemClickEventArgs e)
+    private void CommentListView_OnItemClick(object sender, ItemClickEventArgs e)
     {
-        if (DataContext is Tbl93CommentViewModel vm)
-        {
-            vm.SelectedItem = (Models.Tbl93Comment)e.ClickedItem;
-            vm.OpenEditCommand.Execute(null);
-        }
+        if (ViewModel == null)
+            return;
+
+        ViewModel.IsCommentEditVisible = true;
+        // SelectedItem ist durch TwoWay Binding meist schon gesetzt
+        ViewModel.SelectedItem = (Models.Tbl93Comment)e.ClickedItem;
     }
+
 
     private void CommentListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
@@ -43,4 +54,5 @@ public sealed partial class Tbl93CommentParentControl : UserControl
         }
         return null;
     }
+
 }

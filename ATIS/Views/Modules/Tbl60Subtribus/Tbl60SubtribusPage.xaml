@@ -97,6 +97,7 @@
                     <TabView x:Name="TabViewBase"
                              Margin="0"
                              SelectedIndex="{x:Bind ViewModel.SelectedTabIndex, Mode=TwoWay}"
+                             SelectionChanged="TabViewBase_OnSelectionChanged"
                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
                         <!--  EDIT SUBTRIBUS  -->
@@ -104,8 +105,6 @@
                             <ScrollViewer Padding="1">
                                 <local:Tbl60SubtribusEditControl DataContext="{Binding}"
                                                                  Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                <!--<local:Tbl60SubtribusEditControl DataContext="{x:Bind ViewModel}"
-                                Item="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}" />-->
                             </ScrollViewer>
                         </TabViewItem>
 
@@ -113,36 +112,32 @@
                         <TabViewItem Header="Comments Subtribus">
                             <ScrollViewer Padding="1">
                                 <Grid RowDefinitions="Auto,*">
+
                                     <!--  LISTE  -->
                                     <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
                                                                             DataContext="{x:Bind ViewModel.CommentViewModel}" />
-
                                     <!--  EDITOR  -->
                                     <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
                                                                           DataContext="{x:Bind ViewModel.CommentViewModel}"
                                                                           Item="{Binding SelectedItem, Mode=TwoWay}"
                                                                           Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
                                 </Grid>
                             </ScrollViewer>
                         </TabViewItem>
 
                         <!--  REFERENCES SUBTRIBUS  -->
                         <TabViewItem Header="References Subtribus">
-
                             <ScrollViewer Padding="1">
                                 <Grid RowDefinitions="Auto,*">
 
                                     <!--  LISTE  -->
                                     <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
                                                                                 DataContext="{x:Bind ViewModel.ReferenceViewModel}" />
-
                                     <!--  EDITOR  -->
                                     <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
                                                                               DataContext="{x:Bind ViewModel.ReferenceViewModel}"
                                                                               Item="{Binding SelectedItem, Mode=TwoWay}"
                                                                               Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
                                 </Grid>
                             </ScrollViewer>
 

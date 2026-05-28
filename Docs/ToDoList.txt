@@ -555,7 +555,6 @@ Ki von GitHub angefragt neue Struktur Regnum (0)
                                       ↓ Genus (19)     ← Kind von Infratribus
                                         ↓ Species (20)
     --------------------------------------------------- fehler
-    ---------------------------------------------------
 18.05.2026 19:00 Uhr Mit Git wieder weiter. Lauffähig genus - tribus. muss aber noch aufgeräumt werden und die comments, references und VK noch getestet und angepasst werden
 LookupService installiert zeigt die Tribusall in combobox nicht an. kein leeres fenster wird angezeigt
 -------------------------------------------------------
@@ -568,4 +567,107 @@ Aber neu geht. aber speichern nicht, durch kleine Änderungen
 Nur Neuer Datensatz klappt nur, wenn bereits ein Datensatz angezeigt wird.
 Muss funktionieren wenn kein Datensatz im Listview ist.
 -------------------------------------------------------
-24.05.2026 13:00 Uhr Neu, refresh und delete bei subtribus ok
+24.05.2026 13:00 Uhr Neu, refresh und delete bei subtribus ok versucht comment fertigzustellen. zeigt vk-Datensätze an, aber mit leerem control.
+morgen mit "Weiter" im KI
+-------------------------------------------------------
+25.05.2026 14:00 Uhr 
+comment aus Subtribus funktioniert.Was wir morgen angleichen (und warum es nötig ist)
+1) BaseListViewModel → Muss wieder die zentrale Steuerung übernehmen
+Aktuell:
+
+Subtribus nutzt ReloadAndSelectAsync() korrekt
+
+Comments nutzt eigene Load‑Methoden → inkonsistent
+
+Commands werden in Base initialisiert → aber Comments braucht Overrides
+
+➡️ Morgen machen wir:
+
+InitCommands() virtual
+
+SaveItemAsync() virtual
+
+DeleteItemAsync() virtual
+
+Comments überschreibt diese sauber
+
+Comments nutzt ReloadAndSelectAsync() wie Subtribus
+
+Damit verschwinden:
+
+leere ListViews
+
+fehlende Abfragen
+
+Back‑Button‑Probleme
+
+doppelte Logik
+
+2) BaseBossViewModel → Muss nur orchestrieren, nicht doppeln
+Viele Probleme entstehen, weil BaseBossViewModel:
+
+SelectedItem setzt
+
+Child‑VMs triggert
+
+aber Comments/References eigene Logik haben
+
+➡️ Morgen:
+
+BaseBossViewModel bleibt „Orchestrator“
+
+Child‑VMs (Comments, References) übernehmen ihre eigene Save/Delete/Reload‑Logik
+
+Kein DataContext‑Chaos mehr
+
+Keine doppelten SelectedItem‑Zuweisungen
+
+3) SubtribusViewModel → ist bereits korrekt
+Subtribus ist unser Goldstandard:
+
+nutzt BaseListViewModel sauber
+
+überschreibt Save/Delete korrekt
+
+nutzt ReloadAndSelectAsync
+
+Commands funktionieren
+
+UI stabil
+
+➡️ Morgen übertragen wir dieses Muster 1:1 auf Comments und später References.
+
+4) CommentViewModel → muss wie Subtribus werden
+Aktuell:
+
+Commands kommen aus Base → falsch
+
+Save/Delete überschrieben? → nein
+
+ReloadAndSelectAsync genutzt? → nein
+
+CloseEditCommand fehlt → Back funktioniert nicht
+
+Items werden ersetzt → ListView wird leer
+
+SelectedItem wird nicht neu gesetzt → Editor bleibt offen
+
+➡️ Morgen:
+
+InitCommands() überschreiben
+
+SaveItemAsync() überschreiben
+
+DeleteItemAsync() überschreiben
+
+ConfirmSaveAsync() + ConfirmDeleteAsync() implementieren
+
+ReloadAndSelectAsync() verwenden
+
+CloseEditCommand korrekt setzen
+
+Damit ist Comments so stabil wie Subtribus.
+----------------------------------------
+27.05.2026 14:00 Uhr  comment ist jetzt lauffähig. Jetzt muss das BaseListViewmodel mit Subtribus und comment abgeglichen weerden
+----------------------------------------
+28.05.2026 10:00 Uhr Nuget SDK 2.1.3 und einige mail-toolkids

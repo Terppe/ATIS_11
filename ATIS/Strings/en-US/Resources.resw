@@ -4164,7 +4164,7 @@
   <data name="Dialog_Error_Title" xml:space="preserve">
     <value>Error</value>
   </data>
-  <data name="Dialog_Save_Title" xml:space="preserve">
+  <data name="Dialog_Save_Message" xml:space="preserve">
     <value>Saved</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
@@ -4190,6 +4190,18 @@
   </data>
   <data name="Dialog_Error_Duplicate" xml:space="preserve">
     <value>An identical record already exists.</value>
+  </data>
+  <data name="Dialog_Error_Empty_Title" xml:space="preserve">
+    <value>Empty Field</value>
+  </data>
+  <data name="Dialog_Error_Empty_Message" xml:space="preserve">
+    <value>Field must not be empty.</value>
+  </data>
+  <data name="Dialog_Error_RecordExists_Title" xml:space="preserve">
+    <value>dataset exist</value>
+  </data>
+  <data name="Dialog_Error_RecordExists_Message" xml:space="preserve">
+    <value>dataset already exist</value>
   </data>
   <data name="Dialog_Error_FixBeforeSave" xml:space="preserve">
     <value>Please correct the errors before saving.</value>

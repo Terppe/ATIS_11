@@ -40,12 +40,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         ChildViewModels["Infratribus"] = infratribusViewModel;
         ChildViewModels["Reference"] = referenceViewModel;
         ChildViewModels["Comment"] = commentViewModel;
-
-        //NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(New);
-        //SaveCommand = new AsyncRelayCommand(SaveAsync, () => SelectedItem != null);
-        //DeleteCommand = new AsyncRelayCommand(DeleteAsync, () => SelectedItem != null);
-        //RefreshCommand = new AsyncRelayCommand(ReloadAsync);
-
     }
     // ============================================
     // CHILD VIEWMODELS
@@ -127,6 +121,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ============================================
     // LOAD ITEMS
     // ============================================
+
     protected override async Task<IEnumerable<Models.Tbl60Subtribus>> LoadItemsAsync()
     {
         if (string.IsNullOrWhiteSpace(CurrentFilter))
@@ -163,12 +158,13 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         await LoadTribusAsync();
         await ReloadAndSelectAsync(saved: default, autoSelect: false);
     }
+    private bool _isEditVisible;
     public new bool IsEditVisible
     {
         get => _isEditVisible;
         set => SetProperty(ref _isEditVisible, value);
     }
-    private bool _isEditVisible;
+    public int CurrentTribusId { get; set; }
 
     // ============================================
     // NEW / CREATE
@@ -227,45 +223,43 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         return await _dialog.ShowConfirmAsync("Save_Confirm_Title", "Save_Confirm_Message");
     }
 
-    public override async Task SaveAsync()
-    {
-        if (SelectedItem == null)
-            return;
+    //public override async Task SaveAsync()
+    //{
+    //    if (SelectedItem == null)
+    //        return;
 
-        var item = SelectedItem;
+    //    var item = SelectedItem;
 
-        // 1) Abfrage
-        if (!await ConfirmSaveAsync(item))
-            return;
+    //    // 1) Abfrage
+    //    if (!await ConfirmSaveAsync(item))
+    //        return;
 
-        // 2) Validierung
-        if (!await ValidateBeforeSaveAsync(item))
-            return;
+    //    // 2) Validierung
+    //    if (!await ValidateBeforeSaveAsync(item))
+    //        return;
 
-        // 3) Speichern
-        var saved = await SaveItemAsync(item);
-        if (saved == null)
-            return;
+    //    // 3) Speichern
+    //    var saved = await SaveItemAsync(item);
+    //    if (saved == null)
+    //        return;
 
-        // 4) Filter setzen (damit neuer Datensatz sichtbar wird)
-        if (string.IsNullOrWhiteSpace(SearchText))
-        {
-            SearchText = saved.SubtribusName;
-            CurrentFilter = saved.SubtribusName;
-        }
+    //    // 4) Filter setzen (damit neuer Datensatz sichtbar wird)
+    //    if (string.IsNullOrWhiteSpace(SearchText))
+    //    {
+    //        SearchText = saved.SubtribusName;
+    //        CurrentFilter = saved.SubtribusName;
+    //    }
 
-        // 5) Reload + neuen Datensatz auswählen
-        await ReloadAndSelectAsync(saved, autoSelect: true);
-    }
+    //    // 5) Reload + neuen Datensatz auswählen
+    //    await ReloadAndSelectAsync(saved, autoSelect: true);
+    //}
 
     protected override async Task<Models.Tbl60Subtribus?> SaveItemAsync(Models.Tbl60Subtribus item)
     {
         if (string.IsNullOrWhiteSpace(item.SubtribusName))
         {
             await _dialog.ShowErrorAsync(
-                "Error_EmptyName",
-                "Subtribus-Name darf nicht leer sein."
-            );
+                "Error_EmptyName", "Error_EmptyName");
             return null;
         }
 
@@ -358,22 +352,15 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ============================================
     // DETAIL VISIBILITY & CONTEXT
     // ============================================
-    private Models.Tbl60Subtribus? _selectedSubtribus;
-    public Models.Tbl60Subtribus? SelectedSubtribus
+    public override async Task OnSelectedItemChangedAsync()
     {
-        get => _selectedSubtribus;
-        set
-        {
-            if (SetProperty(ref _selectedSubtribus, value))
-            {
-                UpdateChildContexts(value);
-            }
-        }
-    }
+        // WICHTIG: Wenn wir gerade reloaden → NICHTS tun
+        if (IsLoading)
+            return;
 
-    private void UpdateChildContexts(Models.Tbl60Subtribus? selectedSubtribus)
-    {
-        if (selectedSubtribus == null)
+        await base.OnSelectedItemChangedAsync();
+
+        if (SelectedItem == null)
         {
             CommentViewModel.CurrentSubtribusId = null;
             ReferenceViewModel.CurrentSubtribusId = null;
@@ -381,11 +368,84 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
             return;
         }
 
-        int id = selectedSubtribus.SubtribusId;
+        int id = SelectedItem.SubtribusId;
+
         CommentViewModel.CurrentSubtribusId = id;
         ReferenceViewModel.CurrentSubtribusId = id;
         InfratribusViewModel.CurrentSubtribusId = id;
+
+        CommentViewModel.CurrentSubtribusId = id;
+        await CommentViewModel.LoadForSubtribusAsync(id);   // Liste laden
+        CommentViewModel.SelectedItem = CommentViewModel.Items.FirstOrDefault(); // optional
+        
+        await ReferenceViewModel.ReloadAndSelectAsync(null, true);
+        await InfratribusViewModel.ReloadAndSelectAsync(null, true);
     }
+
+    //private Models.Tbl60Subtribus? _selectedItem;
+    //public Models.Tbl60Subtribus? SelectedItem
+    //{
+    //    get => _selectedItem;
+    //    set
+    //    {
+    //        if (SetProperty(ref _selectedItem, value))
+    //        {
+    //            if (value != null)
+    //            {
+    //                int id = value.SubtribusId;
+
+    //                // Parent-Kontexte setzen
+    //                CommentViewModel.CurrentSubtribusId = id;
+    //                ReferenceViewModel.CurrentSubtribusId = id;
+    //                InfratribusViewModel.CurrentSubtribusId = id;
+
+    //                // Child-Module laden
+    //                _ = CommentViewModel.LoadForSubtribusAsync(id);
+    //                _ = ReferenceViewModel.LoadForSubtribusAsync(id);
+    //                _ = InfratribusViewModel.LoadForSubtribusAsync(id);
+    //            }
+    //            else
+    //            {
+    //                CommentViewModel.CurrentSubtribusId = null;
+    //                ReferenceViewModel.CurrentSubtribusId = null;
+    //                InfratribusViewModel.CurrentSubtribusId = null;
+
+    //                CommentViewModel.Items.Clear();
+    //                ReferenceViewModel.Items.Clear();
+    //                InfratribusViewModel.Items.Clear();
+    //            }
+    //        }
+    //    }
+    //}
+
+    //private Models.Tbl60Subtribus? _selectedSubtribus;
+    //public Models.Tbl60Subtribus? SelectedSubtribus
+    //{
+    //    get => _selectedSubtribus;
+    //    set
+    //    {
+    //        if (SetProperty(ref _selectedSubtribus, value))
+    //        {
+    //            UpdateChildContexts(value);
+    //        }
+    //    }
+    //}
+
+    //private void UpdateChildContexts(Models.Tbl60Subtribus? selectedSubtribus)
+    //{
+    //    if (selectedSubtribus == null)
+    //    {
+    //        CommentViewModel.CurrentSubtribusId = null;
+    //        ReferenceViewModel.CurrentSubtribusId = null;
+    //        InfratribusViewModel.CurrentSubtribusId = null;
+    //        return;
+    //    }
+
+    //    int id = selectedSubtribus.SubtribusId;
+    //    CommentViewModel.CurrentSubtribusId = id;
+    //    ReferenceViewModel.CurrentSubtribusId = id;
+    //    InfratribusViewModel.CurrentSubtribusId = id;
+    //}
 
     private int _selectedTabIndex;
     public int SelectedTabIndex
@@ -415,9 +475,9 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
     private void SetParentContextsForTab(int tabIndex)
     {
-        if (SelectedSubtribus == null) return;
+        if (SelectedItem == null) return;
 
-        int id = SelectedSubtribus.SubtribusId;
+        int id = SelectedItem.SubtribusId;
 
         if (tabIndex == 1) // Comments Subtribus
         {

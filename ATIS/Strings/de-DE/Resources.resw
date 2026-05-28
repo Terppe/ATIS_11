@@ -4164,7 +4164,7 @@
   <data name="Dialog_Error_Title" xml:space="preserve">
     <value>Fehler</value>
   </data>
-  <data name="Dialog_Save_Title" xml:space="preserve">
+  <data name="Dialog_Save_Message" xml:space="preserve">
     <value>Gespeichert</value>
   </data>
   <data name="Dialog_Save" xml:space="preserve">
@@ -4190,6 +4190,18 @@
   </data>
   <data name="Dialog_Error_Duplicate" xml:space="preserve">
     <value>Ein identischer Datensatz existiert bereits.</value>
+  </data>
+  <data name="Dialog_Error_Empty_Title" xml:space="preserve">
+    <value>Leeres Feld</value>
+  </data>
+  <data name="Dialog_Error_Empty_Message" xml:space="preserve">
+    <value>Feld darf nicht leer sein.</value>
+  </data>
+  <data name="Dialog_Error_RecordExists_Title" xml:space="preserve">
+    <value>Datensatz existiert</value>
+  </data>
+  <data name="Dialog_Error_RecordExists_Message" xml:space="preserve">
+    <value>Datensatz existiert bereits</value>
   </data>
   <data name="Dialog_Error_FixBeforeSave" xml:space="preserve">
     <value>Bitte korrigiere die Fehler, bevor du speicherst.</value>
