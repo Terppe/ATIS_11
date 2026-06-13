@@ -1,6 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace ATIS.Views.Modules.Hierarchy;
+﻿namespace ATIS.Views.Modules.Hierarchy;
 
 /// <summary>
 /// Zentrale Koordination für beliebig tiefe Hierarchien

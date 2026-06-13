@@ -37,12 +37,12 @@ public sealed partial class Tbl57TribusPage : Page
     private async void TribusPage_Loaded(object sender, RoutedEventArgs e)
     {
         // ✅ Einmalig beim Seitenaufruf
-        await ViewModel.LoadAsync();
+     //   await ViewModel.LoadAsync();
 
-        ViewModel.SuppressFilter = true;
-        await Task.Delay(50);
-        SearchBox.Focus(FocusState.Programmatic);
-        ViewModel.SuppressFilter = false;
+        //ViewModel.SuppressFilter = true;
+        //await Task.Delay(50);
+        //SearchBox.Focus(FocusState.Programmatic);
+        //ViewModel.SuppressFilter = false;
     }
 
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

@@ -1,4 +1,6 @@
 ﻿
+using System.Diagnostics;
+
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusEditControl : UserControl
@@ -6,6 +8,14 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     public Tbl60SubtribusEditControl()
     {
         InitializeComponent();
+    }
+
+    public Tbl60SubtribusViewModel? ViewModel
+        => DataContext as Tbl60SubtribusViewModel;
+
+    public void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+    {
+        Debug.WriteLine("EditControl DataContext = " + args.NewValue?.GetType().FullName);
     }
 
     // ---------------------------------------------------------
@@ -27,9 +37,12 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
 
     private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
+        var item = e.NewValue as Models.Tbl60Subtribus;
+
         var control = (Tbl60SubtribusEditControl)d;
-        control.ApplyItem(e.NewValue as Models.Tbl60Subtribus);
+        control.ApplyItem(item);
     }
+
     private void ApplyItem(Models.Tbl60Subtribus? newItem)
     {
         // NICHT den DataContext des Controls überschreiben!
@@ -37,17 +50,8 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
         // Die Bindings im XAML müssen auf Item.XXX zeigen.
 
         // Falls du ein Root-Grid hast:
-        // ItemRoot.DataContext = newItem;
-
+      //  ItemRoot.DataContext = newItem;
         // Wenn du kein ItemRoot hast, lass ApplyItem LEER:
-    }
-
-    private void OnTribusChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (Item == null) return;
-
-        if (TribusCombo.SelectedValue is int id)
-            Item.TribusId = id;
     }
 
     private void UpdateValidationState(TextBox box, bool hasError)

@@ -6,64 +6,58 @@ using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl57Tribus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl54Supertribus;
 
 public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Supertribus>
 {
-    private readonly IDataService _data;
-    private readonly LookupService _lookupService;
-
     // ============================================
     // CONSTRUCTOR
     // ============================================
     public Tbl54SupertribusViewModel(
-        IDataService data,
+        IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
-        LookupService lookupService,
-        Tbl57TribusViewModel tribusViewModel,
-        Tbl90ReferenceViewModel referenceViewModel,
-        Tbl93CommentViewModel commentViewModel,
-        HierarchyCoordinator coordinator
-    ) : base(data, dialog, coordinator)
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
-        _data = data;
-        _lookupService = lookupService;
+        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
 
-        // Dictionary mit Children initialisieren
-        ChildViewModels["Tribus"] = tribusViewModel;
-        ChildViewModels["Reference"] = referenceViewModel;
-        ChildViewModels["Comment"] = commentViewModel;
+        //IsDetailVisible = false;
+        //IsEditVisible = false;
     }
     // ============================================
     // CHILD VIEWMODELS
     // ============================================
-    public Tbl57TribusViewModel TribusViewModel
-    {
-        get => ChildViewModels.TryGetValue("Tribus", out var vm)
-            ? (Tbl57TribusViewModel)vm
-            : null!;
-        set => ChildViewModels["Tribus"] = value;
-    }
-    public Tbl90ReferenceViewModel ReferenceViewModel
-    {
-        get => ChildViewModels.TryGetValue("Reference", out var vm)
-            ? (Tbl90ReferenceViewModel)vm
-            : null!;
-        set => ChildViewModels["Reference"] = value;
-    }
-    public Tbl93CommentViewModel CommentViewModel
-    {
-        get => ChildViewModels.TryGetValue("Comment", out var vm)
-            ? (Tbl93CommentViewModel)vm
-            : null!;
-        set => ChildViewModels["Comment"] = value;
-    }
+    //public Tbl57TribusViewModel TribusViewModel
+    //{
+    //    get => ChildViewModels.TryGetValue("Tribus", out var vm)
+    //        ? (Tbl57TribusViewModel)vm
+    //        : null!;
+    //    set => ChildViewModels["Tribus"] = value;
+    //}
+    //public Tbl90ReferenceViewModel ReferenceViewModel
+    //{
+    //    get => ChildViewModels.TryGetValue("Reference", out var vm)
+    //        ? (Tbl90ReferenceViewModel)vm
+    //        : null!;
+    //    set => ChildViewModels["Reference"] = value;
+    //}
+    //public Tbl93CommentViewModel CommentViewModel
+    //{
+    //    get => ChildViewModels.TryGetValue("Comment", out var vm)
+    //        ? (Tbl93CommentViewModel)vm
+    //        : null!;
+    //    set => ChildViewModels["Comment"] = value;
+    //}
     // ============================================
     // HIERARCHIE-KONFIGURATION
     // ============================================
-    protected override HierarchyLevel CurrentLevel => HierarchyLevel.Supertribus;
-    protected override HierarchyLevel ParentLevel { get; }
+    //protected override HierarchyLevel CurrentLevel => HierarchyLevel.Supertribus;
+    //protected override HierarchyLevel ParentLevel { get; }
     //   protected override HierarchyLevel ParentLevel => HierarchyLevel.Unknown; // Kein Parent für Supertribus
 
 
@@ -71,65 +65,83 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
     // TEMPLATE IMPLEMENTATIONS
     // ============================================
 
+    protected override async Task NewAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override Models.Tbl54Supertribus CreateNewItem()
+    {
+        throw new NotImplementedException();
+    }
+
     protected override async Task<IEnumerable<Models.Tbl54Supertribus>> LoadItemsAsync()
     {
-        if (string.IsNullOrWhiteSpace(CurrentFilter))
+        if (string.IsNullOrWhiteSpace(default))
             return Enumerable.Empty<Models.Tbl54Supertribus>();
 
         return Enumerable.Empty<Models.Tbl54Supertribus>();
     }
 
-    protected override Models.Tbl54Supertribus CreateNewItem()
-        => new()
-        {
-            SupertribusId = 0 // Keine Parent-ID, da Supertribus die Top-Level-Ebene ist
-        };
-
     protected override async Task<Models.Tbl54Supertribus?> SaveItemAsync(Models.Tbl54Supertribus item)
     {
-        if (await _data.SupertribusExistsAsync(item))
-        {
-            await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
-            return null;
-        }
-
-        var saved = await _data.UpsertSupertribusAsync(item);
-        return await _data.GetSupertribusByIdAsync(saved.SupertribusId);
+        throw new NotImplementedException();
     }
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl54Supertribus item)
     {
-        if (item.SupertribusId == 0)
-            return false;
-
-        if (await _data.SupertribusHasTribusAsync(item.SupertribusId))
-        {
-            await _dialog.ShowErrorAsync(
-                "Error_DeleteNotAllowed_Title",
-                "Error_DeleteNotAllowed_Message"
-            );
-            return false;
-        }
-
-        await _data.DeleteSupertribusAsync(item.SupertribusId);
-        return true;
+        throw new NotImplementedException();
     }
 
-    protected override async Task LoadForParentAsync(int parentId)
+    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl54Supertribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl54Supertribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override int GetId(Models.Tbl54Supertribus model)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public override async Task LoadParentAsync(int parentId)
     {
         throw new NotImplementedException();
     }
 
     protected override async Task ClearChildCollectionsAsync()
     {
-        TribusViewModel.Items?.Clear();
-        await Task.CompletedTask;
+        throw new NotImplementedException();
     }
 
     protected override async Task LoadChildrenAsync(int entityId)
     {
-        await TribusViewModel.LoadForSupertribusAsync(entityId);
+        throw new NotImplementedException();
     }
+
+
+
+
+    //protected override async Task LoadForParentAsync(int parentId)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //protected override async Task ClearChildCollectionsAsync()
+    //{
+    //    TribusViewModel.Items?.Clear();
+    //    await Task.CompletedTask;
+    //}
+
+    //protected override async Task LoadChildrenAsync(int entityId)
+    //{
+    //    await TribusViewModel.LoadForSupertribusAsync(entityId);
+    //}
 
     // ============================================
     // DETAIL VISIBILITY
@@ -146,6 +158,12 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
     {
         get => _isDetailVisible;
         set => SetProperty(ref _isDetailVisible, value);
+    }
+    public void ResetBelow()
+    {
+ //       SubtribusViewModel.Items?.Clear();
+        //ReferenceViewModel.Items?.Clear();
+        //CommentViewModel.Items?.Clear();
     }
 
     // ============================================
@@ -166,29 +184,29 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
     }
 
 
-    protected override IEnumerable<Models.Tbl54Supertribus> SortItems(
-        IEnumerable<Models.Tbl54Supertribus> items, string column, bool ascending)
-    {
-        return column switch
-        {
-            "Id" => ascending
-                ? items.OrderBy(x => x.SupertribusId)
-                : items.OrderByDescending(x => x.SupertribusId),
-            "Name" => ascending
-                ? items.OrderBy(x => x.SupertribusName)
-                : items.OrderByDescending(x => x.SupertribusName),
-            _ => items
-        };
-    }
+    //protected override IEnumerable<Models.Tbl54Supertribus> SortItems(
+    //    IEnumerable<Models.Tbl54Supertribus> items, string column, bool ascending)
+    //{
+    //    return column switch
+    //    {
+    //        "Id" => ascending
+    //            ? items.OrderBy(x => x.SupertribusId)
+    //            : items.OrderByDescending(x => x.SupertribusId),
+    //        "Name" => ascending
+    //            ? items.OrderBy(x => x.SupertribusName)
+    //            : items.OrderByDescending(x => x.SupertribusName),
+    //        _ => items
+    //    };
+    //}
 
-    protected override void UpdateHeaderTexts()
-    {
-        const string asc = " ▲";
-        const string desc = " ▼";
+    //protected override void UpdateHeaderTexts()
+    //{
+    //    const string asc = " ▲";
+    //    const string desc = " ▼";
 
-        IdHeaderText = "ID";
-        NameHeaderText = "Name";
+    //    IdHeaderText = "ID";
+    //    NameHeaderText = "Name";
 
-        // Optional: Sorting-Pfeile hinzufügen wenn nötig
-    }
+    //    // Optional: Sorting-Pfeile hinzufügen wenn nötig
+    //}
 }

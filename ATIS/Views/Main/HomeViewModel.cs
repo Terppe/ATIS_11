@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using ATIS.Interfaces;
+using ATIS.Services;
+using ATIS.Views.Modules.Hierarchy;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Main;
 
@@ -12,7 +15,8 @@ public partial class HomeViewModel : ObservableObject
     // =========================================================
 
     public HomeViewModel ViewModel { get; }
-    private readonly IDataService _dataService;
+ //   private readonly IDataService _dataService;
+    private readonly LookupService _lookupService;
 
     // =========================================================
     #endregion [Private Data Members]
@@ -23,12 +27,20 @@ public partial class HomeViewModel : ObservableObject
     #region [Constructor]
     // =========================================================
 
-    public HomeViewModel(IDataService dataService)
+    public HomeViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+       // : base(new DataService(factory, user), dialog, coordinator)
     {
-        _dataService = dataService;
-
-    }
-    // =========================================================
+        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+        //...
+        //IsDetailVisible = false;
+        //IsEditVisible = false;
+    }    // =========================================================
     #endregion [Constructor]
     // =========================================================
 

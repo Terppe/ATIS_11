@@ -108,17 +108,27 @@
                     SelectedValuePath="SubtribusId"
                     SelectionChanged="OnSubtribusChanged"
                     Style="{StaticResource AtisComboBox}" />-->
-                    <!-- NUR diese eine ComboBox verwenden -->
-                    <ComboBox
-                        x:Name="SubtribusCombo"
-                        MinWidth="200"
-                        VerticalAlignment="Center"
-                        DisplayMemberPath="SubtribusName"
-                        ItemsSource="{Binding SubtribusList}"
-                        SelectedValuePath="SubtribusId"
-                        SelectedValue="{Binding SelectedItem.SubtribusId, Mode=TwoWay}"
-                        PlaceholderText="Subtribus auswählen"
-                        Style="{StaticResource AtisComboBox}" />
+                    <!--  NUR diese eine ComboBox verwenden  -->
+                    <ComboBox x:Name="SubtribusCombo"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              DisplayMemberPath="SubtribusName"
+                              ItemsSource="{Binding SubtribusList}"
+                              PlaceholderText="Subtribus auswählen"
+                              SelectedValue="{Binding SelectedItem.SubtribusId, Mode=TwoWay}"
+                              SelectedValuePath="SubtribusId"
+                              Style="{StaticResource AtisComboBox}" />
+                    <!--<ComboBox x:Name="SubtribusCombo"
+                    MinWidth="200"
+                    VerticalAlignment="Center"
+                    loc:Uids.Uid="ComboBox_SubtribusName"
+                    DisplayMemberPath="SubtribusName"
+                    ItemsSource="{Binding SubtribusList}"
+                    SelectedValue="{x:Bind Item.SubtribusId, Mode=TwoWay}"
+                    SelectedValuePath="SubtribusId"
+                    SelectionChanged="OnSubtribusChanged"
+                    Style="{StaticResource AtisComboBox}" />-->
+
                 </StackPanel>
 
                 <!--  CheckBox  -->
@@ -192,33 +202,30 @@
                      Text="{x:Bind Item.Synonym, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap" />
 
-            <!--  Language Tabs  -->
-            <TabView>
-                <TabViewItem loc:Uids.Uid="TabViewItem_EngName">
+            <!--  Language Pivot  -->
+            <Pivot>
+                <PivotItem loc:Uids.Uid="TabViewItem_EngName">
                     <TextBox loc:Uids.Uid="TextBox_EngName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.EngName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
-
-                <TabViewItem loc:Uids.Uid="TabViewItem_GerName">
+                             Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
+                <PivotItem loc:Uids.Uid="TabViewItem_GerName">
                     <TextBox loc:Uids.Uid="TextBox_GerName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.GerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
-
-                <TabViewItem loc:Uids.Uid="TabViewItem_FraName">
+                             Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
+                <PivotItem loc:Uids.Uid="TabViewItem_FraName">
                     <TextBox loc:Uids.Uid="TextBox_FraName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.FraName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
-
-                <TabViewItem loc:Uids.Uid="TabViewItem_SpaName">
+                             Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
+                <PivotItem loc:Uids.Uid="TabViewItem_SpaName">
                     <TextBox loc:Uids.Uid="TextBox_SpaName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.PorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
+                             Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
 
-            </TabView>
+            </Pivot>
 
             <!--  Memo  -->
             <TextBox MinHeight="75"

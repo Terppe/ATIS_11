@@ -10,11 +10,14 @@ public sealed partial class Tbl90ReferenceEditControl : UserControl
     public Tbl90ReferenceEditControl()
     {
         InitializeComponent();
-
         Debug.WriteLine(
             $"ReferenceEditControl: Expert={Item?.RefExpertId}, Source={Item?.RefSourceId}, Author={Item?.RefAuthorId}, ");
     }
-
+    private void UserControl_DataContextChanged(object sender, DataContextChangedEventArgs e)
+    {
+        Debug.WriteLine(">>> EditControl DataContextChanged: " + e.NewValue);
+        // KEIN Bindings.Update() mehr nötig
+    }
     // ---------------------------------------------------------
     //  DependencyProperty: Item  (wie Comment)
     // ---------------------------------------------------------
@@ -35,6 +38,13 @@ public sealed partial class Tbl90ReferenceEditControl : UserControl
     private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = (Tbl90ReferenceEditControl)d;
+
+        if (control.Item == null)
+            return;
+
+        if (!control.IsLoaded)
+            return;
+
         control.UpdateComboVisibility();
     }
 

@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ATIS.Views.Base;
 
 namespace ATIS.Models;
 
-public class Tbl75Species
+public class Tbl75Species : IHierarchicalEntity
 {
     [Key]
     public int SpeciesId { get; set; }
@@ -19,6 +20,9 @@ public class Tbl75Species
     public string Divers { get; set; }
     public string SpeciesFullName => $"{SpeciesName} {Subspecies} {Divers}";
     public string GenusSpeciesFullName => $"{Tbl66Genusses.GenusName} {SpeciesName} {Subspecies} {Divers}";
+
+    public Tbl66Genus? Genus { get; set; }
+
     [Required]
     public int GenusId { get; set; }
     public int SpeciesgroupId { get; set; }
@@ -129,4 +133,13 @@ public class Tbl75Species
     }
 
 
+    public int GetEntityId()
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GetDisplayName()
+    {
+        throw new NotImplementedException();
+    }
 }

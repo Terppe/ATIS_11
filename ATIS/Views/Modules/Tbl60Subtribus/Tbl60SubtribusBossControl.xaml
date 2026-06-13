@@ -36,7 +36,7 @@
             <Button Grid.Column="0"
                     Background="Transparent"
                     BorderThickness="0"
-                    Command="{x:Bind ViewModel.SortCommand}"
+                    
                     CommandParameter="Id"
                     FontWeight="Bold">
                 <TextBlock Text="{x:Bind ViewModel.IdHeaderText, Mode=OneWay}" />
@@ -45,7 +45,6 @@
             <Button Grid.Column="1"
                     Background="Transparent"
                     BorderThickness="0"
-                    Command="{x:Bind ViewModel.SortCommand}"
                     CommandParameter="Extra1"
                     FontWeight="Bold">
                 <TextBlock Text="{x:Bind ViewModel.NameHeaderText, Mode=OneWay}" />
@@ -81,7 +80,6 @@
                   BorderThickness="1"
                   CornerRadius="4"
                   IsItemClickEnabled="True"
-                  ItemClick="SubtribusListView_ItemClick"
                   ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
                   ItemsSource="{Binding Items}"
                   RightTapped="SubtribusListView_RightTapped"

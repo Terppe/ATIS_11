@@ -1,10 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ATIS.Views.Base;
 
 namespace ATIS.Models;
 
-public class Tbl78Name
+public class Tbl78Name : IHierarchicalEntity
 {
     [Key]
 
@@ -42,5 +43,13 @@ public class Tbl78Name
     public virtual Tbl75Species Tbl75Speciesses { get; set; }
 
 
+    public int GetEntityId()
+    {
+        throw new NotImplementedException();
+    }
 
+    public string GetDisplayName()
+    {
+        throw new NotImplementedException();
+    }
 }

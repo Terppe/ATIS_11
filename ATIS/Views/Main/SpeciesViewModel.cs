@@ -3,12 +3,14 @@ using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using ATIS.Views.Modules.Hierarchy;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Main;
 public class SpeciesViewModel : ObservableObject
 {
     #region [Private Data Members]
-    private readonly IDataService _dataService;
+  //  private readonly IDataService _dataService;
     private readonly AtisDbContext _context = new();
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
@@ -46,9 +48,15 @@ public class SpeciesViewModel : ObservableObject
 
     #region [Constructor]
 
-    public SpeciesViewModel(IDataService dataService)
+    public SpeciesViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+       // : base(new DataService(factory, user), dialog, coordinator)
     {
-        _dataService = dataService;
+   //     _dataService = dataService;
     }
 
     #endregion [Constructor]
@@ -154,7 +162,7 @@ public class SpeciesViewModel : ObservableObject
             {
                 Tbl03RegnumsAllList ??= new ObservableCollection<Tbl03Regnum>();
                 //   Tbl03RegnumsAllList = _dataService.GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnum();
-                Tbl03RegnumsAllList = _dataService.GetRegnumAsync();
+             //   Tbl03RegnumsAllList = _dataService.GetRegnumAsync();
 
                 //        IsLoading = true;
                 //        PhylumStartModify();

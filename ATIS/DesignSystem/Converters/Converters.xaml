@@ -38,5 +38,6 @@
     <converters:BoolToBorderThicknessConverter x:Key="BoolToBorderThicknessConverter" />
     <converters:BoolToRedBrushConverter x:Key="BoolToRedBrushConverter" />
     <converters:CommentToEditControlConverter x:Key="CommentToEditControlConverter" />
+    <converters:BoolToInvertedVisibilityConverter x:Key="BoolToInvertedVisibilityConverter" />
 </ResourceDictionary>
 

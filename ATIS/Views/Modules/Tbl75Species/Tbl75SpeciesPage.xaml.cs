@@ -42,10 +42,10 @@ public sealed partial class Tbl75SpeciesPage : Page
     {
         await ViewModel.LoadAsync();
 
-        ViewModel.SuppressFilter = true;
-        await Task.Delay(50);
- //       SearchBox.Focus(FocusState.Programmatic);
-        ViewModel.SuppressFilter = false;
+ //       ViewModel.SuppressFilter = true;
+ //       await Task.Delay(50);
+ ////       SearchBox.Focus(FocusState.Programmatic);
+ //       ViewModel.SuppressFilter = false;
     }
 
     // ---------------------------------------------------------

@@ -17,6 +17,7 @@ public sealed partial class Tbl93CommentEditControl : UserControl
     private void UserControl_DataContextChanged(object sender, DataContextChangedEventArgs e)
     {
         Debug.WriteLine(">>> EditControl DataContextChanged: " + e.NewValue);
+        // KEIN Bindings.Update() mehr nötig
     }
     // ---------------------------------------------------------
     //  DependencyProperty: Item  (wie Subtribus)

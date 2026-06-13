@@ -184,12 +184,12 @@
                         </TabViewItem>
 
                         <!--  SUBTRIBUS  -->
-                        <TabViewItem
+                        <!--<TabViewItem
                             Header="Subtribus">
                             <ScrollViewer
                                 Padding="1">
                                 <TabView>
-                                    <!--  EDIT SUBTRIBUS  -->
+                                    --><!--  EDIT SUBTRIBUS  --><!--
                                     <TabViewItem
                                         Header="Edit Subtribus">
                                         <ScrollViewer
@@ -197,12 +197,12 @@
                                             <Grid
                                                 RowDefinitions="Auto,*">
 
-                                                <!--  LISTE  -->
+                                                --><!--  LISTE  --><!--
                                                 <tbl60Subtribus:Tbl60SubtribusParentControl
                                                     Grid.Row="0"
                                                     DataContext="{x:Bind ViewModel.SubtribusViewModel}" />
 
-                                                <!--  EDITOR  -->
+                                                --><!--  EDITOR  --><!--
                                                 <tbl60Subtribus:Tbl60SubtribusEditControl
                                                     Grid.Row="1"
                                                     DataContext="{x:Bind ViewModel.SubtribusViewModel}"
@@ -212,7 +212,7 @@
                                         </ScrollViewer>
                                     </TabViewItem>
 
-                                    <!--  COMMENTS SUBTRIBUS  -->
+                                    --><!--  COMMENTS SUBTRIBUS  --><!--
                                     <TabViewItem
                                         Header="Comments Subtribus">
                                         <ScrollViewer
@@ -220,12 +220,12 @@
                                             <Grid
                                                 RowDefinitions="Auto,*">
 
-                                                <!--  LISTE  -->
+                                                --><!--  LISTE  --><!--
                                                 <tbl93Comment:Tbl93CommentParentControl
                                                     Grid.Row="0"
                                                     DataContext="{x:Bind ViewModel.SubtribusViewModel.CommentViewModel}" />
 
-                                                <!--  EDITOR  -->
+                                                --><!--  EDITOR  --><!--
                                                 <tbl93Comment:Tbl93CommentEditControl
                                                     Grid.Row="1"
                                                     DataContext="{x:Bind ViewModel.SubtribusViewModel.CommentViewModel}"
@@ -236,7 +236,7 @@
                                         </ScrollViewer>
                                     </TabViewItem>
 
-                                    <!--  REFERENCES SUBTRIBUS  -->
+                                    --><!--  REFERENCES SUBTRIBUS  --><!--
                                     <TabViewItem
                                         Header="References Subtribus">
                                         <ScrollViewer
@@ -244,12 +244,12 @@
                                             <Grid
                                                 RowDefinitions="Auto,*">
 
-                                                <!--  LISTE  -->
+                                                --><!--  LISTE  --><!--
                                                 <tbl90Reference:Tbl90ReferenceParentControl
                                                     Grid.Row="0"
                                                     DataContext="{x:Bind ViewModel.SubtribusViewModel.ReferenceViewModel}" />
 
-                                                <!--  EDITOR  -->
+                                                --><!--  EDITOR  --><!--
                                                 <tbl90Reference:Tbl90ReferenceEditControl
                                                     Grid.Row="1"
                                                     DataContext="{x:Bind ViewModel.SubtribusViewModel.ReferenceViewModel}"
@@ -262,7 +262,7 @@
                                 </TabView>
 
                             </ScrollViewer>
-                        </TabViewItem>
+                        </TabViewItem>-->
 
                     </TabView>
 
@@ -273,9 +273,9 @@
         </ScrollViewer>
 
         <!--  2. 🔥 Modernes Lade Overlay  -->
-        <components:LoadingOverlayControl
+        <!--<components:LoadingOverlayControl
             Grid.RowSpan="1"
-            IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+            IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
 
     </Grid>
 </Page>

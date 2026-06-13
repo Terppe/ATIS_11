@@ -23,12 +23,12 @@ public sealed partial class Tbl66GenusPage : Page
     // ---------------------------------------------------------
     private async void GenusPage_Loaded(object sender, RoutedEventArgs e)
     {
-        await ViewModel.LoadAsync();
+     //   await ViewModel.LoadAsync();
 
-        ViewModel.SuppressFilter = true;
+      //  ViewModel.SuppressFilter = true;
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
-        ViewModel.SuppressFilter = false;
+     //   ViewModel.SuppressFilter = false;
     }
 
     // ---------------------------------------------------------
@@ -37,7 +37,7 @@ public sealed partial class Tbl66GenusPage : Page
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
-        await ViewModel.ApplyFilterAsync(sender.Text);
+       // await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
 }

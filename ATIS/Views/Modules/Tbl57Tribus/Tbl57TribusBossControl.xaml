@@ -89,32 +89,28 @@
                   SelectionMode="Single">
 
             <ListView.ItemTemplate>
-                <DataTemplate
-                    x:DataType="models:Tbl57Tribus">
+                <DataTemplate x:DataType="models:Tbl57Tribus">
                     <Grid Style="{StaticResource AtisListRowGridStyle}">
 
                         <!--  Kontextmenü direkt am Row-Root  -->
                         <Grid.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem
-                                    loc:Uids.Uid="MenuFlyout_Add_Tribus"
-                                    Command="{Binding DataContext.NewCommand, ElementName=TribusListView}">
+                                <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Add_Tribus"
+                                                Command="{Binding DataContext.NewCommand, ElementName=TribusListView}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Add" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutItem
-                                    loc:Uids.Uid="MenuFlyout_Save_Tribus"
-                                    Command="{Binding DataContext.SaveCommand, ElementName=TribusListView}"
-                                    CommandParameter="{Binding}">
+                                <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Save_Tribus"
+                                                Command="{Binding DataContext.SaveCommand, ElementName=TribusListView}"
+                                                CommandParameter="{Binding}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Save" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutItem
-                                    loc:Uids.Uid="MenuFlyout_Delete_Tribus"
-                                    Command="{Binding DataContext.DeleteCommand, ElementName=TribusListView}"
-                                    CommandParameter="{Binding}">
+                                <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Delete_Tribus"
+                                                Command="{Binding DataContext.DeleteCommand, ElementName=TribusListView}"
+                                                CommandParameter="{Binding}">
                                     <MenuFlyoutItem.Icon>
                                         <SymbolIcon Symbol="Delete" />
                                     </MenuFlyoutItem.Icon>

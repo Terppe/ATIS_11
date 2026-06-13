@@ -33,11 +33,15 @@ using ATIS.Views.Modules.Tbl48Subfamily;
 using ATIS.Views.Modules.Tbl51Infrafamily;
 using ATIS.Views.Modules.Tbl54Supertribus;
 using ATIS.Views.Modules.Tbl57Tribus;
+using ATIS.Views.Modules.Tbl60Subtribus;
+using ATIS.Views.Modules.Tbl63Infratribus;
 using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl78Name;
+using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl90RefExpert;
 using ATIS.Views.Modules.Tbl90RefSource;
+using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
@@ -85,15 +89,9 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        UnhandledException += (s, e) =>
-        {
-            System.Diagnostics.Debug.WriteLine("UNHANDLED EXCEPTION: " + e.Exception);
-            System.Diagnostics.Debug.WriteLine("STACKTRACE: " + e.Exception.StackTrace);
-        };
         Services = ConfigureServices();
         QuestPDF.Settings.License = LicenseType.Community;
         UnhandledException += App_UnhandledException;
-
     }
 
     // ---------------------------------------------------------
@@ -143,10 +141,6 @@ public partial class App : Application
         var customPrincipal = new CustomPrincipal();
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
 
-        DebugSettings.BindingFailed += (s, e) =>
-        {
-            System.Diagnostics.Debug.WriteLine("BINDING FAILED: " + e.Message);
-        };
 
 
     }
@@ -260,21 +254,23 @@ public partial class App : Application
         services.AddSingleton<WinUICommunity.IThemeService, WinUICommunity.ThemeService>();
 
         // DATABASE + DATA SERVICE
-        services.AddDbContext<AtisDbContext>();
+      //  services.AddDbContext<AtisDbContext>();
 
         // HIERARCHY COORDINATOR - SINGLETON!
         services.AddSingleton<HierarchyCoordinator>();
 
         // DATA SERVICE
-        services.AddScoped<IDataService, DataService>();
+        services.AddDbContextFactory<AtisDbContext>();
+        //   services.AddScoped<IDataService, DataService>();
 
         // DIALOG SYSTEM SERVICES
         services.AddSingleton<IDialogService, DialogService>();
 
         // LOOKUP SERVICES
-        services.AddSingleton<LookupService>();
+        services.AddScoped<LookupService>();
+
         // USER SERVICES
-        services.AddSingleton<IUserService, UserService>();
+        services.AddScoped<IUserService, UserService>();
 
         // VIEWMODELS
         services.AddTransient<TblCountryListTestPage>();
@@ -511,52 +507,34 @@ public partial class App : Application
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
+        // Wir verhindern App-Absturz
         e.Handled = true;
-#if DEBUG && !DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
-        //UnhandledException += (sender, e) =>
-        //{
-        //    if (Debugger.IsAttached) Debugger.Break();
-        //};
-#endif
-        UnhandledException += (s, e) =>
-        {
-            Debug.WriteLine("UNHANDLED EXCEPTION: " + e.Exception);
-        };
-        if (e.Exception is Exception ex)
-        {
-            Debug.WriteLine("🔥 APP LEVEL EXCEPTION: " + e.Exception);
-            Debug.WriteLine("🔥 UNHANDLED EXCEPTION:");
-            Debug.WriteLine(ex.Message);
-            Debug.WriteLine(ex.StackTrace);
 
-            if (ex.InnerException != null)
-            {
-                Debug.WriteLine("➡ INNER EXCEPTION:");
-                Debug.WriteLine(ex.InnerException.Message);
-                Debug.WriteLine(ex.InnerException.StackTrace);
-            }
-            Debug.WriteLine($"[{DateTime.Now:HH:mm:ss}] 🔥 {ex.Message}");
-            LogException(ex);
-        }
-
+        // Logging
+        LogException(e.Exception);
     }
-
-private void LogException(Exception ex)
+    private void LogException(Exception ex)
     {
+        Debug.WriteLine("========================================");
+        Debug.WriteLine($"🔥 UNHANDLED EXCEPTION [{DateTime.Now:HH:mm:ss}]");
+        Debug.WriteLine("========================================");
+
         while (ex != null)
         {
-            Debug.WriteLine($"[{DateTime.Now:HH:mm:ss}] 🔥 {ex.GetType().Name}: {ex.Message}");
+            Debug.WriteLine($"➡ {ex.GetType().Name}: {ex.Message}");
             Debug.WriteLine(ex.StackTrace);
             ex = ex.InnerException;
             if (ex != null)
-                Debug.WriteLine("➡ INNER EXCEPTION:");
+                Debug.WriteLine("---- INNER EXCEPTION ----");
         }
+
+        Debug.WriteLine("========================================");
     }
 // ---------------------------------------------------------
-// 10. Helper
-// ---------------------------------------------------------
+    // 10. Helper
+    // ---------------------------------------------------------
 
-public static T GetService<T>() where T : class
+    public static T GetService<T>() where T : class
     {
         return Services.GetRequiredService<T>();
     }

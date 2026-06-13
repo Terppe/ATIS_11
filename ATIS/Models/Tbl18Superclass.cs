@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using ATIS.Views.Base;
 
 namespace ATIS.Models;
 
-public class Tbl18Superclass
+public class Tbl18Superclass : IHierarchicalEntity
 {
     [Key]
     public int SuperclassId { get; set; }
@@ -47,4 +48,13 @@ public class Tbl18Superclass
     public string Memo { get; set; }
     //     public byte[] RowVersion { get; set; }
 
+    public int GetEntityId()
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GetDisplayName()
+    {
+        throw new NotImplementedException();
+    }
 }

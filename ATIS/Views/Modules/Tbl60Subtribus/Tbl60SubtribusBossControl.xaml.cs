@@ -11,14 +11,21 @@ public sealed partial class Tbl60SubtribusBossControl : UserControl
     {
         InitializeComponent();
     }
+    //private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    //{
+    //    SubtribusListView.SelectedItem = e.ClickedItem;
 
-    private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        SubtribusListView.SelectedItem = e.ClickedItem;
+    //    if (ViewModel != null)
+    //        ViewModel.IsEditVisible = true;
+    //}
 
-        if (ViewModel != null)
-            ViewModel.IsDetailVisible = true;
-    }
+    //private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    //{
+    //    SubtribusListView.SelectedItem = e.ClickedItem;
+
+    //    if (ViewModel != null)
+    //        ViewModel.IsDetailVisible = true;
+    //}
     private void SubtribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (sender is not ListView listView) return;
@@ -37,4 +44,5 @@ public sealed partial class Tbl60SubtribusBossControl : UserControl
         }
         return null;
     }
+
 }

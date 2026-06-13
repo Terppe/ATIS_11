@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using ATIS.Views.Base;
 
 namespace ATIS.Models;
 
-public class Tbl06Phylum
+public class Tbl06Phylum : IHierarchicalEntity
 {
     [Key]
 
@@ -46,6 +47,13 @@ public class Tbl06Phylum
     public string Memo { get; set; }
 
 
+    public int GetEntityId()
+    {
+        throw new NotImplementedException();
+    }
 
-
+    public string GetDisplayName()
+    {
+        throw new NotImplementedException();
+    }
 }

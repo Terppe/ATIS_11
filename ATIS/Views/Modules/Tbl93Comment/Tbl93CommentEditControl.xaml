@@ -74,13 +74,13 @@
                          loc:Uids.Uid="TextBox_CommentId"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.CommentId, Mode=OneWay}" />
+                         Text="{x:Bind   Item.CommentId, Mode=OneWay}" />
 
                 <!--  CheckBox  -->
                 <CheckBox MinWidth="60"
                           VerticalAlignment="Bottom"
                           loc:Uids.Uid="CheckBox_Valid"
-                          IsChecked="{x:Bind Item.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsChecked="{x:Bind  Item.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource AtisCheckBox}" />
 
                 <!--  ValidYear mit Validierung  -->
@@ -92,14 +92,14 @@
                              loc:Uids.Uid="TextBox_ValidYear"
                              Loaded="ValidYearBox_OnLoaded"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{x:Bind  Item.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="ValidYearBox_OnTextChanged" />
 
                     <TextBlock Height="16"
                                FontSize="10"
                                Foreground="Red"
-                               Text="{x:Bind Item.ValidYearError, Mode=OneWay}"
-                               Visibility="{x:Bind Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                               Text="{x:Bind  Item.ValidYearError, Mode=OneWay}"
+                               Visibility="{x:Bind  Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
 
@@ -113,14 +113,14 @@
                          loc:Uids.Uid="TextBox_Info"
                          Loaded="InfoBox_OnLoaded"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{x:Bind   Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          TextChanged="InfoBox_OnTextChanged" />
 
                 <TextBlock Height="16"
                            FontSize="10"
                            Foreground="Red"
-                           Text="{x:Bind Item.InfoError, Mode=OneWay}"
-                           Visibility="{x:Bind Item.HasInfoError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                           Text="{x:Bind   Item.InfoError, Mode=OneWay}"
+                           Visibility="{x:Bind  Item.HasInfoError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
             <!--  Memo  -->
             <TextBox MinHeight="75"
@@ -128,7 +128,7 @@
                      loc:Uids.Uid="TextBox_Memo"
                      AcceptsReturn="True"
                      Style="{StaticResource AtisTextBox}"
-                     Text="{x:Bind Item.Memo, Mode=TwoWay}"
+                     Text="{x:Bind  Item.Memo, Mode=TwoWay}"
                      TextWrapping="Wrap" />
 
         </StackPanel>

@@ -329,7 +329,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
-    private void ValidateSubtribusName()
+    public void ValidateSubtribusName()
     {
         ClearErrors(nameof(SubtribusName));
         var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code

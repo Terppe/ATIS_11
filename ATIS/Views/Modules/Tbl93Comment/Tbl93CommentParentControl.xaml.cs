@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Windows.Media;
+using ATIS.Views.Modules.Tbl60Subtribus;
 using WinUI3Localizer;
 
 namespace ATIS.Views.Modules.Tbl93Comment;
@@ -15,13 +16,7 @@ public sealed partial class Tbl93CommentParentControl : UserControl
     public Tbl93CommentParentControl()
     {
         InitializeComponent();
-    }
-    private void CommentListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var vm = (Tbl93CommentViewModel)DataContext;
-
-        vm.IsCommentEditVisible = true;
-        vm.SelectedItem = (Models.Tbl93Comment)((ListView)sender).SelectedItem;
+        CommentListView.SelectionChanged += (_, __) => Debug.WriteLine("SELECTION!");
     }
 
     private void CommentListView_OnItemClick(object sender, ItemClickEventArgs e)
@@ -29,9 +24,8 @@ public sealed partial class Tbl93CommentParentControl : UserControl
         if (ViewModel == null)
             return;
 
-        ViewModel.IsCommentEditVisible = true;
-        // SelectedItem ist durch TwoWay Binding meist schon gesetzt
         ViewModel.SelectedItem = (Models.Tbl93Comment)e.ClickedItem;
+      //  ViewModel.IsDetailVisible = true;
     }
 
 

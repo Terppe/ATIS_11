@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using ATIS.Views.Base;
 
 namespace ATIS.Models;
 
-public class Tbl21Class
+public class Tbl21Class : IHierarchicalEntity
 {
     [Key]
     public int ClassId { get; set; }
@@ -46,4 +47,13 @@ public class Tbl21Class
     //  public byte[] RowVersion { get; set; }
 
 
+    public int GetEntityId()
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GetDisplayName()
+    {
+        throw new NotImplementedException();
+    }
 }

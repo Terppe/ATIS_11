@@ -671,3 +671,122 @@ Damit ist Comments so stabil wie Subtribus.
 27.05.2026 14:00 Uhr  comment ist jetzt lauffähig. Jetzt muss das BaseListViewmodel mit Subtribus und comment abgeglichen weerden
 ----------------------------------------
 28.05.2026 10:00 Uhr Nuget SDK 2.1.3 und einige mail-toolkids
+----------------------------------------
+28.05.2026 11:00 Uhr Refesh nach save ok, Delete wieder mit Abfrage ok.
+Jetzt fehlt noch neu-button von subtribus und refresh-butten diablen, wenn tabview nicht auf subtribus steht
+----------------------------------------
+29.05.2026 10:00 Uhr IsEditTabActive in viewmodel eingefügt. ViewModel.IsEditTabActive = (TabViewBase.SelectedIndex == 0); 
+----------------------------------------
+29.05.2026 10:00 Uhr Commentviewmodel und ReferenceViewmodel. wieder neu aufgebaut subtribus und comment.
+Morgen Sort‑Pfeile prüfen“ oder „ReferenceViewModel final“ Sort‑Pfeile (war noch nicht ganz stabil)
+
+ReferenceViewModel (falls noch nicht final)
+
+CommentViewModel (für Konsistenz)
+
+Tab‑Routing (Subtribus → Comments → References → Infratribus) bei llerem listview muss button-Neu sichtbar sein
+----------------------------------------
+30.05.2026 10:00 Uhr Version wieder nicht ok
+----------------------------------------
+30.05.2026 17:00 Uhr BaseBossListViewModel / BaseListViewModel prüfen starten
+----------------------------------------
+31.05.2026 15:00 Uhr BaseBossListViewModel / BaseListViewModel /SubtribusViewmodel neu,
+öffnet aber noch keinen Datensatz, wenn imListview fokus auf Datensatz. Startet gleich mit leerem editcontrol. daan ok. Bei comment wird Liste angezeigt.
+Öffnen der Commenteditcontrol noch problem, wird mit leerem commentcontrol geöffnet und bei select gefüllt.
+voller fehler umbruch für erweiterte version mit kompletter page
+----------------------------------------
+01.06.2026 15:00 Uhr muss ganz neu aufgesetzt werden. Page mmit Tabview muss neu gemacht werden.Anwendung ist viel auskommentiert. in der page kann a eingegeben werden.
+aber dahinter folgt noch nichts listview wird nicht gefüllt
+----------------------------------------
+02.06.2026 15:00 Uhr soweit alle viewmodels neu aufgebaut und angefangen subtribuspage mit "a" zu starten und datensätze werden im subtribuslistview angezeigt
+----------------------------------------
+05.06.2026 16:00 Uhr Version soweit ok. erster datensatz imListview wird mit editcontrol angezeigt. muss noch geändert werden, damit editcontrol erst angezeigt wird, wenn datensatz ausgewählt wird.
+----------------------------------------
+06.06.2026 13:00 Uhr ingabe „a“ → Enter:
+Liste wird gefüllt
+
+kein Datensatz fokussiert
+
+EditControl bleibt unsichtbar
+
+UI bleibt stabil
+
+Klick auf Datensatz:
+SelectedItem gesetzt
+
+IsDetailVisible = true
+
+EditControl erscheint
+
+Comboboxen gefüllt
+
+Child‑Tabs geladen
+
+Alles funktioniert exakt wie spezifiziert.
+----------------------------------------
+06.06.2026 15:00 Uhr sichern überarbeiten. Bei neu gibt es den roten validationrahmen und text, aber keinen fokus auf das Subtribusname-Feld.
+sobald auf das feld gecklickt wird, wird der border blau. alle ...ListViewmodels umgestellt auf user.
+Bei Löschen und Refresh wird das Subtribuslistview geleert
+----------------------------------------
+07.06.2026 13:00 Uhr Delete und Refresh und save funktionieren bei Subtribus.
+Comments und References werden in Liste angezeigt, aber bei fokus nicht im Editcontrol angezeigt
+----------------------------------------
+07.06.2026 14:00 Uhr bei Subtribusvm auch     private static IDataService CreateDataService(IUserService user)
+        => new DataService(new AtisDbContext(), user);
+wie bei CommentListVm und ReferenceListVm. LookupService auch mit eigenem DataService versehen.
+mit einem Dataservice gibt es immer wieder Probleme. deshalb als nächstes Umstellen im Dataservice auf Factory tribus bis genus umgebaut auf Factory
+----------------------------------------
+08.06.2026 14:00 Uhr überall auf
+IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
+umgestellt. Schablone für ..ListVm   public TblXXListViewModel(
+    IDbContextFactory<AtisDbContext> factory,
+    IUserService user,
+    IDialogService dialog)
+    : base(
+        new DataService(factory, user),
+        dialog,
+        parentId =>
+        {
+            var data = new DataService(factory, user);
+            return data.GetXXForParentAsync(parentId);
+        })
+{
+    _data = new DataService(factory, user);
+}
+Schablone für Vm public TblXXViewModel(
+    IDbContextFactory<AtisDbContext> factory,
+    IDialogService dialog,
+    HierarchyCoordinator coordinator,
+    LookupService lookup,
+    IUserService user)
+    : base(new DataService(factory, user), dialog, coordinator)
+{
+    Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+    Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+    ...
+    IsDetailVisible = false;
+    IsEditVisible = false;
+} Fehler noch bei speichern,
+dort wird nach sichern der einzelne datensatz angezeigt und in Searchbox der InfratribusName, was nur passieren soll, wenn Searchbox leer ist.
+Comments Tabview und ReferenceTabview wird nur die Liste angezeigt mit leerem editcontrol, das bei Enter in der Liste nicht gefüllt wird. bei enter
+----------------------------------------
+08.06.2026 17:00 Uhr editcomment wird leer angezeigt
+----------------------------------------
+10.06.2026 17:00 Uhr zwischenlösung. nur Subtribus mit editcontrol funktioniert
+----------------------------------------
+10.06.2026 19:00 Uhr Pivot eingefügt. immer noch leerer commenteditcontrol comment und reference geht fast wieder .
+fehlermanagement von app.cs .csproy rein
+----------------------------------------
+12.06.2026 14:00 Uhr UNHANDLED EXCEPTIONS App.xaml.cs eingefügt.InfratribusListe wird angezeigt und edit auch, ohne comboboxSubtribusList. CRUD fehlt für comments und references
+----------------------------------------
+12.06.2026 15:00 Uhr Nuget erneuert SDK 2.2.0
+----------------------------------------
+12.06.2026 16:00 Uhr mehrfachladen von Comments in DetailPivot_OnSelectionChanged geändert.
+Tbl60Subtribuspage.xaml.cs subtribus mit comments und references ok aber save, delete, back gehen noch nicht
+----------------------------------------
+13.06.2026 11:00 Uhr 

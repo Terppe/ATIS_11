@@ -1,9 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<UserControl x:Class="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusEditControl"
+﻿<UserControl x:Class="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusEditControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="using:WinUI3Localizer"
-             Name="DataRoot">
+             x:Name="Root">
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -17,13 +16,11 @@
             <Grid Margin="0,0,0,4"
                   ColumnDefinitions="*,Auto">
 
-                <!--  Titel links  -->
                 <TextBlock Grid.Column="0"
                            Margin="8,0,0,0"
                            loc:Uids.Uid="TextBlock_Subtribus"
                            Style="{StaticResource AtisSectionTitleTextStyle}" />
 
-                <!--  Buttons rechts  -->
                 <StackPanel Grid.Column="1"
                             VerticalAlignment="Center"
                             Orientation="Horizontal"
@@ -63,15 +60,15 @@
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
 
-                <!--  ID (keine Validierung - von DB erzeugt)  -->
+                <!--  ID  -->
                 <TextBox MinWidth="110"
                          VerticalAlignment="Top"
                          loc:Uids.Uid="TextBox_SubtribusId"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.SubtribusId, Mode=OneWay}" />
+                         Text="{Binding Item.SubtribusId, ElementName=Root}" />
 
-                <!--  SubtribusName mit Validierung  -->
+                <!--  SubtribusName  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
@@ -79,16 +76,16 @@
                              loc:Uids.Uid="TextBox_SubtribusName"
                              Loaded="SubtribusNameBox_OnLoaded"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.SubtribusName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding Item.SubtribusName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="SubtribusNameBox_OnTextChanged" />
                     <TextBlock Height="18"
                                FontSize="10"
                                Foreground="Red"
-                               Text="{x:Bind Item.SubtribusNameError, Mode=OneWay}"
-                               Visibility="{x:Bind Item.HasSubtribusNameError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                               Text="{Binding Item.SubtribusNameError, ElementName=Root}"
+                               Visibility="{Binding Item.HasSubtribusNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  TribusName  -->
+                <!--  Tribus Combo  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
@@ -98,22 +95,20 @@
                               VerticalAlignment="Center"
                               loc:Uids.Uid="ComboBox_TribusName"
                               DisplayMemberPath="TribusName"
-                              ItemsSource="{Binding TribusList}"
-                              SelectedValue="{x:Bind Item.TribusId, Mode=OneWay}"
+                              ItemsSource="{Binding ViewModel.TribusList, ElementName=Root}"
+                              SelectedValue="{Binding Item.TribusId, ElementName=Root, Mode=TwoWay}"
                               SelectedValuePath="TribusId"
-                              SelectionChanged="OnTribusChanged"
                               Style="{StaticResource AtisComboBox}" />
-
                 </StackPanel>
 
-                <!--  CheckBox  -->
+                <!--  Valid  -->
                 <CheckBox MinWidth="60"
                           VerticalAlignment="Bottom"
                           loc:Uids.Uid="CheckBox_Valid"
-                          IsChecked="{x:Bind Item.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsChecked="{Binding Item.Valid, ElementName=Root, Mode=TwoWay}"
                           Style="{StaticResource AtisCheckBox}" />
 
-                <!--  ValidYear mit Validierung  -->
+                <!--  ValidYear  -->
                 <StackPanel MinWidth="60"
                             VerticalAlignment="Top"
                             Spacing="2">
@@ -121,26 +116,26 @@
                              loc:Uids.Uid="TextBox_ValidYear"
                              Loaded="ValidYearBox_OnLoaded"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding Item.ValidYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="ValidYearBox_OnTextChanged" />
                     <TextBlock Height="16"
                                FontSize="10"
                                Foreground="Red"
-                               Text="{x:Bind Item.ValidYearError, Mode=OneWay}"
-                               Visibility="{x:Bind Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                               Text="{Binding Item.ValidYearError, ElementName=Root}"
+                               Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
 
+            <!--  Author + AuthorYear  -->
             <StackPanel Orientation="Horizontal"
-                        Spacing="2">
+                        Spacing="4">
                 <TextBox MinWidth="150"
                          VerticalAlignment="Top"
                          loc:Uids.Uid="TextBox_Author"
                          CharacterCasing="Upper"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <!--  AuthorYear mit Validierung  -->
                 <StackPanel MinWidth="60"
                             VerticalAlignment="Top"
                             Spacing="4">
@@ -148,25 +143,15 @@
                              loc:Uids.Uid="TextBox_AuthorYear"
                              Loaded="AuthorYearBox_OnLoaded"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.AuthorYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding Item.AuthorYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="AuthorYearBox_OnTextChanged" />
                     <TextBlock Height="16"
                                FontSize="10"
                                Foreground="Red"
-                               Text="{x:Bind Item.AuthorYearError, Mode=OneWay}"
-                               Visibility="{x:Bind Item.HasAuthorYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                               Text="{Binding Item.AuthorYearError, ElementName=Root}"
+                               Visibility="{Binding Item.HasAuthorYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
-
-            <!--  Info  -->
-            <TextBox MinWidth="200"
-                     MinHeight="75"
-                     MaxHeight="150"
-                     loc:Uids.Uid="TextBox_Info"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{x:Bind Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
 
             <!--  Synonym  -->
             <TextBox MinWidth="200"
@@ -175,36 +160,60 @@
                      loc:Uids.Uid="TextBox_Synonym"
                      AcceptsReturn="True"
                      Style="{StaticResource AtisTextBox}"
-                     Text="{x:Bind Item.Synonym, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap" />
 
-            <!--  Language Tabs  -->
-            <TabView>
-                <TabViewItem loc:Uids.Uid="TabViewItem_EngName">
+            <!--  Language Pivot  -->
+            <Pivot>
+                <PivotItem loc:Uids.Uid="TabViewItem_EngName">
                     <TextBox loc:Uids.Uid="TextBox_EngName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.EngName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
-
-                <TabViewItem loc:Uids.Uid="TabViewItem_GerName">
+                             Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
+                <PivotItem loc:Uids.Uid="TabViewItem_GerName">
                     <TextBox loc:Uids.Uid="TextBox_GerName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.GerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
-
-                <TabViewItem loc:Uids.Uid="TabViewItem_FraName">
+                             Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
+                <PivotItem loc:Uids.Uid="TabViewItem_FraName">
                     <TextBox loc:Uids.Uid="TextBox_FraName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.FraName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
-
-                <TabViewItem loc:Uids.Uid="TabViewItem_SpaName">
+                             Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
+                <PivotItem loc:Uids.Uid="TabViewItem_SpaName">
                     <TextBox loc:Uids.Uid="TextBox_SpaName"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.PorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </TabViewItem>
+                             Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </PivotItem>
 
-            </TabView>
+            </Pivot>
+            <!--<TabView>
+
+            <TabViewItem loc:Uids.Uid="TabViewItem_EngName">
+            <TextBox loc:Uids.Uid="TextBox_EngName"
+            Style="{StaticResource AtisTextBox}"
+            Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </TabViewItem>
+
+            <TabViewItem loc:Uids.Uid="TabViewItem_GerName">
+            <TextBox loc:Uids.Uid="TextBox_GerName"
+            Style="{StaticResource AtisTextBox}"
+            Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </TabViewItem>
+
+            <TabViewItem loc:Uids.Uid="TabViewItem_FraName">
+            <TextBox loc:Uids.Uid="TextBox_FraName"
+            Style="{StaticResource AtisTextBox}"
+            Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </TabViewItem>
+
+            <TabViewItem loc:Uids.Uid="TabViewItem_SpaName">
+            <TextBox loc:Uids.Uid="TextBox_SpaName"
+            Style="{StaticResource AtisTextBox}"
+            Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </TabViewItem>
+
+            </TabView>-->
 
             <!--  Memo  -->
             <TextBox MinWidth="200"
@@ -213,7 +222,7 @@
                      loc:Uids.Uid="TextBox_Memo"
                      AcceptsReturn="True"
                      Style="{StaticResource AtisTextBox}"
-                     Text="{x:Bind Item.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap" />
 
         </StackPanel>

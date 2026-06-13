@@ -329,7 +329,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
-    private void ValidateInfratribusName()
+    public void ValidateInfratribusName()
     {
         ClearErrors(nameof(InfratribusName));
         var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code

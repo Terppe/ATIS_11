@@ -23,19 +23,19 @@ public sealed partial class Tbl63InfratribusPage : Page
         // Unsubscribe sofort, damit der Event nicht nochmal triggert
         Loaded -= InfratribusPage_Loaded;
 
-        await ViewModel.LoadAsync();
+     //   await ViewModel.LoadAsync();
 
-        ViewModel.SuppressFilter = true;
+   //     ViewModel.SuppressFilter = true;
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
-        ViewModel.SuppressFilter = false;
+  //      ViewModel.SuppressFilter = false;
     }
 
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
 
-        await ViewModel.ApplyFilterAsync(sender.Text);
+       // await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
 

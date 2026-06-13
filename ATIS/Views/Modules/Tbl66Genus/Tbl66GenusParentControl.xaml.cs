@@ -17,14 +17,14 @@ public sealed partial class Tbl66GenusParentControl : UserControl
     // ---------------------------------------------------------
     //  ItemClick → Select + Open Edit
     // ---------------------------------------------------------
-    private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        if (DataContext is Tbl66GenusViewModel vm)
-        {
-            vm.SelectedItem = (Models.Tbl66Genus)e.ClickedItem;
-            vm.OpenEditCommand.Execute(null);
-        }
-    }
+    //private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
+    //{
+    //    if (DataContext is Tbl66GenusViewModel vm)
+    //    {
+    //        vm.SelectedItem = (Models.Tbl66Genus)e.ClickedItem;
+    //        vm.OpenEditCommand.Execute(null);
+    //    }
+    //}
 
     // ---------------------------------------------------------
     //  RightTapped → Select row under cursor

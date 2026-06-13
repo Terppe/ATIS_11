@@ -1647,6 +1647,9 @@
   <data name="TabViewItem_Subtribus.Header" xml:space="preserve">
     <value>Subtribus</value>
   </data>
+  <data name="TabViewItem_Subtribus_Edit.Header" xml:space="preserve">
+    <value>Edit Subtribus</value>
+  </data>
   <data name="TabViewItem_Subtribusses.Header" xml:space="preserve">
     <value>Subtribusses</value>
   </data>

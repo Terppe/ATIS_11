@@ -20,7 +20,7 @@ public sealed partial class Tbl90ReferenceParentControl : UserControl
 
         // SelectedItem ist durch TwoWay Binding meist schon gesetzt
         ViewModel.SelectedItem = (Models.Tbl90Reference)e.ClickedItem;
-        ViewModel.OpenEditCommand.Execute(null);
+       // ViewModel.OpenEditCommand.Execute(null);
     }
 
     private void ReferenceListView_RightTapped(object sender, RightTappedRoutedEventArgs e)

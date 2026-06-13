@@ -18,11 +18,5 @@
         <Setter Property="BorderThickness" Value="0,0,0,1" />
     </Style>
 
-    <!--<Style TargetType="TabViewItem">
-    <Setter Property="Padding" Value="20,10" />
-    <Setter Property="FontSize" Value="14" />
-    <Setter Property="FontWeight" Value="SemiBold" />
-    </Style>-->
-
 
 </ResourceDictionary>

@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using Microsoft.UI.Xaml.Input;
-using Windows.System;
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
@@ -13,43 +11,131 @@ public sealed partial class Tbl60SubtribusPage : Page
     {
         InitializeComponent();
 
+
         ViewModel = App.GetService<Tbl60SubtribusViewModel>();
         DataContext = ViewModel;
 
         Loaded += SubtribusPage_Loaded;
-       // ViewModel.NewRequested += OnNewRequested;
     }
-
     private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
     {
-        await ViewModel.LoadAsync();
-        Loaded -= SubtribusPage_Loaded; // Unsubscribe!
+        Loaded -= SubtribusPage_Loaded;
 
-          TabViewBase.SelectedIndex = 0; // Tab „Edit Subtribus“
+        await ViewModel.LoadAsync();   
 
-        ViewModel.SuppressFilter = true;
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
-        ViewModel.SuppressFilter = false;
     }
 
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
+    //private async void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    if (DetailPivot.SelectedItem is PivotItem pivotItem)
+    //    {
+    //        if (pivotItem.Header is string header && header == "Comments")
+    //        {
+    //            if (DataContext is Tbl60SubtribusViewModel vm &&
+    //                vm.SelectedItem != null)
+    //            {
+    //                await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+    //            }
+    //        }
+    //        // später: References, Infratribus genauso
+    //    }
+    //}
 
+    private bool _commentsLoaded;
+    private bool _referencesLoaded;
+    private bool _infratribussesLoaded;
 
-    private void TabViewBase_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (TabViewBase.SelectedItem is TabViewItem tab &&
-            tab.Header?.ToString() == "Comments Subtribus")
+        if (DataContext is not Tbl60SubtribusViewModel vm)
+            return;
+
+        if (vm.SelectedItem == null)
+            return;
+
+        // COMMENTS (Subtribus + Infratribus)
+        if (DetailPivot.SelectedItem == CommentsSubtribusPivot ||
+            DetailPivot.SelectedItem == CommentsInfratribusPivot)
         {
-            if (ViewModel.SelectedItem != null)
+            if (!_commentsLoaded)
             {
-                int id = ViewModel.SelectedItem.SubtribusId;
-                _ = ViewModel.CommentViewModel.LoadForSubtribusAsync(id);
+                _commentsLoaded = true;
+                await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+            }
+        }
+
+        // REFERENCES (Subtribus + Infratribus)
+        else if (DetailPivot.SelectedItem == ReferencesSubtribusPivot ||
+                 DetailPivot.SelectedItem == ReferencesInfratribusPivot)
+        {
+            if (!_referencesLoaded)
+            {
+                _referencesLoaded = true;
+                await vm.ReferenceViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+            }
+        }
+
+        // INFRATRIBUS
+        else if (DetailPivot.SelectedItem == InfratribusSubtribusPivot)
+        {
+            if (!_infratribussesLoaded)
+            {
+                _infratribussesLoaded = true;
+                await vm.InfratribusViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
             }
         }
     }
+
+
+    //private async void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    if (DetailPivot.SelectedItem == CommentsSubtribusPivot)
+    //    {
+    //        if (DataContext is Tbl60SubtribusViewModel vm &&
+    //            vm.SelectedItem != null)
+    //        {
+    //            await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+    //        }
+    //    }
+    //    else if (DetailPivot.SelectedItem == ReferencesSubtribusPivot)
+    //    {
+    //        if (DataContext is Tbl60SubtribusViewModel vm &&
+    //            vm.SelectedItem != null)
+    //        {
+    //            await vm.ReferenceViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+    //        }
+    //    }
+    //    //weiteres Pivot-Item hinzufügen, z.B. Infratribus
+    //    else if (DetailPivot.SelectedItem == InfratribusSubtribusPivot)
+    //    {
+    //        if (DataContext is Tbl60SubtribusViewModel vm &&
+    //            vm.SelectedItem != null)
+    //        {
+    //            await vm.InfratribusViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+    //        }
+    //    }
+    //    else if (DetailPivot.SelectedItem == CommentsInfratribusPivot)
+    //    {
+    //        if (DataContext is Tbl60SubtribusViewModel vm &&
+    //            vm.SelectedItem != null)
+    //        {
+    //            await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+    //        }
+    //    }
+    //    else if (DetailPivot.SelectedItem == ReferencesInfratribusPivot)
+    //    {
+    //        if (DataContext is Tbl60SubtribusViewModel vm &&
+    //            vm.SelectedItem != null)
+    //        {
+    //            await vm.ReferenceViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
+    //        }
+    //    }
+    //}
+
 }

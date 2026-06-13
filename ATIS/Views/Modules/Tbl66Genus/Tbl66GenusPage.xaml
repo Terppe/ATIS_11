@@ -94,12 +94,12 @@
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
 
-                    <TabView x:Name="TabViewBase"
+                    <!--<TabView x:Name="TabViewBase"
                              Margin="0"
                              SelectedIndex="{x:Bind ViewModel.SelectedTabIndex, Mode=TwoWay}"
                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <!--  EDIT  -->
+                        --><!--  EDIT  --><!--
                         <TabViewItem Header="Edit Genus">
                             <ScrollViewer Padding="1">
                                 <local:Tbl66GenusEditControl DataContext="{x:Bind ViewModel}"
@@ -107,15 +107,15 @@
                             </ScrollViewer>
                         </TabViewItem>
 
-                        <!--  COMMENTS  -->
+                        --><!--  COMMENTS  --><!--
                         <TabViewItem Header="Comments Genus">
                             <ScrollViewer Padding="1">
                                 <Grid RowDefinitions="Auto,*">
-                                    <!--  LISTE  -->
+                                    --><!--  LISTE  --><!--
                                     <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
                                                                             DataContext="{x:Bind ViewModel.CommentViewModel}" />
 
-                                    <!--  EDITOR  -->
+                                    --><!--  EDITOR  --><!--
                                     <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
                                                                           DataContext="{x:Bind ViewModel.CommentViewModel}"
                                                                           Item="{Binding SelectedItem, Mode=TwoWay}"
@@ -125,17 +125,17 @@
                             </ScrollViewer>
                         </TabViewItem>
 
-                        <!--  REFERENCES  -->
+                        --><!--  REFERENCES  --><!--
                         <TabViewItem Header="References Genus">
 
                             <ScrollViewer Padding="1">
                                 <Grid RowDefinitions="Auto,*">
 
-                                    <!--  LISTE  -->
+                                    --><!--  LISTE  --><!--
                                     <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
                                                                                 DataContext="{x:Bind ViewModel.ReferenceViewModel}" />
 
-                                    <!--  EDITOR  -->
+                                    --><!--  EDITOR  --><!--
                                     <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
                                                                               DataContext="{x:Bind ViewModel.ReferenceViewModel}"
                                                                               Item="{Binding SelectedItem, Mode=TwoWay}"
@@ -146,21 +146,21 @@
 
                         </TabViewItem>
 
-                        <!--  SPECIES  -->
+                        --><!--  SPECIES  --><!--
                         <TabViewItem Header="Species">
                             <ScrollViewer Padding="1">
                                 <TabView SelectedIndex="{x:Bind ViewModel.SelectedInnerTabIndex, Mode=TwoWay}">
 
-                                    <!--  EDIT SPECIES  -->
+                                    --><!--  EDIT SPECIES  --><!--
                                     <TabViewItem Header="Edit Species">
                                         <ScrollViewer Padding="1">
                                             <Grid RowDefinitions="Auto,*">
 
-                                                <!--  LISTE  -->
+                                                --><!--  LISTE  --><!--
                                                 <tbl75Species:Tbl75SpeciesParentControl Grid.Row="0"
                                                                                         DataContext="{x:Bind ViewModel.SpeciesViewModel}" />
 
-                                                <!--  EDITOR  -->
+                                                --><!--  EDITOR  --><!--
                                                 <tbl75Species:Tbl75SpeciesEditControl Grid.Row="1"
                                                                                       DataContext="{x:Bind ViewModel.SpeciesViewModel}"
                                                                                       Item="{Binding SelectedItem, Mode=TwoWay}"
@@ -169,16 +169,16 @@
                                         </ScrollViewer>
                                     </TabViewItem>
 
-                                    <!--  COMMENTS SPECIES  -->
+                                    --><!--  COMMENTS SPECIES  --><!--
                                     <TabViewItem Header="Comments Species">
                                         <ScrollViewer Padding="1">
                                             <Grid RowDefinitions="Auto,*">
 
-                                                <!--  LISTE  -->
+                                                --><!--  LISTE  --><!--
                                                 <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
                                                                                         DataContext="{x:Bind ViewModel.SpeciesViewModel.CommentViewModel}" />
 
-                                                <!--  EDITOR  -->
+                                                --><!--  EDITOR  --><!--
                                                 <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
                                                                                       DataContext="{x:Bind ViewModel.SpeciesViewModel.CommentViewModel}"
                                                                                       Item="{Binding SelectedItem, Mode=TwoWay}"
@@ -187,16 +187,16 @@
                                         </ScrollViewer>
                                     </TabViewItem>
 
-                                    <!--  REFERENCES SPECIES  -->
+                                    --><!--  REFERENCES SPECIES  --><!--
                                     <TabViewItem Header="References Species">
                                         <ScrollViewer Padding="1">
                                             <Grid RowDefinitions="Auto,*">
 
-                                                <!--  LISTE  -->
+                                                --><!--  LISTE  --><!--
                                                 <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
                                                                                             DataContext="{x:Bind ViewModel.SpeciesViewModel.ReferenceViewModel}" />
 
-                                                <!--  EDITOR  -->
+                                                --><!--  EDITOR  --><!--
                                                 <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
                                                                                           DataContext="{x:Bind ViewModel.SpeciesViewModel.ReferenceViewModel}"
                                                                                           Item="{Binding SelectedItem, Mode=TwoWay}"
@@ -210,7 +210,7 @@
                             </ScrollViewer>
                         </TabViewItem>
 
-                    </TabView>
+                    </TabView>-->
 
                 </layout:BaseBossPageLayout.DetailContent>
 
@@ -219,8 +219,8 @@
         </ScrollViewer>
 
         <!--  2. 🔥 Modernes Lade Overlay  -->
-        <components:LoadingOverlayControl Grid.RowSpan="1"
-                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <!--<components:LoadingOverlayControl Grid.RowSpan="1"
+                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
 
     </Grid>
 </Page>

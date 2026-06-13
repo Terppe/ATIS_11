@@ -7,6 +7,7 @@ using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl60Subtribus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl57Tribus;
 
@@ -18,66 +19,58 @@ namespace ATIS.Views.Modules.Tbl57Tribus;
 public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
 {
     private readonly IDataService _data;
+    private readonly IDialogService _dialog;
+
     private readonly LookupService _lookupService;
 
     // ============================================
     // CONSTRUCTOR
     // ============================================
     public Tbl57TribusViewModel(
-        IDataService data,
+        IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
-        LookupService lookupService,
-        Tbl60SubtribusViewModel subtribusViewModel,
-        Tbl90ReferenceViewModel referenceViewModel,
-        Tbl93CommentViewModel commentViewModel, 
-        HierarchyCoordinator coordinator
-    ) : base(data, dialog, coordinator)
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
-        _data = data;
-        _lookupService = lookupService;
+        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
 
-        // Dictionary mit Children initialisieren
-        ChildViewModels["Subtribus"] = subtribusViewModel;
-        ChildViewModels["Reference"] = referenceViewModel;
-        ChildViewModels["Comment"] = commentViewModel;
-    }
-    public void ResetBelow()
-    {
-        SubtribusViewModel.Items?.Clear();
-        ReferenceViewModel.Items?.Clear();
-        CommentViewModel.Items?.Clear();
+        //IsDetailVisible = false;
+        //IsEditVisible = false;
     }
 
     // ============================================
     // CHILD VIEWMODELS
     // ============================================
-    public Tbl60SubtribusViewModel SubtribusViewModel
-    {
-        get => ChildViewModels.TryGetValue("Subtribus", out var vm)
-            ? (Tbl60SubtribusViewModel)vm
-            : null!;
-        set => ChildViewModels["Subtribus"] = value;
-    }
-    public Tbl90ReferenceViewModel ReferenceViewModel
-    {
-        get => ChildViewModels.TryGetValue("Reference", out var vm)
-            ? (Tbl90ReferenceViewModel)vm
-            : null!;
-        set => ChildViewModels["Reference"] = value;
-    }
+    //public Tbl60SubtribusViewModel SubtribusViewModel
+    //{
+    //    get => ChildViewModels.TryGetValue("Subtribus", out var vm)
+    //        ? (Tbl60SubtribusViewModel)vm
+    //        : null!;
+    //    set => ChildViewModels["Subtribus"] = value;
+    //}
+    //public Tbl90ReferenceViewModel ReferenceViewModel
+    //{
+    //    get => ChildViewModels.TryGetValue("Reference", out var vm)
+    //        ? (Tbl90ReferenceViewModel)vm
+    //        : null!;
+    //    set => ChildViewModels["Reference"] = value;
+    //}
 
-    public Tbl93CommentViewModel CommentViewModel
-    {
-        get => ChildViewModels.TryGetValue("Comment", out var vm)
-            ? (Tbl93CommentViewModel)vm
-            : null!;
-        set => ChildViewModels["Comment"] = value;
-    }
+    //public Tbl93CommentViewModel CommentViewModel
+    //{
+    //    get => ChildViewModels.TryGetValue("Comment", out var vm)
+    //        ? (Tbl93CommentViewModel)vm
+    //        : null!;
+    //    set => ChildViewModels["Comment"] = value;
+    //}
     // ============================================
     // HIERARCHIE-KONFIGURATION
     // ============================================
-    protected override HierarchyLevel CurrentLevel => HierarchyLevel.Tribus;
-    protected override HierarchyLevel ParentLevel => HierarchyLevel.Supertribus;
+    //protected override HierarchyLevel CurrentLevel => HierarchyLevel.Tribus;
+    //protected override HierarchyLevel ParentLevel => HierarchyLevel.Supertribus;
     public ICommand SortCommand { get; }
     public ICommand OpenEditCommand { get; }
     public ICommand CloseEditCommand { get; }
@@ -87,7 +80,7 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
         if (supertribusId <= 0) return;
 
         var items = await _data.GetTribusForSupertribusAsync(supertribusId);
-        Items = new ObservableCollection<Models.Tbl57Tribus>(items);
+     //   Items = new ObservableCollection<Models.Tbl57Tribus>(items);
     }
 
     // ---------------------------------------------------------
@@ -113,15 +106,25 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
             SupertribusLookup[item.SupertribusId] = item.SupertribusName;
         }
     }
-    public async Task LoadAsync()
+    //public async Task LoadAsync()
+    //{
+    //    await LoadSupertribusAsync();
+    //    await ReloadAndSelectAsync(saved: default, autoSelect: true);
+    //}
+
+    protected override async Task NewAsync()
     {
-        await LoadSupertribusAsync();
-        await ReloadAndSelectAsync(saved: default, autoSelect: true);
+        throw new NotImplementedException();
+    }
+
+    protected override Models.Tbl57Tribus CreateNewItem()
+    {
+        throw new NotImplementedException();
     }
 
     protected override async Task<IEnumerable<Models.Tbl57Tribus>> LoadItemsAsync()
     {
-        if (string.IsNullOrWhiteSpace(CurrentFilter))
+        if (string.IsNullOrWhiteSpace(default))
             return Enumerable.Empty<Models.Tbl57Tribus>();
 
         //if (string.IsNullOrWhiteSpace(CurrentFilter))
@@ -131,18 +134,56 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
         //}
 
         // Filtere nach dem Text in CurrentFilter
-        return await _data.SearchTribusAsync(CurrentFilter);
+        return await _data.SearchTribusAsync(default);
     }
-    public override async Task ApplyFilterAsync(string? filter)
-    {
-        if (SuppressFilter)
-            return;
 
-        CurrentFilter = filter;
-        OnPropertyChanged(nameof(CurrentFilter));
+    protected override async Task<Models.Tbl57Tribus?> SaveItemAsync(Models.Tbl57Tribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl57Tribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl57Tribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl57Tribus item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override int GetId(Models.Tbl57Tribus model)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public override async Task LoadParentAsync(int parentId)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task ClearChildCollectionsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        throw new NotImplementedException();
+    }
+
+
+    public  async Task ApplyFilterAsync(string? filter)
+    {
 
         await LoadSupertribusAsync();
-        await ReloadAndSelectAsync(saved: default, autoSelect: false);
+       // await ReloadAndSelectAsync(saved: default, autoSelect: false);
     }
 
 
@@ -172,20 +213,20 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
             {
                 if (value == null)
                 {
-                    CommentViewModel.CurrentTribusId = null;
-                    ReferenceViewModel.CurrentTribusId = null;
+                    //CommentViewModel.CurrentTribusId = null;
+                    //ReferenceViewModel.CurrentTribusId = null;
                     return;
                 }
 
                 int id = value.TribusId;
 
                 // Parent für Comments
-                CommentViewModel.CurrentTribusId = id;
-                CommentViewModel.CurrentSubtribusId = null;
+      //          CommentViewModel.CurrentTribusId = id;
+                //CommentViewModel.CurrentSubtribusId = null;
 
-                // Parent für References
-                ReferenceViewModel.CurrentTribusId = id;
-                ReferenceViewModel.CurrentSubtribusId = null;
+                //// Parent für References
+                //ReferenceViewModel.CurrentTribusId = id;
+                //ReferenceViewModel.CurrentSubtribusId = null;
 
                 // Parent für Subtribus
        //         SubtribusViewModel.CurrenTribusId = id;
@@ -205,14 +246,14 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
 
                 if (value == 1) // Comments Tribus
                 {
-                    CommentViewModel.CurrentTribusId = id;
-                    CommentViewModel.CurrentSupertribusId = null;
+                    //CommentViewModel.CurrentTribusId = id;
+                    //CommentViewModel.CurrentSupertribusId = null;
                 }
 
                 if (value == 2) // References Tribus
                 {
-                    ReferenceViewModel.CurrentTribusId = id;
-                    ReferenceViewModel.CurrentSupertribusId = null;
+                    //ReferenceViewModel.CurrentTribusId = id;
+                    //ReferenceViewModel.CurrentSupertribusId = null;
                 }
             }
         }
@@ -230,14 +271,14 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
 
                 if (value == 1) // Comments Tribus
                 {
-                    CommentViewModel.CurrentTribusId = id;
-                    CommentViewModel.CurrentSupertribusId = null;
+                    //CommentViewModel.CurrentTribusId = id;
+                    //CommentViewModel.CurrentSupertribusId = null;
                 }
 
                 if (value == 2) // References Tribus
                 {
-                    ReferenceViewModel.CurrentTribusId = id;
-                    ReferenceViewModel.CurrentSupertribusId = null;
+                    //ReferenceViewModel.CurrentTribusId = id;
+                    //ReferenceViewModel.CurrentSupertribusId = null;
                 }
             }
         }
@@ -248,59 +289,25 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
     // TEMPLATE IMPLEMENTATIONS
     // ============================================
 
-    protected override Models.Tbl57Tribus CreateNewItem()
-        => new()
-        {
-            SupertribusId = _coordinator.GetSelectedId(ParentLevel) ?? 0,
-            TribusId = 0
-        };
 
-    protected override async Task LoadForParentAsync(int supertribusId)
-    {
-        var items = await _data.GetTribusForSupertribusAsync(supertribusId);
-        Items = new ObservableCollection<Models.Tbl57Tribus>(items);
-    }
+    //protected override async Task LoadForParentAsync(int supertribusId)
+    //{
+    //    var items = await _data.GetTribusForSupertribusAsync(supertribusId);
+    //    Items = new ObservableCollection<Models.Tbl57Tribus>(items);
+    //}
 
-    protected override async Task<Models.Tbl57Tribus?> SaveItemAsync(Models.Tbl57Tribus item)
-    {
-        if (await _data.TribusExistsAsync(item))
-        {
-            await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
-            return null;
-        }
 
-        var saved = await _data.UpsertTribusAsync(item);
-        return await _data.GetTribusByIdAsync(saved.TribusId);
-    }
 
-    protected override async Task<bool> DeleteItemAsync(Models.Tbl57Tribus item)
-    {
-        if (item.TribusId == 0)
-            return false; // Unsaved
+    //protected override async Task ClearChildCollectionsAsync()
+    //{
+    //    SubtribusViewModel.Items?.Clear();
+    //    await Task.CompletedTask;
+    //}
 
-        if (await _data.TribusHasSubtribusAsync(item.TribusId))
-        {
-            await _dialog.ShowErrorAsync(
-                "Error_DeleteNotAllowed_Title",
-                "Error_DeleteNotAllowed_Message"
-            );
-            return false;
-        }
-
-        await _data.DeleteTribusAsync(item.TribusId);
-        return true;
-    }
-
-    protected override async Task ClearChildCollectionsAsync()
-    {
-        SubtribusViewModel.Items?.Clear();
-        await Task.CompletedTask;
-    }
-
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        await SubtribusViewModel.LoadForTribusAsync(entityId);
-    }
+    //protected override async Task LoadChildrenAsync(int entityId)
+    //{
+    //    await SubtribusViewModel.LoadForTribusAsync(entityId);
+    //}
 
 
     // ============================================
@@ -321,29 +328,29 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
     }
 
 
-    protected override IEnumerable<Models.Tbl57Tribus> SortItems(
-        IEnumerable<Models.Tbl57Tribus> items, string column, bool ascending)
-    {
-        return column switch
-        {
-            "Id" => ascending
-                ? items.OrderBy(x => x.TribusId)
-                : items.OrderByDescending(x => x.TribusId),
-            "Name" => ascending
-                ? items.OrderBy(x => x.TribusName)
-                : items.OrderByDescending(x => x.TribusName),
-            _ => items
-        };
-    }
+    //protected override IEnumerable<Models.Tbl57Tribus> SortItems(
+    //    IEnumerable<Models.Tbl57Tribus> items, string column, bool ascending)
+    //{
+    //    return column switch
+    //    {
+    //        "Id" => ascending
+    //            ? items.OrderBy(x => x.TribusId)
+    //            : items.OrderByDescending(x => x.TribusId),
+    //        "Name" => ascending
+    //            ? items.OrderBy(x => x.TribusName)
+    //            : items.OrderByDescending(x => x.TribusName),
+    //        _ => items
+    //    };
+    //}
 
-    protected override void UpdateHeaderTexts()
-    {
-        const string asc = " ▲";
-        const string desc = " ▼";
+    //protected override void UpdateHeaderTexts()
+    //{
+    //    const string asc = " ▲";
+    //    const string desc = " ▼";
 
-        IdHeaderText = "ID";
-        NameHeaderText = "Name";
+    //    IdHeaderText = "ID";
+    //    NameHeaderText = "Name";
 
-        // Optional: Sorting-Pfeile hinzufügen wenn nötig
-    }
+    //    // Optional: Sorting-Pfeile hinzufügen wenn nötig
+    //}
 }

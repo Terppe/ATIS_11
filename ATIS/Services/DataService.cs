@@ -5,6 +5,7 @@ using ATIS.Interfaces;
 using ATIS.Models;
 using Microsoft.EntityFrameworkCore;
 using static ATIS.Interfaces.IDataService;
+using static ATIS.Views.Report.PdfModels;
 using static SkiaSharp.HarfBuzz.SKShaper;
 
 //https://www.reddit.com/r/reactjs/comments/m4mhp7/how_to_update_state_in_useeffect_when_getting/
@@ -16,14 +17,19 @@ public partial class DataService : ObservableObject, IDataService
     private const string Value = "#";
 
     private readonly IUserService _user;
-    private readonly AtisDbContext _context;
+    private readonly AtisDbContext? _context;
+    private readonly IDbContextFactory<AtisDbContext>? _factory;
 
     public DataService(AtisDbContext context, IUserService user)
     {
         _context = context;
         _user = user;
     }
-
+    public DataService(IDbContextFactory<AtisDbContext> factory, IUserService user)
+    {
+        _factory = factory;
+        _user = user;
+    }
     private void ApplyAuditInfo(IAuditable entity, bool isNew)
     {
         if (isNew)
@@ -2020,9 +2026,12 @@ public partial class DataService : ObservableObject, IDataService
     //neu
     public async Task<IEnumerable<Tbl57Tribus>> GetAllTribusAsync()
     {
-        return await _context.Tbl57Tribusses
-            .AsNoTracking()
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .Include(e => e.Supertribus)
             .OrderBy(e => e.TribusName)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl57Tribus>> SearchTribusAsync(string? search)
@@ -2030,35 +2039,31 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl57Tribus>();
 
-        var result = await _context.Tbl57Tribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
             .Where(e =>
                 e.TribusName.StartsWith(search) ||
                 e.TribusId.ToString() == search)
+            .Include(e => e.Supertribus)
             .OrderBy(e => e.TribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        // SupertribusName ergänzen
-        foreach (var item in result)
-        {
-            item.Supertribus = await _context.Tbl54Supertribusses
-                .FirstOrDefaultAsync(x => x.SupertribusId == item.SupertribusId);
-        }
-
-        return result;
     }
-    public async Task<Tbl57Tribus> GetTribusByIdAsync(int id)
+    public async Task<Tbl57Tribus?> GetTribusByIdAsync(int id)
     {
-        return await _context.Tbl57Tribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .Include(e => e.Supertribus)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.TribusId == id);
     }
-
     public async Task<Tbl57Tribus> GetTribusByTribusIdAsync(int tribusId)
     {
         return await _context.Tbl57Tribusses
             .FirstOrDefaultAsync(x => x.TribusId == tribusId);
     }
-
     public async Task<string> GetTribusNameByTribusId(int tribusId)
     {
         var tribus = await GetTribusByTribusIdAsync(tribusId);
@@ -2066,25 +2071,22 @@ public partial class DataService : ObservableObject, IDataService
     }
     public async Task<Tbl57Tribus> UpsertTribusAsync(Tbl57Tribus uiEntity)
     {
+        await using var context = _factory.CreateDbContext();
+
         Tbl57Tribus dbEntity;
 
         if (uiEntity.TribusId == 0)
         {
-            // NEU → frische DB-Instanz erzeugen
             dbEntity = new Tbl57Tribus();
-            _context.Tbl57Tribusses.Add(dbEntity);
+            context.Tbl57Tribusses.Add(dbEntity);
         }
         else
         {
-            // UPDATE → bestehende DB-Instanz laden
-            dbEntity = await _context.Tbl57Tribusses
-                .FirstOrDefaultAsync(x => x.TribusId == uiEntity.TribusId);
-
-            if (dbEntity == null)
-                throw new InvalidOperationException("Entity not found in database.");
+            dbEntity = await context.Tbl57Tribusses
+                           .FirstOrDefaultAsync(x => x.TribusId == uiEntity.TribusId)
+                       ?? throw new InvalidOperationException("Entity not found.");
         }
 
-        // 🔥 Automatische Kopie aller relevanten Felder
         CopyProperties(uiEntity, dbEntity,
             nameof(Tbl57Tribus.TribusId),
             nameof(Tbl57Tribus.Writer),
@@ -2097,57 +2099,69 @@ public partial class DataService : ObservableObject, IDataService
         var isNew = dbEntity.TribusId == 0;
         ApplyAuditInfo(dbEntity, isNew);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return dbEntity;
     }
     public async Task DeleteTribusAsync(int id)
     {
-        var entity = await _context.Tbl57Tribusses.FindAsync(id);
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl57Tribusses.FindAsync(id);
         if (entity != null)
         {
-            _context.Tbl57Tribusses.Remove(entity);
-            await _context.SaveChangesAsync();
+            context.Tbl57Tribusses.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
     public async Task<bool> TribusExistsAsync(Tbl57Tribus entity)
     {
-        return await _context.Tbl57Tribusses.AnyAsync(x =>
-                x.TribusName == entity.TribusName &&
-                x.SupertribusId == entity.SupertribusId &&
-                x.Valid == entity.Valid &&
-                x.ValidYear == entity.ValidYear &&
-                x.Synonym == entity.Synonym &&
-                x.Author == entity.Author &&
-                x.AuthorYear == entity.AuthorYear &&
-                x.Info == entity.Info &&
-                x.EngName == entity.EngName &&
-                x.GerName == entity.GerName &&
-                x.FraName == entity.FraName &&
-                x.PorName == entity.PorName &&
-                x.Memo == entity.Memo &&
-                x.TribusId != entity.TribusId   // wichtig für Update
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses.AnyAsync(x =>
+            x.TribusName == entity.TribusName &&
+            x.SupertribusId == entity.SupertribusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.TribusId != entity.TribusId
         );
     }
 
     public async Task<bool> TribusHasSubtribusAsync(int tribusId)
     {
-        return await _context.Tbl60Subtribusses.AnyAsync(x => x.TribusId == tribusId);
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
+            .AnyAsync(x => x.TribusId == tribusId);
     }
     public async Task<bool> TribusHasReferenceAsync(int tribusId)
     {
-        return await _context.Tbl90References.AnyAsync(x => x.TribusId == tribusId);
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .AnyAsync(x => x.TribusId == tribusId);
     }
     public async Task<bool> TribusHasCommentAsync(int tribusId)
     {
-        return await _context.Tbl93Comments.AnyAsync(x => x.TribusId == tribusId);
-    }
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.TribusId == tribusId);
+    }
 
     public async Task<IEnumerable<Tbl57Tribus>> GetTribusAsync(int dummy)
     {
-        return await _context.Tbl57Tribusses
-            .OrderBy(x => x.TribusName)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .Include(e => e.Supertribus)
+            .OrderBy(e => e.TribusName)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -2201,68 +2215,37 @@ public partial class DataService : ObservableObject, IDataService
     //neu
     public async Task<IEnumerable<Tbl60Subtribus>> GetAllSubtribusAsync()
     {
-        return await _context.Tbl60Subtribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
             .AsNoTracking()
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
-
-    //public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
-    //{
-    //    if (string.IsNullOrWhiteSpace(search))
-    //        return Enumerable.Empty<Tbl60Subtribus>();
-
-    //    var result = await _context.Tbl60Subtribusses
-    //        .Where(e =>
-    //            e.SubtribusName.StartsWith(search) ||
-    //            e.SubtribusId.ToString() == search)
-    //        .OrderBy(e => e.SubtribusName)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-
-    //    //TribusName dem Model Subtribus hinzufügen
-    //    foreach (var item in result)
-    //    {
-    //        item.Tribus = await _context.Tbl57Tribusses
-    //            .FirstOrDefaultAsync(x => x.TribusId == item.TribusId);
-    //    }
-
-    //    //foreach (var item in result)
-    //    //{
-    //    //    item.TribusName = await GetTribusNameByTribusId(item.TribusId);
-    //    //}
-
-    //    return result;
-    //}
-
     public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl60Subtribus>();
 
-        var result = await _context.Tbl60Subtribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
             .Where(e =>
                 e.SubtribusName.StartsWith(search) ||
                 e.SubtribusId.ToString() == search)
+            .Include(e => e.Tribus)
             .OrderBy(e => e.SubtribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        // TribusName ergänzen
-        foreach (var item in result)
-        {
-            item.Tribus = await _context.Tbl57Tribusses
-                .FirstOrDefaultAsync(x => x.TribusId == item.TribusId);
-        }
-
-        return result;
     }
     public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusWithTribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl60Subtribus>();
 
-        var result = await _context.Tbl60Subtribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
             .Where(e =>
                 e.SubtribusName.StartsWith(search) ||
                 e.SubtribusId.ToString() == search)
@@ -2270,57 +2253,34 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubtribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        //// TribusName ergänzen
-        //foreach (var item in result)
-        //{
-        //    item.Tribus = await _context.Tbl57Tribusses
-        //        .FirstOrDefaultAsync(x => x.TribusId == item.TribusId);
-        //}
-
-        return result;
     }
 
-    //public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
-    //{
-    //    if (string.IsNullOrWhiteSpace(search))
-    //        return Enumerable.Empty<Tbl60Subtribus>();
-
-    //    return await _context.Tbl60Subtribusses
-    //        .Where(e =>
-    //            EF.Functions.Like(e.SubtribusName, search + "%") ||
-    //            e.SubtribusId.ToString() == search)
-    //        .Include(e => e.Tribus)
-    //        .OrderBy(e => e.SubtribusName)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
-    public async Task<Tbl60Subtribus> GetSubtribusByIdAsync(int id)
+    public async Task<Tbl60Subtribus?> GetSubtribusByIdAsync(int id)
     {
-        return await _context.Tbl60Subtribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubtribusId == id);
     }
     public async Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
     {
+        await using var context = _factory.CreateDbContext();
+
         Tbl60Subtribus dbEntity;
 
         if (uiEntity.SubtribusId == 0)
         {
-            // NEU → frische DB-Instanz erzeugen
             dbEntity = new Tbl60Subtribus();
-            _context.Tbl60Subtribusses.Add(dbEntity);
+            context.Tbl60Subtribusses.Add(dbEntity);
         }
         else
         {
-            // UPDATE → bestehende DB-Instanz laden
-            dbEntity = await _context.Tbl60Subtribusses
-                .FirstOrDefaultAsync(x => x.SubtribusId == uiEntity.SubtribusId);
-
-            if (dbEntity == null)
-                throw new InvalidOperationException("Entity not found in database.");
+            dbEntity = await context.Tbl60Subtribusses
+                           .FirstOrDefaultAsync(x => x.SubtribusId == uiEntity.SubtribusId)
+                       ?? throw new InvalidOperationException("Entity not found in database.");
         }
 
-        // 🔥 Automatische Kopie aller relevanten Felder
         CopyProperties(uiEntity, dbEntity,
             nameof(Tbl60Subtribus.SubtribusId),
             nameof(Tbl60Subtribus.Writer),
@@ -2333,63 +2293,81 @@ public partial class DataService : ObservableObject, IDataService
         var isNew = dbEntity.SubtribusId == 0;
         ApplyAuditInfo(dbEntity, isNew);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return dbEntity;
     }
     public async Task DeleteSubtribusAsync(int id)
     {
-        var entity = await _context.Tbl60Subtribusses.FindAsync(id);
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl60Subtribusses.FindAsync(id);
         if (entity != null)
         {
-            _context.Tbl60Subtribusses.Remove(entity);
-            await _context.SaveChangesAsync();
+            context.Tbl60Subtribusses.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
     public async Task<bool> SubtribusExistsAsync(Tbl60Subtribus entity)
     {
-        return await _context.Tbl60Subtribusses.AnyAsync(x =>
-                x.SubtribusName == entity.SubtribusName &&
-                x.TribusId == entity.TribusId &&
-                x.Valid == entity.Valid &&
-                x.ValidYear == entity.ValidYear &&
-                x.Synonym == entity.Synonym &&
-                x.Author == entity.Author &&
-                x.AuthorYear == entity.AuthorYear &&
-                x.Info == entity.Info &&
-                x.EngName == entity.EngName &&
-                x.GerName == entity.GerName &&
-                x.FraName == entity.FraName &&
-                x.PorName == entity.PorName &&
-                x.Memo == entity.Memo &&
-                x.SubtribusId != entity.SubtribusId   // wichtig für Update
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses.AnyAsync(x =>
+            x.SubtribusName == entity.SubtribusName &&
+            x.TribusId == entity.TribusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.SubtribusId != entity.SubtribusId
         );
     }
 
     public async Task<bool> SubtribusHasInfratribusAsync(int subtribusId)
     {
-        return await _context.Tbl63Infratribusses.AnyAsync(x => x.SubtribusId == subtribusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl63Infratribusses
+            .AnyAsync(x => x.SubtribusId == subtribusId);
     }
     public async Task<bool> SubtribusHasReferenceAsync(int subtribusId)
     {
-        return await _context.Tbl90References.AnyAsync(x => x.SubtribusId == subtribusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.SubtribusId == subtribusId);
     }
     public async Task<bool> SubtribusHasCommentAsync(int subtribusId)
     {
-        return await _context.Tbl93Comments.AnyAsync(x => x.SubtribusId == subtribusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.SubtribusId == subtribusId);
     }
 
     public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusForTribusAsync(int tribusId)
     {
-        return await _context.Tbl60Subtribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
             .Where(e => e.TribusId == tribusId)
+            .Include(e => e.Tribus)
             .OrderBy(e => e.SubtribusName)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusAsync(int dummy)
     {
-        return await _context.Tbl60Subtribusses
-            .OrderBy(x => x.SubtribusName)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
+            .Include(e => e.Tribus)
+            .OrderBy(e => e.SubtribusName)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -2443,7 +2421,9 @@ public partial class DataService : ObservableObject, IDataService
     //neu
     public async Task<IEnumerable<Tbl63Infratribus>> GetAllInfratribusAsync()
     {
-        return await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
             .AsNoTracking()
             .OrderBy(e => e.InfratribusName)
             .ToListAsync();
@@ -2453,29 +2433,25 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl63Infratribus>();
 
-        var result = await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
             .Where(e =>
                 e.InfratribusName.StartsWith(search) ||
                 e.InfratribusId.ToString() == search)
+            .Include(e => e.Subtribus)
             .OrderBy(e => e.InfratribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        // SubtribusName ergänzen
-        foreach (var item in result)
-        {
-            item.Subtribus = await _context.Tbl60Subtribusses
-                .FirstOrDefaultAsync(x => x.SubtribusId == item.SubtribusId);
-        }
-
-        return result;
     }
     public async Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusWithSubtribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl63Infratribus>();
 
-        var result = await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
             .Where(e =>
                 e.InfratribusName.StartsWith(search) ||
                 e.InfratribusId.ToString() == search)
@@ -2483,38 +2459,32 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfratribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        //// SubtribusName ergänzen
-        //foreach (var item in result)
-        //{
-        //    item.Subtribus = await _context.Tbl60Subtribusses
-        //        .FirstOrDefaultAsync(x => x.SubtribusId == item.SubtribusId);
-        //}
-
-        return result;
     }
 
     public async Task<Tbl63Infratribus> GetInfratribusByIdAsync(int id)
     {
-        return await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.InfratribusId == id);
     }
     public async Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus uiEntity)
     {
+        await using var context = _factory.CreateDbContext();
+
         Tbl63Infratribus dbEntity;
 
         if (uiEntity.InfratribusId == 0)
         {
             dbEntity = new Tbl63Infratribus();
-            _context.Tbl63Infratribusses.Add(dbEntity);
+            context.Tbl63Infratribusses.Add(dbEntity);
         }
         else
         {
-            dbEntity = await _context.Tbl63Infratribusses
-                .FirstOrDefaultAsync(x => x.InfratribusId == uiEntity.InfratribusId);
-
-            if (dbEntity == null)
-                throw new InvalidOperationException("Entity not found in database.");
+            dbEntity = await context.Tbl63Infratribusses
+                           .FirstOrDefaultAsync(x => x.InfratribusId == uiEntity.InfratribusId)
+                       ?? throw new InvalidOperationException("Entity not found in database.");
         }
 
         CopyProperties(uiEntity, dbEntity,
@@ -2529,22 +2499,26 @@ public partial class DataService : ObservableObject, IDataService
         var isNew = dbEntity.InfratribusId == 0;
         ApplyAuditInfo(dbEntity, isNew);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return dbEntity;
     }
     public async Task DeleteInfratribusAsync(int id)
     {
-        var entity = await _context.Tbl63Infratribusses.FindAsync(id);
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl63Infratribusses.FindAsync(id);
         if (entity != null)
         {
-            _context.Tbl63Infratribusses.Remove(entity);
-            await _context.SaveChangesAsync();
+            context.Tbl63Infratribusses.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
     public async Task<bool> InfratribusExistsAsync(Tbl63Infratribus entity)
     {
-        return await _context.Tbl63Infratribusses.AnyAsync(x =>
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses.AnyAsync(x =>
             x.InfratribusName == entity.InfratribusName &&
             x.SubtribusId == entity.SubtribusId &&
             x.Valid == entity.Valid &&
@@ -2564,83 +2538,80 @@ public partial class DataService : ObservableObject, IDataService
 
     public async Task<bool> InfratribusHasGenusAsync(int infratribusId)
     {
-        return await _context.Tbl66Genusses.AnyAsync(x => x.InfratribusId == infratribusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl66Genusses.AnyAsync(x => x.InfratribusId == infratribusId);
     }
     public async Task<bool> InfratribusHasReferenceAsync(int infratribusId)
     {
-        return await _context.Tbl90References.AnyAsync(x => x.InfratribusId == infratribusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References.AnyAsync(x => x.InfratribusId == infratribusId);
     }
     public async Task<bool> InfratribusHasCommentAsync(int infratribusId)
     {
-        return await _context.Tbl93Comments.AnyAsync(x => x.InfratribusId == infratribusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments.AnyAsync(x => x.InfratribusId == infratribusId);
     }
 
     public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int subtribusId)
     {
-        var result = await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
             .Where(i => i.SubtribusId == subtribusId)
+            .Include(i => i.Subtribus)
             .OrderBy(i => i.InfratribusName)
             .AsNoTracking()
             .ToListAsync();
-
-        // SubtribusName ergänzen
-        //foreach (var item in result)
-        //{
-        //    item.Subtribus = await _context.Tbl60Subtribusses
-        //        .FirstOrDefaultAsync(x => x.SubtribusId == item.SubtribusId);
-        //}
-
-        return result;
     }
-
-    //public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int subtribusId)
-    //{
-    //    return await _context.Tbl63Infratribusses
-    //        .Where(e => e.SubtribusId == subtribusId)
-    //        .OrderBy(e => e.InfratribusName)
-    //        .ToListAsync();
-    //}
     public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusAsync(int dummy)
     {
-        return await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
             .OrderBy(x => x.InfratribusName)
+            .AsNoTracking()
             .ToListAsync();
     }
-
-    //-------------------------
-    //alt
-
     public async Task<bool> HasGenusAsync(int infratribusId)
     {
-        return await _context.Tbl66Genusses.AnyAsync(g => g.InfratribusId == infratribusId);
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .AnyAsync(g => g.InfratribusId == infratribusId);
     }
 
     public async Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId)
     {
-        var list = await _context.Tbl63Infratribusses
+        await using var context = _factory.CreateDbContext();
+
+        var list = await context.Tbl63Infratribusses
             .Where(e => e.SubtribusId == subtribusId)
+            .Include(e => e.Subtribus)
             .OrderBy(e => e.InfratribusName)
+            .AsNoTracking()
             .ToListAsync();
 
         return new ObservableCollection<Tbl63Infratribus>(list);
     }
-
     public async Task DeleteCommentsAsync(int infratribusId)
     {
-        var comments = _context.Tbl93Comments
+        await using var context = _factory.CreateDbContext();
+
+        var comments = context.Tbl93Comments
             .Where(c => c.InfratribusId == infratribusId);
 
-        _context.Tbl93Comments.RemoveRange(comments);
-        await _context.SaveChangesAsync();
+        context.Tbl93Comments.RemoveRange(comments);
+        await context.SaveChangesAsync();
     }
-
     public async Task DeleteReferencesAsync(int infratribusId)
     {
-        var refs = _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+
+        var refs = context.Tbl90References
             .Where(r => r.InfratribusId == infratribusId);
 
-        _context.Tbl90References.RemoveRange(refs);
-        await _context.SaveChangesAsync();
+        context.Tbl90References.RemoveRange(refs);
+        await context.SaveChangesAsync();
     }
 
     //-------------------------------------------------------
@@ -2763,9 +2734,12 @@ public partial class DataService : ObservableObject, IDataService
     //Neu
     public async Task<IEnumerable<Tbl66Genus>> GetAllGenusAsync()
     {
-        return await _context.Tbl66Genusses
-            .AsNoTracking()
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .Include(e => e.Infratribus)
             .OrderBy(e => e.GenusName)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search)
@@ -2773,44 +2747,42 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl66Genus>();
 
-        var result = await _context.Tbl66Genusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
             .Where(e =>
                 e.GenusName.StartsWith(search) ||
                 e.GenusId.ToString() == search)
+            .Include(e => e.Infratribus)
             .OrderBy(e => e.GenusName)
             .AsNoTracking()
             .ToListAsync();
-
-        // InfratribusName ergänzen
-        foreach (var item in result)
-        {
-            item.Infratribus = await _context.Tbl63Infratribusses
-                .FirstOrDefaultAsync(x => x.InfratribusId == item.InfratribusId);
-        }
-
-        return result;
     }
-    public async Task<Tbl66Genus> GetGenusByIdAsync(int id)
+    public async Task<Tbl66Genus?> GetGenusByIdAsync(int id)
     {
-        return await _context.Tbl66Genusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .Include(e => e.Infratribus)
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.GenusId == id);
     }
     public async Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus uiEntity)
     {
+        await using var context = _factory.CreateDbContext();
+
         Tbl66Genus dbEntity;
 
-        if (uiEntity.InfratribusId == 0)
+        if (uiEntity.GenusId == 0)
         {
             dbEntity = new Tbl66Genus();
-            _context.Tbl66Genusses.Add(dbEntity);
+            context.Tbl66Genusses.Add(dbEntity);
         }
         else
         {
-            dbEntity = await _context.Tbl66Genusses
-                .FirstOrDefaultAsync(x => x.GenusId == uiEntity.GenusId);
-
-            if (dbEntity == null)
-                throw new InvalidOperationException("Entity not found in database.");
+            dbEntity = await context.Tbl66Genusses
+                           .FirstOrDefaultAsync(x => x.GenusId == uiEntity.GenusId)
+                       ?? throw new InvalidOperationException("Entity not found.");
         }
 
         CopyProperties(uiEntity, dbEntity,
@@ -2825,22 +2797,26 @@ public partial class DataService : ObservableObject, IDataService
         var isNew = dbEntity.GenusId == 0;
         ApplyAuditInfo(dbEntity, isNew);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return dbEntity;
     }
     public async Task DeleteGenusAsync(int id)
     {
-        var entity = await _context.Tbl66Genusses.FindAsync(id);
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl66Genusses.FindAsync(id);
         if (entity != null)
         {
-            _context.Tbl66Genusses.Remove(entity);
-            await _context.SaveChangesAsync();
+            context.Tbl66Genusses.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
     public async Task<bool> GenusExistsAsync(Tbl66Genus entity)
     {
-        return await _context.Tbl66Genusses.AnyAsync(x =>
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses.AnyAsync(x =>
             x.GenusName == entity.GenusName &&
             x.InfratribusId == entity.InfratribusId &&
             x.Valid == entity.Valid &&
@@ -2871,16 +2847,21 @@ public partial class DataService : ObservableObject, IDataService
         return await _context.Tbl93Comments.AnyAsync(x => x.GenusId == genusId);
     }
 
+
     public async Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId)
     {
-        return await _context.Tbl66Genusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
             .Where(e => e.InfratribusId == infratribusId)
             .OrderBy(e => e.GenusName)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl66Genus>> GetGenusAsync(int dummy)
     {
-        return await _context.Tbl66Genusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
             .OrderBy(x => x.GenusName)
             .ToListAsync();
     }
@@ -3089,13 +3070,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Species                
     //new
-    public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
-    {
-        return await _context.Tbl75Speciesses
-            .Where(e => e.GenusId == genusId)
-            .OrderBy(e => e.SpeciesName)
-            .ToListAsync();
-    }
     public async Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy)
     {
         return await _context.Tbl75Speciesses
@@ -3103,6 +3077,16 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Where(e => e.GenusId == genusId)
+            .OrderBy(e => e.SpeciesName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
     //-----------------------------
     public ObservableCollection<Tbl75Species> GetSpeciesAsync()
@@ -3573,7 +3557,9 @@ public partial class DataService : ObservableObject, IDataService
     //Neu
     public async Task<IEnumerable<Tbl90Reference>> GetAllReferenceAsync()
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
             .AsNoTracking()
             .OrderBy(e => e.Info)
             .ToListAsync();
@@ -3584,8 +3570,9 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl90Reference>();
 
-        return await _context.Tbl90References
-            .AsNoTracking()
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
             .Where(e =>
                 e.Info!.StartsWith(search) ||
                 e.ReferenceId.ToString() == search)
@@ -3595,31 +3582,30 @@ public partial class DataService : ObservableObject, IDataService
 
     public async Task<Tbl90Reference> GetReferenceByIdAsync(int id)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
             .FirstOrDefaultAsync(x => x.ReferenceId == id);
     }
 
     public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference uiEntity)
     {
+        await using var context = _factory.CreateDbContext();
+
         Tbl90Reference dbEntity;
 
         if (uiEntity.ReferenceId == 0)
         {
-            // NEU
             dbEntity = new Tbl90Reference();
-            _context.Tbl90References.Add(dbEntity);
+            context.Tbl90References.Add(dbEntity);
         }
         else
         {
-            // UPDATE
-            dbEntity = await _context.Tbl90References
-                .FirstOrDefaultAsync(x => x.ReferenceId == uiEntity.ReferenceId);
-
-            if (dbEntity == null)
-                throw new InvalidOperationException("Entity not found in database.");
+            dbEntity = await context.Tbl90References
+                           .FirstOrDefaultAsync(x => x.ReferenceId == uiEntity.ReferenceId)
+                       ?? throw new InvalidOperationException("Entity not found in database.");
         }
 
-        // 🔥 Automatische Kopie aller relevanten Felder
         CopyProperties(uiEntity, dbEntity,
             nameof(Tbl90Reference.ReferenceId),
             nameof(Tbl90Reference.Writer),
@@ -3632,71 +3618,81 @@ public partial class DataService : ObservableObject, IDataService
         var isNew = dbEntity.ReferenceId == 0;
         ApplyAuditInfo(dbEntity, isNew);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return dbEntity;
     }
 
     public async Task DeleteReferenceAsync(int id)
     {
-        var entity = await _context.Tbl90References.FindAsync(id);
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl90References.FindAsync(id);
         if (entity != null)
         {
-            _context.Tbl90References.Remove(entity);
-            await _context.SaveChangesAsync();
+            context.Tbl90References.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task<bool> ReferenceExistsAsync(Tbl90Reference entity)
     {
-        return await _context.Tbl90References.AnyAsync(x =>
-                x.Info == entity.Info &&
-                x.SubtribusId == entity.SubtribusId &&
-                x.Valid == entity.Valid &&
-                x.ValidYear == entity.ValidYear &&
-                x.Memo == entity.Memo &&
-                x.ReferenceId != entity.ReferenceId
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References.AnyAsync(x =>
+            x.Info == entity.Info &&
+            x.SubtribusId == entity.SubtribusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Memo == entity.Memo &&
+            x.ReferenceId != entity.ReferenceId
         );
     }
 
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSupertribusAsync(int supertribusId)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
             .Where(e => e.SupertribusId == supertribusId)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubtribusAsync(int subtribusId)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
             .Where(e => e.SubtribusId == subtribusId)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForTribusAsync(int tribusId)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
             .Where(e => e.TribusId == tribusId)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int infratribusId)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
             .Where(e => e.InfratribusId == infratribusId)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForGenusAsync(int genusId)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
             .Where(e => e.GenusId == genusId)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSpeciesAsync(int speciesId)
     {
-        return await _context.Tbl90References
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
             .Where(e => e.SpeciesId == speciesId)
             .OrderBy(e => e.Info)
             .ToListAsync();
@@ -3768,7 +3764,9 @@ public partial class DataService : ObservableObject, IDataService
     //Neu
     public async Task<IEnumerable<Tbl90RefAuthor>> GetAllRefAuthorsAsync()
     {
-        return await _context.Tbl90RefAuthors
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefAuthors
             .AsNoTracking()
             .OrderBy(e => e.RefAuthorName)
             .ThenBy(a => a.BookName)
@@ -3931,7 +3929,9 @@ public partial class DataService : ObservableObject, IDataService
     //Neu
     public async Task<IEnumerable<Tbl90RefSource>> GetAllRefSourcesAsync()
     {
-        return await _context.Tbl90RefSources
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefSources
             .AsNoTracking()
             .OrderBy(e => e.RefSourceName)
             .ToListAsync();
@@ -4002,7 +4002,9 @@ public partial class DataService : ObservableObject, IDataService
     //Neu
     public async Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertsAsync()
     {
-        return await _context.Tbl90RefExperts
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefExperts
             .AsNoTracking()
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
@@ -4293,7 +4295,9 @@ public partial class DataService : ObservableObject, IDataService
     //neu
     public async Task<IEnumerable<Tbl93Comment>> GetAllCommentAsync()
     {
-        return await _context.Tbl93Comments
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
             .AsNoTracking()
             .OrderBy(e => e.Info)
             .ToListAsync();
@@ -4303,7 +4307,9 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl93Comment>();
 
-        return await _context.Tbl93Comments
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
             .AsNoTracking()
             .Where(e =>
                 e.Info.StartsWith(search) ||
@@ -4313,130 +4319,150 @@ public partial class DataService : ObservableObject, IDataService
     }
     public async Task<Tbl93Comment> GetCommentByIdAsync(int id)
     {
-        return await _context.Tbl93Comments
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+
             .FirstOrDefaultAsync(x => x.CommentId == id);
     }
     public async Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment uiEntity)
     {
+        await using var context = _factory.CreateDbContext();
+
         Tbl93Comment dbEntity;
 
         if (uiEntity.CommentId == 0)
         {
-            // NEU → frische DB-Instanz erzeugen
             dbEntity = new Tbl93Comment();
-            _context.Tbl93Comments.Add(dbEntity);
+            context.Tbl93Comments.Add(dbEntity);
         }
         else
         {
-            // UPDATE → bestehende DB-Instanz laden
-            dbEntity = await _context.Tbl93Comments
-                .FirstOrDefaultAsync(x => x.CommentId == uiEntity.CommentId);
-
-            if (dbEntity == null)
-                throw new InvalidOperationException("Entity not found in database.");
+            dbEntity = await context.Tbl93Comments
+                           .FirstOrDefaultAsync(x => x.CommentId == uiEntity.CommentId)
+                       ?? throw new InvalidOperationException("Entity not found.");
         }
 
-        // 🔥 Automatische Kopie aller relevanten Felder
         CopyProperties(uiEntity, dbEntity,
             nameof(Tbl93Comment.CommentId),
             nameof(Tbl93Comment.Writer),
             nameof(Tbl93Comment.WriterDate),
             nameof(Tbl93Comment.Updater),
-            nameof(Tbl93Comment.UpdaterDate),
-            nameof(Tbl93Comment.CountId)
+            nameof(Tbl93Comment.UpdaterDate)
         );
 
         var isNew = dbEntity.CommentId == 0;
         ApplyAuditInfo(dbEntity, isNew);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return dbEntity;
     }
     public async Task DeleteCommentAsync(int id)
     {
-        var entity = await _context.Tbl93Comments.FindAsync(id);
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl93Comments.FindAsync(id);
         if (entity != null)
         {
-            _context.Tbl93Comments.Remove(entity);
-            await _context.SaveChangesAsync();
+            context.Tbl93Comments.Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
     public async Task<bool> CommentExistsAsync(Tbl93Comment entity)
     {
-        return await _context.Tbl93Comments.AnyAsync(x =>
-                x.Info == entity.Info &&
-                x.TribusId == entity.TribusId &&
-                x.Valid == entity.Valid &&
-                x.ValidYear == entity.ValidYear &&
-                x.Memo == entity.Memo &&
-                x.SpeciesId == entity.SpeciesId &&
-                x.GenusId == entity.GenusId &&
-                x.InfratribusId == entity.InfratribusId &&
-                x.SubtribusId == entity.SubtribusId &&
-                x.TribusId == entity.TribusId &&
-                x.SupertribusId == entity.SupertribusId &&
-                x.InfrafamilyId == entity.InfrafamilyId &&
-                x.SubfamilyId == entity.SubfamilyId &&
-                x.FamilyId == entity.FamilyId &&
-                x.SuperfamilyId == entity.SuperfamilyId &&
-                x.InfraordoId == entity.InfraordoId &&
-                x.SubordoId == entity.SubordoId &&
-                x.OrdoId == entity.OrdoId &&
-                x.LegioId == entity.LegioId &&
-                x.InfraclassId == entity.InfraclassId &&
-                x.SubclassId == entity.SubclassId &&
-                x.ClassId == entity.ClassId &&
-                x.SuperclassId == entity.SuperclassId &&
-                x.SubdivisionId == entity.SubdivisionId &&
-                x.SubphylumId == entity.SubphylumId &&
-                x.DivisionId == entity.DivisionId &&
-                x.PhylumId == entity.PhylumId &&
-                x.RegnumId == entity.RegnumId &&
-                x.CommentId != entity.CommentId   // wichtig für Update
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments.AnyAsync(x =>
+            x.SpeciesId == entity.SpeciesId &&
+            x.GenusId == entity.GenusId &&
+            x.InfratribusId == entity.InfratribusId &&
+            x.SubtribusId == entity.SubtribusId &&
+            x.TribusId == entity.TribusId &&
+            x.SupertribusId == entity.SupertribusId &&
+            x.InfrafamilyId == entity.InfrafamilyId &&
+            x.SubfamilyId == entity.SubfamilyId &&
+            x.FamilyId == entity.FamilyId &&
+            x.SuperfamilyId == entity.SuperfamilyId &&
+            x.InfraordoId == entity.InfraordoId &&
+            x.SubordoId == entity.SubordoId &&
+            x.OrdoId == entity.OrdoId &&
+            x.LegioId == entity.LegioId &&
+            x.InfraclassId == entity.InfraclassId &&
+            x.SubclassId == entity.SubclassId &&
+            x.ClassId == entity.ClassId &&
+            x.SuperclassId == entity.SuperclassId &&
+            x.SubdivisionId == entity.SubdivisionId &&
+            x.SubphylumId == entity.SubphylumId &&
+            x.DivisionId == entity.DivisionId &&
+            x.PhylumId == entity.PhylumId &&
+            x.RegnumId == entity.RegnumId &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+
+            x.CommentId != entity.CommentId
         );
     }
 
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSupertribusAsync(int supertribusId)
     {
-        return await _context.Tbl93Comments
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
             .Where(e => e.SupertribusId == supertribusId)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForTribusAsync(int tribusId)
     {
-        return await _context.Tbl93Comments
-            .Where(e => e.TribusId == tribusId)
-            .OrderBy(e => e.Info)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(c => c.TribusId == tribusId)
+            .OrderBy(c => c.Info)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubtribusAsync(int subtribusId)
     {
-        return await _context.Tbl93Comments
-            .Where(e => e.SubtribusId == subtribusId)
-            .OrderBy(e => e.Info)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(c => c.SubtribusId == subtribusId)
+            .OrderBy(c => c.Info)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfratribusAsync(int infratribusId)
     {
-        return await _context.Tbl93Comments
-            .Where(e => e.InfratribusId == infratribusId)
-            .OrderBy(e => e.Info)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(c => c.InfratribusId == infratribusId)
+            .OrderBy(c => c.Info)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForGenusAsync(int genusId)
     {
-        return await _context.Tbl93Comments
-            .Where(e => e.GenusId == genusId)
-            .OrderBy(e => e.Info)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(c => c.GenusId == genusId)
+            .OrderBy(c => c.Info)
+            .AsNoTracking()
             .ToListAsync();
     }
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSpeciesAsync(int speciesId)
     {
-        return await _context.Tbl93Comments
-            .Where(e => e.SpeciesId == speciesId)
-            .OrderBy(e => e.Info)
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(c => c.SpeciesId == speciesId)
+            .OrderBy(c => c.Info)
+            .AsNoTracking()
             .ToListAsync();
     }
 

@@ -6,12 +6,14 @@ using System.Text;
 using System.Windows.Input;
 using ATIS.Core.Taxonomy;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Main;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl75Species;
 
@@ -23,9 +25,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // HIERARCHIE-KONFIGURATION
     // ============================================
   //  protected override HierarchyLevel CurrentLevel => HierarchyLevel.Species;
-  protected override HierarchyLevel CurrentLevel { get; }
-  protected override HierarchyLevel ParentLevel => HierarchyLevel.Genus;
-    public ICommand SortCommand { get; }
+  //protected override HierarchyLevel CurrentLevel { get; }
+  //protected override HierarchyLevel ParentLevel => HierarchyLevel.Genus;
+  public ICommand SortCommand { get; }
     public ICommand OpenEditCommand { get; }
     public ICommand CloseEditCommand { get; }
 
@@ -33,42 +35,25 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // CONSTRUCTOR
     // ============================================
     public Tbl75SpeciesViewModel(
-        IDataService data,
+        IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
-        Tbl78NameViewModel nameViewModel,
-        Tbl90ReferenceViewModel referenceViewModel,
-        Tbl93CommentViewModel commentViewModel,
-        HierarchyCoordinator coordinator
-    ) : base(data, dialog, coordinator)
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
-        _data = data;
+        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+
+        //IsDetailVisible = false;
+        //IsEditVisible = false;
     }
     // ============================================
     // CHILD VIEWMODELS
     // ============================================
-    public Tbl78NameViewModel NameViewModel
-    {
-        get => ChildViewModels.TryGetValue("Name", out var vm)
-            ? (Tbl78NameViewModel)vm
-            : null!;
-        set => ChildViewModels["Name"] = value;
-    }
-
-    public Tbl90ReferenceViewModel ReferenceViewModel
-    {
-        get => ChildViewModels.TryGetValue("Reference", out var vm)
-            ? (Tbl90ReferenceViewModel)vm
-            : null!;
-        set => ChildViewModels["Reference"] = value;
-    }
-
-    public Tbl93CommentViewModel CommentViewModel
-    {
-        get => ChildViewModels.TryGetValue("Comment", out var vm)
-            ? (Tbl93CommentViewModel)vm
-            : null!;
-        set => ChildViewModels["Comment"] = value;
-    }
+    public Tbl78NameViewModel NameViewModel { get; }
+    public Tbl90ReferenceViewModel ReferenceViewModel { get; }
+    public Tbl93CommentViewModel CommentViewModel { get; }
 
     // ---------------------------------------------------------
     // Lookup (Genus ComboBox)
@@ -114,19 +99,19 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     {
         await LoadGenusAsync();
 
-        await ReloadAndSelectAsync(saved: default, autoSelect: true);
+       // await ReloadAndSelectAsync(saved: default, autoSelect: true);
     }
 
-    public override async Task ApplyFilterAsync(string? filter)
+    public  async Task ApplyFilterAsync(string? filter)
     {
-        if (SuppressFilter)
-            return;
+        //if (SuppressFilter)
+        //    return;
 
-        CurrentFilter = filter;
-        OnPropertyChanged(nameof(CurrentFilter));
+        //CurrentFilter = filter;
+        //OnPropertyChanged(nameof(CurrentFilter));
 
         await LoadGenusAsync();
-        await ReloadAndSelectAsync(saved: default, autoSelect: false);
+      //  await ReloadAndSelectAsync(saved: default, autoSelect: false);
     }
 
     // ---------------------------------------------------------
@@ -143,16 +128,16 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // LoadForXAsync – neue Pipeline
     // ---------------------------------------------------------
-    public Task LoadForGenusAsync(int id)
-        => LoadForAsync(id, _data.GetSpeciesForGenusAsync, ResetBelow);
+    //public Task LoadForGenusAsync(int id)
+    //    => LoadForAsync(id, _data.GetSpeciesForGenusAsync, ResetBelow);
 
-    public Task LoadForSpeciesAsync(int id)
-        => LoadForAsync(id, _data.GetSpeciesAsync, ResetBelow);
+    //public Task LoadForSpeciesAsync(int id)
+    //    => LoadForAsync(id, _data.GetSpeciesAsync, ResetBelow);
 
     // ---------------------------------------------------------
     // Selection -> load Comments, References via Navigator
     // ---------------------------------------------------------
-    public override async Task OnSelectedItemChangedAsync()
+    protected override async Task OnSelectedItemChangedAsync()
     {
         if (SelectedItem == null)
         {
@@ -167,22 +152,44 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         await TaxonomyNavigator.NavigateToAsync("References", id);
     }
 
-    protected override void OnEditClosed()
-    {
-        IsSpeciesEditVisible = false;
-    }
+    //protected override void OnEditClosed()
+    //{
+    //    IsSpeciesEditVisible = false;
+    //}
     // ---------------------------------------------------------
     // Base overrides
     // ---------------------------------------------------------
 
     protected override async Task<IEnumerable<Models.Tbl75Species>> LoadItemsAsync()
     {
-        if (string.IsNullOrWhiteSpace(CurrentFilter))
+        if (string.IsNullOrWhiteSpace(default))
             return Enumerable.Empty<Models.Tbl75Species>();
 
 //        return await _data.SearchSpeciesAsync(CurrentFilter);
         return Enumerable.Empty<Models.Tbl75Species>();
     }
+
+
+    protected override int GetId(Models.Tbl75Species model)
+        => model.SpeciesId;
+
+    public override async Task LoadParentAsync(int parentId)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task ClearChildCollectionsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
     // ============================================
     // DETAIL VISIBILITY
     // ============================================
@@ -234,11 +241,11 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         set => SetProperty(ref _selectedGenus, value);
     }
 
-    private async Task NewAsync()
+    protected override async Task NewAsync()
     {
         if (CurrentGenusId <= 0)
         {
-            await _dialog.ShowErrorAsync("Hinweis", "Bitte zuerst einen Genus auswählen.");
+          //  await _dialog.ShowErrorAsync("Hinweis", "Bitte zuerst einen Genus auswählen.");
             return;
         }
 
@@ -272,7 +279,17 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
             SpeciesId = 0,
         };
 
+    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl75Species item)
+    {
+        throw new NotImplementedException();
+    }
+
     protected override async Task<Models.Tbl75Species?> SaveItemAsync(Models.Tbl75Species item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl75Species item)
     {
         throw new NotImplementedException();
     }
@@ -284,20 +301,20 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
 
 
-    protected override async Task LoadForParentAsync(int parentId)
-    {
-        throw new NotImplementedException();
-    }
+    //protected override async Task LoadForParentAsync(int parentId)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    protected override async Task ClearChildCollectionsAsync()
-    {
-        throw new NotImplementedException();
-    }
+    //protected override async Task ClearChildCollectionsAsync()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        throw new NotImplementedException();
-    }
+    //protected override async Task LoadChildrenAsync(int entityId)
+    //{
+    //    throw new NotImplementedException();
+    //}
     // ============================================
     // SORTING HEADERS
     // ============================================
@@ -315,30 +332,30 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         set => SetProperty(ref _nameHeaderText, value);
     }
 
-    protected override IEnumerable<Models.Tbl75Species> SortItems(
-        IEnumerable<Models.Tbl75Species> items, string column, bool ascending)
-    {
-        return column switch
-        {
-            "Id" => ascending
-                ? items.OrderBy(x => x.SpeciesId)
-                : items.OrderByDescending(x => x.SpeciesId),
-            "Name" => ascending
-                ? items.OrderBy(x => x.SpeciesName)
-                : items.OrderByDescending(x => x.SpeciesName),
-            _ => items
-        };
-    }
+    //protected override IEnumerable<Models.Tbl75Species> SortItems(
+    //    IEnumerable<Models.Tbl75Species> items, string column, bool ascending)
+    //{
+    //    return column switch
+    //    {
+    //        "Id" => ascending
+    //            ? items.OrderBy(x => x.SpeciesId)
+    //            : items.OrderByDescending(x => x.SpeciesId),
+    //        "Name" => ascending
+    //            ? items.OrderBy(x => x.SpeciesName)
+    //            : items.OrderByDescending(x => x.SpeciesName),
+    //        _ => items
+    //    };
+    //}
 
-    protected override void UpdateHeaderTexts()
-    {
-        const string asc = " ▲";
-        const string desc = " ▼";
+    //protected override void UpdateHeaderTexts()
+    //{
+    //    const string asc = " ▲";
+    //    const string desc = " ▼";
 
-        IdHeaderText = "ID";
-        NameHeaderText = "Name";
+    //    IdHeaderText = "ID";
+    //    NameHeaderText = "Name";
 
-        // Optional: Sorting-Pfeile hinzufügen wenn nötig
-    }
+    //    // Optional: Sorting-Pfeile hinzufügen wenn nötig
+    //}
 
 }

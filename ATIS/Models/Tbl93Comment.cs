@@ -2,11 +2,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 using ATIS.Interfaces;
+using ATIS.Views.Base;
 using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl93Comment : ObservableObject,  IDataService.IAuditable  
+public class Tbl93Comment : ObservableObject,  IDataService.IAuditable, IHierarchicalEntity
 {
     private readonly Dictionary<string, List<string>> _errors = new();
 
@@ -22,7 +23,7 @@ public class Tbl93Comment : ObservableObject,  IDataService.IAuditable
     public int? SpeciesId { get; set; }
     public int? GenusId { get; set; }
     public int? InfratribusId { get; set; }
-    public int SubtribusId { get; set; }
+    public int? SubtribusId { get; set; }
     public int? TribusId { get; set; }
     public int? SupertribusId { get; set; }
     public int? InfrafamilyId { get; set; }
@@ -178,6 +179,12 @@ public class Tbl93Comment : ObservableObject,  IDataService.IAuditable
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+
+    // ---------------------------------------------------------
+    // IHierarchicalEntity IMPLEMENTATION
+    // ---------------------------------------------------------
+    public int GetEntityId() => CommentId;
+    public string GetDisplayName() => Info ?? $"Comment {CommentId}";
 
     // ---------------------------------------------------------
     // VALIDIERUNGSMETHODEN MIT LOCALIZATION

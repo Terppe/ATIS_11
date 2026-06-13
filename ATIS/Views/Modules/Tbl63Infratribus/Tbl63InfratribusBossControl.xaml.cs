@@ -15,13 +15,13 @@ public sealed partial class Tbl63InfratribusBossControl : UserControl
     // ---------------------------------------------------------
     //  ItemClick → Select + Show Detail
     // ---------------------------------------------------------
-    private void InfratribusListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        InfratribusListView.SelectedItem = e.ClickedItem;
+    //private void InfratribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    //{
+    //    InfratribusListView.SelectedItem = e.ClickedItem;
 
-        if (ViewModel != null)
-            ViewModel.IsDetailVisible = true;
-    }
+    //    if (ViewModel != null)
+    //        ViewModel.IsEditVisible = true;
+    //}
 
     // ---------------------------------------------------------
     //  RightTapped → Select row under cursor

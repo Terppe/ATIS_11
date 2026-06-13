@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using ATIS.Views.Base;
 
 namespace ATIS.Models;
 
-public class Tbl12Subphylum
+public class Tbl12Subphylum : IHierarchicalEntity
 {
     [Key]
     public int SubphylumId { get; set; }
@@ -45,4 +46,13 @@ public class Tbl12Subphylum
     public string Memo { get; set; }
     //  public byte[] RowVersion { get; set; }
 
+    public int GetEntityId()
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GetDisplayName()
+    {
+        throw new NotImplementedException();
+    }
 }

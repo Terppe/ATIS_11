@@ -2,22 +2,41 @@
 using System.Collections.Generic;
 using System.Text;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Views.Base;
+using ATIS.Views.Modules.Hierarchy;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl18Superclass;
 
-public class Tbl18SuperclassViewModel : BaseListViewModel<Models.Tbl18Superclass>, ITaxonViewModel
+public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superclass>
 {
-    public Tbl18SuperclassViewModel(IDataService data) : base(data)
+    public Tbl18SuperclassViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookup,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
+        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+
+        //IsDetailVisible = false;
+        //IsEditVisible = false;
     }
 
-    protected override async Task<IEnumerable<Models.Tbl18Superclass>> LoadItemsAsync()
+    protected override async Task NewAsync()
     {
         throw new NotImplementedException();
     }
 
     protected override Models.Tbl18Superclass CreateNewItem()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<IEnumerable<Models.Tbl18Superclass>> LoadItemsAsync()
     {
         throw new NotImplementedException();
     }
@@ -32,6 +51,37 @@ public class Tbl18SuperclassViewModel : BaseListViewModel<Models.Tbl18Superclass
         throw new NotImplementedException();
     }
 
+    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl18Superclass item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl18Superclass item)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override int GetId(Models.Tbl18Superclass model)
+    {
+        throw new NotImplementedException();
+    }
+
+
     public void ResetBelow() { }
-    public Task LoadForSubphylumAsync(int id) => Task.CompletedTask;
+
+    public override async Task LoadParentAsync(int parentId)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override async Task ClearChildCollectionsAsync()
+    {
+        throw new NotImplementedException();
+    }
+
 }

@@ -1,361 +1,56 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
+using ATIS.Views.Main;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
-/// <summary>
-/// Infratribus ist gleichzeitig:
-/// - CHILD von Subtribus
-/// - PARENT für Genus, Comments, References
-/// </summary>
 public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infratribus>
 {
-    private readonly IDataService _data;
     private readonly LookupService _lookupService;
+    private int _currentParentId;
 
-    // ============================================
+    // ---------------------------------------------------------
+    // CHILD MODULES (Infratribus hat Comments + References)
+    // ---------------------------------------------------------
+    public Tbl93CommentViewModel CommentViewModel { get; }
+    public Tbl90ReferenceViewModel ReferenceViewModel { get; }
+    public Tbl66GenusViewModel GenusViewModel { get; }
+    // ---------------------------------------------------------
     // CONSTRUCTOR
-    // ============================================
+    // ---------------------------------------------------------
     public Tbl63InfratribusViewModel(
-        IDataService data,
+        IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
+        HierarchyCoordinator coordinator,
         LookupService lookupService,
-        Tbl66GenusViewModel genusViewModel,
-        Tbl90ReferenceViewModel referenceViewModel,
-        Tbl93CommentViewModel commentViewModel,
-        HierarchyCoordinator coordinator
-    ) : base(data, dialog, coordinator)
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
-        _data = data;
-        _lookupService = lookupService;  // ← Speichern
+        _lookupService = lookupService;
 
-        // Dictionary mit Children initialisieren
-        ChildViewModels["Genus"] = genusViewModel;
-        ChildViewModels["Reference"] = referenceViewModel;
-        ChildViewModels["Comment"] = commentViewModel;
+        CommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
+        ReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        GenusViewModel = new Tbl66GenusViewModel(factory, dialog, coordinator, lookupService, user);
+
+        IsInfratribusDetailVisible = false;
     }
-
-    // ============================================
-    // CHILD VIEWMODELS
-    // ============================================
-    public Tbl66GenusViewModel GenusViewModel
-    {
-        get => ChildViewModels.TryGetValue("Genus", out var vm)
-            ? (Tbl66GenusViewModel)vm
-            : null!;
-        set => ChildViewModels["Genus"] = value;
-    }
-    public Tbl90ReferenceViewModel ReferenceViewModel
-    {
-        get => ChildViewModels.TryGetValue("Reference", out var vm)
-            ? (Tbl90ReferenceViewModel)vm
-            : null!;
-        set => ChildViewModels["Reference"] = value;
-    }
-    public Tbl93CommentViewModel CommentViewModel
-    {
-        get => ChildViewModels.TryGetValue("Comment", out var vm)
-            ? (Tbl93CommentViewModel)vm
-            : null!;
-        set => ChildViewModels["Comment"] = value;
-    }
-    // ============================================
-    // HIERARCHIE-KONFIGURATION
-    // ============================================
-    protected override HierarchyLevel CurrentLevel => HierarchyLevel.Infratribus;
-    protected override HierarchyLevel ParentLevel => HierarchyLevel.Subtribus;
-
-    public ICommand SortCommand { get; }
-    public ICommand OpenEditCommand { get; }
-    public ICommand CloseEditCommand { get; }
-
-    // ============================================
-    // SUBTRIBUS-DATEN LADEN
-    // ============================================
-    public async Task LoadAsync()
-    {
-        await LoadSubtribusAsync();
-        await ReloadAndSelectAsync(saved: default, autoSelect: true);
-    }
-
-    private ObservableCollection<Models.Tbl60Subtribus> _subtribusList = new();
-    public ObservableCollection<Models.Tbl60Subtribus> SubtribusList
-    {
-        get => _subtribusList;
-        set => SetProperty(ref _subtribusList, value);
-    }
-    public Dictionary<int, string?> SubtribusLookup { get; set; } = new();
-    private bool _isLoadingSubtribus = false;
-
-    public async Task LoadSubtribusAsync()
-    {
-        // Verhindere gleichzeitiges Laden
-        if (_isLoadingSubtribus)
-            return;
-
-        _isLoadingSubtribus = true;
-
-        try
-        {
-            SubtribusList = await _lookupService.GetSubtribusListAsync();
-            SubtribusLookup = await _lookupService.GetSubtribusLookupAsync();
-        }
-        finally
-        {
-            _isLoadingSubtribus = false;
-        }
-    }
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        await GenusViewModel.LoadForInfratribusAsync(entityId);
-        await CommentViewModel.LoadForInfratribusAsync(entityId);
-        await ReferenceViewModel.LoadForInfratribusAsync(entityId);
-
-        await ReferenceViewModel.LoadReferenceExpertsAsync();
-        await ReferenceViewModel.LoadReferenceSourcesAsync();
-        await ReferenceViewModel.LoadReferenceAuthorsAsync();
-    }
-
-    protected override async Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
-    {
-        if (string.IsNullOrWhiteSpace(CurrentFilter))
-            return Enumerable.Empty<Models.Tbl63Infratribus>();
-
-        // Filtere nach dem Text in CurrentFilter
-        return await _data.SearchInfratribusWithSubtribusAsync(CurrentFilter);
-    }
-
-    public async Task LoadForSubtribusAsync(int subtribusId)
-    {
-        if (subtribusId <= 0) return;
-
-        var items = await _data.GetInfratribusForSubtribusAsync(subtribusId);
-        Items = new ObservableCollection<Models.Tbl63Infratribus>(items);
-    }
-
-    public override async Task ApplyFilterAsync(string? filter)
-    {
-        if (SuppressFilter)
-            return;
-
-        CurrentFilter = filter;
-        OnPropertyChanged(nameof(CurrentFilter));
-
-        await LoadSubtribusAsync();
-        await ReloadAndSelectAsync(saved: default, autoSelect: false);
-    }
-    public override void New()
-    {
-        // Erstelle leeren neuen Datensatz
-        var item = CreateNewItem();
-
-        // Falls kein ItemsSource vorhanden, initialisiere sie
-        Items ??= new ObservableCollection<Models.Tbl63Infratribus>();
-        Items.Add(item);
-
-        // Setzte das neu erstellte Item als ausgewählt
-        SelectedItem = item;
-
-        // Zeige das EditControl für dieses neue Item
-        IsEditVisible = true;
-    }
-    protected override Models.Tbl63Infratribus CreateNewItem()
-        => new()
-        {
-            SubtribusId = _coordinator.GetSelectedId(ParentLevel) ?? 0,
-            InfratribusId = 0
-        };
 
     // ---------------------------------------------------------
-    // Reload (FK)
+    // UI STATE
     // ---------------------------------------------------------
-    public int? CurrentSubtribusId { get; set; }
-    // ---------------------------------------------------------
-    // Edit visibility
-    // ---------------------------------------------------------
-    private void OpenEdit()
+    private bool _isInfratribusDetailVisible;
+    public bool IsInfratribusDetailVisible
     {
-        if (SelectedItem != null)
-            IsInfratribusEditVisible = true;
+        get => _isInfratribusDetailVisible;
+        set => SetProperty(ref _isInfratribusDetailVisible, value);
     }
-
-    private void CloseEdit()
-    {
-        IsInfratribusEditVisible = false;
-        SelectedItem = null;
-    }
-
-    // ============================================
-    // DETAIL VISIBILITY
-    // ============================================
-    private string _searchText = string.Empty;
-    public string SearchText
-    {
-        get => _searchText;
-        set => SetProperty(ref _searchText, value);
-    }
-
-    private bool _isDetailVisible;
-    public bool IsDetailVisible
-    {
-        get => _isDetailVisible;
-        set => SetProperty(ref _isDetailVisible, value);
-    }
-
-    private bool _isInfratribusEditVisible;
-    public bool IsInfratribusEditVisible
-    {
-        get => _isInfratribusEditVisible;
-        set { _isInfratribusEditVisible = value; OnPropertyChanged(); }
-    }
-
-    private Models.Tbl63Infratribus? _selectedInfratribus;
-    public Models.Tbl63Infratribus? SelectedInfratribus
-    {
-        get => _selectedInfratribus;
-        set
-        {
-            if (SetProperty(ref _selectedInfratribus, value))
-            {
-                if (value == null)
-                {
-                    CommentViewModel.CurrentInfratribusId = null;
-                    ReferenceViewModel.CurrentInfratribusId = null;
-                    return;
-                }
-
-                int id = value.InfratribusId;
-
-                // Parent für Comments
-                CommentViewModel.CurrentInfratribusId = id;
-                CommentViewModel.CurrentGenusId = null;
-
-                // Parent für References
-                ReferenceViewModel.CurrentInfratribusId = id;
-                ReferenceViewModel.CurrentGenusId = null;
-
-                // Parent für Infratribus
-                GenusViewModel.CurrentInfratribusId = id;
-            }
-        }
-    }
-    public void ResetBelow()
-    {
-        GenusViewModel.Items?.Clear();
-        ReferenceViewModel.Items?.Clear();
-        CommentViewModel.Items?.Clear();
-    }
-
-    private int _selectedTabIndex;
-    public int SelectedTabIndex
-    {
-        get => _selectedTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedTabIndex, value) && SelectedInfratribus != null)
-            {
-                int id = SelectedInfratribus.InfratribusId;
-
-                if (value == 1) // Comments Infratribus
-                {
-                    CommentViewModel.CurrentInfratribusId = id;
-                    CommentViewModel.CurrentSubtribusId = null;
-                }
-
-                if (value == 2) // References Infratribus
-                {
-                    ReferenceViewModel.CurrentInfratribusId = id;
-                    ReferenceViewModel.CurrentSubtribusId = null;
-                }
-            }
-        }
-    }
-
-    private int _selectedInnerTabIndex;
-    public int SelectedInnerTabIndex
-    {
-        get => _selectedInnerTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedInnerTabIndex, value) && SelectedInfratribus != null)
-            {
-                int id = SelectedInfratribus.InfratribusId;
-
-                if (value == 1) // Comments Infratribus
-                {
-                    CommentViewModel.CurrentInfratribusId = id;
-                    CommentViewModel.CurrentSubtribusId = null;
-                }
-
-                if (value == 2) // References Infratribus
-                {
-                    ReferenceViewModel.CurrentInfratribusId = id;
-                    ReferenceViewModel.CurrentSubtribusId = null;
-                }
-            }
-        }
-    }
-
-
-    // ============================================
-    // TEMPLATE IMPLEMENTATIONS
-    // ============================================
-
-
-    protected override async Task LoadForParentAsync(int subtribusId)
-    {
-        var items = await _data.GetInfratribusForSubtribusAsync(subtribusId);
-        Items = new ObservableCollection<Models.Tbl63Infratribus>(items);
-    }
-
-    protected override async Task<Models.Tbl63Infratribus?> SaveItemAsync(Models.Tbl63Infratribus item)
-    {
-        if (await _data.InfratribusExistsAsync(item))
-        {
-            await _dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
-            return null;
-        }
-
-        var saved = await _data.UpsertInfratribusAsync(item);
-        return await _data.GetInfratribusByIdAsync(saved.InfratribusId);
-    }
-
-    protected override async Task<bool> DeleteItemAsync(Models.Tbl63Infratribus item)
-    {
-        if (item.InfratribusId == 0)
-            return false; // Unsaved
-
-        if (await _data.InfratribusHasGenusAsync(item.InfratribusId) ||
-            await _data.InfratribusHasReferenceAsync(item.InfratribusId) ||
-            await _data.InfratribusHasCommentAsync(item.InfratribusId))
-        {
-            await _dialog.ShowErrorAsync(
-                "Error_DeleteNotAllowed_Title",
-                "Error_DeleteNotAllowed_Message"
-            );
-            return false;
-        }
-
-        await _data.DeleteInfratribusAsync(item.InfratribusId);
-        return true;
-    }
-
-    protected override async Task ClearChildCollectionsAsync()
-    {
-        GenusViewModel.Items?.Clear();
-        CommentViewModel.Items?.Clear();
-        ReferenceViewModel.Items?.Clear();
-        await Task.CompletedTask;
-    }
-
-
     // ============================================
     // SORTING HEADERS
     // ============================================
@@ -372,31 +67,484 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         get => _nameHeaderText;
         set => SetProperty(ref _nameHeaderText, value);
     }
+    // ---------------------------------------------------------
+    // LOOKUP: TRIBUS
+    // ---------------------------------------------------------
+    public ObservableCollection<Models.Tbl60Subtribus> SubtribusList { get; private set; } = new();
+    public Dictionary<int, string?> SubtribusLookup { get; private set; } = new();
 
+    private bool _isLoadingSubtribus;
 
-    protected override IEnumerable<Models.Tbl63Infratribus> SortItems(
-        IEnumerable<Models.Tbl63Infratribus> items, string column, bool ascending)
+    private async Task LoadSubtribusAsync()
     {
-        return column switch
+        if (_isLoadingSubtribus)
+            return;
+
+        _isLoadingSubtribus = true;
+
+        try
         {
-            "Id" => ascending
-                ? items.OrderBy(x => x.InfratribusId)
-                : items.OrderByDescending(x => x.InfratribusId),
-            "Name" => ascending
-                ? items.OrderBy(x => x.InfratribusName)
-                : items.OrderByDescending(x => x.InfratribusName),
-            _ => items
-        };
+            SubtribusList = await _lookupService.GetSubtribusListAsync();
+            SubtribusLookup = await _lookupService.GetSubtribusLookupAsync();
+        }
+        finally
+        {
+            _isLoadingSubtribus = false;
+        }
     }
 
-    protected override void UpdateHeaderTexts()
+    // ---------------------------------------------------------
+    // LOAD PARENT (Subtribus → Infratribus)
+    // ---------------------------------------------------------
+    public override async Task LoadParentAsync(int parentId)
     {
-        const string asc = " ▲";
-        const string desc = " ▼";
+        _currentParentId = parentId;
 
-        IdHeaderText = "ID";
-        NameHeaderText = "Name";
+        SelectedItem = null;
+        IsInfratribusDetailVisible = false;
 
-        // Optional: Sorting-Pfeile hinzufügen wenn nötig
+        var items = await Data.GetInfratribusForSubtribusAsync(parentId);
+        Items = new ObservableCollection<Models.Tbl63Infratribus>(items);
     }
+    // ---------------------------------------------------------
+    // LOAD PARENT (Tribus → Subtribus)
+    // ---------------------------------------------------------
+    //public override async Task LoadParentAsync(int parentId)
+    //{
+    //    _currentSubtribusId = parentId;
+
+    //    await LoadSubtribusAsync();
+
+    //    var items = await Data.GetInfratribusForSubtribusAsync(parentId);
+    //    Items = new ObservableCollection<Models.Tbl63Infratribus>(items);
+
+    //    SelectedItem = null;
+    //    IsSubtribusDetailVisible = false;
+    //}
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+    protected override async Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+            return Enumerable.Empty<Models.Tbl63Infratribus>();
+
+        return await Data.SearchInfratribusWithSubtribusAsync(SearchText);
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        IsInfratribusDetailVisible = SelectedItem != null;
+
+        if (SelectedItem != null)
+            await LoadChildrenAsync(SelectedItem.InfratribusId);
+        else
+            await ClearChildCollectionsAsync();
+    }
+
+    // ---------------------------------------------------------
+    // CHILDREN (Infratribus → Comments/References)
+    // ---------------------------------------------------------
+    //protected override async Task LoadChildrenAsync(int entityId)
+    //{
+    //    await CommentViewModel.LoadParentAsync(entityId);
+    //    await ReferenceViewModel.LoadParentAsync(entityId);
+    //    await GenusViewModel.LoadParentAsync(entityId);
+    //}
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        await CommentViewModel.LoadParentAsync<Models.Tbl66Genus>(entityId);
+        await ReferenceViewModel.LoadParentAsync<Models.Tbl66Genus>(entityId);
+        await GenusViewModel.LoadParentAsync(entityId);
+    }
+
+    protected override Task ClearChildCollectionsAsync()
+    {
+        CommentViewModel.Items?.Clear();
+        ReferenceViewModel.Items?.Clear();
+        GenusViewModel.Items?.Clear();
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+    protected override async Task NewAsync()
+    {
+        SelectedItem = CreateNewItem();
+        IsInfratribusDetailVisible = true;
+
+        await Task.Delay(50);
+    }
+
+    protected override Models.Tbl63Infratribus CreateNewItem()
+        => new Models.Tbl63Infratribus
+        {
+            SubtribusId = _currentParentId
+        };
+
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
+    protected override async Task<Models.Tbl63Infratribus?> SaveItemAsync(Models.Tbl63Infratribus item)
+    {
+        if (string.IsNullOrWhiteSpace(item.InfratribusName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertInfratribusAsync(item);
+        return await Data.GetInfratribusByIdAsync(saved.InfratribusId);
+    }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl63Infratribus item)
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
+            SearchText = item.InfratribusName;
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl63Infratribus item)
+    {
+        if (item.InfratribusId == 0)
+            return false;
+
+        if (await Data.InfratribusHasReferenceAsync(item.InfratribusId) ||
+            await Data.InfratribusHasCommentAsync(item.InfratribusId))
+        {
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
+        await Data.DeleteInfratribusAsync(item.InfratribusId);
+        return true;
+    }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl63Infratribus item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl63Infratribus item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    // ---------------------------------------------------------
+    // ID
+    // ---------------------------------------------------------
+    protected override int GetId(Models.Tbl63Infratribus item)
+        => item.InfratribusId;
 }
+
+
+//public class Tbl63InfratribusViewModel
+//    : BaseBossListViewModel<Models.Tbl63Infratribus>
+//{
+//    private readonly LookupService _lookupService;
+//    private int? _currentSubtribusId;
+
+//    // ---------------------------------------------------------
+//    // CONSTRUCTOR
+//    // ---------------------------------------------------------
+//    public Tbl63InfratribusViewModel(
+//        IDbContextFactory<AtisDbContext> factory,
+//        IDialogService dialog,
+//        HierarchyCoordinator coordinator,
+//        LookupService lookupService,
+//        IUserService user)
+//        : base(new DataService(factory, user), dialog, coordinator)
+//    {
+//        _lookupService = lookupService;
+//        var lookup = new LookupService(factory, user);
+
+//        // Child‑Module = Boss‑VMs
+//        GenusViewModel = new Tbl66GenusViewModel(factory, dialog, coordinator, lookup, user);
+//        CommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookup, user);
+//        ReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookup, user);
+
+//        IsInfratribusDetailVisible = false;
+//        IsEditVisible = false;
+
+//        // Sortier‑Header
+//        //SortHeader1 = "Id";
+//        //SortHeader2 = "Name";
+//        //SortHeader3 = "Subtribus";
+//        //SortHeader4 = "Valid";
+
+//        NewCommand = new AsyncRelayCommand(NewAsync);
+//    }
+
+//    // ---------------------------------------------------------
+//    // CHILD BOSS‑VIEWMODELS
+//    // ---------------------------------------------------------
+//    public Tbl66GenusViewModel GenusViewModel { get; }
+//    public Tbl93CommentViewModel CommentViewModel { get; }
+//    public Tbl90ReferenceViewModel ReferenceViewModel { get; }
+
+//    // ---------------------------------------------------------
+//    // UI‑STATE
+//    // ---------------------------------------------------------
+//    private bool _isDetailVisible;
+//    public bool IsDetailVisible
+//    {
+//        get => _isDetailVisible;
+//        set => SetProperty(ref _isDetailVisible, value);
+//    }
+
+//    private bool _isEditVisible;
+//    public bool IsEditVisible
+//    {
+//        get => _isEditVisible;
+//        set => SetProperty(ref _isEditVisible, value);
+//    }
+//    private bool _isInfratribusDetailVisible;
+//    public bool IsInfratribusDetailVisible
+//    {
+//        get => _isInfratribusDetailVisible;
+//        set => SetProperty(ref _isInfratribusDetailVisible, value);
+//    }
+//    public string? CurrentFilter { get; private set; }
+//    public bool SuppressFilter { get; set; }
+
+//    public async Task ApplyFilterAsync(string? filter)
+//    {
+//        if (SuppressFilter)
+//            return;
+
+//        SearchText = filter;          // ⭐ WICHTIG
+//        CurrentFilter = filter;
+
+//        OnPropertyChanged(nameof(SearchText));
+//        OnPropertyChanged(nameof(CurrentFilter));
+
+//        await LoadAsync();
+
+//        SelectedItem = null;
+//    }
+
+
+//    // ---------------------------------------------------------
+//    // LOAD PARENT (Subtribus)
+//    // ---------------------------------------------------------
+//    public override async Task LoadParentAsync(int parentId)
+//    {
+//        _currentSubtribusId = parentId;
+
+//        await LoadSubtribusLookupsAsync();   // ⭐ WICHTIG
+
+//        SelectedItem = null;
+//        IsInfratribusDetailVisible = false;
+
+//        var items = await Data.GetInfratribusForSubtribusAsync(parentId);
+//        Items = new ObservableCollection<Models.Tbl63Infratribus>(items);
+
+//    }
+//    // ============================================
+//    // SUBTRIBUS LOOKUP
+//    // ============================================
+//    public ObservableCollection<Models.Tbl60Subtribus> SubtribusList { get; } = new();
+
+//    public async Task LoadSubtribusLookupsAsync()
+//    {
+//        SubtribusList.Clear();
+
+//        var subtribusses = await _lookupService.GetSubtribusListAsync();
+
+//        foreach (var a in subtribusses) SubtribusList.Add(a);
+//    }
+
+
+//    public Dictionary<int, string?> SubtribusLookup { get; set; } = new();
+
+//    private bool _isLoadingSubtribus = false;
+
+//    public async Task LoadSubtribusAsync()
+//    {
+//        if (_isLoadingSubtribus)
+//            return;
+
+//        _isLoadingSubtribus = true;
+
+//        try
+//        {
+//        //    SubtribusList = await _lookupService.GetSubtribusListAsync();
+//            SubtribusLookup = await _lookupService.GetSubtribusLookupAsync();
+//        }
+//        finally
+//        {
+//            _isLoadingSubtribus = false;
+//        }
+//    }
+//    public async Task LoadAsync()
+//    {
+//        await LoadSubtribusAsync();
+//        await ReloadAndSelectAsync(0, x => x.InfratribusId);
+//        IsInfratribusDetailVisible = false;
+//    }
+//    protected override async Task OnSelectedItemChangedAsync()
+//    {
+//        IsInfratribusDetailVisible = SelectedItem != null;
+
+//        if (SelectedItem != null)
+//            await LoadChildrenAsync(SelectedItem.InfratribusId);
+//        else
+//            await ClearChildCollectionsAsync();
+//    }
+//    // ---------------------------------------------------------
+//    // LOAD CHILDREN (Infratribus → Genus, Comments, References)
+//    // ---------------------------------------------------------
+//    protected override async Task LoadChildrenAsync(int entityId)
+//    {
+//        await GenusViewModel.LoadParentAsync(entityId);
+//        await CommentViewModel.LoadParentAsync(entityId);
+//        await ReferenceViewModel.LoadParentAsync(entityId);
+//    }
+
+//    // ---------------------------------------------------------
+//    // CLEAR CHILDREN
+//    // ---------------------------------------------------------
+//    protected override Task ClearChildCollectionsAsync()
+//    {
+//        GenusViewModel.Items?.Clear();
+//        CommentViewModel.Items?.Clear();
+//        ReferenceViewModel.Items?.Clear();
+
+//        return Task.CompletedTask;
+//    }
+
+//    // ---------------------------------------------------------
+//    // LOAD ITEMS (Boss)
+//    // ---------------------------------------------------------
+//    protected override async Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
+//    {
+//        if (_currentSubtribusId is null)
+//            return Enumerable.Empty<Models.Tbl63Infratribus>();
+
+//        return await Data.GetInfratribusForSubtribusAsync(_currentSubtribusId.Value);
+//    }
+
+//    // ---------------------------------------------------------
+//    // CREATE NEW
+//    // ---------------------------------------------------------
+//    protected override async Task NewAsync()
+//    {
+//        var item = CreateNewItem();
+//        SelectedItem = item;
+
+//        // UI binden lassen
+//        OnPropertyChanged(nameof(SelectedItem));
+
+//        // Validierung aktivieren
+//        item.ValidateInfratribusName();
+
+//        // WICHTIG: UI Zeit geben, den roten Rahmen zu rendern
+//        await Task.Delay(50);
+//    }
+
+//    protected override Models.Tbl63Infratribus CreateNewItem()
+//        => new Models.Tbl63Infratribus
+//        {
+//            SubtribusId = _currentSubtribusId ?? 0,
+//            Valid = true
+//        };
+
+
+//    // ---------------------------------------------------------
+//    // SAVE
+//    // ---------------------------------------------------------
+//    protected override async Task<Models.Tbl63Infratribus?> SaveItemAsync(Models.Tbl63Infratribus item)
+//    {
+//        if (string.IsNullOrWhiteSpace(item.InfratribusName))
+//        {
+//            await Dialog.ShowErrorAsync("Name fehlt", "Bitte einen gültigen Infratribus‑Namen eingeben.");
+//            return null;
+//        }
+
+//        var saved = await Data.UpsertInfratribusAsync(item);
+//        return await Data.GetInfratribusByIdAsync(saved.InfratribusId);
+//    }
+
+//    // ---------------------------------------------------------
+//    // DELETE
+//    // ---------------------------------------------------------
+//    protected override async Task<bool> DeleteItemAsync(Models.Tbl63Infratribus item)
+//    {
+//        if (item.InfratribusId == 0)
+//            return false;
+
+//        if (await Data.InfratribusHasGenusAsync(item.InfratribusId) ||
+//            await Data.InfratribusHasReferenceAsync(item.InfratribusId) ||
+//            await Data.InfratribusHasCommentAsync(item.InfratribusId))
+//        {
+//            await Dialog.ShowErrorAsync(
+//                "Löschen nicht möglich",
+//                "Dieser Infratribus hat abhängige Daten."
+//            );
+//            return false;
+//        }
+
+//        await Data.DeleteInfratribusAsync(item.InfratribusId);
+//        return true;
+//    }
+
+//    // ---------------------------------------------------------
+//    // CONFIRM SAVE / DELETE
+//    // ---------------------------------------------------------
+//    protected override Task<bool> ConfirmSaveAsync(Models.Tbl63Infratribus item)
+//        => Dialog.ShowConfirmAsync("Speichern?", "Möchten Sie diesen Infratribus speichern?");
+
+//    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl63Infratribus item)
+//        => Dialog.ShowConfirmAsync("Löschen?", "Möchten Sie diesen Infratribus wirklich löschen?");
+
+//    // ---------------------------------------------------------
+//    // ID SELECTOR
+//    // ---------------------------------------------------------
+//    protected override int GetId(Models.Tbl63Infratribus model)
+//        => model.InfratribusId;
+//    // ============================================
+//    // SORTING
+//    // ============================================
+//    private string _idHeaderText = "ID";
+//    public string IdHeaderText
+//    {
+//        get => _idHeaderText;
+//        set => SetProperty(ref _idHeaderText, value);
+//    }
+
+//    private string _nameHeaderText = "Name";
+//    public string NameHeaderText
+//    {
+//        get => _nameHeaderText;
+//        set => SetProperty(ref _nameHeaderText, value);
+//    }
+//    public IEnumerable<Models.Tbl60Subtribus> SortItems(
+//        IEnumerable<Models.Tbl60Subtribus> items, string column, bool ascending)
+//    {
+//        return column switch
+//        {
+//            "Id" => ascending
+//                ? items.OrderBy(x => x.SubtribusId)
+//                : items.OrderByDescending(x => x.SubtribusId),
+//            "Name" => ascending
+//                ? items.OrderBy(x => x.SubtribusName)
+//                : items.OrderByDescending(x => x.SubtribusName),
+//            _ => items
+//        };
+//    }
+
+//    public void UpdateHeaderTexts()
+//    {
+//        const string asc = " ▲";
+//        const string desc = " ▼";
+
+//        IdHeaderText = "ID";
+//        NameHeaderText = "Name";
+//    }
+//}
+

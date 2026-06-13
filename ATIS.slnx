@@ -1,0 +1,14 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Docs/ToDoList.txt" />
+    <File Path="settings.xamlstyler" />
+  </Folder>
+  <Project Path="ATIS/ATIS.csproj">
+    <Platform Project="x64" />
+    <Deploy />
+  </Project>
+</Solution>

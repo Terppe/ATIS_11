@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Net.Sockets;
-using ATIS.Core.Taxonomy;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -32,13 +31,15 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Main;
+
 public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAware
 {
-    protected readonly IDataService _dataService;
-    protected readonly IDialogService _dialogService;
-    protected readonly LookupService _lookupService;
+    private readonly IDialogService _dialogService;
+    private readonly LookupService _lookupService;
+    private readonly HierarchyCoordinator _coordinator;
 
     // -----------------------------
     // Taxonomie-ViewModels
@@ -70,125 +71,45 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
     public Tbl57TribusViewModel TribusVM { get; }
     public Tbl54SupertribusViewModel SupertribusVM { get; }
 
-    public MainViewModel(IDataService dataService, IDialogService dialogService, LookupService lookupService)
+    public MainViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialogService,
+        LookupService lookupService,
+        HierarchyCoordinator coordinator,
+        IUserService user)
     {
-        _dataService = dataService;
         _dialogService = dialogService;
         _lookupService = lookupService;
+        _coordinator = coordinator;
 
-        // Basis-VMs
-        ReferenceVM = new Tbl90ReferenceViewModel(
-            _dataService,
-            _dialogService,
-            _lookupService,
-            new HierarchyCoordinator());
+        // HIER werden ALLE ViewModels korrekt erzeugt
+        RegnumVM = new Tbl03RegnumViewModel(factory, dialogService, coordinator, lookupService, user);
+        PhylumVM = new Tbl06PhylumViewModel(factory, dialogService, coordinator, lookupService, user);
+        SubphylumVM = new Tbl12SubphylumViewModel(factory, dialogService, coordinator, lookupService, user);
+        SuperclassVM = new Tbl18SuperclassViewModel(factory, dialogService, coordinator, lookupService, user);
+        ClassVM = new Tbl21ClassViewModel(factory, dialogService, coordinator, lookupService, user);
+        SubclassVM = new Tbl24SubclassViewModel(factory, dialogService, coordinator, lookupService, user);
+        InfraclassVM = new Tbl27InfraclassViewModel(factory, dialogService, coordinator, lookupService, user);
+        LegioVM = new Tbl30LegioViewModel(factory, dialogService, coordinator, lookupService, user);
+        OrdoVM = new Tbl33OrdoViewModel(factory, dialogService, coordinator, lookupService, user);
+        SubordoVM = new Tbl36SubordoViewModel(factory, dialogService, coordinator, lookupService, user);
+        InfraordoVM = new Tbl39InfraordoViewModel(factory, dialogService, coordinator, lookupService, user);
+        SuperfamilyVM = new Tbl42SuperfamilyViewModel(factory, dialogService, coordinator, lookupService, user);
+        FamilyVM = new Tbl45FamilyViewModel(factory, dialogService, coordinator, lookupService, user);
+        SubfamilyVM = new Tbl48SubfamilyViewModel(factory, dialogService, coordinator, lookupService, user);
+        InfrafamilyVM = new Tbl51InfrafamilyViewModel(factory, dialogService, coordinator, lookupService, user);
+        SupertribusVM = new Tbl54SupertribusViewModel(factory, dialogService, coordinator, lookupService, user);
+        TribusVM = new Tbl57TribusViewModel(factory, dialogService, coordinator, lookupService, user);
+        SubtribusVM = new Tbl60SubtribusViewModel(factory, dialogService, coordinator, lookupService, user);
+        InfratribusVM = new Tbl63InfratribusViewModel(factory, dialogService, coordinator, lookupService, user);
+        GenusVM = new Tbl66GenusViewModel(factory, dialogService, coordinator, lookupService, user);
+        SpeciesVM = new Tbl75SpeciesViewModel(factory, dialogService, coordinator, lookupService, user);
 
-        CommentVM = new Tbl93CommentViewModel(
-            _dataService, 
-            _dialogService,
-            _lookupService,
-            new HierarchyCoordinator());
+        ReferenceVM = new Tbl90ReferenceViewModel(factory, dialogService, coordinator, lookupService, user);
+        CommentVM = new Tbl93CommentViewModel(factory, dialogService, coordinator, lookupService, user);
 
-        // 1. Species
-        SpeciesVM = new Tbl75SpeciesViewModel(
-            _dataService,
-            _dialogService,
-            NameVM,
-            ReferenceVM,
-            CommentVM,
-            new HierarchyCoordinator()
-        );
-
-        // 1. Genus
-        GenusVM = new Tbl66GenusViewModel(
-            _dataService,
-            _dialogService,
-            SpeciesVM,
-            ReferenceVM,
-            CommentVM,
-            new HierarchyCoordinator()
-        );
-
-        // 2. Infratribus
-        InfratribusVM = new Tbl63InfratribusViewModel(
-            _dataService,
-            _dialogService,
-            _lookupService,
-            GenusVM,
-            ReferenceVM,
-            CommentVM,
-            new HierarchyCoordinator()
-        );
-
-        // 3. Subtribus
-        SubtribusVM = new Tbl60SubtribusViewModel(
-            _dataService,
-            _dialogService,
-            _lookupService,
-            InfratribusVM,
-            ReferenceVM,
-            CommentVM,
-            new HierarchyCoordinator()
-        );
-
-        // 4. Tribus
-        TribusVM = new Tbl57TribusViewModel(
-            _dataService,
-            _dialogService,
-            _lookupService,
-            SubtribusVM,
-            ReferenceVM,
-            CommentVM,
-            new HierarchyCoordinator()
-        );
-
-        // 5. Supertribus
-        SupertribusVM = new Tbl54SupertribusViewModel(
-            _dataService,
-            _dialogService,
-            _lookupService,
-            TribusVM,
-            ReferenceVM,
-            CommentVM,
-            new HierarchyCoordinator()
-        );
-
-        // Taxonomie-Aufbau
-        TaxonomyBuilder.Build(
-            SupertribusVM,
-            TribusVM,
-            SubtribusVM,
-            InfratribusVM,
-            GenusVM
-        );
-        // -----------------------------
-        // Taxonomie einmal aufbauen
-        // -----------------------------
-        //TaxonomyBuilder.Build(
-        //    RegnumVM,
-        //    PhylumVM,
-        //    SubphylumVM,
-        //    SuperclassVM,
-        //    ClassVM,
-        //    SubclassVM,
-        //    InfraclassVM,
-        //    LegioVM,
-        //    OrdoVM,
-        //    SubordoVM,
-        //    InfraordoVM,
-        //    SuperfamilyVM,
-        //    FamilyVM,
-        //    SubfamilyVM,
-        //    InfrafamilyVM,
-        //    SupertribusVM,
-        //    TribusVM,
-        //    SubtribusVM,
-        //    InfratribusVM,
-        //    GenusVM,
-        //    SpeciesVM
-        //);
+        NameVM = new Tbl78NameViewModel(factory, dialogService, coordinator, lookupService, user);
     }
-
 
     private bool _isLoading;
     public bool IsLoading
