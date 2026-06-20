@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using ATIS.Views.Modules.Tbl66Genus;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.UI.Xaml.Input;
 using Windows.System;
 
@@ -17,29 +20,65 @@ public sealed partial class Tbl63InfratribusPage : Page
         DataContext = ViewModel;
 
         Loaded += InfratribusPage_Loaded;
+
+        CommentsInfratribusPivot.DataContext = ViewModel.InfratribusCommentViewModel;
+
+        Debug.WriteLine("ParentControl DC = " + this.DataContext);
+
     }
     private async void InfratribusPage_Loaded(object sender, RoutedEventArgs e)
     {
-        // Unsubscribe sofort, damit der Event nicht nochmal triggert
         Loaded -= InfratribusPage_Loaded;
 
-     //   await ViewModel.LoadAsync();
+        await ViewModel.LoadAsync();
 
-   //     ViewModel.SuppressFilter = true;
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
-  //      ViewModel.SuppressFilter = false;
     }
-
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        Debug.WriteLine("QUERY SUBMITTED: " + sender.Text);
-
-       // await ViewModel.ApplyFilterAsync(sender.Text);
+        await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
+    private async void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            await ViewModel.ApplyFilterAsync(sender.Text);
+    }
 
+    //private void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    if (DetailPivot.SelectedItem == CommentsInfratribusPivot)
+    //    {
+    //        Tbl93CommentParentControl.DataContext = ViewModel.CommentViewModel;
+    //    }
 
+    //    if (DetailPivot.SelectedItem == ReferencesInfratribusPivot) 
+    //    {
+    //        Tbl90ReferenceParentControl.DataContext = ViewModel.ReferenceViewModel;
+    //    }
 
+    //    if (DetailPivot.SelectedItem == GenusInfratribusPivot)
+    //    {
+    //        Tbl66GenusParentControl.DataContext = ViewModel.GenusViewModel;
+    //    }
+    //}
 
+    //private void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    if (DetailPivot.SelectedItem == CommentsInfratribusPivot)
+    //    {
+    //        Tbl93CommentParentControl.DataContext = ViewModel.CommentViewModel;
+    //    }
+
+    //    if (DetailPivot.SelectedItem == ReferencesInfratribusPivot)
+    //    {
+    //        Tbl90ReferenceParentControl.DataContext = ViewModel.ReferenceViewModel;
+    //    }
+
+    //    if (DetailPivot.SelectedItem == GenusInfratribusPivot)
+    //    {
+    //        Tbl66GenusParentControl.DataContext = ViewModel.GenusViewModel;
+    //    }
+    //}
 }

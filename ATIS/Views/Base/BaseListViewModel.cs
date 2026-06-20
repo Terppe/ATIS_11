@@ -66,7 +66,13 @@ public abstract class BaseListViewModel<T> : ObservableObject
         set
         {
             if (SetProperty(ref _selectedItem, value))
+            {
                 _ = OnSelectedItemChangedAsync();
+
+                // WICHTIG: Boss-VM informieren
+                if (this is BaseBossListViewModel<T> boss)
+                    _ = boss.OnSelectedItemChangedBossAsync();
+            }
         }
     }
 
@@ -79,12 +85,8 @@ public abstract class BaseListViewModel<T> : ObservableObject
     protected virtual Task OnSelectedItemChangedAsync()
         => Task.CompletedTask;
 
-
     // optionaler Filter-Hook
     protected virtual bool FilterBySearchText(T item) => true;
-
-    //protected virtual Task OnBeforeReloadAfterSaveAsync(T item)
-    //    => Task.CompletedTask;
 
     protected abstract Task NewAsync();
 

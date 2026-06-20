@@ -11,16 +11,10 @@ public sealed partial class Tbl93CommentEditControl : UserControl
     public Tbl93CommentEditControl()
     {
         InitializeComponent();
-        Debug.WriteLine(">>> EditControl Konstruktor, DataContext = " + this.DataContext);
     }
 
-    private void UserControl_DataContextChanged(object sender, DataContextChangedEventArgs e)
-    {
-        Debug.WriteLine(">>> EditControl DataContextChanged: " + e.NewValue);
-        // KEIN Bindings.Update() mehr nötig
-    }
     // ---------------------------------------------------------
-    //  DependencyProperty: Item  (wie Subtribus)
+    //  DependencyProperty: Item
     // ---------------------------------------------------------
 
     public Models.Tbl93Comment? Item
@@ -38,15 +32,23 @@ public sealed partial class Tbl93CommentEditControl : UserControl
 
     private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var item = e.NewValue as Models.Tbl93Comment;
+        var control = (Tbl93CommentEditControl)d;
 
-        Debug.WriteLine(
-            $"CommentEditControl.Item changed: Id={item?.CommentId}, " +
-            $"Info='{item?.Info}', Memo='{item?.Memo}', Year='{item?.ValidYear}', Valid={item?.Valid}");
+        if (!control.IsLoaded)
+            return;
+
+        control.UpdateAllValidationStates();
     }
+
     // ---------------------------------------------------------
-    //  VisualState-Update (wie Subtribus)
+    //  Validation State Updates
     // ---------------------------------------------------------
+
+    private void UpdateAllValidationStates()
+    {
+        UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
+        UpdateValidationState(InfoBox, Item?.HasInfoError ?? false);
+    }
 
     private void UpdateValidationState(TextBox box, bool hasError)
     {

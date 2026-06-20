@@ -2615,6 +2615,7 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     //-------------------------------------------------------
+    //alt
     public ObservableCollection<Tbl63Infratribus> GetInfratribusAsyncAlt()
     {
         var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
@@ -2622,111 +2623,6 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-
-    //public ObservableCollection<Tbl63Infratribus> GetInfratribusAsync()
-    //{
-    //    var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-    //        .AsNoTracking()
-    //        .OrderBy(a => a.InfratribusName));
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(int infratribusid)
-    //{
-    //    var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-    //        .AsNoTracking()
-    //        .Where(e => e.InfratribusId == infratribusid)
-    //        .OrderBy(k => k.InfratribusName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl63Infratribus> GetInfratribusAsync(string search)
-    //{
-    //    var collection = int.TryParse(search, out var id)
-    //        ? new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-    //            .Where(e => e.InfratribusId == id))
-    //        : new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-    //            .Where(e => search != null && e.InfratribusName.StartsWith(search))
-    //            .OrderBy(a => a.InfratribusName));
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl63Infratribus> GetInfratribusFromSubtribusIdAsync(int subtribusid)
-    //{
-    //    var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-    //        .Where(e => e.SubtribusId == subtribusid)
-    //        .OrderBy(k => k.InfratribusName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public async Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus infratribus)
-    //{
-    //    var current = await _context.Tbl63Infratribusses.FirstOrDefaultAsync(c => c.InfratribusId == infratribus.InfratribusId);
-    //    if (null == current)
-    //    {
-    //        infratribus.CountId = RandomHelper.Randomnumber();
-    //        infratribus.Writer = Environment.UserName;
-    //        infratribus.WriterDate = DateTime.Now;
-    //        infratribus.Updater = Environment.UserName;
-    //        infratribus.UpdaterDate = DateTime.Now;
-    //        _context.Tbl63Infratribusses.Add(infratribus);
-    //    }
-    //    else
-    //    {
-    //        infratribus.Updater = Environment.UserName;
-    //        infratribus.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(infratribus);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return infratribus;
-    //}
-
-    //public async Task DeleteInfratribusAsync(int infratribusid)
-    //{
-    //    var infratribus = await _context.Tbl63Infratribusses.FirstOrDefaultAsync(b => b.InfratribusId == infratribusid);
-    //    if (infratribus != null)
-    //    {
-    //        //necessary to delete before
-    //        //------ Genus -------------
-    //        var genuss = await _context.Tbl66Genusses.Where(a => a.InfratribusId == infratribusid).ToListAsync();
-    //        foreach (var genus in genuss)
-    //        {
-    //            for (var i = 0; i <= genuss.Count; i++)
-    //            {
-    //                var genusid = genus.GenusId;
-    //                var singleref = _context.Tbl90References.SingleOrDefault(a => a.GenusId == genusid);
-    //                if (singleref != null)
-    //                {
-    //                    _context.Tbl90References.Remove(singleref);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //                var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.GenusId == genusid);
-    //                if (singlecom != null)
-    //                {
-    //                    _context.Tbl93Comments.Remove(singlecom);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //            }
-    //        }
-    //        _context.Tbl66Genusses.RemoveRange(genuss);
-    //        await _context.SaveChangesAsync();
-    //        //---------------------------------------------------------
-    //        var references = await _context.Tbl90References.Where(reference => reference.InfratribusId == infratribusid).ToListAsync();
-    //        _context.Tbl90References.RemoveRange(references);
-    //        await _context.SaveChangesAsync();
-
-    //        var comments = await _context.Tbl93Comments.Where(comment => comment.InfratribusId == infratribusid).ToListAsync();
-    //        _context.Tbl93Comments.RemoveRange(comments);
-    //        await _context.SaveChangesAsync();
-
-    //        _context.Tbl63Infratribusses.Remove(infratribus);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
 
     #endregion Infratribus                       
 
@@ -2836,17 +2732,19 @@ public partial class DataService : ObservableObject, IDataService
 
     public async Task<bool> GenusHasSpeciesAsync(int genusId)
     {
-        return await _context.Tbl75Speciesses.AnyAsync(x => x.GenusId == genusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl75Speciesses.AnyAsync(x => x.GenusId == genusId);
     }
     public async Task<bool> GenusHasReferenceAsync(int genusId)
     {
-        return await _context.Tbl90References.AnyAsync(x => x.GenusId == genusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References.AnyAsync(x => x.GenusId == genusId);
     }
     public async Task<bool> GenusHasCommentAsync(int genusId)
     {
-        return await _context.Tbl93Comments.AnyAsync(x => x.GenusId == genusId);
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments.AnyAsync(x => x.GenusId == genusId);
     }
-
 
     public async Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId)
     {
@@ -2854,9 +2752,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl66Genusses
             .Where(e => e.InfratribusId == infratribusId)
+            .Include(i => i.Infratribus)
             .OrderBy(e => e.GenusName)
+            .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl66Genus>> GetGenusAsync(int dummy)
     {
         await using var context = _factory.CreateDbContext();

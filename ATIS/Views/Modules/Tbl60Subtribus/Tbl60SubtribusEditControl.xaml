@@ -26,6 +26,17 @@
                             Orientation="Horizontal"
                             Spacing="8">
 
+                    <!--  BACK  -->
+
+                    <Button Command="{Binding CloseEditCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE72B;" />
+                            <TextBlock Text="Back" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  NEW  -->
                     <Button Command="{Binding NewCommand}"
                             Style="{StaticResource AtisPrimaryButton}">
                         <StackPanel Orientation="Horizontal"
@@ -35,6 +46,7 @@
                         </StackPanel>
                     </Button>
 
+                    <!--  SAVE  -->
                     <Button Command="{Binding SaveCommand}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
@@ -44,6 +56,7 @@
                         </StackPanel>
                     </Button>
 
+                    <!--  DELETE  -->
                     <Button Command="{Binding DeleteCommand}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
@@ -165,22 +178,22 @@
 
             <!--  Language Pivot  -->
             <Pivot>
-                <PivotItem loc:Uids.Uid="TabViewItem_EngName">
+                <PivotItem loc:Uids.Uid="PivotItem_EngName">
                     <TextBox loc:Uids.Uid="TextBox_EngName"
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </PivotItem>
-                <PivotItem loc:Uids.Uid="TabViewItem_GerName">
+                <PivotItem loc:Uids.Uid="PivotItem_GerName">
                     <TextBox loc:Uids.Uid="TextBox_GerName"
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </PivotItem>
-                <PivotItem loc:Uids.Uid="TabViewItem_FraName">
+                <PivotItem loc:Uids.Uid="PivotItem_FraName">
                     <TextBox loc:Uids.Uid="TextBox_FraName"
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </PivotItem>
-                <PivotItem loc:Uids.Uid="TabViewItem_SpaName">
+                <PivotItem loc:Uids.Uid="PivotItem_SpaName">
                     <TextBox loc:Uids.Uid="TextBox_SpaName"
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

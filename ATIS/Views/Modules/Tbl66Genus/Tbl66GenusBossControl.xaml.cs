@@ -20,7 +20,7 @@ public sealed partial class Tbl66GenusBossControl : UserControl
         GenusListView.SelectedItem = e.ClickedItem;
 
         if (ViewModel != null)
-            ViewModel.IsDetailVisible = true;
+            ViewModel.IsGenusDetailVisible = true;
     }
 
     // ---------------------------------------------------------

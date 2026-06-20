@@ -120,6 +120,7 @@
                   BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
                   BorderThickness="1"
                   CornerRadius="4"
+                  IsItemClickEnabled="True"
                   ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
                   ItemsSource="{Binding Items}"
                   RightTapped="InfratribusListView_RightTapped"

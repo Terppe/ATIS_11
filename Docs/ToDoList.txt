@@ -789,4 +789,94 @@ fehlermanagement von app.cs .csproy rein
 12.06.2026 16:00 Uhr mehrfachladen von Comments in DetailPivot_OnSelectionChanged geändert.
 Tbl60Subtribuspage.xaml.cs subtribus mit comments und references ok aber save, delete, back gehen noch nicht
 ----------------------------------------
-13.06.2026 11:00 Uhr 
+13.06.2026 11:00 Uhr Commenteditcontrol nicht lauffähig.
+----------------------------------------
+14.06.2026 09:00 Uhr Reference mit allen funktionen als parent in Subtribus ok.
+Blueprint  public async Task LoadParentAsync<TParent>(int parentId)
+{
+    _currentParentId = parentId;
+
+    if (typeof(TParent) == typeof(Tbl60Subtribus))
+        CurrentParentKind = ParentKind.Subtribus;
+    else if (typeof(TParent) == typeof(Tbl63Infratribus))
+        CurrentParentKind = ParentKind.Infratribus;
+    else if (typeof(TParent) == typeof(Tbl66Genus))
+        CurrentParentKind = ParentKind.Genus;
+    else if (typeof(TParent) == typeof(Tbl70Species))
+        CurrentParentKind = ParentKind.Species;
+    else
+        CurrentParentKind = ParentKind.None;
+
+    var items = _loadByParent != null
+        ? await _loadByParent(parentId)
+        : Enumerable.Empty<TModel>();
+
+    Items = new ObservableCollection<TModel>(items);
+    DataSetCount = Items.Count;
+}
+protected override async Task<IEnumerable<TModel>> LoadItemsAsync()
+{
+    if (_loadByParent != null && _currentParentId > 0)
+        return await _loadByParent(_currentParentId);
+
+    return Items ?? Enumerable.Empty<TModel>();
+}
+protected override async Task<TModel?> SaveItemAsync(TModel item)
+{
+    if (!Validate(item))
+        return null;
+
+    SetParentFk(item);
+
+    var saved = await Data.UpsertAsync(item);
+    return saved;
+}
+private void SetParentFk(TModel item)
+{
+    switch (CurrentParentKind)
+    {
+        case ParentKind.Subtribus:
+            item.SubtribusId = _currentParentId;
+            break;
+
+        case ParentKind.Infratribus:
+            item.InfratribusId = _currentParentId;
+            break;
+
+        case ParentKind.Genus:
+            item.GenusId = _currentParentId;
+            break;
+
+        case ParentKind.Species:
+            item.SpeciesId = _currentParentId;
+            break;
+    }
+}
+Reference und Comment funktionalität ok. Vms noch nicht gleich.
+----------------------------------------
+15.06.2026 15:00 Uhr Reference und Comment identisch ok.
+----------------------------------------
+15.06.2026 16:00 Uhr ParentControl geht nicht Infratribus
+----------------------------------------
+16.06.2026 15:00 Uhr Infratribus-Datensatz wird von Subtribus aus angezeigt. ok. jetzt fehlt noch Comments und References für Infratribus dazu klappt noch nicht
+----------------------------------------
+17.06.2026 15:00 Uhr Subtribus
+ ├── Edit Subtribus
+ ├── Comments Subtribus
+ ├── References Subtribus
+ └── Infratribus
+       ├── Edit Infratribus
+       ├── Comments Infratribus
+       └── References Infratribus
+wird alles angezeigt
+----------------------------------------
+20.06.2026 15:00 Uhr fehler. In Subtribuspage werden InfratribusComments und InfratribusReferences nicht gefunden.
+Header von ListView von ID und Name in Subtribus ID und Subtribus Name und Infratribus. CommentVM umgestellt wie SubtribusVM-Boss und Parent.es fehlt noch References.
+----------------------------------------
+20.06.2026 17:00 Uhr ReferencesVM auch auf Boss und Parentversion geändert.Jetzt fehlt noch die Buttons-Problematik
+----------------------------------------
+20.06.2026 17:30 Uhr Neu-Button und Refresh-Button in Subtribus ok
+----------------------------------------
+20.06.2026 18:30 Uhr Jetzt noch Neu-Button und Refresh-Button disabled, wenn in pivot parents gearbeitet wird. subtribuscomment, subtribusreference, infratribus,
+infratribusComment und Infratribusreference. Jetzt läuft bei Subtribus alles und wir nehmen die Version als Basis erstmal für Infratribus, Tribus und Genus
+ 

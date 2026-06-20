@@ -5,12 +5,11 @@ namespace ATIS.Views.Modules.Tbl63Infratribus;
 
 public sealed partial class Tbl63InfratribusEditControl : UserControl
 {
-    public Tbl63InfratribusViewModel ViewModel { get; set; }
     public Tbl63InfratribusEditControl()
     {
         InitializeComponent();
-        ViewModel = App.GetService<Tbl63InfratribusViewModel>();
     }
+    public Tbl63InfratribusViewModel? ViewModel => DataContext as Tbl63InfratribusViewModel;
 
     public Models.Tbl63Infratribus? Item
     {
@@ -23,7 +22,27 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
             nameof(Item),
             typeof(Models.Tbl63Infratribus),
             typeof(Tbl63InfratribusEditControl),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnItemChanged));
+
+    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var item = e.NewValue as Models.Tbl63Infratribus;
+
+        var control = (Tbl63InfratribusEditControl)d;
+        control.ApplyItem(item);
+    }
+
+    private void ApplyItem(Models.Tbl63Infratribus? newItem)
+    {
+        // NICHT den DataContext des Controls überschreiben!
+        // Stattdessen nur das Item setzen.
+        // Die Bindings im XAML müssen auf Item.XXX zeigen.
+
+        // Falls du ein Root-Grid hast:
+        //  ItemRoot.DataContext = newItem;
+        // Wenn du kein ItemRoot hast, lass ApplyItem LEER:
+    }
+
 
 
     private void OnSubtribusChanged(object sender, SelectionChangedEventArgs e)

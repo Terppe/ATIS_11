@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Input;
+﻿using System.Diagnostics;
+using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 namespace ATIS.Views.Modules.Tbl90Reference;
@@ -10,7 +11,7 @@ public sealed partial class Tbl90ReferenceParentControl : UserControl
     public Tbl90ReferenceParentControl()
     {
         InitializeComponent();
-        // AtisListViewZebraHelper.EnableZebra(ReferenceListView);
+        Debug.WriteLine("ParentControl DC = " + DataContext);
     }
 
     private void ReferenceListView_ItemClick(object sender, ItemClickEventArgs e)

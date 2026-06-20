@@ -1389,6 +1389,30 @@
   <data name="TabViewItem_Author.Header" xml:space="preserve">
     <value>Autor</value>
   </data>
+  <data name="PivotItem_EngName.Header" xml:space="preserve">
+    <value>Englisch</value>
+  </data>
+  <data name="PivotItem_GerName.Header" xml:space="preserve">
+    <value>Französisch</value>
+  </data>
+  <data name="PivotItem_SpaName.Header" xml:space="preserve">
+    <value>Spanisch</value>
+  </data>
+  <data name="PivotItem_Edit_Subtribus.Header" xml:space="preserve">
+    <value>Bearbeiten Untertribus</value>
+  </data>
+  <data name="PivotItem_Edit_Infratribus.Header" xml:space="preserve">
+    <value>Bearbeiten Infratribus</value>
+  </data>
+  <data name="PivotItem_References.Header" xml:space="preserve">
+    <value>Bezüge</value>
+  </data>
+  <data name="PivotItem_Comments.Header" xml:space="preserve">
+    <value>Kommentare</value>
+  </data>
+  <data name="PivotItem_FraName.Header" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
   <data name="TabViewItem_Authors.Header" xml:space="preserve">
     <value>Autoren</value>
   </data>

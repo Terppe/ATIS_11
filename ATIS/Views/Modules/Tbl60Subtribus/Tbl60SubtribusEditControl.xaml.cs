@@ -10,8 +10,7 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
         InitializeComponent();
     }
 
-    public Tbl60SubtribusViewModel? ViewModel
-        => DataContext as Tbl60SubtribusViewModel;
+    public Tbl60SubtribusViewModel? ViewModel => DataContext as Tbl60SubtribusViewModel;
 
     public void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
     {
