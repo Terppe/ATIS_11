@@ -2165,7 +2165,7 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
+    //----------------------------------------------------
     //alt
     public ObservableCollection<Tbl57Tribus> GetTribusAsync()
     {
@@ -2593,26 +2593,6 @@ public partial class DataService : ObservableObject, IDataService
 
         return new ObservableCollection<Tbl63Infratribus>(list);
     }
-    public async Task DeleteCommentsAsync(int infratribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        var comments = context.Tbl93Comments
-            .Where(c => c.InfratribusId == infratribusId);
-
-        context.Tbl93Comments.RemoveRange(comments);
-        await context.SaveChangesAsync();
-    }
-    public async Task DeleteReferencesAsync(int infratribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        var refs = context.Tbl90References
-            .Where(r => r.InfratribusId == infratribusId);
-
-        context.Tbl90References.RemoveRange(refs);
-        await context.SaveChangesAsync();
-    }
 
     //-------------------------------------------------------
     //alt
@@ -2973,7 +2953,9 @@ public partial class DataService : ObservableObject, IDataService
     //new
     public async Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy)
     {
-        return await _context.Tbl75Speciesses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
             .OrderBy(x => x.SpeciesName)
             .ToListAsync();
     }
@@ -2990,6 +2972,7 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     //-----------------------------
+    //alt
     public ObservableCollection<Tbl75Species> GetSpeciesAsync()
     {
         //var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
@@ -3465,7 +3448,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
-
     public async Task<IEnumerable<Tbl90Reference>> SearchReferenceAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -3480,7 +3462,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
-
     public async Task<Tbl90Reference> GetReferenceByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -3488,7 +3469,6 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .FirstOrDefaultAsync(x => x.ReferenceId == id);
     }
-
     public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference uiEntity)
     {
         await using var context = _factory.CreateDbContext();
@@ -3523,7 +3503,6 @@ public partial class DataService : ObservableObject, IDataService
 
         return dbEntity;
     }
-
     public async Task DeleteReferenceAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -3535,7 +3514,6 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
-
     public async Task<bool> ReferenceExistsAsync(Tbl90Reference entity)
     {
         await using var context = _factory.CreateDbContext();
@@ -3549,7 +3527,6 @@ public partial class DataService : ObservableObject, IDataService
             x.ReferenceId != entity.ReferenceId
         );
     }
-
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSupertribusAsync(int supertribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -3597,6 +3574,16 @@ public partial class DataService : ObservableObject, IDataService
             .Where(e => e.SpeciesId == speciesId)
             .OrderBy(e => e.Info)
             .ToListAsync();
+    }
+    public async Task DeleteReferencesAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var refs = context.Tbl90References
+            .Where(r => r.InfratribusId == infratribusId);
+
+        context.Tbl90References.RemoveRange(refs);
+        await context.SaveChangesAsync();
     }
 
     //----------------------------------------------
@@ -4365,6 +4352,16 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(c => c.Info)
             .AsNoTracking()
             .ToListAsync();
+    }
+    public async Task DeleteCommentsAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var comments = context.Tbl93Comments
+            .Where(c => c.InfratribusId == infratribusId);
+
+        context.Tbl93Comments.RemoveRange(comments);
+        await context.SaveChangesAsync();
     }
 
     //-----------------------------------------------------

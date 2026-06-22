@@ -23,16 +23,13 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         Coordinator = coordinator;
 
         // EINHEITLICHE COMMANDS
-        //NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(NewItem);
         NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(NewItem, () => !IsInParentMode);
         EditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(EditItem, () => SelectedItem != null);
         SaveCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await SaveAsync(), () => SelectedItem != null);
         DeleteCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await DeleteAsync(), () => SelectedItem != null);
         CancelCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(CancelEdit);
-        //RefreshCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync());
         CloseEditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() =>  SelectedItem = null );
         RefreshCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync(), () => !IsInParentMode && IsRefreshEnabled);
-
     }
 
     // ---------------------------------------------------------

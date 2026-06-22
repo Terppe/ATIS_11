@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
-public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtribus>
+public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Subtribus>
 {
     private  readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
@@ -50,12 +50,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // UI STATE
     // ---------------------------------------------------------
 
-    private bool _isSubtribusDetailVisible;
-    public bool IsSubtribusDetailVisible
-    {
-        get => _isSubtribusDetailVisible;
-        set => SetProperty(ref _isSubtribusDetailVisible, value);
-    }
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
     {
@@ -65,6 +59,18 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
             if (SetProperty(ref _selectedDetailPivotIndex, value))
             {
                 UpdateButtonStates();
+            }
+        }
+    }
+    public bool IsSubtribusDetailVisible
+    {
+        get => IsDetailVisible;
+        set
+        {
+            if (IsDetailVisible != value)
+            {
+                IsDetailVisible = value;
+                OnPropertyChanged(nameof(IsSubtribusDetailVisible));
             }
         }
     }
@@ -124,30 +130,14 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     public ObservableCollection<Models.Tbl57Tribus> TribusList { get; private set; } = new();
     public Dictionary<int, string?> TribusLookup { get; private set; } = new();
 
-    //private bool _isLoadingTribus;
-
-    //private async Task LoadTribusAsync()
-    //{
-    //    if (_isLoadingTribus)
-    //        return;
-
-    //    _isLoadingTribus = true;
-
-    //    try
-    //    {
-    //        TribusList = await _lookupService.GetTribusListAsync();
-    //        TribusLookup = await _lookupService.GetTribusLookupAsync();
-    //    }
-    //    finally
-    //    {
-    //        _isLoadingTribus = false;
-    //    }
-    //}
-
     public async Task LoadTribusLookupAsync()
     {
         TribusList = await _lookupService.GetTribusListAsync();
         TribusLookup = await _lookupService.GetTribusLookupAsync();
+    }
+    protected override async Task LoadLookupsAsync()
+    {
+        await LoadTribusLookupAsync();
     }
 
     // ---------------------------------------------------------
@@ -244,13 +234,12 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
             await LoadChildrenAsync(SelectedItem.SubtribusId);
         else
             await ClearChildCollectionsAsync();
-
-        await base.OnSelectedItemChangedAsync();
     }
 
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         // Subtribus Comments + References
@@ -339,18 +328,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         return saved;
     }
 
-    //protected override async Task<Models.Tbl60Subtribus?> SaveItemAsync(Models.Tbl60Subtribus item)
-    //{
-    //    if (string.IsNullOrWhiteSpace(item.SubtribusName))
-    //    {
-    //        await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
-    //        return null;
-    //    }
-
-    //    var saved = await Data.UpsertSubtribusAsync(item);
-    //    return saved;
-    //}
-
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
@@ -432,6 +409,16 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
         UpdateHeaderTexts();
     }
+
+    //protected override object GetSortKey(Models.Tbl60Subtribus item, string column)
+    //{
+    //    return column switch
+    //    {
+    //        "Id" => item.SubtribusId,
+    //        "Name" => item.SubtribusName ?? string.Empty,
+    //        _ => string.Empty
+    //    };
+    //}
 
     private void UpdateHeaderTexts()
     {
