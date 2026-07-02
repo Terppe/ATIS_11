@@ -66,6 +66,16 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl39Infraordo item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.InfraordoId,
+            "Info" => item.InfraordoName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

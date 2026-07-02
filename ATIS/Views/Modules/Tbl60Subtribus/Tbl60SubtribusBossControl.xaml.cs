@@ -1,31 +1,45 @@
 ﻿using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
+//    Tbl60SubtribusBossControl Skriptdatum:  25.06.2026  10:32    
+
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusBossControl : UserControl
 {
     public Tbl60SubtribusViewModel? ViewModel => DataContext as Tbl60SubtribusViewModel;
 
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
+
     public Tbl60SubtribusBossControl()
     {
         InitializeComponent();
+        Loaded += (_, __) =>
+        {
+            if (DataContext is Tbl60SubtribusViewModel vm)
+                vm.ScrollRequested += (_, __) => ScrollToSelectedItem();
+        };
     }
-    //private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
-    //{
-    //    SubtribusListView.SelectedItem = e.ClickedItem;
 
-    //    if (ViewModel != null)
-    //        ViewModel.IsEditVisible = true;
-    //}
+    // ---------------------------------------------------------
+    // SCROLL TO SELECTED
+    // ---------------------------------------------------------
 
-    //private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
-    //{
-    //    SubtribusListView.SelectedItem = e.ClickedItem;
+    private void ScrollToSelectedItem()
+    {
+        if (DataContext is Tbl60SubtribusViewModel vm &&
+            vm.SelectedItem != null)
+        {
+            SubtribusListView.ScrollIntoView(vm.SelectedItem);
+        }
+    }
 
-    //    if (ViewModel != null)
-    //        ViewModel.IsDetailVisible = true;
-    //}
+    // ---------------------------------------------------------                   
+    // RIGHT_TAPPED
+    // ---------------------------------------------------------                   
+
     private void SubtribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (sender is not ListView listView) return;
@@ -44,5 +58,6 @@ public sealed partial class Tbl60SubtribusBossControl : UserControl
         }
         return null;
     }
+
 
 }

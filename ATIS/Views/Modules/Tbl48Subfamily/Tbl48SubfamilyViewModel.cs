@@ -66,6 +66,16 @@ public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfami
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl48Subfamily item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.SubfamilyId,
+            "Info" => item.SubfamilyName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

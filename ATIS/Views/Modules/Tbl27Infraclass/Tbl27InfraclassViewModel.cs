@@ -66,6 +66,16 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl27Infraclass item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.InfraclassId,
+            "Info" => item.InfraclassName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

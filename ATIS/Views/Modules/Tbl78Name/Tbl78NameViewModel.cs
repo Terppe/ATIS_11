@@ -36,6 +36,16 @@ public class Tbl78NameViewModel : BaseBossListViewModel<Models.Tbl78Name>
     protected override int GetId(Models.Tbl78Name model)
         => model.NameId;
 
+    protected override object GetSortKey(Models.Tbl78Name item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.NameId,
+            "Name" => item.Info ?? "",
+            _ => ""
+        };
+    }
+
     public override async Task LoadParentAsync(int parentId)
     {
         throw new NotImplementedException();

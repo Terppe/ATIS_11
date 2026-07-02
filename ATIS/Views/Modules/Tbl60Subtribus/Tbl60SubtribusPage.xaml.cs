@@ -1,13 +1,19 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
-using ATIS.Services;
-using log4net;
+using ATIS.Views.Modules.Tbl63Infratribus;
+
+//    Tbl60SubtribusPage Skriptdatum:  25.06.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusPage : Page
 {
+    private object? _commentsHeaderText;
+    private object? _referencesHeaderText;
     public Tbl60SubtribusViewModel ViewModel { get; }
+
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
 
     public Tbl60SubtribusPage()
     {
@@ -19,150 +25,83 @@ public sealed partial class Tbl60SubtribusPage : Page
         Loaded += SubtribusPage_Loaded;
     }
 
+    // ---------------------------------------------------------
+    // PAGE LOADED
+    // ---------------------------------------------------------
+
     private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
     {
         Loaded -= SubtribusPage_Loaded;
-
-        // Falls Lookup: Tribus benötigt wird
-        await ViewModel.LoadTribusLookupAsync();
 
         await ViewModel.LoadAsync();
 
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
+
+        // Wichtig: lokalisierte Header einmal merken
+        _commentsHeaderText = CommentsInfratribusPivot.Header;
+        _referencesHeaderText = ReferencesInfratribusPivot.Header;
+
+        // Start: ausblenden
+        UpdateInfratribusTabs(false);
+
+        Vm.InfratribusViewModel.PropertyChanged += InfratribusViewModel_PropertyChanged;
+
+        // Falls schon selektiert, wieder einblenden
+        UpdateInfratribusTabs(Vm.InfratribusViewModel.SelectedItem != null);
     }
+
+    // ---------------------------------------------------------                   
+    // QUERY-SUBMITTED
+    // ---------------------------------------------------------                   
+
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
-    private async void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+
+    // ---------------------------------------------------------
+    // COMMENTS + REFERENCES PIVOTS VON Infratribus VERWALTEN
+    // ---------------------------------------------------------
+
+    private void UpdateInfratribusTabs(bool hasSelection)
     {
-        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-            await ViewModel.ApplyFilterAsync(sender.Text);
+        CommentsInfratribusPivot.IsEnabled = hasSelection;
+        ReferencesInfratribusPivot.IsEnabled = hasSelection;
+
+        // Nicht mehr mit Uid zur Laufzeit arbeiten, sondern mit gecachtem Header und WinUI3Localizer
+
+        CommentsInfratribusPivot.Header = hasSelection ? _commentsHeaderText : string.Empty;
+        ReferencesInfratribusPivot.Header = hasSelection ? _referencesHeaderText : string.Empty;
+
+        if (!hasSelection && DetailPivot.SelectedIndex >= 4)
+            DetailPivot.SelectedIndex = 3; // Infratribus
     }
-    //private void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (DetailPivot.SelectedItem == CommentsSubtribusPivot)
-    //    {
-    //        CommentParentControl.DataContext = ViewModel.CommentViewModel;
-    //    }
 
-    //    if (DetailPivot.SelectedItem == ReferencesSubtribusPivot)
-    //    {
-    //        ReferenceParentControl.DataContext = ViewModel.ReferenceViewModel;
-    //    }
+    // ---------------------------------------------------------                  
+    // PROPERTCHANGED
+    // ---------------------------------------------------------                  
 
-    //    if (DetailPivot.SelectedItem == InfratribusSubtribusPivot)
-    //    {
-    //        InfratribusParentControl.DataContext = ViewModel.InfratribusViewModel;
-    //    }
-    //}
+    private void InfratribusViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Tbl63InfratribusViewModel.SelectedItem))
+        {
+            DispatcherQueue.TryEnqueue(() =>
+                UpdateInfratribusTabs(Vm.InfratribusViewModel.SelectedItem != null));
+        }
+    }
 
-    //private async void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (DetailPivot.SelectedItem is PivotItem pivotItem)
-    //    {
-    //        if (pivotItem.Header is string header && header == "Comments")
-    //        {
-    //            if (DataContext is Tbl60SubtribusViewModel vm &&
-    //                vm.SelectedItem != null)
-    //            {
-    //                await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //            }
-    //        }
-    //        // später: References, Infratribus genauso
-    //    }
-    //}
+    // ---------------------------------------------------------         
+    // NAVIGATED FROM
+    // ---------------------------------------------------------
 
-    private bool _commentsLoaded;
-    private bool _referencesLoaded;
-    private bool _infratribussesLoaded;
+    private Tbl60SubtribusViewModel Vm => (Tbl60SubtribusViewModel)DataContext;
 
-    //private async void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (DataContext is not Tbl60SubtribusViewModel vm)
-    //        return;
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        if (DataContext is Tbl60SubtribusViewModel vm)
+            vm.InfratribusViewModel.PropertyChanged -= InfratribusViewModel_PropertyChanged;
 
-    //    if (vm.SelectedItem == null)
-    //        return;
-
-    //    // COMMENTS (Subtribus + Infratribus)
-    //    if (DetailPivot.SelectedItem == CommentsSubtribusPivot ||
-    //        DetailPivot.SelectedItem == CommentsInfratribusPivot)
-    //    {
-    //        if (!_commentsLoaded)
-    //        {
-    //            _commentsLoaded = true;
-    //            await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-
-    //    // REFERENCES (Subtribus + Infratribus)
-    //    else if (DetailPivot.SelectedItem == ReferencesSubtribusPivot ||
-    //             DetailPivot.SelectedItem == ReferencesInfratribusPivot)
-    //    {
-    //        if (!_referencesLoaded)
-    //        {
-    //            _referencesLoaded = true;
-    //            await vm.ReferenceViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-
-    //    // INFRATRIBUS
-    //    else if (DetailPivot.SelectedItem == InfratribusSubtribusPivot)
-    //    {
-    //        if (!_infratribussesLoaded)
-    //        {
-    //            _infratribussesLoaded = true;
-    //            await vm.InfratribusViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-    //}
-
-
-    //private async void DetailPivot_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (DetailPivot.SelectedItem == CommentsSubtribusPivot)
-    //    {
-    //        if (DataContext is Tbl60SubtribusViewModel vm &&
-    //            vm.SelectedItem != null)
-    //        {
-    //            await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-    //    else if (DetailPivot.SelectedItem == ReferencesSubtribusPivot)
-    //    {
-    //        if (DataContext is Tbl60SubtribusViewModel vm &&
-    //            vm.SelectedItem != null)
-    //        {
-    //            await vm.ReferenceViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-    //    //weiteres Pivot-Item hinzufügen, z.B. Infratribus
-    //    else if (DetailPivot.SelectedItem == InfratribusSubtribusPivot)
-    //    {
-    //        if (DataContext is Tbl60SubtribusViewModel vm &&
-    //            vm.SelectedItem != null)
-    //        {
-    //            await vm.InfratribusViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-    //    else if (DetailPivot.SelectedItem == CommentsInfratribusPivot)
-    //    {
-    //        if (DataContext is Tbl60SubtribusViewModel vm &&
-    //            vm.SelectedItem != null)
-    //        {
-    //            await vm.CommentViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-    //    else if (DetailPivot.SelectedItem == ReferencesInfratribusPivot)
-    //    {
-    //        if (DataContext is Tbl60SubtribusViewModel vm &&
-    //            vm.SelectedItem != null)
-    //        {
-    //            await vm.ReferenceViewModel.LoadParentAsync(vm.SelectedItem.SubtribusId);
-    //        }
-    //    }
-    //}
-
+        base.OnNavigatedFrom(e);
+    }
 }

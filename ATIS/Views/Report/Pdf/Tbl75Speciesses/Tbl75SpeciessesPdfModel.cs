@@ -224,11 +224,11 @@ public class Tbl75SpeciessesPdfModel
         get; set;
     }
     //Plant
-    public int BasinHeight
+    public int? BasinHeight
     {
         get; set;
     }
-    public decimal PlantLength
+    public decimal? PlantLength
     {
         get; set;
     }

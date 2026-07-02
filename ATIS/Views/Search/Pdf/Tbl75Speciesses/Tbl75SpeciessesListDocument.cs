@@ -76,7 +76,7 @@ internal class Tbl75SpeciessesListDocument(
             {
                 table.Cell().Text("");
                 table.Cell()
-                    .Text($"{item.Tbl66Genusses.GenusName} {item.SpeciesName} {item.Subspecies} {item.Divers}" +
+                    .Text($"{item.Genus.GenusName} {item.SpeciesName} {item.Subspecies} {item.Divers}" +
                           $" {item.Author} {item.AuthorYear}");
             }
         });

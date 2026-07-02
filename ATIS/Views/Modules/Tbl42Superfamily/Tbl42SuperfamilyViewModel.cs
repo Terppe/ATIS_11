@@ -66,6 +66,16 @@ public class Tbl42SuperfamilyViewModel : BaseBossListViewModel<Models.Tbl42Super
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl42Superfamily item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.SuperfamilyId,
+            "Info" => item.SuperfamilyName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

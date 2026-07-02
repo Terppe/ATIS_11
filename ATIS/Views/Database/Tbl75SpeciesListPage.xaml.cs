@@ -99,8 +99,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                     ? [.. AppData.Data.Tbl75Speciesses
                     .Where(e => e.SpeciesId == id)]
                     : [.. AppData.Data.Tbl75Speciesses
-                    .Where(e => e.Tbl66Genusses.GenusName.StartsWith(_search))
-                    .OrderBy(a => a.Tbl66Genusses.GenusName)
+                    .Where(e => e.Genus.GenusName.StartsWith(_search))
+                    .OrderBy(a => a.Genus.GenusName)
                     .ThenBy(a => a.SpeciesName)
                     .ThenBy(a => a.Subspecies)
                     .ThenBy(a => a.Divers)];
@@ -698,8 +698,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                     ? [.. AppData.Data.Tbl75Speciesses
                             .Where(e => e.SpeciesId == id)]
                     : [.. AppData.Data.Tbl75Speciesses
-                            .Where(e => e.Tbl66Genusses.GenusName.StartsWith(_search))
-                            .OrderBy(a => a.Tbl66Genusses.GenusName)
+                            .Where(e => e.Genus.GenusName.StartsWith(_search))
+                            .OrderBy(a => a.Genus.GenusName)
                             .ThenBy(a => a.SpeciesName)
                             .ThenBy(a => a.Subspecies)
                             .ThenBy(a => a.Divers)];
@@ -3125,8 +3125,8 @@ public sealed partial class Tbl75SpeciesListPage : Page, Maps
                         ? [.. AppData.Data.Tbl75Speciesses
                                 .Where(a => a.SpeciesId == id)]
                         : [.. AppData.Data.Tbl75Speciesses
-                                .Where(a => a.Tbl66Genusses.GenusName.StartsWith(_search))
-                                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                                .Where(a => a.Genus.GenusName.StartsWith(_search))
+                                .OrderBy(a => a.Genus.GenusName)
                                 .ThenBy(a => a.SpeciesName)
                                 .ThenBy(a => a.Subspecies)
                                 .ThenBy(a => a.Divers)];

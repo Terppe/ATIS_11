@@ -66,6 +66,16 @@ public class Tbl21ClassViewModel : BaseBossListViewModel<Models.Tbl21Class>, ITa
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl21Class item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.ClassId,
+            "Info" => item.ClassName ?? "",
+            _ => ""
+        };
+    }
+
 
     public void ResetBelow() { }
     public Task LoadForSuperclassAsync(int id) => Task.CompletedTask;

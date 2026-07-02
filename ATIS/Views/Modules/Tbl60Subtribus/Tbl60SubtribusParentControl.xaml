@@ -8,20 +8,21 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
+    <!--  Tbl60SubtribusParentControl Skriptdatum:  25.06.2026  10:32  -->
+
     <UserControl.Resources>
         <GridLength x:Key="IdWidthResource">120</GridLength>
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
-        <GridLength x:Key="Extra5WidthResource">150</GridLength>
+        <GridLength x:Key="Extra5WidthResource">250</GridLength>
         <GridLength x:Key="Extra6WidthResource">100</GridLength>
     </UserControl.Resources>
 
     <Grid Padding="2"
           RowDefinitions="Auto,Auto,*">
-        <!--  TOP BAR  -->
-        <!--  MINI BAR (Row 0)  -->
+        <!--  HEADER LEFT + RIGHT  -->
         <Grid Grid.Row="0"
               Margin="0,0,0,8"
               ColumnDefinitions="*,Auto">
@@ -97,11 +98,6 @@
 
         <!--  LIST  -->
         <ListView x:Name="SubtribusListView"
-                  ItemsSource="{Binding Items}"
-                  IsItemClickEnabled="True"
-                  ItemClick="SubtribusListView_ItemClick" >
-
-        <!--<ListView x:Name="SubtribusListView"
                   Grid.Row="2"
                   MaxHeight="112.5"
                   Margin="0,0,10,0"
@@ -114,7 +110,7 @@
                   ItemsSource="{Binding Items}"
                   RightTapped="SubtribusListView_RightTapped"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                  SelectionMode="Single">-->
+                  SelectionMode="Single">
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Tbl60Subtribus">

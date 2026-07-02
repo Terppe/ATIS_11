@@ -15,12 +15,12 @@ public sealed partial class Tbl66GenusBossControl : UserControl
     // ---------------------------------------------------------
     //  ItemClick → Select + Show Detail
     // ---------------------------------------------------------
-    private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
+    private void GenusListView_OnItemClick(object sender, ItemClickEventArgs e)
     {
         GenusListView.SelectedItem = e.ClickedItem;
 
-        if (ViewModel != null)
-            ViewModel.IsGenusDetailVisible = true;
+       // if (ViewModel != null)
+          //  ViewModel.IsDetailVisible = true;
     }
 
     // ---------------------------------------------------------
@@ -52,4 +52,5 @@ public sealed partial class Tbl66GenusBossControl : UserControl
         }
         return null;
     }
+
 }

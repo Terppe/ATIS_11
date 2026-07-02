@@ -66,6 +66,16 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl12Subphylum item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.SubphylumId,
+            "Info" => item.SubphylumName ?? "",
+            _ => ""
+        };
+    }
+
 
     public void ResetBelow() { }
     public Task LoadForPhylumAsync(int id) => Task.CompletedTask;

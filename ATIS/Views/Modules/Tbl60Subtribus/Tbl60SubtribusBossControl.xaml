@@ -8,13 +8,15 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
+    <!--  Tbl60SubtribusBossControl Skriptdatum:  25.06.2026  10:32  -->
+
     <UserControl.Resources>
         <GridLength x:Key="IdWidthResource">120</GridLength>
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
-        <GridLength x:Key="Extra5WidthResource">150</GridLength>
+        <GridLength x:Key="Extra5WidthResource">250</GridLength>
         <GridLength x:Key="Extra6WidthResource">100</GridLength>
     </UserControl.Resources>
 
@@ -46,7 +48,7 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{x:Bind ViewModel.SortCommand}"
-                    CommandParameter="Extra1"
+                    CommandParameter="Name"
                     FontWeight="Bold">
                 <TextBlock Text="{x:Bind ViewModel.NameHeaderText, Mode=OneWay}" />
             </Button>
@@ -72,7 +74,6 @@
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
         </Grid>
-
         <ListView x:Name="SubtribusListView"
                   Grid.Row="1"
                   MaxHeight="150"
@@ -86,7 +87,6 @@
                   RightTapped="SubtribusListView_RightTapped"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   SelectionMode="Single">
-
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Tbl60Subtribus">
                     <Grid Style="{StaticResource AtisListRowGridStyle}">

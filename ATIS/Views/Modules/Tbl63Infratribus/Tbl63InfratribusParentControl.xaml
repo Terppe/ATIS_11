@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<UserControl x:Class="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusParentControl"
+﻿<UserControl x:Class="ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusParentControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="using:ATIS.Models"
+             xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -14,24 +14,28 @@
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
-        <GridLength x:Key="Extra5WidthResource">150</GridLength>
+        <GridLength x:Key="Extra5WidthResource">250</GridLength>
         <GridLength x:Key="Extra6WidthResource">100</GridLength>
     </UserControl.Resources>
 
     <Grid Padding="2"
           RowDefinitions="Auto,Auto,*">
+
         <!--  TOP BAR  -->
         <!--  MINI BAR (Row 0)  -->
+
         <Grid Grid.Row="0"
               Margin="0,0,0,8"
               ColumnDefinitions="*,Auto">
+
             <!--  LEFT  -->
+
             <StackPanel Margin="8,0,0,8"
                         Orientation="Horizontal"
                         Spacing="10">
 
                 <TextBlock Margin="0,4,0,0"
-                           loc:Uids.Uid="TextBlock_Infratribusses"
+                           loc:Uids.Uid="TextBlock_Infratribus"
                            Style="{StaticResource AtisSectionTitleTextStyle}" />
 
                 <TextBlock Margin="0,12,0,0"
@@ -43,7 +47,9 @@
                            Text="{Binding DataSetCount}" />
             </StackPanel>
 
+
             <!--  RIGHT  -->
+
             <StackPanel Grid.Column="2"
                         Margin="0,0,8,0"
                         VerticalAlignment="Center"
@@ -59,7 +65,9 @@
             </StackPanel>
         </Grid>
 
+
         <!--  LIST HEADER  -->
+
         <Grid Grid.Row="1"
               Padding="2">
             <Grid.ColumnDefinitions>
@@ -95,24 +103,8 @@
                        FontWeight="Bold" />
         </Grid>
 
+
         <!--  LIST  -->
-        <!--<ListView x:Name="InfratribusListView"
-        ItemsSource="{Binding Items}"
-        IsItemClickEnabled="False"
-        SelectionMode="None" >-->
-        <!--<ListView x:Name="InfratribusListView"
-        Grid.Row="2"
-        MaxHeight="112.5"
-        Margin="0,0,10,0"
-        BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-        BorderThickness="1"
-        CornerRadius="4"
-        IsItemClickEnabled="True"
-        ItemClick="InfratribusListView_ItemClick"
-        ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
-        ItemsSource="{Binding Items}"
-        RightTapped="InfratribusListView_RightTapped"
-        SelectionMode="Single">-->
         <ListView x:Name="InfratribusListView"
                   Grid.Row="2"
                   MaxHeight="112.5"
@@ -121,11 +113,28 @@
                   BorderThickness="1"
                   CornerRadius="4"
                   IsItemClickEnabled="True"
+                  ItemClick="InfratribusListView_ItemClick"
                   ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
                   ItemsSource="{Binding Items}"
                   RightTapped="InfratribusListView_RightTapped"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   SelectionMode="Single">
+
+
+            <!--<ListView x:Name="InfratribusListView"
+            Grid.Row="2"
+            MaxHeight="112.5"
+            Margin="0,0,10,0"
+            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="4"
+            IsItemClickEnabled="True"
+            ItemClick="InfratribusListView_ItemClick"
+            ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
+            ItemsSource="{Binding Items}"
+            RightTapped="InfratribusListView_RightTapped"
+            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+            SelectionMode="Single">-->
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Tbl63Infratribus">
@@ -178,6 +187,7 @@
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind SubtribusName}" />
+
 
                         <CheckBox Grid.Column="3"
                                   IsChecked="{x:Bind Valid}"

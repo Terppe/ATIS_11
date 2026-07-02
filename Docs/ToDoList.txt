@@ -883,3 +883,47 @@ infratribusComment und Infratribusreference. Jetzt läuft bei Subtribus alles un
 21.06.2026 18:30 Uhr Versuch Sort in BaseSortableBossViewModel nicht geklappt. morgen neu
 ----------------------------------------
 22.06.2026 18:30 Uhr BaseSortableBossViewModel abgebrochen. BaseHierarchyBossViewModel eingebaut und die ersten teile eingefügt. muss aber noch mehr.
+----------------------------------------
+23.06.2026 16:30 Uhr Zurückgesetzt Version 110. Parent-system nicht virtuell. Neue SubtribusVM erzeugt und lauffähig
+----------------------------------------
+23.06.2026 18:30 Uhr CommentVM, ReferenceVM und InfratribusVM erzeugt und lauffähig.  noch nicht perfekt
+----------------------------------------
+23.06.2026 21:30 Uhr SubtribusVM neu als Master ok nur bei subtribuspage wird infratribus gleich mit 1. geöffneten datensatz angezeigt. evtl. korrigiert, wenn infratribusvm den gleich status hat
+----------------------------------------
+24.06.2026 13:30 Uhr Tribus-Species alle Methoden geändert, aber noch einzelnr Fehler im verhalten.Alle Models aktalisiert. z.t. fehlt     public Tbl60Subtribus? Subtribus { get; set; }
+
+    [NotMapped]
+    public string? SubtribusName => Subtribus?.SubtribusName;
+    // ---------------------------------------------------------
+    // IHierarchicalEntity IMPLEMENTATION
+    // ---------------------------------------------------------
+    public int GetEntityId() => InfratribusId;
+    public string GetDisplayName() => InfratribusName ?? $"Infratribus {InfratribusId}";
+----------------------------------------
+27.06.2026 13:30 Uhr zurückgesetzt von version 116. Lauffähig ist subtribus. jetzt fangen wir wieder an, in BaseBossVM zu verlagern, LoopupService
+und Sort. Verstecken von Header der pivods bei parentComment un Parentreferencen, wenn ein datensatz bei ParentInfratribus ausgewählkt ist
+----------------------------------------
+28.06.2026 18:30 Uhr Im Pivot wird Infratribus nicht angezeigt
+----------------------------------------
+28.06.2026 19:30 Uhr Wir müssen Subtribus komplett sauber machen (Boss + Parent),
+und danach eine 1:1‑Kopie für Infratribus erzeugen.
+jetzt ganz neuer Ansatz nur Infratribus Pivot klappt nicht. Abgeleitet alle von BaseHierarchyBossViewModel
+----------------------------------------
+29.06.2026 14:30 Uhr SubtribusPage mit Comments und References ok. InfratribusPage geht nicht
+----------------------------------------
+29.06.2026 17:30 Uhr Infratribus bei SubtribusPage gelöst. nur noch ein kleiner fehler bei Pivotaufruf von Infratribus wird der Datensatz in der Liste angezeigt und gleich ein leeres Editcontrol.
+bei click sind daten im Editcontrol
+----------------------------------------
+29.06.2026 19:30 Uhr Komplett funktionsfähig. fehlt noch der plan w nur den header von InfratribusComment und InfratribusReference anzuzeigen,
+wenn bei Infratribus ein Datensatz geöffnet ist. Sort in BaseBossViewModel, Neu -Button diablen wenn datensatzgeöffnet ist.
+----------------------------------------
+29.06.2026 22:30 Uhr Sort in BaseBossViewModel verschoben
+----------------------------------------
+30.06.2026 14:30 Uhr Neu-Button spezielles Verhalten. Diese Version ist im Moment ohne Fehler. Sollte als Basis-Versiongenommen werden.
+Ich bereite jetzt den Generator vor, damit wir völlig identische Dateien bekommen
+----------------------------------------
+30.06.2026 20:30 Uhr COMMENTS + REFERENCES PIVOTS VON INFRATRIBUS VERWALTEN in codebehind.
+----------------------------------------
+01.07.2026 20:30 Uhr Version 131 ist Basis für alle Module
+----------------------------------------
+02.07.2026 20:30 Uhr Version 135 ist Basis für alle Module und im Generator eingebaut.

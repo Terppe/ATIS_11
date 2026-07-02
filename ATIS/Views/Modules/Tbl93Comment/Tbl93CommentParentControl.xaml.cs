@@ -11,7 +11,6 @@ public sealed partial class Tbl93CommentParentControl : UserControl
     public Tbl93CommentParentControl()
     {
         InitializeComponent();
-        InitializeComponent();
         Loaded += (_, __) =>
         {
             Debug.WriteLine("ParentControl DC = " + DataContext);

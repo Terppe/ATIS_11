@@ -544,7 +544,7 @@
                         <TextBlock FontSize="18"
                                    FontWeight="Bold"
                                    Style="{StaticResource BodyTextStyle}"
-                                   Text="{x:Bind ViewModel.SpeciesSelected.Tbl66Genusses.GenusName, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSelected.Genus.GenusName, Mode=OneWay}" />
                         <TextBlock Margin="2,0,0,0"
                                    FontSize="18"
                                    FontWeight="Bold"
@@ -790,7 +790,7 @@
                                 Grid.Column="1"
                                 Orientation="Horizontal">
                         <TextBlock Width="Auto"
-                                   Text="{x:Bind ViewModel.SpeciesSelected.Tbl66Genusses.GenusName, Mode=OneWay}" />
+                                   Text="{x:Bind ViewModel.SpeciesSelected.Genus.GenusName, Mode=OneWay}" />
                         <TextBlock Width="Auto"
                                    Margin="2,0,0,0"
                                    Text="{x:Bind ViewModel.SpeciesSelected.SpeciesName, Mode=OneWay}" />

@@ -1153,11 +1153,11 @@ public class PdfModels
         {
             get; set;
         }
-        public int BasinLength
+        public int? BasinLength
         {
             get; set;
         }
-        public decimal FishLength
+        public decimal? FishLength
         {
             get; set;
         }
@@ -1217,35 +1217,35 @@ public class PdfModels
         {
             get; set;
         }
-        public decimal Ph1
+        public decimal? Ph1
         {
             get; set;
         }
-        public decimal Ph2
+        public decimal? Ph2
         {
             get; set;
         }
-        public int Temp1
+        public int? Temp1
         {
             get; set;
         }
-        public int Temp2
+        public int? Temp2
         {
             get; set;
         }
-        public int Hardness1
+        public int? Hardness1
         {
             get; set;
         }
-        public int Hardness2
+        public int? Hardness2
         {
             get; set;
         }
-        public int CarboHardness1
+        public int? CarboHardness1
         {
             get; set;
         }
-        public int CarboHardness2
+        public int? CarboHardness2
         {
             get; set;
         }
@@ -1294,11 +1294,11 @@ public class PdfModels
             get; set;
         }
         //Plant
-        public int BasinHeight
+        public int? BasinHeight
         {
             get; set;
         }
-        public decimal PlantLength
+        public decimal? PlantLength
         {
             get; set;
         }

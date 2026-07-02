@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System.Diagnostics;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
@@ -17,14 +18,13 @@ public sealed partial class Tbl66GenusParentControl : UserControl
     // ---------------------------------------------------------
     //  ItemClick → Select + Open Edit
     // ---------------------------------------------------------
-    //private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
-    //{
-    //    if (DataContext is Tbl66GenusViewModel vm)
-    //    {
-    //        vm.SelectedItem = (Models.Tbl66Genus)e.ClickedItem;
-    //        vm.OpenEditCommand.Execute(null);
-    //    }
-    //}
+    private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (DataContext is Tbl66GenusViewModel vm)
+        {
+            vm.SelectedItem = (Models.Tbl66Genus)e.ClickedItem;
+        }
+    }
 
     // ---------------------------------------------------------
     //  RightTapped → Select row under cursor
@@ -56,4 +56,5 @@ public sealed partial class Tbl66GenusParentControl : UserControl
         }
         return null;
     }
+
 }

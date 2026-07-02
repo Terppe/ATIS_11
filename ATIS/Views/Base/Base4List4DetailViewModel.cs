@@ -393,7 +393,7 @@ public abstract class Base4List4DetailViewModel<TDomain, TEdit>
 
         await _dialogService.ShowInfoAsync("Save_Success_Title", "Save_Success_Message");
 
-        await ReloadAndSelectAsync(saved);
+       // await ReloadAndSelectAsync(saved);
 
         IsInEdit = false;
         IsNew = false;
@@ -425,7 +425,7 @@ public abstract class Base4List4DetailViewModel<TDomain, TEdit>
 
         await _dialogService.ShowInfoAsync("Delete_Success_Title", "Delete_Success_Message");
 
-        await ReloadAndSelectAsync(null);
+      //  await ReloadAndSelectAsync(null);
     }
 
     #endregion
@@ -434,22 +434,22 @@ public abstract class Base4List4DetailViewModel<TDomain, TEdit>
     #region [ RELOAD + RE-SELECT ]
     // ------------------------------------------------------------
 
-    protected virtual async Task ReloadAndSelectAsync(TDomain? saved)
-    {
-        var result = await LoadDataAsync();
-        SetItemsLevel1(result);
-        OnPropertyChanged(nameof(ItemsLevel1));
-        DataSetCount = ItemsLevel1.Count;
+    //protected virtual async Task ReloadAndSelectAsync(TDomain? saved)
+    //{
+    //    var result = await LoadDataAsync();
+    //    SetItemsLevel1(result);
+    //    OnPropertyChanged(nameof(ItemsLevel1));
+    //    DataSetCount = ItemsLevel1.Count;
 
-        if (saved != null)
-        {
-            SelectedItemLevel1 = ItemsLevel1.FirstOrDefault(x => GetId(x) == GetId(saved));
-        }
-        else
-        {
-            SelectedItemLevel1 = ItemsLevel1.FirstOrDefault();
-        }
-    }
+    //    if (saved != null)
+    //    {
+    //        SelectedItemLevel1 = ItemsLevel1.FirstOrDefault(x => GetId(x) == GetId(saved));
+    //    }
+    //    else
+    //    {
+    //        SelectedItemLevel1 = ItemsLevel1.FirstOrDefault();
+    //    }
+    //}
 
     #endregion
 

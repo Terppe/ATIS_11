@@ -31,7 +31,7 @@ public sealed partial class Tbl75SpeciesBossControl : UserControl
     // ---------------------------------------------------------
     //  ItemClick → Select + Show Detail
     // ---------------------------------------------------------
-    private void SpeciesListView_ItemClick(object sender, ItemClickEventArgs e)
+    private void SpeciesListView_OnItemClick(object sender, ItemClickEventArgs e)
     {
         SpeciesListView.SelectedItem = e.ClickedItem;
 

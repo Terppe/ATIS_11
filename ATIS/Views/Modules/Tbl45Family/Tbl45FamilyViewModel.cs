@@ -66,6 +66,16 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>, I
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl45Family item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.FamilyId,
+            "Info" => item.FamilyName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

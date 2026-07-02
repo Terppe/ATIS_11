@@ -18,24 +18,40 @@ public class LookupService
     private IDataService CreateDataService()
         => new DataService(_factory, _user);
 
+    private Dictionary<int, string?>? _supertribusLookupCache;
     private Dictionary<int, string?>? _tribusLookupCache;
     private Dictionary<int, string?>? _subtribusLookupCache;
     private Dictionary<int, string?>? _infratribusLookupCache;
+    private Dictionary<int, string?>? _genusLookupCache;
+    private Dictionary<int, string?>? _speciesLookupCache;
 
     private Dictionary<int, string?>? _refAuthorLookupCache;
     private Dictionary<int, string?>? _refExpertLookupCache;
     private Dictionary<int, string?>? _refSourceLookupCache;
 
 
+    private ObservableCollection<Models.Tbl54Supertribus>? _supertribusListCache;
     private ObservableCollection<Models.Tbl57Tribus>? _tribusListCache;
     private ObservableCollection<Models.Tbl60Subtribus>? _subtribusListCache;
     private ObservableCollection<Models.Tbl63Infratribus>? _infratribusListCache;
+    private ObservableCollection<Models.Tbl66Genus>? _genusListCache;
+    private ObservableCollection<Models.Tbl75Species>? _speciesListCache;
 
     private ObservableCollection<Models.Tbl90RefAuthor>? _refAuthorListCache;
     private ObservableCollection<Models.Tbl90RefExpert>? _refExpertListCache;
     private ObservableCollection<Models.Tbl90RefSource>? _refSourceListCache;
 
     //--------------------------------------------------------------------
+    public async Task<Dictionary<int, string?>> GetSupertribusLookupAsync()
+    {
+        if (_supertribusLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSupertribusAsync();
+            _supertribusLookupCache = list.ToDictionary(x => x.SupertribusId, x => x.SupertribusName);
+        }
+        return _supertribusLookupCache;
+    }
     public async Task<Dictionary<int, string?>> GetTribusLookupAsync()
     {
         if (_tribusLookupCache == null)
@@ -66,6 +82,27 @@ public class LookupService
         }
         return _infratribusLookupCache;
     }
+    public async Task<Dictionary<int, string?>> GetGenusLookupAsync()
+    {
+        if (_genusLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllGenusAsync();
+            _genusLookupCache = list.ToDictionary(x => x.GenusId, x => x.GenusName);
+        }
+        return _genusLookupCache;
+    }
+    public async Task<Dictionary<int, string?>> GetSpeciesLookupAsync()
+    {
+        if (_speciesLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSpeciesAsync();
+            _speciesLookupCache = list.ToDictionary(x => x.SpeciesId, x => x.SpeciesName);
+        }
+        return _speciesLookupCache;
+    }
+
 
     public async Task<Dictionary<int, string?>> GetRefAuthorLookupAsync()
     {
@@ -99,6 +136,16 @@ public class LookupService
     }
 
     //--------------------------------------------------------------------
+    public async Task<ObservableCollection<Models.Tbl54Supertribus>> GetSupertribusListAsync()
+    {
+        if (_supertribusListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSupertribusAsync();
+            _supertribusListCache = new ObservableCollection<Models.Tbl54Supertribus>(list);
+        }
+        return _supertribusListCache;
+    }
     public async Task<ObservableCollection<Models.Tbl57Tribus>> GetTribusListAsync()
     {
         if (_tribusListCache == null)
@@ -129,6 +176,27 @@ public class LookupService
         }
         return _infratribusListCache;
     }
+    public async Task<ObservableCollection<Models.Tbl66Genus>> GetGenusListAsync()
+    {
+        if (_genusListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllGenusAsync();
+            _genusListCache = new ObservableCollection<Models.Tbl66Genus>(list);
+        }
+        return _genusListCache;
+    }
+    public async Task<ObservableCollection<Models.Tbl75Species>> GetSpeciesListAsync()
+    {
+        if (_speciesListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSpeciesAsync();
+            _speciesListCache = new ObservableCollection<Models.Tbl75Species>(list);
+        }
+        return _speciesListCache;
+    }
+
 
     public async Task<ObservableCollection<Models.Tbl90RefAuthor>> GetRefAuthorListAsync()
     {

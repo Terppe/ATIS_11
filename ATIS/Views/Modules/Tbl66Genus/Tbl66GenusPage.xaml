@@ -91,136 +91,86 @@
                     <local:Tbl66GenusBossControl DataContext="{Binding}" />
                 </layout:BaseBossPageLayout.ListContent>
 
-                <!--  DETAIL CONTENT  -->
+                <!--  DETAIL  -->
                 <layout:BaseBossPageLayout.DetailContent>
 
-                    <!--<TabView x:Name="TabViewBase"
-                             Margin="0"
-                             SelectedIndex="{x:Bind ViewModel.SelectedTabIndex, Mode=TwoWay}"
-                             Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Pivot SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
+                           Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        --><!--  EDIT  --><!--
-                        <TabViewItem Header="Edit Genus">
+                        <!--  EDIT GENUS  -->
+                        <PivotItem loc:Uids.Uid="PivotItem_Edit_Genus">
                             <ScrollViewer Padding="1">
-                                <local:Tbl66GenusEditControl DataContext="{x:Bind ViewModel}"
-                                                             Item="{x:Bind ViewModel.SelectedItem, Mode=OneWay}" />
+                                <local:Tbl66GenusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
                             </ScrollViewer>
-                        </TabViewItem>
+                        </PivotItem>
 
-                        --><!--  COMMENTS  --><!--
-                        <TabViewItem Header="Comments Genus">
-                            <ScrollViewer Padding="1">
-                                <Grid RowDefinitions="Auto,*">
-                                    --><!--  LISTE  --><!--
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
-                                                                            DataContext="{x:Bind ViewModel.CommentViewModel}" />
+                        <!--  COMMENTS GENUS  -->
+                        <PivotItem loc:Uids.Uid="PivotItem_Comments">
+                            <Grid DataContext="{Binding GenusCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding SelectedItem}"
+                                                                      Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </PivotItem>
 
-                                    --><!--  EDITOR  --><!--
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          DataContext="{x:Bind ViewModel.CommentViewModel}"
-                                                                          Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                                          Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <!--  REFERENCES GENUS  -->
+                        <PivotItem loc:Uids.Uid="PivotItem_References">
+                            <Grid DataContext="{Binding GenusReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </PivotItem>
 
-                                </Grid>
-                            </ScrollViewer>
-                        </TabViewItem>
+                        <!--  SPECIES  -->
+                        <PivotItem loc:Uids.Uid="PivotItem_Edit_Species">
+                            <Grid RowDefinitions="Auto,*">
+                                <tbl75Species:Tbl75SpeciesParentControl Grid.Row="0"
+                                                                        DataContext="{Binding SpeciesViewModel}" />
 
-                        --><!--  REFERENCES  --><!--
-                        <TabViewItem Header="References Genus">
+                                <tbl75Species:Tbl75SpeciesEditControl Grid.Row="1"
+                                                                      DataContext="{Binding SpeciesViewModel}"
+                                                                      Item="{Binding SelectedItem}"
+                                                                      Visibility="{Binding IsSpeciesDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </PivotItem>
 
-                            <ScrollViewer Padding="1">
-                                <Grid RowDefinitions="Auto,*">
+                        <!--  COMMENTS SPECIES  -->
+                        <PivotItem loc:Uids.Uid="PivotItem_Comments">
+                            <Grid DataContext="{Binding SpeciesViewModel.SpeciesCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding SelectedItem}"
+                                                                      Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </PivotItem>
 
-                                    --><!--  LISTE  --><!--
-                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
-                                                                                DataContext="{x:Bind ViewModel.ReferenceViewModel}" />
+                        <!--  REFERENCES SPECIES  -->
+                        <PivotItem loc:Uids.Uid="PivotItem_References">
+                            <Grid DataContext="{Binding SpeciesViewModel.SpeciesReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </PivotItem>
 
-                                    --><!--  EDITOR  --><!--
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              DataContext="{x:Bind ViewModel.ReferenceViewModel}"
-                                                                              Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                                              Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </ScrollViewer>
-
-                        </TabViewItem>
-
-                        --><!--  SPECIES  --><!--
-                        <TabViewItem Header="Species">
-                            <ScrollViewer Padding="1">
-                                <TabView SelectedIndex="{x:Bind ViewModel.SelectedInnerTabIndex, Mode=TwoWay}">
-
-                                    --><!--  EDIT SPECIES  --><!--
-                                    <TabViewItem Header="Edit Species">
-                                        <ScrollViewer Padding="1">
-                                            <Grid RowDefinitions="Auto,*">
-
-                                                --><!--  LISTE  --><!--
-                                                <tbl75Species:Tbl75SpeciesParentControl Grid.Row="0"
-                                                                                        DataContext="{x:Bind ViewModel.SpeciesViewModel}" />
-
-                                                --><!--  EDITOR  --><!--
-                                                <tbl75Species:Tbl75SpeciesEditControl Grid.Row="1"
-                                                                                      DataContext="{x:Bind ViewModel.SpeciesViewModel}"
-                                                                                      Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                                                      Visibility="{Binding IsGenusEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            </Grid>
-                                        </ScrollViewer>
-                                    </TabViewItem>
-
-                                    --><!--  COMMENTS SPECIES  --><!--
-                                    <TabViewItem Header="Comments Species">
-                                        <ScrollViewer Padding="1">
-                                            <Grid RowDefinitions="Auto,*">
-
-                                                --><!--  LISTE  --><!--
-                                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0"
-                                                                                        DataContext="{x:Bind ViewModel.SpeciesViewModel.CommentViewModel}" />
-
-                                                --><!--  EDITOR  --><!--
-                                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                                      DataContext="{x:Bind ViewModel.SpeciesViewModel.CommentViewModel}"
-                                                                                      Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                                                      Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            </Grid>
-                                        </ScrollViewer>
-                                    </TabViewItem>
-
-                                    --><!--  REFERENCES SPECIES  --><!--
-                                    <TabViewItem Header="References Species">
-                                        <ScrollViewer Padding="1">
-                                            <Grid RowDefinitions="Auto,*">
-
-                                                --><!--  LISTE  --><!--
-                                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0"
-                                                                                            DataContext="{x:Bind ViewModel.SpeciesViewModel.ReferenceViewModel}" />
-
-                                                --><!--  EDITOR  --><!--
-                                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                                          DataContext="{x:Bind ViewModel.SpeciesViewModel.ReferenceViewModel}"
-                                                                                          Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                                                          Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            </Grid>
-                                        </ScrollViewer>
-                                    </TabViewItem>
-
-                                </TabView>
-
-                            </ScrollViewer>
-                        </TabViewItem>
-
-                    </TabView>-->
+                    </Pivot>
 
                 </layout:BaseBossPageLayout.DetailContent>
-
             </layout:BaseBossPageLayout>
 
         </ScrollViewer>
 
         <!--  2. 🔥 Modernes Lade Overlay  -->
         <!--<components:LoadingOverlayControl Grid.RowSpan="1"
-                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
+        IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
 
     </Grid>
 </Page>

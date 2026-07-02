@@ -32,15 +32,18 @@ public partial class DataService : ObservableObject, IDataService
     }
     private void ApplyAuditInfo(IAuditable entity, bool isNew)
     {
+        var user = _user.CurrentUser;
+        var now = DateTime.UtcNow;
+
         if (isNew)
         {
-            entity.Writer = _user.CurrentUser;
-            entity.WriterDate = DateTime.Now;
+            entity.Writer = user;
+            entity.WriterDate = now;
             entity.CountId = RandomHelper.Randomnumber();
         }
 
-        entity.Updater = _user.CurrentUser;
-        entity.UpdaterDate = DateTime.Now;
+        entity.Updater = user;
+        entity.UpdaterDate = now;
     }
     private static void CopyProperties<T>(T source, T target, params string[] exclude)
     {
@@ -54,7 +57,33 @@ public partial class DataService : ObservableObject, IDataService
             prop.SetValue(target, value);
         }
     }
+    //Base-Logik für Upsert-Operationen, die in allen Entitäten verwendet werden kann
+    protected async Task<TEntity> UpsertAsync<TEntity, TKey>(
+        TEntity uiEntity,
+        Func<DbContext, DbSet<TEntity>> setSelector,
+        Func<TEntity, TKey> keySelector,
+        Func<DbSet<TEntity>, TKey, Task<TEntity?>> findByKeyAsync,
+        Action<TEntity, TEntity> mapBusinessFields)
+        where TEntity : class, IDataService.IAuditable, new()
+    {
+        await using var context = _factory.CreateDbContext();
+        var set = setSelector(context);
 
+        var key = keySelector(uiEntity);
+        var dbEntity = await findByKeyAsync(set, key);
+
+        var isNew = dbEntity is null;
+        dbEntity ??= new TEntity();
+
+        if (isNew)
+            set.Add(dbEntity);
+
+        mapBusinessFields(uiEntity, dbEntity);
+        ApplyAuditInfo(dbEntity, isNew);
+
+        await context.SaveChangesAsync();
+        return dbEntity;
+    }
 
     #region für provisorium
 
@@ -1564,7 +1593,7 @@ public partial class DataService : ObservableObject, IDataService
         else
         {
             family.Updater = Environment.UserName;
-            family.UpdaterDate = DateTime.Now;
+            family.UpdaterDate = DateTime.UtcNow;
             _context.Entry(current).CurrentValues.SetValues(family);
         }
         await _context.SaveChangesAsync();
@@ -2243,17 +2272,43 @@ public partial class DataService : ObservableObject, IDataService
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl60Subtribus>();
 
+        search = search.Trim();
+
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl60Subtribusses
-            .Where(e =>
-                e.SubtribusName.StartsWith(search) ||
-                e.SubtribusId.ToString() == search)
+        var query = context.Tbl60Subtribusses
             .Include(x => x.Tribus)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SubtribusId == id || e.SubtribusName.StartsWith(search))
+                .OrderBy(e => e.SubtribusName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SubtribusName.StartsWith(search))
             .OrderBy(e => e.SubtribusName)
-            .AsNoTracking()
             .ToListAsync();
     }
+    //public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusWithTribusAsync(string? search)
+    //{
+    //    if (string.IsNullOrWhiteSpace(search))
+    //        return Enumerable.Empty<Tbl60Subtribus>();
+
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl60Subtribusses
+    //        .Where(e =>
+    //            e.SubtribusName.StartsWith(search) ||
+    //            e.SubtribusId.ToString() == search)
+    //        .Include(x => x.Tribus)
+    //        .OrderBy(e => e.SubtribusName)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
 
     public async Task<Tbl60Subtribus?> GetSubtribusByIdAsync(int id)
     {
@@ -2263,40 +2318,67 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubtribusId == id);
     }
-    public async Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
+
+    public Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
     {
-        await using var context = _factory.CreateDbContext();
-
-        Tbl60Subtribus dbEntity;
-
-        if (uiEntity.SubtribusId == 0)
-        {
-            dbEntity = new Tbl60Subtribus();
-            context.Tbl60Subtribusses.Add(dbEntity);
-        }
-        else
-        {
-            dbEntity = await context.Tbl60Subtribusses
-                           .FirstOrDefaultAsync(x => x.SubtribusId == uiEntity.SubtribusId)
-                       ?? throw new InvalidOperationException("Entity not found in database.");
-        }
-
-        CopyProperties(uiEntity, dbEntity,
-            nameof(Tbl60Subtribus.SubtribusId),
-            nameof(Tbl60Subtribus.Writer),
-            nameof(Tbl60Subtribus.WriterDate),
-            nameof(Tbl60Subtribus.Updater),
-            nameof(Tbl60Subtribus.UpdaterDate),
-            nameof(Tbl60Subtribus.CountId)
+        return UpsertAsync<Tbl60Subtribus, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl60Subtribus>(),
+            x => x.SubtribusId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SubtribusId == id),
+            MapSubtribusFields
         );
-
-        var isNew = dbEntity.SubtribusId == 0;
-        ApplyAuditInfo(dbEntity, isNew);
-
-        await context.SaveChangesAsync();
-
-        return dbEntity;
     }
+    private static void MapSubtribusFields(Tbl60Subtribus source, Tbl60Subtribus target)
+    {
+        target.SubtribusName = source.SubtribusName;
+        target.TribusId = source.TribusId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    //public async Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    Tbl60Subtribus dbEntity;
+
+    //    if (uiEntity.SubtribusId == 0)
+    //    {
+    //        dbEntity = new Tbl60Subtribus();
+    //        context.Tbl60Subtribusses.Add(dbEntity);
+    //    }
+    //    else
+    //    {
+    //        dbEntity = await context.Tbl60Subtribusses
+    //                       .FirstOrDefaultAsync(x => x.SubtribusId == uiEntity.SubtribusId)
+    //                   ?? throw new InvalidOperationException("Entity not found in database.");
+    //    }
+
+    //    CopyProperties(uiEntity, dbEntity,
+    //        nameof(Tbl60Subtribus.SubtribusId),
+    //        nameof(Tbl60Subtribus.Writer),
+    //        nameof(Tbl60Subtribus.WriterDate),
+    //        nameof(Tbl60Subtribus.Updater),
+    //        nameof(Tbl60Subtribus.UpdaterDate),
+    //        nameof(Tbl60Subtribus.CountId)
+    //    );
+
+    //    var isNew = dbEntity.SubtribusId == 0;
+    //    ApplyAuditInfo(dbEntity, isNew);
+
+    //    await context.SaveChangesAsync();
+
+    //    return dbEntity;
+    //}
     public async Task DeleteSubtribusAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -2634,6 +2716,23 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+    public async Task<IEnumerable<Tbl66Genus>> SearchGenusWithInfratribusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl66Genus>();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .Where(e =>
+                e.GenusName.StartsWith(search) ||
+                e.GenusId.ToString() == search)
+            .Include(e => e.Infratribus)
+            .OrderBy(e => e.GenusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public async Task<Tbl66Genus?> GetGenusByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -2950,7 +3049,72 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Speciesgroup
 
     #region Species                
-    //new
+    //Neu
+    public async Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Include(e => e.Genus)
+            .OrderBy(a => a.Genus.GenusName)
+            .ThenBy(a => a.SpeciesName)
+            .ThenBy(a => a.Subspecies)
+            .ThenBy(a => a.Divers)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Where(e => e.GenusId == genusId)
+            .OrderBy(a => a.Genus.GenusName)
+            .ThenBy(a => a.SpeciesName)
+            .ThenBy(a => a.Subspecies)
+            .ThenBy(a => a.Divers)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl75Species>();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Where(e =>
+                e.SpeciesName.StartsWith(search) ||
+                e.SpeciesId.ToString() == search)
+            .Include(e => e.Genus)
+            .OrderBy(a => a.Genus.GenusName)
+            .ThenBy(a => a.SpeciesName)
+            .ThenBy(a => a.Subspecies)
+            .ThenBy(a => a.Divers)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl75Species>();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Where(e =>
+                e.SpeciesName.StartsWith(search) ||
+                e.SpeciesId.ToString() == search)
+            .Include(e => e.Genus)
+            .OrderBy(a => a.Genus.GenusName)
+            .ThenBy(a => a.SpeciesName)
+            .ThenBy(a => a.Subspecies)
+            .ThenBy(a => a.Divers)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy)
     {
         await using var context = _factory.CreateDbContext();
@@ -2959,46 +3123,28 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(x => x.SpeciesName)
             .ToListAsync();
     }
-
-    public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
+    public async Task<bool> SpeciesHasReferenceAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl75Speciesses
-            .Where(e => e.GenusId == genusId)
-            .OrderBy(e => e.SpeciesName)
-            .AsNoTracking()
-            .ToListAsync();
+        return await context.Tbl90References.AnyAsync(x => x.SpeciesId == speciesId);
+    }
+    public async Task<bool> SpeciesHasCommentAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments.AnyAsync(x => x.SpeciesId == speciesId);
     }
 
     //-----------------------------
     //alt
     public ObservableCollection<Tbl75Species> GetSpeciesAsync()
     {
-        //var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-        //    .AsNoTracking()
-        //    .OrderBy(a => a.SpeciesName));
-        //return collection;
-
         var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-            .OrderBy(a => a.Tbl66Genusses.GenusName)
+            .OrderBy(a => a.Genus.GenusName)
             .ThenBy(a => a.SpeciesName)
             .ThenBy(a => a.Subspecies)
             .ThenBy(a => a.Divers));
         return collection;
     }
-    //public ObservableCollection<Tbl75Species> GetSpeciesAsync(int speciesid)
-    //{
-    //    var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-    //        .AsNoTracking()
-    //        .Where(e => e.SpeciesId == speciesid)
-    //        .OrderBy(a => a.Tbl66Genusses.GenusName)
-    //        .ThenBy(a => a.SpeciesName)
-    //        .ThenBy(a => a.Subspecies)
-    //        .ThenBy(a => a.Divers));
-
-    //    return collection;
-    //}
     public ObservableCollection<Tbl75Species> GetSpeciesAsync(string search)
     {
         var collection = int.TryParse(search, out var id)
@@ -3006,27 +3152,28 @@ public partial class DataService : ObservableObject, IDataService
                 .Where(e => e.SpeciesId == id))
             : new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
                 .Where(e => search != null && e.SpeciesName.StartsWith(search))
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                .OrderBy(a => a.Genus.GenusName)
                 .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
         return collection;
     }
-    public ObservableCollection<Tbl75Species> GetSpeciesFromGenusNameAsync(string search)
-    {
-        //search about GenusName
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Where(e => e.SpeciesId == id))
-            : new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Where(e => e.Tbl66Genusses.GenusName.StartsWith(search))
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
-                .ThenBy(a => a.SpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers)
-            );
-        return collection;
-    }
+    //public ObservableCollection<Tbl75Species> SearchSpeciesWithGenusAsync(string search)
+    //{
+    //    //search about GenusName
+    //    var collection = int.TryParse(search, out var id)
+    //        ? new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
+    //            .Where(e => e.SpeciesId == id))
+    //        : new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
+    //            .Where(e => e.Tbl66Genusses.GenusName.StartsWith(search))
+    //            .OrderBy(a => a.Tbl66Genusses.GenusName)
+    //            .ThenBy(a => a.SpeciesName)
+    //            .ThenBy(a => a.Subspecies)
+    //            .ThenBy(a => a.Divers)
+    //        );
+    //    return collection;
+    //}
+
     public ObservableCollection<Tbl75Species> GetSpeciesFromGenusIdAsync(int genusid)
     {
         var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
@@ -5275,16 +5422,16 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl75Speciesses != null)
         {
             var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(a => a.Tbl66Genusses)
+                .Include(a => a.Genus)
                 .Where(e => e.SpeciesName.StartsWith(filterText) &&
                             e.SpeciesName.Contains(Value) == false ||
-                            e.Tbl66Genusses.GenusName.Contains(filterText) ||
+                            e.Genus.GenusName.Contains(filterText) ||
                             e.Subspecies.Contains(filterText) ||
                             e.Divers.Contains(filterText) ||
                             e.TradeName.Contains(filterText) ||
                             e.Author.Contains(filterText)
                 )
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                .OrderBy(a => a.Genus.GenusName)        
                 .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers)
@@ -5352,9 +5499,9 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl78Names != null)
         {
             var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-                .Include(a => a.Tbl75Speciesses)
+                .Include(a => a.Species)
                 .Where(e => e.NameName.StartsWith(filterText) &&
-                            e.Tbl75Speciesses.SpeciesId == e.SpeciesId
+                            e.Species.SpeciesId == e.SpeciesId
                 )
                 .OrderBy(a => a.NameName));
             return collection;
@@ -5367,9 +5514,9 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl84Synonyms != null)
         {
             var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-                .Include(a => a.Tbl75Speciesses)
+                .Include(a => a.Species)
                 .Where(e => e.SynonymName.StartsWith(filterText) &&
-                            e.Tbl75Speciesses.SpeciesId == e.SpeciesId
+                            e.Species.SpeciesId == e.SpeciesId
                 )
                 .OrderBy(a => a.SynonymName));
             return collection;
@@ -8352,12 +8499,12 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl75Speciesses != null)
         {
             var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Tbl66Genusses)
+                .Include(d => d.Genus)
                 .Where(e => e.GenusId == genusId &&
                             e.SpeciesName == name &&
                             e.Subspecies != null &&
                             e.Subspecies != string.Empty)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                .OrderBy(a => a.Genus.GenusName)
                 .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
@@ -8370,12 +8517,12 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl75Speciesses != null)
         {
             var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Tbl66Genusses)
+                .Include(d => d.Genus)
                 .Where(e => e.GenusId == id &&
                             e.SpeciesName == name &&
                             e.Subspecies != null &&
                             e.Subspecies != string.Empty)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                .OrderBy(a => a.Genus.GenusName)
                 .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));
@@ -8395,12 +8542,12 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl75Speciesses != null)
         {
             var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Tbl66Genusses)
+                .Include(d => d.Genus)
                 .Where(e => e.GenusId == id &&
                             e.SpeciesName == name &&
                             (e.Subspecies == null || e.Subspecies == string.Empty) &&
                             (e.Divers == null || e.Divers == string.Empty))
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                .OrderBy(a => a.Genus.GenusName)
                 .ThenBy(a => a.SpeciesName));
             return collection;
         }
@@ -8412,9 +8559,9 @@ public partial class DataService : ObservableObject, IDataService
         if (_context.Tbl75Speciesses != null)
         {
             var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Tbl66Genusses)
+                .Include(d => d.Genus)
                 .Where(e => e.SpeciesName == speciesName && e.Subspecies == subspecies && e.Divers == divers)
-                .OrderBy(a => a.Tbl66Genusses.GenusName)
+                .OrderBy(a => a.Genus.GenusName)
                 .ThenBy(a => a.SpeciesName)
                 .ThenBy(a => a.Subspecies)
                 .ThenBy(a => a.Divers));

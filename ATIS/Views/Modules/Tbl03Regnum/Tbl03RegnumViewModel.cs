@@ -69,6 +69,16 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>, I
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl03Regnum item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.RegnumId,
+            "Info" => item.RegnumName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

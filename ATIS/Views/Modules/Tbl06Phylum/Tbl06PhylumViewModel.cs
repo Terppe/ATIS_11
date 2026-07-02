@@ -69,6 +69,16 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl06Phylum item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.PhylumId,
+            "Info" => item.PhylumName ?? "",
+            _ => ""
+        };
+    }
+
 
     public void ResetBelow() { }
     public Task LoadForRegnumAsync(int id) => Task.CompletedTask;

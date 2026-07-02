@@ -9,6 +9,7 @@ using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
+using ATIS.Views.Report;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Modules.Tbl66Genus;
@@ -18,12 +19,31 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
 
-    private Action<Models.Tbl63Infratribus>? _assignParentFk;
-    private Func<int, Task<IEnumerable<Models.Tbl63Infratribus>>>? _loadByParent;
     private int _currentParentId;
-    public Tbl75SpeciesListViewModel SpeciesViewModel { get; }
-    public Tbl93CommentListViewModel CommentViewModel { get; }
-    public Tbl90ReferenceListViewModel ReferenceViewModel { get; }
+    private Func<int, Task<IEnumerable<Models.Tbl66Genus>>>? _activeLoader;
+
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+
+    public Tbl93CommentViewModel GenusCommentViewModel { get; }
+    public Tbl90ReferenceViewModel GenusReferenceViewModel { get; }
+    public Tbl75SpeciesViewModel SpeciesViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+
+    public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; private set; } = new();
+
+    public async Task LoadInfratribusLookupAsync()
+    {
+        InfratribusList = await _lookupService.GetInfratribusListAsync();
+    }
+
+    // ---------------------------------------------------------
+    // CTOR
+    // ---------------------------------------------------------
 
     public Tbl66GenusViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -35,25 +55,47 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     {
         _lookupService = lookupService;
 
-        SpeciesViewModel = new Tbl75SpeciesListViewModel(factory, user, dialog);
-        CommentViewModel = new Tbl93CommentListViewModel(factory, user, dialog);
-        ReferenceViewModel = new Tbl90ReferenceListViewModel(factory, user, dialog);
+        GenusCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
+        GenusReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        SpeciesViewModel = new Tbl75SpeciesViewModel(factory, dialog, coordinator, lookupService, user);
 
-        IsGenusDetailVisible = false;
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+      //  BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Genus ID");
+        RegisterHeader("Name", "Genus Name");
     }
-    // ---------------------------------------------------------
-    // CHILD VIEWMODELS (für Genus)
-    // ---------------------------------------------------------
 
     // ---------------------------------------------------------
-    // UI-STATE
+    // UI STATE
     // ---------------------------------------------------------
-    private bool _isGenusDetailVisible;
-    public bool IsGenusDetailVisible
+
+    private int _selectedDetailPivotIndex;
+    public int SelectedDetailPivotIndex
     {
-        get => _isGenusDetailVisible;
-        set => SetProperty(ref _isGenusDetailVisible, value);
+        get => _selectedDetailPivotIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        IsInParentMode = SelectedDetailPivotIndex != 0;
+
+        if (SelectedDetailPivotIndex == 2)
+            _ = GenusReferenceViewModel.LoadReferenceLookupsAsync();
+
+        if (SelectedDetailPivotIndex == 5)
+            _ = SpeciesViewModel.SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
     public async Task ApplyFilterAsync(string? filter)
     {
@@ -63,189 +105,173 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     }
 
     // ---------------------------------------------------------
-    // LOOKUP: INFRATRIBUS
+    // LOOKUPS
     // ---------------------------------------------------------
-    public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; private set; } = new();
-    public Dictionary<int, string?> InfratribusLookup { get; private set; } = new();
 
-    //private bool _isLoadingInfratribus;
-
-    //private async Task LoadInfratribusAsync()
+    //public override async Task LoadLookupsAsync()
     //{
-    //    if (_isLoadingInfratribus)
-    //        return;
-
-    //    _isLoadingInfratribus = true;
-
-    //    try
-    //    {
-    //        InfratribusList = await _lookupService.GetInfratribusListAsync();
-    //        InfratribusLookup = await _lookupService.GetInfratribusLookupAsync();
-    //    }
-    //    finally
-    //    {
-    //        _isLoadingInfratribus = false;
-    //    }
+    //    await LoadInfratribusLookupAsync();
     //}
-    public async Task LoadInfratribusLookupAsync()
+
+    // ---------------------------------------------------------
+    // BOSS LOAD
+    // ---------------------------------------------------------
+
+    public  async Task LoadAsync()
     {
-        InfratribusList = await _lookupService.GetInfratribusListAsync();
-        InfratribusLookup = await _lookupService.GetInfratribusLookupAsync();
+        _currentParentId = 0;
+        _activeLoader = null;
+
+        await LoadInfratribusLookupAsync();
+
+        SelectedItem = null;
+          //  IsDetailVisible = false;
     }
+
     // ---------------------------------------------------------
-    // PARENT SYSTEM
+    // LOAD FOR INFRATRIBUS (Parent)
     // ---------------------------------------------------------
-    private void ResolveParent<TParent>(int parentId)
+
+    public async Task LoadForInfratribusAsync(int infratribusId)
+        => await LoadInternalAsync(infratribusId, Data.GetGenusForInfratribusAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (universell)
+    // ---------------------------------------------------------
+
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl66Genus>>> loader)
     {
-        if (typeof(TParent) == typeof(Models.Tbl63Infratribus))
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl66Genus>(items);
+
+        DataSetCount = Items.Count;
+
+        if (Items.Any())
         {
-            _assignParentFk = s => s.InfratribusId = parentId;
-           // _loadByParent = Data.GetGenusForInfratribusAsync;
+            SelectedItem = Items.First();
+          //  IsDetailVisible = true;
+        }
+        else
+        {
+            SelectedItem = null;
+          //  IsDetailVisible = false;
         }
     }
 
     // ---------------------------------------------------------
-    // LOAD PARENT 
+    // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
 
-    public async Task LoadParentAsync<TParent>(int parentId)
+    protected override async Task<IEnumerable<Models.Tbl66Genus>> LoadItemsAsync()
     {
-        _currentParentId = parentId;
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
 
-        ResolveParent<TParent>(parentId);
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchGenusAsync(SearchText);
 
-        //var items = _loadByParent != null
-        //    ? await _loadByParent(parentId)
-        //    : Enumerable.Empty<Models.Tbl66Genus>();
-
-     //   Items = new ObservableCollection<Models.Tbl66Genus>(items);
-     //   DataSetCount = Items.Count;
-
-        // FIX:
-        //SelectedItem = Items.FirstOrDefault();
-        //IsInfratribusDetailVisible = SelectedItem != null;
+        return Items ?? Enumerable.Empty<Models.Tbl66Genus>();
     }
 
-    public override async Task LoadParentAsync(int parentId)
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+
+    protected override async Task OnSelectedItemChangedAsync()
     {
-        if (_loadByParent == null)
-            return;
+        //  IsDetailVisible = SelectedItem != null;
 
-        var items = await _loadByParent(parentId);
-     //   Items = new ObservableCollection<Models.Tbl66Genus>(items);
-
-        DataSetCount = Items.Count;
-
-        // ⭐ WICHTIG: ???
-        SelectedItem = Items.FirstOrDefault();
-        IsGenusDetailVisible = SelectedItem != null;
+        if (SelectedItem != null)
+            await LoadChildrenAsync(SelectedItem.GenusId);
+        else
+            await ClearChildCollectionsAsync();
     }
-
-
-
-    //public override async Task LoadParentAsync(int parentId)
-    //{
-    //    _currentInfratribusId = parentId;
-
-    //    var items = await Data.GetGenusForInfratribusAsync(parentId);
-    //    Items = new ObservableCollection<Models.Tbl66Genus>(items);
-    //}
 
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        //await CommentViewModel.LoadParentAsync<Models.Tbl66Genus>(entityId);
-        //await ReferenceViewModel.LoadParentAsync<Models.Tbl66Genus>(entityId);
 
-        // ⭐ NEU: Lookups für Genus laden
-        //await SpeciesViewModel.LoadGenusLookupAsync();
-        //await SpeciesViewModel.LoadParentAsync<Models.Tbl66Genus>(entityId);
+    protected override async Task LoadChildrenAsync(int genusId)
+    {
+        await GenusCommentViewModel.LoadForGenusAsync(genusId);
+        await GenusReferenceViewModel.LoadForGenusAsync(genusId);
+
+        await SpeciesViewModel.LoadGenusLookupAsync();
+        await SpeciesViewModel.LoadForGenusAsync(genusId);
     }
 
     protected override Task ClearChildCollectionsAsync()
     {
-        CommentViewModel.Items?.Clear();
-        CommentViewModel.SelectedItem = null;
-
-        ReferenceViewModel.Items?.Clear();
-        ReferenceViewModel.SelectedItem = null;
-
+        GenusCommentViewModel.Items?.Clear();
+        GenusReferenceViewModel.Items?.Clear();
         SpeciesViewModel.Items?.Clear();
+
+        GenusCommentViewModel.SelectedItem = null;
+        GenusReferenceViewModel.SelectedItem = null;
         SpeciesViewModel.SelectedItem = null;
 
         return Task.CompletedTask;
     }
-    // ---------------------------------------------------------
-    // LOAD ASYNC (Boss)
-    // ---------------------------------------------------------
-    public async Task LoadAsync()
-    {
-        // Boss-Start: Parent-Kontext löschen
-        _loadByParent = null;
-        _currentParentId = 0;
-
-        // Falls du später noch Lookups brauchst, hier wäre der Platz dafür
-        await LoadInfratribusLookupAsync();
-
-        Items = new ObservableCollection<Models.Tbl66Genus>();
-        SelectedItem = null;
-        IsGenusDetailVisible = false;
-
-        // optional: Suchmodus aktivieren
-        await ReloadAsync();
-    }
 
     // ---------------------------------------------------------
-    // CRUD
+    // NEW
     // ---------------------------------------------------------
-    protected override async Task NewAsync()
-    {
-        throw new NotImplementedException();
-    }
 
     protected override Models.Tbl66Genus CreateNewItem()
-        => new Models.Tbl66Genus
-        {
-//            InfratribusId = _currentParentId ?? 0
-            
-        };
+        => new() { InfratribusId = _currentParentId };
 
-    protected override async Task<IEnumerable<Models.Tbl66Genus>> LoadItemsAsync()
+    protected override async Task NewAsync()
     {
-        //if (_currentParentId is null)
-        //    return Enumerable.Empty<Models.Tbl66Genus>();
-      //  return await Data.GetGenusForInfratribusAsync(_currentParentId.Value);
-
-        return null;
+        SelectedItem = CreateNewItem();
+        //  IsDetailVisible = true;
+        await Task.Delay(50);
     }
+
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
 
     protected override async Task<Models.Tbl66Genus?> SaveItemAsync(Models.Tbl66Genus item)
     {
         if (string.IsNullOrWhiteSpace(item.GenusName))
         {
-            await Dialog.ShowErrorAsync("Name fehlt", "Bitte einen gültigen Genus-Namen eingeben.");
-            return default;
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
         }
 
         var saved = await Data.UpsertGenusAsync(item);
-        return await Data.GetGenusByIdAsync(saved.GenusId);
+
+        if (_activeLoader != null)
+        {
+            var list = await _activeLoader(_currentParentId);
+            Items = new ObservableCollection<Models.Tbl66Genus>(list);
+        }
+
+        SelectedItem = Items.FirstOrDefault(x => x.GenusId == saved.GenusId);
+        SearchText = saved.GenusName;
+
+        return saved;
     }
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl66Genus item)
     {
         if (item.GenusId == 0)
-            return false; // Unsaved
+            return false;
 
         if (await Data.GenusHasSpeciesAsync(item.GenusId) ||
             await Data.GenusHasReferenceAsync(item.GenusId) ||
             await Data.GenusHasCommentAsync(item.GenusId))
         {
-            await Dialog.ShowErrorAsync(
-                "Error_DeleteNotAllowed_Title",
-                "Error_DeleteNotAllowed_Message"
-            );
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
             return false;
         }
 
@@ -253,107 +279,27 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         return true;
     }
 
-    //protected override async Task<bool> DeleteItemAsync(Models.Tbl66Genus item)
-    //{
-    //    if (item.GenusId == 0)
-    //        return false;
-
-    //    if (await Data.GenusHasChildrenAsync(item.GenusId))
-    //    {
-    //        await Dialog.ShowErrorAsync(
-    //            "Löschen nicht möglich",
-    //            "Dieses Genus hat abhängige Daten."
-    //        );
-    //        return false;
-    //    }
-
-    //    await Data.DeleteGenusAsync(item.GenusId);
-    //    return true;
-    //}
-
     protected override Task<bool> ConfirmSaveAsync(Models.Tbl66Genus item)
         => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
 
     protected override Task<bool> ConfirmDeleteAsync(Models.Tbl66Genus item)
         => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
 
-    // ---------------------------------------------------------
-    // LOAD PARENT (Infratribus → Genus)
-    // ---------------------------------------------------------
-    protected override int GetId(Models.Tbl66Genus model)
-        => model.GenusId;
+    protected override int GetId(Models.Tbl66Genus item)
+        => item.GenusId;
+
 
     // ---------------------------------------------------------
     // Sorting (in-memory)
     // ---------------------------------------------------------
-    private bool _sortAscending = true;
-    private string _currentSortColumn = "";
-
-    private string _idHeaderText = "ID";
-    public string IdHeaderText
-    {
-        get => _idHeaderText;
-        set { _idHeaderText = value; OnPropertyChanged(); }
-    }
-
-    private string _nameHeaderText = "Name";
-    public string NameHeaderText
-    {
-        get => _nameHeaderText;
-        set { _nameHeaderText = value; OnPropertyChanged(); }
-    }
-
-    public void SortBy(string column)
-    {
-        if (Items.Count == 0)
-            return;
-
-        if (_currentSortColumn == column)
-            _sortAscending = !_sortAscending;
-        else
+    protected override object GetSortKey(Models.Tbl66Genus item, string column)
+        => column switch
         {
-            _currentSortColumn = column;
-            _sortAscending = true;
-        }
-
-        IEnumerable<Models.Tbl66Genus> sorted = column switch
-        {
-            "Id" => _sortAscending ? Items.OrderBy(x => x.GenusId)
-                                   : Items.OrderByDescending(x => x.GenusId),
-
-            "Extra1" => _sortAscending ? Items.OrderBy(x => x.GenusName)
-                                       : Items.OrderByDescending(x => x.GenusName),
-
-            _ => Items
+            "Id" => item.GenusId,
+            "Name" => item.GenusName ?? "",
+            _ => ""
         };
 
-        Items = new ObservableCollection<Models.Tbl66Genus>(sorted);
-
-        // Selection bewusst auf null setzen (wie vorher)
-        SelectedItem = null;
-
-        UpdateHeaderTexts();
-    }
-
-    private void UpdateHeaderTexts()
-    {
-        const string asc = " ▲";
-        const string desc = " ▼";
-
-        IdHeaderText = "ID";
-        NameHeaderText = "Name";
-
-        var suffix = _sortAscending ? asc : desc;
-
-        switch (_currentSortColumn)
-        {
-            case "Id":
-                IdHeaderText += suffix;
-                break;
-            case "Extra1":
-                NameHeaderText += suffix;
-                break;
-        }
-    }
-
 }
+
+

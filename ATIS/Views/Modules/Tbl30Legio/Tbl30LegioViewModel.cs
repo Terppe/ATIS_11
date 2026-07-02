@@ -66,6 +66,16 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>, ITa
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl30Legio item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.LegioId,
+            "Info" => item.LegioName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

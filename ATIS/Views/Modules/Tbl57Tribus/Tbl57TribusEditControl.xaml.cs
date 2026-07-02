@@ -11,6 +11,8 @@ public sealed partial class Tbl57TribusEditControl : UserControl
     {
         InitializeComponent();
     }
+    public Tbl57TribusViewModel? ViewModel => DataContext as Tbl57TribusViewModel;
+
     // ---------------------------------------------------------
     //  DependencyProperty: Item
     // ---------------------------------------------------------

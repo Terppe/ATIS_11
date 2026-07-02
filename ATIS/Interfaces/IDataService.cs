@@ -487,6 +487,8 @@ public interface IDataService
     //Neu
     Task<IEnumerable<Tbl66Genus>> GetAllGenusAsync();
     Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search);
+    Task<IEnumerable<Tbl66Genus>> SearchGenusWithInfratribusAsync(string? search);
+
     Task<Tbl66Genus> GetGenusByIdAsync(int id);
     Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus entity);
     Task DeleteGenusAsync(int id);
@@ -522,14 +524,21 @@ public interface IDataService
 
     #region Species                  
     //neu
-    Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy);
+    Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync();
     Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId);
+    Task<IEnumerable<Tbl75Species>> SearchSpeciesAsync(string? search);
+    Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search);
+    Task<bool> SpeciesHasReferenceAsync(int speciesId);
+    Task<bool> SpeciesHasCommentAsync(int speciesId);
+
+    Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy);
 
     //--------------------------------
     ObservableCollection<Tbl75Species> GetSpeciesAsync();
-  //  ObservableCollection<Tbl75Species> GetSpeciesAsync(int speciesid);
+
+    //  ObservableCollection<Tbl75Species> GetSpeciesAsync(int speciesid);
     ObservableCollection<Tbl75Species> GetSpeciesAsync(string search);
-    ObservableCollection<Tbl75Species> GetSpeciesFromGenusNameAsync(string search);
+    //ObservableCollection<Tbl75Species> GetSpeciesFromGenusNameAsync(string search);
     ObservableCollection<Tbl75Species> GetSpeciesFromGenusIdAsync(int genusid);
     Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species);
     Task DeleteSpeciesAsync(int speciesid);

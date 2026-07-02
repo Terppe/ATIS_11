@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
@@ -12,6 +13,9 @@ namespace ATIS.Views.Modules.Tbl54Supertribus;
 
 public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Supertribus>
 {
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
+
     // ============================================
     // CONSTRUCTOR
     // ============================================
@@ -23,11 +27,12 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
-        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
-        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        //IsDetailVisible = false;
-        //IsEditVisible = false;
+        RegisterHeader("Id", "Supertribus ID");
+        RegisterHeader("Name", "Supertribus Name");
+
     }
     // ============================================
     // CHILD VIEWMODELS
@@ -169,44 +174,70 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
     // ============================================
     // SORTING HEADERS
     // ============================================
-    private string _idHeaderText = "ID";
-    public string IdHeaderText
+    protected override object GetSortKey(Models.Tbl54Supertribus item, string column)
     {
-        get => _idHeaderText;
-        set => SetProperty(ref _idHeaderText, value);
+        return column switch
+        {
+            "Id" => item.SupertribusId,
+            "Info" => item.SupertribusName ?? "",
+            _ => ""
+        };
+    }
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+
+    private void ExecuteBack()
+    {
+        //SelectedItem = null;
+        //OnPropertyChanged(nameof(IsDetailVisible));
+
+        //IsInParentMode = true;
+        //SelectedDetailPivotIndex = 0;
+
+        //NewCommand.NotifyCanExecuteChanged();
+        //RefreshCommand.NotifyCanExecuteChanged();
     }
 
-    private string _nameHeaderText = "Name";
-    public string NameHeaderText
-    {
-        get => _nameHeaderText;
-        set => SetProperty(ref _nameHeaderText, value);
-    }
 
-
-    //protected override IEnumerable<Models.Tbl54Supertribus> SortItems(
-    //    IEnumerable<Models.Tbl54Supertribus> items, string column, bool ascending)
+    //private string _idHeaderText = "ID";
+    //public string IdHeaderText
     //{
-    //    return column switch
-    //    {
-    //        "Id" => ascending
-    //            ? items.OrderBy(x => x.SupertribusId)
-    //            : items.OrderByDescending(x => x.SupertribusId),
-    //        "Name" => ascending
-    //            ? items.OrderBy(x => x.SupertribusName)
-    //            : items.OrderByDescending(x => x.SupertribusName),
-    //        _ => items
-    //    };
+    //    get => _idHeaderText;
+    //    set => SetProperty(ref _idHeaderText, value);
     //}
 
-    //protected override void UpdateHeaderTexts()
+    //private string _nameHeaderText = "Name";
+    //public string NameHeaderText
     //{
-    //    const string asc = " ▲";
-    //    const string desc = " ▼";
-
-    //    IdHeaderText = "ID";
-    //    NameHeaderText = "Name";
-
-    //    // Optional: Sorting-Pfeile hinzufügen wenn nötig
+    //    get => _nameHeaderText;
+    //    set => SetProperty(ref _nameHeaderText, value);
     //}
+
+
+    ////protected override IEnumerable<Models.Tbl54Supertribus> SortItems(
+    ////    IEnumerable<Models.Tbl54Supertribus> items, string column, bool ascending)
+    ////{
+    ////    return column switch
+    ////    {
+    ////        "Id" => ascending
+    ////            ? items.OrderBy(x => x.SupertribusId)
+    ////            : items.OrderByDescending(x => x.SupertribusId),
+    ////        "Name" => ascending
+    ////            ? items.OrderBy(x => x.SupertribusName)
+    ////            : items.OrderByDescending(x => x.SupertribusName),
+    ////        _ => items
+    ////    };
+    ////}
+
+    ////protected override void UpdateHeaderTexts()
+    ////{
+    ////    const string asc = " ▲";
+    ////    const string desc = " ▼";
+
+    ////    IdHeaderText = "ID";
+    ////    NameHeaderText = "Name";
+
+    ////    // Optional: Sorting-Pfeile hinzufügen wenn nötig
+    ////}
 }

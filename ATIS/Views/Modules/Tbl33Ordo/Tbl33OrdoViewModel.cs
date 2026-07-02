@@ -66,6 +66,16 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>, ITaxo
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl33Ordo item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.OrdoId,
+            "Info" => item.OrdoName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

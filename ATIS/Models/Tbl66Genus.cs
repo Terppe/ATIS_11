@@ -367,7 +367,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         if (year < 1500 || year > 2100)
             AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
 
-Notify:
+        Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
 
@@ -394,7 +394,7 @@ Notify:
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-Notify:
+        Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 

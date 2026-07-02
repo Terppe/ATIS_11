@@ -28,16 +28,10 @@ public sealed partial class Tbl57TribusParentControl : UserControl
     }
     private void TribusListView_ItemClick(object sender, ItemClickEventArgs e)
     {
-        //if (ViewModel != null)
-        //{
-        //    ViewModel.SelectedItem = (Models.Tbl57Tribus)e.ClickedItem;
-        //    ViewModel.IsTribusEditVisible = true;
-        //}
-        //if (DataContext is Tbl57TribusViewModel vm)
-        //{
-        //    vm.SelectedItem = (Models.Tbl57Tribus)e.ClickedItem;
-        //    vm.OpenEditCommand.Execute(null);
-        //}
+        if (DataContext is Tbl57TribusViewModel vm)
+        {
+            vm.SelectedItem = (Models.Tbl57Tribus)e.ClickedItem;
+        }
     }
 
     private void TribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)

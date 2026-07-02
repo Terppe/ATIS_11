@@ -24,6 +24,7 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
 
         //IsDetailVisible = false;
         //IsEditVisible = false;
+
     }
 
     protected override async Task NewAsync()
@@ -64,6 +65,16 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     protected override int GetId(Models.Tbl51Infrafamily model)
     {
         throw new NotImplementedException();
+    }
+
+    protected override object GetSortKey(Models.Tbl51Infrafamily item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.InfrafamilyId,
+            "Info" => item.InfrafamilyName ?? "",
+            _ => ""
+        };
     }
 
     protected override async Task LoadChildrenAsync(int entityId)

@@ -50,6 +50,6 @@ public abstract class BaseSortableBossViewModel<TModel>
         OnSorted();   // ⭐ WICHTIG
     }
 
-    protected abstract object GetSortKey(TModel item, string column);
+  //  protected abstract object GetSortKey(TModel item, string column);
 
 }

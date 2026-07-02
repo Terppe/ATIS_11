@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 
@@ -10,7 +9,8 @@ public abstract class BaseListViewModel<T> : ObservableObject
 {
     protected readonly IDataService Data;
     protected readonly IDialogService Dialog;
-    public readonly LookupService _lookupService;
+    public readonly LookupService LookupService;
+    public event EventHandler? ScrollRequested;
 
     protected BaseListViewModel(
         IDataService data,
@@ -18,14 +18,11 @@ public abstract class BaseListViewModel<T> : ObservableObject
     {
         Data = data;
         Dialog = dialog;
-
-      //  RefreshCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync());
     }
 
     // ---------------------------------------------------------
     // LOADING
     // ---------------------------------------------------------
-    
     private bool _isLoading;
     public bool IsLoading
     {
@@ -33,28 +30,15 @@ public abstract class BaseListViewModel<T> : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
-
+    public virtual Task ReloadAsync() => Task.CompletedTask;
 
     // ---------------------------------------------------------
-    // ITEMS + COUNT
+    // STATE PROPERTIES
     // ---------------------------------------------------------
-    private ObservableCollection<T>? _items;
-    public ObservableCollection<T>? Items
-    {
-        get => _items;
-        set
-        {
-            if (SetProperty(ref _items, value))
-                DataSetCount = _items?.Count ?? 0;
-        }
-    }
-
-    private int _dataSetCount;
-    public int DataSetCount
-    {
-        get => _dataSetCount;
-        set => SetProperty(ref _dataSetCount, value);
-    }
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasSelection => SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------
     // SELECTED ITEM
@@ -69,11 +53,41 @@ public abstract class BaseListViewModel<T> : ObservableObject
             {
                 _ = OnSelectedItemChangedAsync();
 
-                // WICHTIG: Boss-VM informieren
                 if (this is BaseBossListViewModel<T> boss)
+                {
                     _ = boss.OnSelectedItemChangedBossAsync();
+                    boss.OnScrollRequested();   // ✔ korrekt
+                }
+
+                OnPropertyChanged(nameof(IsEditMode));
+                OnPropertyChanged(nameof(IsDetailVisible));
+                OnPropertyChanged(nameof(HasSelection));
             }
         }
+    }
+
+    // ---------------------------------------------------------
+    // ITEMS + COUNT
+    // ---------------------------------------------------------
+    private ObservableCollection<T>? _items;
+    public ObservableCollection<T>? Items
+    {
+        get => _items;
+        set
+        {
+            if (SetProperty(ref _items, value))
+            {
+                DataSetCount = _items?.Count ?? 0;
+                OnPropertyChanged(nameof(HasItems));
+            }
+        }
+    }
+
+    private int _dataSetCount;
+    public int DataSetCount
+    {
+        get => _dataSetCount;
+        set => SetProperty(ref _dataSetCount, value);
     }
 
     // ---------------------------------------------------------
@@ -85,9 +99,109 @@ public abstract class BaseListViewModel<T> : ObservableObject
     protected virtual Task OnSelectedItemChangedAsync()
         => Task.CompletedTask;
 
-    // optionaler Filter-Hook
     protected virtual bool FilterBySearchText(T item) => true;
 
     protected abstract Task NewAsync();
-
 }
+
+//public abstract class BaseListViewModel<T> : ObservableObject
+//    where T : class
+//{
+//    protected readonly IDataService Data;
+//    protected readonly IDialogService Dialog;
+//    public readonly LookupService _lookupService;
+
+//    protected BaseListViewModel(
+//        IDataService data,
+//        IDialogService dialog)
+//    {
+//        Data = data;
+//        Dialog = dialog;
+//    }
+
+//    // ---------------------------------------------------------
+//    // LOADING
+//    // ---------------------------------------------------------
+
+//    private bool _isLoading;
+//    public bool IsLoading
+//    {
+//        get => _isLoading;
+//        set => SetProperty(ref _isLoading, value);
+//    }
+//    public virtual Task ReloadAsync()
+//    {
+//        return Task.CompletedTask;
+//    }
+//    public bool IsEditMode => SelectedItem != null;
+//    public bool HasSelection => SelectedItem != null;
+
+//    // ---------------------------------------------------------
+//    // DETAIL VISIBILITY
+//    // ---------------------------------------------------------
+//    public bool IsDetailVisible => SelectedItem != null;
+
+//    // ---------------------------------------------------------
+//    // SELECTED ITEM
+//    // ---------------------------------------------------------
+
+//    private T? _selectedItem;
+//    public T? SelectedItem
+//    {
+//        get => _selectedItem;
+//        set
+//        {
+//            if (SetProperty(ref _selectedItem, value))
+//            {
+//                _ = OnSelectedItemChangedAsync();
+
+//                if (this is BaseBossListViewModel<T> boss)
+//                    _ = boss.OnSelectedItemChangedBossAsync();
+
+//                OnPropertyChanged(nameof(IsEditMode));
+//                OnPropertyChanged(nameof(IsDetailVisible));
+//            }
+//        }
+//    }
+
+
+//    // ---------------------------------------------------------
+//    // ITEMS + COUNT
+//    // ---------------------------------------------------------
+//    private ObservableCollection<T>? _items;
+//    public ObservableCollection<T>? Items
+//    {
+//        get => _items;
+//        set
+//        {
+//            if (SetProperty(ref _items, value))
+//            {
+//                DataSetCount = _items?.Count ?? 0;
+//                OnPropertyChanged(nameof(HasItems));
+//            }
+//        }
+//    }
+
+//    private int _dataSetCount;
+//    public int DataSetCount
+//    {
+//        get => _dataSetCount;
+//        set => SetProperty(ref _dataSetCount, value);
+//    }
+
+
+//    // ---------------------------------------------------------
+//    // HOOKS
+//    // ---------------------------------------------------------
+//    protected virtual Task<IEnumerable<T>> LoadItemsAsync()
+//        => Task.FromResult<IEnumerable<T>>(Array.Empty<T>());
+
+//    protected virtual Task OnSelectedItemChangedAsync()
+//        => Task.CompletedTask;
+
+//    // optionaler Filter-Hook
+//    protected virtual bool FilterBySearchText(T item) => true;
+
+//    protected abstract Task NewAsync();
+
+//}

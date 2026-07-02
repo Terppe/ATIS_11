@@ -1,6 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -11,22 +9,44 @@ using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 
+//    Tbl60SubtribusViewModel Skriptdatum:  25.06.2026  10:32
+
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
-public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Subtribus>
+public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtribus>
 {
-    private  readonly LookupService _lookupService;
+    private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
 
-    // Parent-Mechanik
-    private Action<Models.Tbl60Subtribus>? _assignParentFk;
-    private Func<int, Task<IEnumerable<Models.Tbl60Subtribus>>>? _loadByParent;
     private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.Tbl60Subtribus>>>? _activeLoader;
 
-    // Child-VMs
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+
     public Tbl93CommentViewModel SubtribusCommentViewModel { get; }
     public Tbl90ReferenceViewModel SubtribusReferenceViewModel { get; }
     public Tbl63InfratribusViewModel InfratribusViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+
+    public ObservableCollection<Models.Tbl57Tribus> TribusList { get; private set; } = new();
+    public Dictionary<int, string?> TribusLookup { get; private set; } = new();
+
+    public async Task LoadTribusLookupAsync()
+    {
+        TribusList = await _lookupService.GetTribusListAsync();
+        TribusLookup = await _lookupService.GetTribusLookupAsync();
+    }
+
+    // ---------------------------------------------------------
+    // CTOR
+    // ---------------------------------------------------------
 
     public Tbl60SubtribusViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -42,8 +62,11 @@ public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Su
         SubtribusReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
         InfratribusViewModel = new Tbl63InfratribusViewModel(factory, dialog, coordinator, lookupService, user);
 
-        IsSubtribusDetailVisible = false;
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Subtribus ID");
+        RegisterHeader("Name", "Subtribus Name");
     }
 
     // ---------------------------------------------------------
@@ -62,160 +85,88 @@ public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Su
             }
         }
     }
-    public bool IsSubtribusDetailVisible
-    {
-        get => IsDetailVisible;
-        set
-        {
-            if (IsDetailVisible != value)
-            {
-                IsDetailVisible = value;
-                OnPropertyChanged(nameof(IsSubtribusDetailVisible));
-            }
-        }
-    }
 
     private void UpdateButtonStates()
     {
-        // Nur Pivot 0 = Boss-Modus
+        // Pivot 0 = Boss-Modus
         IsInParentMode = SelectedDetailPivotIndex != 0;
 
-        // ⭐ Lookups laden, wenn Reference-Pivot aktiv ist
-        if (SelectedDetailPivotIndex == 2) // Subtribus-References
-        {
+        if (SelectedDetailPivotIndex == 2)
             _ = SubtribusReferenceViewModel.LoadReferenceLookupsAsync();
-        }
 
-        if (SelectedDetailPivotIndex == 5) // Infratribus-References
-        {
+        if (SelectedDetailPivotIndex == 5)
             _ = InfratribusViewModel.InfratribusReferenceViewModel.LoadReferenceLookupsAsync();
-        }
 
         UpdateRefreshState();
-
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
 
-    //private void UpdateButtonStates()
-    //{
-    //    // Pivot 0 = Subtribus Edit (Boss)
-    //    // Pivot 1 = Subtribus Comments (Parent)
-    //    // Pivot 2 = Subtribus References (Parent)
-    //    // Pivot 3 = Infratribus Edit (Parent)
-    //    // Pivot 4 = Infratribus Comments (Parent)
-    //    // Pivot 5 = Infratribus References (Parent)
-
-    //    // ⭐ Nur Pivot 0 ist Boss-Modus
-    //    IsInParentMode = SelectedDetailPivotIndex != 0;
-
-    //    // ⭐ Refresh-Status aktualisieren (Items leer? Parent aktiv?)
-    //    UpdateRefreshState();
-
-    //    // ⭐ Commands aktualisieren
-    //    NewCommand.NotifyCanExecuteChanged();
-    //    RefreshCommand.NotifyCanExecuteChanged();
-    //}
-
     public async Task ApplyFilterAsync(string? filter)
     {
-        SearchText = filter;
-        await ReloadAsync();
-        SelectedItem = null;
-    }
-
-    // ---------------------------------------------------------
-    // LOOKUP: TRIBUS
-    // ---------------------------------------------------------
-    public ObservableCollection<Models.Tbl57Tribus> TribusList { get; private set; } = new();
-    public Dictionary<int, string?> TribusLookup { get; private set; } = new();
-
-    public async Task LoadTribusLookupAsync()
-    {
-        TribusList = await _lookupService.GetTribusListAsync();
-        TribusLookup = await _lookupService.GetTribusLookupAsync();
-    }
-    protected override async Task LoadLookupsAsync()
-    {
-        await LoadTribusLookupAsync();
-    }
-
-    // ---------------------------------------------------------
-    // PARENT SYSTEM
-    // ---------------------------------------------------------
-    private void ResolveParent<TParent>(int parentId)
-    {
-        if (typeof(TParent) == typeof(Models.Tbl57Tribus))
+        if (IsBossMode)
         {
-            _assignParentFk = s => s.TribusId = parentId;
-            _loadByParent = Data.GetSubtribusForTribusAsync;
+            SearchText = filter;
+            await ReloadAsync();
         }
     }
 
-    // ---------------------------------------------------------
-    // LOAD PARENT 
-    // ---------------------------------------------------------
+    public bool IsInfratribusParentSelected => InfratribusViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
 
-    public async Task LoadParentAsync<TParent>(int parentId)
-    {
-        _currentParentId = parentId;
-
-        ResolveParent<TParent>(parentId);
-
-        var items = _loadByParent != null
-            ? await _loadByParent(parentId)
-            : Enumerable.Empty<Models.Tbl60Subtribus>();
-
-        Items = new ObservableCollection<Models.Tbl60Subtribus>(items);
-
-        DataSetCount = Items.Count;
-    }
-
-    public override async Task LoadParentAsync(int parentId)
-    {
-        if (_loadByParent == null)
-            return;
-
-        var items = await _loadByParent(parentId);
-        Items = new ObservableCollection<Models.Tbl60Subtribus>(items);
-
-        DataSetCount = Items.Count;
-
-        // ❗ KEIN Auto-Select
-        SelectedItem = null;
-        IsSubtribusDetailVisible = false;
-
-        // ⭐ Child-VMs Parent laden, aber NICHT das EditControl öffnen
-        await SubtribusCommentViewModel.LoadParentAsync(parentId);
-        await SubtribusReferenceViewModel.LoadParentAsync(parentId);
-    }
     // ---------------------------------------------------------
     // LOAD ASYNC (Boss)
     // ---------------------------------------------------------
-
     public async Task LoadAsync()
     {
         // Boss-Start: Parent-Kontext löschen
-        _loadByParent = null;
+        _activeLoader = null;
         _currentParentId = 0;
 
         await LoadTribusLookupAsync();
 
         Items = new ObservableCollection<Models.Tbl60Subtribus>();
-        SelectedItem = null;
-        IsSubtribusDetailVisible = false;
+        OnPropertyChanged(nameof(HasItems));
 
         // optional: Suchmodus aktivieren
         await ReloadAsync();
     }
 
     // ---------------------------------------------------------
+    // LOAD FOR VK
+    // ---------------------------------------------------------
+
+    public async Task LoadForTribusAsync(int tribusId)
+        => await LoadInternalAsync(tribusId, Data.GetSubtribusForTribusAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl60Subtribus>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl60Subtribus>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
+
     protected override async Task<IEnumerable<Models.Tbl60Subtribus>> LoadItemsAsync()
     {
-        if (_loadByParent != null && _currentParentId > 0)
-            return await _loadByParent(_currentParentId);
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
             return await Data.SearchSubtribusWithTribusAsync(SearchText);
@@ -228,12 +179,25 @@ public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Su
     // ---------------------------------------------------------
     protected override async Task OnSelectedItemChangedAsync()
     {
-        IsSubtribusDetailVisible = SelectedItem != null;
-
-        if (SelectedItem != null)
-            await LoadChildrenAsync(SelectedItem.SubtribusId);
-        else
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
+            SelectedDetailPivotIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
     }
 
     // ---------------------------------------------------------
@@ -242,50 +206,60 @@ public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Su
 
     protected override async Task LoadChildrenAsync(int entityId)
     {
-        // Subtribus Comments + References
-        await SubtribusCommentViewModel.LoadParentAsync<Models.Tbl60Subtribus>(entityId);
-        await SubtribusCommentViewModel.LoadParentAsync(entityId);
+        await SubtribusCommentViewModel.LoadForSubtribusAsync(entityId);
+        await SubtribusReferenceViewModel.LoadForSubtribusAsync(entityId);
 
-        await SubtribusReferenceViewModel.LoadParentAsync<Models.Tbl60Subtribus>(entityId);
-        await SubtribusReferenceViewModel.LoadParentAsync(entityId);
-
-        // ⭐ InfratribusVM vollständig initialisieren
-        await InfratribusViewModel.LoadAsync();
         await InfratribusViewModel.LoadSubtribusLookupAsync();
+        await InfratribusViewModel.LoadForSubtribusAsync(entityId);
 
-        // Infratribus Liste + UI
-        await InfratribusViewModel.LoadParentAsync<Models.Tbl60Subtribus>(entityId);
-        await InfratribusViewModel.LoadParentAsync(entityId);
+        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        InfratribusViewModel.IsInParentMode = true;
     }
+
     protected override Task ClearChildCollectionsAsync()
     {
         SubtribusCommentViewModel.Items?.Clear();
-        SubtribusCommentViewModel.SelectedItem = null;
-
         SubtribusReferenceViewModel.Items?.Clear();
-        SubtribusReferenceViewModel.SelectedItem = null;
-
         InfratribusViewModel.Items?.Clear();
-        InfratribusViewModel.SelectedItem = null;
+
+        if (IsBossMode)
+        {
+            SubtribusCommentViewModel.SelectedItem = null;
+            SubtribusReferenceViewModel.SelectedItem = null;
+            InfratribusViewModel.SelectedItem = null;
+        }
 
         return Task.CompletedTask;
     }
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl60Subtribus item, string column)
+        => column switch
+        {
+            "Id" => item.SubtribusId,
+            "Name" => item.SubtribusName ?? "",
+            _ => ""
+        };
 
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-    protected override async Task NewAsync()
+
+    protected override Task NewAsync()
     {
-        SelectedItem = CreateNewItem();
-        IsSubtribusDetailVisible = true;
-        await Task.Delay(50);
+        return Task.CompletedTask;
     }
 
     protected override Models.Tbl60Subtribus CreateNewItem()
     {
-        var s = new Models.Tbl60Subtribus();
-        _assignParentFk?.Invoke(s);
-        return s;
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
+
+        return new Models.Tbl60Subtribus
+        {
+            TribusId = _currentParentId
+        };
     }
 
     // ---------------------------------------------------------
@@ -300,37 +274,26 @@ public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Su
             return null;
         }
 
-        // speichern
         var saved = await Data.UpsertSubtribusAsync(item);
-
-        // ⭐ Parent-Liste neu laden
-        if (_loadByParent != null && _currentParentId > 0)
-        {
-            var list = await _loadByParent(_currentParentId);
-            Items = new ObservableCollection<Models.Tbl60Subtribus>(list);
-            DataSetCount = Items.Count;
-
-            // ⭐ neuen Datensatz auswählen
-            SelectedItem = Items.FirstOrDefault(x => x.SubtribusId == saved.SubtribusId);
-
-            // ⭐ SearchBox setzen
-            SearchText = saved.SubtribusName;
-        }
-        else
-        {
-            // Boss-Modus (keine Parent-Filterung)
-            await ReloadAsync();
-
-            SelectedItem = Items.FirstOrDefault(x => x.SubtribusId == saved.SubtribusId);
-            SearchText = saved.SubtribusName;
-        }
-
         return saved;
     }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl60Subtribus item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.SubtribusName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
+    }
+
 
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
+
     protected override async Task<bool> DeleteItemAsync(Models.Tbl60Subtribus item)
     {
         if (item.SubtribusId == 0)
@@ -358,89 +321,29 @@ public class Tbl60SubtribusViewModel : BaseHierarchyBossViewModel<Models.Tbl60Su
         => item.SubtribusId;
 
     // ---------------------------------------------------------
-    // Sorting (in-memory)
+    // BACK
     // ---------------------------------------------------------
 
-    private bool _sortAscending = true;
-    private string _currentSortColumn = "";
-
-    private string _idHeaderText = "Subtribus ID";
-    public string IdHeaderText
+    private void ExecuteBack()
     {
-        get => _idHeaderText;
-        set { _idHeaderText = value; OnPropertyChanged(); }
-    }
-
-    private string _nameHeaderText = "Subtribus Name";
-    public string NameHeaderText
-    {
-        get => _nameHeaderText;
-        set { _nameHeaderText = value; OnPropertyChanged(); }
-    }
-
-    public void SortBy(string column)
-    {
-        if (Items.Count == 0)
-            return;
-
-        if (_currentSortColumn == column)
-            _sortAscending = !_sortAscending;
-        else
-        {
-            _currentSortColumn = column;
-            _sortAscending = true;
-        }
-
-        IEnumerable<Models.Tbl60Subtribus> sorted = column switch
-        {
-            "Id" => _sortAscending ? Items.OrderBy(x => x.SubtribusId)
-                                   : Items.OrderByDescending(x => x.SubtribusId),
-
-            "Extra1" => _sortAscending ? Items.OrderBy(x => x.SubtribusName)
-                                       : Items.OrderByDescending(x => x.SubtribusName),
-
-            _ => Items
-        };
-
-        Items = new ObservableCollection<Models.Tbl60Subtribus>(sorted);
-
-        // Selection bewusst auf null setzen (wie vorher)
+        // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;
 
-        UpdateHeaderTexts();
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailPivotIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
-
-    //protected override object GetSortKey(Models.Tbl60Subtribus item, string column)
-    //{
-    //    return column switch
-    //    {
-    //        "Id" => item.SubtribusId,
-    //        "Name" => item.SubtribusName ?? string.Empty,
-    //        _ => string.Empty
-    //    };
-    //}
-
-    private void UpdateHeaderTexts()
-    {
-        const string asc = " ▲";
-        const string desc = " ▼";
-
-        IdHeaderText = "Subtribus ID";
-        NameHeaderText = "Subtribus Name";
-
-        var suffix = _sortAscending ? asc : desc;
-
-        switch (_currentSortColumn)
-        {
-            case "Id":
-                IdHeaderText += suffix;
-                break;
-            case "Extra1":
-                NameHeaderText += suffix;
-                break;
-        }
-    }
-
 }
+
+
+
+
 
 

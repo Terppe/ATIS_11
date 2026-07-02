@@ -66,6 +66,16 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl18Superclass item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.SuperclassId,
+            "Info" => item.SuperclassName ?? "",
+            _ => ""
+        };
+    }
+
 
     public void ResetBelow() { }
 

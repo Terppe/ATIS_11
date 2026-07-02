@@ -66,6 +66,16 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>,
         throw new NotImplementedException();
     }
 
+    protected override object GetSortKey(Models.Tbl36Subordo item, string column)
+    {
+        return column switch
+        {
+            "Id" => item.SubordoId,
+            "Info" => item.SubordoName ?? "",
+            _ => ""
+        };
+    }
+
     protected override async Task LoadChildrenAsync(int entityId)
     {
         throw new NotImplementedException();

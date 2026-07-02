@@ -92,7 +92,7 @@ public abstract class BaseHierarchyBossViewModel<TModel>
     // ---------------------------------------------------------
     // LOOKUPS (Hook für Subklassen)
     // ---------------------------------------------------------
-    protected virtual Task LoadLookupsAsync()
+    public virtual Task LoadLookupsAsync()
     {
         return Task.CompletedTask;
     }

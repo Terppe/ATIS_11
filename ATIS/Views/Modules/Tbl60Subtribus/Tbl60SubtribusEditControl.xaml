@@ -1,8 +1,11 @@
-﻿<UserControl x:Class="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusEditControl"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusEditControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="using:WinUI3Localizer"
              x:Name="Root">
+
+    <!--  Tbl60SubtribusEditControl Skriptdatum:  25.06.2026  10:32  -->
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -28,7 +31,7 @@
 
                     <!--  BACK  -->
 
-                    <Button Command="{Binding CloseEditCommand}">
+                    <Button Command="{Binding BackCommand}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
                             <FontIcon Glyph="&#xE72B;" />
@@ -69,7 +72,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--  ID + Name + Tribus  -->
+            <!--  ID + Name  -->
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
 
@@ -200,33 +203,6 @@
                 </PivotItem>
 
             </Pivot>
-            <!--<TabView>
-
-            <TabViewItem loc:Uids.Uid="TabViewItem_EngName">
-            <TextBox loc:Uids.Uid="TextBox_EngName"
-            Style="{StaticResource AtisTextBox}"
-            Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </TabViewItem>
-
-            <TabViewItem loc:Uids.Uid="TabViewItem_GerName">
-            <TextBox loc:Uids.Uid="TextBox_GerName"
-            Style="{StaticResource AtisTextBox}"
-            Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </TabViewItem>
-
-            <TabViewItem loc:Uids.Uid="TabViewItem_FraName">
-            <TextBox loc:Uids.Uid="TextBox_FraName"
-            Style="{StaticResource AtisTextBox}"
-            Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </TabViewItem>
-
-            <TabViewItem loc:Uids.Uid="TabViewItem_SpaName">
-            <TextBox loc:Uids.Uid="TextBox_SpaName"
-            Style="{StaticResource AtisTextBox}"
-            Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </TabViewItem>
-
-            </TabView>-->
 
             <!--  Memo  -->
             <TextBox MinWidth="200"

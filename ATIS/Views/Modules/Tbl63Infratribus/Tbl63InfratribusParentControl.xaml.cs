@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ATIS.Views.Modules.Tbl66Genus;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
@@ -11,7 +12,20 @@ public sealed partial class Tbl63InfratribusParentControl : UserControl
     public Tbl63InfratribusParentControl()
     {
         InitializeComponent();
-        InfratribusListView.SelectionChanged += (_, __) => Debug.WriteLine("SELECTION!");
+        Loaded += (_, __) =>
+        {
+            if (DataContext is Tbl63InfratribusViewModel vm)
+                vm.ScrollRequested += (_, __) => ScrollToSelectedItem();
+        };
+    }
+
+    private void ScrollToSelectedItem()
+    {
+        if (DataContext is Tbl63InfratribusViewModel vm &&
+            vm.SelectedItem != null)
+        {
+            InfratribusListView.ScrollIntoView(vm.SelectedItem);
+        }
     }
 
     private void InfratribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
@@ -33,5 +47,12 @@ public sealed partial class Tbl63InfratribusParentControl : UserControl
         }
         return null;
     }
+
+    private void InfratribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (DataContext is Tbl63InfratribusViewModel vm)
+            vm.SelectedItem = (Models.Tbl63Infratribus)e.ClickedItem;
+    }
+
 
 }

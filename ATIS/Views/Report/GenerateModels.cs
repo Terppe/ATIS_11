@@ -565,7 +565,7 @@ public abstract class GenrateModels
 
             return new PdfModels.Species
             {
-                Tbl66Genusses = single.Tbl66Genusses,
+                Tbl66Genusses = single.Genus,
                 SpeciesName = single.SpeciesName,
                 Subspecies = single.Subspecies,
                 Divers = single.Divers,

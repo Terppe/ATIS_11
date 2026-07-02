@@ -1401,6 +1401,12 @@
   <data name="PivotItem_Edit_Subtribus.Header" xml:space="preserve">
     <value>Bearbeiten Untertribus</value>
   </data>
+  <data name="PivotItem_Edit_Genus.Header" xml:space="preserve">
+    <value>Bearbeiten Gattung</value>
+  </data>
+  <data name="PivotItem_Edit_Species.Header" xml:space="preserve">
+    <value>Bearbeiten Art</value>
+  </data>
   <data name="PivotItem_Edit_Infratribus.Header" xml:space="preserve">
     <value>Bearbeiten Infratribus</value>
   </data>

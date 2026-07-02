@@ -26,12 +26,12 @@ public sealed partial class Tbl57TribusBossControl : UserControl
     {
         InitializeComponent();
     }
-    private void TribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    private void TribusListView_OnItemClick(object sender, ItemClickEventArgs e)
     {
         TribusListView.SelectedItem = e.ClickedItem;
 
-        if (ViewModel != null)
-            ViewModel.IsDetailVisible = true;
+        //if (ViewModel != null)
+        //    ViewModel.IsDetailVisible = true;
     }
     private void TribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {

@@ -1,273 +1,173 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Page
-    x:Class="ATIS.Views.Modules.Tbl57Tribus.Tbl57TribusPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ATIS.Views.Modules.Tbl57Tribus"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:layout="using:ATIS.DesignSystem.Layout"
-    xmlns:winUi3Localizer="using:WinUI3Localizer"
-    xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
-    xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-    xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
-    xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
-    xmlns:components="using:ATIS.DesignSystem.Components"
-    mc:Ignorable="d">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ATIS.Views.Modules.Tbl57Tribus.Tbl57TribusPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:layout="using:ATIS.DesignSystem.Layout"
+      xmlns:loc="using:WinUI3Localizer"
+      xmlns:local="using:ATIS.Views.Modules.Tbl57Tribus"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
+      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
+      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+      xmlns:winUi3Localizer="using:WinUI3Localizer"
+      mc:Ignorable="d">
 
-    <Grid
-        x:Name="RootGrid">
-        <ScrollViewer
-            VerticalScrollBarVisibility="Visible">
+    <Grid x:Name="RootGrid">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
 
             <layout:BaseBossPageLayout>
 
                 <!--  HEADER LEFT  -->
                 <layout:BaseBossPageLayout.Header>
-                    <StackPanel
-                        Margin="8,0,0,8"
-                        Orientation="Horizontal"
-                        Spacing="10">
+                    <StackPanel Margin="8,0,0,8"
+                                Orientation="Horizontal"
+                                Spacing="10">
 
-                        <TextBlock
-                            Margin="0,4,0,0"
-                            winUi3Localizer:Uids.Uid="TextBlock_Tribusses"
-                            Style="{StaticResource AtisSectionTitleTextStyle}" />
+                        <TextBlock Margin="0,4,0,0"
+                                   winUi3Localizer:Uids.Uid="TextBlock_Tribusses"
+                                   Style="{StaticResource AtisSectionTitleTextStyle}" />
 
-                        <TextBlock
-                            Margin="0,12,0,0"
-                            winUi3Localizer:Uids.Uid="TextBlock_DataSetCount"
-                            Style="{StaticResource AtisBodyTextStyle}" />
+                        <TextBlock Margin="0,12,0,0"
+                                   winUi3Localizer:Uids.Uid="TextBlock_DataSetCount"
+                                   Style="{StaticResource AtisBodyTextStyle}" />
 
-                        <TextBlock
-                            Margin="0,12,0,0"
-                            Style="{StaticResource AtisBodyTextStyle}"
-                            Text="{Binding DataSetCount}" />
+                        <TextBlock Margin="0,12,0,0"
+                                   Style="{StaticResource AtisBodyTextStyle}"
+                                   Text="{Binding DataSetCount}" />
                     </StackPanel>
                 </layout:BaseBossPageLayout.Header>
 
                 <!--  APPBAR RIGHT  -->
                 <layout:BaseBossPageLayout.AppBar>
-                    <Grid
-                        ColumnSpacing="8">
+                    <Grid ColumnSpacing="8">
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="*" />
-                            <ColumnDefinition
-                                Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel
-                            Grid.Column="0"
-                            Margin="8"
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal">
+                        <StackPanel Grid.Column="0"
+                                    Margin="8"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
 
-                            <Button
-                                Margin="5,0,5,0"
-                                Command="{Binding NewCommand}"
-                                Style="{StaticResource AtisPrimaryButton}">
-                                <StackPanel
-                                    Orientation="Horizontal"
-                                    Spacing="6">
-                                    <FontIcon
-                                        Glyph="&#xE710;" />
-                                    <TextBlock
-                                        winUi3Localizer:Uids.Uid="TextBlock_Add" />
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding NewCommand}"
+                                    Style="{StaticResource AtisPrimaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE710;" />
+                                    <TextBlock winUi3Localizer:Uids.Uid="TextBlock_Add" />
                                 </StackPanel>
                             </Button>
 
-                            <Button
-                                Margin="5,0,5,0"
-                                Command="{Binding RefreshCommand}"
-                                Style="{StaticResource AtisSecondaryButton}">
-                                <StackPanel
-                                    Orientation="Horizontal"
-                                    Spacing="6">
-                                    <FontIcon
-                                        Glyph="&#xE72C;" />
-                                    <TextBlock
-                                        winUi3Localizer:Uids.Uid="TextBlock_Refresh" />
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding RefreshCommand}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE72C;" />
+                                    <TextBlock winUi3Localizer:Uids.Uid="TextBlock_Refresh" />
                                 </StackPanel>
                             </Button>
 
                         </StackPanel>
 
                         <!--  SEARCH  -->
-                        <AutoSuggestBox
-                            x:Name="SearchBox"
-                            Grid.Column="1"
-                            Width="260"
-                            Height="32"
-                            Margin="12,0"
-                            VerticalAlignment="Center"
-                            PlaceholderText="Suchen..."
-                            QueryIcon="Find"
-                            QuerySubmitted="SearchBox_OnQuerySubmitted"
-                            Text="{Binding SearchText, Mode=TwoWay}" />
+                        <AutoSuggestBox x:Name="SearchBox"
+                                        Grid.Column="1"
+                                        Width="260"
+                                        Height="32"
+                                        Margin="12,0"
+                                        VerticalAlignment="Center"
+                                        PlaceholderText="Suchen..."
+                                        QueryIcon="Find"
+                                        QuerySubmitted="SearchBox_OnQuerySubmitted"
+                                        Text="{Binding SearchText, Mode=TwoWay}" />
                     </Grid>
                 </layout:BaseBossPageLayout.AppBar>
 
-                <!--  LIST CONTENT  -->
-                <layout:BaseBossPageLayout.ListContent>
-                    <local:Tbl57TribusBossControl
-                        DataContext="{Binding}" />
-                </layout:BaseBossPageLayout.ListContent>
+                <layout:BaseBossPageLayout>
 
-                <!--  DETAIL CONTENT  -->
-                <layout:BaseBossPageLayout.DetailContent>
+                    <!--  LIST  -->
+                    <layout:BaseBossPageLayout.ListContent>
+                        <local:Tbl57TribusBossControl DataContext="{Binding}" />
+                    </layout:BaseBossPageLayout.ListContent>
 
-                    <TabView
-                        x:Name="TabViewBase"
-                        Margin="0"
-                        Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <!--  DETAIL  -->
+                    <layout:BaseBossPageLayout.DetailContent>
 
-                        <!--  EDIT TRIBUS  -->
-                        <TabViewItem
-                            Header="Edit Tribus">
-                            <ScrollViewer
-                                Padding="1">
-                                <local:Tbl57TribusEditControl
-                                    DataContext="{x:Bind ViewModel}"
-                                    Item="{x:Bind ViewModel.SelectedItem, Mode=OneWay}" />
-                            </ScrollViewer>
-                        </TabViewItem>
+                        <Pivot SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
+                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <!--  COMMENTS TRIBUS  -->
-                        <TabViewItem
-                            Header="Comments Tribus">
-                            <ScrollViewer
-                                Padding="1">
-                                <Grid
-                                    RowDefinitions="Auto,*">
-                                    <!--  LISTE  -->
-                                    <!--<tbl93Comment:Tbl93CommentParentControl
-                                        Grid.Row="0"
-                                        DataContext="{x:Bind ViewModel.CommentViewModel}" />-->
+                            <!--  EDIT TRIBUS  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Tribus">
+                                <ScrollViewer Padding="1">
+                                    <local:Tbl57TribusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                                </ScrollViewer>
+                            </PivotItem>
 
-                                    <!--  EDITOR  -->
-                                    <!--<tbl93Comment:Tbl93CommentEditControl
-                                        Grid.Row="1"
-                                        DataContext="{x:Bind ViewModel.CommentViewModel}"
-                                        Item="{Binding SelectedItem, Mode=TwoWay}"
-                                        Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />-->
-
+                            <!--  COMMENTS TRIBUS  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_Comments">
+                                <Grid DataContext="{Binding TribusCommentViewModel}"
+                                      RowDefinitions="Auto,*">
+                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
-                            </ScrollViewer>
-                        </TabViewItem>
+                            </PivotItem>
 
-                        <!--  REFERENCES TRIBUS  -->
-                        <TabViewItem
-                            Header="References Tribus">
-
-                            <ScrollViewer
-                                Padding="1">
-                                <Grid
-                                    RowDefinitions="Auto,*">
-
-                                    <!--  LISTE  -->
-                                    <!--<tbl90Reference:Tbl90ReferenceParentControl
-                                        Grid.Row="0"
-                                        DataContext="{x:Bind ViewModel.ReferenceViewModel}" />-->
-
-                                    <!--  EDITOR  -->
-                                    <!--<tbl90Reference:Tbl90ReferenceEditControl
-                                        Grid.Row="1"
-                                        DataContext="{x:Bind ViewModel.ReferenceViewModel}"
-                                        Item="{Binding SelectedItem, Mode=TwoWay}"
-                                        Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />-->
-
+                            <!--  REFERENCES TRIBUS  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_References">
+                                <Grid DataContext="{Binding TribusReferenceViewModel}"
+                                      RowDefinitions="Auto,*">
+                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
+                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                              Item="{Binding SelectedItem}"
+                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
-                            </ScrollViewer>
+                            </PivotItem>
 
-                        </TabViewItem>
+                            <!--  SUBTRIBUS  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Subtribus">
+                                <Grid RowDefinitions="Auto,*">
+                                    <tbl60Subtribus:Tbl60SubtribusParentControl Grid.Row="0"
+                                                                                DataContext="{Binding SubtribusViewModel}" />
 
-                        <!--  SUBTRIBUS  -->
-                        <!--<TabViewItem
-                            Header="Subtribus">
-                            <ScrollViewer
-                                Padding="1">
-                                <TabView>
-                                    --><!--  EDIT SUBTRIBUS  --><!--
-                                    <TabViewItem
-                                        Header="Edit Subtribus">
-                                        <ScrollViewer
-                                            Padding="1">
-                                            <Grid
-                                                RowDefinitions="Auto,*">
+                                    <tbl60Subtribus:Tbl60SubtribusEditControl Grid.Row="1"
+                                                                              DataContext="{Binding SubtribusViewModel}"
+                                                                              Item="{Binding SelectedItem}"
+                                                                              Visibility="{Binding IsSubtribusDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+                            </PivotItem>
 
-                                                --><!--  LISTE  --><!--
-                                                <tbl60Subtribus:Tbl60SubtribusParentControl
-                                                    Grid.Row="0"
-                                                    DataContext="{x:Bind ViewModel.SubtribusViewModel}" />
+                            <!--  COMMENTS SUBTRIBUS  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_Comments">
+                                <Grid DataContext="{Binding SubtribusViewModel.SubtribusCommentViewModel}"
+                                      RowDefinitions="Auto,*">
+                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+                            </PivotItem>
 
-                                                --><!--  EDITOR  --><!--
-                                                <tbl60Subtribus:Tbl60SubtribusEditControl
-                                                    Grid.Row="1"
-                                                    DataContext="{x:Bind ViewModel.SubtribusViewModel}"
-                                                    Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                    Visibility="{Binding IsSubtribusEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                            </Grid>
-                                        </ScrollViewer>
-                                    </TabViewItem>
+                            <!--  REFERENCES SUBTRIBUS  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_References">
+                                <Grid DataContext="{Binding SubtribusViewModel.SubtribusReferenceViewModel}"
+                                      RowDefinitions="Auto,*">
+                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
+                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                              Item="{Binding SelectedItem}"
+                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+                            </PivotItem>
 
-                                    --><!--  COMMENTS SUBTRIBUS  --><!--
-                                    <TabViewItem
-                                        Header="Comments Subtribus">
-                                        <ScrollViewer
-                                            Padding="1">
-                                            <Grid
-                                                RowDefinitions="Auto,*">
-
-                                                --><!--  LISTE  --><!--
-                                                <tbl93Comment:Tbl93CommentParentControl
-                                                    Grid.Row="0"
-                                                    DataContext="{x:Bind ViewModel.SubtribusViewModel.CommentViewModel}" />
-
-                                                --><!--  EDITOR  --><!--
-                                                <tbl93Comment:Tbl93CommentEditControl
-                                                    Grid.Row="1"
-                                                    DataContext="{x:Bind ViewModel.SubtribusViewModel.CommentViewModel}"
-                                                    Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                    Visibility="{Binding IsCommentEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                            </Grid>
-                                        </ScrollViewer>
-                                    </TabViewItem>
-
-                                    --><!--  REFERENCES SUBTRIBUS  --><!--
-                                    <TabViewItem
-                                        Header="References Subtribus">
-                                        <ScrollViewer
-                                            Padding="1">
-                                            <Grid
-                                                RowDefinitions="Auto,*">
-
-                                                --><!--  LISTE  --><!--
-                                                <tbl90Reference:Tbl90ReferenceParentControl
-                                                    Grid.Row="0"
-                                                    DataContext="{x:Bind ViewModel.SubtribusViewModel.ReferenceViewModel}" />
-
-                                                --><!--  EDITOR  --><!--
-                                                <tbl90Reference:Tbl90ReferenceEditControl
-                                                    Grid.Row="1"
-                                                    DataContext="{x:Bind ViewModel.SubtribusViewModel.ReferenceViewModel}"
-                                                    Item="{Binding SelectedItem, Mode=TwoWay}"
-                                                    Visibility="{Binding IsReferenceEditVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                            </Grid>
-                                        </ScrollViewer>
-                                    </TabViewItem>
-                                </TabView>
-
-                            </ScrollViewer>
-                        </TabViewItem>-->
-
-                    </TabView>
-
-                </layout:BaseBossPageLayout.DetailContent>
-
+                        </Pivot>
+                    </layout:BaseBossPageLayout.DetailContent>
+                </layout:BaseBossPageLayout>
             </layout:BaseBossPageLayout>
 
         </ScrollViewer>
