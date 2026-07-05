@@ -1,56 +1,52 @@
-﻿
-using System.ComponentModel;
-using System.Diagnostics;
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Input;
+﻿using System.ComponentModel;
+
+
+//    Tbl90RefExpertPage Skriptdatum:  06.01.2025  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefExpert;
 
 public sealed partial class Tbl90RefExpertPage : Page
 {
+    private object? _commentsHeaderText;
+    private object? _referencesHeaderText;
     public Tbl90RefExpertViewModel ViewModel { get; }
+
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
 
     public Tbl90RefExpertPage()
     {
         InitializeComponent();
+
         ViewModel = App.GetService<Tbl90RefExpertViewModel>();
         DataContext = ViewModel;
 
-        //Fokus auf Search
-        Loaded += (_, _) => { SearchBox.Focus(FocusState.Programmatic); };
-
-        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        Loaded += RefExpertPage_Loaded;
     }
 
-    private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    // ---------------------------------------------------------
+    // PAGE LOADED
+    // ---------------------------------------------------------
+
+    private async void RefExpertPage_Loaded(object sender, RoutedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.ShouldFocusFirstField)
-            && ViewModel.ShouldFocusFirstField)
-        {
-            FocusRefExpertName();
-        }
+        Loaded -= RefExpertPage_Loaded;
+
+        await ViewModel.LoadAsync();
+
+        await Task.Delay(50);
+        SearchBox.Focus(FocusState.Programmatic);
     }
 
-    public void FocusRefExpertName()
+    // ---------------------------------------------------------                   
+    // QUERY-SUBMITTED
+    // ---------------------------------------------------------                   
+
+    private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        DispatcherQueue.TryEnqueue(() =>
-        {
-            RefExpertName.Focus(FocusState.Programmatic);
-        });
+        await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
-    {
-        (sender as DataGrid)!.Sort(e.Column, ViewModel.Sort);
-    }
-
-
-    private void SearchBox_OnKeyUp(object sender, KeyRoutedEventArgs e)
-    {
-        if (e.Key == Windows.System.VirtualKey.Enter)
-        {
-            ViewModel.SearchCommand.Execute(null);
-        }
-    }
 
 }

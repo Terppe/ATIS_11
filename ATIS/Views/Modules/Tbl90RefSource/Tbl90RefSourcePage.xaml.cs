@@ -1,52 +1,61 @@
 ﻿using System.ComponentModel;
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Input;
+
+
+//    Tbl90RefSourcePage Skriptdatum:   06.01.2025  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefSource;
 
 public sealed partial class Tbl90RefSourcePage : Page
 {
+    private object? _commentsHeaderText;
+    private object? _referencesHeaderText;
     public Tbl90RefSourceViewModel ViewModel { get; }
+
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
 
     public Tbl90RefSourcePage()
     {
         InitializeComponent();
+
         ViewModel = App.GetService<Tbl90RefSourceViewModel>();
         DataContext = ViewModel;
 
-        // Fokus auf SearchBox beim Laden
-        Loaded += (_, _) => { SearchBox.Focus(FocusState.Programmatic); };
-
-        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        Loaded += RefSourcePage_Loaded;
     }
 
-    private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    // ---------------------------------------------------------
+    // PAGE LOADED
+    // ---------------------------------------------------------
+
+    private async void RefSourcePage_Loaded(object sender, RoutedEventArgs e)
     {
-        if (e.PropertyName == nameof(ViewModel.ShouldFocusFirstField)
-            && ViewModel.ShouldFocusFirstField)
-        {
-            FocusRefSourceName();
-        }
+        Loaded -= RefSourcePage_Loaded;
+
+        await ViewModel.LoadAsync();
+
+        await Task.Delay(50);
+        SearchBox.Focus(FocusState.Programmatic);
+
     }
 
-    public void FocusRefSourceName()
+    // ---------------------------------------------------------                   
+    // QUERY-SUBMITTED
+    // ---------------------------------------------------------                   
+
+    private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        DispatcherQueue.TryEnqueue(() =>
-        {
-            RefSourceName.Focus(FocusState.Programmatic);
-        });
+        await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    private void DataGrid_Sorting(object sender, DataGridColumnEventArgs e)
-    {
-        (sender as DataGrid)!.Sort(e.Column, ViewModel.Sort);
-    }
 
-    private void SearchBox_OnKeyUp(object sender, KeyRoutedEventArgs e)
-    {
-        if (e.Key == Windows.System.VirtualKey.Enter)
-        {
-            ViewModel.SearchCommand.Execute(null);
-        }
-    }
+
+    // ---------------------------------------------------------         
+    // NAVIGATED FROM
+    // ---------------------------------------------------------
+
+    private Tbl90RefSourceViewModel Vm => (Tbl90RefSourceViewModel)DataContext;
+
+
 }

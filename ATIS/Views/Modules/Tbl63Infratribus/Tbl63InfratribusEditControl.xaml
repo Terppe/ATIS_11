@@ -5,6 +5,8 @@
              xmlns:loc="using:WinUI3Localizer"
              x:Name="Root">
 
+    <!--  Tbl63InfratribusEditControl Skriptdatum:  30.12.2024  10:32  -->
+
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
@@ -70,7 +72,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--  ID + Name + Tribus  -->
+            <!--  ID + Name  -->
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
 
@@ -99,7 +101,7 @@
                                Visibility="{Binding Item.HasInfratribusNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  Tribus Combo  -->
+                <!--  Subtribus Combo  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">

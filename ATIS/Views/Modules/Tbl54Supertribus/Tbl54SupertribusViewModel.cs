@@ -9,235 +9,342 @@ using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 
+
+//    Tbl54SupertribusViewModel Skriptdatum:  22.01.2025  10:32    
+
 namespace ATIS.Views.Modules.Tbl54Supertribus;
 
 public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Supertribus>
 {
+    private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
 
-    // ============================================
-    // CONSTRUCTOR
-    // ============================================
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.Tbl54Supertribus>>>? _activeLoader;
+
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+
+    public Tbl93CommentViewModel SupertribusCommentViewModel { get; }
+    public Tbl90ReferenceViewModel SupertribusReferenceViewModel { get; }
+    public Tbl57TribusViewModel TribusViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+
+    public ObservableCollection<Models.Tbl51Infrafamily> InfrafamilyList { get; private set; } = new();
+    public Dictionary<int, string?> InfrafamilyLookup { get; private set; } = new();
+
+    public async Task LoadInfrafamilyLookupAsync()
+    {
+        InfrafamilyList = await _lookupService.GetInfrafamilyListAsync();
+        InfrafamilyLookup = await _lookupService.GetInfrafamilyLookupAsync();
+    }
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+
     public Tbl54SupertribusViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
         HierarchyCoordinator coordinator,
-        LookupService lookup,
+        LookupService lookupService,
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
+        _lookupService = lookupService;
+
+        SupertribusCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
+        SupertribusReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        TribusViewModel = new Tbl57TribusViewModel(factory, dialog, coordinator, lookupService, user);
+
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Supertribus ID");
         RegisterHeader("Name", "Supertribus Name");
-
     }
-    // ============================================
-    // CHILD VIEWMODELS
-    // ============================================
-    //public Tbl57TribusViewModel TribusViewModel
-    //{
-    //    get => ChildViewModels.TryGetValue("Tribus", out var vm)
-    //        ? (Tbl57TribusViewModel)vm
-    //        : null!;
-    //    set => ChildViewModels["Tribus"] = value;
-    //}
-    //public Tbl90ReferenceViewModel ReferenceViewModel
-    //{
-    //    get => ChildViewModels.TryGetValue("Reference", out var vm)
-    //        ? (Tbl90ReferenceViewModel)vm
-    //        : null!;
-    //    set => ChildViewModels["Reference"] = value;
-    //}
-    //public Tbl93CommentViewModel CommentViewModel
-    //{
-    //    get => ChildViewModels.TryGetValue("Comment", out var vm)
-    //        ? (Tbl93CommentViewModel)vm
-    //        : null!;
-    //    set => ChildViewModels["Comment"] = value;
-    //}
-    // ============================================
-    // HIERARCHIE-KONFIGURATION
-    // ============================================
-    //protected override HierarchyLevel CurrentLevel => HierarchyLevel.Supertribus;
-    //protected override HierarchyLevel ParentLevel { get; }
-    //   protected override HierarchyLevel ParentLevel => HierarchyLevel.Unknown; // Kein Parent für Supertribus
 
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------               
 
-    // ============================================
-    // TEMPLATE IMPLEMENTATIONS
-    // ============================================
-
-    protected override async Task NewAsync()
+    private int _selectedDetailPivotIndex;
+    public int SelectedDetailPivotIndex
     {
-        throw new NotImplementedException();
+        get => _selectedDetailPivotIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Pivot 0 = Boss-Modus
+        IsInParentMode = SelectedDetailPivotIndex != 0;
+
+        if (SelectedDetailPivotIndex == 2)
+            _ = SupertribusReferenceViewModel.LoadReferenceLookupsAsync();
+
+        if (SelectedDetailPivotIndex == 5)
+            _ = TribusViewModel.TribusReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+
+    public bool IsTribusParentSelected => TribusViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+        // Boss-Start: Parent-Kontext löschen
+        _activeLoader = null;
+        _currentParentId = 0;
+
+        await LoadInfrafamilyLookupAsync();
+
+        Items = new ObservableCollection<Models.Tbl54Supertribus>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
+
+    // ---------------------------------------------------------
+    // LOAD FOR VK 
+    // ---------------------------------------------------------
+
+    public async Task LoadForInfrafamilyAsync(int infrafamilyId)
+        => await LoadInternalAsync(infrafamilyId, Data.GetSupertribusForInfrafamilyAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl54Supertribus>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl54Supertribus>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+
+    protected override async Task<IEnumerable<Models.Tbl54Supertribus>> LoadItemsAsync()
+    {
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchSupertribusWithInfrafamilyAsync(SearchText);
+
+        return Items ?? Enumerable.Empty<Models.Tbl54Supertribus>();
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
+            await ClearChildCollectionsAsync();
+            SelectedDetailPivotIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
+    }
+
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        await SupertribusCommentViewModel.LoadForSupertribusAsync(entityId);
+        await SupertribusReferenceViewModel.LoadForSupertribusAsync(entityId);
+
+        await TribusViewModel.LoadSupertribusLookupAsync();
+        await TribusViewModel.LoadForSupertribusAsync(entityId);
+
+
+        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        TribusViewModel.IsInParentMode = true;
+    }
+
+    protected override Task ClearChildCollectionsAsync()
+    {
+        SupertribusCommentViewModel.Items?.Clear();
+        SupertribusReferenceViewModel.Items?.Clear();
+        TribusViewModel.Items?.Clear();
+
+        if (IsBossMode)
+        {
+            SupertribusCommentViewModel.SelectedItem = null;
+            SupertribusReferenceViewModel.SelectedItem = null;
+            TribusViewModel.SelectedItem = null;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl54Supertribus item, string column)
+        => column switch
+        {
+            "Id" => item.SupertribusId,
+            "Name" => item.SupertribusName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+
+    protected override Task NewAsync()
+    {
+        return Task.CompletedTask;
     }
 
     protected override Models.Tbl54Supertribus CreateNewItem()
     {
-        throw new NotImplementedException();
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
+
+        return new Models.Tbl54Supertribus
+        {
+            InfrafamilyId = _currentParentId
+        };
     }
 
-    protected override async Task<IEnumerable<Models.Tbl54Supertribus>> LoadItemsAsync()
-    {
-        if (string.IsNullOrWhiteSpace(default))
-            return Enumerable.Empty<Models.Tbl54Supertribus>();
-
-        return Enumerable.Empty<Models.Tbl54Supertribus>();
-    }
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
 
     protected override async Task<Models.Tbl54Supertribus?> SaveItemAsync(Models.Tbl54Supertribus item)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(item.SupertribusName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertSupertribusAsync(item);
+        return saved;
     }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl54Supertribus item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.SupertribusName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl54Supertribus item)
     {
-        throw new NotImplementedException();
-    }
+        if (item.SupertribusId == 0)
+            return false;
 
-    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl54Supertribus item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl54Supertribus item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override int GetId(Models.Tbl54Supertribus model)
-    {
-        throw new NotImplementedException();
-    }
-
-
-    public override async Task LoadParentAsync(int parentId)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task ClearChildCollectionsAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        throw new NotImplementedException();
-    }
-
-
-
-
-    //protected override async Task LoadForParentAsync(int parentId)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    //protected override async Task ClearChildCollectionsAsync()
-    //{
-    //    TribusViewModel.Items?.Clear();
-    //    await Task.CompletedTask;
-    //}
-
-    //protected override async Task LoadChildrenAsync(int entityId)
-    //{
-    //    await TribusViewModel.LoadForSupertribusAsync(entityId);
-    //}
-
-    // ============================================
-    // DETAIL VISIBILITY
-    // ============================================
-    private string _searchText = string.Empty;
-    public string SearchText
-    {
-        get => _searchText;
-        set => SetProperty(ref _searchText, value);
-    }
-
-    private bool _isDetailVisible;
-    public bool IsDetailVisible
-    {
-        get => _isDetailVisible;
-        set => SetProperty(ref _isDetailVisible, value);
-    }
-    public void ResetBelow()
-    {
- //       SubtribusViewModel.Items?.Clear();
-        //ReferenceViewModel.Items?.Clear();
-        //CommentViewModel.Items?.Clear();
-    }
-
-    // ============================================
-    // SORTING HEADERS
-    // ============================================
-    protected override object GetSortKey(Models.Tbl54Supertribus item, string column)
-    {
-        return column switch
+        if (await Data.SupertribusHasTribusAsync(item.SupertribusId) ||
+            await Data.SupertribusHasReferenceAsync(item.SupertribusId) ||
+            await Data.SupertribusHasCommentAsync(item.SupertribusId))
         {
-            "Id" => item.SupertribusId,
-            "Info" => item.SupertribusName ?? "",
-            _ => ""
-        };
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
+        await Data.DeleteSupertribusAsync(item.SupertribusId);
+        return true;
     }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl54Supertribus item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl54Supertribus item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    protected override int GetId(Models.Tbl54Supertribus item)
+        => item.SupertribusId;
+
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
 
     private void ExecuteBack()
     {
-        //SelectedItem = null;
-        //OnPropertyChanged(nameof(IsDetailVisible));
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
 
-        //IsInParentMode = true;
-        //SelectedDetailPivotIndex = 0;
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
 
-        //NewCommand.NotifyCanExecuteChanged();
-        //RefreshCommand.NotifyCanExecuteChanged();
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailPivotIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
 
 
-    //private string _idHeaderText = "ID";
-    //public string IdHeaderText
-    //{
-    //    get => _idHeaderText;
-    //    set => SetProperty(ref _idHeaderText, value);
-    //}
 
-    //private string _nameHeaderText = "Name";
-    //public string NameHeaderText
-    //{
-    //    get => _nameHeaderText;
-    //    set => SetProperty(ref _nameHeaderText, value);
-    //}
-
-
-    ////protected override IEnumerable<Models.Tbl54Supertribus> SortItems(
-    ////    IEnumerable<Models.Tbl54Supertribus> items, string column, bool ascending)
-    ////{
-    ////    return column switch
-    ////    {
-    ////        "Id" => ascending
-    ////            ? items.OrderBy(x => x.SupertribusId)
-    ////            : items.OrderByDescending(x => x.SupertribusId),
-    ////        "Name" => ascending
-    ////            ? items.OrderBy(x => x.SupertribusName)
-    ////            : items.OrderByDescending(x => x.SupertribusName),
-    ////        _ => items
-    ////    };
-    ////}
-
-    ////protected override void UpdateHeaderTexts()
-    ////{
-    ////    const string asc = " ▲";
-    ////    const string desc = " ▼";
-
-    ////    IdHeaderText = "ID";
-    ////    NameHeaderText = "Name";
-
-    ////    // Optional: Sorting-Pfeile hinzufügen wenn nötig
-    ////}
 }

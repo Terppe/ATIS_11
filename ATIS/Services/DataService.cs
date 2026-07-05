@@ -45,6 +45,7 @@ public partial class DataService : ObservableObject, IDataService
         entity.Updater = user;
         entity.UpdaterDate = now;
     }
+
     private static void CopyProperties<T>(T source, T target, params string[] exclude)
     {
         var props = typeof(T).GetProperties()
@@ -282,7 +283,160 @@ public partial class DataService : ObservableObject, IDataService
 
     #region CRUD
 
+
     #region Regnum
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllRegnumAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl03Regnum>> GetAllRegnumAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl03Regnums
+            .AsNoTracking()
+            .OrderBy(e => e.RegnumName)
+            .ThenBy(a => a.Subregnum)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchRegnumWithNULLAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl03Regnum>> SearchRegnumWithNULLAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl03Regnum>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl03Regnums
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.RegnumId == id || e.RegnumName.StartsWith(search))
+                .OrderBy(e => e.RegnumName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.RegnumName.StartsWith(search))
+            .OrderBy(e => e.RegnumName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertRegnumAsync(Tbl03Regnum uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl03Regnum> UpsertRegnumAsync(Tbl03Regnum uiEntity)
+    {
+        return UpsertAsync<Tbl03Regnum, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl03Regnum>(),
+            x => x.RegnumId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.RegnumId == id),
+            MapRegnumFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapRegnumFields(Tbl03Regnum source, Tbl03Regnum target)
+    // ---------------------------------------------------------                 
+    private static void MapRegnumFields(Tbl03Regnum source, Tbl03Regnum target)
+    {
+        target.RegnumName = source.RegnumName;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetRegnumByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl03Regnum?> GetRegnumByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl03Regnums
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.RegnumId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteRegnumAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteRegnumAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl03Regnums.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl03Regnums.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl03Regnum entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RegnumExistsAsync(Tbl03Regnum entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl03Regnums.AnyAsync(x =>
+            x.RegnumName == entity.RegnumName &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.RegnumId != entity.RegnumId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasPhylumAsync(int regnumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RegnumHasPhylumAsync(int regnumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl06Phylums
+            .AnyAsync(x => x.RegnumId == regnumId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int regnumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RegnumHasReferenceAsync(int regnumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.RegnumId == regnumId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int regnumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RegnumHasCommentAsync(int regnumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.RegnumId == regnumId);
+    }
+
+
+    //alt
     public ObservableCollection<Tbl03Regnum> GetRegnumAsync()
     {
         var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
@@ -312,49 +466,185 @@ public partial class DataService : ObservableObject, IDataService
                 .ThenBy(a => a.Subregnum));
         return collection;
     }
-    public async Task<Tbl03Regnum> UpsertRegnumAsync(Tbl03Regnum regnum)
-    {
-        var current = await _context.Tbl03Regnums.FirstOrDefaultAsync(_regnum => _regnum.RegnumId == regnum.RegnumId);
-        if (null == current)
-        {
-            regnum.CountId = RandomHelper.Randomnumber();
-            regnum.Writer = Environment.UserName;
-            regnum.WriterDate = DateTime.Now;
-            regnum.Updater = Environment.UserName;
-            regnum.UpdaterDate = DateTime.Now;
-            _context.Tbl03Regnums.Add(regnum);
-        }
-        else
-        {
-            regnum.Updater = Environment.UserName;
-            regnum.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(regnum);
-        }
-        await _context.SaveChangesAsync();
-        return regnum;
-    }
-    public async Task DeleteRegnumAsync(int regnumid)
-    {
-        var regnum = await _context.Tbl03Regnums.FirstOrDefaultAsync(reg => reg.RegnumId == regnumid);
-        if (regnum != null)
-        {
-            var references = await _context.Tbl90References.Where(reference => reference.RegnumId == regnumid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(comment => comment.RegnumId == regnumid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl03Regnums.Remove(regnum);
-            await _context.SaveChangesAsync();
-        }
-    }
 
     #endregion Regnum
 
-    #region Phylum
 
+    #region Phylum
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllPhylumAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl06Phylum>> GetAllPhylumAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl06Phylums
+            .AsNoTracking()
+            .OrderBy(e => e.PhylumName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchPhylumWithRegnumAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl06Phylum>> SearchPhylumWithRegnumAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl06Phylum>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl06Phylums
+            .Include(x => x.Regnum)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.PhylumId == id || e.PhylumName.StartsWith(search))
+                .OrderBy(e => e.PhylumName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.PhylumName.StartsWith(search))
+            .OrderBy(e => e.PhylumName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertPhylumAsync(Tbl06Phylum uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl06Phylum> UpsertPhylumAsync(Tbl06Phylum uiEntity)
+    {
+        return UpsertAsync<Tbl06Phylum, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl06Phylum>(),
+            x => x.PhylumId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.PhylumId == id),
+            MapPhylumFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapPhylumFields(Tbl06Phylum source, Tbl06Phylum target)
+    // ---------------------------------------------------------                 
+    private static void MapPhylumFields(Tbl06Phylum source, Tbl06Phylum target)
+    {
+        target.PhylumName = source.PhylumName;
+        target.RegnumId = source.RegnumId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetPhylumByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl06Phylum?> GetPhylumByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl06Phylums
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.PhylumId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeletePhylumAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeletePhylumAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl06Phylums.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl06Phylums.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl06Phylum entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> PhylumExistsAsync(Tbl06Phylum entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl06Phylums.AnyAsync(x =>
+            x.PhylumName == entity.PhylumName &&
+            x.RegnumId == entity.RegnumId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.PhylumId != entity.PhylumId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasSubphylumAsync(int phylumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> PhylumHasSubphylumAsync(int phylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl12Subphylums
+            .AnyAsync(x => x.PhylumId == phylumId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int phylumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> PhylumHasReferenceAsync(int phylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.PhylumId == phylumId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int phylumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> PhylumHasCommentAsync(int phylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.PhylumId == phylumId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetPhylumForRegnumAsync(int regnumId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl06Phylum>> GetPhylumForRegnumAsync(int regnumId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl06Phylums
+            .Where(e => e.RegnumId == regnumId)
+            .Include(e => e.Regnum)
+            .OrderBy(e => e.PhylumName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
+
+
+    //alt
+
+    //alt
     public ObservableCollection<Tbl06Phylum> GetPhylumAsync()
     {
         var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
@@ -391,73 +681,180 @@ public partial class DataService : ObservableObject, IDataService
 
         return collection;
     }
-    public async Task<Tbl06Phylum> UpsertPhylumAsync(Tbl06Phylum phylum)
-    {
-        var current = await _context.Tbl06Phylums.FirstOrDefaultAsync(_phy => _phy.PhylumId == phylum.PhylumId);
-        if (null == current)
-        {
-            phylum.CountId = RandomHelper.Randomnumber();
-            phylum.Writer = Environment.UserName;
-            phylum.WriterDate = DateTime.Now;
-            phylum.Updater = Environment.UserName;
-            phylum.UpdaterDate = DateTime.Now;
-            _context.Tbl06Phylums.Add(phylum);
-        }
-        else
-        {
-            phylum.Updater = Environment.UserName;
-            phylum.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(phylum);
-        }
-        await _context.SaveChangesAsync();
-        return phylum;
-    }
-    public async Task DeletePhylumAsync(int phylumid)
-    {
-        var phylum = await _context.Tbl06Phylums.FirstOrDefaultAsync(b => b.PhylumId == phylumid);
-        if (phylum != null)
-        {
-            //necessary to delete before
-            var subphylums = await _context.Tbl12Subphylums.Where(a => a.PhylumId == phylumid).ToListAsync();
-            foreach (var subphylum in subphylums)
-            {
-                for (var i = 0; i <= subphylums.Count; i++)
-                {
-                    var subphylumid = subphylum.SubphylumId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.SubphylumId == subphylumid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SubphylumId == subphylumid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            _context.Tbl12Subphylums.RemoveRange(subphylums);
-            await _context.SaveChangesAsync();
-
-            var references = await _context.Tbl90References.Where(reference => reference.PhylumId == phylumid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(comment => comment.PhylumId == phylumid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl06Phylums.Remove(phylum);
-            await _context.SaveChangesAsync();
-        }
-    }
 
     #endregion Phylum
 
-    #region Subphylum
 
+    #region Subphylum
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSubphylumAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl12Subphylum>> GetAllSubphylumAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl12Subphylums
+            .AsNoTracking()
+            .OrderBy(e => e.SubphylumName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchSubphylumWithPhylumAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl12Subphylum>> SearchSubphylumWithPhylumAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl12Subphylum>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl12Subphylums
+            .Include(x => x.Phylum)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SubphylumId == id || e.SubphylumName.StartsWith(search))
+                .OrderBy(e => e.SubphylumName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SubphylumName.StartsWith(search))
+            .OrderBy(e => e.SubphylumName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSubphylumAsync(Tbl12Subphylum uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl12Subphylum> UpsertSubphylumAsync(Tbl12Subphylum uiEntity)
+    {
+        return UpsertAsync<Tbl12Subphylum, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl12Subphylum>(),
+            x => x.SubphylumId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SubphylumId == id),
+            MapSubphylumFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSubphylumFields(Tbl12Subphylum source, Tbl12Subphylum target)
+    // ---------------------------------------------------------                 
+    private static void MapSubphylumFields(Tbl12Subphylum source, Tbl12Subphylum target)
+    {
+        target.SubphylumName = source.SubphylumName;
+        target.PhylumId = source.PhylumId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetSubphylumByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl12Subphylum?> GetSubphylumByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl12Subphylums
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SubphylumId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSubphylumAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSubphylumAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl12Subphylums.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl12Subphylums.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl12Subphylum entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubphylumExistsAsync(Tbl12Subphylum entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl12Subphylums.AnyAsync(x =>
+            x.SubphylumName == entity.SubphylumName &&
+            x.PhylumId == entity.PhylumId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.SubphylumId != entity.SubphylumId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasSuperclassAsync(int subphylumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubphylumHasSuperclassAsync(int subphylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl18Superclasses
+            .AnyAsync(x => x.SubphylumId == subphylumId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int subphylumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubphylumHasReferenceAsync(int subphylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.SubphylumId == subphylumId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int subphylumId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubphylumHasCommentAsync(int subphylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.SubphylumId == subphylumId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSubphylumForPhylumAsync(int phylumId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl12Subphylum>> GetSubphylumForPhylumAsync(int phylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl12Subphylums
+            .Where(e => e.PhylumId == phylumId)
+            .Include(e => e.Phylum)
+            .OrderBy(e => e.SubphylumName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+    //alt
     public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync()
     {
         var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
@@ -494,74 +891,181 @@ public partial class DataService : ObservableObject, IDataService
 
         return collection;
     }
-    public async Task<Tbl12Subphylum> UpsertSubphylumAsync(Tbl12Subphylum subphylum)
-    {
-        var current = await _context.Tbl12Subphylums.FirstOrDefaultAsync(a => a.SubphylumId == subphylum.SubphylumId);
-        if (null == current)
-        {
-            subphylum.CountId = RandomHelper.Randomnumber();
-            subphylum.Writer = Environment.UserName;
-            subphylum.WriterDate = DateTime.Now;
-            subphylum.Updater = Environment.UserName;
-            subphylum.UpdaterDate = DateTime.Now;
-            _context.Tbl12Subphylums.Add(subphylum);
-        }
-        else
-        {
-            subphylum.Updater = Environment.UserName;
-            subphylum.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(subphylum);
-        }
-        await _context.SaveChangesAsync();
-        return subphylum;
-    }
-    public async Task DeleteSubphylumAsync(int subphylumid)
-    {
-        var subphylum = await _context.Tbl12Subphylums.FirstOrDefaultAsync(reg => reg.SubphylumId == subphylumid);
-        if (subphylum != null)
-        {
-            //necessary to delete before
-            var superclasss = await _context.Tbl18Superclasses.Where(a => a.SubphylumId == subphylumid).ToListAsync();
-            foreach (var superclass in superclasss)
-            {
-                for (var i = 0; i <= superclasss.Count; i++)
-                {
-                    var superclassid = superclass.SuperclassId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.SuperclassId == superclassid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SuperclassId == superclassid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-
-            _context.Tbl18Superclasses.RemoveRange(superclasss);
-            await _context.SaveChangesAsync();
-
-            var references = await _context.Tbl90References.Where(r => r.SubphylumId == subphylumid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(c => c.SubphylumId == subphylumid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl12Subphylums.Remove(subphylum);
-            await _context.SaveChangesAsync();
-        }
-    }
 
     #endregion Subphylum
 
-    #region Superclass
 
+    #region Superclass
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSuperclassAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl18Superclass>> GetAllSuperclassAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl18Superclasses
+            .AsNoTracking()
+            .OrderBy(e => e.SuperclassName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchSuperclassWithSubphylumAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl18Superclass>> SearchSuperclassWithSubphylumAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl18Superclass>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl18Superclasses
+            .Include(x => x.Subphylum)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SuperclassId == id || e.SuperclassName.StartsWith(search))
+                .OrderBy(e => e.SuperclassName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SuperclassName.StartsWith(search))
+            .OrderBy(e => e.SuperclassName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSuperclassAsync(Tbl18Superclass uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl18Superclass> UpsertSuperclassAsync(Tbl18Superclass uiEntity)
+    {
+        return UpsertAsync<Tbl18Superclass, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl18Superclass>(),
+            x => x.SuperclassId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SuperclassId == id),
+            MapSuperclassFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSuperclassFields(Tbl18Superclass source, Tbl18Superclass target)
+    // ---------------------------------------------------------                 
+    private static void MapSuperclassFields(Tbl18Superclass source, Tbl18Superclass target)
+    {
+        target.SuperclassName = source.SuperclassName;
+        target.SubphylumId = source.SubphylumId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetSuperclassByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl18Superclass?> GetSuperclassByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl18Superclasses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SuperclassId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSuperclassAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSuperclassAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl18Superclasses.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl18Superclasses.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl18Superclass entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SuperclassExistsAsync(Tbl18Superclass entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl18Superclasses.AnyAsync(x =>
+            x.SuperclassName == entity.SuperclassName &&
+            x.SubphylumId == entity.SubphylumId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.SuperclassId != entity.SuperclassId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasClassAsync(int superclassId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SuperclassHasClassAsync(int superclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl21Classes
+            .AnyAsync(x => x.SuperclassId == superclassId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int superclassId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SuperclassHasReferenceAsync(int superclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.SuperclassId == superclassId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int superclassId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SuperclassHasCommentAsync(int superclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.SuperclassId == superclassId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSuperclassForSubphylumAsync(int subphylumId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl18Superclass>> GetSuperclassForSubphylumAsync(int subphylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl18Superclasses
+            .Where(e => e.SubphylumId == subphylumId)
+            .Include(e => e.Subphylum)
+            .OrderBy(e => e.SuperclassName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
+    //all
     public ObservableCollection<Tbl18Superclass> GetSuperclassAsync()
     {
         var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
@@ -602,75 +1106,181 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl18Superclass> UpsertSuperclassAsync(Tbl18Superclass superclass)
-    {
-        var current = await _context.Tbl18Superclasses.FirstOrDefaultAsync(a => a.SuperclassId == superclass.SuperclassId);
-        if (null == current)
-        {
-            superclass.CountId = RandomHelper.Randomnumber();
-            superclass.Writer = Environment.UserName;
-            superclass.WriterDate = DateTime.Now;
-            superclass.Updater = Environment.UserName;
-            superclass.UpdaterDate = DateTime.Now;
-            _context.Tbl18Superclasses.Add(superclass);
-        }
-        else
-        {
-            superclass.Updater = Environment.UserName;
-            superclass.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(superclass);
-        }
-        await _context.SaveChangesAsync();
-        return superclass;
-    }
-
-    public async Task DeleteSuperclassAsync(int superclassid)
-    {
-        var superclass = await _context.Tbl18Superclasses.FirstOrDefaultAsync(reg => reg.SuperclassId == superclassid);
-        if (superclass != null)
-        {
-            //necessary to delete before evtl noch weiter nach oben bis FiSpecies 
-            var classes = await _context.Tbl21Classes.Where(a => a.SuperclassId == superclassid).ToListAsync();
-            foreach (var class1 in classes)
-            {
-                for (var i = 0; i <= classes.Count; i++)
-                {
-                    var classid = class1.ClassId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.ClassId == classid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.ClassId == classid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-
-            _context.Tbl21Classes.RemoveRange(classes);
-            await _context.SaveChangesAsync();
-
-            var references = await _context.Tbl90References.Where(r => r.SuperclassId == superclassid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(c => c.SuperclassId == superclassid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl18Superclasses.Remove(superclass);
-            await _context.SaveChangesAsync();
-        }
-    }
 
     #endregion Superclass
 
-    #region Class                
 
+    #region Class
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllClassAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl21Class>> GetAllClassAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl21Classes
+            .AsNoTracking()
+            .OrderBy(e => e.ClassName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchClassWithSuperclassAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl21Class>> SearchClassWithSuperclassAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl21Class>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl21Classes
+            .Include(x => x.Superclass)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.ClassId == id || e.ClassName.StartsWith(search))
+                .OrderBy(e => e.ClassName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.ClassName.StartsWith(search))
+            .OrderBy(e => e.ClassName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertClassAsync(Tbl21Class uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl21Class> UpsertClassAsync(Tbl21Class uiEntity)
+    {
+        return UpsertAsync<Tbl21Class, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl21Class>(),
+            x => x.ClassId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.ClassId == id),
+            MapClassFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapClassFields(Tbl21Class source, Tbl21Class target)
+    // ---------------------------------------------------------                 
+    private static void MapClassFields(Tbl21Class source, Tbl21Class target)
+    {
+        target.ClassName = source.ClassName;
+        target.SuperclassId = source.SuperclassId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetClassByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl21Class?> GetClassByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl21Classes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ClassId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteClassAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteClassAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl21Classes.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl21Classes.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl21Class entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> ClassExistsAsync(Tbl21Class entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl21Classes.AnyAsync(x =>
+            x.ClassName == entity.ClassName &&
+            x.SuperclassId == entity.SuperclassId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.ClassId != entity.ClassId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasSubclassAsync(int classId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> ClassHasSubclassAsync(int classId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl24Subclasses
+            .AnyAsync(x => x.ClassId == classId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int classId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> ClassHasReferenceAsync(int classId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.ClassId == classId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int classId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> ClassHasCommentAsync(int classId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.ClassId == classId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetClassForSuperclassAsync(int superclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl21Class>> GetClassForSuperclassAsync(int superclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl21Classes
+            .Where(e => e.SuperclassId == superclassId)
+            .Include(e => e.Superclass)
+            .OrderBy(e => e.ClassName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
+    //alt
     public ObservableCollection<Tbl21Class> GetClassAsync()
     {
         var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
@@ -711,74 +1321,181 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl21Class> UpsertClassAsync(Tbl21Class class1)
-    {
-        var current = await _context.Tbl21Classes.FirstOrDefaultAsync(c => c.ClassId == class1.ClassId);
-        if (null == current)
-        {
-            class1.CountId = RandomHelper.Randomnumber();
-            class1.Writer = Environment.UserName;
-            class1.WriterDate = DateTime.Now;
-            class1.Updater = Environment.UserName;
-            class1.UpdaterDate = DateTime.Now;
-            _context.Tbl21Classes.Add(class1);
-        }
-        else
-        {
-            class1.Updater = Environment.UserName;
-            class1.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(class1);
-        }
-        await _context.SaveChangesAsync();
-        return class1;
-    }
-
-    public async Task DeleteClassAsync(int classid)
-    {
-        var class1 = await _context.Tbl21Classes.FirstOrDefaultAsync(b => b.ClassId == classid);
-        if (class1 != null)
-        {
-            //necessary to delete before
-            var subclasss = await _context.Tbl24Subclasses.Where(a => a.ClassId == classid).ToListAsync();
-            foreach (var subclass in subclasss)
-            {
-                for (var i = 0; i <= subclasss.Count; i++)
-                {
-                    var subclassid = subclass.SubclassId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.SubclassId == subclassid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SubclassId == subclassid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            _context.Tbl24Subclasses.RemoveRange(subclasss);
-            await _context.SaveChangesAsync();
-
-            var references = await _context.Tbl90References.Where(reference => reference.ClassId == classid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(comment => comment.ClassId == classid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl21Classes.Remove(class1);
-            await _context.SaveChangesAsync();
-        }
-    }
 
     #endregion Class                       
 
-    #region Subclass                
 
+    #region Subclass
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSubclassAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl24Subclass>> GetAllSubclassAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl24Subclasses
+            .AsNoTracking()
+            .OrderBy(e => e.SubclassName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchSubclassWithClassAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl24Subclass>> SearchSubclassWithClassAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl24Subclass>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl24Subclasses
+            .Include(x => x.Class)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SubclassId == id || e.SubclassName.StartsWith(search))
+                .OrderBy(e => e.SubclassName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SubclassName.StartsWith(search))
+            .OrderBy(e => e.SubclassName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSubclassAsync(Tbl24Subclass uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl24Subclass> UpsertSubclassAsync(Tbl24Subclass uiEntity)
+    {
+        return UpsertAsync<Tbl24Subclass, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl24Subclass>(),
+            x => x.SubclassId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SubclassId == id),
+            MapSubclassFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSubclassFields(Tbl24Subclass source, Tbl24Subclass target)
+    // ---------------------------------------------------------                 
+    private static void MapSubclassFields(Tbl24Subclass source, Tbl24Subclass target)
+    {
+        target.SubclassName = source.SubclassName;
+        target.ClassId = source.ClassId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetSubclassByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl24Subclass?> GetSubclassByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl24Subclasses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SubclassId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSubclassAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSubclassAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl24Subclasses.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl24Subclasses.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl24Subclass entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubclassExistsAsync(Tbl24Subclass entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl24Subclasses.AnyAsync(x =>
+            x.SubclassName == entity.SubclassName &&
+            x.ClassId == entity.ClassId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.SubclassId != entity.SubclassId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasInfraclassAsync(int subclassId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubclassHasInfraclassAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl27Infraclasses
+            .AnyAsync(x => x.SubclassId == subclassId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int subclassId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubclassHasReferenceAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.SubclassId == subclassId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int subclassId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SubclassHasCommentAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.SubclassId == subclassId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSubclassForClassAsync(int classeId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl24Subclass>> GetSubclassForClassAsync(int classeId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl24Subclasses
+            .Where(e => e.ClassId == classeId)
+            .Include(e => e.Class)
+            .OrderBy(e => e.SubclassName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
+    //alt
     public ObservableCollection<Tbl24Subclass> GetSubclassAsync()
     {
         var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
@@ -819,69 +1536,6 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl24Subclass> UpsertSubclassAsync(Tbl24Subclass subclass)
-    {
-        var current = await _context.Tbl24Subclasses.FirstOrDefaultAsync(c => c.SubclassId == subclass.SubclassId);
-        if (null == current)
-        {
-            subclass.CountId = RandomHelper.Randomnumber();
-            subclass.Writer = Environment.UserName;
-            subclass.WriterDate = DateTime.Now;
-            subclass.Updater = Environment.UserName;
-            subclass.UpdaterDate = DateTime.Now;
-            _context.Tbl24Subclasses.Add(subclass);
-        }
-        else
-        {
-            subclass.Updater = Environment.UserName;
-            subclass.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(subclass);
-        }
-        await _context.SaveChangesAsync();
-        return subclass;
-    }
-
-    public async Task DeleteSubclassAsync(int subclassid)
-    {
-        var subclass = await _context.Tbl24Subclasses.FirstOrDefaultAsync(b => b.SubclassId == subclassid);
-        if (subclass != null)
-        {
-            //necessary to delete before
-            var infraclasss = await _context.Tbl27Infraclasses.Where(a => a.SubclassId == subclassid).ToListAsync();
-            foreach (var infraclass in infraclasss)
-            {
-                for (var i = 0; i <= infraclasss.Count; i++)
-                {
-                    var infraclassid = infraclass.InfraclassId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.InfraclassId == infraclassid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.InfraclassId == infraclassid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            _context.Tbl27Infraclasses.RemoveRange(infraclasss);
-            await _context.SaveChangesAsync();
-
-            var references = await _context.Tbl90References.Where(reference => reference.SubclassId == subclassid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(comment => comment.SubclassId == subclassid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl24Subclasses.Remove(subclass);
-            await _context.SaveChangesAsync();
-        }
-    }
 
     #endregion Subclass                       
 
@@ -1756,6 +2410,16 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Infrafamily                
 
+    public async Task<IEnumerable<Tbl51Infrafamily>> GetAllInfrafamilyAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl51Infrafamilies
+            .AsNoTracking()
+            .OrderBy(e => e.InfrafamilyName)
+            .ToListAsync();
+    }
+
     public ObservableCollection<Tbl51Infrafamily> GetInfrafamilyAsync()
     {
         var collection = new ObservableCollection<Tbl51Infrafamily>(_context.Tbl51Infrafamilies
@@ -1864,86 +2528,182 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Infrafamily                       
 
     #region Supertribus                
-    //neu
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSupertribusAsync()
+    // ---------------------------------------------------------                           
     public async Task<IEnumerable<Tbl54Supertribus>> GetAllSupertribusAsync()
     {
-        return await _context.Tbl54Supertribusses
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl54Supertribusses
             .AsNoTracking()
             .OrderBy(e => e.SupertribusName)
             .ToListAsync();
     }
-    public async Task<IEnumerable<Tbl54Supertribus>> SearchSupertribusAsync(string? search)
+    // ---------------------------------------------------------                  
+    // SearchSupertribusWithInfrafamilyAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl54Supertribus>> SearchSupertribusWithInfrafamilyAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl54Supertribus>();
 
-        var result = await _context.Tbl54Supertribusses
-            .Where(e =>
-                e.SupertribusName.StartsWith(search) ||
-                e.SupertribusId.ToString() == search)
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl54Supertribusses
+            .Include(x => x.Infrafamily)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SupertribusId == id || e.SupertribusName.StartsWith(search))
+                .OrderBy(e => e.SupertribusName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SupertribusName.StartsWith(search))
+            .OrderBy(e => e.SupertribusName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSupertribusAsync(Tbl54Supertribus uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl54Supertribus> UpsertSupertribusAsync(Tbl54Supertribus uiEntity)
+    {
+        return UpsertAsync<Tbl54Supertribus, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl54Supertribus>(),
+            x => x.SupertribusId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SupertribusId == id),
+            MapSupertribusFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSupertribusFields(Tbl54Supertribus source, Tbl54Supertribus target)
+    // ---------------------------------------------------------                 
+    private static void MapSupertribusFields(Tbl54Supertribus source, Tbl54Supertribus target)
+    {
+        target.SupertribusName = source.SupertribusName;
+        target.InfrafamilyId = source.InfrafamilyId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetSupertribusByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl54Supertribus?> GetSupertribusByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl54Supertribusses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SupertribusId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSupertribusAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSupertribusAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl54Supertribusses.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl54Supertribusses.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl54Supertribus entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SupertribusExistsAsync(Tbl54Supertribus entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl54Supertribusses.AnyAsync(x =>
+            x.SupertribusName == entity.SupertribusName &&
+            x.InfrafamilyId == entity.InfrafamilyId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.SupertribusId != entity.SupertribusId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasTribusAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SupertribusHasTribusAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl57Tribusses
+            .AnyAsync(x => x.SupertribusId == supertribusId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SupertribusHasReferenceAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.SupertribusId == supertribusId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SupertribusHasCommentAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.SupertribusId == supertribusId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSupertribusForInfrafamilyAsync(int infrafamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl54Supertribus>> GetSupertribusForInfrafamilyAsync(int infrafamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl54Supertribusses
+            .Where(e => e.InfrafamilyId == infrafamilyId)
+            .Include(e => e.Infrafamily)
             .OrderBy(e => e.SupertribusName)
             .AsNoTracking()
             .ToListAsync();
+    }
 
-        // InfrafamilyName ergänzen
-        foreach (var item in result)
-        {
-            item.Infrafamily = await _context.Tbl51Infrafamilies
-                .FirstOrDefaultAsync(x => x.InfrafamilyId == item.InfrafamilyId);
-        }
 
-        return result;
-    }
-    public async Task<IEnumerable<Tbl57Tribus>> GetTribusForSupertribusAsync(int? supertribusId)
-    {
-        return await _context.Tbl57Tribusses
-            .Where(e => e.SupertribusId == supertribusId)
-            .OrderBy(e => e.TribusName)
-            .ToListAsync();
-    }
-    public async Task<IEnumerable<Tbl57Tribus>> GetTribusForSupertribusAsync(int supertribusId)
-    {
-        return await _context.Tbl57Tribusses
-            .Where(x => x.SupertribusId == supertribusId)
-            .OrderBy(x => x.TribusName)
-            .ToListAsync();
-    }
+
+    //alt
     public async Task<IEnumerable<Tbl54Supertribus>> GetSupertribusAsync(int dummy)
     {
         return await _context.Tbl54Supertribusses
             .OrderBy(x => x.SupertribusName)
             .ToListAsync();
     }
-    public async Task<bool> SupertribusExistsAsync(Tbl54Supertribus entity)
-    {
-        return await _context.Tbl54Supertribusses.AnyAsync(x =>
-                x.SupertribusName == entity.SupertribusName &&
-                x.InfrafamilyId == entity.InfrafamilyId &&
-                x.Valid == entity.Valid &&
-                x.ValidYear == entity.ValidYear &&
-                x.Synonym == entity.Synonym &&
-                x.Author == entity.Author &&
-                x.AuthorYear == entity.AuthorYear &&
-                x.Info == entity.Info &&
-                x.EngName == entity.EngName &&
-                x.GerName == entity.GerName &&
-                x.FraName == entity.FraName &&
-                x.PorName == entity.PorName &&
-                x.Memo == entity.Memo &&
-                x.SupertribusId != entity.SupertribusId   // wichtig für Update
-        );
-    }
-    public async Task<Tbl54Supertribus> GetSupertribusByIdAsync(int id)
-    {
-        return await _context.Tbl54Supertribusses
-            .FirstOrDefaultAsync(x => x.SupertribusId == id);
-    }
-    public async Task<bool> SupertribusHasTribusAsync(int supertribusId)
-    {
-        return await _context.Tbl57Tribusses.AnyAsync(x => x.SupertribusId == supertribusId);
-    }
-
-    //alt
     public ObservableCollection<Tbl54Supertribus> GetSupertribusAsync()
     {
         var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
@@ -1951,17 +2711,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.SupertribusName));
         return collection;
     }
-
-    //public ObservableCollection<Tbl54Supertribus> GetSupertribusAsync(int supertribusid)
-    //{
-    //    var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-    //        .AsNoTracking()
-    //        .Where(e => e.SupertribusId == supertribusid)
-    //        .OrderBy(k => k.SupertribusName)
-    //    );
-
-    //    return collection;
-    //}
 
     public ObservableCollection<Tbl54Supertribus> GetSupertribusAsync(string search)
     {
@@ -1984,85 +2733,182 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl54Supertribus> UpsertSupertribusAsync(Tbl54Supertribus supertribus)
-    {
-        var current = await _context.Tbl54Supertribusses.FirstOrDefaultAsync(c => c.SupertribusId == supertribus.SupertribusId);
-        if (null == current)
-        {
-            supertribus.CountId = RandomHelper.Randomnumber();
-            supertribus.Writer = Environment.UserName;
-            supertribus.WriterDate = DateTime.Now;
-            supertribus.Updater = Environment.UserName;
-            supertribus.UpdaterDate = DateTime.Now;
-            _context.Tbl54Supertribusses.Add(supertribus);
-        }
-        else
-        {
-            supertribus.Updater = Environment.UserName;
-            supertribus.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(supertribus);
-        }
-        await _context.SaveChangesAsync();
-        return supertribus;
-    }
-
-    public async Task DeleteSupertribusAsync(int supertribusid)
-    {
-        var supertribus = await _context.Tbl54Supertribusses.FirstOrDefaultAsync(b => b.SupertribusId == supertribusid);
-        if (supertribus != null)
-        {
-            //necessary to delete before
-            //------ Tribus -------------
-            var tribuss = await _context.Tbl57Tribusses.Where(a => a.SupertribusId == supertribusid).ToListAsync();
-            foreach (var tribus in tribuss)
-            {
-                for (var i = 0; i <= tribuss.Count; i++)
-                {
-                    var tribusid = tribus.TribusId;
-                    var singleref = _context.Tbl90References.SingleOrDefault(a => a.TribusId == tribusid);
-                    if (singleref != null)
-                    {
-                        _context.Tbl90References.Remove(singleref);
-                        await _context.SaveChangesAsync();
-                    }
-                    var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.TribusId == tribusid);
-                    if (singlecom != null)
-                    {
-                        _context.Tbl93Comments.Remove(singlecom);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            _context.Tbl57Tribusses.RemoveRange(tribuss);
-            await _context.SaveChangesAsync();
-            //---------------------------------------------------------
-            var references = await _context.Tbl90References.Where(reference => reference.SupertribusId == supertribusid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
-
-            var comments = await _context.Tbl93Comments.Where(comment => comment.SupertribusId == supertribusid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
-
-            _context.Tbl54Supertribusses.Remove(supertribus);
-            await _context.SaveChangesAsync();
-        }
-    }
-
     #endregion Supertribus                       
 
     #region Tribus                
     //neu
+
+    // ---------------------------------------------------------                  
+    // Tribus 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllTribusAsync()
+    // ---------------------------------------------------------                           
     public async Task<IEnumerable<Tbl57Tribus>> GetAllTribusAsync()
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl57Tribusses
+            .AsNoTracking()
+            .OrderBy(e => e.TribusName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchTribusWithSupertribusAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl57Tribus>> SearchTribusWithSupertribusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl57Tribus>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl57Tribusses
+            .Include(x => x.Supertribus)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.TribusId == id || e.TribusName.StartsWith(search))
+                .OrderBy(e => e.TribusName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.TribusName.StartsWith(search))
+            .OrderBy(e => e.TribusName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertTribusAsync(Tbl57Tribus uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl57Tribus> UpsertTribusAsync(Tbl57Tribus uiEntity)
+    {
+        return UpsertAsync<Tbl57Tribus, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl57Tribus>(),
+            x => x.TribusId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.TribusId == id),
+            MapTribusFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapTribusFields(Tbl57Tribus source, Tbl57Tribus target)
+    // ---------------------------------------------------------                 
+    private static void MapTribusFields(Tbl57Tribus source, Tbl57Tribus target)
+    {
+        target.TribusName = source.TribusName;
+        target.SupertribusId = source.SupertribusId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetTribusByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl57Tribus?> GetTribusByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.TribusId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteTribusAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteTribusAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl57Tribusses.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl57Tribusses.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl57Tribus entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> TribusExistsAsync(Tbl57Tribus entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses.AnyAsync(x =>
+            x.TribusName == entity.TribusName &&
+            x.SupertribusId == entity.SupertribusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.TribusId != entity.TribusId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasSubtribusAsync(int tribusId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> TribusHasSubtribusAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl60Subtribusses
+            .AnyAsync(x => x.TribusId == tribusId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int tribusId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> TribusHasReferenceAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.TribusId == tribusId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int tribusId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> TribusHasCommentAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.TribusId == tribusId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetTribusForSupertribusAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl57Tribus>> GetTribusForSupertribusAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .Where(e => e.SupertribusId == supertribusId)
             .Include(e => e.Supertribus)
             .OrderBy(e => e.TribusName)
             .AsNoTracking()
             .ToListAsync();
     }
+
+    //----------------------------------------------------
+    //alt
     public async Task<IEnumerable<Tbl57Tribus>> SearchTribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -2079,15 +2925,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-    public async Task<Tbl57Tribus?> GetTribusByIdAsync(int id)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl57Tribusses
-            .Include(e => e.Supertribus)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.TribusId == id);
-    }
     public async Task<Tbl57Tribus> GetTribusByTribusIdAsync(int tribusId)
     {
         return await _context.Tbl57Tribusses
@@ -2098,90 +2935,7 @@ public partial class DataService : ObservableObject, IDataService
         var tribus = await GetTribusByTribusIdAsync(tribusId);
         return tribus?.TribusName ?? "Unknown";  // ✓ Null-safe
     }
-    public async Task<Tbl57Tribus> UpsertTribusAsync(Tbl57Tribus uiEntity)
-    {
-        await using var context = _factory.CreateDbContext();
 
-        Tbl57Tribus dbEntity;
-
-        if (uiEntity.TribusId == 0)
-        {
-            dbEntity = new Tbl57Tribus();
-            context.Tbl57Tribusses.Add(dbEntity);
-        }
-        else
-        {
-            dbEntity = await context.Tbl57Tribusses
-                           .FirstOrDefaultAsync(x => x.TribusId == uiEntity.TribusId)
-                       ?? throw new InvalidOperationException("Entity not found.");
-        }
-
-        CopyProperties(uiEntity, dbEntity,
-            nameof(Tbl57Tribus.TribusId),
-            nameof(Tbl57Tribus.Writer),
-            nameof(Tbl57Tribus.WriterDate),
-            nameof(Tbl57Tribus.Updater),
-            nameof(Tbl57Tribus.UpdaterDate),
-            nameof(Tbl57Tribus.CountId)
-        );
-
-        var isNew = dbEntity.TribusId == 0;
-        ApplyAuditInfo(dbEntity, isNew);
-
-        await context.SaveChangesAsync();
-
-        return dbEntity;
-    }
-    public async Task DeleteTribusAsync(int id)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        var entity = await context.Tbl57Tribusses.FindAsync(id);
-        if (entity != null)
-        {
-            context.Tbl57Tribusses.Remove(entity);
-            await context.SaveChangesAsync();
-        }
-    }
-    public async Task<bool> TribusExistsAsync(Tbl57Tribus entity)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl57Tribusses.AnyAsync(x =>
-            x.TribusName == entity.TribusName &&
-            x.SupertribusId == entity.SupertribusId &&
-            x.Valid == entity.Valid &&
-            x.ValidYear == entity.ValidYear &&
-            x.Synonym == entity.Synonym &&
-            x.Author == entity.Author &&
-            x.AuthorYear == entity.AuthorYear &&
-            x.Info == entity.Info &&
-            x.Memo == entity.Memo &&
-            x.TribusId != entity.TribusId
-        );
-    }
-
-    public async Task<bool> TribusHasSubtribusAsync(int tribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl60Subtribusses
-            .AnyAsync(x => x.TribusId == tribusId);
-    }
-    public async Task<bool> TribusHasReferenceAsync(int tribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl90References
-            .AnyAsync(x => x.TribusId == tribusId);
-    }
-    public async Task<bool> TribusHasCommentAsync(int tribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl93Comments
-            .AnyAsync(x => x.TribusId == tribusId);
-    }
 
     public async Task<IEnumerable<Tbl57Tribus>> GetTribusAsync(int dummy)
     {
@@ -2193,9 +2947,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
-    //----------------------------------------------------
-    //alt
     public ObservableCollection<Tbl57Tribus> GetTribusAsync()
     {
         var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
@@ -2203,17 +2954,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.TribusName));
         return collection;
     }
-
-    //public ObservableCollection<Tbl57Tribus> GetTribusAsync(int tribusid)
-    //{
-    //    var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-    //        .AsNoTracking()
-    //        .Where(e => e.TribusId == tribusid)
-    //        .OrderBy(k => k.TribusName)
-    //    );
-
-    //    return collection;
-    //}
 
     public ObservableCollection<Tbl57Tribus> GetTribusAsync(string search)
     {
@@ -2241,7 +2981,13 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Tribus                       
 
     #region Subtribus                
-    //neu
+
+    // ---------------------------------------------------------                  
+    // Subtribus 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSubtribusAsync()
+    // ---------------------------------------------------------                           
     public async Task<IEnumerable<Tbl60Subtribus>> GetAllSubtribusAsync()
     {
         await using var context = _factory.CreateDbContext();
@@ -2251,22 +2997,9 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
-    public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl60Subtribus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl60Subtribusses
-            .Where(e =>
-                e.SubtribusName.StartsWith(search) ||
-                e.SubtribusId.ToString() == search)
-            .Include(e => e.Tribus)
-            .OrderBy(e => e.SubtribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
+    // ---------------------------------------------------------                  
+    // SearchSubtribusWithTribusAsync(string? search)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusWithTribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -2293,32 +3026,9 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
-    //public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusWithTribusAsync(string? search)
-    //{
-    //    if (string.IsNullOrWhiteSpace(search))
-    //        return Enumerable.Empty<Tbl60Subtribus>();
-
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl60Subtribusses
-    //        .Where(e =>
-    //            e.SubtribusName.StartsWith(search) ||
-    //            e.SubtribusId.ToString() == search)
-    //        .Include(x => x.Tribus)
-    //        .OrderBy(e => e.SubtribusName)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
-
-    public async Task<Tbl60Subtribus?> GetSubtribusByIdAsync(int id)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl60Subtribusses
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.SubtribusId == id);
-    }
-
+    // ---------------------------------------------------------                  
+    // UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
+    // ---------------------------------------------------------                 
     public Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
     {
         return UpsertAsync<Tbl60Subtribus, int>(
@@ -2329,6 +3039,9 @@ public partial class DataService : ObservableObject, IDataService
             MapSubtribusFields
         );
     }
+    // ---------------------------------------------------------                  
+    // MapSubtribusFields(Tbl60Subtribus source, Tbl60Subtribus target)
+    // ---------------------------------------------------------                 
     private static void MapSubtribusFields(Tbl60Subtribus source, Tbl60Subtribus target)
     {
         target.SubtribusName = source.SubtribusName;
@@ -2345,40 +3058,20 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
-    //public async Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
-    //{
-    //    await using var context = _factory.CreateDbContext();
+    // ---------------------------------------------------------                  
+    // GetSubtribusByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl60Subtribus?> GetSubtribusByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
 
-    //    Tbl60Subtribus dbEntity;
-
-    //    if (uiEntity.SubtribusId == 0)
-    //    {
-    //        dbEntity = new Tbl60Subtribus();
-    //        context.Tbl60Subtribusses.Add(dbEntity);
-    //    }
-    //    else
-    //    {
-    //        dbEntity = await context.Tbl60Subtribusses
-    //                       .FirstOrDefaultAsync(x => x.SubtribusId == uiEntity.SubtribusId)
-    //                   ?? throw new InvalidOperationException("Entity not found in database.");
-    //    }
-
-    //    CopyProperties(uiEntity, dbEntity,
-    //        nameof(Tbl60Subtribus.SubtribusId),
-    //        nameof(Tbl60Subtribus.Writer),
-    //        nameof(Tbl60Subtribus.WriterDate),
-    //        nameof(Tbl60Subtribus.Updater),
-    //        nameof(Tbl60Subtribus.UpdaterDate),
-    //        nameof(Tbl60Subtribus.CountId)
-    //    );
-
-    //    var isNew = dbEntity.SubtribusId == 0;
-    //    ApplyAuditInfo(dbEntity, isNew);
-
-    //    await context.SaveChangesAsync();
-
-    //    return dbEntity;
-    //}
+        return await context.Tbl60Subtribusses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SubtribusId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSubtribusAsync(int id)
+    // ---------------------------------------------------------                 
     public async Task DeleteSubtribusAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -2390,6 +3083,9 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl60Subtribus entity)
+    // ---------------------------------------------------------                 
     public async Task<bool> SubtribusExistsAsync(Tbl60Subtribus entity)
     {
         await using var context = _factory.CreateDbContext();
@@ -2412,18 +3108,27 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
+    // ---------------------------------------------------------                  
+    // HasInfratribusAsync(int subtribusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> SubtribusHasInfratribusAsync(int subtribusId)
     {
         await using var context = _factory.CreateDbContext();
         return await context.Tbl63Infratribusses
             .AnyAsync(x => x.SubtribusId == subtribusId);
     }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int subtribusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> SubtribusHasReferenceAsync(int subtribusId)
     {
         await using var context = _factory.CreateDbContext();
         return await context.Tbl90References
             .AnyAsync(x => x.SubtribusId == subtribusId);
     }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int subtribusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> SubtribusHasCommentAsync(int subtribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -2431,6 +3136,9 @@ public partial class DataService : ObservableObject, IDataService
             .AnyAsync(x => x.SubtribusId == subtribusId);
     }
 
+    // ---------------------------------------------------------                  
+    // GetSubtribusForTribusAsync(int tribusId)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusForTribusAsync(int tribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -2442,6 +3150,9 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
+//alt
+    ////---------------------------------------------------------
     public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusAsync(int dummy)
     {
         await using var context = _factory.CreateDbContext();
@@ -2453,9 +3164,25 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
 
-    //alt
     //-------------------------------------------
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl60Subtribus>();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
+            .Where(e =>
+                e.SubtribusName.StartsWith(search) ||
+                e.SubtribusId.ToString() == search)
+            .Include(e => e.Tribus)
+            .OrderBy(e => e.SubtribusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     public ObservableCollection<Tbl60Subtribus> GetSubtribusAsync()
     {
         var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
@@ -2463,17 +3190,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.SubtribusName));
         return collection;
     }
-
-    //public ObservableCollection<Tbl60Subtribus> GetSubtribusAsync(int subtribusid)
-    //{
-    //    var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-    //        .AsNoTracking()
-    //        .Where(e => e.SubtribusId == subtribusid)
-    //        .OrderBy(k => k.SubtribusName)
-    //    );
-
-    //    return collection;
-    //}
 
     public ObservableCollection<Tbl60Subtribus> GetSubtribusAsync(string search)
     {
@@ -2501,6 +3217,12 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Infratribus
     //neu
+    // ---------------------------------------------------------                  
+    // Infratribus 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllInfratribusAsync()
+    // ---------------------------------------------------------                           
     public async Task<IEnumerable<Tbl63Infratribus>> GetAllInfratribusAsync()
     {
         await using var context = _factory.CreateDbContext();
@@ -2510,40 +3232,71 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfratribusName)
             .ToListAsync();
     }
-    public async Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl63Infratribus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl63Infratribusses
-            .Where(e =>
-                e.InfratribusName.StartsWith(search) ||
-                e.InfratribusId.ToString() == search)
-            .Include(e => e.Subtribus)
-            .OrderBy(e => e.InfratribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
+    // ---------------------------------------------------------                  
+    // SearchInfratribusWithSubtribusAsync(string? search)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusWithSubtribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl63Infratribus>();
 
+        search = search.Trim();
+
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl63Infratribusses
-            .Where(e =>
-                e.InfratribusName.StartsWith(search) ||
-                e.InfratribusId.ToString() == search)
+        var query = context.Tbl63Infratribusses
             .Include(x => x.Subtribus)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.InfratribusId == id || e.InfratribusName.StartsWith(search))
+                .OrderBy(e => e.InfratribusName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.InfratribusName.StartsWith(search))
             .OrderBy(e => e.InfratribusName)
-            .AsNoTracking()
             .ToListAsync();
     }
-
-    public async Task<Tbl63Infratribus> GetInfratribusByIdAsync(int id)
+    // ---------------------------------------------------------                  
+    // UpsertInfratribusAsync(Tbl63Infratribus uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus uiEntity)
+    {
+        return UpsertAsync<Tbl63Infratribus, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl63Infratribus>(),
+            x => x.InfratribusId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.InfratribusId == id),
+            MapInfratribusFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapInfratribusFields(Tbl63Infratribus source, Tbl63Infratribus target)
+    // ---------------------------------------------------------                 
+    private static void MapInfratribusFields(Tbl63Infratribus source, Tbl63Infratribus target)
+    {
+        target.InfratribusName = source.InfratribusName;
+        target.SubtribusId = source.SubtribusId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetInfratribusByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl63Infratribus?> GetInfratribusByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -2551,40 +3304,9 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.InfratribusId == id);
     }
-    public async Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus uiEntity)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        Tbl63Infratribus dbEntity;
-
-        if (uiEntity.InfratribusId == 0)
-        {
-            dbEntity = new Tbl63Infratribus();
-            context.Tbl63Infratribusses.Add(dbEntity);
-        }
-        else
-        {
-            dbEntity = await context.Tbl63Infratribusses
-                           .FirstOrDefaultAsync(x => x.InfratribusId == uiEntity.InfratribusId)
-                       ?? throw new InvalidOperationException("Entity not found in database.");
-        }
-
-        CopyProperties(uiEntity, dbEntity,
-            nameof(Tbl63Infratribus.InfratribusId),
-            nameof(Tbl63Infratribus.Writer),
-            nameof(Tbl63Infratribus.WriterDate),
-            nameof(Tbl63Infratribus.Updater),
-            nameof(Tbl63Infratribus.UpdaterDate),
-            nameof(Tbl63Infratribus.CountId)
-        );
-
-        var isNew = dbEntity.InfratribusId == 0;
-        ApplyAuditInfo(dbEntity, isNew);
-
-        await context.SaveChangesAsync();
-
-        return dbEntity;
-    }
+    // ---------------------------------------------------------                  
+    // DeleteInfratribusAsync(int id)
+    // ---------------------------------------------------------                 
     public async Task DeleteInfratribusAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -2596,6 +3318,9 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl63Infratribus entity)
+    // ---------------------------------------------------------                 
     public async Task<bool> InfratribusExistsAsync(Tbl63Infratribus entity)
     {
         await using var context = _factory.CreateDbContext();
@@ -2618,30 +3343,67 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
+
+    // ---------------------------------------------------------                  
+    // HasGenusAsync(int infratribusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> InfratribusHasGenusAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
-        return await context.Tbl66Genusses.AnyAsync(x => x.InfratribusId == infratribusId);
+        return await context.Tbl66Genusses
+            .AnyAsync(x => x.InfratribusId == infratribusId);
     }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int infratribusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> InfratribusHasReferenceAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
-        return await context.Tbl90References.AnyAsync(x => x.InfratribusId == infratribusId);
+        return await context.Tbl90References
+            .AnyAsync(x => x.InfratribusId == infratribusId);
     }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int infratribusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> InfratribusHasCommentAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
-        return await context.Tbl93Comments.AnyAsync(x => x.InfratribusId == infratribusId);
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.InfratribusId == infratribusId);
     }
 
+
+    // ---------------------------------------------------------                  
+    // GetInfratribusForSubtribusAsync(int subtribusId)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int subtribusId)
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl63Infratribusses
-            .Where(i => i.SubtribusId == subtribusId)
-            .Include(i => i.Subtribus)
-            .OrderBy(i => i.InfratribusName)
+            .Where(e => e.SubtribusId == subtribusId)
+            .Include(e => e.Subtribus)
+            .OrderBy(e => e.InfratribusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    //-------------------------------------------------------
+    //alt
+
+    public async Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl63Infratribus>();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
+            .Where(e =>
+                e.InfratribusName.StartsWith(search) ||
+                e.InfratribusId.ToString() == search)
+            .Include(e => e.Subtribus)
+            .OrderBy(e => e.InfratribusName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2676,8 +3438,6 @@ public partial class DataService : ObservableObject, IDataService
         return new ObservableCollection<Tbl63Infratribus>(list);
     }
 
-    //-------------------------------------------------------
-    //alt
     public ObservableCollection<Tbl63Infratribus> GetInfratribusAsyncAlt()
     {
         var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
@@ -2690,92 +3450,97 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Genus                
     //Neu
+
+    // ---------------------------------------------------------                  
+    // Genus 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllGenusAsync()
+    // ---------------------------------------------------------                           
     public async Task<IEnumerable<Tbl66Genus>> GetAllGenusAsync()
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl66Genusses
-            .Include(e => e.Infratribus)
-            .OrderBy(e => e.GenusName)
             .AsNoTracking()
+            .OrderBy(e => e.GenusName)
             .ToListAsync();
     }
-    public async Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl66Genus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl66Genusses
-            .Where(e =>
-                e.GenusName.StartsWith(search) ||
-                e.GenusId.ToString() == search)
-            .Include(e => e.Infratribus)
-            .OrderBy(e => e.GenusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
+    // ---------------------------------------------------------                  
+    // SearchGenusWithInfratribusAsync(string? search)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl66Genus>> SearchGenusWithInfratribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl66Genus>();
 
+        search = search.Trim();
+
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl66Genusses
-            .Where(e =>
-                e.GenusName.StartsWith(search) ||
-                e.GenusId.ToString() == search)
-            .Include(e => e.Infratribus)
+        var query = context.Tbl66Genusses
+            .Include(x => x.Infratribus)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.GenusId == id || e.GenusName.StartsWith(search))
+                .OrderBy(e => e.GenusName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.GenusName.StartsWith(search))
             .OrderBy(e => e.GenusName)
-            .AsNoTracking()
             .ToListAsync();
     }
-
+    // ---------------------------------------------------------                  
+    // UpsertGenusAsync(Tbl66Genus uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus uiEntity)
+    {
+        return UpsertAsync<Tbl66Genus, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl66Genus>(),
+            x => x.GenusId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.GenusId == id),
+            MapGenusFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapGenusFields(Tbl66Genus source, Tbl66Genus target)
+    // ---------------------------------------------------------                 
+    private static void MapGenusFields(Tbl66Genus source, Tbl66Genus target)
+    {
+        target.GenusName = source.GenusName;
+        target.InfratribusId = source.InfratribusId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetGenusByIdAsync(int id)
+    // ---------------------------------------------------------                 
     public async Task<Tbl66Genus?> GetGenusByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl66Genusses
-            .Include(e => e.Infratribus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.GenusId == id);
     }
-    public async Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus uiEntity)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        Tbl66Genus dbEntity;
-
-        if (uiEntity.GenusId == 0)
-        {
-            dbEntity = new Tbl66Genus();
-            context.Tbl66Genusses.Add(dbEntity);
-        }
-        else
-        {
-            dbEntity = await context.Tbl66Genusses
-                           .FirstOrDefaultAsync(x => x.GenusId == uiEntity.GenusId)
-                       ?? throw new InvalidOperationException("Entity not found.");
-        }
-
-        CopyProperties(uiEntity, dbEntity,
-            nameof(Tbl66Genus.GenusId),
-            nameof(Tbl66Genus.Writer),
-            nameof(Tbl66Genus.WriterDate),
-            nameof(Tbl66Genus.Updater),
-            nameof(Tbl66Genus.UpdaterDate),
-            nameof(Tbl66Genus.CountId)
-        );
-
-        var isNew = dbEntity.GenusId == 0;
-        ApplyAuditInfo(dbEntity, isNew);
-
-        await context.SaveChangesAsync();
-
-        return dbEntity;
-    }
+    // ---------------------------------------------------------                  
+    // DeleteGenusAsync(int id)
+    // ---------------------------------------------------------                 
     public async Task DeleteGenusAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -2787,6 +3552,9 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl66Genus entity)
+    // ---------------------------------------------------------                 
     public async Task<bool> GenusExistsAsync(Tbl66Genus entity)
     {
         await using var context = _factory.CreateDbContext();
@@ -2809,34 +3577,51 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
+    // ---------------------------------------------------------                  
+    // HasSpeciesAsync(int genusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> GenusHasSpeciesAsync(int genusId)
     {
         await using var context = _factory.CreateDbContext();
-        return await context.Tbl75Speciesses.AnyAsync(x => x.GenusId == genusId);
+        return await context.Tbl75Speciesses
+            .AnyAsync(x => x.GenusId == genusId);
     }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int genusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> GenusHasReferenceAsync(int genusId)
     {
         await using var context = _factory.CreateDbContext();
-        return await context.Tbl90References.AnyAsync(x => x.GenusId == genusId);
+        return await context.Tbl90References
+            .AnyAsync(x => x.GenusId == genusId);
     }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int genusId)
+    // ---------------------------------------------------------                 
     public async Task<bool> GenusHasCommentAsync(int genusId)
     {
         await using var context = _factory.CreateDbContext();
-        return await context.Tbl93Comments.AnyAsync(x => x.GenusId == genusId);
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.GenusId == genusId);
     }
 
+    // ---------------------------------------------------------                  
+    // GetGenusForInfratribusAsync(int infratribusId)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl66Genusses
             .Where(e => e.InfratribusId == infratribusId)
-            .Include(i => i.Infratribus)
+            .Include(e => e.Infratribus)
             .OrderBy(e => e.GenusName)
             .AsNoTracking()
             .ToListAsync();
     }
 
+    //---------------------------------------
+    //Alt
     public async Task<IEnumerable<Tbl66Genus>> GetGenusAsync(int dummy)
     {
         await using var context = _factory.CreateDbContext();
@@ -2845,9 +3630,22 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(x => x.GenusName)
             .ToListAsync();
     }
+    public async Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl66Genus>();
 
-    //---------------------------------------
-    //Alt
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .Where(e =>
+                e.GenusName.StartsWith(search) ||
+                e.GenusId.ToString() == search)
+            .Include(e => e.Infratribus)
+            .OrderBy(e => e.GenusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
     public ObservableCollection<Tbl66Genus> GetGenusAsync()
     {
         var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
@@ -3048,91 +3846,249 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion Speciesgroup
 
-    #region Species                
-    //Neu
+    #region Species
+
+    // ---------------------------------------------------------                  
+    // Species 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSpeciesAsync()
+    // ---------------------------------------------------------                           
     public async Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync()
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl75Speciesses
-            .Include(e => e.Genus)
-            .OrderBy(a => a.Genus.GenusName)
-            .ThenBy(a => a.SpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers)
             .AsNoTracking()
+            .OrderBy(e => e.SpeciesName)
             .ToListAsync();
     }
+    // ---------------------------------------------------------                  
+    // SearchSpeciesWithGenusAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl75Species>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl75Speciesses
+            .Include(x => x.Genus)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SpeciesId == id || e.SpeciesName.StartsWith(search))
+                .OrderBy(e => e.SpeciesName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SpeciesName.StartsWith(search))
+            .OrderBy(e => e.SpeciesName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSpeciesAsync(Tbl75Species uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species uiEntity)
+    {
+        return UpsertAsync<Tbl75Species, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl75Species>(),
+            x => x.SpeciesId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SpeciesId == id),
+            MapSpeciesFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSpeciesFields(Tbl75Species source, Tbl75Species target)
+    // ---------------------------------------------------------                 
+    private static void MapSpeciesFields(Tbl75Species source, Tbl75Species target)
+    {
+        target.SpeciesName = source.SpeciesName;
+        target.GenusId = source.GenusId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+    }
+    // ---------------------------------------------------------                  
+    // GetSpeciesByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl75Species?> GetSpeciesByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SpeciesId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSpeciesAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSpeciesAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl75Speciesses.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl75Speciesses.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl75Species entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesExistsAsync(Tbl75Species entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses.AnyAsync(x =>
+            x.SpeciesName == entity.SpeciesName &&
+            x.GenusId == entity.GenusId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.SpeciesId != entity.SpeciesId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasNameAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesHasNameAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl78Names
+            .AnyAsync(x => x.SpeciesId == speciesId);
+    }
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesHasReferenceAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .AnyAsync(x => x.SpeciesId == speciesId);
+    }
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesHasCommentAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl93Comments
+            .AnyAsync(x => x.SpeciesId == speciesId);
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSpeciesForGenusAsync(int genusId)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl75Speciesses
             .Where(e => e.GenusId == genusId)
-            .OrderBy(a => a.Genus.GenusName)
-            .ThenBy(a => a.SpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl75Species>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl75Speciesses
-            .Where(e =>
-                e.SpeciesName.StartsWith(search) ||
-                e.SpeciesId.ToString() == search)
             .Include(e => e.Genus)
-            .OrderBy(a => a.Genus.GenusName)
-            .ThenBy(a => a.SpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl75Species>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl75Speciesses
-            .Where(e =>
-                e.SpeciesName.StartsWith(search) ||
-                e.SpeciesId.ToString() == search)
-            .Include(e => e.Genus)
-            .OrderBy(a => a.Genus.GenusName)
-            .ThenBy(a => a.SpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers)
+            .OrderBy(e => e.SpeciesName)
             .AsNoTracking()
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy)
-    {
-        await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl75Speciesses
-            .OrderBy(x => x.SpeciesName)
-            .ToListAsync();
-    }
-    public async Task<bool> SpeciesHasReferenceAsync(int speciesId)
-    {
-        await using var context = _factory.CreateDbContext();
-        return await context.Tbl90References.AnyAsync(x => x.SpeciesId == speciesId);
-    }
-    public async Task<bool> SpeciesHasCommentAsync(int speciesId)
-    {
-        await using var context = _factory.CreateDbContext();
-        return await context.Tbl93Comments.AnyAsync(x => x.SpeciesId == speciesId);
-    }
+
+    //Neu
+    //public async Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync()
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl75Speciesses
+    //        .Include(e => e.Genus)
+    //        .OrderBy(a => a.Genus.GenusName)
+    //        .ThenBy(a => a.SpeciesName)
+    //        .ThenBy(a => a.Subspecies)
+    //        .ThenBy(a => a.Divers)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
+    //public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl75Speciesses
+    //        .Where(e => e.GenusId == genusId)
+    //        .OrderBy(a => a.Genus.GenusName)
+    //        .ThenBy(a => a.SpeciesName)
+    //        .ThenBy(a => a.Subspecies)
+    //        .ThenBy(a => a.Divers)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
+    //public async Task<IEnumerable<Tbl75Species>> SearchSpeciesAsync(string? search)
+    //{
+    //    if (string.IsNullOrWhiteSpace(search))
+    //        return Enumerable.Empty<Tbl75Species>();
+
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl75Speciesses
+    //        .Where(e =>
+    //            e.SpeciesName.StartsWith(search) ||
+    //            e.SpeciesId.ToString() == search)
+    //        .Include(e => e.Genus)
+    //        .OrderBy(a => a.Genus.GenusName)
+    //        .ThenBy(a => a.SpeciesName)
+    //        .ThenBy(a => a.Subspecies)
+    //        .ThenBy(a => a.Divers)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
+    //public async Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search)
+    //{
+    //    if (string.IsNullOrWhiteSpace(search))
+    //        return Enumerable.Empty<Tbl75Species>();
+
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl75Speciesses
+    //        .Where(e =>
+    //            e.SpeciesName.StartsWith(search) ||
+    //            e.SpeciesId.ToString() == search)
+    //        .Include(e => e.Genus)
+    //        .OrderBy(a => a.Genus.GenusName)
+    //        .ThenBy(a => a.SpeciesName)
+    //        .ThenBy(a => a.Subspecies)
+    //        .ThenBy(a => a.Divers)
+    //        .AsNoTracking()
+    //        .ToListAsync();
+    //}
+
+    //public async Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl75Speciesses
+    //        .OrderBy(x => x.SpeciesName)
+    //        .ToListAsync();
+    //}
+    //public async Task<bool> SpeciesHasReferenceAsync(int speciesId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.Tbl90References.AnyAsync(x => x.SpeciesId == speciesId);
+    //}
+    //public async Task<bool> SpeciesHasCommentAsync(int speciesId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.Tbl93Comments.AnyAsync(x => x.SpeciesId == speciesId);
+    //}
 
     //-----------------------------
     //alt
@@ -3183,45 +4139,45 @@ public partial class DataService : ObservableObject, IDataService
 
         return collection;
     }
-    public async Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species)
-    {
-        var current = await _context.Tbl75Speciesses.FirstOrDefaultAsync(c => c.SpeciesId == species.SpeciesId);
-        if (null == current)
-        {
-            species.CountId = RandomHelper.Randomnumber();
-            species.Writer = Environment.UserName;
-            species.WriterDate = DateTime.Now;
-            species.Updater = Environment.UserName;
-            species.UpdaterDate = DateTime.Now;
-            _context.Tbl75Speciesses.Add(species);
-        }
-        else
-        {
-            species.Updater = Environment.UserName;
-            species.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(species);
-        }
-        await _context.SaveChangesAsync();
-        return species;
-    }
-    public async Task DeleteSpeciesAsync(int speciesid)
-    {
-        var species = await _context.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
-        if (species != null)
-        {
-            //necessary to delete before
-            var references = await _context.Tbl90References.Where(reference => reference.SpeciesId == speciesid).ToListAsync();
-            _context.Tbl90References.RemoveRange(references);
-            await _context.SaveChangesAsync();
+    //public async Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species)
+    //{
+    //    var current = await _context.Tbl75Speciesses.FirstOrDefaultAsync(c => c.SpeciesId == species.SpeciesId);
+    //    if (null == current)
+    //    {
+    //        species.CountId = RandomHelper.Randomnumber();
+    //        species.Writer = Environment.UserName;
+    //        species.WriterDate = DateTime.Now;
+    //        species.Updater = Environment.UserName;
+    //        species.UpdaterDate = DateTime.Now;
+    //        _context.Tbl75Speciesses.Add(species);
+    //    }
+    //    else
+    //    {
+    //        species.Updater = Environment.UserName;
+    //        species.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(species);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return species;
+    //}
+    //public async Task DeleteSpeciesAsync(int speciesid)
+    //{
+    //    var species = await _context.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
+    //    if (species != null)
+    //    {
+    //        //necessary to delete before
+    //        var references = await _context.Tbl90References.Where(reference => reference.SpeciesId == speciesid).ToListAsync();
+    //        _context.Tbl90References.RemoveRange(references);
+    //        await _context.SaveChangesAsync();
 
-            var comments = await _context.Tbl93Comments.Where(comment => comment.SpeciesId == speciesid).ToListAsync();
-            _context.Tbl93Comments.RemoveRange(comments);
-            await _context.SaveChangesAsync();
+    //        var comments = await _context.Tbl93Comments.Where(comment => comment.SpeciesId == speciesid).ToListAsync();
+    //        _context.Tbl93Comments.RemoveRange(comments);
+    //        await _context.SaveChangesAsync();
 
-            _context.Tbl75Speciesses.Remove(species);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //        _context.Tbl75Speciesses.Remove(species);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Species                       
 
@@ -3674,6 +4630,42 @@ public partial class DataService : ObservableObject, IDataService
             x.ReferenceId != entity.ReferenceId
         );
     }
+    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForRegnumAsync(int regnumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .Where(e => e.RegnumId == regnumId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForPhylumAsync(int phylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .Where(e => e.PhylumId == phylumId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubphylumAsync(int subphylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .Where(e => e.SubphylumId == subphylumId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSuperclassAsync(int superclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl90References
+            .Where(e => e.SuperclassId == superclassId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+
+
+
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSupertribusAsync(int supertribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -3795,76 +4787,115 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion Reference
 
+
     #region RefAuthor
-    //Neu
-    public async Task<IEnumerable<Tbl90RefAuthor>> GetAllRefAuthorsAsync()
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllRefAuthorAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl90RefAuthor>> GetAllRefAuthorAsync()
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl90RefAuthors
             .AsNoTracking()
             .OrderBy(e => e.RefAuthorName)
-            .ThenBy(a => a.BookName)
-            .ThenBy(a => a.Page1)
             .ToListAsync();
     }
-
-    //---------------------------
+    // ---------------------------------------------------------                  
+    // SearchRefAuthorWithNULLAsync(string? search)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl90RefAuthor>> SearchRefAuthorAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl90RefAuthor>();
 
-        return await _context.Tbl90RefAuthors
-            .Where(e =>
-                e.RefAuthorName.StartsWith(search) ||
-                e.RefAuthorId.ToString() == search)
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl90RefAuthors
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.RefAuthorId == id || e.RefAuthorName.StartsWith(search))
+                .OrderBy(e => e.RefAuthorName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.RefAuthorName.StartsWith(search))
             .OrderBy(e => e.RefAuthorName)
             .ToListAsync();
     }
-
-    public async Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor model)
+    // ---------------------------------------------------------                  
+    // UpsertRefAuthorAsync(Tbl90RefAuthor uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor uiEntity)
     {
-        if (model.RefAuthorId == 0)
-        {
-            _context.Tbl90RefAuthors.Add(model);
-        }
-        else
-        {
-            _context.Tbl90RefAuthors.Update(model);
-        }
-
-        await _context.SaveChangesAsync();
-        return model;
-    }
-
-    public async Task DeleteRefAuthorAsync(int id)
-    {
-        var entity = await _context.Tbl90RefAuthors.FindAsync(id);
-        if (entity != null)
-        {
-            _context.Tbl90RefAuthors.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-    }
-
-    public async Task<bool> RefAuthorExistsAsync(Tbl90RefAuthor model)
-    {
-        return await _context.Tbl90RefAuthors.AnyAsync(c =>
-            c.RefAuthorName == model.RefAuthorName &&
-            c.ArticelTitle == model.ArticelTitle &&
-            c.BookName == model.BookName &&
-            c.Publisher == model.Publisher &&
-            c.PublicationPlace == model.PublicationPlace &&
-            c.Valid == model.Valid &&
-            c.ValidYear == model.ValidYear &&
-            c.Page == model.Page &&
-            c.Page1 == model.Page1 &&
-            c.Info == model.Info &&
-            c.Notes == model.Notes &&
-            c.Memo == model.Memo
+        return UpsertAsync<Tbl90RefAuthor, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl90RefAuthor>(),
+            x => x.RefAuthorId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.RefAuthorId == id),
+            MapRefAuthorFields
         );
     }
+    // ---------------------------------------------------------                  
+    // MapRefAuthorFields(Tbl90RefAuthor source, Tbl90RefAuthor target)
+    // ---------------------------------------------------------                 
+    private static void MapRefAuthorFields(Tbl90RefAuthor source, Tbl90RefAuthor target)
+    {
+        target.RefAuthorName = source.RefAuthorName;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetRefAuthorByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl90RefAuthor?> GetRefAuthorByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefAuthors
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.RefAuthorId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteRefAuthorAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteRefAuthorAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl90RefAuthors.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl90RefAuthors.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl90RefAuthor entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RefAuthorExistsAsync(Tbl90RefAuthor entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefAuthors.AnyAsync(x =>
+            x.RefAuthorName == entity.RefAuthorName &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.RefAuthorId != entity.RefAuthorId
+        );
+    }
+
 
     public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsyncAlt()
     {
@@ -3873,96 +4904,14 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-
-    //public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync()
-    //{
-    //    var collection = new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-    //        .AsNoTracking()
-    //        .OrderBy(k => k.RefAuthorName)
-    //        .ThenBy(a => a.BookName)
-    //        .ThenBy(a => a.Page1));
-    //    //var collection = new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-    //    //    .AsNoTracking()
-    //    //    .OrderBy(x => x.RefAuthorName)
-    //    //    .ThenBy(y => y.ArticelTitle)
-    //    //    .ThenBy(y => y.BookName)
-    //    //    .ThenBy(y => y.Page1)
-    //    //    .ThenBy(y => y.Publisher)
-    //    //    .ThenBy(y => y.PublicationPlace));
-
-    //    return collection;
-    //}
-
-    //public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync(int refauthorid)
-    //{
-    //    var collection = new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-    //        .Where(e => e.RefAuthorId == refauthorid));
-
-    //    return collection;
-    //}
-
-    //public async Task<ObservableCollection<Tbl90RefAuthor>> GetRefAuthorAsync(string search)
-    //{
-    //    var collection = int.TryParse(search, out var id)
-    //        ? new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-    //            .Where(e => e.RefAuthorId == id))
-    //        : new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-    //            .Where(e => e.RefAuthorName.StartsWith(search))
-    //            .OrderBy(x => x.RefAuthorName)
-    //            .ThenBy(y => y.ArticelTitle)
-    //            .ThenBy(y => y.BookName)
-    //            .ThenBy(y => y.Page1)
-    //            .ThenBy(y => y.Publisher)
-    //            .ThenBy(y => y.PublicationPlace));
-
-    //    await Task.CompletedTask;
-    //    return collection;
-    //}
-
-    //public async Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor refauthor)
-    //{
-    //    var current = await _context.Tbl90RefAuthors.FirstOrDefaultAsync(_comment => _comment.RefAuthorId == refauthor.RefAuthorId);
-    //    if (null == current)
-    //    {
-    //        if (refauthor.Valid != null)
-    //        {
-    //        }
-    //        else
-    //        {
-    //            refauthor.Valid = false; //Valid cannot be null. eingefügt 06.01.2025 Terppe
-    //        }
-
-    //        refauthor.CountId = RandomHelper.Randomnumber();
-    //        refauthor.Writer = Environment.UserName;
-    //        refauthor.WriterDate = DateTime.Now;
-    //        refauthor.Updater = Environment.UserName;
-    //        refauthor.UpdaterDate = DateTime.Now;
-    //        _context.Tbl90RefAuthors.Add(refauthor);
-    //    }
-    //    else
-    //    {
-    //        _context.Entry(current).CurrentValues.SetValues(refauthor);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return refauthor;
-    //}
-
-
-    //public async Task DeleteRefAuthorAsync(int refauthorid)
-    //{
-    //    var reference = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == refauthorid);
-    //    if (null != reference)
-    //    {
-    //        _context.Tbl90References.Remove(reference);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion RefAuthor
 
     #region RefSource
-    //Neu
-    public async Task<IEnumerable<Tbl90RefSource>> GetAllRefSourcesAsync()
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllRefSourceAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl90RefSource>> GetAllRefSourceAsync()
     {
         await using var context = _factory.CreateDbContext();
 
@@ -3971,59 +4920,100 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefSourceName)
             .ToListAsync();
     }
-    //---------------------------
+    // ---------------------------------------------------------                  
+    // SearchRefSourceWithNULLAsync(string? search)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl90RefSource>> SearchRefSourceAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl90RefSource>();
 
-        return await _context.Tbl90RefSources
-            .Where(e =>
-                e.RefSourceName.StartsWith(search) ||
-                e.RefSourceId.ToString() == search)
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl90RefSources
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.RefSourceId == id || e.RefSourceName.StartsWith(search))
+                .OrderBy(e => e.RefSourceName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.RefSourceName.StartsWith(search))
             .OrderBy(e => e.RefSourceName)
             .ToListAsync();
     }
-
-    public async Task<Tbl90RefSource> UpsertRefSourceAsync(Tbl90RefSource model)
+    // ---------------------------------------------------------                  
+    // UpsertRefSourceAsync(Tbl90RefSource uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl90RefSource> UpsertRefSourceAsync(Tbl90RefSource uiEntity)
     {
-        if (model.RefSourceId == 0)
-        {
-            _context.Tbl90RefSources.Add(model);
-        }
-        else
-        {
-            _context.Tbl90RefSources.Update(model);
-        }
-
-        await _context.SaveChangesAsync();
-        return model;
-    }
-
-    public async Task DeleteRefSourceAsync(int id)
-    {
-        var entity = await _context.Tbl90RefSources.FindAsync(id);
-        if (entity != null)
-        {
-            _context.Tbl90RefSources.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-    }
-
-    public async Task<bool> RefSourceExistsAsync(Tbl90RefSource model)
-    {
-        return await _context.Tbl90RefSources.AnyAsync(c =>
-            c.RefSourceName == model.RefSourceName &&
-            c.SourceYear == model.SourceYear &&
-            c.Valid == model.Valid &&
-            c.ValidYear == model.ValidYear &&
-            c.Info == model.Info &&
-            c.Notes == model.Notes &&
-            c.Memo == model.Memo &&
-            c.Author == model.Author
+        return UpsertAsync<Tbl90RefSource, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl90RefSource>(),
+            x => x.RefSourceId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.RefSourceId == id),
+            MapRefSourceFields
         );
     }
+    // ---------------------------------------------------------                  
+    // MapRefSourceFields(Tbl90RefSource source, Tbl90RefSource target)
+    // ---------------------------------------------------------                 
+    private static void MapRefSourceFields(Tbl90RefSource source, Tbl90RefSource target)
+    {
+        target.RefSourceName = source.RefSourceName;
+        target.Valid = source.Valid;
+        target.Author = source.Author;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetRefSourceByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl90RefSource?> GetRefSourceByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl90RefSources
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.RefSourceId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteRefSourceAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteRefSourceAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl90RefSources.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl90RefSources.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl90RefSource entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RefSourceExistsAsync(Tbl90RefSource entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefSources.AnyAsync(x =>
+            x.RefSourceName == entity.RefSourceName &&
+            x.Valid == entity.Valid &&
+            x.Author == entity.Author &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.RefSourceId != entity.RefSourceId
+        );
+    }
+    //alt----------------------
     public ObservableCollection<Tbl90RefSource> GetRefSourceAsyncAlt()
     {
         var collection = new ObservableCollection<Tbl90RefSource>(_context.Tbl90RefSources
@@ -4034,8 +5024,11 @@ public partial class DataService : ObservableObject, IDataService
     #endregion
 
     #region RefExpert
-    //Neu
-    public async Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertsAsync()
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllRefExpertAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl90RefExpert>> GetAllRefExpertAsync()
     {
         await using var context = _factory.CreateDbContext();
 
@@ -4044,52 +5037,104 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
     }
-    //---------------------------
-
+    // ---------------------------------------------------------                  
+    // SearchRefExpertWithNULLAsync(string? search)
+    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl90RefExpert>();
 
-        return await _context.Tbl90RefExperts
-            .Where(e => e.RefExpertName.StartsWith(search) || e.RefExpertId.ToString() == search)
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl90RefExperts
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.RefExpertId == id || e.RefExpertName.StartsWith(search))
+                .OrderBy(e => e.RefExpertName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.RefExpertName.StartsWith(search))
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
     }
-    public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert model)
+    // ---------------------------------------------------------                  
+    // UpsertRefExpertAsync(Tbl90RefExpert uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert uiEntity)
     {
-        if (model.RefExpertId == 0)
-        {
-            _context.Tbl90RefExperts.Add(model);
-        }
-        else
-        {
-            _context.Tbl90RefExperts.Update(model);
-        }
-
-        await _context.SaveChangesAsync();
-        return model;
-    }
-    public async Task DeleteRefExpertAsync(int id)
-    {
-        var entity = await _context.Tbl90RefExperts.FindAsync(id);
-        if (entity != null)
-        {
-            _context.Tbl90RefExperts.Remove(entity);
-            await _context.SaveChangesAsync();
-        }
-    }
-    public async Task<bool> RefExpertExistsAsync(Tbl90RefExpert model)
-    {
-        return await _context.Tbl90RefExperts.AnyAsync(c =>
-            c.RefExpertName == model.RefExpertName &&
-            c.Valid == model.Valid &&
-            c.ValidYear == model.ValidYear &&
-            c.Info == model.Info &&
-            c.Notes == model.Notes &&
-            c.Memo == model.Memo
+        return UpsertAsync<Tbl90RefExpert, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl90RefExpert>(),
+            x => x.RefExpertId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.RefExpertId == id),
+            MapRefExpertFields
         );
     }
+    // ---------------------------------------------------------                  
+    // MapRefExpertFields(Tbl90RefExpert source, Tbl90RefExpert target)
+    // ---------------------------------------------------------                 
+    private static void MapRefExpertFields(Tbl90RefExpert source, Tbl90RefExpert target)
+    {
+        target.RefExpertName = source.RefExpertName;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetRefExpertByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl90RefExpert?> GetRefExpertByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefExperts
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.RefExpertId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteRefExpertAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteRefExpertAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl90RefExperts.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl90RefExperts.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl90RefExpert entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> RefExpertExistsAsync(Tbl90RefExpert entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90RefExperts.AnyAsync(x =>
+            x.RefExpertName == entity.RefExpertName &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.RefExpertId != entity.RefExpertId
+        );
+    }
+
+
+
+    //-----alt----------------------
+
 
     //public async Task<List<Tbl90RefExpert>> GetAllRefExpertsAsync()
     //{
@@ -4440,6 +5485,54 @@ public partial class DataService : ObservableObject, IDataService
             x.CommentId != entity.CommentId
         );
     }
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForRegnumAsync(int regnumId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(e => e.RegnumId == regnumId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForPhylumAsync(int phylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(e => e.PhylumId == phylumId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubphylumAsync(int subphylumId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(e => e.SubphylumId == subphylumId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSuperclassAsync(int superclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(e => e.SuperclassId == superclassId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsForClassAsync(int classId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(e => e.ClassId == classId)
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+
+
+
 
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSupertribusAsync(int supertribusId)
     {
@@ -8372,7 +9465,7 @@ public partial class DataService : ObservableObject, IDataService
 
             if (dbset != null)
             {
-                return dbset.InfratribusId;
+                return dbset.InfratribusId ?? 0;
             }
         }
 

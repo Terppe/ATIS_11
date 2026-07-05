@@ -287,14 +287,12 @@
                                 <RelativePanel Margin="4,0,0,0">
                                     <TextBox x:Name="RefAuthorId"
                                              MinWidth="110"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_RefAuthorId"
                                              IsReadOnly="True"
                                              RelativePanel.AlignLeftWithPanel="True"
                                              Text="{x:Bind ViewModel.RefAuthorSelected.RefAuthorId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="RefAuthorName"
                                              MinWidth="300"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_RefAuthorName"
                                              CharacterCasing="Upper"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
@@ -303,16 +301,14 @@
                                              Text="{x:Bind ViewModel.RefAuthorSelected.RefAuthorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <CheckBox x:Name="ValidCheckRefAuthor"
                                               Width="80"
-                                              Margin="{StaticResource SmallRightCheckBoxMargin}"
                                               VerticalAlignment="Bottom"
                                               loca:Uids.Uid="CheckBox_Valid"
                                               IsChecked="{x:Bind ViewModel.RefAuthorSelected.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
                                               RelativePanel.AlignLeftWithPanel="True"
                                               RelativePanel.Below="RefAuthorId" />
-                                    <TextBox x:Name="ValidYearTextRefAuthor"
+                                    <!--<TextBox x:Name="ValidYearTextRefAuthor"
                                              Width="70"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_ValidYear"
                                              winUiCommunity:TextBoxExtensions.Mask="9999"
                                              winUiCommunity:TextBoxExtensions.MaskPlaceholder=" "
@@ -321,20 +317,17 @@
                                              RelativePanel.Below="RefAuthorId"
                                              RelativePanel.RightOf="ValidCheckRefAuthor"
                                              Style="{StaticResource BodyTextBoxStyle}"
-                                             Text="{x:Bind ViewModel.RefAuthorSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{x:Bind ViewModel.RefAuthorSelected.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                     <TextBox x:Name="IsbnTextRefAuthor"
                                              Width="200"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_ISBN"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
                                              MaxLength="60"
                                              RelativePanel.Below="RefAuthorId"
                                              RelativePanel.RightOf="ValidYearTextRefAuthor"
-                                             Style="{StaticResource BodyTextBoxStyle}"
                                              Text="{x:Bind ViewModel.RefAuthorSelected.ISBN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="ArticelTitleTextRefAuthor"
                                              MinWidth="800"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              HorizontalAlignment="Stretch"
                                              loca:Uids.Uid="TextBox_ArticelTitle"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
@@ -344,7 +337,6 @@
                                              Text="{x:Bind ViewModel.RefAuthorSelected.ArticelTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="BookNameTextRefAuthor"
                                              Width="950"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_BookName"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
                                              MaxLength="200"
@@ -353,7 +345,6 @@
                                              Text="{x:Bind ViewModel.RefAuthorSelected.BookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="PageTextRefAuthor"
                                              Width="160"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_Page"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
                                              MaxLength="60"
@@ -362,7 +353,6 @@
                                              Text="{x:Bind ViewModel.RefAuthorSelected.Page1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="PublisherRefAuthor"
                                              MinWidth="800"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              HorizontalAlignment="Stretch"
                                              loca:Uids.Uid="TextBox_Publisher"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
@@ -372,7 +362,6 @@
                                              Text="{x:Bind ViewModel.RefAuthorSelected.Publisher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBox x:Name="PublicationPlaceRefAuthor"
                                              MinWidth="310"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              HorizontalAlignment="Stretch"
                                              loca:Uids.Uid="TextBox_PublicationPlace"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
@@ -385,7 +374,6 @@
                                              MinHeight="50"
                                              MaxWidth="1300"
                                              MaxHeight="200"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              loca:Uids.Uid="TextBox_Notes"
                                              AcceptsReturn="True"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
@@ -396,7 +384,6 @@
                                              TextWrapping="Wrap" />
                                     <TextBox x:Name="InfoRefAuthor"
                                              MinWidth="1120"
-                                             Margin="{StaticResource XSmallRightMargin}"
                                              HorizontalAlignment="Stretch"
                                              loca:Uids.Uid="TextBox_Info"
                                              IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"
@@ -418,7 +405,6 @@
                                                  MinHeight="50"
                                                  MaxWidth="1300"
                                                  MaxHeight="200"
-                                                 Margin="{StaticResource XSmallRightMargin}"
                                                  loca:Uids.Uid="TextBox_Memo"
                                                  AcceptsReturn="True"
                                                  IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEditRefAuthor), Mode=OneWay}"

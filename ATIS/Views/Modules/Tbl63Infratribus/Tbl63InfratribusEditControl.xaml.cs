@@ -1,24 +1,22 @@
-﻿using System.Diagnostics;
-using ATIS.Views.Modules.Tbl60Subtribus;
+﻿
+//    Tbl63InfratribusEditControl Skriptdatum:  30.12.2024  10:32    
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
 public sealed partial class Tbl63InfratribusEditControl : UserControl
 {
+    public Tbl63InfratribusViewModel? ViewModel => DataContext as Tbl63InfratribusViewModel;
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
+
     public Tbl63InfratribusEditControl()
     {
         InitializeComponent();
     }
 
     // ---------------------------------------------------------
-    // ViewModel (optional debugging)
-    // ---------------------------------------------------------
-
-    public Tbl63InfratribusViewModel? ViewModel
-        => DataContext as Tbl63InfratribusViewModel;
-
-    // ---------------------------------------------------------
-    // DependencyProperty: Item
+    // DEPENDENCY PROPERTY: ITEM
     // ---------------------------------------------------------
 
     public Models.Tbl63Infratribus? Item
@@ -42,6 +40,10 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
         control.ApplyItem(item);
     }
 
+    // ---------------------------------------------------------                   
+    // APPLY ITEM
+    // ---------------------------------------------------------                   
+
     private void ApplyItem(Models.Tbl63Infratribus? newItem)
     {
         // ⭐ WICHTIG:
@@ -53,9 +55,9 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
         // Deshalb bleibt diese Methode LEER.
     }
 
-    // ---------------------------------------------------------
-    // Validation Helper
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // VALDATINHELPER
+    // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
     {
@@ -74,9 +76,9 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
             VisualStateManager.GoToState(box, "Normal", true);
     }
 
-    // ---------------------------------------------------------
-    // SubtribusName Validation
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // SUBTRIBUSNAME VALIDATION
+    // ---------------------------------------------------------                   
 
     private void InfratribusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -88,9 +90,9 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
         UpdateValidationState(InfratribusNameBox, Item?.HasInfratribusNameError ?? false);
     }
 
-    // ---------------------------------------------------------
-    // ValidYear Validation
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // VALID YEAR VALIDATION
+    // ---------------------------------------------------------                   
 
     private void ValidYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -102,9 +104,9 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
 
-    // ---------------------------------------------------------
-    // AuthorYear Validation
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // AUTHOR YEAR VALIDATION
+    // ---------------------------------------------------------                   
 
     private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -115,4 +117,8 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
     {
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
-}
+}  
+ 
+
+   
+  

@@ -1,38 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
+﻿
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+//    Tbl57TribusParentControl Skriptdatum:  22.01.2025  10:32    
 
 namespace ATIS.Views.Modules.Tbl57Tribus;
 
 public sealed partial class Tbl57TribusParentControl : UserControl
 {
     public Tbl57TribusViewModel? ViewModel => DataContext as Tbl57TribusViewModel;
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
 
     public Tbl57TribusParentControl()
     {
         InitializeComponent();
-    }
-    private void TribusListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        if (DataContext is Tbl57TribusViewModel vm)
+        Loaded += (_, __) =>
         {
-            vm.SelectedItem = (Models.Tbl57Tribus)e.ClickedItem;
+            if (DataContext is Tbl57TribusViewModel vm)
+                vm.ScrollRequested += (_, __) => ScrollToSelectedItem();
+        };
+    }
+
+    // ---------------------------------------------------------
+    // SCROLL TO SELECTED
+    // ---------------------------------------------------------
+
+    private void ScrollToSelectedItem()
+    {
+        if (DataContext is Tbl57TribusViewModel vm &&
+            vm.SelectedItem != null)
+        {
+            TribusListView.ScrollIntoView(vm.SelectedItem);
         }
     }
+
+    // ---------------------------------------------------------                   
+    // RIGHT_TAPPED
+    // ---------------------------------------------------------                   
 
     private void TribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
@@ -51,12 +58,24 @@ public sealed partial class Tbl57TribusParentControl : UserControl
     {
         while (current != null)
         {
-            if (current is T match)
-                return match;
-
+            if (current is T match) return match;
             current = VisualTreeHelper.GetParent(current);
         }
         return null;
     }
+
+    // ---------------------------------------------------------
+    // ITEM CLICK
+    // ---------------------------------------------------------
+
+    private void TribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (DataContext is Tbl57TribusViewModel vm)
+        {
+            vm.SelectedItem = (Models.Tbl57Tribus)e.ClickedItem;
+        }
+    }
+
+
 
 }

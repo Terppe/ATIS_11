@@ -1,11 +1,17 @@
 ﻿using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
+
+//    Tbl60SubtribusParentControl Skriptdatum:  25.06.2026  10:32    
+
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusParentControl : UserControl
 {
     public Tbl60SubtribusViewModel? ViewModel => DataContext as Tbl60SubtribusViewModel;
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
 
     public Tbl60SubtribusParentControl()
     {
@@ -17,13 +23,10 @@ public sealed partial class Tbl60SubtribusParentControl : UserControl
         };
     }
 
-    private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        if (DataContext is Tbl60SubtribusViewModel vm)
-        {
-            vm.SelectedItem = (Models.Tbl60Subtribus)e.ClickedItem;
-        }
-    }
+    // ---------------------------------------------------------
+    // SCROLL TO SELECTED
+    // ---------------------------------------------------------
+
     private void ScrollToSelectedItem()
     {
         if (DataContext is Tbl60SubtribusViewModel vm &&
@@ -32,6 +35,10 @@ public sealed partial class Tbl60SubtribusParentControl : UserControl
             SubtribusListView.ScrollIntoView(vm.SelectedItem);
         }
     }
+
+    // ---------------------------------------------------------                   
+    // RIGHT_TAPPED
+    // ---------------------------------------------------------                   
 
     private void SubtribusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
@@ -50,12 +57,24 @@ public sealed partial class Tbl60SubtribusParentControl : UserControl
     {
         while (current != null)
         {
-            if (current is T match)
-                return match;
-
+            if (current is T match) return match;
             current = VisualTreeHelper.GetParent(current);
         }
         return null;
     }
+
+    // ---------------------------------------------------------
+    // ITEM CLICK
+    // ---------------------------------------------------------
+
+    private void SubtribusListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (DataContext is Tbl60SubtribusViewModel vm)
+        {
+            vm.SelectedItem = (Models.Tbl60Subtribus)e.ClickedItem;
+        }
+    }
+
+
 
 }

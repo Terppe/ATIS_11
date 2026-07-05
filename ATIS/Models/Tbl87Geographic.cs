@@ -50,9 +50,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
     // ---------------------------------------------------------
     // FIELDS
     // ---------------------------------------------------------
-    private string _address;
+    private string? _address;
     [StringLength(100)]
-    public string Address
+    public string? Address
     {
         get => _address;
         set
@@ -62,9 +62,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    private string _country;
+    private string? _country;
     [StringLength(100)]
-    public string Country
+    public string? Country
     {
         get => _country;
         set
@@ -74,9 +74,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    private string _continent;
+    private string? _continent;
     [StringLength(100)]
-    public string Continent
+    public string? Continent
     {
         get => _continent;
         set
@@ -91,9 +91,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
     [Required]
     public int CountId { get; set; }
 
-    private string _jurisdiction;
+    private string? _jurisdiction;
     [StringLength(100)]
-    public string Jurisdiction
+    public string? Jurisdiction
     {
         get => _jurisdiction;
         set
@@ -115,9 +115,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
 
     public bool? Valid { get; set; }
 
-    private string _validYear;
+    private string? _validYear;
     [StringLength(4)]
-    public string ValidYear
+    public string? ValidYear
     {
         get => _validYear;
         set
@@ -127,9 +127,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    private string _author;
+    private string? _author;
     [StringLength(60)]
-    public string Author
+    public string? Author
     {
         get => _author;
         set
@@ -139,9 +139,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    private string _authorYear;
+    private string? _authorYear;
     [StringLength(4)]
-    public string AuthorYear
+    public string? AuthorYear
     {
         get => _authorYear;
         set
@@ -151,9 +151,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    private string _info;
+    private string? _info;
     [StringLength(100)]
-    public string Info
+    public string? Info
     {
         get => _info;
         set
@@ -171,9 +171,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
     public string Updater { get; set; }
     public DateTime UpdaterDate { get; set; }
 
-    private string _memo;
+    private string? _memo;
     [StringLength(1000)]
-    public string Memo
+    public string? Memo
     {
         get => _memo;
         set
@@ -183,9 +183,9 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    private string _http;
+    private string? _http;
     [StringLength(100)]
-    public string Http
+    public string? Http
     {
         get => _http;
         set

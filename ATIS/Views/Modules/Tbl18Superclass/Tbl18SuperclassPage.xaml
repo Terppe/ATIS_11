@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ATIS.Views.Modules.Tbl18Superclass.Tbl18SuperclassPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:components="using:ATIS.DesignSystem.Components"
+      xmlns:layout="using:ATIS.DesignSystem.Layout"
+      xmlns:loc="using:WinUI3Localizer"
+      xmlns:tbl18Superclass="using:ATIS.Views.Modules.Tbl18Superclass"
+      xmlns:tbl21Class="using:ATIS.Views.Modules.Tbl21Class"
+      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
+      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+      x:Name="RootPage"
+      DataContext="{Binding SuperclassViewModel}">
+
+    <!--    Tbl18SuperclassPage Skriptdatum:  15.06.2024  12:32 -->
+
+    <Grid x:Name="RootGrid">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+
+            <layout:BaseBossPageLayout>
+
+                <!--  HEADER LEFT  -->
+                <layout:BaseBossPageLayout.Header>
+                    <StackPanel Margin="8,0,0,8"
+                                Orientation="Horizontal"
+                                Spacing="10">
+
+                        <TextBlock Margin="0,4,0,0"
+                                   loc:Uids.Uid="TextBlock_Superclasses"
+                                   Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                        <TextBlock Margin="0,12,0,0"
+                                   loc:Uids.Uid="TextBlock_DataSetCount"
+                                   Style="{StaticResource AtisBodyTextStyle}" />
+
+                        <TextBlock Margin="0,12,0,0"
+                                   Style="{StaticResource AtisBodyTextStyle}"
+                                   Text="{Binding DataSetCount}" />
+                    </StackPanel>
+                </layout:BaseBossPageLayout.Header>
+
+                <!--  APPBAR RIGHT  -->
+                <layout:BaseBossPageLayout.AppBar>
+                    <Grid ColumnSpacing="8">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0"
+                                    Margin="8"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding NewCommand}"
+                                    IsEnabled="{Binding IsEditMode, Converter={StaticResource InverseBoolConverter}}"
+                                    Style="{StaticResource AtisPrimaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE710;" />
+                                    <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                                </StackPanel>
+                            </Button>
+
+                            <Button Margin="5,0,5,0"
+                                    Command="{Binding RefreshCommand}"
+                                    IsEnabled="{Binding HasItems}"
+                                    Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <FontIcon Glyph="&#xE72C;" />
+                                    <TextBlock loc:Uids.Uid="TextBlock_Refresh" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+
+                        <!--  SEARCH  -->
+                        <AutoSuggestBox x:Name="SearchBox"
+                                        Grid.Column="1"
+                                        Width="260"
+                                        Height="32"
+                                        Margin="12,0"
+                                        VerticalAlignment="Center"
+                                        IsEnabled="{Binding IsInParentMode, Converter={StaticResource InverseBoolConverter}}"
+                                        PlaceholderText="Suchen..."
+                                        QueryIcon="Find"
+                                        QuerySubmitted="SearchBox_OnQuerySubmitted"
+                                        Text="{Binding SearchText, Mode=TwoWay}" />
+                    </Grid>
+                </layout:BaseBossPageLayout.AppBar>
+
+                <!--  LIST CONTENT  -->
+                <layout:BaseBossPageLayout.ListContent>
+                    <tbl18Superclass:Tbl18SuperclassBossControl DataContext="{Binding}" />
+                </layout:BaseBossPageLayout.ListContent>
+
+                <!--  DETAIL CONTENT  -->
+                <layout:BaseBossPageLayout.DetailContent>
+                    <Grid>
+                        <Pivot x:Name="DetailPivot"
+                               SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
+                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                            <!--  Edit Superclass  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Superclass">
+                                <ScrollViewer Padding="1">
+                                    <tbl18Superclass:Tbl18SuperclassEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                                </ScrollViewer>
+                            </PivotItem>
+
+                            <!--  Comments Superclass  -->
+                            <PivotItem x:Name="CommentsSuperclassPivot"
+                                       loc:Uids.Uid="PivotItem_Comments">
+                                <Grid DataContext="{Binding SuperclassCommentViewModel}"
+                                      RowDefinitions="Auto,*">
+
+                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+
+                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+                            </PivotItem>
+
+                            <!--  References Superclass  -->
+                            <PivotItem x:Name="ReferencesSuperclassPivot"
+                                       loc:Uids.Uid="PivotItem_References">
+
+                                <Grid DataContext="{Binding SuperclassReferenceViewModel}"
+                                      RowDefinitions="Auto,*">
+
+                                    <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                                                                Grid.Row="0" />
+
+                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                              Item="{Binding SelectedItem}"
+                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+                            </PivotItem>
+
+                            <!--  Class -->
+                            <PivotItem x:Name="ClassPivot"
+                                       loc:Uids.Uid="PivotItem_Edit_Class">
+
+                                <Grid RowDefinitions="Auto,*">
+                                    <tbl21Class:Tbl21ClassParentControl x:Name="ClassParentControl"
+                                                                                    Grid.Row="0"
+                                                                                    DataContext="{Binding ClassViewModel}" />
+
+                                    <tbl21Class:Tbl21ClassEditControl Grid.Row="1"
+                                                                                  DataContext="{Binding ClassViewModel}"
+                                                                                  Item="{Binding SelectedItem}"
+                                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+                            </PivotItem>
+
+                            <!--  Comments Class  -->
+                            <PivotItem x:Name="CommentsClassPivot"
+                                       loc:Uids.Uid="PivotItem_Comments">
+
+                                <Grid DataContext="{Binding ClassViewModel.ClassCommentViewModel}"
+                                      RowDefinitions="Auto,*">
+
+                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+
+                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                </Grid>
+                            </PivotItem>
+
+                            <!--  References Class  -->
+                            <PivotItem x:Name="ReferencesClassPivot"
+                                       loc:Uids.Uid="PivotItem_References">
+
+                                <Grid DataContext="{Binding ClassViewModel.ClassReferenceViewModel}"
+                                      RowDefinitions="Auto,*">
+
+                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
+
+                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                              Item="{Binding SelectedItem}"
+                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                </Grid>
+                            </PivotItem>
+                        </Pivot>
+                    </Grid>
+
+                </layout:BaseBossPageLayout.DetailContent>
+
+            </layout:BaseBossPageLayout>
+
+        </ScrollViewer>
+
+        <!--  2. 🔥 Modernes Lade Overlay  -->
+        <components:LoadingOverlayControl Grid.RowSpan="1"
+                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
+    </Grid>
+</Page>  

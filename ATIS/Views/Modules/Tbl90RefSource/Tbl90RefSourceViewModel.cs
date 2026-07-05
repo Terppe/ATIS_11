@@ -1,283 +1,223 @@
-﻿
-using ATIS.Helpers;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Views.Base;
+using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
+using Microsoft.EntityFrameworkCore;
+
+
+//    Tbl90RefSourceViewModel Skriptdatum:   06.01.2025  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefSource;
 
-public class Tbl90RefSourceViewModel
-    : Base1List1DetailViewModel<Models.Tbl90RefSource, RefSourceEditModel>
+public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSource>
 {
-    private readonly IDataService _data;
-    private readonly IUserService _user;
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
 
-    public Tbl90RefSourceViewModel(IDataService data, IUserService user, IDialogService dialogService)
-        : base(dialogService)
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+
+
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+
+    public Tbl90RefSourceViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
-        _data = data;
-        _user = user;
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "RefSource ID");
+        RegisterHeader("Name", "RefSource Name");
     }
 
-    // ---------------------------------------------------------
-    // SEARCH
-    // ---------------------------------------------------------
-    protected override async Task<IEnumerable<Models.Tbl90RefSource>> SearchItemsAsync(string? text)
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------               
+
+    public async Task ApplyFilterAsync(string? filter)
     {
-        IsLoading = true;
-        try
+        if (IsBossMode)
         {
-            return await _data.SearchRefSourceAsync(text);
-        }
-        finally
-        {
-            IsLoading = false;
+            SearchText = filter;
+            await ReloadAsync();
         }
     }
 
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+        // Boss-Start: Parent-Kontext löschen
+        _currentParentId = 0;
+
+        Items = new ObservableCollection<Models.Tbl90RefSource>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
+
+
+
     // ---------------------------------------------------------
-    // LOAD ITEMS (für Refresh/Reload)
+    // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
+
     protected override async Task<IEnumerable<Models.Tbl90RefSource>> LoadItemsAsync()
     {
-        // Base1 lädt bei Refresh/Reload immer die letzte Suche
+
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await _data.SearchRefSourceAsync(SearchText);
+            return await Data.SearchRefSourceAsync(SearchText);
 
-        return Enumerable.Empty<Models.Tbl90RefSource>();
+        return Items ?? Enumerable.Empty<Models.Tbl90RefSource>();
     }
 
     // ---------------------------------------------------------
-    // CREATE NEW DOMAIN MODEL
+    // SELECTED ITEM
     // ---------------------------------------------------------
-    protected override Models.Tbl90RefSource CreateNewDomainModel()
-        => new Models.Tbl90RefSource();
-
-    // ---------------------------------------------------------
-    // CLONE
-    // ---------------------------------------------------------
-    protected override Models.Tbl90RefSource CloneDomain(Models.Tbl90RefSource source)
-        => source.Clone();
-
-    // ---------------------------------------------------------
-    // EXISTS?
-    // ---------------------------------------------------------
-    protected override Task<bool> ExistsAsync(RefSourceEditModel edit)
+    protected override async Task OnSelectedItemChangedAsync()
     {
-        var domain = new Models.Tbl90RefSource
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
         {
-            RefSourceName = edit.RefSourceName,
-            SourceYear = edit.SourceYear,
-            Author = edit.Author,
-            Valid = edit.Valid,
-            ValidYear = edit.ValidYear,
-            Info = edit.Info,
-            Notes = edit.Notes,
-            Memo = edit.Memo
-        };
+            OnPropertyChanged(nameof(IsDetailVisible));
+            await ClearChildCollectionsAsync();
+            return;
+        }
 
-        return _data.RefSourceExistsAsync(domain);
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
     }
 
-    // ---------------------------------------------------------
-    // DOMAIN → EDITMODEL
-    // ---------------------------------------------------------
-    protected override RefSourceEditModel ConvertDomainToEdit(Models.Tbl90RefSource d)
-        => new RefSourceEditModel
-        {
-            RefSourceName = d.RefSourceName,
-            SourceYear = d.SourceYear,
-            Author = d.Author,
-            ValidYear = d.ValidYear,
-            Valid = d.Valid,
-            Notes = d.Notes,
-            Info = d.Info,
-            Memo = d.Memo,
-            CountId = d.CountId
-        };
 
     // ---------------------------------------------------------
-    // EDITMODEL → DOMAIN
+    // SORTING
     // ---------------------------------------------------------
-    protected override void ConvertEditToDomain(RefSourceEditModel e, Models.Tbl90RefSource d)
+
+    protected override object GetSortKey(Models.Tbl90RefSource item, string column)
+        => column switch
+        {
+            "Id" => item.RefSourceId,
+            "Name" => item.RefSourceName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+
+    protected override Task NewAsync()
     {
-        d.RefSourceName = e.RefSourceName;
-        d.SourceYear = e.SourceYear;
-        d.Author = e.Author;
-        d.ValidYear = e.ValidYear;
-        d.Valid = e.Valid;
-        d.Notes = e.Notes;
-        d.Info = e.Info;
-        d.Memo = e.Memo;
-        d.CountId = e.CountId;
+        return Task.CompletedTask;
+    }
+
+    protected override Models.Tbl90RefSource CreateNewItem()
+    {
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
+
+        return new Models.Tbl90RefSource
+        {
+            RefSourceId = _currentParentId
+        };
     }
 
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-    protected override async Task<Models.Tbl90RefSource> SaveDomainAsync(Models.Tbl90RefSource domain)
-        => await _data.UpsertRefSourceAsync(domain);
+
+    protected override async Task<Models.Tbl90RefSource?> SaveItemAsync(Models.Tbl90RefSource item)
+    {
+        if (string.IsNullOrWhiteSpace(item.RefSourceName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertRefSourceAsync(item);
+        return saved;
+    }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl90RefSource item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.RefSourceName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
+    }
 
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-    protected override async Task DeleteDomainAsync(Models.Tbl90RefSource domain)
-        => await _data.DeleteRefSourceAsync(domain.RefSourceId);
 
-    // ---------------------------------------------------------
-    // GET ID
-    // ---------------------------------------------------------
-    protected override int GetId(Models.Tbl90RefSource model)
-        => model.RefSourceId;
-
-    // ---------------------------------------------------------
-    // BEFORE SAVE
-    // ---------------------------------------------------------
-    protected override void OnBeforeSave(Models.Tbl90RefSource domain, bool isNew)
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl90RefSource item)
     {
-        if (isNew)
-        {
-            domain.Writer = _user.CurrentUser;
-            domain.WriterDate = DateTime.Now;
-            domain.CountId = RandomHelper.Randomnumber();
-        }
+        if (item.RefSourceId == 0)
+            return false;
 
-        domain.Updater = _user.CurrentUser;
-        domain.UpdaterDate = DateTime.Now;
+        await Data.DeleteRefSourceAsync(item.RefSourceId);
+        return true;
     }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl90RefSource item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl90RefSource item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override int GetId(Models.Tbl90RefSource item)
+        => item.RefSourceId;
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+
+    private void ExecuteBack()
+    {
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
+
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+
+
 }
-
-
-//using ATIS.Helpers;
-//using ATIS.Interfaces;
-//using ATIS.Views.Base;
-
-//namespace ATIS.Views.Modules.Tbl90RefSource;
-
-//public class Tbl90RefSourceViewModel
-//    : Base1List1DetailViewModel<Models.Tbl90RefSource, RefSourceEditModel>
-//{
-//    private readonly IDataService _data;
-//    private readonly IUserService _user;
-
-//    public Tbl90RefSourceViewModel(IDataService data, IUserService user, IDialogService dialogService)
-//        : base(dialogService)
-//    {
-//        _data = data;
-//        _user = user;
-//    }
-
-//    // ---------------------------------------------------------
-//    // SEARCH
-//    // ---------------------------------------------------------
-//    protected override async Task<IEnumerable<Models.Tbl90RefSource>> SearchItemsAsync(string? text)
-//    {
-//        IsLoading = true;
-//        try
-//        {
-//            return await _data.SearchRefSourceAsync(text);
-//        }
-//        finally
-//        {
-//            IsLoading = false;
-//        }
-//    }
-
-//    // ---------------------------------------------------------
-//    // CREATE NEW DOMAIN MODEL
-//    // ---------------------------------------------------------
-//    protected override Models.Tbl90RefSource CreateNewDomainModel()
-//        => new Models.Tbl90RefSource();
-
-//    // ---------------------------------------------------------
-//    // CLONE
-//    // ---------------------------------------------------------
-//    protected override Models.Tbl90RefSource CloneDomain(Models.Tbl90RefSource source)
-//        => source.Clone();
-
-//    // ---------------------------------------------------------
-//    // EXISTS?
-//    // ---------------------------------------------------------
-//    protected override Task<bool> ExistsAsync(RefSourceEditModel edit)
-//    {
-//        var domain = new Models.Tbl90RefSource
-//        {
-//            RefSourceName = edit.RefSourceName,
-//            SourceYear = edit.SourceYear,
-//            Author = edit.Author,
-//            Valid = edit.Valid,
-//            ValidYear = edit.ValidYear,
-//            Info = edit.Info,
-//            Notes = edit.Notes,
-//            Memo = edit.Memo
-//        };
-
-//        return _data.RefSourceExistsAsync(domain);
-//    }
-
-//    // ---------------------------------------------------------
-//    // DOMAIN → EDITMODEL
-//    // ---------------------------------------------------------
-//    protected override RefSourceEditModel ConvertDomainToEdit(Models.Tbl90RefSource d)
-//        => new RefSourceEditModel
-//        {
-//            RefSourceName = d.RefSourceName,
-//            SourceYear = d.SourceYear,
-//            Author = d.Author,
-//            ValidYear = d.ValidYear,
-//            Valid = d.Valid,
-//            Notes = d.Notes,
-//            Info = d.Info,
-//            Memo = d.Memo,
-//            CountId = d.CountId
-//        };
-
-//    // ---------------------------------------------------------
-//    // EDITMODEL → DOMAIN
-//    // ---------------------------------------------------------
-//    protected override void ConvertEditToDomain(RefSourceEditModel e, Models.Tbl90RefSource d)
-//    {
-//        d.RefSourceName = e.RefSourceName;
-//        d.SourceYear = e.SourceYear;
-//        d.Author = e.Author;
-//        d.ValidYear = e.ValidYear;
-//        d.Valid = e.Valid;
-//        d.Notes = e.Notes;
-//        d.Info = e.Info;
-//        d.Memo = e.Memo;
-//        d.CountId = e.CountId;
-//    }
-
-//    // ---------------------------------------------------------
-//    // SAVE
-//    // ---------------------------------------------------------
-//    protected override async Task<Models.Tbl90RefSource> SaveDomainAsync(Models.Tbl90RefSource domain)
-//        => await _data.UpsertRefSourceAsync(domain);
-
-//    // ---------------------------------------------------------
-//    // DELETE
-//    // ---------------------------------------------------------
-//    protected override async Task DeleteDomainAsync(Models.Tbl90RefSource domain)
-//        => await _data.DeleteRefSourceAsync(domain.RefSourceId);
-
-//    // ---------------------------------------------------------
-//    // GET ID
-//    // ---------------------------------------------------------
-//    protected override int GetId(Models.Tbl90RefSource model)
-//        => model.RefSourceId;
-
-//    // ---------------------------------------------------------
-//    // BEFORE SAVE
-//    // ---------------------------------------------------------
-//    protected override void OnBeforeSave(Models.Tbl90RefSource domain, bool isNew)
-//    {
-//        if (isNew)
-//        {
-//            domain.Writer = _user.CurrentUser;
-//            domain.WriterDate = DateTime.Now;
-//            domain.CountId = RandomHelper.Randomnumber();
-//        }
-
-//        domain.Updater = _user.CurrentUser;
-//        domain.UpdaterDate = DateTime.Now;
-//    }
-//}

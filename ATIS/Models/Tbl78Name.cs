@@ -74,9 +74,9 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
 
     public bool Valid { get; set; }
 
-    private string _validYear;
+    private string? _validYear;
     [StringLength(4)]
-    public string ValidYear
+    public string? ValidYear
     {
         get => _validYear;
         set
@@ -86,9 +86,9 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         }
     }
 
-    private string _language;
+    private string? _language;
     [StringLength(3)]
-    public string Language
+    public string? Language
     {
         get => _language;
         set
@@ -98,9 +98,9 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         }
     }
 
-    private string _info;
+    private string? _info;
     [StringLength(100)]
-    public string Info
+    public string? Info
     {
         get => _info;
         set

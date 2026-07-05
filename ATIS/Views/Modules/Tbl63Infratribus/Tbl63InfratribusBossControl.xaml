@@ -8,6 +8,8 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
+    <!--  Tbl63InfratribusBossControl Skriptdatum:  30.12.2024  10:32  -->
+
     <UserControl.Resources>
         <GridLength x:Key="IdWidthResource">120</GridLength>
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
@@ -85,37 +87,6 @@
                   RightTapped="InfratribusListView_RightTapped"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   SelectionMode="Single">
-
-            <!--<ListView x:Name="InfratribusListView"
-            Grid.Row="1"
-            MaxHeight="150"
-            Margin="0,0,10,0"
-            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="4"
-            ItemClick="InfratribusListView_ItemClick"
-            ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
-            ItemsSource="{Binding Items}"
-            RightTapped="SubtribusListView_RightTapped"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            SelectionChanged="SubtribusListView_OnSelectionChanged"
-            SelectionMode="Single">-->
-
-            <!--<ListView x:Name="SubtribusListView"
-            Grid.Row="1"
-            MaxHeight="150"
-            Margin="0,0,10,0"
-            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="4"
-            IsItemClickEnabled="True"
-            ItemClick="SubtribusListView_OnItemClick"
-            ItemContainerStyle="{StaticResource AtisListViewItemStyle}"
-            ItemsSource="{Binding Items}"
-            RightTapped="SubtribusListView_RightTapped"
-            SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-            SelectionChanged="SubtribusListView_OnSelectionChanged"
-            SelectionMode="Single">-->
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Tbl63Infratribus">

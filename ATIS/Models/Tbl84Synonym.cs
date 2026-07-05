@@ -51,10 +51,10 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // FIELDS
     // ---------------------------------------------------------
-    private string _synonymName;
+    private string? _synonymName;
     [Required]
     [StringLength(100)]
-    public string SynonymName
+    public string? SynonymName
     {
         get => _synonymName;
         set
@@ -71,9 +71,9 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
 
     public bool Valid { get; set; }
 
-    private string _validYear;
+    private string? _validYear;
     [StringLength(4)]
-    public string ValidYear
+    public string? ValidYear
     {
         get => _validYear;
         set
@@ -83,9 +83,9 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
         }
     }
 
-    private string _author;
+    private string? _author;
     [StringLength(60)]
-    public string Author
+    public string? Author
     {
         get => _author;
         set
@@ -95,9 +95,9 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
         }
     }
 
-    private string _authorYear;
+    private string? _authorYear;
     [StringLength(4)]
-    public string AuthorYear
+    public string? AuthorYear
     {
         get => _authorYear;
         set
@@ -107,9 +107,9 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
         }
     }
 
-    private string _info;
+    private string? _info;
     [StringLength(100)]
-    public string Info
+    public string? Info
     {
         get => _info;
         set
@@ -127,9 +127,9 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
     public string Updater { get; set; }
     public DateTime UpdaterDate { get; set; }
 
-    private string _memo;
+    private string? _memo;
     [StringLength(1000)]
-    public string Memo
+    public string? Memo
     {
         get => _memo;
         set

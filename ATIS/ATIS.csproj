@@ -49,21 +49,21 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-		<PackageReference Include="log4net" Version="3.3.1" />
+		<PackageReference Include="log4net" Version="3.3.2" />
 		<PackageReference Include="MailKit" Version="4.17.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.1839" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2270" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="MimeKit" Version="4.17.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2026.6.0" />
+		<PackageReference Include="QuestPDF" Version="2026.6.1" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -803,6 +803,31 @@
 		<None Remove="Views\Main\SpeciesPage.xaml" />
 		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Main\UtilityPage.xaml" />
+		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumPage.xaml" />
+		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl06Phylum\Tbl06PhylumBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl06Phylum\Tbl06PhylumEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl06Phylum\Tbl06PhylumPage.xaml" />
+		<None Remove="Views\Modules\Tbl06Phylum\Tbl06PhylumParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl12Subphylum\Tbl12SubphylumBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl12Subphylum\Tbl12SubphylumEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl12Subphylum\Tbl12SubphylumPage.xaml" />
+		<None Remove="Views\Modules\Tbl12Subphylum\Tbl12SubphylumParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl18Superclass\Tbl18SuperclassBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl18Superclass\Tbl18SuperclassEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl18Superclass\Tbl18SuperclassPage.xaml" />
+		<None Remove="Views\Modules\Tbl18Superclass\Tbl18SuperclassParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassPage.xaml" />
+		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl24Subclass\Tbl24SubclassPage.xaml" />
+		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusPage.xaml" />
+		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl57Tribus\Tbl57TribusBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl57Tribus\Tbl57TribusEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl57Tribus\Tbl57TribusPage.xaml" />
@@ -820,10 +845,16 @@
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesPage.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesParentControl.xaml" />
-		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorPage.xaml" />
 		<None Remove="Views\Modules\Tbl90Reference\Tbl90ReferenceEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90Reference\Tbl90ReferenceParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl.xaml" />
@@ -969,6 +1000,9 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
+	<Folder Include="Views\Modules\Tbl87Geographic\" />
+	<Folder Include="Views\Modules\Tbl84Synonym\" />
+	<Folder Include="Views\Modules\Tbl81Image\" />
 	<Folder Include="Views\Modules\TblCountry\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
@@ -1006,6 +1040,198 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>
@@ -1166,12 +1392,6 @@
 
 <ItemGroup>
 	<Page Update="DesignSystem\Components\Base4List4DetailPageLayout.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-</ItemGroup>
-
-<ItemGroup>
-	<Page Update="Views\Modules\Tbl90RefAuthor\Tbl90AuthorPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 </ItemGroup>

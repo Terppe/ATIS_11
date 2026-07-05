@@ -926,4 +926,15 @@ Ich bereite jetzt den Generator vor, damit wir völlig identische Dateien bekomm
 ----------------------------------------
 01.07.2026 20:30 Uhr Version 131 ist Basis für alle Module
 ----------------------------------------
-02.07.2026 20:30 Uhr Version 135 ist Basis für alle Module und im Generator eingebaut.
+02.07.2026 11:30 Uhr Version 135 ist Basis für alle Module und im Generator eingebaut.
+----------------------------------------
+02.07.2026 13:30 Uhr jetzt copieren infratribus aus generator.
+----------------------------------------
+03.07.2026 13:30 Uhr DataService aus Generator in Anwendung + Infratribus. Infratribus wohl ok
+----------------------------------------
+04.07.2026 13:30 Uhr Genus, Species, Tribus =>.... zwischenzeitlich habe ich versucht RefAuthors so wie Subtribus herzurichten. klappt noch nicht.
+----------------------------------------
+05.07.2026 14:30 Uhr RefAuthors, RefExpert, RefSource noch verfeinern. später. Tribus ok
+----------------------------------------
+05.07.2026 16:30 Uhr Versuch mit name muss nocheinmal neu unerkannter Fehler aufgetreten. Jetzt weiter mit Regnum-
+Phylum-Subphylum-Superclass-Class::Fertig => heir weiter-Subclass-Infraclass-Legio-Ordo-Subordo-Infraordo-Superfamily-Family-Subfamily-Infrafamily-Supertribus.

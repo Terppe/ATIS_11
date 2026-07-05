@@ -9,12 +9,14 @@ using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 
+
+//    Tbl63InfratribusViewModel Skriptdatum:  30.12.2024  10:32    
+
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
 public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infratribus>
 {
     private readonly LookupService _lookupService;
-
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
 
@@ -43,9 +45,9 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         SubtribusLookup = await _lookupService.GetSubtribusLookupAsync();
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // CTOR
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     public Tbl63InfratribusViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -68,11 +70,9 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         RegisterHeader("Name", "Infratribus Name");
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
     // UI STATE
-    // ---------------------------------------------------------
-
-    public bool IsGenusParentSelected => GenusViewModel.SelectedItem != null;
+    // ---------------------------------------------------------               
 
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
@@ -112,22 +112,24 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         }
     }
 
+    public bool IsGenusParentSelected => GenusViewModel.SelectedItem != null;
     public bool IsDetailVisible => SelectedItem != null;
-    public bool IsInfratribusDetailVisible
-        => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
 
-    // ---------------------------------------------------------
-    // BOSS LOAD
-    // ---------------------------------------------------------
-
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
-        _currentParentId = 0;
+        // Boss-Start: Parent-Kontext löschen
         _activeLoader = null;
+        _currentParentId = 0;
 
         await LoadSubtribusLookupAsync();
 
         Items = new ObservableCollection<Models.Tbl63Infratribus>();
+
         OnPropertyChanged(nameof(HasItems));
 
         // optional: Suchmodus aktivieren
@@ -135,7 +137,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     }
 
     // ---------------------------------------------------------
-    // LOAD FOR SUBTRIBUS (Parent)
+    // LOAD FOR VK 
     // ---------------------------------------------------------
 
     public async Task LoadForSubtribusAsync(int subtribusId)
@@ -169,7 +171,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchInfratribusAsync(SearchText);
+            return await Data.SearchInfratribusWithSubtribusAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl63Infratribus>();
     }
@@ -212,6 +214,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         await GenusViewModel.LoadInfratribusLookupAsync();
         await GenusViewModel.LoadForInfratribusAsync(entityId);
 
+
         // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
         GenusViewModel.IsInParentMode = true;
     }
@@ -231,6 +234,19 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
 
         return Task.CompletedTask;
     }
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl63Infratribus item, string column)
+        => column switch
+        {
+            "Id" => item.InfratribusId,
+            "Name" => item.InfratribusName ?? "",
+            _ => ""
+        };
+
 
     // ---------------------------------------------------------
     // NEW
@@ -255,17 +271,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // SAVE
     // ---------------------------------------------------------
 
-    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl63Infratribus item)
-    {
-        if (_wasEmptyBeforeSave && IsBossMode)
-        {
-            SearchText = item.InfratribusName;
-            IsInParentMode = false;
-        }
-
-        return Task.CompletedTask;
-    }
-
     protected override async Task<Models.Tbl63Infratribus?> SaveItemAsync(Models.Tbl63Infratribus item)
     {
         if (string.IsNullOrWhiteSpace(item.InfratribusName))
@@ -276,6 +281,17 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
 
         var saved = await Data.UpsertInfratribusAsync(item);
         return saved;
+    }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl63Infratribus item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.InfratribusName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
     }
 
     // ---------------------------------------------------------
@@ -309,18 +325,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         => item.InfratribusId;
 
     // ---------------------------------------------------------
-    // SORTING
-    // ---------------------------------------------------------
-
-    protected override object GetSortKey(Models.Tbl63Infratribus item, string column)
-        => column switch
-        {
-            "Id" => item.InfratribusId,
-            "Name" => item.InfratribusName ?? "",
-            _ => ""
-        };
-
-    // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
 
@@ -340,10 +344,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
+
+
+
 }
-
-
-
-
-
-

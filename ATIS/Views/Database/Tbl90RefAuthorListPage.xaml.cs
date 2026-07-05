@@ -278,7 +278,7 @@ public sealed partial class Tbl90RefAuthorListPage : Page
     {
         ViewModel.RefAuthorSelected.RefAuthorName = SingleRefAuthor.RefAuthorName;
         ViewModel.RefAuthorSelected.Valid = SingleRefAuthor.Valid;
-        ViewModel.RefAuthorSelected.ValidYear = SingleRefAuthor.ValidYear;
+ //       ViewModel.RefAuthorSelected.ValidYear = SingleRefAuthor.ValidYear;
         ViewModel.RefAuthorSelected.Info = SingleRefAuthor.Info;
         ViewModel.RefAuthorSelected.ArticelTitle = SingleRefAuthor.ArticelTitle;
         ViewModel.RefAuthorSelected.BookName = SingleRefAuthor.BookName;

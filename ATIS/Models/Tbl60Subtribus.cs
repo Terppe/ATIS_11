@@ -4,6 +4,9 @@ using ATIS.Interfaces;
 using ATIS.Views.Base;
 using WinUI3Localizer;
 
+
+//    Tbl60SubtribusModel Skriptdatum:  25.06.2026  10:32    
+
 namespace ATIS.Models;
 
 public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
@@ -13,12 +16,14 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
+
     [Key]
     public int SubtribusId { get; set; }
 
     // ---------------------------------------------------------
     // SubtribusName
     // ---------------------------------------------------------
+
     [StringLength(100)]
     private string? _subtribusName;
     public string? SubtribusName
@@ -54,9 +59,10 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
         }
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // TribusId (FK)
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+
     private int? _tribusId;
     public int? TribusId
     {
@@ -69,9 +75,10 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     [NotMapped]
     public string? TribusName => Tribus?.TribusName;
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
     // CountId
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
+
     private int _countId;
     public int CountId
     {
@@ -79,9 +86,9 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
         set => SetProperty(ref _countId, value);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     // Valid
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     private bool _valid;
     public bool Valid
     {
@@ -92,6 +99,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // ValidYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
@@ -125,6 +133,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Synonym
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _synonym;
     public string? Synonym
@@ -136,6 +145,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Author
     // ---------------------------------------------------------
+
     [StringLength(60)]
     private string? _author;
     public string? Author
@@ -147,6 +157,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // AuthorYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _authorYear;
     public string? AuthorYear
@@ -180,6 +191,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Info
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _info;
     public string? Info
@@ -191,6 +203,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // EngName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _engName;
     public string? EngName
@@ -202,6 +215,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // GerName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _gerName;
     public string? GerName
@@ -213,6 +227,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // FraName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _fraName;
     public string? FraName
@@ -224,6 +239,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // PorName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _porName;
     public string? PorName
@@ -235,6 +251,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Writer
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _writer;
     public string? Writer
@@ -253,6 +270,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Updater
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _updater;
     public string? Updater
@@ -271,6 +289,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Memo
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _memo;
     public string? Memo
@@ -282,6 +301,7 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION
     // ---------------------------------------------------------
+
     public int GetEntityId() => SubtribusId;
     public string GetDisplayName() => SubtribusName ?? $"Subtribus {SubtribusId}";
 
@@ -329,6 +349,10 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
+    // ---------------------------------------------------------
+    // Validate Name
+    // ---------------------------------------------------------
+
     public void ValidateSubtribusName()
     {
         ClearErrors(nameof(SubtribusName));
@@ -342,6 +366,10 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
 
         UpdateErrorProperty(nameof(SubtribusName));
     }
+
+    // ---------------------------------------------------------
+    // Validate ValidYear
+    // ---------------------------------------------------------
 
     private void ValidateValidYear()
     {
@@ -369,6 +397,10 @@ public class Tbl60Subtribus : ObservableObject, IDataService.IAuditable, IHierar
 Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
+
+    // ---------------------------------------------------------
+    // Validate AuthorYear
+    // ---------------------------------------------------------
 
     private void ValidateAuthorYear()
     {
@@ -405,4 +437,7 @@ Notify:
 
         return !HasSubtribusNameError && !HasValidYearError && !HasAuthorYearError;
     }
+
+
+
 }

@@ -4,6 +4,9 @@ using ATIS.Interfaces;
 using ATIS.Views.Base;
 using WinUI3Localizer;
 
+
+//    Tbl57TribusModel Skriptdatum:  22.01.2025  10:32    
+
 namespace ATIS.Models;
 
 public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
@@ -13,12 +16,14 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
+
     [Key]
     public int TribusId { get; set; }
 
     // ---------------------------------------------------------
     // TribusName
     // ---------------------------------------------------------
+
     [StringLength(100)]
     private string? _tribusName;
     public string? TribusName
@@ -49,14 +54,15 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
             if (_hasTribusNameError != value)
             {
                 _hasTribusNameError = value;
-                OnPropertyChanged();
+                OnPropertyChanged(); // WICHTIG!
             }
         }
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // SupertribusId (FK)
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+
     private int? _supertribusId;
     public int? SupertribusId
     {
@@ -69,9 +75,10 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     [NotMapped]
     public string? SupertribusName => Supertribus?.SupertribusName;
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
     // CountId
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
+
     private int _countId;
     public int CountId
     {
@@ -79,9 +86,9 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
         set => SetProperty(ref _countId, value);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     // Valid
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     private bool _valid;
     public bool Valid
     {
@@ -92,6 +99,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // ValidYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
@@ -125,6 +133,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // Synonym
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _synonym;
     public string? Synonym
@@ -136,6 +145,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // Author
     // ---------------------------------------------------------
+
     [StringLength(60)]
     private string? _author;
     public string? Author
@@ -147,6 +157,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // AuthorYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _authorYear;
     public string? AuthorYear
@@ -180,6 +191,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // Info
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _info;
     public string? Info
@@ -191,6 +203,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // EngName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _engName;
     public string? EngName
@@ -202,6 +215,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // GerName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _gerName;
     public string? GerName
@@ -213,6 +227,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // FraName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _fraName;
     public string? FraName
@@ -224,6 +239,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // PorName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _porName;
     public string? PorName
@@ -235,6 +251,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // Writer
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _writer;
     public string? Writer
@@ -253,6 +270,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // Updater
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _updater;
     public string? Updater
@@ -271,6 +289,7 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // Memo
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _memo;
     public string? Memo
@@ -282,11 +301,12 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION
     // ---------------------------------------------------------
+
     public int GetEntityId() => TribusId;
     public string GetDisplayName() => TribusName ?? $"Tribus {TribusId}";
 
     // ---------------------------------------------------------
-    // VALIDIERUNGSMETHODEN
+    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
     // ---------------------------------------------------------
 
     private void ClearErrors(string propertyName)
@@ -329,10 +349,14 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
-    private void ValidateTribusName()
+    // ---------------------------------------------------------
+    // Validate Name
+    // ---------------------------------------------------------
+
+    public void ValidateTribusName()
     {
         ClearErrors(nameof(TribusName));
-        var loc = Localizer.Get();
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
 
         if (string.IsNullOrWhiteSpace(_tribusName))
             AddError(nameof(TribusName), loc.GetLocalizedString("Error_TribusName_Empty"));
@@ -343,10 +367,14 @@ public class Tbl57Tribus : ObservableObject, IDataService.IAuditable, IHierarchi
         UpdateErrorProperty(nameof(TribusName));
     }
 
+    // ---------------------------------------------------------
+    // Validate ValidYear
+    // ---------------------------------------------------------
+
     private void ValidateValidYear()
     {
         ClearErrors(nameof(ValidYear));
-        var loc = Localizer.Get();
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
         if (string.IsNullOrWhiteSpace(ValidYear))
             goto Notify;
@@ -370,10 +398,14 @@ Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
 
+    // ---------------------------------------------------------
+    // Validate AuthorYear
+    // ---------------------------------------------------------
+
     private void ValidateAuthorYear()
     {
         ClearErrors(nameof(AuthorYear));
-        var loc = Localizer.Get();
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
         if (string.IsNullOrWhiteSpace(AuthorYear))
             goto Notify;
@@ -405,4 +437,7 @@ Notify:
 
         return !HasTribusNameError && !HasValidYearError && !HasAuthorYearError;
     }
+
+
+
 }

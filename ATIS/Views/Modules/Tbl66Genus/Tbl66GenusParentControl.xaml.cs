@@ -1,34 +1,46 @@
-﻿using System.Diagnostics;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+﻿
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
+
+
+//    Tbl66GenusParentControl Skriptdatum:  13.06.2024  10:32    
 
 namespace ATIS.Views.Modules.Tbl66Genus;
 
 public sealed partial class Tbl66GenusParentControl : UserControl
 {
     public Tbl66GenusViewModel? ViewModel => DataContext as Tbl66GenusViewModel;
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
 
     public Tbl66GenusParentControl()
     {
         InitializeComponent();
+        Loaded += (_, __) =>
+        {
+            if (DataContext is Tbl66GenusViewModel vm)
+                vm.ScrollRequested += (_, __) => ScrollToSelectedItem();
+        };
     }
 
     // ---------------------------------------------------------
-    //  ItemClick → Select + Open Edit
+    // SCROLL TO SELECTED
     // ---------------------------------------------------------
-    private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
+
+    private void ScrollToSelectedItem()
     {
-        if (DataContext is Tbl66GenusViewModel vm)
+        if (DataContext is Tbl66GenusViewModel vm &&
+            vm.SelectedItem != null)
         {
-            vm.SelectedItem = (Models.Tbl66Genus)e.ClickedItem;
+            GenusListView.ScrollIntoView(vm.SelectedItem);
         }
     }
 
-    // ---------------------------------------------------------
-    //  RightTapped → Select row under cursor
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // RIGHT_TAPPED
+    // ---------------------------------------------------------                   
+
     private void GenusListView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (sender is not ListView listView)
@@ -42,19 +54,28 @@ public sealed partial class Tbl66GenusParentControl : UserControl
         e.Handled = true;
     }
 
-    // ---------------------------------------------------------
-    //  Helper: Find ancestor of type T
-    // ---------------------------------------------------------
     private static T? FindAncestor<T>(DependencyObject? current) where T : DependencyObject
     {
         while (current != null)
         {
-            if (current is T match)
-                return match;
-
+            if (current is T match) return match;
             current = VisualTreeHelper.GetParent(current);
         }
         return null;
     }
+
+    // ---------------------------------------------------------
+    // ITEM CLICK
+    // ---------------------------------------------------------
+
+    private void GenusListView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (DataContext is Tbl66GenusViewModel vm)
+        {
+            vm.SelectedItem = (Models.Tbl66Genus)e.ClickedItem;
+        }
+    }
+
+
 
 }

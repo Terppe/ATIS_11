@@ -1401,8 +1401,23 @@
   <data name="PivotItem_Edit_Subtribus.Header" xml:space="preserve">
     <value>Bearbeiten Untertribus</value>
   </data>
+  <data name="PivotItem_Edit_Supertribus.Header" xml:space="preserve">
+    <value>Bearbeiten Übertribus</value>
+  </data>
+  <data name="PivotItem_Edit_Tribus.Header" xml:space="preserve">
+    <value>Bearbeiten Tribus</value>
+  </data>
   <data name="PivotItem_Edit_Genus.Header" xml:space="preserve">
     <value>Bearbeiten Gattung</value>
+  </data>
+  <data name="PivotItem_Edit_RefAuthor.Header" xml:space="preserve">
+    <value>Bearbeiten Publikation</value>
+  </data>
+  <data name="PivotItem_Edit_RefExpert.Header" xml:space="preserve">
+    <value>Bearbeiten Experte</value>
+  </data>
+  <data name="PivotItem_Edit_RefSource.Header" xml:space="preserve">
+    <value>Bearbeiten Quelle</value>
   </data>
   <data name="PivotItem_Edit_Species.Header" xml:space="preserve">
     <value>Bearbeiten Art</value>

@@ -4,6 +4,9 @@ using ATIS.Interfaces;
 using ATIS.Views.Base;
 using WinUI3Localizer;
 
+
+//    Tbl66GenusModel Skriptdatum:  13.06.2024  10:32    
+
 namespace ATIS.Models;
 
 public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
@@ -13,16 +16,17 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
+
     [Key]
     public int GenusId { get; set; }
 
     // ---------------------------------------------------------
-    // GenusName (Pflicht)
+    // GenusName
     // ---------------------------------------------------------
-    [Required]
+
     [StringLength(100)]
-    private string _genusName = string.Empty;
-    public string GenusName
+    private string? _genusName;
+    public string? GenusName
     {
         get => _genusName;
         set
@@ -50,16 +54,17 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
             if (_hasGenusNameError != value)
             {
                 _hasGenusNameError = value;
-                OnPropertyChanged();
+                OnPropertyChanged(); // WICHTIG!
             }
         }
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // InfratribusId (FK)
-    // ---------------------------------------------------------
-    private int _infratribusId;
-    public int InfratribusId
+    // ---------------------------------------------------------                   
+
+    private int? _infratribusId;
+    public int? InfratribusId
     {
         get => _infratribusId;
         set => SetProperty(ref _infratribusId, value);
@@ -70,9 +75,10 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     [NotMapped]
     public string? InfratribusName => Infratribus?.InfratribusName;
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
     // CountId
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
+
     private int _countId;
     public int CountId
     {
@@ -80,9 +86,9 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         set => SetProperty(ref _countId, value);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     // Valid
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     private bool _valid;
     public bool Valid
     {
@@ -93,6 +99,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // ValidYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
@@ -126,6 +133,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // Synonym
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _synonym;
     public string? Synonym
@@ -137,6 +145,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // Author
     // ---------------------------------------------------------
+
     [StringLength(60)]
     private string? _author;
     public string? Author
@@ -148,6 +157,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // AuthorYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _authorYear;
     public string? AuthorYear
@@ -181,6 +191,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // Info
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _info;
     public string? Info
@@ -192,6 +203,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // EngName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _engName;
     public string? EngName
@@ -203,6 +215,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // GerName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _gerName;
     public string? GerName
@@ -214,6 +227,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // FraName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _fraName;
     public string? FraName
@@ -225,6 +239,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // PorName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _porName;
     public string? PorName
@@ -236,6 +251,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // Writer
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _writer;
     public string? Writer
@@ -254,6 +270,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // Updater
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _updater;
     public string? Updater
@@ -272,6 +289,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // Memo
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _memo;
     public string? Memo
@@ -283,11 +301,12 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION
     // ---------------------------------------------------------
+
     public int GetEntityId() => GenusId;
     public string GetDisplayName() => GenusName ?? $"Genus {GenusId}";
 
     // ---------------------------------------------------------
-    // VALIDIERUNGSMETHODEN
+    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
     // ---------------------------------------------------------
 
     private void ClearErrors(string propertyName)
@@ -330,10 +349,14 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
-    private void ValidateGenusName()
+    // ---------------------------------------------------------
+    // Validate Name
+    // ---------------------------------------------------------
+
+    public void ValidateGenusName()
     {
         ClearErrors(nameof(GenusName));
-        var loc = Localizer.Get();
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
 
         if (string.IsNullOrWhiteSpace(_genusName))
             AddError(nameof(GenusName), loc.GetLocalizedString("Error_GenusName_Empty"));
@@ -344,10 +367,14 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         UpdateErrorProperty(nameof(GenusName));
     }
 
+    // ---------------------------------------------------------
+    // Validate ValidYear
+    // ---------------------------------------------------------
+
     private void ValidateValidYear()
     {
         ClearErrors(nameof(ValidYear));
-        var loc = Localizer.Get();
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
         if (string.IsNullOrWhiteSpace(ValidYear))
             goto Notify;
@@ -367,14 +394,18 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         if (year < 1500 || year > 2100)
             AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
+
+    // ---------------------------------------------------------
+    // Validate AuthorYear
+    // ---------------------------------------------------------
 
     private void ValidateAuthorYear()
     {
         ClearErrors(nameof(AuthorYear));
-        var loc = Localizer.Get();
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
         if (string.IsNullOrWhiteSpace(AuthorYear))
             goto Notify;
@@ -394,7 +425,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 
@@ -406,4 +437,7 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
 
         return !HasGenusNameError && !HasValidYearError && !HasAuthorYearError;
     }
+
+
+
 }

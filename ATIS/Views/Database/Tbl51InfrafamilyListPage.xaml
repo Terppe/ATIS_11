@@ -117,7 +117,7 @@
     </Page.Resources>
 
     <RelativePanel x:Name="InfrafamilyRoot"
-                   Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+                   >
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>

@@ -45,6 +45,21 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     // ---------------------------------------------------------
     // LOAD FOR EACH PARENT TYPE
     // ---------------------------------------------------------
+    public async Task LoadForRegnumAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForRegnumAsync, c => c.RegnumId = id);
+    public async Task LoadForPhylumAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForPhylumAsync, c => c.PhylumId = id);
+    public async Task LoadForSubphylumAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSubphylumAsync, c => c.SubphylumId = id);
+    public async Task LoadForSuperclassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSuperclassAsync, c => c.SuperclassId = id);
+    public async Task LoadForClassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForClassAsync, c => c.SuperclassId = id);
+
+
+
+    public async Task LoadForSupertribusAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSupertribusAsync, c => c.SupertribusId = id);
 
     public async Task LoadForTribusAsync(int id)
         => await LoadInternalAsync(id, Data.GetCommentsForTribusAsync, c => c.TribusId = id);

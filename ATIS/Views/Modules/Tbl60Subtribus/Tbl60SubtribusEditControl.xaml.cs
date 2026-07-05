@@ -1,21 +1,23 @@
-﻿
-
-using System.Diagnostics;
+﻿//    Tbl60SubtribusEditControl Skriptdatum:  25.06.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusEditControl : UserControl
 {
+    public Tbl60SubtribusViewModel? ViewModel => DataContext as Tbl60SubtribusViewModel;
+
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
+
     public Tbl60SubtribusEditControl()
     {
         InitializeComponent();
     }
 
-    public Tbl60SubtribusViewModel? ViewModel
-        => DataContext as Tbl60SubtribusViewModel;
 
     // ---------------------------------------------------------
-    // DependencyProperty: Item
+    // DEPENDENCY PROPERTY: ITEM
     // ---------------------------------------------------------
 
     public Models.Tbl60Subtribus? Item
@@ -39,6 +41,10 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
         control.ApplyItem(item);
     }
 
+    // ---------------------------------------------------------                   
+    // APPLY ITEM
+    // ---------------------------------------------------------                   
+
     private void ApplyItem(Models.Tbl60Subtribus? newItem)
     {
         // ⭐ WICHTIG:
@@ -51,7 +57,7 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------
-    // Validation Helper
+    // VALDATINHELPER
     // ---------------------------------------------------------
 
     private void UpdateValidationState(TextBox box, bool hasError)
@@ -72,7 +78,7 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------
-    // SubtribusName Validation
+    // SUBTRIBUSNAME VALIDATION
     // ---------------------------------------------------------
 
     private void SubtribusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -86,7 +92,7 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------
-    // ValidYear Validation
+    // VALID YEAR VALIDATION
     // ---------------------------------------------------------
 
     private void ValidYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -100,7 +106,7 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------
-    // AuthorYear Validation
+    // AUTHOR YEAR VALIDATION
     // ---------------------------------------------------------
 
     private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)

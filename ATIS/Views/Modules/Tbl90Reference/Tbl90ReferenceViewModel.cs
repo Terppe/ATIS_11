@@ -75,7 +75,23 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
     // ---------------------------------------------------------
     // LOAD FOR EACH PARENT TYPE
     // ---------------------------------------------------------
+    public async Task LoadForRegnumAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForRegnumAsync, r => r.RegnumId = id);
+    public async Task LoadForPhylumAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForPhylumAsync, r => r.PhylumId = id);
+    public async Task LoadForSubphylumAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSubphylumAsync, r => r.SubphylumId = id);
+    public async Task LoadForSuperclassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSuperclassAsync, r => r.SuperclassId = id);
+    public async Task LoadForClassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForClassAsync, r => r.ClassId = id);
 
+
+
+
+
+    public async Task LoadForSupertribusAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSupertribusAsync, r => r.SupertribusId = id);
     public async Task LoadForTribusAsync(int id)
         => await LoadInternalAsync(id, Data.GetReferencesForTribusAsync, r => r.TribusId = id);
 

@@ -1,20 +1,23 @@
-﻿using ATIS.Views.Modules.Tbl60Subtribus;
+﻿
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+//    Tbl57TribusEditControl Skriptdatum:  22.01.2025  10:32    
 
 namespace ATIS.Views.Modules.Tbl57Tribus;
 
 public sealed partial class Tbl57TribusEditControl : UserControl
 {
+    public Tbl57TribusViewModel? ViewModel => DataContext as Tbl57TribusViewModel;
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
+
     public Tbl57TribusEditControl()
     {
         InitializeComponent();
     }
-    public Tbl57TribusViewModel? ViewModel => DataContext as Tbl57TribusViewModel;
 
     // ---------------------------------------------------------
-    //  DependencyProperty: Item
+    // DEPENDENCY PROPERTY: ITEM
     // ---------------------------------------------------------
 
     public Models.Tbl57Tribus? Item
@@ -28,15 +31,34 @@ public sealed partial class Tbl57TribusEditControl : UserControl
             nameof(Item),
             typeof(Models.Tbl57Tribus),
             typeof(Tbl57TribusEditControl),
-            new PropertyMetadata(new Models.Tbl57Tribus()));
+            new PropertyMetadata(null, OnItemChanged));
 
-
-    private void OnSupertribusChanged(object sender, SelectionChangedEventArgs e)
+    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (Item == null) return;
-        if (SupertribusCombo.SelectedValue is int id)
-            Item.SupertribusId = id;
+        var control = (Tbl57TribusEditControl)d;
+        var item = e.NewValue as Models.Tbl57Tribus;
+
+        control.ApplyItem(item);
     }
+
+    // ---------------------------------------------------------                   
+    // APPLY ITEM
+    // ---------------------------------------------------------                   
+
+    private void ApplyItem(Models.Tbl57Tribus? newItem)
+    {
+        // ⭐ WICHTIG:
+        // KEIN DataContext-Wechsel!
+        // KEIN Boss-Workflow!
+        // KEIN Parent-Workflow!
+        //
+        // Bindings im XAML zeigen direkt auf Item.XXX
+        // Deshalb bleibt diese Methode LEER.
+    }
+
+    // ---------------------------------------------------------                   
+    // VALDATINHELPER
+    // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
     {
@@ -49,40 +71,54 @@ public sealed partial class Tbl57TribusEditControl : UserControl
             return;
         }
 
-        // Kein Fehler → Fokus prüfen
         if (box.FocusState == FocusState.Pointer || box.FocusState == FocusState.Keyboard)
             VisualStateManager.GoToState(box, "Focused", true);
         else
             VisualStateManager.GoToState(box, "Normal", true);
     }
 
+    // ---------------------------------------------------------                   
+    // SUBTRIBUSNAME VALIDATION
+    // ---------------------------------------------------------                   
+
     private void TribusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         UpdateValidationState(TribusNameBox, Item?.HasTribusNameError ?? false);
     }
+
     private void TribusNameBox_OnLoaded(object sender, RoutedEventArgs e)
     {
         UpdateValidationState(TribusNameBox, Item?.HasTribusNameError ?? false);
     }
 
+    // ---------------------------------------------------------                   
+    // VALID YEAR VALIDATION
+    // ---------------------------------------------------------                   
+
     private void ValidYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
+
     private void ValidYearBox_OnLoaded(object sender, RoutedEventArgs e)
     {
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
+
+    // ---------------------------------------------------------                   
+    // AUTHOR YEAR VALIDATION
+    // ---------------------------------------------------------                   
 
     private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
 
-
     private void AuthorYearBox_OnLoaded(object sender, RoutedEventArgs e)
     {
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
+
+
 
 }

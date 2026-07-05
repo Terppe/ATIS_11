@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
-using ATIS.Core.Taxonomy;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;

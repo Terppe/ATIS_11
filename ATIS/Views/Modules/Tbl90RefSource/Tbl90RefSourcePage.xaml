@@ -2,25 +2,28 @@
 <Page x:Class="ATIS.Views.Modules.Tbl90RefSource.Tbl90RefSourcePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:atis="using:ATIS.DesignSystem.Components"
-      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:components="using:ATIS.DesignSystem.Components"
+      xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:helpers="using:ATIS.Helpers"
+      xmlns:tbl90RefSource="using:ATIS.Views.Modules.Tbl90RefSource"
+      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
+      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       x:Name="RootPage"
-      mc:Ignorable="d">
+      DataContext="{Binding RefSourceViewModel}">
+
+    <!--  Tbl90RefSourcePage Skriptdatum:   06.01.2025  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
 
-            <atis:Base1List1DetailPageLayout>
+            <layout:BaseBossPageLayout>
 
                 <!--  HEADER LEFT  -->
-                <atis:Base1List1DetailPageLayout.Header>
+                <layout:BaseBossPageLayout.Header>
                     <StackPanel Margin="8,0,0,8"
                                 Orientation="Horizontal"
                                 Spacing="10">
+
                         <TextBlock Margin="0,4,0,0"
                                    loc:Uids.Uid="TextBlock_RefSources"
                                    Style="{StaticResource AtisSectionTitleTextStyle}" />
@@ -31,12 +34,12 @@
 
                         <TextBlock Margin="0,12,0,0"
                                    Style="{StaticResource AtisBodyTextStyle}"
-                                   Text="{Binding DataSetCount, Mode=OneWay}" />
+                                   Text="{Binding DataSetCount}" />
                     </StackPanel>
-                </atis:Base1List1DetailPageLayout.Header>
+                </layout:BaseBossPageLayout.Header>
 
-                <!--  HEADER RIGHT BUTTONS + SEARCHBOX  -->
-                <atis:Base1List1DetailPageLayout.AppBar>
+                <!--  APPBAR RIGHT  -->
+                <layout:BaseBossPageLayout.AppBar>
                     <Grid ColumnSpacing="8">
 
                         <Grid.ColumnDefinitions>
@@ -51,6 +54,7 @@
 
                             <Button Margin="5,0,5,0"
                                     Command="{Binding NewCommand}"
+                                    IsEnabled="{Binding IsEditMode, Converter={StaticResource InverseBoolConverter}}"
                                     Style="{StaticResource AtisPrimaryButton}">
                                 <StackPanel Orientation="Horizontal"
                                             Spacing="6">
@@ -60,17 +64,8 @@
                             </Button>
 
                             <Button Margin="5,0,5,0"
-                                    Command="{Binding DeleteCommand}"
-                                    Style="{StaticResource AtisSecondaryButton}">
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="6">
-                                    <FontIcon Glyph="&#xE74D;" />
-                                    <TextBlock loc:Uids.Uid="TextBlock_Delete" />
-                                </StackPanel>
-                            </Button>
-
-                            <Button Margin="5,0,5,0"
                                     Command="{Binding RefreshCommand}"
+                                    IsEnabled="{Binding HasItems}"
                                     Style="{StaticResource AtisSecondaryButton}">
                                 <StackPanel Orientation="Horizontal"
                                             Spacing="6">
@@ -81,315 +76,50 @@
 
                         </StackPanel>
 
-                        <!--  RIGHT SEARCH  -->
+                        <!--  SEARCH  -->
                         <AutoSuggestBox x:Name="SearchBox"
                                         Grid.Column="1"
                                         Width="260"
                                         Height="32"
-                                        Margin="10,0,18,0"
+                                        Margin="12,0"
                                         VerticalAlignment="Center"
-                                        loc:Uids.Uid="AutoSuggestBox_Search"
-                                        KeyUp="SearchBox_OnKeyUp"
+                                        IsEnabled="{Binding IsInParentMode, Converter={StaticResource InverseBoolConverter}}"
+                                        PlaceholderText="Suchen..."
                                         QueryIcon="Find"
+                                        QuerySubmitted="SearchBox_OnQuerySubmitted"
                                         Text="{Binding SearchText, Mode=TwoWay}" />
                     </Grid>
-                </atis:Base1List1DetailPageLayout.AppBar>
+                </layout:BaseBossPageLayout.AppBar>
 
-                <!--  LIST (DATAGRID)  -->
-                <atis:Base1List1DetailPageLayout.ListContent>
-                    <Border Style="{StaticResource AtisCard}">
-                        <Grid>
-                            <controls:DataGrid x:Name="RefSourceDataGrid"
-                                               Height="Auto"
-                                               MinHeight="150"
-                                               MaxHeight="200"
-                                               HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Top"
-                                               AlternatingRowBackground="{ThemeResource AtisGridRowAlternateBackground}"
-                                               AreRowDetailsFrozen="True"
-                                               CanUserSortColumns="True"
-                                               GridLinesVisibility="Vertical"
-                                               IsEnabled="{Binding IsInEdit, Converter={StaticResource InverseBoolConverter}}"
-                                               ItemsSource="{Binding Items}"
-                                               RowBackground="{ThemeResource AtisGridRowBackground}"
-                                               SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                                               SelectionMode="Single"
-                                               Sorting="DataGrid_Sorting"
-                                               Style="{StaticResource AtisDataGridStyle}">
+                <!--  LIST CONTENT  -->
+                <layout:BaseBossPageLayout.ListContent>
+                    <tbl90RefSource:Tbl90RefSourceBossControl DataContext="{Binding}" />
+                </layout:BaseBossPageLayout.ListContent>
 
-                                <!--  ContextFlyout  -->
-                                <controls:DataGrid.ContextFlyout>
-                                    <MenuFlyout>
+                <!--  DETAIL CONTENT  -->
+                <layout:BaseBossPageLayout.DetailContent>
+                    <Grid>
+                        <Pivot x:Name="DetailPivot"
+                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                                        <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Add"
-                                                        Command="{Binding NewCommand}"
-                                                        Icon="Add"
-                                                        Style="{StaticResource AtisPrimaryMenuFlyoutItem}" />
+                            <!--  Edit RefSource  -->
+                            <PivotItem loc:Uids.Uid="PivotItem_Edit_RefSource">
+                                <ScrollViewer Padding="1">
+                                    <tbl90RefSource:Tbl90RefSourceEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                                </ScrollViewer>
+                            </PivotItem>
+                        </Pivot>
+                    </Grid>
 
-                                        <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Edit"
-                                                        Command="{Binding EditCommand}"
-                                                        Icon="Edit" />
+                </layout:BaseBossPageLayout.DetailContent>
 
-                                        <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Save"
-                                                        Command="{Binding SaveCommand}"
-                                                        Icon="Save"
-                                                        IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBoolConverter}}" />
-
-                                        <MenuFlyoutItem loc:Uids.Uid="MenuFlyout_Delete"
-                                                        Command="{Binding DeleteCommand}"
-                                                        Icon="Delete" />
-
-                                    </MenuFlyout>
-                                </controls:DataGrid.ContextFlyout>
-
-                                <!--  RowStyle  -->
-                                <controls:DataGrid.RowStyle>
-                                    <Style TargetType="controls:DataGridRow">
-                                        <Setter Property="Background" Value="{Binding IsAlternate, Converter={StaticResource BoolToRowBackgroundConverter}}" />
-                                    </Style>
-                                </controls:DataGrid.RowStyle>
-
-                                <!--  Columns  -->
-                                <controls:DataGrid.Columns>
-
-                                    <controls:DataGridTextColumn loc:Uids.Uid="DataGridTextColumn_RefSourceId"
-                                                                 Binding="{Binding RefSourceId}"
-                                                                 CanUserSort="True"
-                                                                 IsReadOnly="True"
-                                                                 Tag="RefSourceId" />
-
-                                    <controls:DataGridTextColumn loc:Uids.Uid="DataGridTextColumn_RefSourceName"
-                                                                 Binding="{Binding RefSourceName}"
-                                                                 CanUserSort="True"
-                                                                 Tag="RefSourceName" />
-
-                                    <controls:DataGridTextColumn loc:Uids.Uid="DataGridTextColumn_Author"
-                                                                 Binding="{Binding Author}"
-                                                                 CanUserSort="True"
-                                                                 Tag="Author" />
-
-                                    <controls:DataGridTextColumn loc:Uids.Uid="DataGridTextColumn_AuthorYear"
-                                                                 Binding="{Binding SourceYear}"
-                                                                 CanUserSort="True"
-                                                                 Tag="SourceYear" />
-
-
-                                    <controls:DataGridTextColumn loc:Uids.Uid="DataGridTextColumn_ValidYear"
-                                                                 Binding="{Binding ValidYear}"
-                                                                 CanUserSort="True"
-                                                                 Tag="ValidYear" />
-
-                                    <controls:DataGridCheckBoxColumn loc:Uids.Uid="DataGridCheckBoxColumn_Valid"
-                                                                     Binding="{Binding Valid}"
-                                                                     CanUserSort="True"
-                                                                     Tag="Valid" />
-                                </controls:DataGrid.Columns>
-
-                            </controls:DataGrid>
-
-                            <!-- Overlay blockiert Klicks im Edit-Modus -->
-                            <Border Background="#40FFFFFF"
-                                    Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        </Grid>
-                    </Border>
-                </atis:Base1List1DetailPageLayout.ListContent>
-
-                <!--  DETAIL FORM  -->
-                <atis:Base1List1DetailPageLayout.DetailContent>
-                    <Border Style="{StaticResource AtisCard}"
-                            Visibility="{Binding SelectedItem, Converter={StaticResource NullToVisibilityConverter}}">
-                        <StackPanel Spacing="8">
-
-                            <!--  Detail Header  -->
-                            <atis:AtisDetailHeader IsEnabled="True">
-
-                                <atis:AtisDetailHeader.LeftContent>
-                                    <TextBlock loc:Uids.Uid="TextBlock_RefSourceDetail"
-                                               Style="{StaticResource AtisSectionTitleTextStyle}" />
-                                </atis:AtisDetailHeader.LeftContent>
-
-                                <atis:AtisDetailHeader.RightContent>
-                                    <StackPanel Orientation="Horizontal"
-                                                Spacing="8">
-
-                                        <Button Margin="5,0,5,0"
-                                                Command="{Binding SaveCommand}"
-                                                Style="{StaticResource AtisSecondaryButton}"
-                                                Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <StackPanel Orientation="Horizontal"
-                                                        Spacing="6">
-                                                <FontIcon Glyph="&#xE74E;" />
-                                                <TextBlock loc:Uids.Uid="TextBlock_Save" />
-                                            </StackPanel>
-                                        </Button>
-
-                                        <Button Margin="5,0,5,0"
-                                                Command="{Binding CancelCommand}"
-                                                Style="{StaticResource AtisSecondaryButton}"
-                                                Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <StackPanel Orientation="Horizontal"
-                                                        Spacing="6">
-                                                <FontIcon Glyph="&#xE8BB;" />
-                                                <TextBlock loc:Uids.Uid="TextBlock_Cancel" />
-                                            </StackPanel>
-                                        </Button>
-
-                                        <Button Command="{Binding EditCommand}"
-                                                IsEnabled="{Binding SelectedItem, Converter={StaticResource NullToBoolConverter}}"
-                                                Style="{StaticResource AtisSecondaryButton}">
-                                            <StackPanel Orientation="Horizontal"
-                                                        Spacing="6">
-                                                <FontIcon Glyph="&#xE70F;" />
-                                                <TextBlock loc:Uids.Uid="TextBlock_Edit" />
-                                            </StackPanel>
-                                        </Button>
-
-                                    </StackPanel>
-                                </atis:AtisDetailHeader.RightContent>
-
-                            </atis:AtisDetailHeader>
-
-                            <!-- ⭐ Detail Fields -->
-                            <Grid RowSpacing="8">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <!--Row 0: RefSourceName-->
-                                <Grid RowDefinitions="Auto,Auto,Auto">
-                                    <TextBox x:Name="RefSourceName"
-                                             Grid.Row="1"
-                                             MinWidth="600"
-                                             HorizontalAlignment="Left"
-                                             loc:Uids.Uid="TextBox_RefSourceName"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             MaxLength="300"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.RefSourceName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             helpers:ValidationHelper.HasError="{Binding EditItem.HasRefSourceNameError}" />
-
-                                    <TextBlock Grid.Row="2"
-                                               Foreground="Red"
-                                               Text="{Binding EditItem.RefSourceNameError}"
-                                               Visibility="{Binding EditItem.HasRefSourceNameError, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-
-                                <!--Row 1: AuthorYear + ValidYear + Valid-->
-                                <Grid Grid.Row="1"
-                                      ColumnDefinitions="Auto,Auto,Auto"
-                                      RowDefinitions="Auto,Auto,Auto">
-
-                                    <!--AuthorYear-->
-                                    <TextBox Grid.Row="1"
-                                             Grid.Column="0"
-                                             loc:Uids.Uid="TextBox_AuthorYear"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             MaxLength="4"
-                                             Style="{StaticResource AtisTextBox}"
-                                             helpers:ValidationHelper.HasError="{Binding EditItem.HasSourceYearError}"
-                                             Text="{Binding EditItem.SourceYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                    <!--ValidYear-->
-                                    <TextBox Grid.Row="1"
-                                             Grid.Column="1"
-                                             Margin="12,0,0,0"
-                                             loc:Uids.Uid="TextBox_ValidYear"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             MaxLength="4"
-                                             Style="{StaticResource AtisTextBox}"
-                                             helpers:ValidationHelper.HasError="{Binding EditItem.HasValidYearError}"
-                                             Text="{Binding EditItem.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                    <!--Valid-->
-                                    <CheckBox Grid.Row="1"
-                                              Grid.Column="2"
-                                              Margin="12,0,0,0"
-                                              VerticalAlignment="Bottom"
-                                              loc:Uids.Uid="CheckBox_Valid"
-                                              IsChecked="{Binding EditItem.Valid, Mode=TwoWay}"
-                                              IsEnabled="{Binding IsInEdit}"
-                                              Style="{StaticResource AtisCheckBox}" />
-
-                                    <!--Fehlertexte-->
-                                    <TextBlock Grid.Row="2"
-                                               Grid.Column="0"
-                                               Foreground="Red"
-                                               Text="{Binding EditItem.SourceYearError}"
-                                               Visibility="{Binding EditItem.HasSourceYearError, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                    <TextBlock Grid.Row="2"
-                                               Grid.Column="1"
-                                               Foreground="Red"
-                                               Text="{Binding EditItem.ValidYearError}"
-                                               Visibility="{Binding EditItem.HasValidYearError, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-
-                                <!--Row 2: Author-->
-                                <Grid Grid.Row="2" ColumnDefinitions="Auto,*">
-                                    <TextBox Grid.Column="1"
-                                             Height="80"
-                                             loc:Uids.Uid="TextBox_Author"
-                                             AcceptsReturn="True"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Grid>
-
-                                <!--Row 3: Info-->
-                                <Grid Grid.Row="3" ColumnDefinitions="Auto">
-                                    <TextBox x:Name="Info"
-                                             MinWidth="300"
-                                             HorizontalAlignment="Left"
-                                             loc:Uids.Uid="TextBox_Info"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             MaxLength="100"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-
-                                <!--Row 4: Notes-->
-                                <Grid Grid.Row="4" ColumnDefinitions="Auto,*">
-                                    <TextBox Grid.Column="1"
-                                             Height="80"
-                                             loc:Uids.Uid="TextBox_Notes"
-                                             AcceptsReturn="True"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Grid>
-
-                                <!--Row 5: Memo-->
-                                <Grid Grid.Row="5" ColumnDefinitions="Auto,*">
-                                    <TextBox Grid.Column="1"
-                                             Height="80"
-                                             loc:Uids.Uid="TextBox_Memo"
-                                             AcceptsReturn="True"
-                                             IsEnabled="{Binding IsInEdit}"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding EditItem.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextWrapping="Wrap" />
-                                </Grid>
-
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-                </atis:Base1List1DetailPageLayout.DetailContent>
-
-            </atis:Base1List1DetailPageLayout>
+            </layout:BaseBossPageLayout>
 
         </ScrollViewer>
 
-        <!-- 🔥 Modernes Lade Overlay -->
-        <atis:LoadingOverlayControl Grid.RowSpan="1"
-                                    IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <!--  2. 🔥 Modernes Lade Overlay  -->
+        <components:LoadingOverlayControl Grid.RowSpan="1"
+                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-
 </Page>

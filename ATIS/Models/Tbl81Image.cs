@@ -61,9 +61,9 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
 
     public bool? Valid { get; set; }
 
-    private string _validYear;
+    private string? _validYear;
     [StringLength(4)]
-    public string ValidYear
+    public string? ValidYear
     {
         get => _validYear;
         set
@@ -75,9 +75,9 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
 
     public DateTime? ShotDate { get; set; }
 
-    private string _info;
+    private string? _info;
     [StringLength(100)]
-    public string Info
+    public string? Info
     {
         get => _info;
         set
@@ -95,9 +95,9 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     public string Updater { get; set; }
     public DateTime UpdaterDate { get; set; }
 
-    private string _memo;
+    private string? _memo;
     [StringLength(1000)]
-    public string Memo
+    public string? Memo
     {
         get => _memo;
         set

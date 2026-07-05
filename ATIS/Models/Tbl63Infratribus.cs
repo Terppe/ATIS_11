@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
 using ATIS.Interfaces;
 using ATIS.Views.Base;
 using WinUI3Localizer;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
+
+//    Tbl63InfratribusModel Skriptdatum:  30.12.2024  10:32    
 
 namespace ATIS.Models;
 
@@ -15,12 +16,14 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
+
     [Key]
     public int InfratribusId { get; set; }
 
     // ---------------------------------------------------------
     // InfratribusName
     // ---------------------------------------------------------
+
     [StringLength(100)]
     private string? _infratribusName;
     public string? InfratribusName
@@ -32,6 +35,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
             ValidateInfratribusName();
         }
     }
+
     private string? _infratribusNameError;
     [NotMapped]
     public string? InfratribusNameError
@@ -51,14 +55,14 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
             {
                 _hasInfratribusNameError = value;
                 OnPropertyChanged(); // WICHTIG!
-
             }
         }
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // SubtribusId (FK)
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
+
     private int? _subtribusId;
     public int? SubtribusId
     {
@@ -70,10 +74,11 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
 
     [NotMapped]
     public string? SubtribusName => Subtribus?.SubtribusName;
-    
-    // ---------------------------------------------------------
+
+    // ---------------------------------------------------------               
     // CountId
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
+
     private int _countId;
     public int CountId
     {
@@ -81,11 +86,11 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
         set => SetProperty(ref _countId, value);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     // Valid
-    // ---------------------------------------------------------
-    private bool? _valid;
-    public bool? Valid
+    // ---------------------------------------------------------                  
+    private bool _valid;
+    public bool Valid
     {
         get => _valid;
         set => SetProperty(ref _valid, value);
@@ -94,6 +99,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // ValidYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _validYear;
     public string? ValidYear
@@ -107,6 +113,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
             }
         }
     }
+
     private string? _validYearError;
     [NotMapped]
     public string? ValidYearError
@@ -126,6 +133,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // Synonym
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _synonym;
     public string? Synonym
@@ -137,6 +145,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // Author
     // ---------------------------------------------------------
+
     [StringLength(60)]
     private string? _author;
     public string? Author
@@ -148,6 +157,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // AuthorYear
     // ---------------------------------------------------------
+
     [StringLength(4)]
     private string? _authorYear;
     public string? AuthorYear
@@ -181,6 +191,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // Info
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _info;
     public string? Info
@@ -192,6 +203,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // EngName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _engName;
     public string? EngName
@@ -203,6 +215,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // GerName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _gerName;
     public string? GerName
@@ -214,6 +227,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // FraName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _fraName;
     public string? FraName
@@ -225,6 +239,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // PorName
     // ---------------------------------------------------------
+
     [StringLength(200)]
     private string? _porName;
     public string? PorName
@@ -236,6 +251,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // Writer
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _writer;
     public string? Writer
@@ -254,6 +270,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // Updater
     // ---------------------------------------------------------
+
     [StringLength(50)]
     private string? _updater;
     public string? Updater
@@ -272,6 +289,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
     // Memo
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _memo;
     public string? Memo
@@ -279,9 +297,11 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION
     // ---------------------------------------------------------
+
     public int GetEntityId() => InfratribusId;
     public string GetDisplayName() => InfratribusName ?? $"Infratribus {InfratribusId}";
 
@@ -329,6 +349,10 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
+    // ---------------------------------------------------------
+    // Validate Name
+    // ---------------------------------------------------------
+
     public void ValidateInfratribusName()
     {
         ClearErrors(nameof(InfratribusName));
@@ -342,6 +366,10 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
 
         UpdateErrorProperty(nameof(InfratribusName));
     }
+
+    // ---------------------------------------------------------
+    // Validate ValidYear
+    // ---------------------------------------------------------
 
     private void ValidateValidYear()
     {
@@ -366,9 +394,13 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
         if (year < 1500 || year > 2100)
             AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
+
+    // ---------------------------------------------------------
+    // Validate AuthorYear
+    // ---------------------------------------------------------
 
     private void ValidateAuthorYear()
     {
@@ -393,7 +425,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 
@@ -405,6 +437,7 @@ public class Tbl63Infratribus : ObservableObject, IDataService.IAuditable, IHier
 
         return !HasInfratribusNameError && !HasValidYearError && !HasAuthorYearError;
     }
+
 
 
 }

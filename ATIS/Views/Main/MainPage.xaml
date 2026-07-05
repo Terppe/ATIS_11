@@ -339,7 +339,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSupertribus"
                                                     loc:Uids.Uid="Nav_Supertribus"
-                                                    Tag="ATIS.Views.Database.Tbl54SupertribusListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl54Supertribus.Tbl54SupertribusPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -451,7 +451,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavClass"
                                                     loc:Uids.Uid="Nav_Class"
-                                                    Tag="ATIS.Views.Database.Tbl21ClassListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl21Class.Tbl21ClassPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -459,7 +459,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSuperclass"
                                                     loc:Uids.Uid="Nav_Superclass"
-                                                    Tag="ATIS.Views.Database.Tbl18SuperclassListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl18Superclass.Tbl18SuperclassPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -475,7 +475,7 @@
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavSubphylum"
                                                     loc:Uids.Uid="Nav_Subphylum"
-                                                    Tag="ATIS.Views.Database.Tbl12SubphylumListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl12Subphylum.Tbl12SubphylumPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -483,7 +483,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavPhylum"
                                                     loc:Uids.Uid="Nav_Phylum"
-                                                    Tag="ATIS.Views.Database.Tbl06PhylumListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl06Phylum.Tbl06PhylumPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -493,7 +493,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavRegnum"
                                             loc:Uids.Uid="Nav_Regnum"
-                                            Tag="ATIS.Views.Database.Tbl03RegnumListPage">
+                                            Tag="ATIS.Views.Modules.Tbl03Regnum.Tbl03RegnumPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />

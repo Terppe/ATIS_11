@@ -18,6 +18,14 @@ public class LookupService
     private IDataService CreateDataService()
         => new DataService(_factory, _user);
 
+    private Dictionary<int, string?>? _regnumLookupCache;
+    private Dictionary<int, string?>? _phylumLookupCache;
+    private Dictionary<int, string?>? _subphylumLookupCache;
+    private Dictionary<int, string?>? _superclassLookupCache;
+
+
+
+    private Dictionary<int, string?>? _infrafamilyLookupCache;
     private Dictionary<int, string?>? _supertribusLookupCache;
     private Dictionary<int, string?>? _tribusLookupCache;
     private Dictionary<int, string?>? _subtribusLookupCache;
@@ -29,7 +37,15 @@ public class LookupService
     private Dictionary<int, string?>? _refExpertLookupCache;
     private Dictionary<int, string?>? _refSourceLookupCache;
 
+    //--------------------------------------------------------------------
+    private ObservableCollection<Models.Tbl03Regnum>? _regnumListCache;
+    private ObservableCollection<Models.Tbl06Phylum>? _phylumListCache;
+    private ObservableCollection<Models.Tbl12Subphylum>? _subphylumListCache;
+    private ObservableCollection<Models.Tbl18Superclass>? _superclassListCache;
 
+
+
+    private ObservableCollection<Models.Tbl51Infrafamily>? _infrafamilyListCache;
     private ObservableCollection<Models.Tbl54Supertribus>? _supertribusListCache;
     private ObservableCollection<Models.Tbl57Tribus>? _tribusListCache;
     private ObservableCollection<Models.Tbl60Subtribus>? _subtribusListCache;
@@ -42,6 +58,60 @@ public class LookupService
     private ObservableCollection<Models.Tbl90RefSource>? _refSourceListCache;
 
     //--------------------------------------------------------------------
+    public async Task<Dictionary<int, string?>> GetRegnumLookupAsync()
+    {
+        if (_regnumLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllRegnumAsync();
+            _regnumLookupCache = list.ToDictionary(x => x.RegnumId, x => x.RegnumName);
+        }
+        return _regnumLookupCache;
+    }
+    public async Task<Dictionary<int, string?>> GetPhylumLookupAsync()
+    {
+        if (_phylumLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllPhylumAsync();
+            _phylumLookupCache = list.ToDictionary(x => x.PhylumId, x => x.PhylumName);
+        }
+        return _phylumLookupCache;
+    }
+    public async Task<Dictionary<int, string?>> GetSubphylumLookupAsync()
+    {
+        if (_subphylumLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSubphylumAsync();
+            _subphylumLookupCache = list.ToDictionary(x => x.SubphylumId, x => x.SubphylumName);
+        }
+        return _subphylumLookupCache;
+    }
+    public async Task<Dictionary<int, string?>> GetSuperclassLookupAsync()
+    {
+        if (_superclassLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSuperclassAsync();
+            _superclassLookupCache = list.ToDictionary(x => x.SuperclassId, x => x.SuperclassName);
+        }
+        return _superclassLookupCache;
+    }
+
+
+
+
+    public async Task<Dictionary<int, string?>> GetInfrafamilyLookupAsync()
+    {
+        if (_infrafamilyLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllInfrafamilyAsync();
+            _infrafamilyLookupCache = list.ToDictionary(x => x.InfrafamilyId, x => x.InfrafamilyName);
+        }
+        return _infrafamilyLookupCache;
+    }
     public async Task<Dictionary<int, string?>> GetSupertribusLookupAsync()
     {
         if (_supertribusLookupCache == null)
@@ -109,7 +179,7 @@ public class LookupService
         if (_refAuthorLookupCache == null)
         {
             var data = CreateDataService();
-            var list = await data.GetAllRefAuthorsAsync();
+            var list = await data.GetAllRefAuthorAsync();
             _refAuthorLookupCache = list.ToDictionary(x => x.RefAuthorId, x => x.RefAuthorName);
         }
         return _refAuthorLookupCache;
@@ -119,7 +189,7 @@ public class LookupService
         if (_refExpertLookupCache == null)
         {
             var data = CreateDataService();
-            var list = await data.GetAllRefExpertsAsync();
+            var list = await data.GetAllRefExpertAsync();
             _refExpertLookupCache = list.ToDictionary(x => x.RefExpertId, x => x.RefExpertName);
         }
         return _refExpertLookupCache;
@@ -129,13 +199,66 @@ public class LookupService
         if (_refSourceLookupCache == null)
         {
             var data = CreateDataService();
-            var list = await data.GetAllRefSourcesAsync();
+            var list = await data.GetAllRefSourceAsync();
             _refSourceLookupCache = list.ToDictionary(x => x.RefSourceId, x => x.RefSourceName);
         }
         return _refSourceLookupCache;
     }
 
     //--------------------------------------------------------------------
+    public async Task<ObservableCollection<Models.Tbl03Regnum>> GetRegnumListAsync()
+    {
+        if (_regnumListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllRegnumAsync();
+            _regnumListCache = new ObservableCollection<Models.Tbl03Regnum>(list);
+        }
+        return _regnumListCache;
+    }
+    public async Task<ObservableCollection<Models.Tbl06Phylum>> GetPhylumListAsync()
+    {
+        if (_phylumListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllPhylumAsync();
+            _phylumListCache = new ObservableCollection<Models.Tbl06Phylum>(list);
+        }
+        return _phylumListCache;
+    }
+    public async Task<ObservableCollection<Models.Tbl12Subphylum>> GetSubphylumListAsync()
+    {
+        if (_subphylumListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSubphylumAsync();
+            _subphylumListCache = new ObservableCollection<Models.Tbl12Subphylum>(list);
+        }
+        return _subphylumListCache;
+    }
+    public async Task<ObservableCollection<Models.Tbl18Superclass>> GetSuperclassListAsync()
+    {
+        if (_superclassListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSuperclassAsync();
+            _superclassListCache = new ObservableCollection<Models.Tbl18Superclass>(list);
+        }
+        return _superclassListCache;
+    }
+
+
+
+    public async Task<ObservableCollection<Models.Tbl51Infrafamily>> GetInfrafamilyListAsync()
+    {
+        if (_infrafamilyListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllInfrafamilyAsync();
+            _infrafamilyListCache = new ObservableCollection<Models.Tbl51Infrafamily>(list);
+        }
+        return _infrafamilyListCache;
+    }
     public async Task<ObservableCollection<Models.Tbl54Supertribus>> GetSupertribusListAsync()
     {
         if (_supertribusListCache == null)
@@ -203,7 +326,7 @@ public class LookupService
         if (_refAuthorListCache == null)
         {
             var data = CreateDataService();
-            var list = await data.GetAllRefAuthorsAsync();
+            var list = await data.GetAllRefAuthorAsync();
             _refAuthorListCache = new ObservableCollection<Models.Tbl90RefAuthor>(list);
         }
         return _refAuthorListCache;
@@ -213,7 +336,7 @@ public class LookupService
         if (_refExpertListCache == null)
         {
             var data = CreateDataService();
-            var list = await data.GetAllRefExpertsAsync();
+            var list = await data.GetAllRefExpertAsync();
             _refExpertListCache = new ObservableCollection<Models.Tbl90RefExpert>(list);
         }
         return _refExpertListCache;
@@ -223,7 +346,7 @@ public class LookupService
         if (_refSourceListCache == null)
         {
             var data = CreateDataService();
-            var list = await data.GetAllRefSourcesAsync();
+            var list = await data.GetAllRefSourceAsync();
             _refSourceListCache = new ObservableCollection<Models.Tbl90RefSource>(list);
         }
         return _refSourceListCache;

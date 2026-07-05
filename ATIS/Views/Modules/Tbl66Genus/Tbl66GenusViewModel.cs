@@ -1,16 +1,16 @@
 ﻿using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
-using ATIS.Views.Main;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
-using ATIS.Views.Report;
 using Microsoft.EntityFrameworkCore;
+
+
+//    Tbl66GenusViewModel Skriptdatum:  13.06.2024  10:32    
 
 namespace ATIS.Views.Modules.Tbl66Genus;
 
@@ -18,8 +18,10 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl66Genus>>>? _activeLoader;
 
     // ---------------------------------------------------------
@@ -35,15 +37,17 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
 
     public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; private set; } = new();
+    public Dictionary<int, string?> InfratribusLookup { get; private set; } = new();
 
     public async Task LoadInfratribusLookupAsync()
     {
         InfratribusList = await _lookupService.GetInfratribusListAsync();
+        InfratribusLookup = await _lookupService.GetInfratribusLookupAsync();
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // CTOR
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     public Tbl66GenusViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -60,15 +64,15 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         SpeciesViewModel = new Tbl75SpeciesViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-      //  BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Genus ID");
         RegisterHeader("Name", "Genus Name");
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
     // UI STATE
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
 
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
@@ -85,6 +89,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 
     private void UpdateButtonStates()
     {
+        // Pivot 0 = Boss-Modus
         IsInParentMode = SelectedDetailPivotIndex != 0;
 
         if (SelectedDetailPivotIndex == 2)
@@ -97,46 +102,49 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
+
     public async Task ApplyFilterAsync(string? filter)
     {
-        SearchText = filter;
-        await ReloadAsync();
-        SelectedItem = null;
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
     }
 
-    // ---------------------------------------------------------
-    // LOOKUPS
-    // ---------------------------------------------------------
+    public bool IsSpeciesParentSelected => SpeciesViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
 
-    //public override async Task LoadLookupsAsync()
-    //{
-    //    await LoadInfratribusLookupAsync();
-    //}
-
-    // ---------------------------------------------------------
-    // BOSS LOAD
-    // ---------------------------------------------------------
-
-    public  async Task LoadAsync()
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
     {
-        _currentParentId = 0;
+        // Boss-Start: Parent-Kontext löschen
         _activeLoader = null;
+        _currentParentId = 0;
 
         await LoadInfratribusLookupAsync();
 
-        SelectedItem = null;
-          //  IsDetailVisible = false;
+        Items = new ObservableCollection<Models.Tbl66Genus>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
     }
 
     // ---------------------------------------------------------
-    // LOAD FOR INFRATRIBUS (Parent)
+    // LOAD FOR VK 
     // ---------------------------------------------------------
 
     public async Task LoadForInfratribusAsync(int infratribusId)
         => await LoadInternalAsync(infratribusId, Data.GetGenusForInfratribusAsync);
 
     // ---------------------------------------------------------
-    // INTERNAL LOADER (universell)
+    // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
 
     private async Task LoadInternalAsync(
@@ -148,19 +156,9 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 
         var items = await loader(parentId);
         Items = new ObservableCollection<Models.Tbl66Genus>(items);
+        OnPropertyChanged(nameof(HasItems));
 
         DataSetCount = Items.Count;
-
-        if (Items.Any())
-        {
-            SelectedItem = Items.First();
-          //  IsDetailVisible = true;
-        }
-        else
-        {
-            SelectedItem = null;
-          //  IsDetailVisible = false;
-        }
     }
 
     // ---------------------------------------------------------
@@ -173,7 +171,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchGenusAsync(SearchText);
+            return await Data.SearchGenusWithInfratribusAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl66Genus>();
     }
@@ -181,28 +179,44 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // SELECTED ITEM
     // ---------------------------------------------------------
-
     protected override async Task OnSelectedItemChangedAsync()
     {
-        //  IsDetailVisible = SelectedItem != null;
-
-        if (SelectedItem != null)
-            await LoadChildrenAsync(SelectedItem.GenusId);
-        else
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
+            SelectedDetailPivotIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
     }
 
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
 
-    protected override async Task LoadChildrenAsync(int genusId)
+    protected override async Task LoadChildrenAsync(int entityId)
     {
-        await GenusCommentViewModel.LoadForGenusAsync(genusId);
-        await GenusReferenceViewModel.LoadForGenusAsync(genusId);
+        await GenusCommentViewModel.LoadForGenusAsync(entityId);
+        await GenusReferenceViewModel.LoadForGenusAsync(entityId);
 
         await SpeciesViewModel.LoadGenusLookupAsync();
-        await SpeciesViewModel.LoadForGenusAsync(genusId);
+        await SpeciesViewModel.LoadForGenusAsync(entityId);
+
+
+        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        SpeciesViewModel.IsInParentMode = true;
     }
 
     protected override Task ClearChildCollectionsAsync()
@@ -211,25 +225,46 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         GenusReferenceViewModel.Items?.Clear();
         SpeciesViewModel.Items?.Clear();
 
-        GenusCommentViewModel.SelectedItem = null;
-        GenusReferenceViewModel.SelectedItem = null;
-        SpeciesViewModel.SelectedItem = null;
+        if (IsBossMode)
+        {
+            GenusCommentViewModel.SelectedItem = null;
+            GenusReferenceViewModel.SelectedItem = null;
+            SpeciesViewModel.SelectedItem = null;
+        }
 
         return Task.CompletedTask;
     }
 
     // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl66Genus item, string column)
+        => column switch
+        {
+            "Id" => item.GenusId,
+            "Name" => item.GenusName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
 
-    protected override Models.Tbl66Genus CreateNewItem()
-        => new() { InfratribusId = _currentParentId };
-
-    protected override async Task NewAsync()
+    protected override Task NewAsync()
     {
-        SelectedItem = CreateNewItem();
-        //  IsDetailVisible = true;
-        await Task.Delay(50);
+        return Task.CompletedTask;
+    }
+
+    protected override Models.Tbl66Genus CreateNewItem()
+    {
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
+
+        return new Models.Tbl66Genus
+        {
+            InfratribusId = _currentParentId
+        };
     }
 
     // ---------------------------------------------------------
@@ -245,17 +280,18 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         }
 
         var saved = await Data.UpsertGenusAsync(item);
+        return saved;
+    }
 
-        if (_activeLoader != null)
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl66Genus item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
         {
-            var list = await _activeLoader(_currentParentId);
-            Items = new ObservableCollection<Models.Tbl66Genus>(list);
+            SearchText = item.GenusName;
+            IsInParentMode = false;
         }
 
-        SelectedItem = Items.FirstOrDefault(x => x.GenusId == saved.GenusId);
-        SearchText = saved.GenusName;
-
-        return saved;
+        return Task.CompletedTask;
     }
 
     // ---------------------------------------------------------
@@ -288,18 +324,24 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     protected override int GetId(Models.Tbl66Genus item)
         => item.GenusId;
 
-
     // ---------------------------------------------------------
-    // Sorting (in-memory)
+    // BACK
     // ---------------------------------------------------------
-    protected override object GetSortKey(Models.Tbl66Genus item, string column)
-        => column switch
-        {
-            "Id" => item.GenusId,
-            "Name" => item.GenusName ?? "",
-            _ => ""
-        };
 
+    private void ExecuteBack()
+    {
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
+
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailPivotIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
 }
-
-

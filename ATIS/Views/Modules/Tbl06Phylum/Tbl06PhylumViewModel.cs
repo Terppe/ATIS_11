@@ -1,102 +1,350 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-using log4net;
+using ATIS.Views.Modules.Tbl12Subphylum;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+
+
+//    Tbl06PhylumViewModel Skriptdatum:  15.06.2024  12:32    
 
 namespace ATIS.Views.Modules.Tbl06Phylum;
 
 public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
 {
-    private readonly IDataService _data;
+    private readonly LookupService _lookupService;
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
+
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.Tbl06Phylum>>>? _activeLoader;
+
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+
+    public Tbl93CommentViewModel PhylumCommentViewModel { get; }
+    public Tbl90ReferenceViewModel PhylumReferenceViewModel { get; }
+    public Tbl12SubphylumViewModel SubphylumViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+
+    public ObservableCollection<Models.Tbl03Regnum> RegnumList { get; private set; } = new();
+    public Dictionary<int, string?> RegnumLookup { get; private set; } = new();
+
+    public async Task LoadRegnumLookupAsync()
+    {
+        RegnumList = await _lookupService.GetRegnumListAsync();
+        RegnumLookup = await _lookupService.GetRegnumLookupAsync();
+    }
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
 
     public Tbl06PhylumViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
         HierarchyCoordinator coordinator,
-        LookupService lookup,
+        LookupService lookupService,
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
-        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
-        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+        _lookupService = lookupService;
 
-        //IsDetailVisible = false;
-        //IsEditVisible = false;
+        PhylumCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
+        PhylumReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        SubphylumViewModel = new Tbl12SubphylumViewModel(factory, dialog, coordinator, lookupService, user);
+
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Phylum ID");
+        RegisterHeader("Name", "Phylum Name");
     }
 
-    protected override async Task NewAsync()
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------               
+
+    private int _selectedDetailPivotIndex;
+    public int SelectedDetailPivotIndex
     {
-        throw new NotImplementedException();
+        get => _selectedDetailPivotIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Pivot 0 = Boss-Modus
+        IsInParentMode = SelectedDetailPivotIndex != 0;
+
+        if (SelectedDetailPivotIndex == 2)
+            _ = PhylumReferenceViewModel.LoadReferenceLookupsAsync();
+
+        if (SelectedDetailPivotIndex == 5)
+            _ = SubphylumViewModel.SubphylumReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+
+    public bool IsSubphylumParentSelected => SubphylumViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+        // Boss-Start: Parent-Kontext löschen
+        _activeLoader = null;
+        _currentParentId = 0;
+
+        await LoadRegnumLookupAsync();
+
+        Items = new ObservableCollection<Models.Tbl06Phylum>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
+
+    // ---------------------------------------------------------
+    // LOAD FOR VK 
+    // ---------------------------------------------------------
+
+    public async Task LoadForRegnumAsync(int regnumId)
+        => await LoadInternalAsync(regnumId, Data.GetPhylumForRegnumAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl06Phylum>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl06Phylum>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+
+    protected override async Task<IEnumerable<Models.Tbl06Phylum>> LoadItemsAsync()
+    {
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchPhylumWithRegnumAsync(SearchText);
+
+        return Items ?? Enumerable.Empty<Models.Tbl06Phylum>();
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
+            await ClearChildCollectionsAsync();
+            SelectedDetailPivotIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
+    }
+
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        await PhylumCommentViewModel.LoadForPhylumAsync(entityId);
+        await PhylumReferenceViewModel.LoadForPhylumAsync(entityId);
+
+        await SubphylumViewModel.LoadPhylumLookupAsync();
+        await SubphylumViewModel.LoadForPhylumAsync(entityId);
+
+
+        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        SubphylumViewModel.IsInParentMode = true;
+    }
+
+    protected override Task ClearChildCollectionsAsync()
+    {
+        PhylumCommentViewModel.Items?.Clear();
+        PhylumReferenceViewModel.Items?.Clear();
+        SubphylumViewModel.Items?.Clear();
+
+        if (IsBossMode)
+        {
+            PhylumCommentViewModel.SelectedItem = null;
+            PhylumReferenceViewModel.SelectedItem = null;
+            SubphylumViewModel.SelectedItem = null;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl06Phylum item, string column)
+        => column switch
+        {
+            "Id" => item.PhylumId,
+            "Name" => item.PhylumName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+
+    protected override Task NewAsync()
+    {
+        return Task.CompletedTask;
     }
 
     protected override Models.Tbl06Phylum CreateNewItem()
     {
-        throw new NotImplementedException();
-    }
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-    protected override async Task<IEnumerable<Models.Tbl06Phylum>> LoadItemsAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<Models.Tbl06Phylum?> SaveItemAsync(Models.Tbl06Phylum item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> DeleteItemAsync(Models.Tbl06Phylum item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl06Phylum item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl06Phylum item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override int GetId(Models.Tbl06Phylum model)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override object GetSortKey(Models.Tbl06Phylum item, string column)
-    {
-        return column switch
+        return new Models.Tbl06Phylum
         {
-            "Id" => item.PhylumId,
-            "Info" => item.PhylumName ?? "",
-            _ => ""
+            RegnumId = _currentParentId
         };
     }
 
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
 
-    public void ResetBelow() { }
-    public Task LoadForRegnumAsync(int id) => Task.CompletedTask;
-
-    public override async Task LoadParentAsync(int parentId)
+    protected override async Task<Models.Tbl06Phylum?> SaveItemAsync(Models.Tbl06Phylum item)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(item.PhylumName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertPhylumAsync(item);
+        return saved;
     }
 
-    protected override async Task LoadChildrenAsync(int entityId)
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl06Phylum item)
     {
-        throw new NotImplementedException();
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.PhylumName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
     }
 
-    protected override async Task ClearChildCollectionsAsync()
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
+
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl06Phylum item)
     {
-        throw new NotImplementedException();
+        if (item.PhylumId == 0)
+            return false;
+
+        if (await Data.PhylumHasSubphylumAsync(item.PhylumId) ||
+            await Data.PhylumHasReferenceAsync(item.PhylumId) ||
+            await Data.PhylumHasCommentAsync(item.PhylumId))
+        {
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
+        await Data.DeletePhylumAsync(item.PhylumId);
+        return true;
     }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl06Phylum item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl06Phylum item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    protected override int GetId(Models.Tbl06Phylum item)
+        => item.PhylumId;
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+
+    private void ExecuteBack()
+    {
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
+
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailPivotIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
 
 
 }
