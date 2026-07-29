@@ -2,6 +2,28 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  =========================================================  -->
+    <!--  Alte Styles -->
+    <!--  =========================================================  -->
+
+    <Thickness x:Key="XSmallLeftTopRightBottomMargin">2,2,2,2</Thickness>
+    <Thickness x:Key="SmallLeftMargin">4,0,0,0</Thickness>
+
+    <Style x:Key="ListTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style x:Key="ListSubTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Opacity" Value="0.8" />
+    </Style>
+    <Style x:Key="BodyTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Opacity" Value="0.8" />
+    </Style>
+
+
+    <!--  =========================================================  -->
     <!--  BASE TEXTBLOCK STYLE  -->
     <!--  =========================================================  -->
     <Style x:Key="AtisTextBlockBase"

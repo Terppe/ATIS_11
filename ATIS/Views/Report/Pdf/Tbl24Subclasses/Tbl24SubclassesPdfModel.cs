@@ -12,7 +12,7 @@ public class Tbl24SubclassesPdfModel
     {
         get; set;
     }
-    public bool Valid
+    public bool? Valid
     {
         get; set;
     }

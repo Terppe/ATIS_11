@@ -85,11 +85,26 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         => await LoadInternalAsync(id, Data.GetReferencesForSuperclassAsync, r => r.SuperclassId = id);
     public async Task LoadForClassAsync(int id)
         => await LoadInternalAsync(id, Data.GetReferencesForClassAsync, r => r.ClassId = id);
-
-
-
-
-
+    public async Task LoadForSubclassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSubclassAsync, r => r.SubclassId = id);
+    public async Task LoadForInfraclassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForInfraclassAsync, r => r.InfraclassId = id);
+    public async Task LoadForLegioAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForLegioAsync, r => r.LegioId = id);
+    public async Task LoadForOrdoAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForOrdoAsync, r => r.OrdoId = id);
+    public async Task LoadForSubordoAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSubordoAsync, r => r.SubordoId = id);
+    public async Task LoadForInfraordoAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForInfraordoAsync, r => r.InfraordoId = id);
+    public async Task LoadForSuperfamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSuperfamilyAsync, r => r.SuperfamilyId = id);
+    public async Task LoadForFamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForFamilyAsync, r => r.FamilyId = id);
+    public async Task LoadForSubfamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForSubfamilyAsync, r => r.SubfamilyId = id);
+    public async Task LoadForInfrafamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetReferencesForInfrafamilyAsync, r => r.InfrafamilyId = id);
     public async Task LoadForSupertribusAsync(int id)
         => await LoadInternalAsync(id, Data.GetReferencesForSupertribusAsync, r => r.SupertribusId = id);
     public async Task LoadForTribusAsync(int id)

@@ -5,7 +5,7 @@
              xmlns:loc="using:WinUI3Localizer"
              x:Name="Root">
 
-    <!--    Tbl03RegnumEditControl Skriptdatum:  30.12.2024  12:32   -->
+    <!--  Tbl03RegnumEditControl Skriptdatum:  30.12.2024  12:32  -->
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -72,7 +72,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--  ID + Name   -->
+            <!--  ID + Name  -->
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
 
@@ -101,21 +101,13 @@
                                Visibility="{Binding Item.HasRegnumNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  NULL Combo  -->
-                <StackPanel MinWidth="150"
-                            VerticalAlignment="Top"
-                            Spacing="2">
-                    <TextBlock Visibility="Collapsed" />
-                    <ComboBox x:Name="NULLCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_NULLName"
-                              DisplayMemberPath="NULLName"
-                              ItemsSource="{Binding ViewModel.NULLList, ElementName=Root}"
-                              SelectedValue="{Binding Item.NULLId, ElementName=Root, Mode=TwoWay}"
-                              SelectedValuePath="NULLId"
-                              Style="{StaticResource AtisComboBox}" />
-                </StackPanel>
+                <!--  Subregnum  -->
+                <TextBox MinWidth="200"
+                         MinHeight="75"
+                         MaxHeight="150"
+                         loc:Uids.Uid="TextBox_Subregnum"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.Subregnum, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"
@@ -217,4 +209,4 @@
         </StackPanel>
 
     </Border>
-</UserControl>  
+</UserControl>

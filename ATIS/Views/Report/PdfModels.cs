@@ -39,7 +39,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -87,7 +87,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -139,7 +139,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -283,7 +283,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -331,7 +331,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -379,7 +379,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -427,7 +427,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -475,7 +475,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -523,7 +523,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -571,7 +571,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -619,7 +619,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -667,7 +667,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -715,7 +715,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -763,7 +763,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }
@@ -811,7 +811,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
+        public bool? Valid
         {
             get; set;
         }

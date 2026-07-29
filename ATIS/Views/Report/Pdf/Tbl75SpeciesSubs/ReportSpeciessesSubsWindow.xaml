@@ -523,7 +523,6 @@
                         Style="{StaticResource AtisButtonPrimary}" />
             </StackPanel>
             <ScrollViewer Grid.Row="1"
-                          Padding="{StaticResource SmallDetailPageMargin}"
                           HorizontalAlignment="Stretch"
                           Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                           IsTabStop="True"

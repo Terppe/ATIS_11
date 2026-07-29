@@ -937,4 +937,78 @@ Ich bereite jetzt den Generator vor, damit wir völlig identische Dateien bekomm
 05.07.2026 14:30 Uhr RefAuthors, RefExpert, RefSource noch verfeinern. später. Tribus ok
 ----------------------------------------
 05.07.2026 16:30 Uhr Versuch mit name muss nocheinmal neu unerkannter Fehler aufgetreten. Jetzt weiter mit Regnum-
-Phylum-Subphylum-Superclass-Class::Fertig => heir weiter-Subclass-Infraclass-Legio-Ordo-Subordo-Infraordo-Superfamily-Family-Subfamily-Infrafamily-Supertribus.
+Phylum-Subphylum-Superclass-Class::Fertig => hier weiter-Subclass-Infraclass-Legio-Ordo-Subordo-Infraordo-Superfamily-Family-Subfamily-Infrafamily-Supertribus.
+----------------------------------------
+06.07.2026 16:30 Uhr Subclass-Infraclass-Legio-Ordo-Subordo-Infraordo-Superfamily-Family-Subfamily-Infrafamily-Supertribus. alle ok. viele altdateien gelöscht
+----------------------------------------
+07.07.2026 16:30 Uhr Vorschlag (WinUI 3) – Zielbild
+SearchPage als Einstieg
+
+Oben: AutoSuggestBox + Filterchips (Tabelle, Status, Datum, Mandant, …)
+Mitte: Ergebnisbereich mit Pivot (z. B. „Alle“, „Kunden“, „Aufträge“, „Rechnungen“)
+Unten/Seite: Detail-Preview (optional)
+Daten statt UI pro Tabelle
+
+Nicht 20 einzelne ListViews pflegen.
+Stattdessen: konfigurationsbasierte Search-Sources (jede Tabelle beschreibt: Label, Icon, Query, Sortierung, Felder für Trefferanzeige).
+Einheitlicher SearchDataService
+
+Eine Schnittstelle wie ISearchService.SearchAsync(query, filters, page, pageSize, cancellationToken).
+Liefert ein gemeinsames Ergebnisformat:
+EntityType
+PrimaryText, SecondaryText
+Id
+Score
+PreviewFields
+Vorteil: UI ist generisch, Datenlogik zentral.
+Interaktion
+
+Klick/Enter auf Treffer öffnet DetailView (besser als separates Window, außer wirklich nötig).
+PDF-Druck als Action in DetailView (Print / Export PDF), nicht beim Fokus.
+Fokus-Änderung sollte nur Preview laden, keine schweren Aktionen triggern.
+Performance
+
+Debounce (250–400 ms) bei Texteingabe.
+CancellationToken bei neuer Suche.
+Serverseitiges Paging + virtuelle Liste.
+Optional: „Top Hits“ zuerst, dann gruppierte Treffer.
+Empfohlene Architektur (MVVM)
+SearchPage.xaml (Layout + States)
+SearchViewModel
+QueryText, SelectedPivot, Filters, Results, IsLoading
+SearchCommand, OpenDetailCommand, PrintCommand
+ISearchService + SearchService
+IDetailNavigationService
+IPdfPrintService
+UX-Verbesserungen
+Trefferhighlight im Text.
+„Zuletzt gesucht“ + gespeicherte Filter.
+Keyboard-first: Ctrl+K für Suchfokus, Pfeile/Enter für Treffer.
+Leere Zustände: „Keine Treffer“, „Filter zurücksetzen“.
+Migrationsplan (kurz)
+Gemeinsames SearchResultItem-Modell erstellen.
+Für 2–3 Kern-Tabellen Pilot im neuen Service bauen.
+SearchPage + Pivot + generische ResultList umsetzen.
+Detail-Navigation vereinheitlichen.
+Restliche Tabellen schrittweise migrieren, alte TabPages abbauen.
+Wenn du willst, kann ich dir im nächsten Schritt ein konkretes WinUI3-XAML-Gerüst + ViewModel-Skeleton (inkl. Debounce/Cancellation) direkt vorschreiben.
+Basis-Version von Search steht. Phylum und Subphylum werden angezeigt. aber noch viel arbeit mit Detailpage und PDF-Page
+----------------------------------------
+08.07.2026 13:30 Uhr SearchPage von GitHub angefangen. Winui3. Plan für eine neue SearchPage entwickeln.
+Suchfeld => bisher wurden TabPages verwendet mit listviews für 20 Tabellen.
+beim fokus eines datensatze wurde ein Window aufgerufen für Einzelheiten und pdf-Druckseite.
+Besser vielleicht Pivots und elegantere Dataservice-Suche. Gute Basis für die neue SearchPage. 
+----------------------------------------
+08.07.2026 21:30 Uhr Alternative zu Git versuchen
+----------------------------------------
+09.07.2026 21:30 Uhr Alternative mit Dialog bei Chat
+----------------------------------------
+26.07.2026 14:30 Uhr SearchPage geht. Dialog wird angezeigt schon ganz gut.
+----------------------------------------
+27.07.2026 13:30 Uhr Versuch mit Dialog gescheitert
+----------------------------------------
+28.07.2026 6:30 Uhr ListSubTitleStyle alle neu anlegen oder ich muss alle ändern dann geht es weiter mit DetailPages
+----------------------------------------
+29.07.2026 6:30 Uhr Margin="{StaticResource XSmallLeftTopRightBottomMargin}"  Style="{StaticResource ListTitleStyle}" Margin="{StaticResource SmallLeftMargin}"
+                       Style="{StaticResource ListSubTitleStyle}"
+ResourceDictionary.xaml geändert. jetzt geht es weiter mit DetailPagesRegnum

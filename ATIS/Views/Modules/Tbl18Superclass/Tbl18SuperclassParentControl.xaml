@@ -11,12 +11,19 @@
     <!--    Tbl18SuperclassParentControl Skriptdatum:  15.06.2024  12:32 -->
 
     <UserControl.Resources>
-        <GridLength x:Key="IdWidthResource">120</GridLength>
+        <!--  ID -->
+        <GridLength x:Key="IdWidthResource">150</GridLength>
+        <!--  Name -->
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
+        <!--  FK-ID -->
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
+        <!--  Valid -->
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
+        <!--  ValidYear -->
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
+        <!--  Author -->
         <GridLength x:Key="Extra5WidthResource">250</GridLength>
+        <!--  AuthorYear -->
         <GridLength x:Key="Extra6WidthResource">100</GridLength>
     </UserControl.Resources>
 
@@ -30,15 +37,12 @@
             <StackPanel Margin="8,0,0,8"
                         Orientation="Horizontal"
                         Spacing="10">
-
                 <TextBlock Margin="0,4,0,0"
                            loc:Uids.Uid="TextBlock_Superclasses"
                            Style="{StaticResource AtisSectionTitleTextStyle}" />
-
                 <TextBlock Margin="0,12,0,0"
                            loc:Uids.Uid="TextBlock_DataSetCount"
                            Style="{StaticResource AtisBodyTextStyle}" />
-
                 <TextBlock Margin="0,12,0,0"
                            Style="{StaticResource AtisBodyTextStyle}"
                            Text="{Binding DataSetCount}" />
@@ -155,19 +159,16 @@
                                    Margin="4,0,0,0"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind SuperclassId}" />
-
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind SuperclassName}" />
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind SubphylumName}" />
-
                         <CheckBox Grid.Column="3"
                                   IsChecked="{x:Bind Valid}"
                                   IsEnabled="False"
                                   IsTabStop="False" />
-
                         <TextBlock Grid.Column="4"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind ValidYear}" />
@@ -177,7 +178,6 @@
                         <TextBlock Grid.Column="6"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind AuthorYear}" />
-
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

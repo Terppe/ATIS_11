@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:database="using:ATIS.Views.Database"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tbl90RefAuthor="using:ATIS.Views.Modules.Tbl90RefAuthor"
       xmlns:tbl90RefSource="using:ATIS.Views.Modules.Tbl90RefSource"
       NavigationCacheMode="Required"
       mc:Ignorable="d">
@@ -33,7 +34,7 @@
                 </TabViewItem>
                 <TabViewItem x:Uid="TabViewItem_RefAuthors"
                              IsClosable="False">
-                    <database:Tbl90RefAuthorListPage />
+                    <tbl90RefAuthor:Tbl90RefAuthorPage />
                 </TabViewItem>
                 <!--<TabViewItem x:Uid="TabViewItem_RefExperts"
                 IsClosable="False">
@@ -43,14 +44,14 @@
                              IsClosable="False">
                     <tbl90RefSource:Tbl90RefSourcePage />
                 </TabViewItem>
-                <TabViewItem x:Uid="TabViewItem_References"
+                <!--<TabViewItem x:Uid="TabViewItem_References"
                              IsClosable="False">
-                    <database:Tbl90ReferenceListPage />
-                </TabViewItem>
-                <TabViewItem x:Uid="TabViewItem_Comments"
+                    <tbl90Reference:Tbl90ReferencePage />
+                </TabViewItem>-->
+                <!--<TabViewItem x:Uid="TabViewItem_Comments"
                              IsClosable="False">
-                    <database:Tbl93CommentListPage />
-                </TabViewItem>
+                    <tbl93Comment:Tbl93CommentPage />
+                </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_Countries"
                              IsClosable="False">
                     <database:TblCountryListPage />

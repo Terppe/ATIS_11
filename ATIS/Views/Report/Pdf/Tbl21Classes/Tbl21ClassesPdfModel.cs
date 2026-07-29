@@ -11,7 +11,7 @@ public class Tbl21ClassesPdfModel
     {
         get; set;
     }
-    public bool Valid
+    public bool? Valid
     {
         get; set;
     }

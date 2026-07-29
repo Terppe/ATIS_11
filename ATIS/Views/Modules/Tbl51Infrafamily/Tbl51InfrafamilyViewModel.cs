@@ -1,88 +1,350 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl54Supertribus;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+
+
+//    Tbl51InfrafamilyViewModel Skriptdatum:  21.01.2025  10:32    
 
 namespace ATIS.Views.Modules.Tbl51Infrafamily;
 
-public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infrafamily>, ITaxonViewModel
+public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infrafamily>
 {
+    private readonly LookupService _lookupService;
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
+
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.Tbl51Infrafamily>>>? _activeLoader;
+
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+
+    public Tbl93CommentViewModel InfrafamilyCommentViewModel { get; }
+    public Tbl90ReferenceViewModel InfrafamilyReferenceViewModel { get; }
+    public Tbl54SupertribusViewModel SupertribusViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+
+    public ObservableCollection<Models.Tbl48Subfamily> SubfamilyList { get; private set; } = new();
+    public Dictionary<int, string?> SubfamilyLookup { get; private set; } = new();
+
+    public async Task LoadSubfamilyLookupAsync()
+    {
+        SubfamilyList = await _lookupService.GetSubfamilyListAsync();
+        SubfamilyLookup = await _lookupService.GetSubfamilyLookupAsync();
+    }
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+
     public Tbl51InfrafamilyViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
         HierarchyCoordinator coordinator,
-        LookupService lookup,
+        LookupService lookupService,
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
-        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
-        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+        _lookupService = lookupService;
 
-        //IsDetailVisible = false;
-        //IsEditVisible = false;
+        InfrafamilyCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
+        InfrafamilyReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        SupertribusViewModel = new Tbl54SupertribusViewModel(factory, dialog, coordinator, lookupService, user);
 
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Infrafamily ID");
+        RegisterHeader("Name", "Infrafamily Name");
     }
 
-    protected override async Task NewAsync()
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------               
+
+    private int _selectedDetailPivotIndex;
+    public int SelectedDetailPivotIndex
     {
-        throw new NotImplementedException();
+        get => _selectedDetailPivotIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Pivot 0 = Boss-Modus
+        IsInParentMode = SelectedDetailPivotIndex != 0;
+
+        if (SelectedDetailPivotIndex == 2)
+            _ = InfrafamilyReferenceViewModel.LoadReferenceLookupsAsync();
+
+        if (SelectedDetailPivotIndex == 5)
+            _ = SupertribusViewModel.SupertribusReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+
+    public bool IsSupertribusParentSelected => SupertribusViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+        // Boss-Start: Parent-Kontext löschen
+        _activeLoader = null;
+        _currentParentId = 0;
+
+        await LoadSubfamilyLookupAsync();
+
+        Items = new ObservableCollection<Models.Tbl51Infrafamily>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
+
+    // ---------------------------------------------------------
+    // LOAD FOR VK 
+    // ---------------------------------------------------------
+
+    public async Task LoadForSubfamilyAsync(int subfamilyId)
+        => await LoadInternalAsync(subfamilyId, Data.GetInfrafamilyForSubfamilyAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl51Infrafamily>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl51Infrafamily>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+
+    protected override async Task<IEnumerable<Models.Tbl51Infrafamily>> LoadItemsAsync()
+    {
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchInfrafamilyWithSubfamilyAsync(SearchText);
+
+        return Items ?? Enumerable.Empty<Models.Tbl51Infrafamily>();
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
+            await ClearChildCollectionsAsync();
+            SelectedDetailPivotIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
+    }
+
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        await InfrafamilyCommentViewModel.LoadForInfrafamilyAsync(entityId);
+        await InfrafamilyReferenceViewModel.LoadForInfrafamilyAsync(entityId);
+
+        await SupertribusViewModel.LoadInfrafamilyLookupAsync();
+        await SupertribusViewModel.LoadForInfrafamilyAsync(entityId);
+
+
+        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        SupertribusViewModel.IsInParentMode = true;
+    }
+
+    protected override Task ClearChildCollectionsAsync()
+    {
+        InfrafamilyCommentViewModel.Items?.Clear();
+        InfrafamilyReferenceViewModel.Items?.Clear();
+        SupertribusViewModel.Items?.Clear();
+
+        if (IsBossMode)
+        {
+            InfrafamilyCommentViewModel.SelectedItem = null;
+            InfrafamilyReferenceViewModel.SelectedItem = null;
+            SupertribusViewModel.SelectedItem = null;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl51Infrafamily item, string column)
+        => column switch
+        {
+            "Id" => item.InfrafamilyId,
+            "Name" => item.InfrafamilyName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+
+    protected override Task NewAsync()
+    {
+        return Task.CompletedTask;
     }
 
     protected override Models.Tbl51Infrafamily CreateNewItem()
     {
-        throw new NotImplementedException();
-    }
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-    protected override async Task<IEnumerable<Models.Tbl51Infrafamily>> LoadItemsAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<Models.Tbl51Infrafamily?> SaveItemAsync(Models.Tbl51Infrafamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> DeleteItemAsync(Models.Tbl51Infrafamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl51Infrafamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl51Infrafamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override int GetId(Models.Tbl51Infrafamily model)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override object GetSortKey(Models.Tbl51Infrafamily item, string column)
-    {
-        return column switch
+        return new Models.Tbl51Infrafamily
         {
-            "Id" => item.InfrafamilyId,
-            "Info" => item.InfrafamilyName ?? "",
-            _ => ""
+            SubfamilyId = _currentParentId
         };
     }
 
-    protected override async Task LoadChildrenAsync(int entityId)
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
+
+    protected override async Task<Models.Tbl51Infrafamily?> SaveItemAsync(Models.Tbl51Infrafamily item)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(item.InfrafamilyName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertInfrafamilyAsync(item);
+        return saved;
+    }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl51Infrafamily item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.InfrafamilyName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
+
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl51Infrafamily item)
+    {
+        if (item.InfrafamilyId == 0)
+            return false;
+
+        if (await Data.InfrafamilyHasSupertribusAsync(item.InfrafamilyId) ||
+            await Data.InfrafamilyHasReferenceAsync(item.InfrafamilyId) ||
+            await Data.InfrafamilyHasCommentAsync(item.InfrafamilyId))
+        {
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
+        await Data.DeleteInfrafamilyAsync(item.InfrafamilyId);
+        return true;
+    }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl51Infrafamily item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl51Infrafamily item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    protected override int GetId(Models.Tbl51Infrafamily item)
+        => item.InfrafamilyId;
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+
+    private void ExecuteBack()
+    {
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
+
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailPivotIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
 
 
-    public void ResetBelow() { }
-    public Task LoadForSubfamilyAsync(int id) => Task.CompletedTask;
+
 }

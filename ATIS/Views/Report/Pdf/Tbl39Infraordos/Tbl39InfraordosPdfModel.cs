@@ -12,7 +12,7 @@ public class Tbl39InfraordosPdfModel
     {
         get; set;
     }
-    public bool Valid
+    public bool? Valid
     {
         get; set;
     }

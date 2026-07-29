@@ -7,6 +7,22 @@ using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
 using ATIS.Views.Main.Disease;
+using ATIS.Views.Modules.Tbl03Regnum;
+using ATIS.Views.Modules.Tbl06Phylum;
+using ATIS.Views.Modules.Tbl12Subphylum;
+using ATIS.Views.Modules.Tbl18Superclass;
+using ATIS.Views.Modules.Tbl21Class;
+using ATIS.Views.Modules.Tbl24Subclass;
+using ATIS.Views.Modules.Tbl27Infraclass;
+using ATIS.Views.Modules.Tbl30Legio;
+using ATIS.Views.Modules.Tbl33Ordo;
+using ATIS.Views.Modules.Tbl36Subordo;
+using ATIS.Views.Modules.Tbl39Infraordo;
+using ATIS.Views.Modules.Tbl42Superfamily;
+using ATIS.Views.Modules.Tbl45Family;
+using ATIS.Views.Modules.Tbl48Subfamily;
+using ATIS.Views.Modules.Tbl51Infrafamily;
+using ATIS.Views.Modules.Tbl54Supertribus;
 using ATIS.Views.Modules.Tbl57Tribus;
 using ATIS.Views.Modules.Tbl60Subtribus;
 using ATIS.Views.Modules.Tbl63Infratribus;
@@ -18,6 +34,7 @@ using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
@@ -130,7 +147,7 @@ public sealed partial class MainPage : Page
 
         App.SearchQuickString = args.QueryText;
 
-        NavFrame.Navigate(typeof(SearchQuickPage));
+        NavFrame.Navigate(typeof(SearchPage));
     }
 
     private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -241,18 +258,12 @@ public sealed partial class MainPage : Page
         Localizer.Get().SetLanguage(languageOverride);
         App.Cult = languageOverride;
 
+        App.RaiseLanguageChanged(languageOverride); // alle VMs informieren
+
         // 3. UI neu laden color in header
         ChangeLanguageLoginReset();
     }
 
-
-    private void RefreshCurrentPage()
-    {
-        var currentPageType = NavFrame.CurrentSourcePageType;
-        var parameter = (NavFrame.Content as Page)?.Tag;
-
-        NavFrame.Navigate(currentPageType, parameter);
-    }
 
     private void ChangeLanguageLoginReset()
     {
@@ -404,7 +415,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavSearch.Content)
         {
-            NavFrame.Navigate(typeof(SearchQuickPage));
+            NavFrame.Navigate(typeof(SearchPage));
             return;
         }
 
@@ -444,108 +455,108 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavSupertribus.Content)
         {
-            NavFrame.Navigate(typeof(Tbl54SupertribusListPage));
+            NavFrame.Navigate(typeof(Tbl54SupertribusPage));
         }
 
         //-------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavInfrafamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl51InfrafamilyListPage));
+            NavFrame.Navigate(typeof(Tbl51InfrafamilyPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSubfamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl48SubfamilyListPage));
+            NavFrame.Navigate(typeof(Tbl48SubfamilyPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavFamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl45FamilyListPage));
+            NavFrame.Navigate(typeof(Tbl45FamilyPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSuperfamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl42SuperfamilyListPage));
+            NavFrame.Navigate(typeof(Tbl42SuperfamilyPage));
         }
         //-------------------------------------------
 
         if ((string)args.ChosenSuggestion == (string)NavInfrafamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl51InfrafamilyListPage));
+            NavFrame.Navigate(typeof(Tbl51InfrafamilyPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSubfamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl48SubfamilyListPage));
+            NavFrame.Navigate(typeof(Tbl48SubfamilyPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavFamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl45FamilyListPage));
+            NavFrame.Navigate(typeof(Tbl45FamilyPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSuperfamily.Content)
         {
-            NavFrame.Navigate(typeof(Tbl42SuperfamilyListPage));
+            NavFrame.Navigate(typeof(Tbl42SuperfamilyPage));
         }
 
         //----------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavInfraordo.Content)
         {
-            NavFrame.Navigate(typeof(Tbl39InfraordoListPage));
+            NavFrame.Navigate(typeof(Tbl39InfraordoPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSubordo.Content)
         {
-            NavFrame.Navigate(typeof(Tbl36SubordoListPage));
+            NavFrame.Navigate(typeof(Tbl36SubordoPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavOrdo.Content)
         {
-            NavFrame.Navigate(typeof(Tbl33OrdoListPage));
+            NavFrame.Navigate(typeof(Tbl33OrdoPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavLegio.Content)
         {
-            NavFrame.Navigate(typeof(Tbl30LegioListPage));
+            NavFrame.Navigate(typeof(Tbl30LegioPage));
         }
 
         //--------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavInfraclass.Content)
         {
-            NavFrame.Navigate(typeof(Tbl27InfraclassListPage));
+            NavFrame.Navigate(typeof(Tbl27InfraclassPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSubclass.Content)
         {
-            NavFrame.Navigate(typeof(Tbl24SubclassListPage));
+            NavFrame.Navigate(typeof(Tbl24SubclassPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavClass.Content)
         {
-            NavFrame.Navigate(typeof(Tbl21ClassListPage));
+            NavFrame.Navigate(typeof(Tbl21ClassPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSuperclass.Content)
         {
-            NavFrame.Navigate(typeof(Tbl18SuperclassListPage));
+            NavFrame.Navigate(typeof(Tbl18SuperclassPage));
         }
 
         //-------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavSubphylum.Content)
         {
-            NavFrame.Navigate(typeof(Tbl12SubphylumListPage));
+            NavFrame.Navigate(typeof(Tbl12SubphylumPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavPhylum.Content)
         {
-            NavFrame.Navigate(typeof(Tbl06PhylumListPage));
+            NavFrame.Navigate(typeof(Tbl06PhylumPage));
         }
 
         //---------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavRegnum.Content)
         {
-            NavFrame.Navigate(typeof(Tbl03RegnumListPage));
+            NavFrame.Navigate(typeof(Tbl03RegnumPage));
         }
 
         //---------------------------------------------
@@ -571,7 +582,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavReferences.Content)
         {
-            NavFrame.Navigate(typeof(Tbl90ReferenceListPage));
+           // NavFrame.Navigate(typeof(Tbl90ReferencePage));
         }
 
         //------------------------------------------
@@ -593,7 +604,7 @@ public sealed partial class MainPage : Page
         //-----------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavComments.Content)
         {
-            NavFrame.Navigate(typeof(Tbl93CommentListPage));
+           // NavFrame.Navigate(typeof(Tbl93CommentPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavCountries.Content)

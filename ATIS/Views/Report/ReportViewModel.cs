@@ -116,14 +116,6 @@ public class ReportViewModel : ObservableObject
             RefreshSpeciesItems();
             IsLoading = false;
         }
-        //if (_selectedMainTabIndex == 2)  //PlSpecies
-        //{
-        //    PlSpeciessesCollection = _dataService.GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(filterText);
-        //    DataSetCount = PlSpeciessesCollection.Count;
-
-        //    OnPropertyChanged(nameof(PlSpeciessesCollection));
-        //    RefreshPlSpeciesItems();
-        //}
         if (_selectedMainTabIndex == 3 && _selectedTribusTabIndex == 0)
         {
             InfratribussesCollection = _dataService.GetTbl63InfratribussesCollectionOrderByInfratribusNameFromFilterText(filterText);
@@ -352,7 +344,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl42SuperfamiliesAllList ??= [];
-                Tbl42SuperfamiliesAllList = _dataService.GetSuperfamilyAsync();
+          //      Tbl42SuperfamiliesAllList = _dataService.GetSuperfamilyAsync();
                 FamiliesCollection = _dataService.GetTbl45FamiliesCollectionOrderByFamilyNameFromFilterText(FilterText);
 
                 DataSetCount = FamiliesCollection.Count;
@@ -363,7 +355,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl30LegiosAllList ??= [];
-                Tbl30LegiosAllList = _dataService.GetLegioAsync();
+            //    Tbl30LegiosAllList = _dataService.GetLegioAsync();
                 OrdosCollection = _dataService.GetTbl33OrdosCollectionOrderByOrdoNameFromFilterText(FilterText);
                 DataSetCount = OrdosCollection.Count;
 
@@ -685,7 +677,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl51InfrafamiliesAllList ??= [];
-                Tbl51InfrafamiliesAllList = _dataService.GetInfrafamilyAsync();
+             //   Tbl51InfrafamiliesAllList = _dataService.GetInfrafamilyAsync();
                 SupertribussesCollection = _dataService.GetTbl54SupertribussesCollectionOrderBySupertribusNameFromFilterText(FilterText);
                 DataSetCount = SupertribussesCollection.Count;
 
@@ -710,7 +702,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl48SubfamiliesAllList ??= [];
-                Tbl48SubfamiliesAllList = _dataService.GetSubfamilyAsync();
+           //     Tbl48SubfamiliesAllList = _dataService.GetSubfamilyAsync();
                 InfrafamiliesCollection = _dataService.GetTbl51InfrafamiliesCollectionOrderByInfrafamilyNameFromFilterText(FilterText);
                 DataSetCount = InfrafamiliesCollection.Count;
 
@@ -722,7 +714,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl45FamiliesAllList ??= [];
-                Tbl45FamiliesAllList = _dataService.GetFamilyAsync();
+          //      Tbl45FamiliesAllList = _dataService.GetFamilyAsync();
                 SubfamiliesCollection = _dataService.GetTbl48SubfamiliesCollectionOrderBySubfamilyNameFromFilterText(FilterText);
                 DataSetCount = SubfamiliesCollection.Count;
 
@@ -734,7 +726,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl42SuperfamiliesAllList ??= [];
-                Tbl42SuperfamiliesAllList = _dataService.GetSuperfamilyAsync();
+           //     Tbl42SuperfamiliesAllList = _dataService.GetSuperfamilyAsync();
                 FamiliesCollection = _dataService.GetTbl45FamiliesCollectionOrderByFamilyNameFromFilterText(FilterText);
                 DataSetCount = FamiliesCollection.Count;
 
@@ -746,7 +738,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl39InfraordosAllList ??= [];
-                Tbl39InfraordosAllList = _dataService.GetInfraordoAsync();
+             //   Tbl39InfraordosAllList = _dataService.GetInfraordoAsync();
                 SuperfamiliesCollection = _dataService.GetTbl42SuperfamiliesCollectionOrderBySuperfamilyNameFromFilterText(FilterText);
                 DataSetCount = SuperfamiliesCollection.Count;
 
@@ -771,7 +763,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl36SubordosAllList ??= [];
-                Tbl36SubordosAllList = _dataService.GetSubordoAsync();
+           //     Tbl36SubordosAllList = _dataService.GetSubordoAsync();
                 InfraordosCollection = _dataService.GetTbl39InfraordosCollectionOrderByInfraordoNameFromFilterText(FilterText);
                 DataSetCount = InfraordosCollection.Count;
 
@@ -783,7 +775,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl33OrdosAllList ??= [];
-                Tbl33OrdosAllList = _dataService.GetOrdoAsync();
+           //     Tbl33OrdosAllList = _dataService.GetOrdoAsync();
                 SubordosCollection = _dataService.GetTbl36SubordosCollectionOrderBySubordoNameFromFilterText(FilterText);
                 DataSetCount = SubordosCollection.Count;
 
@@ -795,7 +787,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl30LegiosAllList ??= [];
-                Tbl30LegiosAllList = _dataService.GetLegioAsync();
+           //     Tbl30LegiosAllList = _dataService.GetLegioAsync();
                 OrdosCollection = _dataService.GetTbl33OrdosCollectionOrderByOrdoNameFromFilterText(FilterText);
                 DataSetCount = OrdosCollection.Count;
 
@@ -807,7 +799,7 @@ public class ReportViewModel : ObservableObject
             {
                 ClearAllCollections();
                 Tbl27InfraclassesAllList ??= [];
-                Tbl27InfraclassesAllList = _dataService.GetInfraclassAsync();
+           //     Tbl27InfraclassesAllList = _dataService.GetInfraclassAsync();
                 LegiosCollection = _dataService.GetTbl30LegiosCollectionOrderByLegioNameFromFilterText(FilterText);
                 DataSetCount = LegiosCollection.Count;
 
@@ -985,14 +977,6 @@ public class ReportViewModel : ObservableObject
     public void ReportSearchAll(int id, string tab)
     {
         ClearAllCollections();
-        //if (_context.Tbl15Subdivisions != null)
-        //{
-        //    var plantaeRegnum = _context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-        //    if (plantaeRegnum != null)
-        //    {
-        //        _plantId = plantaeRegnum.SubdivisionId;
-        //    }
-        //}
 
         if (_context.Tbl12Subphylums != null)
         {

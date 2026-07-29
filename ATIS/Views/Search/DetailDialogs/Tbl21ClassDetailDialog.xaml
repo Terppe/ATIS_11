@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog x:Class="ATIS.Views.Search.DetailDialogs.Tbl21ClassDetailDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
+               xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
+               xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
+               xmlns:dataTemplates="using:ATIS.Views.Search.DataTemplates"
+               xmlns:dataTemplates1="using:ATIS.Views.Report.DataTemplates"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:models="using:ATIS.Models"
+               Title="{x:Bind ViewModel.Title}"
+               MinWidth="1200"
+               MinHeight="900"
+               MaxWidth="1600"
+               MaxHeight="1200"
+               PrimaryButtonText="Close"
+               mc:Ignorable="d">
+
+    <Grid MinWidth="1200"
+          MinHeight="900"
+          Padding="12"
+          HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+
+        <Grid.Resources>
+            <DataTemplate x:Key="SearchItemTemplateTbl03Regnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplates:SearchItemTemplateTbl03RegnumControl />
+            </DataTemplate>
+
+            <DataTemplate x:Key="SearchItemTemplateTbl06Phylum"
+                          x:DataType="models:Tbl06Phylum">
+                <dataTemplates:SearchItemTemplateTbl06PhylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
+                          x:DataType="models:Tbl12Subphylum">
+                <dataTemplates:SearchItemTemplateTbl12SubphylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplates:SearchItemTemplateTbl18SuperclassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="SearchItemTemplateTbl21Class"
+                          x:DataType="models:Tbl21Class">
+                <dataTemplates:SearchItemTemplateTbl21ClassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="SearchItemTemplateTbl24Subclass"
+                          x:DataType="models:Tbl24Subclass">
+                <dataTemplates:SearchItemTemplateTbl24SubclassControl />
+            </DataTemplate>
+
+
+            <Style x:Key="NoSpacesListViewItemStyle"
+                   TargetType="ListViewItem">
+                <Setter Property="MinHeight" Value="24" />
+            </Style>
+
+            <!--  Report.Listviews  -->
+            <!--  Header  -->
+            <DataTemplate x:Key="ReportItemTemplateHeaderRegnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHeader:ReportItemTemplateHeaderRegnumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderPhylum"
+                          x:DataType="models:Tbl06Phylum">
+                <dataTemplateHeader:ReportItemTemplateHeaderPhylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderSubphylum"
+                          x:DataType="models:Tbl12Subphylum">
+                <dataTemplateHeader:ReportItemTemplateHeaderSubphylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderSuperclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplateHeader:ReportItemTemplateHeaderSuperclassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderClass"
+                          x:DataType="models:Tbl21Class">
+                <dataTemplateHeader:ReportItemTemplateHeaderClassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderSubclass"
+                          x:DataType="models:Tbl24Subclass">
+                <dataTemplateHeader:ReportItemTemplateHeaderSubclassControl />
+            </DataTemplate>
+
+            <!--  Taxonomy-Header  -->
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeader"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderControl />
+            </DataTemplate>
+
+            <!--  Taxonomy-Header-Body  -->
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylum"
+                          x:DataType="models:Tbl06Phylum">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylum"
+                          x:DataType="models:Tbl12Subphylum">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyClass"
+                          x:DataType="models:Tbl21Class">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubclass"
+                          x:DataType="models:Tbl24Subclass">
+                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubclassControl />
+            </DataTemplate>
+
+            <!--  Hyperlink-ListViews  -->
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
+                          x:DataType="models:Tbl03Regnum">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum"
+                          x:DataType="models:Tbl06Phylum">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
+                          x:DataType="models:Tbl12Subphylum">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubphylumControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
+                          x:DataType="models:Tbl18Superclass">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkClass"
+                          x:DataType="models:Tbl21Class">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkClassControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateHyperlinkSubclass"
+                          x:DataType="models:Tbl24Subclass">
+                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubclassControl />
+            </DataTemplate>
+
+            <!--  Rest-ListViews  -->
+
+            <DataTemplate x:Key="ReportItemTemplateTbl90RefExpert"
+                          x:DataType="models:Tbl90Reference">
+                <dataTemplates1:ReportItemTemplateTbl90RefExpertControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateTbl90RefSource"
+                          x:DataType="models:Tbl90Reference">
+                <dataTemplates1:ReportItemTemplateTbl90RefSourceControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateTbl90RefAuthor"
+                          x:DataType="models:Tbl90Reference">
+                <dataTemplates1:ReportItemTemplateTbl90RefAuthorControl />
+            </DataTemplate>
+            <DataTemplate x:Key="ReportItemTemplateTbl93Comment"
+                          x:DataType="models:Tbl93Comment">
+                <dataTemplates1:ReportItemTemplateTbl93CommentControl />
+            </DataTemplate>
+        </Grid.Resources>
+
+        <!--<Grid Padding="8">-->
+
+        <!--<Grid MinWidth="1200"
+        MinHeight="900"
+        Padding="12"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">-->
+
+        <TabView>
+
+            <!--  TAB 1: Overview  -->
+            <TabViewItem Header="Overview">
+                <ScrollViewer Padding="12">
+                    <StackPanel Spacing="20">
+
+                        <!--  Class Header  -->
+                        <ContentPresenter Content="{x:Bind ViewModel.ClassSelected}"
+                                          ContentTemplate="{StaticResource ReportItemTemplateHeaderClass}" />
+
+                        <!--  Taxo Nomen Header  -->
+                        <ContentPresenter Content="{x:Bind ViewModel.SuperclassSelected}"
+                                          ContentTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeader}" />
+
+                        <!--  Taxo Nomen Body (belongs to Class!)  -->
+                        <ContentPresenter Content="{x:Bind ViewModel.ClassSelected}"
+                                          ContentTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyClass}" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabViewItem>
+
+            <!--  TAB 2: Hierarchy  -->
+            <TabViewItem Header="Hierarchy">
+                <ScrollViewer Padding="12">
+                    <StackPanel Spacing="20">
+
+                        <TextBlock FontSize="20"
+                                   FontWeight="Bold"
+                                   Text="Taxonomic Hierarchy" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+                                  ItemsSource="{x:Bind ViewModel.RegnumItems}" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateHyperlinkPhylum}"
+                                  ItemsSource="{x:Bind ViewModel.PhylumItems}" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubphylum}"
+                                  ItemsSource="{x:Bind ViewModel.SubphylumItems}" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSuperclass}"
+                                  ItemsSource="{x:Bind ViewModel.SuperclassItems}" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"
+                                  ItemsSource="{x:Bind ViewModel.ClassItems}" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabViewItem>
+
+            <!--  TAB 3: Direct Children  -->
+            <TabViewItem Header="Direct Children">
+                <ScrollViewer Padding="12">
+                    <StackPanel Spacing="20">
+
+                        <ListView ItemsSource="{x:Bind ViewModel.SubclassItems}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <dataTemplates:SearchItemTemplateTbl21ClassControl />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabViewItem>
+
+            <!--  TAB 4: References  -->
+            <TabViewItem Header="References">
+                <ScrollViewer Padding="12">
+                    <StackPanel Spacing="20">
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
+                                  ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
+                                  ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
+
+                        <ListView ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
+                                  ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabViewItem>
+
+            <!--  TAB 5: Comments  -->
+            <TabViewItem Header="Comments">
+                <ScrollViewer Padding="12">
+                    <ListView ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
+                              ItemsSource="{x:Bind ViewModel.CommentItems}" />
+                </ScrollViewer>
+            </TabViewItem>
+
+            <!--  TAB 6: PDF  -->
+            <TabViewItem Header="PDF">
+                <StackPanel Padding="12"
+                            Spacing="12">
+                    <Button Command="{x:Bind ViewModel.ExportPdfCommand}"
+                            Content="PDF erzeugen" />
+                </StackPanel>
+            </TabViewItem>
+
+        </TabView>
+
+    </Grid>
+
+    <!--</Grid>-->
+</ContentDialog>

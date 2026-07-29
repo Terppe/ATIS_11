@@ -80,6 +80,10 @@ public partial class App : Application
     public static string? Cult = "";
 
     private SplashWindow splash;
+
+    public static event Action<string>? LanguageChanged;
+
+    public static MainPage MainPageInstance { get; private set; }
     // ---------------------------------------------------------
     // 2. KONSTRUKTOR
     // ---------------------------------------------------------
@@ -113,7 +117,8 @@ public partial class App : Application
         };
 
         // 3. MainPage setzen
-        MainWindow.Content = new MainPage();
+        MainPageInstance = new MainPage();
+        MainWindow.Content = MainPageInstance;
         MainRoot = MainWindow.Content as FrameworkElement;
 
         // 4 ThemeService
@@ -121,7 +126,6 @@ public partial class App : Application
         themeService?.AutoInitialize(MainWindow);
 
         // 5  
-
 
         // 6 Logging 
         InitializeLogging();
@@ -139,9 +143,6 @@ public partial class App : Application
 
         var customPrincipal = new CustomPrincipal();
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
-
-
-
     }
 
     //---------------------------------------------------------
@@ -250,17 +251,14 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         // THEME SERVICE (KORREKT)
-        services.AddSingleton<WinUICommunity.IThemeService, WinUICommunity.ThemeService>();
-
-        // DATABASE + DATA SERVICE
-      //  services.AddDbContext<AtisDbContext>();
+        services.AddSingleton<IThemeService, ThemeService>();
 
         // HIERARCHY COORDINATOR - SINGLETON!
         services.AddSingleton<HierarchyCoordinator>();
 
         // DATA SERVICE
         services.AddDbContextFactory<AtisDbContext>();
-        //   services.AddScoped<IDataService, DataService>();
+        services.AddScoped<IDataService, DataService>();
 
         // DIALOG SYSTEM SERVICES
         services.AddSingleton<IDialogService, DialogService>();
@@ -269,9 +267,7 @@ public partial class App : Application
         services.AddScoped<LookupService>();
 
         // USER SERVICES
-        services.AddScoped<IUserService, UserService>();
-
-        // VIEWMODELS
+        services.AddScoped<IUserService, UserService>();        // VIEWMODELS
         services.AddTransient<TblCountryListTestPage>();
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();
@@ -286,24 +282,6 @@ public partial class App : Application
         services.AddTransient<GitUpdateSettingViewModel>();
         services.AddTransient<AboutUsSettingViewModel>();
         services.AddTransient<BreadCrumbBarViewModel>();
-
-        services.AddTransient<Tbl03RegnumAltViewModel>();
-        services.AddTransient<Tbl06PhylumAltViewModel>();
-        services.AddTransient<Tbl12SubphylumAltViewModel>();
-        services.AddTransient<Tbl18SuperclassAltViewModel>();
-        services.AddTransient<Tbl21ClassAltViewModel>();
-        services.AddTransient<Tbl24SubclassAltViewModel>();
-        services.AddTransient<Tbl27InfraclassAltViewModel>();
-        services.AddTransient<Tbl30LegioAltViewModel>();
-        services.AddTransient<Tbl33OrdoAltViewModel>();
-        services.AddTransient<Tbl36SubordoAltViewModel>();
-        services.AddTransient<Tbl39InfraordoAltViewModel>();
-        services.AddTransient<Tbl42SuperfamilyAltViewModel>();
-        services.AddTransient<Tbl45FamilyAltViewModel>();
-        services.AddTransient<Tbl48SubfamilyAltViewModel>();
-        services.AddTransient<Tbl51InfrafamilyAltViewModel>();
-        services.AddTransient<Tbl54SupertribusAltViewModel>();
-        services.AddTransient<Tbl57TribusAltViewModel>();
 
         services.AddTransient<Tbl03RegnumViewModel>();
         services.AddTransient<Tbl06PhylumViewModel>();
@@ -328,9 +306,7 @@ public partial class App : Application
         services.AddTransient<Tbl75SpeciesViewModel>();
         services.AddTransient<Tbl78NameViewModel>();
 
-        services.AddTransient<Tbl66GenusAltViewModel>();
         services.AddTransient<Tbl68SpeciesgroupAltViewModel>();
-        services.AddTransient<Tbl75SpeciesAltViewModel>();
         services.AddTransient<Tbl78NameAltViewModel>();
         services.AddTransient<Tbl81ImageAltViewModel>();
         services.AddTransient<Tbl84SynonymAltViewModel>();
@@ -486,6 +462,8 @@ public partial class App : Application
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
     }
 
+    public static void RaiseLanguageChanged(string lang)
+        => LanguageChanged?.Invoke(lang);
 
     // ---------------------------------------------------------
     // 8. LOGGING

@@ -8,6 +8,7 @@ using ATIS.Views.Modules.Tbl12Subphylum;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer; 
 
 
 //    Tbl06PhylumViewModel Skriptdatum:  15.06.2024  12:32    
@@ -23,6 +24,7 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl06Phylum>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -66,8 +68,29 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Phylum ID");
-        RegisterHeader("Name", "Phylum Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------               
+    // SORTING HEADERS
+    // ---------------------------------------------------------               
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_PhylumId")) ? "Id" : loc.GetLocalizedString("HeaderSort_PhylumId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_PhylumName")) ? "Name" : loc.GetLocalizedString("HeaderSort_PhylumName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               

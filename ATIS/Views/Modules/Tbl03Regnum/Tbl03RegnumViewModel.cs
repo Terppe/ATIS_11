@@ -8,6 +8,7 @@ using ATIS.Views.Modules.Tbl06Phylum;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
 //    Tbl03RegnumViewModel Skriptdatum:  30.12.2024  12:32      
@@ -22,6 +23,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl03Regnum>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -52,10 +54,30 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Regnum ID");
-        RegisterHeader("Name", "Regnum Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
     }
 
+    // ---------------------------------------------------------               
+    // SORTING HEADERS
+    // ---------------------------------------------------------               
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_RegnumId")) ? "Id" : loc.GetLocalizedString("HeaderSort_RegnumId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_RegnumName")) ? "Name" : loc.GetLocalizedString("HeaderSort_RegnumName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
+    }
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
@@ -148,7 +170,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchRegnumWithNULLAsync(SearchText);
+            return await Data.SearchRegnumAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl03Regnum>();
     }

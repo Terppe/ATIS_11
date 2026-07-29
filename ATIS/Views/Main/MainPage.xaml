@@ -271,7 +271,7 @@
 
                 <NavigationViewItem x:Name="NavSearch"
                                     loc:Uids.Uid="Nav_Search"
-                                    Tag="ATIS.Views.Search.SearchQuickPage">
+                                    Tag="ATIS.Views.Search.SearchPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/search.png" />
@@ -355,7 +355,7 @@
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfrafamily"
                                                     loc:Uids.Uid="Nav_Infrafamily"
-                                                    Tag="ATIS.Views.Database.Tbl51InfrafamilyListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl51Infrafamily.Tbl51InfrafamilyPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -363,7 +363,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubfamily"
                                                     loc:Uids.Uid="Nav_Subfamily"
-                                                    Tag="ATIS.Views.Database.Tbl48SubfamilyListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl48Subfamily.Tbl48SubfamilyPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -371,7 +371,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavFamily"
                                                     loc:Uids.Uid="Nav_Family"
-                                                    Tag="ATIS.Views.Database.Tbl45FamilyListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl45Family.Tbl45FamilyPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -379,7 +379,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSuperfamily"
                                                     loc:Uids.Uid="Nav_Superfamily"
-                                                    Tag="ATIS.Views.Database.Tbl42SuperfamilyListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl42Superfamily.Tbl42SuperfamilyPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -395,7 +395,7 @@
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfraordo"
                                                     loc:Uids.Uid="Nav_Infraordo"
-                                                    Tag="ATIS.Views.Database.Tbl39InfraordoListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl39Infraordo.Tbl39InfraordoPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -403,7 +403,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubordo"
                                                     loc:Uids.Uid="Nav_Subordo"
-                                                    Tag="ATIS.Views.Database.Tbl36SubordoListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl36Subordo.Tbl36SubordoPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -411,7 +411,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavOrdo"
                                                     loc:Uids.Uid="Nav_Ordo"
-                                                    Tag="ATIS.Views.Database.Tbl33OrdoListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl33Ordo.Tbl33OrdoPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -419,7 +419,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavLegio"
                                                     loc:Uids.Uid="Nav_Legio"
-                                                    Tag="ATIS.Views.Database.Tbl30LegioListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl30Legio.Tbl30LegioPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -435,7 +435,7 @@
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavInfraclass"
                                                     loc:Uids.Uid="Nav_Infraclass"
-                                                    Tag="ATIS.Views.Database.Tbl27InfraclassListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl27Infraclass.Tbl27InfraclassPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -443,7 +443,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSubclass"
                                                     loc:Uids.Uid="Nav_Subclass"
-                                                    Tag="ATIS.Views.Database.Tbl24SubclassListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl24Subclass.Tbl24SubclassPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />

@@ -7,7 +7,7 @@ public class Tbl45FamiliesPdfModel
 {
     public string FamilyName { get; set; }
     public int CountId { get; set; }
-    public bool Valid { get; set; }
+    public bool? Valid { get; set; }
     public string ValidYear { get; set; }
     public string Synonym { get; set; }
     public string Author { get; set; }

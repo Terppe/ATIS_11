@@ -1,269 +1,443 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
 using ATIS.Views.Base;
-using CommunityToolkit.Mvvm.ComponentModel;
+using WinUI3Localizer;
+
+
+//    Tbl36SubordoModel Skriptdatum:  15.06.2024  10:32    
 
 namespace ATIS.Models;
 
 public class Tbl36Subordo : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
-    // ---------------------------------------------------------
-    // ERROR DICTIONARY (wie Subtribus)
-    // ---------------------------------------------------------
-    private readonly Dictionary<string, List<string>> _errors = new();
-
-    public IReadOnlyDictionary<string, List<string>> Errors => _errors;
-
-    private void AddError(string property, string message)
-    {
-        if (!_errors.ContainsKey(property))
-            _errors[property] = new List<string>();
-
-        if (!_errors[property].Contains(message))
-            _errors[property].Add(message);
-
-        OnPropertyChanged(nameof(HasErrors));
-        OnPropertyChanged($"{property}Error");
-        OnPropertyChanged($"Has{property}Error");
-    }
-
-    private void ClearErrors(string property)
-    {
-        if (_errors.ContainsKey(property))
-        {
-            _errors.Remove(property);
-            OnPropertyChanged(nameof(HasErrors));
-            OnPropertyChanged($"{property}Error");
-            OnPropertyChanged($"Has{property}Error");
-        }
-    }
-
-    public bool HasErrors => _errors.Count > 0;
+    private Dictionary<string, List<string>> _errors = new();
 
     // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
+
     [Key]
     public int SubordoId { get; set; }
 
     // ---------------------------------------------------------
-    // FIELDS
+    // SubordoName
     // ---------------------------------------------------------
-    private string _subordoName;
-    [Required]
+
     [StringLength(100)]
-    public string SubordoName
+    private string? _subordoName;
+    public string? SubordoName
     {
         get => _subordoName;
         set
         {
-            if (SetProperty(ref _subordoName, value))
-                ValidateSubordoName();
+            SetProperty(ref _subordoName, value);
+            ValidateSubordoName();
         }
     }
 
-    [Required]
-    public int OrdoId { get; set; }
+    private string? _subordoNameError;
+    [NotMapped]
+    public string? SubordoNameError
+    {
+        get => _subordoNameError;
+        set => SetProperty(ref _subordoNameError, value);
+    }
 
-    [Required]
-    public int CountId { get; set; }
+    private bool _hasSubordoNameError;
+    [NotMapped]
+    public bool HasSubordoNameError
+    {
+        get => _hasSubordoNameError;
+        set
+        {
+            if (_hasSubordoNameError != value)
+            {
+                _hasSubordoNameError = value;
+                OnPropertyChanged(); // WICHTIG!
+            }
+        }
+    }
 
-    public bool Valid { get; set; }
+    // ---------------------------------------------------------                   
+    // OrdoId (FK)
+    // ---------------------------------------------------------                   
 
-    private string _validYear;
+    private int _ordoId;
+    public int OrdoId
+    {
+        get => _ordoId;
+        set => SetProperty(ref _ordoId, value);
+    }
+
+    public Tbl33Ordo? Ordo { get; set; }
+
+    [NotMapped]
+    public string? OrdoName => Ordo?.OrdoName;
+
+    // ---------------------------------------------------------               
+    // CountId
+    // ---------------------------------------------------------               
+
+    private int _countId;
+    public int CountId
+    {
+        get => _countId;
+        set => SetProperty(ref _countId, value);
+    }
+
+    // ---------------------------------------------------------                  
+    // Valid
+    // ---------------------------------------------------------                  
+    private bool? _valid;
+    public bool? Valid
+    {
+        get => _valid;
+        set => SetProperty(ref _valid, value);
+    }
+
+    // ---------------------------------------------------------
+    // ValidYear
+    // ---------------------------------------------------------
+
     [StringLength(4)]
-    public string ValidYear
+    private string? _validYear;
+    public string? ValidYear
     {
         get => _validYear;
         set
         {
             if (SetProperty(ref _validYear, value))
+            {
                 ValidateValidYear();
+            }
         }
     }
 
-    private string _synonym;
+    private string? _validYearError;
+    [NotMapped]
+    public string? ValidYearError
+    {
+        get => _validYearError;
+        set => SetProperty(ref _validYearError, value);
+    }
+
+    private bool _hasValidYearError;
+    [NotMapped]
+    public bool HasValidYearError
+    {
+        get => _hasValidYearError;
+        set => SetProperty(ref _hasValidYearError, value);
+    }
+
+    // ---------------------------------------------------------
+    // Synonym
+    // ---------------------------------------------------------
+
     [StringLength(1000)]
-    public string Synonym
+    private string? _synonym;
+    public string? Synonym
     {
         get => _synonym;
-        set
-        {
-            if (SetProperty(ref _synonym, value))
-                ValidateSynonym();
-        }
+        set => SetProperty(ref _synonym, value);
     }
 
-    private string _author;
+    // ---------------------------------------------------------
+    // Author
+    // ---------------------------------------------------------
+
     [StringLength(60)]
-    public string Author
+    private string? _author;
+    public string? Author
     {
         get => _author;
-        set
-        {
-            if (SetProperty(ref _author, value))
-                ValidateAuthor();
-        }
+        set => SetProperty(ref _author, value);
     }
 
-    private string _authorYear;
+    // ---------------------------------------------------------
+    // AuthorYear
+    // ---------------------------------------------------------
+
     [StringLength(4)]
-    public string AuthorYear
+    private string? _authorYear;
+    public string? AuthorYear
     {
         get => _authorYear;
         set
         {
             if (SetProperty(ref _authorYear, value))
+            {
                 ValidateAuthorYear();
+            }
         }
     }
 
-    private string _info;
+    private string? _authorYearError;
+    [NotMapped]
+    public string? AuthorYearError
+    {
+        get => _authorYearError;
+        set => SetProperty(ref _authorYearError, value);
+    }
+
+    private bool _hasAuthorYearError;
+    [NotMapped]
+    public bool HasAuthorYearError
+    {
+        get => _hasAuthorYearError;
+        set => SetProperty(ref _hasAuthorYearError, value);
+    }
+
+    // ---------------------------------------------------------
+    // Info
+    // ---------------------------------------------------------
+
     [StringLength(1000)]
-    public string Info
+    private string? _info;
+    public string? Info
     {
         get => _info;
-        set
-        {
-            if (SetProperty(ref _info, value))
-                ValidateInfo();
-        }
+        set => SetProperty(ref _info, value);
     }
 
-    [StringLength(200)]
-    public string EngName { get; set; }
+    // ---------------------------------------------------------
+    // EngName
+    // ---------------------------------------------------------
 
     [StringLength(200)]
-    public string GerName { get; set; }
+    private string? _engName;
+    public string? EngName
+    {
+        get => _engName;
+        set => SetProperty(ref _engName, value);
+    }
+
+    // ---------------------------------------------------------
+    // GerName
+    // ---------------------------------------------------------
 
     [StringLength(200)]
-    public string FraName { get; set; }
+    private string? _gerName;
+    public string? GerName
+    {
+        get => _gerName;
+        set => SetProperty(ref _gerName, value);
+    }
+
+    // ---------------------------------------------------------
+    // FraName
+    // ---------------------------------------------------------
 
     [StringLength(200)]
-    public string PorName { get; set; }
+    private string? _fraName;
+    public string? FraName
+    {
+        get => _fraName;
+        set => SetProperty(ref _fraName, value);
+    }
+
+    // ---------------------------------------------------------
+    // PorName
+    // ---------------------------------------------------------
+
+    [StringLength(200)]
+    private string? _porName;
+    public string? PorName
+    {
+        get => _porName;
+        set => SetProperty(ref _porName, value);
+    }
+
+    // ---------------------------------------------------------
+    // Writer
+    // ---------------------------------------------------------
 
     [StringLength(50)]
-    public string Writer { get; set; }
-    public DateTime WriterDate { get; set; }
+    private string? _writer;
+    public string? Writer
+    {
+        get => _writer;
+        set => SetProperty(ref _writer, value);
+    }
+
+    private DateTime _writerDate;
+    public DateTime WriterDate
+    {
+        get => _writerDate;
+        set => SetProperty(ref _writerDate, value);
+    }
+
+    // ---------------------------------------------------------
+    // Updater
+    // ---------------------------------------------------------
 
     [StringLength(50)]
-    public string Updater { get; set; }
-    public DateTime UpdaterDate { get; set; }
+    private string? _updater;
+    public string? Updater
+    {
+        get => _updater;
+        set => SetProperty(ref _updater, value);
+    }
 
-    private string _memo;
+    private DateTime _updaterDate;
+    public DateTime UpdaterDate
+    {
+        get => _updaterDate;
+        set => SetProperty(ref _updaterDate, value);
+    }
+
+    // ---------------------------------------------------------
+    // Memo
+    // ---------------------------------------------------------
+
     [StringLength(1000)]
-    public string Memo
+    private string? _memo;
+    public string? Memo
     {
         get => _memo;
-        set
-        {
-            if (SetProperty(ref _memo, value))
-                ValidateMemo();
-        }
+        set => SetProperty(ref _memo, value);
     }
 
     // ---------------------------------------------------------
-    // NAVIGATION
+    // IHierarchicalEntity IMPLEMENTATION
     // ---------------------------------------------------------
-    [ForeignKey("OrdoId")]
-    public virtual Tbl33Ordo Ordo { get; set; }
 
-    [NotMapped]
-    public string OrdoName => Ordo?.OrdoName;
+    public int GetEntityId() => SubordoId;
+    public string GetDisplayName() => SubordoName ?? $"Subordo {SubordoId}";
 
     // ---------------------------------------------------------
-    // VALIDATION METHODS
+    // VALIDIERUNGSMETHODEN MIT LOCALIZATION
     // ---------------------------------------------------------
-    private void ValidateSubordoName()
+
+    private void ClearErrors(string propertyName)
+    {
+        if (_errors.ContainsKey(propertyName))
+            _errors[propertyName].Clear();
+    }
+
+    private void AddError(string propertyName, string errorMessage)
+    {
+        if (!_errors.ContainsKey(propertyName))
+            _errors[propertyName] = new List<string>();
+
+        if (!_errors[propertyName].Contains(errorMessage))
+            _errors[propertyName].Add(errorMessage);
+    }
+
+    private void UpdateErrorProperty(string propertyName)
+    {
+        var hasErrors = _errors.ContainsKey(propertyName) && _errors[propertyName].Count > 0;
+        var errorMessage = hasErrors ? string.Join(" | ", _errors[propertyName]) : "";
+
+        switch (propertyName)
+        {
+            case nameof(SubordoName):
+                SubordoNameError = errorMessage;
+                HasSubordoNameError = hasErrors;
+                break;
+            case nameof(ValidYear):
+                ValidYearError = errorMessage;
+                HasValidYearError = hasErrors;
+                break;
+            case nameof(AuthorYear):
+                AuthorYearError = errorMessage;
+                HasAuthorYearError = hasErrors;
+                break;
+        }
+
+        OnPropertyChanged($"{propertyName}Error");
+        OnPropertyChanged($"Has{propertyName}Error");
+    }
+
+    // ---------------------------------------------------------
+    // Validate Name
+    // ---------------------------------------------------------
+
+    public void ValidateSubordoName()
     {
         ClearErrors(nameof(SubordoName));
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
 
-        if (string.IsNullOrWhiteSpace(SubordoName))
-            AddError(nameof(SubordoName), "Name is required.");
+        if (string.IsNullOrWhiteSpace(_subordoName))
+            AddError(nameof(SubordoName), loc.GetLocalizedString("Error_SubordoName_Empty"));
 
-        if (SubordoName?.Length > 100)
-            AddError(nameof(SubordoName), "Max length is 100.");
+        if (_subordoName?.Length > 100)
+            AddError(nameof(SubordoName), loc.GetLocalizedString("Error_SubordoName_TooLong"));
+
+        UpdateErrorProperty(nameof(SubordoName));
     }
+
+    // ---------------------------------------------------------
+    // Validate ValidYear
+    // ---------------------------------------------------------
 
     private void ValidateValidYear()
     {
         ClearErrors(nameof(ValidYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
-        if (!string.IsNullOrWhiteSpace(ValidYear) && ValidYear.Length != 4)
-            AddError(nameof(ValidYear), "Year must be 4 digits.");
+        if (string.IsNullOrWhiteSpace(ValidYear))
+            goto Notify;
+
+        if (ValidYear!.Length != 4)
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(ValidYear, out var year))
+        {
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
+
+Notify:
+        UpdateErrorProperty(nameof(ValidYear));
     }
 
-    private void ValidateSynonym()
-    {
-        ClearErrors(nameof(Synonym));
-
-        if (!string.IsNullOrWhiteSpace(Synonym) && Synonym.Length > 1000)
-            AddError(nameof(Synonym), "Max length is 1000.");
-    }
-
-    private void ValidateAuthor()
-    {
-        ClearErrors(nameof(Author));
-
-        if (!string.IsNullOrWhiteSpace(Author) && Author.Length > 60)
-            AddError(nameof(Author), "Max length is 60.");
-    }
+    // ---------------------------------------------------------
+    // Validate AuthorYear
+    // ---------------------------------------------------------
 
     private void ValidateAuthorYear()
     {
         ClearErrors(nameof(AuthorYear));
+        var loc = Localizer.Get();  // ← Direkt verwenden
 
-        if (!string.IsNullOrWhiteSpace(AuthorYear) && AuthorYear.Length != 4)
-            AddError(nameof(AuthorYear), "Year must be 4 digits.");
+        if (string.IsNullOrWhiteSpace(AuthorYear))
+            goto Notify;
+
+        if (AuthorYear!.Length != 4)
+        {
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Length"));
+            goto Notify;
+        }
+
+        if (!int.TryParse(AuthorYear, out var year))
+        {
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_NotNumber"));
+            goto Notify;
+        }
+
+        if (year < 1500 || year > 2100)
+            AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
+
+Notify:
+        UpdateErrorProperty(nameof(AuthorYear));
     }
 
-    private void ValidateInfo()
+    public bool IsValid()
     {
-        ClearErrors(nameof(Info));
+        ValidateSubordoName();
+        ValidateValidYear();
+        ValidateAuthorYear();
 
-        if (!string.IsNullOrWhiteSpace(Info) && Info.Length > 1000)
-            AddError(nameof(Info), "Max length is 1000.");
+        return !HasSubordoNameError && !HasValidYearError && !HasAuthorYearError;
     }
 
-    private void ValidateMemo()
-    {
-        ClearErrors(nameof(Memo));
 
-        if (!string.IsNullOrWhiteSpace(Memo) && Memo.Length > 1000)
-            AddError(nameof(Memo), "Max length is 1000.");
-    }
 
-    // ---------------------------------------------------------
-    // ERROR PROPERTIES
-    // ---------------------------------------------------------
-    [NotMapped] public string SubordoNameError => _errors.ContainsKey(nameof(SubordoName)) ? string.Join("; ", _errors[nameof(SubordoName)]) : null;
-    [NotMapped] public bool HasSubordoNameError => _errors.ContainsKey(nameof(SubordoName));
-
-    [NotMapped] public string ValidYearError => _errors.ContainsKey(nameof(ValidYear)) ? string.Join("; ", _errors[nameof(ValidYear)]) : null;
-    [NotMapped] public bool HasValidYearError => _errors.ContainsKey(nameof(ValidYear));
-
-    [NotMapped] public string SynonymError => _errors.ContainsKey(nameof(Synonym)) ? string.Join("; ", _errors[nameof(Synonym)]) : null;
-    [NotMapped] public bool HasSynonymError => _errors.ContainsKey(nameof(Synonym));
-
-    [NotMapped] public string AuthorError => _errors.ContainsKey(nameof(Author)) ? string.Join("; ", _errors[nameof(Author)]) : null;
-    [NotMapped] public bool HasAuthorError => _errors.ContainsKey(nameof(Author));
-
-    [NotMapped] public string AuthorYearError => _errors.ContainsKey(nameof(AuthorYear)) ? string.Join("; ", _errors[nameof(AuthorYear)]) : null;
-    [NotMapped] public bool HasAuthorYearError => _errors.ContainsKey(nameof(AuthorYear));
-
-    [NotMapped] public string InfoError => _errors.ContainsKey(nameof(Info)) ? string.Join("; ", _errors[nameof(Info)]) : null;
-    [NotMapped] public bool HasInfoError => _errors.ContainsKey(nameof(Info));
-
-    [NotMapped] public string MemoError => _errors.ContainsKey(nameof(Memo)) ? string.Join("; ", _errors[nameof(Memo)]) : null;
-    [NotMapped] public bool HasMemoError => _errors.ContainsKey(nameof(Memo));
-
-    // ---------------------------------------------------------
-    // IHierarchicalEntity
-    // ---------------------------------------------------------
-    public int GetEntityId() => SubordoId;
-
-    public string GetDisplayName() => SubordoName;
 }

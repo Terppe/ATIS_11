@@ -3,7 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:loca="using:WinUI3Localizer"
+             xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -18,15 +18,14 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0"
                     Grid.ColumnSpan="2">
-            <TextBlock loca:Uids.Uid="TextBlock_TaxonomyAndNomenclatura"
+            <TextBlock loc:Uids.Uid="TextBlock_TaxonomyAndNomenclatura"
                        FontSize="18"
                        FontWeight="Bold" />
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="0">
             <TextBlock Margin="8,0,0,0"
-                       loca:Uids.Uid="TextBlock_Kingdom"
-                       Text="Kingdom:" />
+                       loc:Uids.Uid="TextBlock_Kingdom" />
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1"

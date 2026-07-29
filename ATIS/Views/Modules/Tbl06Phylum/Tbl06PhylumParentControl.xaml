@@ -8,15 +8,22 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
-    <!--    Tbl06PhylumParentControl Skriptdatum:  15.06.2024  12:32 -->
+    <!--  Tbl06PhylumParentControl Skriptdatum:  15.06.2024  12:32  -->
 
     <UserControl.Resources>
-        <GridLength x:Key="IdWidthResource">120</GridLength>
+        <!--  ID  -->
+        <GridLength x:Key="IdWidthResource">150</GridLength>
+        <!--  Name  -->
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
+        <!--  FK-ID  -->
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
+        <!--  Valid  -->
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
+        <!--  ValidYear  -->
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
+        <!--  Author  -->
         <GridLength x:Key="Extra5WidthResource">250</GridLength>
+        <!--  AuthorYear  -->
         <GridLength x:Key="Extra6WidthResource">100</GridLength>
     </UserControl.Resources>
 
@@ -191,4 +198,4 @@
         </ListView>
 
     </Grid>
-</UserControl>  
+</UserControl>

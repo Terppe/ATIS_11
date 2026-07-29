@@ -50,7 +50,6 @@
     <SolidColorBrush x:Key="AtisIconDisabledBrush"
                      Color="#55000000" />
 
-    <Color x:Key="AtisDataGridAlternateRowBackgroundColor">#F5F5F5</Color>
 
     <SolidColorBrush x:Key="AtisPrimaryBackgroundBrush"
                      Color="#0078D4" />

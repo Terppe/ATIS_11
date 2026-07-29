@@ -54,10 +54,27 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     public async Task LoadForSuperclassAsync(int id)
         => await LoadInternalAsync(id, Data.GetCommentsForSuperclassAsync, c => c.SuperclassId = id);
     public async Task LoadForClassAsync(int id)
-        => await LoadInternalAsync(id, Data.GetCommentsForClassAsync, c => c.SuperclassId = id);
-
-
-
+        => await LoadInternalAsync(id, Data.GetCommentsForClassAsync, c => c.ClassId = id);
+    public async Task LoadForSubclassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSubclassAsync, c => c.SubclassId = id);
+    public async Task LoadForInfraclassAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForInfraclassAsync, c => c.InfraclassId = id);
+    public async Task LoadForLegioAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForLegioAsync, c => c.LegioId = id);
+    public async Task LoadForOrdoAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForOrdoAsync, c => c.OrdoId = id);
+    public async Task LoadForSubordoAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSubordoAsync, c => c.SubordoId = id);
+    public async Task LoadForInfraordoAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForInfraordoAsync, c => c.InfraordoId = id);
+    public async Task LoadForSuperfamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSuperfamilyAsync, c => c.SuperfamilyId = id);
+    public async Task LoadForFamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForFamilyAsync, c => c.FamilyId = id);
+    public async Task LoadForSubfamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForSubfamilyAsync, c => c.SubfamilyId = id);
+    public async Task LoadForInfrafamilyAsync(int id)
+        => await LoadInternalAsync(id, Data.GetCommentsForInfrafamilyAsync, c => c.InfrafamilyId = id);
     public async Task LoadForSupertribusAsync(int id)
         => await LoadInternalAsync(id, Data.GetCommentsForSupertribusAsync, c => c.SupertribusId = id);
 

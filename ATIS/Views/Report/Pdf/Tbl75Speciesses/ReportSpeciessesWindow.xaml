@@ -27,18 +27,10 @@
                           x:DataType="models:Tbl06Phylum">
                 <dataTemplatesSearch:SearchItemTemplateTbl06PhylumControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="SearchItemTemplateTbl09Division"
-                          x:DataType="models:Tbl09Division">
-                <dataTemplatesSearch:SearchItemTemplateTbl09DivisionControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplatesSearch:SearchItemTemplateTbl12SubphylumControl />
             </DataTemplate>
-            <!--<DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
-                          x:DataType="models:Tbl15Subdivision">
-                <dataTemplatesSearch:SearchItemTemplateTbl15SubdivisionControl />
-            </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
                           x:DataType="models:Tbl18Superclass">
                 <dataTemplatesSearch:SearchItemTemplateTbl18SuperclassControl />

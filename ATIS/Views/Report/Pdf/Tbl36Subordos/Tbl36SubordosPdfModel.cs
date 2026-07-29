@@ -12,7 +12,7 @@ public class Tbl36SubordosPdfModel
     {
         get; set;
     }
-    public bool Valid
+    public bool? Valid
     {
         get; set;
     }

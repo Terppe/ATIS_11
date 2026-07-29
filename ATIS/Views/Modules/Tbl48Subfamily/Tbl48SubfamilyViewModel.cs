@@ -1,87 +1,350 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl51Infrafamily;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+
+
+//    Tbl48SubfamilyViewModel Skriptdatum:  15.06.2024  10:32    
 
 namespace ATIS.Views.Modules.Tbl48Subfamily;
 
-public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfamily>, ITaxonViewModel
+public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfamily>
 {
+    private readonly LookupService _lookupService;
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
+
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.Tbl48Subfamily>>>? _activeLoader;
+
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+
+    public Tbl93CommentViewModel SubfamilyCommentViewModel { get; }
+    public Tbl90ReferenceViewModel SubfamilyReferenceViewModel { get; }
+    public Tbl51InfrafamilyViewModel InfrafamilyViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+
+    public ObservableCollection<Models.Tbl45Family> FamilyList { get; private set; } = new();
+    public Dictionary<int, string?> FamilyLookup { get; private set; } = new();
+
+    public async Task LoadFamilyLookupAsync()
+    {
+        FamilyList = await _lookupService.GetFamilyListAsync();
+        FamilyLookup = await _lookupService.GetFamilyLookupAsync();
+    }
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+
     public Tbl48SubfamilyViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
         HierarchyCoordinator coordinator,
-        LookupService lookup,
+        LookupService lookupService,
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
-        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
-        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+        _lookupService = lookupService;
 
-        //IsDetailVisible = false;
-        //IsEditVisible = false;
+        SubfamilyCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
+        SubfamilyReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        InfrafamilyViewModel = new Tbl51InfrafamilyViewModel(factory, dialog, coordinator, lookupService, user);
+
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Subfamily ID");
+        RegisterHeader("Name", "Subfamily Name");
     }
 
-    protected override async Task NewAsync()
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------               
+
+    private int _selectedDetailPivotIndex;
+    public int SelectedDetailPivotIndex
     {
-        throw new NotImplementedException();
+        get => _selectedDetailPivotIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Pivot 0 = Boss-Modus
+        IsInParentMode = SelectedDetailPivotIndex != 0;
+
+        if (SelectedDetailPivotIndex == 2)
+            _ = SubfamilyReferenceViewModel.LoadReferenceLookupsAsync();
+
+        if (SelectedDetailPivotIndex == 5)
+            _ = InfrafamilyViewModel.InfrafamilyReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+
+    public bool IsInfrafamilyParentSelected => InfrafamilyViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+        // Boss-Start: Parent-Kontext löschen
+        _activeLoader = null;
+        _currentParentId = 0;
+
+        await LoadFamilyLookupAsync();
+
+        Items = new ObservableCollection<Models.Tbl48Subfamily>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
+
+    // ---------------------------------------------------------
+    // LOAD FOR VK 
+    // ---------------------------------------------------------
+
+    public async Task LoadForFamilyAsync(int familyId)
+        => await LoadInternalAsync(familyId, Data.GetSubfamilyForFamilyAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl48Subfamily>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl48Subfamily>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+
+    protected override async Task<IEnumerable<Models.Tbl48Subfamily>> LoadItemsAsync()
+    {
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchSubfamilyWithFamilyAsync(SearchText);
+
+        return Items ?? Enumerable.Empty<Models.Tbl48Subfamily>();
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
+            await ClearChildCollectionsAsync();
+            SelectedDetailPivotIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+            await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
+    }
+
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        await SubfamilyCommentViewModel.LoadForSubfamilyAsync(entityId);
+        await SubfamilyReferenceViewModel.LoadForSubfamilyAsync(entityId);
+
+        await InfrafamilyViewModel.LoadSubfamilyLookupAsync();
+        await InfrafamilyViewModel.LoadForSubfamilyAsync(entityId);
+
+
+        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        InfrafamilyViewModel.IsInParentMode = true;
+    }
+
+    protected override Task ClearChildCollectionsAsync()
+    {
+        SubfamilyCommentViewModel.Items?.Clear();
+        SubfamilyReferenceViewModel.Items?.Clear();
+        InfrafamilyViewModel.Items?.Clear();
+
+        if (IsBossMode)
+        {
+            SubfamilyCommentViewModel.SelectedItem = null;
+            SubfamilyReferenceViewModel.SelectedItem = null;
+            InfrafamilyViewModel.SelectedItem = null;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+
+    protected override object GetSortKey(Models.Tbl48Subfamily item, string column)
+        => column switch
+        {
+            "Id" => item.SubfamilyId,
+            "Name" => item.SubfamilyName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+
+    protected override Task NewAsync()
+    {
+        return Task.CompletedTask;
     }
 
     protected override Models.Tbl48Subfamily CreateNewItem()
     {
-        throw new NotImplementedException();
-    }
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-    protected override async Task<IEnumerable<Models.Tbl48Subfamily>> LoadItemsAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<Models.Tbl48Subfamily?> SaveItemAsync(Models.Tbl48Subfamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> DeleteItemAsync(Models.Tbl48Subfamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmSaveAsync(Models.Tbl48Subfamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override async Task<bool> ConfirmDeleteAsync(Models.Tbl48Subfamily item)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override int GetId(Models.Tbl48Subfamily model)
-    {
-        throw new NotImplementedException();
-    }
-
-    protected override object GetSortKey(Models.Tbl48Subfamily item, string column)
-    {
-        return column switch
+        return new Models.Tbl48Subfamily
         {
-            "Id" => item.SubfamilyId,
-            "Info" => item.SubfamilyName ?? "",
-            _ => ""
+            FamilyId = _currentParentId
         };
     }
 
-    protected override async Task LoadChildrenAsync(int entityId)
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
+
+    protected override async Task<Models.Tbl48Subfamily?> SaveItemAsync(Models.Tbl48Subfamily item)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(item.SubfamilyName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertSubfamilyAsync(item);
+        return saved;
+    }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl48Subfamily item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.SubfamilyName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
+
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl48Subfamily item)
+    {
+        if (item.SubfamilyId == 0)
+            return false;
+
+        if (await Data.SubfamilyHasInfrafamilyAsync(item.SubfamilyId) ||
+            await Data.SubfamilyHasReferenceAsync(item.SubfamilyId) ||
+            await Data.SubfamilyHasCommentAsync(item.SubfamilyId))
+        {
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
+        await Data.DeleteSubfamilyAsync(item.SubfamilyId);
+        return true;
+    }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl48Subfamily item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl48Subfamily item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    protected override int GetId(Models.Tbl48Subfamily item)
+        => item.SubfamilyId;
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+
+    private void ExecuteBack()
+    {
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
+
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailPivotIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
 
 
-    public void ResetBelow() { }
-    public Task LoadForFamilyAsync(int id) => Task.CompletedTask;
+
 }

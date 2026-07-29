@@ -5,6 +5,27 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:database="using:ATIS.Views.Database"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:tbl03Regnum="using:ATIS.Views.Modules.Tbl03Regnum"
+      xmlns:tbl06Phylum="using:ATIS.Views.Modules.Tbl06Phylum"
+      xmlns:tbl12Subphylum="using:ATIS.Views.Modules.Tbl12Subphylum"
+      xmlns:tbl18Superclass="using:ATIS.Views.Modules.Tbl18Superclass"
+      xmlns:tbl21Class="using:ATIS.Views.Modules.Tbl21Class"
+      xmlns:tbl24Subclass="using:ATIS.Views.Modules.Tbl24Subclass"
+      xmlns:tbl27Infraclass="using:ATIS.Views.Modules.Tbl27Infraclass"
+      xmlns:tbl30Legio="using:ATIS.Views.Modules.Tbl30Legio"
+      xmlns:tbl33Ordo="using:ATIS.Views.Modules.Tbl33Ordo"
+      xmlns:tbl36Subordo="using:ATIS.Views.Modules.Tbl36Subordo"
+      xmlns:tbl39Infraordo="using:ATIS.Views.Modules.Tbl39Infraordo"
+      xmlns:tbl42Superfamily="using:ATIS.Views.Modules.Tbl42Superfamily"
+      xmlns:tbl45Family="using:ATIS.Views.Modules.Tbl45Family"
+      xmlns:tbl48Subfamily="using:ATIS.Views.Modules.Tbl48Subfamily"
+      xmlns:tbl51Infrafamily="using:ATIS.Views.Modules.Tbl51Infrafamily"
+      xmlns:tbl54Supertribus="using:ATIS.Views.Modules.Tbl54Supertribus"
+      xmlns:tbl57Tribus="using:ATIS.Views.Modules.Tbl57Tribus"
+      xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
+      xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
+      xmlns:tbl66Genus="using:ATIS.Views.Modules.Tbl66Genus"
+      xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
       NavigationCacheMode="Required"
       mc:Ignorable="d">
 
@@ -25,11 +46,11 @@
                         <TabView.TabItems>
                             <TabViewItem x:Uid="TabViewItem_Speciesses"
                                          IsClosable="False">
-                                <database:Tbl75SpeciesListPage />
+                                <tbl75Species:Tbl75SpeciesPage />
                             </TabViewItem>
                             <TabViewItem x:Uid="TabViewItem_Genusses"
                                          IsClosable="False">
-                                <database:Tbl66GenusListPage />
+                                <tbl66Genus:Tbl66GenusPage />
                             </TabViewItem>
 
                             <TabViewItem x:Uid="TabViewItem_Speciesgroups"
@@ -39,92 +60,92 @@
 
                             <TabViewItem Header="Infratribusses"
                                          IsClosable="False">
-                                <database:Tbl63InfratribusListPage />
+                                <tbl63Infratribus:Tbl63InfratribusPage />
                             </TabViewItem>
                             <TabViewItem Header="Subtribusses"
                                          IsClosable="False">
-                                <database:Tbl60SubtribusListPage />
+                                <tbl60Subtribus:Tbl60SubtribusPage />
                             </TabViewItem>
                             <TabViewItem Header="Tribusses"
                                          IsClosable="False">
-                                <database:Tbl57TribusListPage />
+                                <tbl57Tribus:Tbl57TribusPage />
                             </TabViewItem>
                             <TabViewItem Header="Supertribusses"
                                          IsClosable="False">
-                                <database:Tbl54SupertribusListPage />
+                                <tbl54Supertribus:Tbl54SupertribusPage />
                             </TabViewItem>
 
                             <TabViewItem Header="Infrafamilies"
                                          IsClosable="False">
-                                <database:Tbl51InfrafamilyListPage />
+                                <tbl51Infrafamily:Tbl51InfrafamilyPage />
                             </TabViewItem>
                             <TabViewItem Header="Subfamilies"
                                          IsClosable="False">
-                                <database:Tbl48SubfamilyListPage />
+                                <tbl48Subfamily:Tbl48SubfamilyPage />
                             </TabViewItem>
                             <TabViewItem Header="Families"
                                          IsClosable="False">
-                                <database:Tbl45FamilyListPage />
+                                <tbl45Family:Tbl45FamilyPage />
                             </TabViewItem>
                             <TabViewItem Header="Superfamilies"
                                          IsClosable="False">
-                                <database:Tbl42SuperfamilyListPage />
+                                <tbl42Superfamily:Tbl42SuperfamilyPage />
                             </TabViewItem>
 
                             <TabViewItem Header="Infraorders"
                                          IsClosable="False">
-                                <database:Tbl39InfraordoListPage />
+                                <tbl39Infraordo:Tbl39InfraordoPage />
                             </TabViewItem>
                             <TabViewItem Header="Suborders"
                                          IsClosable="False">
-                                <database:Tbl36SubordoListPage />
+                                <tbl36Subordo:Tbl36SubordoPage />
                             </TabViewItem>
                             <TabViewItem Header="Orders"
                                          IsClosable="False">
-                                <database:Tbl33OrdoListPage />
+                                <tbl33Ordo:Tbl33OrdoPage />
                             </TabViewItem>
                             <TabViewItem Header="Superorders"
                                          IsClosable="False">
-                                <database:Tbl30LegioListPage />
+                                <tbl30Legio:Tbl30LegioPage />
                             </TabViewItem>
 
                             <TabViewItem Header="Infraclasses"
                                          IsClosable="False">
                                 <!--  Tab 15  -->
-                                <database:Tbl27InfraclassListPage />
+                                <tbl27Infraclass:Tbl27InfraclassPage />
                             </TabViewItem>
                             <TabViewItem Header="Subclasses"
                                          IsClosable="False">
                                 <!--  Tab 16  -->
-                                <database:Tbl24SubclassListPage />
+                                <tbl24Subclass:Tbl24SubclassPage />
                             </TabViewItem>
                             <TabViewItem Header="Classes"
                                          IsClosable="False">
                                 <!--  Tab 17  -->
-                                <database:Tbl21ClassListPage />
+                                <tbl21Class:Tbl21ClassPage />
                             </TabViewItem>
                             <TabViewItem Header="Superclasses"
                                          IsClosable="False">
                                 <!--  Tab 18  -->
-                                <database:Tbl18SuperclassListPage />
+                                <tbl18Superclass:Tbl18SuperclassPage />
                             </TabViewItem>
 
                             <TabViewItem Header="Subphylums"
                                          IsClosable="False">
                                 <!--  Tab 19  -->
-                                <database:Tbl12SubphylumListPage />
+                                <tbl12Subphylum:Tbl12SubphylumPage />
                             </TabViewItem>
                             <TabViewItem Header="Phylums"
                                          IsClosable="False">
                                 <!--  Tab 20  -->
-                                <database:Tbl06PhylumListPage />
+                                <tbl06Phylum:Tbl06PhylumPage />
                             </TabViewItem>
 
 
                             <TabViewItem Header="Regnums"
                                          IsClosable="False">
                                 <!--  Tab 21  -->
-                                <database:Tbl03RegnumListPage />
+                                <tbl03Regnum:Tbl03RegnumPage />
                             </TabViewItem>
 
                             <!--<TabViewItem Header="Experts" IsClosable="False">

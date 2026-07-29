@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+
+<ContentDialog x:Class="ATIS.Views.Search.DetailDialog"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:local="using:ATIS.Views.Search"
+               Title="Details"
+               DefaultButton="Primary"
+               PrimaryButtonText="OK">
+
+    <Grid Padding="12">
+
+        <TabView>
+
+            <!--  TAB 1: DETAILS  -->
+            <TabViewItem Header="Details">
+                <ScrollViewer>
+                    <StackPanel Spacing="12">
+
+                        <!--  Dynamischer Titel  -->
+                        <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                                   Text="{x:Bind ViewModel.Title}" />
+
+                        <!--  Felder  -->
+                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.Fields}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="local:DetailField">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Text="{x:Bind Label}" />
+                                        <TextBlock Text="{x:Bind Value}" />
+                                        <Rectangle Height="1"
+                                                   Fill="Gray"
+                                                   Opacity="0.2" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabViewItem>
+
+            <!--  TAB 2: PDF  -->
+            <TabViewItem Header="PDF">
+                <StackPanel Padding="12"
+                            Spacing="12">
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                               Text="PDF‑Export" />
+
+                    <TextBlock Text="Hier kannst du den Datensatz als PDF exportieren." />
+
+                    <Button Command="{x:Bind ViewModel.ExportPdfCommand}"
+                            Content="PDF erzeugen" />
+                </StackPanel>
+            </TabViewItem>
+
+        </TabView>
+
+    </Grid>
+</ContentDialog>

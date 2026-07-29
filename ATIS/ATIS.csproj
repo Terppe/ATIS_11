@@ -63,7 +63,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2026.6.1" />
+		<PackageReference Include="QuestPDF" Version="2026.7.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -322,15 +322,6 @@
 	<Page Update="Views\Database\TblCountryListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Database\Tbl93CommentListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl90ReferenceListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl90RefAuthorListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Database\Tbl87GeographicListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -343,70 +334,7 @@
 	<Page Update="Views\Database\Tbl78NameListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Database\Tbl75SpeciesListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Database\Tbl68SpeciesgroupListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl66GenusListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl63InfratribusListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl60SubtribusListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl57TribusListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl54SupertribusListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl51InfrafamilyListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl48SubfamilyListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl45FamilyListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl42SuperfamilyListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl39InfraordoListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl36SubordoListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl33OrdoListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl30LegioListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl27InfraclassListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl24SubclassListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl21ClassListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl18SuperclassListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl12SubphylumListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl06PhylumListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl03RegnumListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\Pdf\Tbl75SpeciesSubs\ReportSpeciessesSubsWindow.xaml">
@@ -700,9 +628,6 @@
 	<Page Update="Views\UserControls\LogInControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Search\SearchQuickPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -760,35 +685,11 @@
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
-		<None Remove="Views\Database\Tbl03RegnumListPage.xaml" />
-		<None Remove="Views\Database\Tbl06PhylumListPage.xaml" />
-		<None Remove="Views\Database\Tbl12SubphylumListPage.xaml" />
-		<None Remove="Views\Database\Tbl18SuperclassListPage.xaml" />
-		<None Remove="Views\Database\Tbl21ClassListPage.xaml" />
-		<None Remove="Views\Database\Tbl24SubclassListPage.xaml" />
-		<None Remove="Views\Database\Tbl27InfraclassListPage.xaml" />
-		<None Remove="Views\Database\Tbl30LegioListPage.xaml" />
-		<None Remove="Views\Database\Tbl33OrdoListPage.xaml" />
-		<None Remove="Views\Database\Tbl36SubordoListPage.xaml" />
-		<None Remove="Views\Database\Tbl39InfraordoListPage.xaml" />
-		<None Remove="Views\Database\Tbl42SuperfamilyListPage.xaml" />
-		<None Remove="Views\Database\Tbl45FamilyListPage.xaml" />
-		<None Remove="Views\Database\Tbl48SubfamilyListPage.xaml" />
-		<None Remove="Views\Database\Tbl51InfrafamilyListPage.xaml" />
-		<None Remove="Views\Database\Tbl54SupertribusListPage.xaml" />
-		<None Remove="Views\Database\Tbl57TribusListPage.xaml" />
-		<None Remove="Views\Database\Tbl60SubtribusListPage.xaml" />
-		<None Remove="Views\Database\Tbl63InfratribusListPage.xaml" />
-		<None Remove="Views\Database\Tbl66GenusListPage.xaml" />
 		<None Remove="Views\Database\Tbl68SpeciesgroupListPage.xaml" />
-		<None Remove="Views\Database\Tbl75SpeciesListPage.xaml" />
 		<None Remove="Views\Database\Tbl78NameListPage.xaml" />
 		<None Remove="Views\Database\Tbl81ImageListPage.xaml" />
 		<None Remove="Views\Database\Tbl84SynonymListPage.xaml" />
 		<None Remove="Views\Database\Tbl87GeographicListPage.xaml" />
-		<None Remove="Views\Database\Tbl90RefAuthorListPage.xaml" />
-		<None Remove="Views\Database\Tbl90ReferenceListPage.xaml" />
-		<None Remove="Views\Database\Tbl93CommentListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListTestPage.xaml" />
 		<None Remove="Views\Database\TblUserProfileListPage.xaml" />
@@ -823,7 +724,46 @@
 		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassPage.xaml" />
 		<None Remove="Views\Modules\Tbl21Class\Tbl21ClassParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl24Subclass\Tbl24SubclassBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl24Subclass\Tbl24SubclassEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl24Subclass\Tbl24SubclassPage.xaml" />
+		<None Remove="Views\Modules\Tbl24Subclass\Tbl24SubclassParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl27Infraclass\Tbl27InfraclassBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl27Infraclass\Tbl27InfraclassEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl27Infraclass\Tbl27InfraclassPage.xaml" />
+		<None Remove="Views\Modules\Tbl27Infraclass\Tbl27InfraclassParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl30Legio\Tbl30LegioBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl30Legio\Tbl30LegioEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl30Legio\Tbl30LegioPage.xaml" />
+		<None Remove="Views\Modules\Tbl30Legio\Tbl30LegioParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl33Ordo\Tbl33OrdoBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl33Ordo\Tbl33OrdoEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl33Ordo\Tbl33OrdoPage.xaml" />
+		<None Remove="Views\Modules\Tbl33Ordo\Tbl33OrdoParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl36Subordo\Tbl36SubordoBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl36Subordo\Tbl36SubordoEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl36Subordo\Tbl36SubordoPage.xaml" />
+		<None Remove="Views\Modules\Tbl36Subordo\Tbl36SubordoParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl39Infraordo\Tbl39InfraordoBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl39Infraordo\Tbl39InfraordoEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl39Infraordo\Tbl39InfraordoPage.xaml" />
+		<None Remove="Views\Modules\Tbl39Infraordo\Tbl39InfraordoParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyPage.xaml" />
+		<None Remove="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl45Family\Tbl45FamilyBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl45Family\Tbl45FamilyEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl45Family\Tbl45FamilyPage.xaml" />
+		<None Remove="Views\Modules\Tbl45Family\Tbl45FamilyParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyPage.xaml" />
+		<None Remove="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyPage.xaml" />
+		<None Remove="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl54Supertribus\Tbl54SupertribusPage.xaml" />
@@ -948,6 +888,8 @@
 		<None Remove="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblFoods\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblMiscellaneous\ReportMiscellaneoussesWindow.xaml" />
+		<None Remove="Views\Report\ReportPages\Tbl21ClassReportPage.xaml" />
+		<None Remove="Views\Report\ReportResources.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateFiSpeciesControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateGeographicControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateImageControl.xaml" />
@@ -981,8 +923,12 @@
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl63InfratribusControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl66GenusControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl75SpeciesControl.xaml" />
+		<None Remove="Views\Search\DetailDialog.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl03RegnumDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl21ClassDetailPage.xaml" />
+		<None Remove="Views\Search\DetailWindows\DetailWindow.xaml" />
 		<None Remove="Views\Search\SearchItemTemplateTblFoodControl.xaml" />
-		<None Remove="Views\Search\SearchQuickPage.xaml" />
+		<None Remove="Views\Search\SearchPage.xaml" />
 		<None Remove="Views\Settings\GitUpdateSettingPage.xaml" />
 		<None Remove="Views\Settings\SqlConnectionSettingPage.xaml" />
 		<None Remove="Views\UserControls\AtisDataGrid.xaml" />
@@ -1040,6 +986,306 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\ReportResources.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\ReportPages\Tbl21ClassReportPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailDialogs\Tbl21ClassDetailDialog.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailDialog.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailDialog.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailWindows\DetailWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl21ClassDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl03RegnumDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\Tbl12SubphylumDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\Tbl06PhylumDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\SearchPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

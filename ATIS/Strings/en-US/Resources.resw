@@ -1294,10 +1294,10 @@
     <value>Password Forgot</value>
   </data>
   <data name="Nav_Phylum.Content" xml:space="preserve">
-    <value>Phylum/Division</value>
+    <value>Phylum</value>
   </data>
   <data name="Nav_Phylums.Content" xml:space="preserve">
-    <value>Phylums/Divisions</value>
+    <value>Phylums</value>
   </data>
   <data name="Nav_PlSpecies.Content" xml:space="preserve">
     <value>Species</value>
@@ -1401,14 +1401,50 @@
   <data name="PivotItem_Edit_Subtribus.Header" xml:space="preserve">
     <value>Edit Subtribus</value>
   </data>
+  <data name="PivotItem_Edit_Subordo.Header" xml:space="preserve">
+    <value>Edit Subordo</value>
+  </data>
+  <data name="PivotItem_Edit_Subfamily.Header" xml:space="preserve">
+    <value>Edit Subfamily</value>
+  </data>
+  <data name="PivotItem_Edit_Subclass.Header" xml:space="preserve">
+    <value>Edit Subclass</value>
+  </data>
+  <data name="PivotItem_Edit_Class.Header" xml:space="preserve">
+    <value>Edit Class</value>
+  </data>
   <data name="PivotItem_Edit_Supertribus.Header" xml:space="preserve">
     <value>Edit Supertribus</value>
+  </data>
+  <data name="PivotItem_Edit_Superclass.Header" xml:space="preserve">
+    <value>Edit Superclass</value>
+  </data>
+  <data name="PivotItem_Edit_Superfamily.Header" xml:space="preserve">
+    <value>Edit Superfamily</value>
+  </data>
+  <data name="PivotItem_Edit_Superordo.Header" xml:space="preserve">
+    <value>Edit Superorder</value>
   </data>
   <data name="PivotItem_Edit_Tribus.Header" xml:space="preserve">
     <value>Edit Tribus</value>
   </data>
+  <data name="PivotItem_Edit_Regnum.Header" xml:space="preserve">
+    <value>Edit Regnum</value>
+  </data>
+  <data name="PivotItem_Edit_Phylum.Header" xml:space="preserve">
+    <value>Edit Phylum</value>
+  </data>
+  <data name="PivotItem_Edit_Ordo.Header" xml:space="preserve">
+    <value>Edit Ordo</value>
+  </data>
+  <data name="PivotItem_Edit_Subphylum.Header" xml:space="preserve">
+    <value>Edit Subphylum</value>
+  </data>
   <data name="PivotItem_Edit_Genus.Header" xml:space="preserve">
     <value>Edit Genus</value>
+  </data>
+  <data name="PivotItem_Edit_Family.Header" xml:space="preserve">
+    <value>Edit Family</value>
   </data>
   <data name="PivotItem_Edit_RefAuthor.Header" xml:space="preserve">
     <value>Edit Author</value>
@@ -1424,6 +1460,15 @@
   </data>
   <data name="PivotItem_Edit_Infratribus.Header" xml:space="preserve">
     <value>Edit Infratribus</value>
+  </data>
+  <data name="PivotItem_Edit_Infrafamily.Header" xml:space="preserve">
+    <value>Edit Infrafamily</value>
+  </data>
+  <data name="PivotItem_Edit_Infraclass.Header" xml:space="preserve">
+    <value>Edit Infraclass</value>
+  </data>
+  <data name="PivotItem_Edit_Infraordo.Header" xml:space="preserve">
+    <value>Edit Infraordo</value>
   </data>
   <data name="PivotItem_References.Header" xml:space="preserve">
     <value>References</value>
@@ -1780,7 +1825,7 @@
     <value>Cancel</value>
   </data>
   <data name="TextBlock_Class.Text" xml:space="preserve">
-    <value>Infraclass Subclass Class Superclass</value>
+    <value>Class</value>
   </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
     <value>Classes</value>
@@ -1867,7 +1912,7 @@
     <value>Families</value>
   </data>
   <data name="TextBlock_Family.Text" xml:space="preserve">
-    <value>Infrafamily Subfamily Family Superfamily</value>
+    <value>Family</value>
   </data>
   <data name="TextBlock_FamilyId.Text" xml:space="preserve">
     <value>Family ID</value>
@@ -2152,7 +2197,7 @@
     <value>Notes</value>
   </data>
   <data name="TextBlock_Ordo.Text" xml:space="preserve">
-    <value>Infraordo Subordo Ordo Legio</value>
+    <value>Ordo</value>
   </data>
   <data name="TextBlock_OrdoId.Text" xml:space="preserve">
     <value>Ordo ID</value>
@@ -2179,7 +2224,10 @@
     <value>Ph</value>
   </data>
   <data name="TextBlock_Phylum.Text" xml:space="preserve">
-    <value>Subphylum Phylum Regnum</value>
+    <value>Phylum</value>
+  </data>
+  <data name="TestKey" xml:space="preserve">
+    <value>Hello</value>
   </data>
   <data name="TextBlock_PhylumId.Text" xml:space="preserve">
     <value>Phylum ID</value>
@@ -2458,7 +2506,7 @@
     <value>TradeName</value>
   </data>
   <data name="TextBlock_Tribus.Text" xml:space="preserve">
-    <value>Infratribus Subtribus Tribus Supertribus</value>
+    <value>Tribus</value>
   </data>
   <data name="TextBlock_TribusId.Text" xml:space="preserve">
     <value>Tribus ID</value>
@@ -4083,6 +4131,9 @@
   <data name="TextBlock_PlSpecies.Text" xml:space="preserve">
     <value>Plant Species</value>
   </data>
+  <data name="TextBlock_Preview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
   <data name="TextBlock_Domorphism.Text" xml:space="preserve">
     <value>Domorphisms</value>
   </data>
@@ -4346,6 +4397,30 @@
   </data>
   <data name="ErrorTitle" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="HeaderSort_RegnumId" xml:space="preserve">
+    <value>Regnum ID</value>
+  </data>
+  <data name="HeaderSort_PhylumId" xml:space="preserve">
+    <value>Phylum ID</value>
+  </data>
+  <data name="HeaderSort_SubphylumId" xml:space="preserve">
+    <value>Subphylum ID</value>
+  </data>
+  <data name="HeaderSort_SuperclassId" xml:space="preserve">
+    <value>Superclass ID</value>
+  </data>
+  <data name="HeaderSort_SuperclassName" xml:space="preserve">
+    <value>Superclass Name</value>
+  </data>
+  <data name="HeaderSort_SubphylumName" xml:space="preserve">
+    <value>Subphylum Name</value>
+  </data>
+  <data name="HeaderSort_RegnumName" xml:space="preserve">
+    <value>Regnum Name</value>
+  </data>
+  <data name="HeaderSort_PhylumName" xml:space="preserve">
+    <value>Phylum Name</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>Saved</value>

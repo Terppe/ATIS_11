@@ -11,7 +11,7 @@
     <!--    Tbl12SubphylumParentControl Skriptdatum:  15.06.2024  12:32 -->
 
     <UserControl.Resources>
-        <GridLength x:Key="IdWidthResource">120</GridLength>
+        <GridLength x:Key="IdWidthResource">150</GridLength>
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
