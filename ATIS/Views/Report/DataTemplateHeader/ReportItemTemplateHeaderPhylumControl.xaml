@@ -22,17 +22,17 @@
             <TextBlock FontSize="18"
                        FontWeight="Bold"
                        Style="{StaticResource BodyTextStyle}"
-                       Text="{Binding PhylumName}" />
+                       Text="{Binding Item.PhylumName}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
                        FontSize="18"
                        FontWeight="Bold"
-                       Text="{Binding Author}" />
+                       Text="{Binding Item.Author}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
                        FontSize="18"
                        FontWeight="Bold"
-                       Text="{Binding AuthorYear}" />
+                       Text="{Binding Item.AuthorYear}" />
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
@@ -41,7 +41,7 @@
                        loc:Uids.Uid="TextBlock_TaxonomicId" />
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
-                       Text="{Binding CountId}" />
+                       Text="{Binding Item.CountId}" />
         </StackPanel>
     </Grid>
 </UserControl>

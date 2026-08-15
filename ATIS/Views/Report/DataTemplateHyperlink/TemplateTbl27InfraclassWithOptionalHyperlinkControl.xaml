@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Report.DataTemplateHyperlink.TemplateTbl27InfraclassWithOptionalHyperlinkControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loca="using:WinUI3Localizer"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            <TextBlock Margin="{Binding HeaderMargin}"
+                       loca:Uids.Uid="TextBlock_Infraclass" />
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+            <StackPanel x:Name="HyperlinkPanel"
+                        Margin="0"
+                        Padding="0"
+                        Orientation="Horizontal"
+                        Spacing="0">
+
+                <TextBlock x:Name="TbInfraclass"
+                           Margin="0"
+                           Padding="0"
+                           Foreground="DarkBlue"
+                           Tag="{Binding Item.InfraclassId, Mode=OneWay}"
+                           Tapped="TextBlock_Tapped"
+                           Text="{Binding Item.InfraclassName, Mode=OneWay}"
+                           TextDecorations="Underline" />
+
+                <TextBlock x:Name="TbAuthorDisplay"
+                           Margin="4,0,0,0"
+                           Padding="0" />
+
+                <TextBlock x:Name="TbLanguageNamesDisplay"
+                           Margin="4,0,0,0"
+                           Padding="0" />
+            </StackPanel>
+
+            <TextBlock x:Name="TbInfraclassLine"
+                       Margin="0"
+                       Padding="0"
+                       TextWrapping="WrapWholeWords"
+                       Visibility="Collapsed" />
+        </Grid>
+
+    </Grid>
+</UserControl>

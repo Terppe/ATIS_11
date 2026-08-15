@@ -52,18 +52,18 @@
 		<PackageReference Include="log4net" Version="3.3.2" />
 		<PackageReference Include="MailKit" Version="4.17.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.9" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2270" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.2.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.11" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2526" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.3.1" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="MimeKit" Version="4.17.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-		<PackageReference Include="nucs.JsonSettings" Version="2.0.2" />
-		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.0.2" />
-		<PackageReference Include="QuestPDF" Version="2026.7.0" />
+		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
+		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
+		<PackageReference Include="QuestPDF" Version="2026.7.3" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -78,8 +78,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4022.49" ExcludeAssets="buildTransitive" />
-		<PackageReference Include="WinUIEx" Version="2.9.1" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4129.50" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="WinUIEx" Version="2.9.2" />
 	</ItemGroup>
 
 	<!--<PropertyGroup>
@@ -415,22 +415,19 @@
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSuperfamilyControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSuperclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl18SuperclassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubtribusControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubphylumControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubordoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl12SubphylumWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubfamilyControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl24SubclassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesSubControl.xaml">
@@ -439,16 +436,13 @@
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkRegnumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl03RegnumWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPhylumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl06PhylumWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkOrdoControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkLegioControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl33OrdoWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfratribusControl.xaml">
@@ -460,7 +454,7 @@
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfrafamilyControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfraclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl27InfraclassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkGenusControl.xaml">
@@ -469,7 +463,7 @@
 	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFamilyControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkClassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl21ClassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml">
@@ -841,28 +835,20 @@
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSuperfamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSupertribusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderTribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkClassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkGenusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfraclassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfrafamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfraordoControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfratribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkLegioControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkOrdoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkPhylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkRegnumControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesSubControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubclassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubordoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubphylumControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubtribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSuperclassControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSuperfamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSupertribusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkTribusControl.xaml" />
+		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
+		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl03Regnums\ReportRegnumsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl06Phylums\ReportPhylumsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl12Subphylums\ReportSubphylumsWindow.xaml" />
@@ -923,9 +909,14 @@
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl63InfratribusControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl66GenusControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\SearchItemTemplateTbl75SpeciesControl.xaml" />
-		<None Remove="Views\Search\DetailDialog.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl03RegnumDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl18SuperclassDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl21ClassDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl24SubclassDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl27InfraclassDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl30LegioDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl33OrdoDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl36SubordoDetailPage.xaml" />
 		<None Remove="Views\Search\DetailWindows\DetailWindow.xaml" />
 		<None Remove="Views\Search\SearchItemTemplateTblFoodControl.xaml" />
 		<None Remove="Views\Search\SearchPage.xaml" />
@@ -989,6 +980,54 @@
 </ItemGroup>
 
 <ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl36SubordoDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl33OrdoDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl30LegioDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl27InfraclassDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl24SubclassDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl18SuperclassDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
   <Page Update="Views\Report\ReportResources.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -996,24 +1035,6 @@
 
 <ItemGroup>
   <Page Update="Views\Report\ReportPages\Tbl21ClassReportPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Search\DetailDialogs\Tbl21ClassDetailDialog.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Search\DetailDialog.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Search\DetailDialog.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>

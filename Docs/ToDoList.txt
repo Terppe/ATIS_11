@@ -1012,3 +1012,54 @@ Besser vielleicht Pivots und elegantere Dataservice-Suche. Gute Basis für die n
 29.07.2026 6:30 Uhr Margin="{StaticResource XSmallLeftTopRightBottomMargin}"  Style="{StaticResource ListTitleStyle}" Margin="{StaticResource SmallLeftMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
 ResourceDictionary.xaml geändert. jetzt geht es weiter mit DetailPagesRegnum
+----------------------------------------
+02.08.2026 09:30 Uhr Von Version 008_Altern überspielt
+Ausgangspunkt:
+                <ListView Grid.Row="4"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,0,0,0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+                          ItemsSource="{x:Bind ViewModel.RegnumItems}" />
+In ReportItemTemplateHyperlinkRegnum muss Margin="TaxMargin,0,0,0" . PropertyTaxMargin = 8.
+In ReportItemTemplateHyperlinkPhylumControl  muss Margin="TaxMargin,0,0,0" . public Property TaxMargin = 16 sein, wenn ein datensatz vorhanden ist.                      
+DetailPages und DetailVMs angelegt noch nicht fehlerfrei.BuildBreadcrumb
+Vorbereitet für public TaxMargin
+----------------------------------------
+04.08.2026 09:30 Uhr Nuget SDK 2.3.1 installiert. bei git weiter mitControls Hyperlink und Anzeige in ClassDetailpage. von Regnum-Class alle Hyperlinks fertig.
+jetzt kommt Direct children.
+----------------------------------------
+06.08.2026 14:30 Uhr Bei Regnum-Class wird page class und Subclass fast fertig . searchpage noch nicht ok
+----------------------------------------
+07.08.2026 14:30 Uhr Regnum-Subclass bis zum Direct children fertig.
+----------------------------------------
+07.08.2026 17:30 Uhr Directchildren. jetzt ist es klar umbenennen bei class schauen
+in 2 Wochen fragt man sich wieder: „Warum nehme ich das Hyperlink-Template, obwohl es kein Hyperlink sein soll?“
+Mit einem kleinen TODO ist das sauber dokumentiert.
+----------------------------------------
+08.08.2026 17:30 Uhr Fehler noch bei controls in Ordner Report und ordner Search für header und Nomenclature ändern in Item. BuildBreadcrumb gelöst. j
+etzt noch die underline TextBlock zum wechseln der page
+----------------------------------------
+09.08.2026 12:30 Uhr neuer name für alle hyperlinkcontrols: ReportItemTemplateInfraclassWithOptionalHyperlink. backbutton ok .
+jetzt hyperlink mit sprung zum anderen datensatz
+----------------------------------------
+09.08.2026 16:30 Uhr jetzt hyperlink mit sprung zum anderen datensatz Subclass funktioniert um class aufzurufen bei Breadcrump und Hyperlink.
+alles umgestellt fehler
+----------------------------------------
+10.08.2026 14:30 Uhr Hyperlink haben wir umständlich von subclasspage für class gelöst. muss aber aufgeräumt werden
+----------------------------------------
+11.08.2026 16:30 Uhr Jetzt läuft wieder Breadcrump und Hyperlink.
+// Navigation scope (intentional):
+// - supported: Subclass -> Class
+// - not supported: Subclass -> Subclass, Class -> Class, breadcrumb self-navigation
+Align hyperlink class/subclass controls (state, content mode, additional text, navigation fallback).
+----------------------------------------
+12.08.2026 11:30 Uhr Tbl24DetailPage ist basis. leider funktioniert der generator nicht in HH.
+Datenbank ist vorhanden mit version 2610, aber im wird nicht angezeigt. loadalldo gridview nicht ok
+----------------------------------------
+12.08.2026 16:30 Uhr regnum-subclass nachgezogen einige fehler noch.infraclass control noch alt. Nuget aktualisiert.
+Bei regnum wird name nicht angezeigt bei control
+----------------------------------------
+13.08.2026 09:30 Uhr Tbl24 als Pasis fertigstellen. Bei tbl27 fehlt name von Infraclaas
+----------------------------------------
+14.08.2026 18:30 Uhr Nachgezogen sehr mühsam bis Ordo.

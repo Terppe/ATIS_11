@@ -1,20 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+﻿using ATIS.Interfaces;
+using ATIS.Views.Search.DetailViewModels;
 
 namespace ATIS.Views.Search.DetailPages;
 /// <summary>
@@ -22,40 +7,90 @@ namespace ATIS.Views.Search.DetailPages;
 /// </summary>
 public sealed partial class Tbl03RegnumDetailPage : Page
 {
+    public Func<BreadcrumbItem, Task> NavigateBreadcrumbAsync { get; }
+    private IDataService _dataService;
+
     public Tbl03RegnumDetailPage()
     {
         InitializeComponent();
+        _dataService = App.Services.GetRequiredService<IDataService>();
+        NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
+
+        ViewModel = new Tbl03RegnumDetailViewModel(default, _dataService);
+        DataContext = ViewModel;
+        ViewModel.IsLoading = true;
     }
 
-    private void Back_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame?.CanGoBack == true)
-            Frame.GoBack();
-        else
-            Frame?.Navigate(typeof(SearchPage));
-    }
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    public Tbl03RegnumDetailViewModel ViewModel { get; private set; }
+
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
-        int? id = e.Parameter switch
-        {
-            int i => i,
-            string s when int.TryParse(s, out var p) => p,
-            SearchResultItem r => r.EntityId,
-            _ => null
-        };
+        if (e.Parameter is not int id) return;
 
-        if (id is null)
+        // falls ViewModel schon existiert:
+        ViewModel.IsLoading = true;
+
+        try
         {
-            System.Diagnostics.Debug.WriteLine($"Invalid nav parameter: {e.Parameter?.GetType().FullName ?? "null"}");
-            return;
+            var selected = await _dataService.GetRegnumByIdAsync(id);
+            if (selected == null) return;
+
+            ViewModel = new Tbl03RegnumDetailViewModel(selected, _dataService);
+            DataContext = ViewModel;
+
+            ViewModel.IsLoading = true; // nach New nochmal sicher setzen
+            await ViewModel.InitializeAsync();
+            Bindings.Update();
         }
-
-        LoadById(id.Value);
+        finally
+        {
+            if (ViewModel != null)
+                ViewModel.IsLoading = false;
+        }
     }
-    private async void LoadById(int id)
+
+    public Task OnNavigateBreadcrumbAsync(BreadcrumbItem item)
     {
-        // Daten laden...
+        // gleiche Logik wie Breadcrumb_Click / bestehende Navigation
+        return ViewModel.NavigateBreadcrumbAsync(item);
+    }
+
+    private void ExecuteBack()
+    {
+        var frame = App.MainPageInstance.NavFrame;
+
+        if (frame.CanGoBack)
+            frame.GoBack();
+    }
+    private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    {
+        await PrintCurrentReviewAsync();
+    }
+    private Task PrintCurrentReviewAsync()
+    {
+        // TODO
+        return Task.CompletedTask;
+    }
+    private void OpenPdf_Click(object sender, RoutedEventArgs e)
+    {
+        // Frame?.Navigate(typeof(Tbl21ClassReportPage), $"{_entityType}|{_entityId}");
+    }
+
+    private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is HyperlinkButton button)
+        {
+            var label = button.Content?.ToString();
+
+            var item = ViewModel.Breadcrumb.FirstOrDefault(x => x.Label == label);
+
+            if (item != null)
+            {
+
+                await ViewModel.NavigateBreadcrumbAsync(item);
+            }
+        }
     }
 }

@@ -88,19 +88,19 @@
             <!--  Hyperlink-ListViews  -->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
                           x:DataType="models:Tbl03Regnum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
+                <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum"
                           x:DataType="models:Tbl06Phylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
+                <dataTemplateHyperlink:TemplateTbl06PhylumWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
                           x:DataType="models:Tbl12Subphylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubphylumControl />
+                <dataTemplateHyperlink:TemplateTbl12SubphylumWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
                           x:DataType="models:Tbl18Superclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
+                <dataTemplateHyperlink:TemplateTbl18SuperclassWithOptionalHyperlinkControl />
             </DataTemplate>
 
             <!--  Rest-ListViews  -->

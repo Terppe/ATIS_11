@@ -43,6 +43,7 @@ using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
+using ATIS.Views.Search.DetailViewModels;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
@@ -267,7 +268,9 @@ public partial class App : Application
         services.AddScoped<LookupService>();
 
         // USER SERVICES
-        services.AddScoped<IUserService, UserService>();        // VIEWMODELS
+        services.AddScoped<IUserService, UserService>();
+
+        // VIEWMODELS
         services.AddTransient<TblCountryListTestPage>();
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();

@@ -2,13 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <!--<Style
-    x:Key="AtisListViewItemContainerStyle"
-    TargetType="ListViewItem">
-    <Setter
-    Property="Background"
-    Value="{ThemeResource ControlFillColorSecondaryBrush}" />
-    </Style>-->
 
     <Style x:Key="AtisListViewStyle"
            TargetType="ListView">
@@ -138,7 +131,56 @@
         </Setter>
     </Style>
 
+    <!--  Nur für Taxo-Hierarchy: maximale Kompaktheit  -->
+    <Style x:Key="AtisListViewItemStyleCompactTaxo"
+           TargetType="ListViewItem">
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
 
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Grid x:Name="Root"
+                          Background="{TemplateBinding Background}">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Selected" />
+                                <VisualState x:Name="SelectedPointerOver" />
+                                <VisualState x:Name="Focused" />
+                                <VisualState x:Name="PointerFocused" />
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentPresenter MinHeight="0"
+                                          Margin="0"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          IsTabStop="False" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Optional: kompletter ListView-Style für Taxo  -->
+    <Style x:Key="AtisListViewStyleCompactTaxo"
+           BasedOn="{StaticResource AtisListViewStyle}"
+           TargetType="ListView">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource AtisListViewItemStyleCompactTaxo}" />
+    </Style>
 
 
 

@@ -1,70 +1,95 @@
-﻿
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
+﻿using ATIS.Interfaces;
 using ATIS.Services;
+using ATIS.Views.Search.DetailViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Search.DetailPages;
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
+
 public sealed partial class Tbl12SubphylumDetailPage : Page
 {
-    private readonly IDbContextFactory<AtisDbContext> _factory;
-
+    public Func<BreadcrumbItem, Task> NavigateBreadcrumbAsync { get; }
+    private IDataService _dataService;
     public Tbl12SubphylumDetailPage()
     {
         InitializeComponent();
-        _factory = App.GetService<IDbContextFactory<AtisDbContext>>();
+        _dataService = App.Services.GetRequiredService<IDataService>();
+        NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
+
+        ViewModel = new Tbl12SubphylumDetailViewModel(default, _dataService);
+        DataContext = ViewModel;
+        ViewModel.IsLoading = true;
     }
-    private void Back_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame?.CanGoBack == true)
-            Frame.GoBack();
-        else
-            Frame?.Navigate(typeof(SearchPage));
-    }
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+
+    public Tbl12SubphylumDetailViewModel ViewModel { get; private set; }
+
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
-        int id;
-        if (e.Parameter is int i) id = i;
-        else if (e.Parameter is string s && int.TryParse(s, out var parsed)) id = parsed;
-        else if (e.Parameter is SearchResultItem r) id = r.EntityId;
-        else return;
+        if (e.Parameter is not int id) return;
 
-        _ = LoadByIdAsync(id);
-    }
-    private async Task LoadByIdAsync(int id)
-    {
+        // falls ViewModel schon existiert:
+        ViewModel.IsLoading = true;
+
         try
         {
-            await using var context = _factory.CreateDbContext();
+            var selected = await _dataService.GetSubphylumByIdAsync(id);
+            if (selected == null) return;
 
-            var entity = await context.Tbl12Subphylums
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.SubphylumId == id);
+            ViewModel = new Tbl12SubphylumDetailViewModel(selected, _dataService);
+            DataContext = ViewModel;
 
-            if (entity is null)
-            {
-                System.Diagnostics.Debug.WriteLine($"Subphylum {id} nicht gefunden.");
-                return;
-            }
-
-            // Variante A: direkt ans ViewModel geben
-            // ViewModel.SetEntity(entity);
-
-            // Variante B: falls es eine Selected-Property gibt
-            // ViewModel.SelectedSubphylum = entity;
-
-            // Variante C: falls du schon Load(id) im VM hast, dann diese Methode oben direkt nutzen.
+            ViewModel.IsLoading = true; // nach New nochmal sicher setzen
+            await ViewModel.InitializeAsync();
+            Bindings.Update();
         }
-        catch (Exception ex)
+        finally
         {
-            System.Diagnostics.Debug.WriteLine($"LoadByIdAsync Fehler: {ex}");
+            if (ViewModel != null)
+                ViewModel.IsLoading = false;
+        }
+    }
+
+    public Task OnNavigateBreadcrumbAsync(BreadcrumbItem item)
+    {
+        // gleiche Logik wie Breadcrumb_Click / bestehende Navigation
+        return ViewModel.NavigateBreadcrumbAsync(item);
+    }
+
+    private void ExecuteBack()
+    {
+        var frame = App.MainPageInstance.NavFrame;
+
+        if (frame.CanGoBack)
+            frame.GoBack();
+    }
+    private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    {
+        await PrintCurrentReviewAsync();
+    }
+    private Task PrintCurrentReviewAsync()
+    {
+        // TODO
+        return Task.CompletedTask;
+    }
+    private void OpenPdf_Click(object sender, RoutedEventArgs e)
+    {
+        // Frame?.Navigate(typeof(Tbl21ClassReportPage), $"{_entityType}|{_entityId}");
+    }
+
+    private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is HyperlinkButton button)
+        {
+            var label = button.Content?.ToString();
+
+            var item = ViewModel.Breadcrumb.FirstOrDefault(x => x.Label == label);
+
+            if (item != null)
+            {
+
+                await ViewModel.NavigateBreadcrumbAsync(item);
+            }
         }
     }
 }

@@ -4,11 +4,12 @@ using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Views.Search;
+using ATIS.Views.Search.DirectChildren;
 using Microsoft.EntityFrameworkCore;
 using static ATIS.Interfaces.IDataService;
 using static ATIS.Views.Report.PdfModels;
 using static SkiaSharp.HarfBuzz.SKShaper;
-
+using ATIS.Core.Taxonomy;
 //https://www.reddit.com/r/reactjs/comments/m4mhp7/how_to_update_state_in_useeffect_when_getting/
 
 namespace ATIS.Services;
@@ -1913,8 +1914,93 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetInfraclassesBySubclassIdAsync(int subclassId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl27Infraclass>> GetInfraclassesBySubclassIdAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl27Infraclasses
+            .Where(x => x.SubclassId == subclassId)
+            .OrderBy(x => x.InfraclassName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySubclassIdAsync(int subclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubclassIdAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SubclassId == subclassId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySubclassIdAsync(int subclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubclassIdAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SubclassId == subclassId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySubclassIdAsync(int subclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubclassIdAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SubclassId == subclassId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySubclassIdAsync(int subclassId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySubclassIdAsync(int subclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SubclassId == subclassId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    //test
     //alt
     public ObservableCollection<Tbl24Subclass> GetSubclassAsync()
     {
@@ -2127,6 +2213,144 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetLegiosByInfraclassIdAsync(int infraclassId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl30Legio>> GetLegiosByInfraclassIdAsync(int infraclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl30Legios
+            .Where(x => x.InfraclassId == infraclassId)
+            .OrderBy(x => x.LegioName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByInfraclassIdAsync(int infraclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfraclassIdAsync(int infraclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.InfraclassId == infraclassId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByInfraclassIdAsync(int infraclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfraclassIdAsync(int infraclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.InfraclassId == infraclassId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByInfraclassIdAsync(int infraclassId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfraclassIdAsync(int infraclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.InfraclassId == infraclassId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByInfraclassIdAsync(int infraclassId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByInfraclassIdAsync(int infraclassId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.InfraclassId == infraclassId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    //Test
+    private static bool IsVisibleTaxonName(string? name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
+
+    public async Task<DirectChildrenResult?> GetFirstDirectChildrenOfSubclassAsync(int subclassId)
+    {
+        var infraclasses = (await GetInfraclassesBySubclassIdAsync(subclassId))
+            .Where(x => IsVisibleTaxonName(x.InfraclassName))
+            .Cast<object>()
+            .ToList();
+
+        if (infraclasses.Count > 0)
+        {
+            return new DirectChildrenResult
+            {
+                Level = TaxonLevel.Infraclass,
+                Items = infraclasses
+            };
+        }
+
+        var legios = (await GetLegiosByInfraclassIdAsync(subclassId))
+            .Where(x => IsVisibleTaxonName(x.LegioName))
+            .Cast<object>()
+            .ToList();
+
+        if (legios.Count > 0)
+        {
+            return new DirectChildrenResult
+            {
+                Level = TaxonLevel.Legio,
+                Items = legios
+            };
+        }
+
+        var ordos = (await GetOrdosByLegioIdAsync(subclassId))
+            .Where(x => IsVisibleTaxonName(x.OrdoName))
+            .Cast<object>()
+            .ToList();
+
+        if (ordos.Count > 0)
+        {
+            return new DirectChildrenResult
+            {
+                Level = TaxonLevel.Ordo,
+                Items = ordos
+            };
+        }
+
+        return null;
+    }
     #endregion Infraclass                       
 
     #region Legio                
@@ -2297,6 +2521,93 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetOrdosByLegioIdAsync(int legioId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl33Ordo>> GetOrdosByLegioIdAsync(int legioId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl33Ordos
+            .Where(x => x.LegioId == legioId)
+            .OrderBy(x => x.OrdoName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByLegioIdAsync(int legioId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByLegioIdAsync(int legioId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.LegioId == legioId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByLegioIdAsync(int legioId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByLegioIdAsync(int legioId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.LegioId == legioId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByLegioIdAsync(int legioId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByLegioIdAsync(int legioId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.LegioId == legioId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByLegioIdAsync(int legioId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByLegioIdAsync(int legioId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.LegioId == legioId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
     #endregion Legio                       
 
     #region Ordo                
@@ -2463,6 +2774,92 @@ public partial class DataService : ObservableObject, IDataService
             .Where(e => e.LegioId == legioId)
             .Include(e => e.Legio)
             .OrderBy(e => e.OrdoName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSubordosByOrdoIdAsync(int ordoId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl36Subordo>> GetSubordosByOrdoIdAsync(int ordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl36Subordos
+            .Where(x => x.OrdoId == ordoId)
+            .OrderBy(x => x.SubordoName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByOrdoIdAsync(int ordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByOrdoIdAsync(int ordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.OrdoId == ordoId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByOrdoIdAsync(int ordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByOrdoIdAsync(int ordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.OrdoId == ordoId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByOrdoIdAsync(int ordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByOrdoIdAsync(int ordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.OrdoId == ordoId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByOrdoIdAsync(int ordoId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByOrdoIdAsync(int ordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.OrdoId == ordoId)
             .AsNoTracking()
             .ToListAsync();
     }

@@ -147,11 +147,11 @@
             <!--  Hyperlink-ListViews  -->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
                           x:DataType="models:Tbl03Regnum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
+                <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum"
                           x:DataType="models:Tbl06Phylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
+                <dataTemplateHyperlink:TemplateTbl06PhylumWithOptionalHyperlinkControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
                           x:DataType="models:Tbl09Division">
@@ -159,7 +159,7 @@
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
                           x:DataType="models:Tbl12Subphylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubphylumControl />
+                <dataTemplateHyperlink:TemplateTbl12SubphylumWithOptionalHyperlinkControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
                           x:DataType="models:Tbl15Subdivision">
@@ -167,19 +167,19 @@
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
                           x:DataType="models:Tbl18Superclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
+                <dataTemplateHyperlink:TemplateTbl18SuperclassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkClass"
                           x:DataType="models:Tbl21Class">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkClassControl />
+                <dataTemplateHyperlink:TemplateTbl21ClassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubclass"
                           x:DataType="models:Tbl24Subclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubclassControl />
+                <dataTemplateHyperlink:TemplateTbl24SubclassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraclass"
                           x:DataType="models:Tbl27Infraclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraclassControl />
+                <dataTemplateHyperlink:TemplateTbl27InfraclassWithOptionalHyperlinkControl />
             </DataTemplate>
 
             <!--  Rest-ListViews  -->

@@ -28,16 +28,16 @@
                 <dataTemplatesSearch:SearchItemTemplateTbl06PhylumControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="SearchItemTemplateTbl09Division"
-                          x:DataType="models:Tbl09Division">
-                <dataTemplatesSearch:SearchItemTemplateTbl09DivisionControl />
+            x:DataType="models:Tbl09Division">
+            <dataTemplatesSearch:SearchItemTemplateTbl09DivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl12Subphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplatesSearch:SearchItemTemplateTbl12SubphylumControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="SearchItemTemplateTbl15Subdivision"
-                          x:DataType="models:Tbl15Subdivision">
-                <dataTemplatesSearch:SearchItemTemplateTbl15SubdivisionControl />
+            x:DataType="models:Tbl15Subdivision">
+            <dataTemplatesSearch:SearchItemTemplateTbl15SubdivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl18Superclass"
                           x:DataType="models:Tbl18Superclass">
@@ -108,16 +108,16 @@
                 <dataTemplatesSearch:SearchItemTemplateTbl66GenusControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="SearchItemTemplateTbl69FiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplatesSearch:SearchItemTemplateTbl69FiSpeciesControl />
+            x:DataType="models:Tbl69FiSpecies">
+            <dataTemplatesSearch:SearchItemTemplateTbl69FiSpeciesControl />
             </DataTemplate>-->
             <DataTemplate x:Key="SearchItemTemplateTbl75Species"
                           x:DataType="models:Tbl75Species">
                 <dataTemplatesSearch:SearchItemTemplateTbl75SpeciesControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="SearchItemTemplateTbl72PlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplatesSearch:SearchItemTemplateTbl72PlSpeciesControl />
+            x:DataType="models:Tbl72PlSpecies">
+            <dataTemplatesSearch:SearchItemTemplateTbl72PlSpeciesControl />
             </DataTemplate>-->
 
 
@@ -137,16 +137,16 @@
                 <dataTemplateHeader:ReportItemTemplateHeaderPhylumControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderDivision"
-                          x:DataType="models:Tbl09Division">
-                <dataTemplateHeader:ReportItemTemplateHeaderDivisionControl />
+            x:DataType="models:Tbl09Division">
+            <dataTemplateHeader:ReportItemTemplateHeaderDivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderSubphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplateHeader:ReportItemTemplateHeaderSubphylumControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderSubdivision"
-                          x:DataType="models:Tbl15Subdivision">
-                <dataTemplateHeader:ReportItemTemplateHeaderSubdivisionControl />
+            x:DataType="models:Tbl15Subdivision">
+            <dataTemplateHeader:ReportItemTemplateHeaderSubdivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderSuperclass"
                           x:DataType="models:Tbl18Superclass">
@@ -217,8 +217,8 @@
                 <dataTemplateHeader:ReportItemTemplateHeaderGenusControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesControl />
+            x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderSpecies"
                           x:DataType="models:Tbl75Species">
@@ -228,8 +228,8 @@
             <dataTemplateHeader:ReportItemTemplateHeaderFiSpeciesSubsControl />
             </DataTemplate>-->
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesControl />
+            x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesControl />
             </DataTemplate>-->
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderPlSpeciesSub" x:DataType="models:Tbl72PlSpecies">
             <dataTemplateHeader:ReportItemTemplateHeaderPlSpeciesSubsControl />
@@ -251,16 +251,16 @@
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyDivision"
-                          x:DataType="models:Tbl09Division">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
+            x:DataType="models:Tbl09Division">
+            <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyDivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylum"
                           x:DataType="models:Tbl12Subphylum">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivision"
-                          x:DataType="models:Tbl15Subdivision">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivisionControl />
+            x:DataType="models:Tbl15Subdivision">
+            <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySubdivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclass"
                           x:DataType="models:Tbl18Superclass">
@@ -331,66 +331,66 @@
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl />
+            x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyFiSpeciesControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySpecies"
                           x:DataType="models:Tbl75Species">
                 <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodySpeciesControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl />
+            x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHeaderTaxoNomen:ReportItemTemplateHeaderTaxoNomenHeaderBodyPlSpeciesControl />
             </DataTemplate>-->
 
             <!--  Hyperlink-ListViews  -->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum"
                           x:DataType="models:Tbl03Regnum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
+                <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum"
                           x:DataType="models:Tbl06Phylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
+                <dataTemplateHyperlink:TemplateTbl06PhylumWithOptionalHyperlinkControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkDivision"
-                          x:DataType="models:Tbl09Division">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkDivisionControl />
+            x:DataType="models:Tbl09Division">
+            <dataTemplateHyperlink:ReportItemTemplateHyperlinkDivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum"
                           x:DataType="models:Tbl12Subphylum">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubphylumControl />
+                <dataTemplateHyperlink:TemplateTbl12SubphylumWithOptionalHyperlinkControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkSubdivision"
-                          x:DataType="models:Tbl15Subdivision">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubdivisionControl />
+            x:DataType="models:Tbl15Subdivision">
+            <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubdivisionControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass"
                           x:DataType="models:Tbl18Superclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
+                <dataTemplateHyperlink:TemplateTbl18SuperclassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkClass"
                           x:DataType="models:Tbl21Class">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkClassControl />
+                <dataTemplateHyperlink:TemplateTbl21ClassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubclass"
                           x:DataType="models:Tbl24Subclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubclassControl />
+                <dataTemplateHyperlink:TemplateTbl24SubclassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraclass"
                           x:DataType="models:Tbl27Infraclass">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraclassControl />
+                <dataTemplateHyperlink:TemplateTbl27InfraclassWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkLegio"
                           x:DataType="models:Tbl30Legio">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkLegioControl />
+                <dataTemplateHyperlink:TemplateTbl30LegioWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkOrdo"
                           x:DataType="models:Tbl33Ordo">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkOrdoControl />
+                <dataTemplateHyperlink:TemplateTbl33OrdoWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSubordo"
                           x:DataType="models:Tbl36Subordo">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubordoControl />
+                <dataTemplateHyperlink:TemplateTbl36SubordoWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo"
                           x:DataType="models:Tbl39Infraordo">
@@ -433,8 +433,8 @@
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkGenusControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesControl />
+            x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSpecies"
                           x:DataType="models:Tbl75Species">
@@ -445,22 +445,22 @@
                 <dataTemplateHyperlink:ReportItemTemplateHyperlinkSpeciesSubControl />
             </DataTemplate>
             <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkFiSpeciesSub"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesSubControl />
+            x:DataType="models:Tbl69FiSpecies">
+            <dataTemplateHyperlink:ReportItemTemplateHyperlinkFiSpeciesSubControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpecies"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesControl />
+            x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkPlSpeciesSub"
-                          x:DataType="models:Tbl72PlSpecies">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesSubControl />
+            x:DataType="models:Tbl72PlSpecies">
+            <dataTemplateHyperlink:ReportItemTemplateHyperlinkPlSpeciesSubControl />
             </DataTemplate>-->
 
             <!--  Rest-ListViews  -->
             <!--<DataTemplate x:Key="ReportItemTemplateFiSpecies"
-                          x:DataType="models:Tbl69FiSpecies">
-                <dataTemplatesReport:ReportItemTemplateFiSpeciesControl />
+            x:DataType="models:Tbl69FiSpecies">
+            <dataTemplatesReport:ReportItemTemplateFiSpeciesControl />
             </DataTemplate>-->
             <DataTemplate x:Key="ReportItemTemplateSpecies"
                           x:DataType="models:Tbl75Species">

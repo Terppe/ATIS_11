@@ -2,98 +2,97 @@
 using System.Runtime.CompilerServices;
 using ATIS.Interfaces;
 using ATIS.Services;
+using ATIS.Views.Search.DetailViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ATIS.Views.Search.DetailPages;
 
-public sealed partial class Tbl06PhylumDetailPage : Page, INotifyPropertyChanged
+public sealed partial class Tbl06PhylumDetailPage : Page
 {
-    private readonly IDataService _dataService;
+    public Func<BreadcrumbItem, Task> NavigateBreadcrumbAsync { get; }
+    private IDataService _dataService;
 
     public Tbl06PhylumDetailPage()
     {
         InitializeComponent();
-        DataContext = this;
+        _dataService = App.Services.GetRequiredService<IDataService>();
+        NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
-        var factory = App.Services.GetRequiredService<IDbContextFactory<AtisDbContext>>();
-        var user = App.Services.GetRequiredService<IUserService>();
-        _dataService = new DataService(factory, user);
+        ViewModel = new Tbl06PhylumDetailViewModel(default, _dataService);
+        DataContext = ViewModel;
+        ViewModel.IsLoading = true;
     }
 
-    private bool _isBusy;
-    public bool IsBusy
-    {
-        get => _isBusy;
-        set { _isBusy = value; OnPropertyChanged(); }
-    }
+    public Tbl06PhylumDetailViewModel ViewModel { get; private set; }
 
-    //protected override async void OnNavigatedTo(NavigationEventArgs e)
-    //{
-    //    base.OnNavigatedTo(e);
-
-    //    if (e.Parameter is not string idText || !int.TryParse(idText, out var id))
-    //    {
-    //        DetailIdTextBlock.Text = "(ungültige Id)";
-    //        return;
-    //    }
-
-    //    try
-    //    {
-    //        IsBusy = true;
-
-    //        var item = await _dataService.GetPhylumByIdAsync(id);
-
-    //        if (item is null)
-    //        {
-    //            DetailIdTextBlock.Text = $"Nicht gefunden: {id}";
-    //            DetailTitleTextBlock.Text = string.Empty;
-    //            DetailSubtitleTextBlock.Text = string.Empty;
-    //            return;
-    //        }
-
-    //        DetailIdTextBlock.Text = item.PhylumId.ToString();
-    //        DetailTitleTextBlock.Text = item.PhylumName ?? string.Empty;
-    //        DetailSubtitleTextBlock.Text = item.Author ?? string.Empty;
-    //    }
-    //    finally
-    //    {
-    //        IsBusy = false;
-    //    }
-    //}
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-    private void OnPropertyChanged([CallerMemberName] string? n = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
-
-    private void Back_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame?.CanGoBack == true)
-            Frame.GoBack();
-        else
-            Frame?.Navigate(typeof(SearchPage));
-    }
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
-        int? id = e.Parameter switch
-        {
-            int i => i,
-            string s when int.TryParse(s, out var p) => p,
-            SearchResultItem r => r.EntityId,
-            _ => null
-        };
+        if (e.Parameter is not int id) return;
 
-        if (id is null)
+        // falls ViewModel schon existiert:
+        ViewModel.IsLoading = true;
+
+        try
         {
-            System.Diagnostics.Debug.WriteLine($"Invalid nav parameter: {e.Parameter?.GetType().FullName ?? "null"}");
-            return;
+            var selected = await _dataService.GetPhylumByIdAsync(id);
+            if (selected == null) return;
+
+            ViewModel = new Tbl06PhylumDetailViewModel(selected, _dataService);
+            DataContext = ViewModel;
+
+            ViewModel.IsLoading = true; // nach New nochmal sicher setzen
+            await ViewModel.InitializeAsync();
+            Bindings.Update();
         }
-
-        LoadById(id.Value);
+        finally
+        {
+            if (ViewModel != null)
+                ViewModel.IsLoading = false;
+        }
     }
-    private async void LoadById(int id)
+
+    public Task OnNavigateBreadcrumbAsync(BreadcrumbItem item)
     {
-        // Daten laden...
+        // gleiche Logik wie Breadcrumb_Click / bestehende Navigation
+        return ViewModel.NavigateBreadcrumbAsync(item);
+    }
+
+    private void ExecuteBack()
+    {
+        var frame = App.MainPageInstance.NavFrame;
+
+        if (frame.CanGoBack)
+            frame.GoBack();
+    }
+    private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    {
+        await PrintCurrentReviewAsync();
+    }
+    private Task PrintCurrentReviewAsync()
+    {
+        // TODO
+        return Task.CompletedTask;
+    }
+    private void OpenPdf_Click(object sender, RoutedEventArgs e)
+    {
+        // Frame?.Navigate(typeof(Tbl21ClassReportPage), $"{_entityType}|{_entityId}");
+    }
+
+    private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is HyperlinkButton button)
+        {
+            var label = button.Content?.ToString();
+
+            var item = ViewModel.Breadcrumb.FirstOrDefault(x => x.Label == label);
+
+            if (item != null)
+            {
+
+                await ViewModel.NavigateBreadcrumbAsync(item);
+            }
+        }
     }
 }

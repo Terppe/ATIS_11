@@ -36,16 +36,19 @@ public sealed partial class SearchPage : Page
         TableCombo.Focus(FocusState.Keyboard);
     }
 
+    private void OnTableSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // alte Trefferliste löschen, damit z.B. Subclass -> Phylum sauber ist
+        ViewModel.Results?.Clear();
+
+        // optional: Suchfeld leeren
+        // ViewModel.SearchText = string.Empty;
+
+        SearchBox.Focus(FocusState.Programmatic);
+    }
     private async void OnSearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         await ViewModel.SearchCommand.ExecuteAsync(null);
-    }
-    private void OnTableSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var selector = (SearchTemplateSelector)Resources["SearchSelector"];
-        selector.SelectedTable = ViewModel.SelectedTable;
-
-        SearchBox.Focus(FocusState.Programmatic);
     }
 
     private void OnRowSelected(object sender, SelectionChangedEventArgs e)
@@ -53,12 +56,60 @@ public sealed partial class SearchPage : Page
         if (e.AddedItems.Count == 0)
             return;
 
-        var selectedClass = e.AddedItems[0] as Tbl21Class;
-        if (selectedClass == null)
-            return;
+        var item = e.AddedItems[0];
 
-        var vm = new Tbl21ClassDetailViewModel(selectedClass, _dataService);
+        switch (item)
+        {
+            case Tbl03Regnum regnum:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl03RegnumDetailPage), regnum.RegnumId);
+                break;
 
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), vm);
+            case Tbl06Phylum phylum:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl06PhylumDetailPage), phylum.PhylumId);
+                break;
+
+            case Tbl12Subphylum subphylum:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl12SubphylumDetailPage), subphylum.SubphylumId);
+                break;
+
+            case Tbl18Superclass superclass:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl18SuperclassDetailPage), superclass.SuperclassId);
+                break;
+            case Tbl21Class class1:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl21ClassDetailPage), class1.ClassId);
+                break;
+
+            case Tbl24Subclass subclass:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl24SubclassDetailPage), subclass.SubclassId);
+                break;
+            case Tbl27Infraclass infraclass:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl27InfraclassDetailPage), infraclass.InfraclassId);
+                break;
+
+            case Tbl30Legio legio:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl30LegioDetailPage), legio.LegioId);
+                break;
+
+            case Tbl33Ordo ordo:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl33OrdoDetailPage), ordo.OrdoId);
+                break;
+            case Tbl36Subordo subordo:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl36SubordoDetailPage), subordo.SubordoId);
+                break;
+
+                //weiter bis species
+        }
+        System.Diagnostics.Debug.WriteLine(e.AddedItems[0]?.GetType().FullName);
+        ResultList.SelectedItem = null;
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Views.Search.DetailPages;
+using ATIS.Views.Taxonomy;
 
 namespace ATIS.Views.Search.DetailViewModels;
 
@@ -39,12 +41,12 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
-    public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = new();
-    public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = new();
-    public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = new();
-    public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = new();
-    public ObservableCollection<Tbl21Class> ClassItems { get; } = new();
-    public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl03Regnum>> RegnumItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl06Phylum>> PhylumItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl12Subphylum>> SubphylumItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl18Superclass>> SuperclassItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl21Class>> ClassItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl24Subclass>> SubclassItems { get; } = new();
 
     // -----------------------------
     //  REFERENCES
@@ -52,7 +54,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
-    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; } = new();
+    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
 
     // -----------------------------
     //  COMMENTS
@@ -76,66 +78,145 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         ClassSelected = selectedClass;
         _dataService = dataService;
 
-        InitializeAsync();
-
         ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
-    private async void InitializeAsync()
-    {
-        await LoadTaxonomy();        // WICHTIG: jetzt wird gewartet
-        LoadDirectChildren();
-        LoadReferences();
-        LoadComments();
 
-        BuildBreadcrumb();           // jetzt sind alle Selected-Objekte vorhanden
+    private bool _isInitialized;
+    private bool _isInitializing;
+
+    public async Task InitializeAsync()
+    {
+        if (_isInitialized || _isInitializing) return;
+        _isInitializing = true;
+        try
+        {
+            await LoadTaxonomy();
+            LoadDirectChildren();
+            LoadReferences();
+            LoadComments();
+            BuildBreadcrumb();
+            _isInitialized = true;
+        }
+        finally
+        {
+            _isInitializing = false;
+        }
+    }
+
+    // -----------------------------
+    //  ISLOADING PROPERTY
+    // -----------------------------
+
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
     }
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
-        //Breadcrumb.Add(new BreadcrumbItem
-        //{
-        //    Label = RegnumSelected.RegnumName,
-        //    NavigateCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() => NavigateToRegnum(RegnumSelected.RegnumId))
-        //});
-
-        //Breadcrumb.Add(new BreadcrumbItem
-        //{
-        //    Label = PhylumSelected.PhylumName,
-        //    NavigateCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() => NavigateToPhylum(PhylumSelected.PhylumId))
-        //});
-
-        //Breadcrumb.Add(new BreadcrumbItem
-        //{
-        //    Label = SubphylumSelected.SubphylumName,
-        //    NavigateCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() => NavigateToSubphylum(SubphylumSelected.SubphylumId))
-        //});
-
-        //Breadcrumb.Add(new BreadcrumbItem
-        //{
-        //    Label = SuperclassSelected.SuperclassName,
-        //    NavigateCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() => NavigateToSuperclass(SuperclassSelected.SuperclassId))
-        //});
-
-
-        Breadcrumb.Add(new BreadcrumbItem
+        if (RegnumSelected != null)
         {
-            Label = ClassSelected.ClassName,
-            NavigateCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() => NavigateToClass(ClassSelected.ClassId))
-        });
+            Breadcrumb.Add(new BreadcrumbItem
+            {
+                Label = RegnumSelected.RegnumName,
+                EntityType = "Regnum",
+                EntityId = RegnumSelected.RegnumId
+            });
+        }
 
+        if (PhylumSelected != null)
+        {
+            Breadcrumb.Add(new BreadcrumbItem
+            {
+                Label = PhylumSelected.PhylumName,
+                EntityType = "Phylum",
+                EntityId = PhylumSelected.PhylumId
+            });
+        }
+
+        if (SubphylumSelected != null)
+        {
+            Breadcrumb.Add(new BreadcrumbItem
+            {
+                Label = SubphylumSelected.SubphylumName,
+                EntityType = "Subphylum",
+                EntityId = SubphylumSelected.SubphylumId
+            });
+        }
+
+        if (SuperclassSelected != null)
+        {
+            Breadcrumb.Add(new BreadcrumbItem
+            {
+                Label = SuperclassSelected.SuperclassName,
+                EntityType = "Superclass",
+                EntityId = SuperclassSelected.SuperclassId
+            });
+        }
+
+        if (ClassSelected != null)
+        {
+            Breadcrumb.Add(new BreadcrumbItem
+            {
+                Label = ClassSelected.ClassName,
+                EntityType = "Class",
+                EntityId = ClassSelected.ClassId
+            });
+        }
+
+        // <<< HIER: aktuellen Knoten entfernen
+        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
+        {
+            var x = Breadcrumb[i];
+            if (x.EntityType == "Class" && x.EntityId == ClassSelected.ClassId)
+                Breadcrumb.RemoveAt(i);
+        }
+
+    }
+
+    public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
+    {
+        switch (item.EntityType)
+        {
+            case "Regnum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
+                break;
+
+            case "Phylum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                break;
+
+            case "Subphylum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                break;
+
+            case "Superclass":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
+                break;
+
+        }
     }
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
+    }
+    private static bool IsVisibleTaxonName(string? name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
+
+    private static Thickness CreateHeaderMargin(int visibleIndex)
+    {
+        return new Thickness(8 + (visibleIndex * 8), 0, 0, 0);
     }
 
     // -----------------------------
@@ -143,60 +224,120 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     private async Task LoadTaxonomy()
     {
-        // -------------------------
-        // CLASS → SUPERCLASS
-        // -------------------------
+        RegnumItems.Clear();
+        PhylumItems.Clear();
+        SubphylumItems.Clear();
+        SuperclassItems.Clear();
+        ClassItems.Clear();
+
+        Tbl18Superclass? superclass = null;
+        Tbl12Subphylum? subphylum = null;
+        Tbl06Phylum? phylum = null;
+        Tbl03Regnum? regnum = null;
+
         if (ClassSelected.SuperclassId != 0)
+            superclass = await _dataService.GetSuperclassByIdAsync(ClassSelected.SuperclassId);
+
+        if (superclass?.SubphylumId != 0)
+            subphylum = await _dataService.GetSubphylumByIdAsync(superclass.SubphylumId);
+
+        if (subphylum?.PhylumId != 0)
+            phylum = await _dataService.GetPhylumByIdAsync(subphylum.PhylumId);
+
+        if (phylum?.RegnumId != 0)
+            regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
+
+        int visibleIndex = 0;
+
+        if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
-            SuperclassSelected = await _dataService.GetSuperclassByIdAsync(ClassSelected.SuperclassId);
-            if (SuperclassSelected != null)
-                SuperclassItems.Add(SuperclassSelected);
+            RegnumSelected = regnum;
+            RegnumItems.Add(new TaxonomyLine<Tbl03Regnum>
+            {
+                Item = regnum,
+                HeaderMargin = CreateHeaderMargin(visibleIndex++),
+                ShowAsHyperlink = true
+            });
         }
 
-        // -------------------------
-        // SUPERCLASS → SUBPHYLUM
-        // -------------------------
-        if (SuperclassSelected?.SubphylumId != 0)
+        if (phylum != null && IsVisibleTaxonName(phylum.PhylumName))
         {
-            SubphylumSelected = await _dataService.GetSubphylumByIdAsync(SuperclassSelected.SubphylumId);
-            if (SubphylumSelected != null)
-                SubphylumItems.Add(SubphylumSelected);
+            PhylumSelected = phylum;
+            PhylumItems.Add(new TaxonomyLine<Tbl06Phylum>
+            {
+                Item = phylum,
+                HeaderMargin = CreateHeaderMargin(visibleIndex++),
+                ShowAsHyperlink = true
+            });
         }
 
-        // -------------------------
-        // SUBPHYLUM → PHYLUM
-        // -------------------------
-        if (SubphylumSelected?.PhylumId != 0)
+        if (subphylum != null && IsVisibleTaxonName(subphylum.SubphylumName))
         {
-            PhylumSelected = await _dataService.GetPhylumByIdAsync(SubphylumSelected.PhylumId);
-            if (PhylumSelected != null)
-                PhylumItems.Add(PhylumSelected);
+            SubphylumSelected = subphylum;
+            SubphylumItems.Add(new TaxonomyLine<Tbl12Subphylum>
+            {
+                Item = subphylum,
+                HeaderMargin = CreateHeaderMargin(visibleIndex++),
+                ShowAsHyperlink = true
+            });
         }
 
-        // -------------------------
-        // PHYLUM → REGNUM
-        // -------------------------
-        if (PhylumSelected?.RegnumId != 0)
+        if (superclass != null && IsVisibleTaxonName(superclass.SuperclassName))
         {
-            RegnumSelected = await _dataService.GetRegnumByIdAsync(PhylumSelected.RegnumId);
-            if (RegnumSelected != null)
-                RegnumItems.Add(RegnumSelected);
+            SuperclassSelected = superclass;
+            SuperclassItems.Add(new TaxonomyLine<Tbl18Superclass>
+            {
+                Item = superclass,
+                HeaderMargin = CreateHeaderMargin(visibleIndex++),
+                ShowAsHyperlink = true
+            });
         }
 
-        // -------------------------
-        // CLASS (immer vorhanden)
-        // -------------------------
-        ClassItems.Add(ClassSelected);
+        ClassItems.Add(new TaxonomyLine<Tbl21Class>
+        {
+            Item = ClassSelected,
+            HeaderMargin = CreateHeaderMargin(visibleIndex++),
+            ShowAsHyperlink = false
+        });
     }
 
     // -----------------------------
     //  LOAD DIRECT CHILDREN (SUBCLASS)
     // -----------------------------
+    private bool _hasDirectChildren;
+    public bool HasDirectChildren
+    {
+        get => _hasDirectChildren;
+        set => SetProperty(ref _hasDirectChildren, value);
+    }
     private async void LoadDirectChildren()
     {
+        SubclassItems.Clear();
+        HasDirectChildren = false;
+
         var subclasses = await _dataService.GetSubclassesByClassIdAsync(ClassSelected.ClassId);
-        foreach (var item in subclasses)
-            SubclassItems.Add(item);
+
+        var visibleItems = subclasses
+            .Where(x => IsVisibleTaxonName(x.SubclassName))
+            .ToList();
+
+        if (visibleItems.Count == 0)
+            return;
+
+        var parentLeft = ClassItems.Count > 0 ? ClassItems[0].HeaderMargin.Left : 8;
+        var childMargin = new Thickness(parentLeft + 8, 0, 0, 0);
+
+        foreach (var item in visibleItems)
+        {
+            SubclassItems.Add(new TaxonomyLine<Tbl24Subclass>
+            {
+                Item = item,
+                HeaderMargin = childMargin,
+                ShowAsHyperlink = false
+            });
+        }
+
+        HasDirectChildren = true;
     }
 
     // -----------------------------
@@ -244,15 +385,4 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         // Hier später QuestPDF oder Syncfusion einbauen
     }
 
-    // -----------------------------
-    //  NAVIGATION (Hyperlink)
-    // -----------------------------
-    private void NavigateToClass(int classId)
-    {
-        var selectedClass = _dataService.GetClassByIdAsync(classId).Result;
-
-        var vm = new Tbl21ClassDetailViewModel(selectedClass, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), vm);
-    }
 }

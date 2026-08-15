@@ -390,7 +390,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl24Subclass>> GetSubclassForClassAsync(int classeId);
 
-
+    //Für ReportPDF
+    Task<IEnumerable<Tbl27Infraclass>> GetInfraclassesBySubclassIdAsync(int subclassId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubclassIdAsync(int subclassId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubclassIdAsync(int subclassId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubclassIdAsync(int subclassId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsBySubclassIdAsync(int subclassId);
 
     //alt
     ObservableCollection<Tbl24Subclass> GetSubclassAsync();
@@ -415,6 +420,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl27Infraclass>> GetInfraclassForSubclassAsync(int subclassId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl30Legio>> GetLegiosByInfraclassIdAsync(int infraclassId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfraclassIdAsync(int infraclassId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfraclassIdAsync(int infraclassId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfraclassIdAsync(int infraclassId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByInfraclassIdAsync(int infraclassId);
 
 
     #endregion Infraclass
@@ -434,6 +445,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl30Legio>> GetLegioForInfraclassAsync(int infraclassId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl33Ordo>> GetOrdosByLegioIdAsync(int legioId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByLegioIdAsync(int legioId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByLegioIdAsync(int legioId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByLegioIdAsync(int legioId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByLegioIdAsync(int legioId);
 
 
     #endregion Legio
@@ -453,6 +470,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl33Ordo>> GetOrdoForLegioAsync(int legioId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl36Subordo>> GetSubordosByOrdoIdAsync(int ordoId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByOrdoIdAsync(int ordoId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByOrdoIdAsync(int ordoId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByOrdoIdAsync(int ordoId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByOrdoIdAsync(int ordoId);
 
 
     #endregion Ordo

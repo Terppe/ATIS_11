@@ -1,7 +1,27 @@
 ﻿namespace ATIS.Core.Taxonomy;
 
-public record TaxonLevel(
-    string Name,
-    Func<int, Task> Load,     // Wie lade ich diese Ebene?
-    Action ResetBelow         // Was muss unterhalb zurückgesetzt werden?
-);
+public enum TaxonLevel
+{
+    None,
+    Regnum,
+    Phylum,
+    Subphylum,
+    Superclass,
+    Class,
+    Subclass,
+    Infraclass,
+    Legio,
+    Ordo,
+    Subordo,
+    Infraordo,
+    Superfamily,
+    Family,
+    Subfamily,
+    Infrafamily,
+    Supertribus,
+    Tribus,
+    Subtribus,
+    Infratribus,
+    Genus,
+    Species
+}

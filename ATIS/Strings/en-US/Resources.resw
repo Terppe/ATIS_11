@@ -2241,6 +2241,9 @@
   <data name="TextBlock_Phylums.Text" xml:space="preserve">
     <value>Phylums</value>
   </data>
+  <data name="TextBlock_Print.Text" xml:space="preserve">
+    <value>PRINT</value>
+  </data>
   <data name="TextBlock_PlSpeciesId.Text" xml:space="preserve">
     <value>PlSpecies ID</value>
   </data>
@@ -3186,7 +3189,7 @@
   <data name="TextBlock_References.Text" xml:space="preserve">
     <value>References</value>
   </data>
-  <data name="TextBlock_Sources.Text" xml:space="preserve">
+  <data name="TextBlock_OtherSources.Text" xml:space="preserve">
     <value>Other Source(s):</value>
   </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
@@ -4133,6 +4136,9 @@
   </data>
   <data name="TextBlock_Preview.Text" xml:space="preserve">
     <value>Preview</value>
+  </data>
+  <data name="TextBlock_Pdf.Text" xml:space="preserve">
+    <value>PDF</value>
   </data>
   <data name="TextBlock_Domorphism.Text" xml:space="preserve">
     <value>Domorphisms</value>

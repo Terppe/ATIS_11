@@ -25,32 +25,32 @@
             <TextBlock Width="50"
                        Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListTitleStyle}"
-                       Text="{Binding SubclassId}" />
+                       Text="{Binding Item.SubclassId}" />
             <CheckBox Width="80"
                       Margin="{StaticResource SmallLeftMargin}"
                       Content="Valid"
-                      IsChecked="{Binding Valid}" />
+                      IsChecked="{Binding Item.Valid}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding SubclassName}" />
+                       Text="{Binding Item.SubclassName}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding Author}" />
+                       Text="{Binding Item.Author}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding AuthorYear}" />
+                       Text="{Binding Item.AuthorYear}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding EngName}" />
+                       Text="{Binding Item.EngName}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding GerName}" />
+                       Text="{Binding Item.GerName}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding FraName}" />
+                       Text="{Binding Item.FraName}" />
             <TextBlock Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                        Style="{StaticResource ListSubTitleStyle}"
-                       Text="{Binding PorName}" />
+                       Text="{Binding Item.PorName}" />
         </StackPanel>
     </Grid>
 </UserControl>

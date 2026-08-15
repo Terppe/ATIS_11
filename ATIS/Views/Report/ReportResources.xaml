@@ -84,8 +84,8 @@
 
 
     <!--
-        Report.Listviews
-        Header
+    Report.Listviews
+    Header
     -->
 
     <DataTemplate x:Key="ReportItemTemplateHeaderRegnum">
@@ -227,34 +227,34 @@
 
     <!--  Hyperlink-ListViews  -->
     <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkRegnumControl />
+        <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkPhylumControl />
+        <dataTemplateHyperlink:TemplateTbl06PhylumWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSubphylum">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubphylumControl />
+        <dataTemplateHyperlink:TemplateTbl12SubphylumWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperclass">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperclassControl />
+        <dataTemplateHyperlink:TemplateTbl18SuperclassWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkClass">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkClassControl />
+        <dataTemplateHyperlink:TemplateTbl21ClassWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSubclass">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubclassControl />
+        <dataTemplateHyperlink:TemplateTbl24SubclassWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraclass">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraclassControl />
+        <dataTemplateHyperlink:TemplateTbl27InfraclassWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkLegio">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkLegioControl />
+        <dataTemplateHyperlink:TemplateTbl30LegioWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkOrdo">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkOrdoControl />
+        <dataTemplateHyperlink:TemplateTbl33OrdoWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSubordo">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubordoControl />
+        <dataTemplateHyperlink:TemplateTbl36SubordoWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo">
         <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraordoControl />

@@ -14,14 +14,27 @@ public sealed class SearchPageViewModel : ObservableObject
     {
         _dataService = dataService;
 
-        Tables = new() { "Species", "Class", "Superclass", "Subphylum", "Phylum", "Regnum" };
-        SelectedTable = Tables.First();
+        Tables = new()
+        {
+            "Species", "Genus", "Infratribus", "Subtribus", "Tribus", "Supertribus", "Infrafamily",
+            "Subfamily", "Family", "Superfamily", "Infraordo", "Subordo", "Ordo", "Legio", "Infraclass", "Subclass", "Class",
+            "Superclass", "Subphylum", "Phylum", "Regnum" 
+        };
+
+        // nur Default, wenn wirklich noch nichts gesetzt
+        SelectedTable ??= "Species";
 
         SearchCommand = new AsyncRelayCommand(ExecuteSearchAsync);
     }
 
+    public string? SelectedTable
+    {
+        get => _selectedTable;
+        set => SetProperty(ref _selectedTable, value);
+    }
+    private string? _selectedTable;
+
     public List<string> Tables { get; }
-    public string SelectedTable { get; set; }
 
     public string SearchText { get; set; } = string.Empty;
 
@@ -35,16 +48,101 @@ public sealed class SearchPageViewModel : ObservableObject
 
         switch (SelectedTable)
         {
+            case "Regnum":
+                {
+                    var items = await _dataService.SearchRegnumAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.RegnumName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+
+            case "Phylum":
+                {
+                    var items = await _dataService.SearchPhylumWithRegnumAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.PhylumName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+
+            case "Subphylum":
+                {
+                    var items = await _dataService.SearchSubphylumWithPhylumAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.SubphylumName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+
             case "Superclass":
-                var superclassResults = await _dataService.SearchSuperclassWithSubphylumAsync(SearchText);
-                foreach (var item in superclassResults)
-                    Results.Add(item);
-                break;
+                {
+                    var items = await _dataService.SearchSuperclassWithSubphylumAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.SuperclassName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+
             case "Class":
-                var classResults = await _dataService.SearchClassWithSuperclassAsync(SearchText);
-                foreach (var item in classResults)
+                {
+                    var items = await _dataService.SearchClassWithSuperclassAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.ClassName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+
+            case "Subclass":
+                {
+                    var items = await _dataService.SearchSubclassWithClassAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.SubclassName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+            case "Infraclass":
+                {
+                    var items = await _dataService.SearchInfraclassWithSubclassAsync(SearchText);
+                    foreach (var item in items)
+                    {
+                        if (item.InfraclassName.Contains('#')) continue;
+                        Results.Add(item);
+                    }
+                    break;
+                }
+            case "Legio":
+            {
+                var items = await _dataService.SearchLegioWithInfraclassAsync(SearchText);
+                foreach (var item in items)
+                {
+                    if (item.LegioName.Contains('#')) continue;
                     Results.Add(item);
+                }
                 break;
+            }
+            case "Ordo":
+            {
+                var items = await _dataService.SearchOrdoWithLegioAsync(SearchText);
+                foreach (var item in items)
+                {
+                    if (item.OrdoName.Contains('#')) continue;
+                    Results.Add(item);
+                }
+                break;
+            }
 
         }
     }
