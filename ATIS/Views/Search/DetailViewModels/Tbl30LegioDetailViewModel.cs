@@ -123,6 +123,7 @@ public class Tbl30LegioDetailViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
+    public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
     private void BuildBreadcrumb()
     {
         //Initialisierung der Breadcrumb-Navigation

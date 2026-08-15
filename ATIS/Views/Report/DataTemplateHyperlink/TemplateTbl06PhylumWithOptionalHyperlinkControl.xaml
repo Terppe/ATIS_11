@@ -19,16 +19,16 @@
         </StackPanel>
 
         <Grid Grid.Column="1">
-            <StackPanel x:Name="HyperlinkPanel"
-                        Margin="0"
-                        Padding="0"
-                        Orientation="Horizontal"
-                        Spacing="0">
-
+            <!--  Hyperlink-Variante  -->
+            <Grid x:Name="HyperlinkPanel">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
                 <TextBlock x:Name="TbPhylum"
-                           Margin="0"
-                           Padding="0"
+                           Grid.Column="0"
                            Foreground="DarkBlue"
                            Tag="{Binding Item.PhylumId, Mode=OneWay}"
                            Tapped="TextBlock_Tapped"
@@ -36,13 +36,14 @@
                            TextDecorations="Underline" />
 
                 <TextBlock x:Name="TbAuthorDisplay"
-                           Margin="4,0,0,0"
-                           Padding="0" />
+                           Grid.Column="1"
+                           Margin="4,0,0,0" />
 
                 <TextBlock x:Name="TbLanguageNamesDisplay"
+                           Grid.Column="2"
                            Margin="4,0,0,0"
-                           Padding="0" />
-            </StackPanel>
+                           TextWrapping="WrapWholeWords" />
+            </Grid>
 
             <TextBlock x:Name="TbPhylumLine"
                        Margin="0"

@@ -45,10 +45,6 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     public ObservableCollection<TaxonomyLine<Tbl03Regnum>> RegnumItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl06Phylum>> PhylumItems { get; } = new();
-    //public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = new();
-    //public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = new();
-    //public ObservableCollection<Tbl21Class> ClassItems { get; } = new();
-    //public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = new();
 
     // -----------------------------
     //  REFERENCES
@@ -117,6 +113,7 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+    public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {

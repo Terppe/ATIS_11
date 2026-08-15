@@ -47,10 +47,10 @@
                     Grid.Column="1"
                     Orientation="Horizontal">
             <TextBlock Width="Auto"
-                       Text="{Binding Valid}" />
+                       Text="{Binding Item.Valid}" />
             <TextBlock Width="Auto"
                        Margin="2,0,0,0"
-                       Text="{Binding ValidYear}" />
+                       Text="{Binding Item.ValidYear}" />
         </StackPanel>
         <StackPanel Grid.Row="3"
                     Grid.Column="0">
@@ -70,7 +70,7 @@
         </StackPanel>
         <StackPanel Grid.Row="5"
                     Grid.Column="1">
-            <TextBlock Text="{Binding UpdaterDate}" />
+            <TextBlock Text="{Binding Item.UpdaterDate}" />
         </StackPanel>
         <StackPanel Grid.Row="6"
                     Grid.Column="0">
@@ -79,7 +79,7 @@
         </StackPanel>
         <StackPanel Grid.Row="6"
                     Grid.Column="1">
-            <TextBlock Text="{Binding TradeName}"
+            <TextBlock Text="{Binding Item.TradeName}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="9"
@@ -89,7 +89,7 @@
         </StackPanel>
         <StackPanel Grid.Row="9"
                     Grid.Column="1">
-            <TextBlock Text="{Binding MemoSpecies}"
+            <TextBlock Text="{Binding Item.MemoSpecies}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="10"
@@ -99,20 +99,20 @@
         </StackPanel>
         <StackPanel Grid.Row="10"
                     Grid.Column="1">
-            <TextBlock Text="{Binding Importer}"
+            <TextBlock Text="{Binding Item.Importer}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <!--<StackPanel Grid.Row="11" Grid.Column="0">
-            <TextBlock loca:Uids.Uid="TextBlock_LNummer" Margin="8,0,0,0" />
+        <TextBlock loca:Uids.Uid="TextBlock_LNummer" Margin="8,0,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="11" Grid.Column="1">
-            <TextBlock Text="{Binding LNumber}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding LNumber}" TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="12" Grid.Column="0">
-            <TextBlock loca:Uids.Uid="TextBlock_LDANummer" Margin="8,0,0,0" />
+        <TextBlock loca:Uids.Uid="TextBlock_LDANummer" Margin="8,0,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="12" Grid.Column="1">
-            <TextBlock Text="{Binding LdaNumber}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding LdaNumber}" TextWrapping="Wrap" />
         </StackPanel>-->
         <StackPanel x:Name="Sp1BasinLength"
                     Grid.Row="13"
@@ -124,7 +124,7 @@
                     Grid.Row="13"
                     Grid.Column="1">
             <TextBlock x:Name="Tb2BasinLength"
-                       Text="{Binding BasinLength}"
+                       Text="{Binding Item.BasinLength}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel x:Name="Sp1BasinHeight"
@@ -137,7 +137,7 @@
                     Grid.Row="14"
                     Grid.Column="1">
             <TextBlock x:Name="Tb2BasinHeight"
-                       Text="{Binding BasinLength}"
+                       Text="{Binding Item.BasinLength}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="15"
@@ -147,7 +147,7 @@
         </StackPanel>
         <StackPanel Grid.Row="15"
                     Grid.Column="1">
-            <TextBlock Text="{Binding FishLength}"
+            <TextBlock Text="{Binding Item.FishLength}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="16"
@@ -157,14 +157,14 @@
         </StackPanel>
         <StackPanel Grid.Row="16"
                     Grid.Column="1">
-            <TextBlock Text="{Binding PlantLength}"
+            <TextBlock Text="{Binding Item.PlantLength}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <!--<StackPanel Grid.Row="17" Grid.Column="0">
-            <TextBlock loca:Uids.Uid="TextBlock_MemoSpecial" Margin="8,0,0,0" />
+        <TextBlock loca:Uids.Uid="TextBlock_MemoSpecial" Margin="8,0,0,0" />
         </StackPanel>
         <StackPanel Grid.Row="17" Grid.Column="1">
-            <TextBlock Text="{Binding MemoSpecial}" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding MemoSpecial}" TextWrapping="Wrap" />
         </StackPanel>-->
     </Grid>
 </UserControl>
