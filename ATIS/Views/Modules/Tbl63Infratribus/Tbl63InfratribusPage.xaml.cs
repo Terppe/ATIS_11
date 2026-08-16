@@ -2,7 +2,7 @@
 using ATIS.Views.Modules.Tbl66Genus;
 
 
-//    Tbl63InfratribusPage Skriptdatum:  30.12.2024  10:32    
+//    Tbl63InfratribusPage Skriptdatum:  16.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
@@ -40,8 +40,8 @@ public sealed partial class Tbl63InfratribusPage : Page
         SearchBox.Focus(FocusState.Programmatic);
 
         // Wichtig: lokalisierte Header einmal merken
-        _commentsHeaderText = CommentsInfratribusPivot.Header;
-        _referencesHeaderText = ReferencesInfratribusPivot.Header;
+        _commentsHeaderText = CommentsGenusPivot.Header;
+        _referencesHeaderText = ReferencesGenusPivot.Header;
 
         // Start: ausblenden
         UpdateGenusTabs(false);

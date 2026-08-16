@@ -256,11 +256,11 @@
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo"
                           x:DataType="models:Tbl39Infraordo">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraordoControl />
+                <dataTemplateHyperlink:TemplateTbl39InfraordoWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperfamily"
                           x:DataType="models:Tbl42Superfamily">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperfamilyControl />
+                <dataTemplateHyperlink:TemplateTbl42SuperfamilyWithOptionalHyperlinkControl />
             </DataTemplate>
 
             <!--  Rest-ListViews  -->

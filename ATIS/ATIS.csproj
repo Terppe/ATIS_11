@@ -406,34 +406,31 @@
 	<Page Update="Views\Report\Pdf\Tbl03Regnums\ReportRegnumsWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkTribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl54SupertribusWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSupertribusControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSuperfamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl42SuperfamilyWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl18SuperclassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubtribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl60SubtribusWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl12SubphylumWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubfamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl48SubfamilyWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl24SubclassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesSubControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl75SpeciesSubWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl75SpeciesWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl03RegnumWithOptionalHyperlinkControl.xaml">
@@ -445,22 +442,22 @@
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl33OrdoWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfratribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl63InfratribusWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfraordoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl39InfraordoWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfrafamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl51InfrafamilyWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl27InfraclassWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkGenusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl66GenusWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl45FamilyWithOptionalHyperlinkControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl21ClassWithOptionalHyperlinkControl.xaml">
@@ -835,20 +832,9 @@
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSuperfamilyControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSupertribusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderTribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkFamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkGenusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfrafamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfraordoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkInfratribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSpeciesSubControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSubtribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSuperfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkSupertribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHyperlink\ReportItemTemplateHyperlinkTribusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
+		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl03Regnums\ReportRegnumsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl06Phylums\ReportPhylumsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl12Subphylums\ReportSubphylumsWindow.xaml" />
@@ -917,6 +903,17 @@
 		<None Remove="Views\Search\DetailPages\Tbl30LegioDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl33OrdoDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl36SubordoDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl39InfraordoDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl42SuperfamilyDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl45FamilyDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl48SubfamilyDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl51InfrafamilyDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl54SupertribusDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl57TribusDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl60SubtribusDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl63InfratribusDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl66GenusDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl75SpeciesDetailPage.xaml" />
 		<None Remove="Views\Search\DetailWindows\DetailWindow.xaml" />
 		<None Remove="Views\Search\SearchItemTemplateTblFoodControl.xaml" />
 		<None Remove="Views\Search\SearchPage.xaml" />
@@ -977,6 +974,78 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl75SpeciesDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl60SubtribusDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl57TribusDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl54SupertribusDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl51InfrafamilyDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl48SubfamilyDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl45FamilyDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl42SuperfamilyDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl39InfraordoDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl63InfratribusDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl66GenusDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

@@ -423,7 +423,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     }
 
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (INFRACLASS)
+    //  LOAD DIRECT CHILDREN (Subordo)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -433,13 +433,13 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     }
     private async void LoadDirectChildren()
     {
-        OrdoItems.Clear();
+        SubordoItems.Clear();
         HasDirectChildren = false;
 
-        var ordos = await _dataService.GetOrdosByLegioIdAsync(LegioSelected.LegioId);
+        var subordo = await _dataService.GetSubordosByOrdoIdAsync(OrdoSelected.OrdoId);
 
-        var visibleItems = ordos
-            .Where(x => IsVisibleTaxonName(x.OrdoName))
+        var visibleItems = subordo
+            .Where(x => IsVisibleTaxonName(x.SubordoName))
             .ToList();
 
         if (visibleItems.Count == 0)
@@ -450,7 +450,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
 
         foreach (var item in visibleItems)
         {
-            OrdoItems.Add(new TaxonomyLine<Tbl33Ordo>
+            SubordoItems.Add(new TaxonomyLine<Tbl36Subordo>
             {
                 Item = item,
                 HeaderMargin = childMargin,

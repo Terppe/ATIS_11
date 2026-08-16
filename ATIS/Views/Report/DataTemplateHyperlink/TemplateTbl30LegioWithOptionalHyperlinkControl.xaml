@@ -53,38 +53,5 @@
                        Visibility="Collapsed" />
 
         </Grid>
-
-        <!--<Grid Grid.Column="1">
-        <StackPanel x:Name="HyperlinkPanel"
-        Margin="0"
-        Padding="0"
-        Orientation="Horizontal"
-        Spacing="0">
-
-        <TextBlock x:Name="TbLegio"
-        Margin="0"
-        Padding="0"
-        Foreground="DarkBlue"
-        Tag="{Binding Item.LegioId, Mode=OneWay}"
-        Tapped="TextBlock_Tapped"
-        Text="{Binding Item.LegioName, Mode=OneWay}"
-        TextDecorations="Underline" />
-
-        <TextBlock x:Name="TbAuthorDisplay"
-        Margin="4,0,0,0"
-        Padding="0" />
-
-        <TextBlock x:Name="TbLanguageNamesDisplay"
-        Margin="4,0,0,0" TextWrapping="WrapWholeWords"
-        Padding="0" />
-        </StackPanel>
-
-        <TextBlock x:Name="TbLegioLine"
-        Margin="0"
-        Padding="0"
-        TextWrapping="WrapWholeWords"
-        Visibility="Collapsed" />
-        </Grid>-->
-
     </Grid>
 </UserControl>

@@ -257,41 +257,41 @@
         <dataTemplateHyperlink:TemplateTbl36SubordoWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraordoControl />
+        <dataTemplateHyperlink:TemplateTbl39InfraordoWithOptionalHyperlinkControl  ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperfamily">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperfamilyControl />
+        <dataTemplateHyperlink:TemplateTbl42SuperfamilyWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkFamily">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkFamilyControl />
+        <dataTemplateHyperlink:TemplateTbl45FamilyWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSubfamily">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubfamilyControl />
+        <dataTemplateHyperlink:TemplateTbl48SubfamilyWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkInfrafamily">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfrafamilyControl />
+        <dataTemplateHyperlink:TemplateTbl51InfrafamilyWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSupertribus">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSupertribusControl />
+        <dataTemplateHyperlink:TemplateTbl54SupertribusWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkTribus">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkTribusControl />
+        <dataTemplateHyperlink:TemplateTbl57TribusWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSubtribus">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSubtribusControl />
+        <dataTemplateHyperlink:TemplateTbl60SubtribusWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkInfratribus">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfratribusControl />
+        <dataTemplateHyperlink:TemplateTbl63InfratribusWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkGenus">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkGenusControl />
+        <dataTemplateHyperlink:TemplateTbl66GenusWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSpecies">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSpeciesControl />
+        <dataTemplateHyperlink:TemplateTbl75SpeciesWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
-    <DataTemplate x:Key="ReportItemTemplateHyperlinkSpeciesSub">
-        <dataTemplateHyperlink:ReportItemTemplateHyperlinkSpeciesSubControl />
-    </DataTemplate>
+    <!--<DataTemplate x:Key="ReportItemTemplateHyperlinkSpeciesSub">
+        <dataTemplateHyperlink:TemplateTbl75SpeciesSubWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
+    </DataTemplate>-->
 
     <!--  Rest-ListViews  -->
     <DataTemplate x:Key="ReportItemTemplateSpecies">

@@ -9,6 +9,8 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
+    <!--  Tbl21ClassDetailPage.xaml  Skriptdatum:  15.08.2026   18:32  -->
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -146,7 +148,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!--  HEADER CLASS  -->
+                <!--  HEADER Class  -->
                 <ListView Grid.Row="0"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"

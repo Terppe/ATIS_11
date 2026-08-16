@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using ATIS.Interfaces;
+﻿using ATIS.Interfaces;
 using ATIS.Views.Search.DetailViewModels;
-using Microsoft.UI.Xaml.Data;
+
+//  Tbl21ClassDetailPage.xaml.cs Skriptdatum:  15.08.2026   18:32  
 
 namespace ATIS.Views.Search.DetailPages;
 
@@ -51,22 +51,6 @@ public sealed partial class Tbl21ClassDetailPage : Page
         }
     }
 
-    //protected override async void OnNavigatedTo(NavigationEventArgs e)
-    //{
-    //    base.OnNavigatedTo(e);
-
-    //    if (e.Parameter is int id)
-    //    {
-    //        var selected = await _dataService.GetClassByIdAsync(id); 
-    //        if (selected == null) return;
-
-    //        ViewModel = new Tbl21ClassDetailViewModel(selected, _dataService);
-    //        DataContext = ViewModel;
-
-    //        await ViewModel.InitializeAsync();
-    //        Bindings.Update();
-    //    }
-    //}
     public Task OnNavigateBreadcrumbAsync(BreadcrumbItem item)
     {
         // gleiche Logik wie Breadcrumb_Click / bestehende Navigation

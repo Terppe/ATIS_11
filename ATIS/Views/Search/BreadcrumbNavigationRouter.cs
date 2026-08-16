@@ -65,11 +65,73 @@ public static class BreadcrumbNavigationRouter
             return;
         }
 
-        //if (content is Tbl66GenusDetailPage genusPage && genusPage.ViewModel != null)
+        if (content is Tbl36SubordoDetailPage subordoPage && subordoPage.ViewModel != null)
+        {
+            await subordoPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        if (content is Tbl39InfraordoDetailPage infraordoPage && infraordoPage.ViewModel != null)
+        {
+            await infraordoPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        if (content is Tbl42SuperfamilyDetailPage superfamilyPage && superfamilyPage.ViewModel != null)
+        {
+            await superfamilyPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        if (content is Tbl45FamilyDetailPage familyPage && familyPage.ViewModel != null)
+        {
+            await familyPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        if (content is Tbl48SubfamilyDetailPage subfamilyPage && subfamilyPage.ViewModel != null)
+        {
+            await subfamilyPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        //if (content is Tbl51InfrafamilyDetailPage infrafamilyPage && infrafamilyPage.ViewModel != null)
         //{
-        //    await genusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+        //    await infrafamilyPage.ViewModel.NavigateBreadcrumbAsync(crumb);
         //    return;
         //}
+
+        //if (content is Tbl54SupertribusDetailPage supertribusPage && supertribusPage.ViewModel != null)
+        //{
+        //    await supertribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+        //    return;
+        //}
+
+        //if (content is Tbl57TribusDetailPage tribusPage && tribusPage.ViewModel != null)
+        //{
+        //    await tribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+        //    return;
+        //}
+
+        if (content is Tbl60SubtribusDetailPage subtribusPage && subtribusPage.ViewModel != null)
+        {
+            await subtribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        if (content is Tbl63InfratribusDetailPage infratribusPage && infratribusPage.ViewModel != null)
+        {
+            await infratribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+
+
+        if (content is Tbl66GenusDetailPage genusPage && genusPage.ViewModel != null)
+        {
+            await genusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
 
         // ...weitere Seiten hier zentral ergänzen
     }

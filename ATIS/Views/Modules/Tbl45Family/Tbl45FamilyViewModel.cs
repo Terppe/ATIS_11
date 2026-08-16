@@ -8,6 +8,7 @@ using ATIS.Views.Modules.Tbl48Subfamily;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
 //    Tbl45FamilyViewModel Skriptdatum:  18.10.2025  10:32    
@@ -23,6 +24,7 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl45Family>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -66,8 +68,29 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Family ID");
-        RegisterHeader("Name", "Family Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_FamilyId")) ? "Id" : loc.GetLocalizedString("HeaderSort_FamilyId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_FamilyName")) ? "Name" : loc.GetLocalizedString("HeaderSort_FamilyName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               

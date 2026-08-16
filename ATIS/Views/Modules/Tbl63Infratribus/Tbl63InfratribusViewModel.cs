@@ -8,9 +8,10 @@ using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
-//    Tbl63InfratribusViewModel Skriptdatum:  30.12.2024  10:32    
+//    Tbl63InfratribusViewModel Skriptdatum:  16.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
@@ -23,6 +24,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl63Infratribus>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -66,8 +68,29 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Infratribus ID");
-        RegisterHeader("Name", "Infratribus Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_InfratribusId")) ? "Id" : loc.GetLocalizedString("HeaderSort_InfratribusId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_InfratribusName")) ? "Name" : loc.GetLocalizedString("HeaderSort_InfratribusName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               

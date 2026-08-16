@@ -4,6 +4,8 @@ using ATIS.Models;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
 
+//    Tbl24SubclassDetailViewModel Skriptdatum:  15.08.2026  18:32    
+
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl24SubclassDetailViewModel : ObservableObject
@@ -16,7 +18,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     public string Title => $"Subclass: {SubclassSelected?.SubclassName}";
 
     // -----------------------------
-    //  SELECTED SUBCLASS
+    //  SELECTED Subclass
     // -----------------------------
     public Tbl24Subclass SubclassSelected { get; }
 
@@ -215,6 +217,10 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
                 break;
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
     private void ExecuteBack()
     {
         var frame = App.MainPageInstance.NavFrame;
@@ -245,7 +251,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
         SubclassItems.Clear();
 
         Tbl24Subclass? subclass = null;
-        Tbl21Class? class1 = null;
+        Tbl21Class? classe1 = null;
         Tbl18Superclass? superclass = null;
         Tbl12Subphylum? subphylum = null;
         Tbl06Phylum? phylum = null;
@@ -253,10 +259,10 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
 
         // technisch laden
         if (SubclassSelected.ClassId != 0)
-            class1 = await _dataService.GetClassByIdAsync(SubclassSelected.ClassId);
+            classe1 = await _dataService.GetClassByIdAsync(SubclassSelected.ClassId);
 
-        if (class1?.SuperclassId != 0)
-            superclass = await _dataService.GetSuperclassByIdAsync(class1.SuperclassId);
+        if (classe1?.SuperclassId != 0)
+            superclass = await _dataService.GetSuperclassByIdAsync(classe1.SuperclassId);
 
         if (superclass?.SubphylumId != 0)
             subphylum = await _dataService.GetSubphylumByIdAsync(superclass.SubphylumId);
@@ -314,12 +320,12 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
             });
         }
 
-        if (class1 != null && IsVisibleTaxonName(class1.ClassName))
+        if (classe1 != null && IsVisibleTaxonName(classe1.ClassName))
         {
-            ClassSelected = class1;
+            ClassSelected = classe1;
             ClassItems.Add(new TaxonomyLine<Tbl21Class>
             {
-                Item = class1,
+                Item = classe1,
                 HeaderMargin = CreateHeaderMargin(visibleIndex++),
                 ShowAsHyperlink = true
             });
@@ -348,9 +354,9 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
         InfraclassItems.Clear();
         HasDirectChildren = false;
 
-        var infraclasses = await _dataService.GetInfraclassesBySubclassIdAsync(SubclassSelected.SubclassId);
+        var infraclass = await _dataService.GetInfraclassesBySubclassIdAsync(SubclassSelected.SubclassId);
 
-        var visibleItems = infraclasses
+        var visibleItems = infraclass
             .Where(x => IsVisibleTaxonName(x.InfraclassName))
             .ToList();
 

@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using ATIS.Views.Modules.Tbl63Infratribus;
 
-//    Tbl60SubtribusPage Skriptdatum:  25.06.2026  10:32    
+
+//    Tbl60SubtribusPage Skriptdatum:  16.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
@@ -60,9 +61,9 @@ public sealed partial class Tbl60SubtribusPage : Page
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    // ---------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------
     // COMMENTS + REFERENCES PIVOTS VON Infratribus VERWALTEN
-    // ---------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------------
 
     private void UpdateInfratribusTabs(bool hasSelection)
     {
@@ -81,7 +82,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ---------------------------------------------------------                  
     // PROPERTCHANGED
     // ---------------------------------------------------------                  
-
     private void InfratribusViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Tbl63InfratribusViewModel.SelectedItem))
@@ -104,4 +104,7 @@ public sealed partial class Tbl60SubtribusPage : Page
 
         base.OnNavigatedFrom(e);
     }
+
+
+
 }

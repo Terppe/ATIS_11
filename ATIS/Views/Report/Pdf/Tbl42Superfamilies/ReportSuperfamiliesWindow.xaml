@@ -268,15 +268,15 @@
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo"
                           x:DataType="models:Tbl39Infraordo">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkInfraordoControl />
+                <dataTemplateHyperlink:TemplateTbl39InfraordoWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperfamily"
                           x:DataType="models:Tbl42Superfamily">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkSuperfamilyControl />
+                <dataTemplateHyperlink:TemplateTbl42SuperfamilyWithOptionalHyperlinkControl />
             </DataTemplate>
             <DataTemplate x:Key="ReportItemTemplateHyperlinkFamily"
                           x:DataType="models:Tbl45Family">
-                <dataTemplateHyperlink:ReportItemTemplateHyperlinkFamilyControl />
+                <dataTemplateHyperlink:TemplateTbl45FamilyWithOptionalHyperlinkControl />
             </DataTemplate>
 
             <!--  Rest-ListViews  -->

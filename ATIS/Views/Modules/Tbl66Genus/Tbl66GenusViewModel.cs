@@ -8,9 +8,9 @@ using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
-
-//    Tbl66GenusViewModel Skriptdatum:  13.06.2024  10:32    
+//    Tbl66GenusViewModel Skriptdatum:  16.08.2026  10:32
 
 namespace ATIS.Views.Modules.Tbl66Genus;
 
@@ -24,6 +24,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl66Genus>>>? _activeLoader;
 
+    private readonly Action<string> _langHandler;
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
@@ -66,8 +67,29 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Genus ID");
-        RegisterHeader("Name", "Genus Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_GenusId")) ? "Id" : loc.GetLocalizedString("HeaderSort_GenusId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_GenusName")) ? "Name" : loc.GetLocalizedString("HeaderSort_GenusName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               

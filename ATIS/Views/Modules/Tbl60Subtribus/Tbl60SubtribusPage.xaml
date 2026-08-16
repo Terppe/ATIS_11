@@ -5,14 +5,14 @@
       xmlns:components="using:ATIS.DesignSystem.Components"
       xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
-      xmlns:local="using:ATIS.Views.Modules.Tbl60Subtribus"
+      xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
       xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       x:Name="RootPage"
       DataContext="{Binding SubtribusViewModel}">
 
-    <!--  Tbl60SubtribusPage Skriptdatum:  25.06.2026  10:32  -->
+    <!--  Tbl60SubtribusPage Skriptdatum:  16.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -94,7 +94,7 @@
 
                 <!--  LIST CONTENT  -->
                 <layout:BaseBossPageLayout.ListContent>
-                    <local:Tbl60SubtribusBossControl DataContext="{Binding}" />
+                    <tbl60Subtribus:Tbl60SubtribusBossControl DataContext="{Binding}" />
                 </layout:BaseBossPageLayout.ListContent>
 
                 <!--  DETAIL CONTENT  -->
@@ -107,7 +107,7 @@
                             <!--  Edit Subtribus  -->
                             <PivotItem loc:Uids.Uid="PivotItem_Edit_Subtribus">
                                 <ScrollViewer Padding="1">
-                                    <local:Tbl60SubtribusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                                    <tbl60Subtribus:Tbl60SubtribusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
                                 </ScrollViewer>
                             </PivotItem>
 

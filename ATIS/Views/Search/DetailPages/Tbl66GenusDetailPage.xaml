@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ATIS.Views.Search.DetailPages.Tbl66GenusDetailPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:components="using:ATIS.DesignSystem.Components"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:loc="using:WinUI3Localizer"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:search="using:ATIS.Views.Search"
+      mc:Ignorable="d">
+
+    <!-- Tbl66GenusDetailPage.xaml  Skriptdatum:  16.08.2026  10:32   -->
+
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Views/Report/ReportResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  BUTTON-LEISTE  -->
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal">
+
+            <TextBlock Margin="20,0,0,5"
+                       loc:Uids.Uid="TextBlock_Preview"
+                       Style="{ThemeResource TitleTextBlockStyle}" />
+
+            <Button Margin="20,5,0,5"
+                    HorizontalAlignment="Right"
+                    Command="{x:Bind ViewModel.BackCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE72B;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_Back" />
+                </StackPanel>
+            </Button>
+
+            <Button Margin="10,5,0,5"
+                    HorizontalAlignment="Right"
+                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE749;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_Pdf" />
+                </StackPanel>
+            </Button>
+
+            <Button Margin="10,5,0,5"
+                    HorizontalAlignment="Right"
+                    Click="PrintButton_Click">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE749;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!--  Breadcrumb  -->
+        <ItemsControl Grid.Row="1"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{x:Bind ViewModel.BreadcrumbReversed}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="search:BreadcrumbItem">
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8">
+                        <HyperlinkButton Click="Breadcrumb_Click"
+                                         Content="{x:Bind Label}" />
+                        <TextBlock Margin="0,6,0,0"
+                                   Text="&lt;" />
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--  SCROLLBEREICH  -->
+        <ScrollViewer Grid.Row="2"
+                      HorizontalAlignment="Stretch"
+                      VerticalScrollMode="Enabled">
+
+            <Grid Margin="4,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="260" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  ALLE ROWS WIE IM ALTEN WINDOW  -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--  HEADER Genus  -->
+                <ListView Grid.Row="0"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-15,0,0,0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderGenus}"              
+                          ItemsSource="{x:Bind ViewModel.GenusItems}" />
+
+                <!--  HEADER TAXONOMY  -->
+                <ListView Grid.Row="1"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-15,0,0,0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeader}"
+                          ItemsSource="{x:Bind ViewModel.RegnumItems}" />
+
+                <ListView Grid.Row="2"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-15,0,0,0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderTaxoNomenHeaderBodyGenus}"
+                          ItemsSource="{x:Bind ViewModel.GenusItems}" />
+
+                <!--  TAXONOMIC HIERARCHY  -->
+                <TextBlock Grid.Row="3"
+                           Grid.Column="0"
+                           loc:Uids.Uid="TextBlock_TaxonomicHierarchy"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="4"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+                          ItemsSource="{x:Bind ViewModel.RegnumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="5"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkPhylum}"
+                          ItemsSource="{x:Bind ViewModel.PhylumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="6"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubphylum}"
+                          ItemsSource="{x:Bind ViewModel.SubphylumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="7"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSuperclass}"
+                          ItemsSource="{x:Bind ViewModel.SuperclassItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="8"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"
+                          ItemsSource="{x:Bind ViewModel.ClassItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="9"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubclass}"
+                          ItemsSource="{x:Bind ViewModel.SubclassItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="10"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkInfraclass}"
+                          ItemsSource="{x:Bind ViewModel.InfraclassItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="11"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkLegio}"
+                          ItemsSource="{x:Bind ViewModel.LegioItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="12"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkOrdo}"
+                          ItemsSource="{x:Bind ViewModel.OrdoItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="13"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubordo}"
+                          ItemsSource="{x:Bind ViewModel.SubordoItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="14"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkInfraordo}"
+                          ItemsSource="{x:Bind ViewModel.InfraordoItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="15"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSuperfamily}"
+                          ItemsSource="{x:Bind ViewModel.SuperfamilyItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="16"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkFamily}"
+                          ItemsSource="{x:Bind ViewModel.FamilyItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="17"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubfamily}"
+                          ItemsSource="{x:Bind ViewModel.SubfamilyItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="18"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkInfrafamily}"
+                          ItemsSource="{x:Bind ViewModel.InfrafamilyItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="19"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSupertribus}"
+                          ItemsSource="{x:Bind ViewModel.SupertribusItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="20"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkTribus}"
+                          ItemsSource="{x:Bind ViewModel.TribusItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="21"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubtribus}"
+                          ItemsSource="{x:Bind ViewModel.SubtribusItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="22"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkInfratribus}"
+                          ItemsSource="{x:Bind ViewModel.InfratribusItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <!--  Genus DETAILS  -->
+                <ListView Grid.Row="23"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkGenus}"               
+                          ItemsSource="{x:Bind ViewModel.GenusItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <!--  DIRECT CHILDREN  -->
+                <TextBlock Grid.Row="24"
+                           Grid.Column="1"
+                           Margin="0,5,0,5"
+                           loc:Uids.Uid="TextBlock_DirectChildren"
+                           FontWeight="Bold"
+                           Visibility="{x:Bind ViewModel.HasDirectChildren, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                <ListView Grid.Row="25"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSpecies}"
+                          ItemsSource="{x:Bind ViewModel.SpeciesItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <!--  REFERENCES  -->
+                <TextBlock Grid.Row="26"
+                           Grid.Column="0"
+                           loc:Uids.Uid="TextBlock_References"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <TextBlock Grid.Row="27"
+                           Grid.Column="0"
+                           Margin="8,0,0,10"
+                           loc:Uids.Uid="TextBlock_Experts"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="28"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
+                          ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
+
+                <TextBlock Grid.Row="29"
+                           Grid.Column="0"
+                           Margin="8,0,0,10"
+                           loc:Uids.Uid="TextBlock_OtherSources"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="30"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
+                          ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
+
+                <TextBlock Grid.Row="31"
+                           Grid.Column="0"
+                           Margin="8,0,0,10"
+                           loc:Uids.Uid="TextBlock_Publications"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="32"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
+                          ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
+
+                <!--  COMMENTS  -->
+                <TextBlock Grid.Row="33"
+                           Grid.Column="0"
+                           Margin="0,0,0,10"
+                           loc:Uids.Uid="TextBlock_Comments"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="34"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
+                          ItemsSource="{x:Bind ViewModel.CommentItems}" />
+
+            </Grid>
+
+        </ScrollViewer>
+        <!--  2. 🔥 Modernes Lade Overlay  -->
+        <components:LoadingOverlayControl Grid.Row="0"
+                                          Grid.RowSpan="3"
+                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
+    </Grid>
+</Page>     

@@ -1063,3 +1063,9 @@ Bei regnum wird name nicht angezeigt bei control
 13.08.2026 09:30 Uhr Tbl24 als Pasis fertigstellen. Bei tbl27 fehlt name von Infraclaas
 ----------------------------------------
 14.08.2026 18:30 Uhr Nachgezogen sehr mühsam bis Ordo.
+----------------------------------------
+15.08.2026 18:30 Uhr bis auf Tbl75Sub nachgezogen. Detailviewmodels nachziehen
+----------------------------------------
+16.08.2026 09:30 Uhr alle leeren pages und vms erzeugt bis tbl63Subtribus gefüllt
+----------------------------------------
+16.08.2026 11:30 Uhr weiter mit tbl60Tribus

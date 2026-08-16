@@ -8,8 +8,10 @@ using ATIS.Views.Modules.Tbl63Infratribus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
-//    Tbl60SubtribusViewModel Skriptdatum:  25.06.2026  10:32
+
+//    Tbl60SubtribusViewModel Skriptdatum:  16.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
@@ -22,6 +24,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl60Subtribus>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -44,9 +47,9 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         TribusLookup = await _lookupService.GetTribusLookupAsync();
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // CTOR
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     public Tbl60SubtribusViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -65,13 +68,34 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Subtribus ID");
-        RegisterHeader("Name", "Subtribus Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SubtribusId")) ? "Id" : loc.GetLocalizedString("HeaderSort_SubtribusId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SubtribusName")) ? "Name" : loc.GetLocalizedString("HeaderSort_SubtribusName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
+    }
+
+    // ---------------------------------------------------------               
     // UI STATE
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------               
 
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
@@ -116,9 +140,9 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     public bool IsEditMode => SelectedItem != null;
     public bool HasItems => Items != null && Items.Count > 0;
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
         // Boss-Start: Parent-Kontext löschen
@@ -128,6 +152,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         await LoadTribusLookupAsync();
 
         Items = new ObservableCollection<Models.Tbl60Subtribus>();
+
         OnPropertyChanged(nameof(HasItems));
 
         // optional: Suchmodus aktivieren
@@ -135,7 +160,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     }
 
     // ---------------------------------------------------------
-    // LOAD FOR VK
+    // LOAD FOR VK 
     // ---------------------------------------------------------
 
     public async Task LoadForTribusAsync(int tribusId)
@@ -212,6 +237,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         await InfratribusViewModel.LoadSubtribusLookupAsync();
         await InfratribusViewModel.LoadForSubtribusAsync(entityId);
 
+
         // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
         InfratribusViewModel.IsInParentMode = true;
     }
@@ -231,6 +257,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
         return Task.CompletedTask;
     }
+
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
@@ -242,6 +269,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
             "Name" => item.SubtribusName ?? "",
             _ => ""
         };
+
 
     // ---------------------------------------------------------
     // NEW
@@ -288,7 +316,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
         return Task.CompletedTask;
     }
-
 
     // ---------------------------------------------------------
     // DELETE
@@ -340,10 +367,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
+
+
+
 }
-
-
-
-
-
-

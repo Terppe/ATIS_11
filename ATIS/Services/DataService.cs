@@ -3034,6 +3034,93 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetInfraordosBySubordoIdAsync(int subordoId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl39Infraordo>> GetInfraordosBySubordoIdAsync(int subordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl39Infraordos
+            .Where(x => x.SubordoId == subordoId)
+            .OrderBy(x => x.InfraordoName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySubordoIdAsync(int subordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubordoIdAsync(int subordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SubordoId == subordoId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySubordoIdAsync(int subordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubordoIdAsync(int subordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SubordoId == subordoId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySubordoIdAsync(int subordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubordoIdAsync(int subordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SubordoId == subordoId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySubordoIdAsync(int subordoId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySubordoIdAsync(int subordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SubordoId == subordoId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
     #endregion Subordo                       
 
     #region Infraordo                
@@ -3203,6 +3290,94 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
+    // ---------------------------------------------------------                  
+    // GetSuperfamiliesByInfraordoIdAsync(int infraordoId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl42Superfamily>> GetSuperfamiliesByInfraordoIdAsync(int infraordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl42Superfamilies
+            .Where(x => x.InfraordoId == infraordoId)
+            .OrderBy(x => x.SuperfamilyName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByInfraordoIdAsync(int infraordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfraordoIdAsync(int infraordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.InfraordoId == infraordoId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByInfraordoIdAsync(int infraordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfraordoIdAsync(int infraordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.InfraordoId == infraordoId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByInfraordoIdAsync(int infraordoId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfraordoIdAsync(int infraordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.InfraordoId == infraordoId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByInfraordoIdAsync(int infraordoId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByInfraordoIdAsync(int infraordoId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.InfraordoId == infraordoId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
 
     #endregion Infraordo                       
 
@@ -3374,6 +3549,93 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetFamiliesBySuperfamilyIdAsync(int superfamilyId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl45Family>> GetFamiliesBySuperfamilyIdAsync(int superfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl45Families
+            .Where(x => x.SuperfamilyId == superfamilyId)
+            .OrderBy(x => x.FamilyName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySuperfamilyIdAsync(int superfamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySuperfamilyIdAsync(int superfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SuperfamilyId == superfamilyId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySuperfamilyIdAsync(int superfamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySuperfamilyIdAsync(int superfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SuperfamilyId == superfamilyId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySuperfamilyIdAsync(int superfamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySuperfamilyIdAsync(int superfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SuperfamilyId == superfamilyId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySuperfamilyIdAsync(int superfamilyId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySuperfamilyIdAsync(int superfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SuperfamilyId == superfamilyId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
     #endregion Superfamily                       
 
     #region Family                
@@ -3544,6 +3806,94 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetSubfamiliesByFamilyIdAsync(int familyId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl48Subfamily>> GetSubfamiliesByFamilyIdAsync(int familyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl48Subfamilies
+            .Where(x => x.FamilyId == familyId)
+            .OrderBy(x => x.SubfamilyName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByFamilyIdAsync(int familyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByFamilyIdAsync(int familyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.FamilyId == familyId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByFamilyIdAsync(int familyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByFamilyIdAsync(int familyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.FamilyId == familyId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByFamilyIdAsync(int familyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByFamilyIdAsync(int familyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.FamilyId == familyId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByFamilyIdAsync(int familyId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByFamilyIdAsync(int familyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.FamilyId == familyId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
     #endregion Family                       
 
     #region Subfamily                
@@ -3713,6 +4063,93 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
+    // ---------------------------------------------------------                  
+    // GetInfrafamiliesBySubfamilyIdAsync(int subfamilyId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl51Infrafamily>> GetInfrafamiliesBySubfamilyIdAsync(int subfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl51Infrafamilies
+            .Where(x => x.SubfamilyId == subfamilyId)
+            .OrderBy(x => x.InfrafamilyName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySubfamilyIdAsync(int subfamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubfamilyIdAsync(int subfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SubfamilyId == subfamilyId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySubfamilyIdAsync(int subfamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubfamilyIdAsync(int subfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SubfamilyId == subfamilyId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySubfamilyIdAsync(int subfamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubfamilyIdAsync(int subfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SubfamilyId == subfamilyId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySubfamilyIdAsync(int subfamilyId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySubfamilyIdAsync(int subfamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SubfamilyId == subfamilyId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
 
     #endregion Subfamily                       
 
@@ -3964,7 +4401,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetSupertribusByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl54Supertribus?> GetSupertribusByIdAsync(int id)
+    public async Task<Tbl54Supertribus> GetSupertribusByIdAsync(int? id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -4176,7 +4613,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetTribusByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl57Tribus?> GetTribusByIdAsync(int id)
+    public async Task<Tbl57Tribus> GetTribusByIdAsync(int? id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -4339,10 +4776,8 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion Tribus                       
 
-    #region Subtribus                
 
-    // ---------------------------------------------------------                  
-    // Subtribus 
+    #region Subtribus                
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubtribusAsync()
@@ -4420,7 +4855,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetSubtribusByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl60Subtribus?> GetSubtribusByIdAsync(int id)
+    public async Task<Tbl60Subtribus> GetSubtribusByIdAsync(int? id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -4510,7 +4945,95 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-//alt
+    // ---------------------------------------------------------                  
+    // GetInfratribussesBySubtribusIdAsync(int subtribusId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribussesBySubtribusIdAsync(int subtribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
+            .Where(x => x.SubtribusId == subtribusId)
+            .OrderBy(x => x.InfratribusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySubtribusIdAsync(int subtribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubtribusIdAsync(int subtribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SubtribusId == subtribusId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySubtribusIdAsync(int subtribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubtribusIdAsync(int subtribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SubtribusId == subtribusId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySubtribusIdAsync(int subtribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubtribusIdAsync(int subtribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SubtribusId == subtribusId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySubtribusIdAsync(int subtribusId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySubtribusIdAsync(int subtribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SubtribusId == subtribusId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
+    //alt
     ////---------------------------------------------------------
     public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusAsync(int dummy)
     {
@@ -4575,9 +5098,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Subtribus                       
 
     #region Infratribus
-    //neu
-    // ---------------------------------------------------------                  
-    // Infratribus 
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfratribusAsync()
@@ -4655,7 +5175,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetInfratribusByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl63Infratribus?> GetInfratribusByIdAsync(int id)
+    public async Task<Tbl63Infratribus> GetInfratribusByIdAsync(int? id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -4702,7 +5222,6 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
     // ---------------------------------------------------------                  
     // HasGenusAsync(int infratribusId)
     // ---------------------------------------------------------                 
@@ -4746,6 +5265,94 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
+
+    // ---------------------------------------------------------                  
+    // GetGenussesByInfratribusIdAsync(int infratribusId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl66Genus>> GetGenussesByInfratribusIdAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .Where(x => x.InfratribusId == infratribusId)
+            .OrderBy(x => x.GenusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByInfratribusIdAsync(int infratribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfratribusIdAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.InfratribusId == infratribusId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByInfratribusIdAsync(int infratribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfratribusIdAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.InfratribusId == infratribusId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByInfratribusIdAsync(int infratribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfratribusIdAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.InfratribusId == infratribusId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByInfratribusIdAsync(int infratribusId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByInfratribusIdAsync(int infratribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.InfratribusId == infratribusId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
 
     //-------------------------------------------------------
     //alt
@@ -4808,10 +5415,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Infratribus                       
 
     #region Genus                
-    //Neu
-
-    // ---------------------------------------------------------                  
-    // Genus 
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllGenusAsync()
@@ -4978,6 +5581,94 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
+
+    // ---------------------------------------------------------                  
+    // GetSpeciessesByGenusIdAsync(int genusId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl75Species>> GetSpeciessesByGenusIdAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Where(x => x.GenusId == genusId)
+            .OrderBy(x => x.SpeciesName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByGenusIdAsync(int genusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByGenusIdAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.GenusId == genusId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByGenusIdAsync(int genusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByGenusIdAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.GenusId == genusId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByGenusIdAsync(int genusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByGenusIdAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.GenusId == genusId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByGenusIdAsync(int genusId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByGenusIdAsync(int genusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.GenusId == genusId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
 
     //---------------------------------------
     //Alt

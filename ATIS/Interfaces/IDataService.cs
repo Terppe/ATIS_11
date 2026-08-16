@@ -495,6 +495,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl36Subordo>> GetSubordoForOrdoAsync(int ordoId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl39Infraordo>> GetInfraordosBySubordoIdAsync(int subordoId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubordoIdAsync(int subordoId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubordoIdAsync(int subordoId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubordoIdAsync(int subordoId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsBySubordoIdAsync(int subordoId);
 
 
     #endregion Subordo
@@ -514,6 +520,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl39Infraordo>> GetInfraordoForSubordoAsync(int subordoId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl42Superfamily>> GetSuperfamiliesByInfraordoIdAsync(int infraordoId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfraordoIdAsync(int infraordoId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfraordoIdAsync(int infraordoId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfraordoIdAsync(int infraordoId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByInfraordoIdAsync(int infraordoId);
 
 
     #endregion Infraordo
@@ -533,6 +545,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl42Superfamily>> GetSuperfamilyForInfraordoAsync(int infraordoId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl45Family>> GetFamiliesBySuperfamilyIdAsync(int superfamilyId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySuperfamilyIdAsync(int superfamilyId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySuperfamilyIdAsync(int superfamilyId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySuperfamilyIdAsync(int superfamilyId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsBySuperfamilyIdAsync(int superfamilyId);
 
 
     #endregion Superfamily
@@ -552,6 +570,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl45Family>> GetFamilyForSuperfamilyAsync(int superfamilyId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl48Subfamily>> GetSubfamiliesByFamilyIdAsync(int familyId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByFamilyIdAsync(int familyId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByFamilyIdAsync(int familyId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByFamilyIdAsync(int familyId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByFamilyIdAsync(int familyId);
 
 
     #endregion Family
@@ -571,6 +595,12 @@ public interface IDataService
 
     Task<IEnumerable<Tbl48Subfamily>> GetSubfamilyForFamilyAsync(int familyId);
 
+    //Für ReportPDF
+    Task<IEnumerable<Tbl51Infrafamily>> GetInfrafamiliesBySubfamilyIdAsync(int subfamilyId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubfamilyIdAsync(int subfamilyId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubfamilyIdAsync(int subfamilyId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubfamilyIdAsync(int subfamilyId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsBySubfamilyIdAsync(int subfamilyId);
 
 
     #endregion Subfamily
@@ -596,7 +626,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl54Supertribus>> GetAllSupertribusAsync();
     Task<IEnumerable<Tbl54Supertribus>> SearchSupertribusWithInfrafamilyAsync(string? search);
-    Task<Tbl54Supertribus> GetSupertribusByIdAsync(int id);
+    Task<Tbl54Supertribus> GetSupertribusByIdAsync(int? id);
     Task<Tbl54Supertribus> UpsertSupertribusAsync(Tbl54Supertribus entity);
     Task DeleteSupertribusAsync(int id);
     Task<bool> SupertribusExistsAsync(Tbl54Supertribus entity);
@@ -623,7 +653,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl57Tribus>> GetAllTribusAsync();
     Task<IEnumerable<Tbl57Tribus>> SearchTribusWithSupertribusAsync(string? search);
-    Task<Tbl57Tribus> GetTribusByIdAsync(int id);
+    Task<Tbl57Tribus> GetTribusByIdAsync(int? id);
     Task<Tbl57Tribus> UpsertTribusAsync(Tbl57Tribus entity);
     Task DeleteTribusAsync(int id);
     Task<bool> TribusExistsAsync(Tbl57Tribus entity);
@@ -647,13 +677,10 @@ public interface IDataService
     #endregion Tribus
 
     #region Subtribus                  
-    // neu
-    // ---------------------------------------------------------                  
-    // Subtribus 
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl60Subtribus>> GetAllSubtribusAsync();
     Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusWithTribusAsync(string? search);
-    Task<Tbl60Subtribus> GetSubtribusByIdAsync(int id);
+    Task<Tbl60Subtribus> GetSubtribusByIdAsync(int? id);
     Task<Tbl60Subtribus> UpsertSubtribusAsync(Tbl60Subtribus entity);
     Task DeleteSubtribusAsync(int id);
     Task<bool> SubtribusExistsAsync(Tbl60Subtribus entity);
@@ -663,6 +690,13 @@ public interface IDataService
     Task<bool> SubtribusHasCommentAsync(int subtribusId);
 
     Task<IEnumerable<Tbl60Subtribus>> GetSubtribusForTribusAsync(int tribusId);
+
+    //Für ReportPDF
+    Task<IEnumerable<Tbl63Infratribus>> GetInfratribussesBySubtribusIdAsync(int subtribusId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySubtribusIdAsync(int subtribusId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySubtribusIdAsync(int subtribusId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubtribusIdAsync(int subtribusId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsBySubtribusIdAsync(int subtribusId);
 
     //alt
     //--------------------------------------------------------
@@ -675,13 +709,10 @@ public interface IDataService
     #endregion Subtribus
 
     #region Infratribus
-    //neu
-    // ---------------------------------------------------------                  
-    // Infratribus 
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl63Infratribus>> GetAllInfratribusAsync();
     Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusWithSubtribusAsync(string? search);
-    Task<Tbl63Infratribus> GetInfratribusByIdAsync(int id);
+    Task<Tbl63Infratribus> GetInfratribusByIdAsync(int? id);
     Task<Tbl63Infratribus> UpsertInfratribusAsync(Tbl63Infratribus entity);
     Task DeleteInfratribusAsync(int id);
     Task<bool> InfratribusExistsAsync(Tbl63Infratribus entity);
@@ -691,6 +722,14 @@ public interface IDataService
     Task<bool> InfratribusHasCommentAsync(int infratribusId);
 
     Task<IEnumerable<Tbl63Infratribus>> GetInfratribusForSubtribusAsync(int subtribusId);
+
+    //Für ReportPDF
+    Task<IEnumerable<Tbl66Genus>> GetGenussesByInfratribusIdAsync(int infratribusId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfratribusIdAsync(int infratribusId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfratribusIdAsync(int infratribusId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfratribusIdAsync(int infratribusId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByInfratribusIdAsync(int infratribusId);
+
 
     //alt
     //----------------------------
@@ -718,6 +757,14 @@ public interface IDataService
     Task<bool> GenusHasCommentAsync(int genusId);
 
     Task<IEnumerable<Tbl66Genus>> GetGenusForInfratribusAsync(int infratribusId);
+
+    //Für ReportPDF
+    Task<IEnumerable<Tbl75Species>> GetSpeciessesByGenusIdAsync(int genusId);
+    Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByGenusIdAsync(int genusId);
+    Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByGenusIdAsync(int genusId);
+    Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByGenusIdAsync(int genusId);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsByGenusIdAsync(int genusId);
+
 
     //--------------------------
     //alt

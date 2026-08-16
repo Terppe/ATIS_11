@@ -97,29 +97,129 @@
             </StackPanel>
         </DataTemplate>
 
-        <!--<DataTemplate x:Key="SpeciesTemplate"
-        x:DataType="models:Tbl75Species">
-        <StackPanel Spacing="8">
-        <TextBlock Text="{x:Bind SpeciesId}" />
-        <TextBlock Text="{x:Bind Subspecies}" />
-        <TextBlock Text="{x:Bind SpeciesName}" />
-        <TextBlock Text="{x:Bind Divers}" />
-        <TextBlock Text="{x:Bind Author}" />
-        </StackPanel>
-        </DataTemplate>-->
+        <DataTemplate x:Key="InfraordoTemplate"
+                      x:DataType="models:Tbl39Infraordo">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind InfraordoId}" />
+                <TextBlock Text="{x:Bind InfraordoName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SuperfamilyTemplate"
+                      x:DataType="models:Tbl42Superfamily">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind SuperfamilyId}" />
+                <TextBlock Text="{x:Bind SuperfamilyName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="FamilyTemplate"
+                      x:DataType="models:Tbl45Family">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind FamilyId}" />
+                <TextBlock Text="{x:Bind FamilyName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SubfamilyTemplate"
+                      x:DataType="models:Tbl48Subfamily">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind SubfamilyId}" />
+                <TextBlock Text="{x:Bind SubfamilyName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InfrafamilyTemplate"
+                      x:DataType="models:Tbl51Infrafamily">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind InfrafamilyId}" />
+                <TextBlock Text="{x:Bind InfrafamilyName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SupertribusTemplate"
+                      x:DataType="models:Tbl54Supertribus">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind SupertribusId}" />
+                <TextBlock Text="{x:Bind SupertribusName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="TribusTemplate"
+                      x:DataType="models:Tbl57Tribus">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind TribusId}" />
+                <TextBlock Text="{x:Bind TribusName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SubtribusTemplate"
+                      x:DataType="models:Tbl60Subtribus">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind SubtribusId}" />
+                <TextBlock Text="{x:Bind SubtribusName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="InfratribusTemplate"
+                      x:DataType="models:Tbl63Infratribus">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind InfratribusId}" />
+                <TextBlock Text="{x:Bind InfratribusName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="GenusTemplate"
+                      x:DataType="models:Tbl66Genus">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind GenusId}" />
+                <TextBlock Text="{x:Bind GenusName}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SpeciesTemplate"
+                      x:DataType="models:Tbl75Species">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{x:Bind SpeciesId}" />
+                <TextBlock Text="{x:Bind Subspecies}" />
+                <TextBlock Text="{x:Bind SpeciesName}" />
+                <TextBlock Text="{x:Bind Divers}" />
+                <TextBlock Text="{x:Bind Author}" />
+            </StackPanel>
+        </DataTemplate>
 
         <search:SearchTemplateSelector x:Key="SearchSelector"
-                                       RegnumTemplate="{StaticResource RegnumTemplate}"
-                                       PhylumTemplate="{StaticResource PhylumTemplate}"
-                                       SubphylumTemplate="{StaticResource SubphylumTemplate}"
-                                       SuperclassTemplate="{StaticResource SuperclassTemplate}" 
                                        ClassTemplate="{StaticResource ClassTemplate}"
-                                       SubclassTemplate="{StaticResource SubclassTemplate}"
+                                       FamilyTemplate="{StaticResource FamilyTemplate}"
+                                       GenusTemplate="{StaticResource GenusTemplate}"
                                        InfraclassTemplate="{StaticResource InfraclassTemplate}"
+                                       InfrafamilyTemplate="{StaticResource InfrafamilyTemplate}"
+                                       InfraordoTemplate="{StaticResource InfraordoTemplate}"
+                                       InfratribusTemplate="{StaticResource InfratribusTemplate}"
                                        LegioTemplate="{StaticResource LegioTemplate}"
                                        OrdoTemplate="{StaticResource OrdoTemplate}"
+                                       PhylumTemplate="{StaticResource PhylumTemplate}"
+                                       RegnumTemplate="{StaticResource RegnumTemplate}"
+                                       SpeciesTemplate="{StaticResource SpeciesTemplate}"
+                                       SubclassTemplate="{StaticResource SubclassTemplate}"
+                                       SubfamilyTemplate="{StaticResource SubfamilyTemplate}"
                                        SubordoTemplate="{StaticResource SubordoTemplate}"
-          />
+                                       SubphylumTemplate="{StaticResource SubphylumTemplate}"
+                                       SubtribusTemplate="{StaticResource SubtribusTemplate}"
+                                       SuperclassTemplate="{StaticResource SuperclassTemplate}"
+                                       SuperfamilyTemplate="{StaticResource SuperfamilyTemplate}"
+                                       SupertribusTemplate="{StaticResource SupertribusTemplate}"
+                                       TribusTemplate="{StaticResource TribusTemplate}" />
     </Page.Resources>
 
     <Grid Padding="12"

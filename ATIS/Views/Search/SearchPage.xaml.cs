@@ -106,8 +106,51 @@ public sealed partial class SearchPage : Page
                 App.MainPageInstance.NavFrame.Navigate(
                     typeof(Tbl36SubordoDetailPage), subordo.SubordoId);
                 break;
+            case Tbl39Infraordo infraordo:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl39InfraordoDetailPage), infraordo.InfraordoId);
+                break;
+            case Tbl42Superfamily superfamily:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl42SuperfamilyDetailPage), superfamily.SuperfamilyId);
+                break;
+            case Tbl45Family family:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl45FamilyDetailPage), family.FamilyId);
+                break;
+            case Tbl48Subfamily subfamily:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl48SubfamilyDetailPage), subfamily.SubfamilyId);
+                break;
+            case Tbl51Infrafamily infrafamily:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl51InfrafamilyDetailPage), infrafamily.InfrafamilyId);
+                break;
+            case Tbl54Supertribus supertribus:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl54SupertribusDetailPage), supertribus.SupertribusId);
+                break;
+            case Tbl57Tribus tribus:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl57TribusDetailPage), tribus.TribusId);
+                break;
+            case Tbl60Subtribus subtribus:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl60SubtribusDetailPage), subtribus.SubtribusId);
+                break;
+            case Tbl63Infratribus infratribus:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl63InfratribusDetailPage), infratribus.InfratribusId);
+                break;
+            case Tbl66Genus genus:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl66GenusDetailPage), genus.GenusId);
+                break;
 
-                //weiter bis species
+            case Tbl75Species species:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(Tbl75SpeciesDetailPage), species.SpeciesId);
+                break;
         }
         System.Diagnostics.Debug.WriteLine(e.AddedItems[0]?.GetType().FullName);
         ResultList.SelectedItem = null;
