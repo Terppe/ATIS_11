@@ -1,6 +1,5 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Views.Search.DetailViewModels;
-using Microsoft.UI.Xaml.Data;
 
 //  Tbl39InfraordoDetailPage.xaml.cs Skriptdatum:  15.06.2024  10:32     
 

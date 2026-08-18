@@ -1068,4 +1068,4 @@ Bei regnum wird name nicht angezeigt bei control
 ----------------------------------------
 16.08.2026 09:30 Uhr alle leeren pages und vms erzeugt bis tbl63Subtribus gefüllt
 ----------------------------------------
-16.08.2026 11:30 Uhr weiter mit tbl60Tribus
+16.08.2026 11:30 Uhr weiter mit tbl57Tribus

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
 
-//    Tbl42SuperfamilyViewModel Skriptdatum:  15.06.2024  10:32    
+//    Tbl42SuperfamilyViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl42Superfamily;
 

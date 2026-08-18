@@ -12,7 +12,7 @@
       x:Name="RootPage"
       DataContext="{Binding SuperfamilyViewModel}">
 
-    <!--  Tbl42SuperfamilyPage Skriptdatum:  15.06.2024  10:32  -->
+    <!--  Tbl42SuperfamilyPage Skriptdatum:  18.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">

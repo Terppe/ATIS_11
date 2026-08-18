@@ -37,6 +37,7 @@ public sealed class Tbl39InfraordoDetailViewModel : ObservableObject
     public Tbl30Legio? LegioSelected { get; private set; }
     public Tbl33Ordo? OrdoSelected { get; private set; }
     public Tbl36Subordo? SubordoSelected { get; private set; }
+    public Tbl42Superfamily? SuperfamilySelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -505,7 +506,6 @@ public sealed class Tbl39InfraordoDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
 
         InfraordoItems.Add(new TaxonomyLine<Tbl39Infraordo>
         {

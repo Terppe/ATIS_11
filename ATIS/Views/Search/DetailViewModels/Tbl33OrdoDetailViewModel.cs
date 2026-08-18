@@ -413,9 +413,20 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             });
         }
 
-        LegioItems.Add(new TaxonomyLine<Tbl30Legio>
+        if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
-            Item = LegioSelected,
+            LegioSelected = legio;
+            LegioItems.Add(new TaxonomyLine<Tbl30Legio>
+            {
+                Item = legio,
+                HeaderMargin = CreateHeaderMargin(visibleIndex++),
+                ShowAsHyperlink = true
+            });
+        }
+
+        OrdoItems.Add(new TaxonomyLine<Tbl33Ordo>
+        {
+            Item = OrdoSelected,
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
@@ -445,7 +456,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
         if (visibleItems.Count == 0)
             return;
 
-        var parentLeft = LegioItems.Count > 0 ? LegioItems[0].HeaderMargin.Left : 8;
+        var parentLeft = OrdoItems.Count > 0 ? OrdoItems[0].HeaderMargin.Left : 8;
         var childMargin = new Thickness(parentLeft + 8, 0, 0, 0);
 
         foreach (var item in visibleItems)
