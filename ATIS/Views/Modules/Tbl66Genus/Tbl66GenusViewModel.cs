@@ -10,7 +10,8 @@ using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
-//    Tbl66GenusViewModel Skriptdatum:  16.08.2026  10:32
+
+//    Tbl66GenusViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl66Genus;
 
@@ -23,8 +24,8 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl66Genus>>>? _activeLoader;
-
     private readonly Action<string> _langHandler;
+
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
@@ -366,4 +367,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
+
+
+
 }

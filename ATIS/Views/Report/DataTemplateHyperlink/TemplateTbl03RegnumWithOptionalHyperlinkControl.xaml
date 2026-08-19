@@ -7,152 +7,150 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <StackPanel>
-            <TextBlock Margin="{Binding HeaderMargin}"
-                       loca:Uids.Uid="TextBlock_Regnum" />
-        </StackPanel>
-
-        <Grid Grid.Column="1">
-            <TextBlock x:Name="TbRegnumLink"
-                       Foreground="DarkBlue"
-                       Tag="{Binding Item.RegnumId, Mode=OneWay}"
-                       Tapped="TextBlock_Tapped"
-                       TextDecorations="Underline"
-                       TextWrapping="WrapWholeWords" />
-
-            <!--<TextBlock x:Name="TbAuthorDisplay"
-            Margin="4,0,0,0"
-            Padding="0" />-->
-
-            <!--<TextBlock x:Name="TbLanguageNamesDisplay"
-            Margin="4,0,0,0"
-            Padding="0" />-->
-
-            <TextBlock x:Name="TbRegnumLine"
-                       TextWrapping="WrapWholeWords"
-                       Visibility="Collapsed" />
-        </Grid>
-
-        <!--<Grid Grid.Column="1">
-        <StackPanel x:Name="HyperlinkPanel"
-        Orientation="Horizontal">
-        <TextBlock x:Name="TbRegnum"
-        Foreground="DarkBlue"
-        Tag="{Binding Item.RegnumId}"
-        Tapped="TextBlock_Tapped"
-        Text="{Binding Item.RegnumName}"
-        TextDecorations="Underline" />
-
-        <TextBlock x:Name="TbSubregnum"
-        Margin="2,0,0,0"
-        Foreground="DarkBlue"
-        Tag="{Binding Item.RegnumId}"
-        Tapped="TextBlock_Tapped"
-        Text="{Binding Item.Subregnum}"
-        TextDecorations="Underline" />
-        </StackPanel>
-
-        <TextBlock x:Name="TbRegnumLine"
-        TextWrapping="WrapWholeWords"
-        Visibility="Collapsed" />
-        </Grid>-->
-
-
-
-
-
-        <!--<Grid Grid.Column="1">
-        <TextBlock x:Name="TbRegnum"
-        Foreground="DarkBlue"
-        Tag="{Binding Item.RegnumId, Mode=OneWay}"
-        Tapped="TextBlock_Tapped"
-        TextDecorations="Underline"
-        TextWrapping="WrapWholeWords" />
-
-        <TextBlock x:Name="TbAuthorDisplay"
-        Margin="4,0,0,0"
-        Padding="0" />
-
-        <TextBlock x:Name="TbLanguageNamesDisplay"
-        Margin="4,0,0,0"
-        Padding="0" />
-
-        <TextBlock x:Name="TbRegnumLine"
-        TextWrapping="WrapWholeWords"
-        Visibility="Collapsed" />
-        </Grid>-->
-        <!--<Grid Grid.Column="1">
-        <StackPanel x:Name="HyperlinkPanel"
-        Orientation="Horizontal">
-        <TextBlock x:Name="TbRegnum"
-        Foreground="DarkBlue"
-        Tag="{Binding Item.RegnumId}"
-        Tapped="TextBlock_Tapped"
-        Text="{Binding Item.RegnumName}"
-        TextDecorations="Underline" />
-
-        <TextBlock x:Name="TbSubregnum"
-        Margin="2,0,0,0"
-        Foreground="DarkBlue"
-        Tag="{Binding Item.RegnumId}"
-        Tapped="TextBlock_Tapped"
-        Text="{Binding Item.Subregnum}"
-        TextDecorations="Underline" />
-        </StackPanel>
-
-        <TextBlock x:Name="TbRegnumLine"
-        TextWrapping="WrapWholeWords"
-        Visibility="Collapsed" />
-        </Grid>-->
-    </Grid>
-
     <!--<Grid>
     <Grid.ColumnDefinitions>
     <ColumnDefinition Width="260" />
     <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
+
     <StackPanel>
-    <TextBlock Width="Auto"
-    Margin="{Binding HeaderMargin}"
+    <TextBlock Margin="{Binding HeaderMargin}"
     loca:Uids.Uid="TextBlock_Regnum" />
     </StackPanel>
-    <StackPanel Grid.Column="1"
+
+    <Grid Grid.Column="1">
+    <TextBlock x:Name="TbRegnumLink"
+    Foreground="DarkBlue"
+    Tag="{Binding Item.RegnumId, Mode=OneWay}"
+    Tapped="TextBlock_Tapped"
+    TextDecorations="Underline"
+    TextWrapping="WrapWholeWords" />
+
+    <TextBlock x:Name="TbAuthorDisplay"
+    Margin="4,0,0,0"
+    Padding="0" />
+
+    <TextBlock x:Name="TbLanguageNamesDisplay"
+    Margin="4,0,0,0"
+    Padding="0" />
+
+    <TextBlock x:Name="TbRegnumLine"
+    TextWrapping="WrapWholeWords"
+    Visibility="Collapsed" />
+    </Grid>-->
+
+    <!--<Grid Grid.Column="1">
+    <StackPanel x:Name="HyperlinkPanel"
     Orientation="Horizontal">
-    <RelativePanel>
     <TextBlock x:Name="TbRegnum"
-    Width="Auto"
     Foreground="DarkBlue"
     Tag="{Binding Item.RegnumId}"
     Tapped="TextBlock_Tapped"
     Text="{Binding Item.RegnumName}"
     TextDecorations="Underline" />
-    <TextBlock Margin="2,0,0,0"
+
+    <TextBlock x:Name="TbSubregnum"
+    Margin="2,0,0,0"
     Foreground="DarkBlue"
-    RelativePanel.RightOf="TbRegnum"
+    Tag="{Binding Item.RegnumId}"
+    Tapped="TextBlock_Tapped"
     Text="{Binding Item.Subregnum}"
     TextDecorations="Underline" />
-    </RelativePanel>
-    <TextBlock Text=" - " />
-    <TextBlock Margin="2,0,0,0"
-    Text="{Binding Item.Author}" />
-    <TextBlock Margin="2,0,0,0"
-    Text="{Binding Item.AuthorYear}" />
-    <TextBlock Text=" - " />
-    <TextBlock Text="TEST" />
-    <TextBlock Margin="2,0,0,0"
-    Text="{Binding Item.EngName}" />
-    <TextBlock Margin="2,0,0,0"
-    Text="{Binding Item.GerName}" />
-    <TextBlock Margin="2,0,0,0"
-    Text="{Binding Item.FraName}" />
-    <TextBlock Margin="2,0,0,0"
-    Text="{Binding Item.PorName}" />
     </StackPanel>
+
+    <TextBlock x:Name="TbRegnumLine"
+    TextWrapping="WrapWholeWords"
+    Visibility="Collapsed" />
     </Grid>-->
+
+
+
+
+
+    <!--<Grid Grid.Column="1">
+    <TextBlock x:Name="TbRegnum"
+    Foreground="DarkBlue"
+    Tag="{Binding Item.RegnumId, Mode=OneWay}"
+    Tapped="TextBlock_Tapped"
+    TextDecorations="Underline"
+    TextWrapping="WrapWholeWords" />
+
+    <TextBlock x:Name="TbAuthorDisplay"
+    Margin="4,0,0,0"
+    Padding="0" />
+
+    <TextBlock x:Name="TbLanguageNamesDisplay"
+    Margin="4,0,0,0"
+    Padding="0" />
+
+    <TextBlock x:Name="TbRegnumLine"
+    TextWrapping="WrapWholeWords"
+    Visibility="Collapsed" />
+    </Grid>-->
+    <!--<Grid Grid.Column="1">
+    <StackPanel x:Name="HyperlinkPanel"
+    Orientation="Horizontal">
+    <TextBlock x:Name="TbRegnum"
+    Foreground="DarkBlue"
+    Tag="{Binding Item.RegnumId}"
+    Tapped="TextBlock_Tapped"
+    Text="{Binding Item.RegnumName}"
+    TextDecorations="Underline" />
+
+    <TextBlock x:Name="TbSubregnum"
+    Margin="2,0,0,0"
+    Foreground="DarkBlue"
+    Tag="{Binding Item.RegnumId}"
+    Tapped="TextBlock_Tapped"
+    Text="{Binding Item.Subregnum}"
+    TextDecorations="Underline" />
+    </StackPanel>
+
+    <TextBlock x:Name="TbRegnumLine"
+    TextWrapping="WrapWholeWords"
+    Visibility="Collapsed" />
+    </Grid>-->
+    <!--</Grid>-->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <TextBlock Width="Auto"
+                       Margin="{Binding HeaderMargin}"
+                       loca:Uids.Uid="TextBlock_Regnum" />
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Orientation="Horizontal">
+            <RelativePanel>
+                <TextBlock x:Name="TbRegnum"
+                           Width="Auto"
+                           Foreground="DarkBlue"
+                           Tag="{Binding Item.RegnumId}"
+                           Tapped="TextBlock_Tapped"
+                           Text="{Binding Item.RegnumName}"
+                           TextDecorations="Underline" />
+                <TextBlock Margin="2,0,0,0"
+                           Foreground="DarkBlue"
+                           RelativePanel.RightOf="TbRegnum"
+                           Text="{Binding Item.Subregnum}"
+                           TextDecorations="Underline" />
+            </RelativePanel>
+            <TextBlock Margin="2,0,0,0"
+                       Text="{Binding Item.Author}" />
+            <TextBlock Margin="2,0,0,0"
+                       Text="{Binding Item.AuthorYear}" />
+            <TextBlock Text=" - " />
+            <TextBlock Margin="2,0,0,0"
+                       Text="{Binding Item.EngName}" />
+            <TextBlock Margin="2,0,0,0"
+                       Text="{Binding Item.GerName}" />
+            <TextBlock Margin="2,0,0,0"
+                       Text="{Binding Item.FraName}" />
+            <TextBlock Margin="2,0,0,0"
+                       Text="{Binding Item.PorName}" />
+        </StackPanel>
+    </Grid>
 </UserControl>

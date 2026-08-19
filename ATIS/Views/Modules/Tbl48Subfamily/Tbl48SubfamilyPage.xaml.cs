@@ -2,7 +2,7 @@
 using ATIS.Views.Modules.Tbl51Infrafamily;
 
 
-//    Tbl48SubfamilyPage Skriptdatum:  15.06.2024  10:32    
+//    Tbl48SubfamilyPage Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl48Subfamily;
 

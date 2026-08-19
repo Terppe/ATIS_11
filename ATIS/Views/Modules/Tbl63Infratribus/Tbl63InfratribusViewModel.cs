@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
 
-//    Tbl63InfratribusViewModel Skriptdatum:  16.08.2026  10:32    
+//    Tbl63InfratribusViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 

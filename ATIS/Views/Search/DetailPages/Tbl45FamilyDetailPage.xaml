@@ -9,7 +9,7 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!-- Tbl45FamilyDetailPage.xaml  Skriptdatum:  18.10.2025  10:32   -->
+    <!--  Tbl45FamilyDetailPage.xaml  Skriptdatum:  18.10.2025  10:32  -->
 
 
     <Page.Resources>
@@ -154,7 +154,7 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-15,0,0,0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHeaderFamily}"              
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderFamily}"
                           ItemsSource="{x:Bind ViewModel.FamilyItems}" />
 
                 <!--  HEADER TAXONOMY  -->
@@ -280,7 +280,7 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkFamily}"               
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkFamily}"
                           ItemsSource="{x:Bind ViewModel.FamilyItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
@@ -370,4 +370,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>     
+</Page>

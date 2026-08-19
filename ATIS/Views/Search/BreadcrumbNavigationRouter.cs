@@ -95,23 +95,23 @@ public static class BreadcrumbNavigationRouter
             return;
         }
 
-        //if (content is Tbl51InfrafamilyDetailPage infrafamilyPage && infrafamilyPage.ViewModel != null)
-        //{
-        //    await infrafamilyPage.ViewModel.NavigateBreadcrumbAsync(crumb);
-        //    return;
-        //}
+        if (content is Tbl51InfrafamilyDetailPage infrafamilyPage && infrafamilyPage.ViewModel != null)
+        {
+            await infrafamilyPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
 
-        //if (content is Tbl54SupertribusDetailPage supertribusPage && supertribusPage.ViewModel != null)
-        //{
-        //    await supertribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
-        //    return;
-        //}
+        if (content is Tbl54SupertribusDetailPage supertribusPage && supertribusPage.ViewModel != null)
+        {
+            await supertribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
 
-        //if (content is Tbl57TribusDetailPage tribusPage && tribusPage.ViewModel != null)
-        //{
-        //    await tribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
-        //    return;
-        //}
+        if (content is Tbl57TribusDetailPage tribusPage && tribusPage.ViewModel != null)
+        {
+            await tribusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
 
         if (content is Tbl60SubtribusDetailPage subtribusPage && subtribusPage.ViewModel != null)
         {
@@ -125,11 +125,15 @@ public static class BreadcrumbNavigationRouter
             return;
         }
 
-
-
         if (content is Tbl66GenusDetailPage genusPage && genusPage.ViewModel != null)
         {
             await genusPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
+
+        if (content is Tbl75SpeciesDetailPage speciesPage && speciesPage.ViewModel != null)
+        {
+            await speciesPage.ViewModel.NavigateBreadcrumbAsync(crumb);
             return;
         }
 

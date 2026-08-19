@@ -8,9 +8,10 @@ using ATIS.Views.Modules.Tbl60Subtribus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
-//    Tbl57TribusViewModel Skriptdatum:  22.01.2025  10:32    
+//    Tbl57TribusViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl57Tribus;
 
@@ -23,6 +24,7 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl57Tribus>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -66,8 +68,29 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Tribus ID");
-        RegisterHeader("Name", "Tribus Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_TribusId")) ? "Id" : loc.GetLocalizedString("HeaderSort_TribusId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_TribusName")) ? "Name" : loc.GetLocalizedString("HeaderSort_TribusName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               

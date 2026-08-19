@@ -2,7 +2,7 @@
 using ATIS.Views.Modules.Tbl60Subtribus;
 
 
-//    Tbl57TribusPage Skriptdatum:  22.01.2025  10:32    
+//    Tbl57TribusPage Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl57Tribus;
 

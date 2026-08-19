@@ -2,7 +2,6 @@
 
 using ATIS.Views.Report.Pdf.Tbl21Classes;
 using ATIS.Views.Search;
-using Microsoft.UI.Xaml.Data;
 using QuestPDF.Fluent;
 
 namespace ATIS.Views.Report.ReportPages;
@@ -56,7 +55,9 @@ public sealed partial class Tbl21ClassReportPage : Page
 
         try
         {
-            var model = Tbl21ClassesDocumentDataSource.GetClassDetails(_item.EntityId);
+            //var model = Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(_item.EntityId);
+            //var document = new Tbl21ClassesDocument(await model);
+            var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(_item.EntityId);
             var document = new Tbl21ClassesDocument(model);
 
             var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);

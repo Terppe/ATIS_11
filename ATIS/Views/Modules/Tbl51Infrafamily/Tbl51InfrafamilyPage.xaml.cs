@@ -2,7 +2,7 @@
 using ATIS.Views.Modules.Tbl54Supertribus;
 
 
-//    Tbl51InfrafamilyPage Skriptdatum:  21.01.2025  10:32    
+//    Tbl51InfrafamilyPage Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl51Infrafamily;
 

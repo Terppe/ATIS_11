@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl21Classes;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
 
 namespace ATIS.Views.Search.DetailViewModels;
 
@@ -64,7 +65,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -78,8 +79,8 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         ClassSelected = selectedClass;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
-
+     //   ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
@@ -381,9 +382,47 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (ClassSelected == null || ClassSelected.ClassId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(ClassSelected.ClassId);
+            var document = new Tbl21ClassesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(ClassSelected.ClassName)
+                ? $"Class_{ClassSelected.ClassId}"
+                : string.Concat(ClassSelected.ClassName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{ClassSelected.ClassId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var successDialog = new ContentDialog
+            {
+                Title = "PDF exportiert",
+                Content = $"Die PDF wurde erstellt:\n{filePath}",
+                CloseButtonText = "OK",
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            var errorDialog = new ContentDialog
+            {
+                Title = "PDF-Fehler",
+                Content = ex.Message,
+                CloseButtonText = "OK",
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

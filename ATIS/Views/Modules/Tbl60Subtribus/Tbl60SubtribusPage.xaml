@@ -12,7 +12,7 @@
       x:Name="RootPage"
       DataContext="{Binding SubtribusViewModel}">
 
-    <!--  Tbl60SubtribusPage Skriptdatum:  16.08.2026  10:32  -->
+    <!--  Tbl60SubtribusPage Skriptdatum:  18.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">

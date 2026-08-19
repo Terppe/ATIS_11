@@ -343,67 +343,7 @@
 	<Page Update="Views\Report\Pdf\Tbl75Speciesses\ReportSpeciessesWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\Pdf\Tbl66Genusses\ReportGenussesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl63Infratribusses\ReportInfratribussesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfratribusControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl60Subtribusses\ReportSubtribussesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl57Tribusses\ReportTribussesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl54Supertribusses\ReportSupertribussesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl51Infrafamilies\ReportInfrafamiliesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl48Subfamilies\ReportSubfamiliesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl45Families\ReportFamiliesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl42Superfamilies\ReportSuperfamiliesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl39Infraordos\ReportInfraordosWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl36Subordos\ReportSubordosWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl33Ordos\ReportOrdosWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl30Legios\ReportLegiosWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl27Infraclasses\ReportInfraclassesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl24Subclasses\ReportSubclassesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl21Classes\ReportClassesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl18Superclasses\ReportSuperclassesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl12Subphylums\ReportSubphylumsWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl06Phylums\ReportPhylumsWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl03Regnums\ReportRegnumsWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl54SupertribusWithOptionalHyperlinkControl.xaml">
@@ -835,26 +775,6 @@
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl03Regnums\ReportRegnumsWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl06Phylums\ReportPhylumsWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl12Subphylums\ReportSubphylumsWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl18Superclasses\ReportSuperclassesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl21Classes\ReportClassesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl24Subclasses\ReportSubclassesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl27Infraclasses\ReportInfraclassesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl30Legios\ReportLegiosWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl33Ordos\ReportOrdosWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl36Subordos\ReportSubordosWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl39Infraordos\ReportInfraordosWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl42Superfamilies\ReportSuperfamiliesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl45Families\ReportFamiliesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl48Subfamilies\ReportSubfamiliesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl51Infrafamilies\ReportInfrafamiliesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl54Supertribusses\ReportSupertribussesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl57Tribusses\ReportTribussesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl60Subtribusses\ReportSubtribussesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl63Infratribusses\ReportInfratribussesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl66Genusses\ReportGenussesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl75Speciesses\ReportSpeciessesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\Tbl75SpeciesSubs\ReportSpeciessesSubsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml" />

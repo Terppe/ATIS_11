@@ -12,7 +12,7 @@
       x:Name="RootPage"
       DataContext="{Binding InfrafamilyViewModel}">
 
-    <!--    Tbl51InfrafamilyPage Skriptdatum:  21.01.2025  10:32 -->
+    <!--  Tbl51InfrafamilyPage Skriptdatum:  18.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -141,7 +141,7 @@
                                 </Grid>
                             </PivotItem>
 
-                            <!--  Supertribus -->
+                            <!--  Supertribus  -->
                             <PivotItem x:Name="SupertribusPivot"
                                        loc:Uids.Uid="PivotItem_Edit_Supertribus">
 
@@ -202,4 +202,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>  
+</Page>

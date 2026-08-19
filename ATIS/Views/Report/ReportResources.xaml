@@ -227,7 +227,7 @@
 
     <!--  Hyperlink-ListViews  -->
     <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum">
-        <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
+        <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl  />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum">
         <dataTemplateHyperlink:TemplateTbl06PhylumWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />

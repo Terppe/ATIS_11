@@ -2,7 +2,7 @@
 using ATIS.Views.Modules.Tbl66Genus;
 
 
-//    Tbl63InfratribusPage Skriptdatum:  16.08.2026  10:32    
+//    Tbl63InfratribusPage Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 

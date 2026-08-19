@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
 
-//    Tbl45FamilyViewModel Skriptdatum:  18.10.2025  10:32    
+//    Tbl45FamilyViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl45Family;
 

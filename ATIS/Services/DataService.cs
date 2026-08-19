@@ -4321,6 +4321,94 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetSupertribussesByInfrafamilyIdAsync(int infrafamilyId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl54Supertribus>> GetSupertribussesByInfrafamilyIdAsync(int infrafamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl54Supertribusses
+            .Where(x => x.InfrafamilyId == infrafamilyId)
+            .OrderBy(x => x.SupertribusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByInfrafamilyIdAsync(int infrafamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByInfrafamilyIdAsync(int infrafamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.InfrafamilyId == infrafamilyId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByInfrafamilyIdAsync(int infrafamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfrafamilyIdAsync(int infrafamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.InfrafamilyId == infrafamilyId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByInfrafamilyIdAsync(int infrafamilyId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfrafamilyIdAsync(int infrafamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.InfrafamilyId == infrafamilyId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByInfrafamilyIdAsync(int infrafamilyId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByInfrafamilyIdAsync(int infrafamilyId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.InfrafamilyId == infrafamilyId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+
     #endregion Infrafamily                       
 
     #region Supertribus                
@@ -4491,8 +4579,94 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetTribussesBySupertribusIdAsync(int supertribusId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl57Tribus>> GetTribussesBySupertribusIdAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .Where(x => x.SupertribusId == supertribusId)
+            .OrderBy(x => x.TribusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySupertribusIdAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySupertribusIdAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SupertribusId == supertribusId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySupertribusIdAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySupertribusIdAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SupertribusId == supertribusId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySupertribusIdAsync(int supertribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySupertribusIdAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SupertribusId == supertribusId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySupertribusIdAsync(int supertribusId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySupertribusIdAsync(int supertribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SupertribusId == supertribusId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
 
+    //-------------------------------------------------
     //alt
     public async Task<IEnumerable<Tbl54Supertribus>> GetSupertribusAsync(int dummy)
     {
@@ -4532,10 +4706,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Supertribus                       
 
     #region Tribus                
-    //neu
-
-    // ---------------------------------------------------------                  
-    // Tribus 
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllTribusAsync()
@@ -4703,6 +4873,93 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetSubtribussesByTribusIdAsync(int tribusId) FürReportPDF
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribussesByTribusIdAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
+            .Where(x => x.TribusId == tribusId)
+            .OrderBy(x => x.SubtribusName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesByTribusIdAsync(int tribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesByTribusIdAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.TribusId == tribusId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesByTribusIdAsync(int tribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByTribusIdAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.TribusId == tribusId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesByTribusIdAsync(int tribusId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByTribusIdAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.TribusId == tribusId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsByTribusIdAsync(int tribusId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsByTribusIdAsync(int tribusId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.TribusId == tribusId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
     //----------------------------------------------------
     //alt
     public async Task<IEnumerable<Tbl57Tribus>> SearchTribusAsync(string? search)
@@ -4775,7 +5032,6 @@ public partial class DataService : ObservableObject, IDataService
 
 
     #endregion Tribus                       
-
 
     #region Subtribus                
     // ---------------------------------------------------------   
@@ -5582,7 +5838,6 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
     // ---------------------------------------------------------                  
     // GetSpeciessesByGenusIdAsync(int genusId) FürReportPDF
     // ---------------------------------------------------------                 
@@ -5668,7 +5923,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
 
     //---------------------------------------
     //Alt
@@ -6053,6 +6307,125 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetNamesBySpeciesIdAsync(int speciesId) FürReportPDF
+    // ---------------------------------------------------------                 
+
+    public async Task<IEnumerable<Tbl78Name>> GetNamesBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl78Names
+            .Where(x => x.SpeciesId == speciesId)
+            .OrderBy(x => x.NameName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl81Image>> GetImagesBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images
+            .Where(x => x.SpeciesId == speciesId)
+            .OrderBy(x => x.Info)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl84Synonym>> GetSynonymsBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl84Synonyms
+            .Where(x => x.SpeciesId == speciesId)
+            .OrderBy(x => x.SynonymName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl87Geographic>> GetGeographicsBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl87Geographics
+            .Where(x => x.SpeciesId == speciesId)
+            .OrderBy(x => x.Info)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetExpertReferencesBySpeciesIdAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetExpertReferencesBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefExperts)
+            .Where(x => x.SpeciesId == speciesId &&
+                        x.RefExpertId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue)
+            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetSourceReferencesBySpeciesIdAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetSourceReferencesBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefSources)
+            .Where(x => x.SpeciesId == speciesId &&
+                        x.RefSourceId.HasValue &&
+                        !x.RefAuthorId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetAuthorReferencesBySpeciesIdAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl90References
+            .Include(x => x.Tbl90RefAuthors)
+            .Where(x => x.SpeciesId == speciesId &&
+                        x.RefAuthorId.HasValue &&
+                        !x.RefSourceId.HasValue &&
+                        !x.RefExpertId.HasValue)
+            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetCommentsBySpeciesIdAsync(int speciesId)      
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl93Comment>> GetCommentsBySpeciesIdAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl93Comments
+            .Where(x => x.SpeciesId == speciesId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
 
 
     //Neu
@@ -9179,9 +9552,11 @@ public partial class DataService : ObservableObject, IDataService
     #region Regnum
     public Tbl03Regnum GetRegnumSingleByRegnumIdAndHash(int id)
     {
-        if (_context.Tbl03Regnums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl03Regnums != null)
         {
-            var single = _context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id &&
+            var single = context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id &&
                                                                    a.RegnumName.Contains(Value) == false);
             if (single != null)
             {
@@ -9192,9 +9567,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public Tbl03Regnum GetRegnumSingleByRegnumId(int id)
     {
-        if (_context.Tbl03Regnums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl03Regnums != null)
         {
-            var single = _context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id);
+            var single = context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id);
             if (single != null)
             {
                 return single;
@@ -9204,9 +9581,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumId(int id)
     {
-        if (_context.Tbl03Regnums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl03Regnums != null)
         {
-            var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
+            var collection = new ObservableCollection<Tbl03Regnum>(context.Tbl03Regnums
                 .Where(e => e.RegnumId == id));
             return collection;
         }
@@ -9215,9 +9594,11 @@ public partial class DataService : ObservableObject, IDataService
     //direct children
     public ObservableCollection<Tbl06Phylum> CollPhylumsByRegnumIdAndHash(int id)
     {
-        if (_context.Tbl06Phylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl06Phylums != null)
         {
-            var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
+            var collection = new ObservableCollection<Tbl06Phylum>(context.Tbl06Phylums
             .Where(e => e.RegnumId == id &&
                         e.PhylumName.Contains(Value) == false)
             .OrderBy(a => a.PhylumName));
@@ -9228,9 +9609,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl09Division> CollDivisionsByRegnumIdAndHash(int id)
     {
-        if (_context.Tbl09Divisions != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl09Divisions != null)
         {
-            var collection = new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
+            var collection = new ObservableCollection<Tbl09Division>(context.Tbl09Divisions
                 .Where(e => e.RegnumId == id &&
                             e.DivisionName.Contains(Value) == false)
                 .OrderBy(a => a.DivisionName));
@@ -9241,9 +9624,11 @@ public partial class DataService : ObservableObject, IDataService
     //References
     public ObservableCollection<Tbl90Reference> CollExpertsByRegnumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefExperts)
                 .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
                             e.RegnumId == id &&
@@ -9256,9 +9641,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollSourcesByRegnumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefSources)
                 .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
                             e.RegnumId == id &&
@@ -9272,9 +9659,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollAuthorsByRegnumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefAuthors)
                 .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
                             e.RegnumId == id &&
@@ -9292,9 +9681,11 @@ public partial class DataService : ObservableObject, IDataService
     //Comments
     public ObservableCollection<Tbl93Comment> CollCommentsByRegnumId(int id)
     {
-        if (_context.Tbl93Comments != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl93Comments != null)
         {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
+            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
                 .Where(e => e.RegnumId == id));
             return collection;
         }
@@ -9305,9 +9696,11 @@ public partial class DataService : ObservableObject, IDataService
     #region Phylum
     public Tbl06Phylum GetPhylumSingleByPhylumIdAndHash(int id)
     {
-        if (_context.Tbl06Phylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl06Phylums != null)
         {
-            var single = _context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id &&
+            var single = context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id &&
                                                                   a.PhylumName.Contains(Value) == false);
             if (single != null)
             {
@@ -9318,9 +9711,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public Tbl06Phylum GetPhylumSingleByPhylumId(int id)
     {
-        if (_context.Tbl06Phylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl06Phylums != null)
         {
-            var single = _context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id);
+            var single = context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id);
             if (single != null)
             {
                 return single;
@@ -9331,9 +9726,11 @@ public partial class DataService : ObservableObject, IDataService
 
     public ObservableCollection<Tbl06Phylum> CollPhylumsByPhylumId(int id)
     {
-        if (_context.Tbl06Phylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl06Phylums != null)
         {
-            var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
+            var collection = new ObservableCollection<Tbl06Phylum>(context.Tbl06Phylums
                 .Where(e => e.PhylumId == id));
             return collection;
         }
@@ -9342,9 +9739,11 @@ public partial class DataService : ObservableObject, IDataService
     //direct children
     public ObservableCollection<Tbl12Subphylum> CollSubphylumsByPhylumIdAndHash(int id)
     {
-        if (_context.Tbl12Subphylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl12Subphylums != null)
         {
-            var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
+            var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
                 .Where(e => e.PhylumId == id &&
                             e.SubphylumName.Contains(Value) == false));
             return collection;
@@ -9354,9 +9753,11 @@ public partial class DataService : ObservableObject, IDataService
     //Function
     public int RegnumIdFromPhylumsCollectionSelect(int id)
     {
-        if (_context.Tbl06Phylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl06Phylums != null)
         {
-            var dbset = _context.Tbl06Phylums.SingleOrDefault(p => p.PhylumId == id);
+            var dbset = context.Tbl06Phylums.SingleOrDefault(p => p.PhylumId == id);
 
             if (dbset != null)
             {
@@ -9369,9 +9770,11 @@ public partial class DataService : ObservableObject, IDataService
     //ForeignKey
     public ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumIdAndHash(int id)
     {
-        if (_context.Tbl03Regnums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl03Regnums != null)
         {
-            var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
+            var collection = new ObservableCollection<Tbl03Regnum>(context.Tbl03Regnums
                 .Where(e => e.RegnumId == id &&
                             e.RegnumName.Contains(Value) == false));
             return collection;
@@ -9381,9 +9784,11 @@ public partial class DataService : ObservableObject, IDataService
     //References
     public ObservableCollection<Tbl90Reference> CollExpertsByPhylumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefExperts)
                 .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
                             e.PhylumId == id &&
@@ -9396,9 +9801,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollSourcesByPhylumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefSources)
                 .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
                             e.PhylumId == id &&
@@ -9412,9 +9819,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollAuthorsByPhylumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefAuthors)
                 .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
                             e.PhylumId == id &&
@@ -9432,9 +9841,11 @@ public partial class DataService : ObservableObject, IDataService
     //Comments
     public ObservableCollection<Tbl93Comment> CollCommentsByPhylumId(int id)
     {
-        if (_context.Tbl93Comments != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl93Comments != null)
         {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
+            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
                 .Where(e => e.PhylumId == id));
             return collection;
         }
@@ -9445,9 +9856,11 @@ public partial class DataService : ObservableObject, IDataService
     #region Subphylum
     public Tbl12Subphylum GetSubphylumSingleBySubphylumIdAndHash(int id)
     {
-        if (_context.Tbl12Subphylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl12Subphylums != null)
         {
-            var single = _context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id &&
+            var single = context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id &&
                                                                      a.SubphylumName.Contains(Value) == false);
             if (single != null)
             {
@@ -9458,9 +9871,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public Tbl12Subphylum GetSubphylumSingleBySubphylumId(int id)
     {
-        if (_context.Tbl12Subphylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl12Subphylums != null)
         {
-            var single = _context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id);
+            var single = context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id);
             if (single != null)
             {
                 return single;
@@ -9471,9 +9886,11 @@ public partial class DataService : ObservableObject, IDataService
 
     public ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumId(int id)
     {
-        if (_context.Tbl12Subphylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl12Subphylums != null)
         {
-            var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
+            var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
                 .Where(e => e.SubphylumId == id));
             return collection;
         }
@@ -9482,9 +9899,11 @@ public partial class DataService : ObservableObject, IDataService
     //direct children
     public ObservableCollection<Tbl18Superclass> CollSuperclassesBySubphylumIdAndHash(int id)
     {
-        if (_context.Tbl18Superclasses != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl18Superclasses != null)
         {
-            var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
+            var collection = new ObservableCollection<Tbl18Superclass>(context.Tbl18Superclasses
                 .Where(e => e.SubphylumId == id &&
                             e.SuperclassName.Contains(Value) == false));
             return collection;
@@ -9494,9 +9913,11 @@ public partial class DataService : ObservableObject, IDataService
     //Function
     public int PhylumIdFromSubphylumsCollectionSelect(int id)
     {
-        if (_context.Tbl12Subphylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl12Subphylums != null)
         {
-            var dbset = _context.Tbl12Subphylums
+            var dbset = context.Tbl12Subphylums
                 .SingleOrDefault(p => p.SubphylumId == id);
 
             if (dbset != null)
@@ -9510,9 +9931,11 @@ public partial class DataService : ObservableObject, IDataService
     //ForeignKey
     public ObservableCollection<Tbl06Phylum> CollPhylumsByPhylumIdAndHash(int id)
     {
-        if (_context.Tbl06Phylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl06Phylums != null)
         {
-            var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
+            var collection = new ObservableCollection<Tbl06Phylum>(context.Tbl06Phylums
                 .Where(e => e.PhylumId == id &&
                             e.PhylumName.Contains(Value) == false));
             return collection;
@@ -9522,9 +9945,11 @@ public partial class DataService : ObservableObject, IDataService
     //References
     public ObservableCollection<Tbl90Reference> CollExpertsBySubphylumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefExperts)
                 .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
                             e.SubphylumId == id &&
@@ -9537,9 +9962,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollSourcesBySubphylumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefSources)
                 .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
                             e.SubphylumId == id &&
@@ -9553,9 +9980,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollAuthorsBySubphylumId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefAuthors)
                 .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
                             e.SubphylumId == id &&
@@ -9573,9 +10002,11 @@ public partial class DataService : ObservableObject, IDataService
     //Comments
     public ObservableCollection<Tbl93Comment> CollCommentsBySubphylumId(int id)
     {
-        if (_context.Tbl93Comments != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl93Comments != null)
         {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
+            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
                 .Where(e => e.SubphylumId == id));
             return collection;
         }
@@ -9586,9 +10017,11 @@ public partial class DataService : ObservableObject, IDataService
     #region Superclass
     public Tbl18Superclass GetSuperclassSingleBySuperclassIdAndHash(int id)
     {
-        if (_context.Tbl18Superclasses != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl18Superclasses != null)
         {
-            var single = _context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == id &&
+            var single = context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == id &&
                                                                       a.SuperclassName.Contains(Value) == false);
             if (single != null)
             {
@@ -9601,9 +10034,11 @@ public partial class DataService : ObservableObject, IDataService
 
     public ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassId(int id)
     {
-        if (_context.Tbl18Superclasses != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl18Superclasses != null)
         {
-            var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
+            var collection = new ObservableCollection<Tbl18Superclass>(context.Tbl18Superclasses
                 .Where(e => e.SuperclassId == id));
             return collection;
         }
@@ -9612,9 +10047,11 @@ public partial class DataService : ObservableObject, IDataService
     //direct children
     public ObservableCollection<Tbl21Class> CollClassesBySuperclassIdAndHash(int id)
     {
-        if (_context.Tbl21Classes != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl21Classes != null)
         {
-            var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
+            var collection = new ObservableCollection<Tbl21Class>(context.Tbl21Classes
                 .Where(e => e.SuperclassId == id &&
                             e.ClassName.Contains(Value) == false));
             return collection;
@@ -9639,9 +10076,11 @@ public partial class DataService : ObservableObject, IDataService
     //}
     public int SubphylumIdFromSuperclassesCollectionSelect(int id)
     {
-        if (_context.Tbl18Superclasses != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl18Superclasses != null)
         {
-            var dbset = _context.Tbl18Superclasses
+            var dbset = context.Tbl18Superclasses
                 .SingleOrDefault(p => p.SuperclassId == id);
 
             if (dbset != null)
@@ -9655,9 +10094,11 @@ public partial class DataService : ObservableObject, IDataService
     //ForeignKey
     public ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumIdAndHash(int id)
     {
-        if (_context.Tbl12Subphylums != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl12Subphylums != null)
         {
-            var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
+            var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
                 .Where(e => e.SubphylumId == id &&
                             e.SubphylumName.Contains(Value) == false));
             return collection;
@@ -9666,9 +10107,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl15Subdivision> CollSubdivisionsBySubdivisionIdAndHash(int id)
     {
-        if (_context.Tbl15Subdivisions != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl15Subdivisions != null)
         {
-            var collection = new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
+            var collection = new ObservableCollection<Tbl15Subdivision>(context.Tbl15Subdivisions
                 .Where(e => e.SubdivisionId == id &&
                             e.SubdivisionName.Contains(Value) == false));
             return collection;
@@ -9678,9 +10121,11 @@ public partial class DataService : ObservableObject, IDataService
     //References
     public ObservableCollection<Tbl90Reference> CollExpertsBySuperclassId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefExperts)
                 .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
                             e.SuperclassId == id &&
@@ -9693,9 +10138,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollSourcesBySuperclassId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefSources)
                 .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
                             e.SuperclassId == id &&
@@ -9709,9 +10156,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollAuthorsBySuperclassId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefAuthors)
                 .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
                             e.SuperclassId == id &&
@@ -9729,9 +10178,11 @@ public partial class DataService : ObservableObject, IDataService
     //Comments
     public ObservableCollection<Tbl93Comment> CollCommentsBySuperclassId(int id)
     {
-        if (_context.Tbl93Comments != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl93Comments != null)
         {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
+            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
                 .Where(e => e.SuperclassId == id));
             return collection;
         }
@@ -9742,9 +10193,11 @@ public partial class DataService : ObservableObject, IDataService
     #region Class
     public Tbl21Class GetClassSingleByClassIdAndHash(int id)
     {
-        if (_context.Tbl21Classes != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl21Classes != null)
         {
-            var single = _context.Tbl21Classes.SingleOrDefault(a => a.ClassId == id &&
+            var single = context.Tbl21Classes.SingleOrDefault(a => a.ClassId == id &&
                                                                  a.ClassName.Contains(Value) == false);
             if (single != null)
             {
@@ -9757,9 +10210,11 @@ public partial class DataService : ObservableObject, IDataService
 
     public ObservableCollection<Tbl21Class> CollClassesByClassId(int id)
     {
-        if (_context.Tbl21Classes != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl21Classes != null)
         {
-            var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
+            var collection = new ObservableCollection<Tbl21Class>(context.Tbl21Classes
                 .Where(e => e.ClassId == id));
             return collection;
         }
@@ -9768,9 +10223,11 @@ public partial class DataService : ObservableObject, IDataService
     //direct children
     public ObservableCollection<Tbl24Subclass> CollSubclassesByClassIdAndHash(int id)
     {
-        if (_context.Tbl24Subclasses != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl24Subclasses != null)
         {
-            var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
+            var collection = new ObservableCollection<Tbl24Subclass>(context.Tbl24Subclasses
                 .Where(e => e.ClassId == id &&
                             e.SubclassName.Contains(Value) == false));
             return collection;
@@ -9780,9 +10237,11 @@ public partial class DataService : ObservableObject, IDataService
     //Function
     public int SuperclassIdFromClassesCollectionSelect(int id)
     {
-        if (_context.Tbl21Classes != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl21Classes != null)
         {
-            var dbset = _context.Tbl21Classes
+            var dbset = context.Tbl21Classes
                 .SingleOrDefault(p => p.ClassId == id);
 
             if (dbset != null)
@@ -9796,9 +10255,11 @@ public partial class DataService : ObservableObject, IDataService
     //ForeignKey
     public ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassIdAndHash(int id)
     {
-        if (_context.Tbl18Superclasses != null)
+         using var context = _factory.CreateDbContext();
+
+        if (context.Tbl18Superclasses != null)
         {
-            var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
+            var collection = new ObservableCollection<Tbl18Superclass>(context.Tbl18Superclasses
                 .Where(e => e.SuperclassId == id &&
                             e.SuperclassName.Contains(Value) == false));
             return collection;
@@ -9808,9 +10269,11 @@ public partial class DataService : ObservableObject, IDataService
     //References
     public ObservableCollection<Tbl90Reference> CollExpertsByClassId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefExperts)
                 .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
                             e.ClassId == id &&
@@ -9823,9 +10286,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollSourcesByClassId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefSources)
                 .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
                             e.ClassId == id &&
@@ -9839,9 +10304,11 @@ public partial class DataService : ObservableObject, IDataService
     }
     public ObservableCollection<Tbl90Reference> CollAuthorsByClassId(int id)
     {
-        if (_context.Tbl90References != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl90References != null)
         {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
+            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
                 .Include(a => a.Tbl90RefAuthors)
                 .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
                             e.ClassId == id &&
@@ -9859,9 +10326,11 @@ public partial class DataService : ObservableObject, IDataService
     //Comments
     public ObservableCollection<Tbl93Comment> CollCommentsByClassId(int id)
     {
-        if (_context.Tbl93Comments != null)
+        using var context = _factory.CreateDbContext();
+
+        if (context.Tbl93Comments != null)
         {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
+            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
                 .Where(e => e.ClassId == id));
             return collection;
         }

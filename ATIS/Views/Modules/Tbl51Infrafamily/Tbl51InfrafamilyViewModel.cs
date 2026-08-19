@@ -8,9 +8,10 @@ using ATIS.Views.Modules.Tbl54Supertribus;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
-//    Tbl51InfrafamilyViewModel Skriptdatum:  21.01.2025  10:32    
+//    Tbl51InfrafamilyViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl51Infrafamily;
 
@@ -23,6 +24,7 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl51Infrafamily>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -66,8 +68,29 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Infrafamily ID");
-        RegisterHeader("Name", "Infrafamily Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_InfrafamilyId")) ? "Id" : loc.GetLocalizedString("HeaderSort_InfrafamilyId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_InfrafamilyName")) ? "Name" : loc.GetLocalizedString("HeaderSort_InfrafamilyName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               

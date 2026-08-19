@@ -53,5 +53,22 @@
 
         </Grid>
 
+        <!--<RelativePanel>
+            <TextBlock x:Name="TbSpecies"
+                       Width="Auto"
+                       Text="{Binding Tbl66Genusses.GenusName}" />
+            <TextBlock x:Name="TbSpeciesName"
+                       Margin="2,0,0,0"
+                       RelativePanel.RightOf="TbSpecies"
+                       Text="{Binding SpeciesName}" />
+            <TextBlock x:Name="TbSubspecies"
+                       Margin="2,0,0,0"
+                       RelativePanel.RightOf="TbSpeciesName"
+                       Text="{Binding Subspecies}" />
+            <TextBlock Margin="2,0,0,0"
+                       RelativePanel.RightOf="TbSubspecies"
+                       Text="{Binding Divers}" />
+        </RelativePanel>-->
+
     </Grid>
 </UserControl>
