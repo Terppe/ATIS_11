@@ -61,6 +61,7 @@ using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthor
 using Tbl90ReferenceViewModel = ATIS.Views.Modules.Tbl90Reference.Tbl90ReferenceViewModel;
 using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
 using TblCountryAltViewModel = ATIS.ViewModels.TblCountryAltViewModel;
+using QuestPDF;
 
 namespace ATIS;
 
@@ -96,6 +97,9 @@ public partial class App : Application
         Services = ConfigureServices();
         QuestPDF.Settings.License = LicenseType.Community;
         UnhandledException += App_UnhandledException;
+
+        QuestPDF.Settings.CheckIfAllTextGlyphsAreAvailable = false;
+        QuestPDF.Settings.EnableDebugging = false;
     }
 
     // ---------------------------------------------------------

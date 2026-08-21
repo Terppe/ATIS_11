@@ -1071,3 +1071,7 @@ Bei regnum wird name nicht angezeigt bei control
 16.08.2026 11:30 Uhr weiter mit tbl57Tribus
 ----------------------------------------
 19.08.2026 18:30 Uhr Detailpage bis auf Species, SpeciesSub, names, usw fertig. angefangen bei Class für PDF
+----------------------------------------
+20.08.2026 18:30 Uhr ClassPDF fast ok überall strings.Res austauschen gegen loc und in Resourcedatei anlegen
+----------------------------------------
+21.08.2026 18:30 Uhr überall strings.Res austauschen gegen loc und in Resourcedatei anlegen. Taxonomy in Classdocument und CompTaxoHieras noch nicht fertig

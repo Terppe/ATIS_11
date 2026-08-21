@@ -337,12 +337,6 @@
 	<Page Update="Views\Database\Tbl68SpeciesgroupListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\Pdf\Tbl75SpeciesSubs\ReportSpeciessesSubsWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\Tbl75Speciesses\ReportSpeciessesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfratribusControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -775,8 +769,6 @@
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl75Speciesses\ReportSpeciessesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\Tbl75SpeciesSubs\ReportSpeciessesSubsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblFoods\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblMiscellaneous\ReportMiscellaneoussesWindow.xaml" />

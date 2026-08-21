@@ -5,6 +5,7 @@ using ATIS.Views.Report.Pdf.Tbl21Classes;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
 using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Search.DetailViewModels;
 
@@ -382,6 +383,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  PDF EXPORT
     // -----------------------------
+
     private async Task ExportPdfAsync()
     {
         if (ClassSelected == null || ClassSelected.ClassId == 0)
@@ -390,6 +392,23 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         try
         {
             var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(ClassSelected.ClassId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
             var document = new Tbl21ClassesDocument(model);
 
             var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
@@ -414,10 +433,12 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+
             var errorDialog = new ContentDialog
             {
                 Title = "PDF-Fehler",
-                Content = ex.Message,
+                Content = ex.ToString(),
                 CloseButtonText = "OK",
                 XamlRoot = App.MainPageInstance.Content.XamlRoot
             };
@@ -425,4 +446,94 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
             await errorDialog.ShowAsync();
         }
     }
+    //private async Task ExportPdfAsync()
+    //{
+    //    if (ClassSelected == null || ClassSelected.ClassId == 0)
+    //        return;
+
+    //    try
+    //    {
+    //        var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(ClassSelected.ClassId);
+    //        var document = new Tbl21ClassesDocument(model);
+
+    //        var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+    //        var safeTitle = string.IsNullOrWhiteSpace(ClassSelected.ClassName)
+    //            ? $"Class_{ClassSelected.ClassId}"
+    //            : string.Concat(ClassSelected.ClassName.Split(Path.GetInvalidFileNameChars()));
+
+    //        var fileName = $"{safeTitle}_{ClassSelected.ClassId}.pdf";
+    //        var filePath = Path.Combine(desktopPath, fileName);
+
+    //        document.GeneratePdf(filePath);
+
+    //        var successDialog = new ContentDialog
+    //        {
+    //            Title = "PDF exportiert",
+    //            Content = $"Die PDF wurde erstellt:\n{filePath}",
+    //            CloseButtonText = "OK",
+    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
+    //        };
+
+    //        await successDialog.ShowAsync();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+    //        var errorDialog = new ContentDialog
+    //        {
+    //            Title = "PDF-Fehler",
+    //            Content = ex.ToString(),
+    //            CloseButtonText = "OK",
+    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
+    //        };
+
+    //        await errorDialog.ShowAsync();
+    //    }
+    //}
+
+
+    //private async Task ExportPdfAsync()
+    //{
+    //    if (ClassSelected == null || ClassSelected.ClassId == 0)
+    //        return;
+
+    //    try
+    //    {
+    //        var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(ClassSelected.ClassId);
+    //        var document = new Tbl21ClassesDocument(model);
+
+    //        var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+    //        var safeTitle = string.IsNullOrWhiteSpace(ClassSelected.ClassName)
+    //            ? $"Class_{ClassSelected.ClassId}"
+    //            : string.Concat(ClassSelected.ClassName.Split(Path.GetInvalidFileNameChars()));
+
+    //        var fileName = $"{safeTitle}_{ClassSelected.ClassId}.pdf";
+    //        var filePath = Path.Combine(desktopPath, fileName);
+
+    //        document.GeneratePdf(filePath);
+
+    //        var successDialog = new ContentDialog
+    //        {
+    //            Title = "PDF exportiert",
+    //            Content = $"Die PDF wurde erstellt:\n{filePath}",
+    //            CloseButtonText = "OK",
+    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
+    //        };
+
+    //        await successDialog.ShowAsync();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        var errorDialog = new ContentDialog
+    //        {
+    //            Title = "PDF-Fehler",
+    //            Content = ex.ToString(),
+    //            CloseButtonText = "OK",
+    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
+    //        };
+
+    //        await errorDialog.ShowAsync();
+    //    }
+    //}
 }

@@ -1,10 +1,13 @@
 ﻿using System.Globalization;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Report;
 public class CompHeaders
 {
+    private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
+
     public static void Header(IContainer container, int textHight)
     {
         // evtl icon
@@ -14,12 +17,11 @@ public class CompHeaders
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.Atis).FontSize(18).SemiBold();
+                    text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
-                    text.Span(Strings.StringsRes.AtisHeader).FontSize(textHight).SemiBold();
-                    text.Span("             ");
+                    text.Span(Loc("AtisHeader")).FontSize(textHight).SemiBold();
+                    text.Span("  ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
-
                 });
             });
         });
@@ -38,7 +40,7 @@ public class CompHeaders
                         columns.ConstantColumn(tabRightRel);
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportSynonyms);
+                    table.Cell().Text(Loc("Synonyms"));
                 });
 
             });
@@ -58,7 +60,7 @@ public class CompHeaders
                         columns.ConstantColumn(tabRightRel);
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportNames);
+                    table.Cell().Text(Loc("Names"));
                 });
 
             });
@@ -79,7 +81,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoHiera).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("TaxonomicHierarchy")).FontSize(textHight).SemiBold();
                 });
             });
         });
@@ -98,7 +100,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportDirectChild).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("DirectChildren")).FontSize(textHight).SemiBold();
                 });
             });
         });
@@ -118,7 +120,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportReferences).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("References")).FontSize(textHight).SemiBold();
                 });
             });
         });
@@ -138,7 +140,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportExperts).SemiBold();
+                    table.Cell().Text(Loc("Experts")).SemiBold();
                 });
             });
         });
@@ -158,7 +160,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportOtherSources).SemiBold();
+                    table.Cell().Text(Loc("OtherSources")).SemiBold();
                 });
             });
         });
@@ -178,7 +180,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportPublications).SemiBold();
+                    table.Cell().Text(Loc("Publications")).SemiBold();
                 });
             });
         });
@@ -198,7 +200,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportGeographics).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("Geographics")).FontSize(textHight).SemiBold();
                 });
             });
         });
@@ -218,7 +220,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportImages).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("Images")).FontSize(textHight).SemiBold();
                 });
             });
         });
@@ -239,7 +241,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportUseful).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("Useful")).FontSize(textHight).SemiBold();
                 });
             });
         });
@@ -259,7 +261,7 @@ public class CompHeaders
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportComments).FontSize(textHight).SemiBold();
+                    table.Cell().Text(Loc("Comments")).FontSize(textHight).SemiBold();
                 });
             });
         });

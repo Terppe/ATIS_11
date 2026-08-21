@@ -12,7 +12,7 @@
       x:Name="RootPage"
       DataContext="{Binding GenusViewModel}">
 
-    <!--    Tbl66GenusPage Skriptdatum:  18.08.2026  10:32 -->
+    <!--  Tbl66GenusPage Skriptdatum:  18.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -141,19 +141,19 @@
                                 </Grid>
                             </PivotItem>
 
-                            <!--  Species -->
+                            <!--  Species  -->
                             <PivotItem x:Name="SpeciesPivot"
                                        loc:Uids.Uid="PivotItem_Edit_Species">
 
                                 <Grid RowDefinitions="Auto,*">
                                     <tbl75Species:Tbl75SpeciesParentControl x:Name="SpeciesParentControl"
-                                                                                    Grid.Row="0"
-                                                                                    DataContext="{Binding SpeciesViewModel}" />
+                                                                            Grid.Row="0"
+                                                                            DataContext="{Binding SpeciesViewModel}" />
 
                                     <tbl75Species:Tbl75SpeciesEditControl Grid.Row="1"
-                                                                                  DataContext="{Binding SpeciesViewModel}"
-                                                                                  Item="{Binding SelectedItem}"
-                                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                                          DataContext="{Binding SpeciesViewModel}"
+                                                                          Item="{Binding SelectedItem}"
+                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                                 </Grid>
                             </PivotItem>
 
@@ -202,4 +202,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>  
+</Page>

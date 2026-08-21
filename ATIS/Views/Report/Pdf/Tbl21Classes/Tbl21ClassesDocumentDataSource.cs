@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
 
 
 //    Tbl21ClassesDocumentDataSourceSkriptdatum:  14.06.2023  18:32    
@@ -22,59 +20,37 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
     #endregion [Private Data Members]      
 
 
-    //    Part 1    
-
-
-    public static async Task<Tbl21ClassesPdfModel> GetClassDetailsAsync(int classId)
+    //    Part 1
+    //
+    private static bool IsVisibleTaxonName(string? name)
     {
-        #region [Private Data Members]
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
 
+    public static async Task<Tbl21ClassesPdfModel?> GetClassDetailsAsync(int classId)
+    {
         var dataService = App.GetService<IDataService>();
-        //var context = new AtisDbContext();
-        //var fishId = 0;
-        //var plantId = 0;
-
-        #endregion [Private Data Members]
 
         ClearAllCollections();
 
-        _classSingle = await dataService.GetClassByIdAsync(classId);
-        var superclassId = _classSingle.SuperclassId;
+        var _classSingle = await dataService.GetClassByIdAsync(classId);
 
-        SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
-        var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
-        //if (subphylumId == fishId)  //Basis #Subphylum#
-        //{
-        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        if (_classSingle.SuperclassId != 0)
+            _superclassSingle = await dataService.GetSuperclassByIdAsync(_classSingle.SuperclassId);
 
-        //    _regnumSingle = dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
-        //    _divisionSingle = dataService.GetDivisionSingleByDivisionIdAndHash(divisionId);
-        //    _subdivisionSingle = dataService.GetSubdivisionSingleBySubdivisionIdAndHash(subdivisionId);
+        if (_superclassSingle?.SubphylumId != 0)
+            _subphylumSingle = await dataService.GetSubphylumByIdAsync(_superclassSingle.SubphylumId);
 
-        //}
-        //if (subdivisionId == plantId)  //Basis #Subdivision#
-        {
-            SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
-            var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
-            PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-            var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        if (_subphylumSingle?.PhylumId != 0)
+            _phylumSingle = await dataService.GetPhylumByIdAsync(_subphylumSingle.PhylumId);
 
-            _regnumSingle = dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
-            _phylumSingle = dataService.GetPhylumSingleByPhylumIdAndHash(phylumId);
-            _subphylumSingle = dataService.GetSubphylumSingleBySubphylumIdAndHash(subphylumId);
-        }
+        if (_phylumSingle?.RegnumId != 0)
+            _regnumSingle = await dataService.GetRegnumByIdAsync(_phylumSingle.RegnumId);
 
-        //direct children
         SubclassesCollection = new ObservableCollection<Tbl24Subclass>(
-            await dataService.GetSubclassesByClassIdAsync(classId));
+            (await dataService.GetSubclassesByClassIdAsync(classId))
+            .Where(x => IsVisibleTaxonName(x.SubclassName)));
 
-        //-----------------------------------------------------------------------------
         ExpertsCollection = new ObservableCollection<Tbl90Reference>(
             await dataService.GetExpertReferencesByClassIdAsync(classId));
 
@@ -83,11 +59,17 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
 
         AuthorsCollection = new ObservableCollection<Tbl90Reference>(
             await dataService.GetAuthorReferencesByClassIdAsync(classId));
-        //------------------------------------------------------------------------------
+
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByClassIdAsync(classId));
 
-        _superclassSingle = dataService.GetSuperclassSingleBySuperclassIdAndHash(superclassId);
+        System.Diagnostics.Debug.WriteLine($"Class: {_classSingle?.ClassName}");
+        System.Diagnostics.Debug.WriteLine($"Superclass: {_superclassSingle?.SuperclassName}");
+        System.Diagnostics.Debug.WriteLine($"Subphylum: {_subphylumSingle?.SubphylumName}");
+        System.Diagnostics.Debug.WriteLine($"Phylum: {_phylumSingle?.PhylumName}");
+        System.Diagnostics.Debug.WriteLine($"Regnum: {_regnumSingle?.RegnumName}");
+        System.Diagnostics.Debug.WriteLine($"Subclasses count: {SubclassesCollection?.Count}");
+
 
         return new Tbl21ClassesPdfModel
         {
@@ -106,15 +88,153 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
             Memo = _classSingle.Memo,
             WriterDate = _classSingle.WriterDate,
             UpdaterDate = _classSingle.UpdaterDate,
-            //------------------------------- 
 
             RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
             PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
             SubphylumTree = GenrateModels.GenSubphylums.GenerateSubphylums(_subphylumSingle),
             SuperclassTree = GenrateModels.GenSuperclasses.GenerateSuperclasses(_superclassSingle),
             ClassTree = GenrateModels.GenClasses.GenerateClasses(_classSingle)
+
         };
     }
+
+    //public static async Task<Tbl21ClassesPdfModel> GetClassDetailsAsync(int classId)
+    //{
+    //    #region [Private Data Members]
+
+    //    var dataService = App.GetService<IDataService>();
+
+    //    #endregion [Private Data Members]
+
+    //    ClearAllCollections();
+
+    //    _classSingle = await dataService.GetClassByIdAsync(classId);
+
+    //    if (_classSingle.SuperclassId != 0)
+    //        _superclassSingle = await dataService.GetSuperclassByIdAsync(_classSingle.SuperclassId);
+
+    //    if (_superclassSingle?.SubphylumId != 0)
+    //        _subphylumSingle = await dataService.GetSubphylumByIdAsync(_superclassSingle.SubphylumId);
+
+    //    if (_subphylumSingle?.PhylumId != 0)
+    //        _phylumSingle = await dataService.GetPhylumByIdAsync(_subphylumSingle.PhylumId);
+
+    //    if (_phylumSingle?.RegnumId != 0)
+    //        _regnumSingle = await dataService.GetRegnumByIdAsync(_phylumSingle.RegnumId);
+
+    //    //direct children
+    //    SubclassesCollection = new ObservableCollection<Tbl24Subclass>(
+    //        await dataService.GetSubclassesByClassIdAsync(classId));
+
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = new ObservableCollection<Tbl90Reference>(
+    //        await dataService.GetExpertReferencesByClassIdAsync(classId));
+
+    //    SourcesCollection = new ObservableCollection<Tbl90Reference>(
+    //        await dataService.GetSourceReferencesByClassIdAsync(classId));
+
+    //    AuthorsCollection = new ObservableCollection<Tbl90Reference>(
+    //        await dataService.GetAuthorReferencesByClassIdAsync(classId));
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = new ObservableCollection<Tbl93Comment>(
+    //        await dataService.GetCommentsByClassIdAsync(classId));
+
+    //    return new Tbl21ClassesPdfModel
+    //    {
+    //        ClassName = _classSingle.ClassName,
+    //        CountId = _classSingle.CountId,
+    //        Synonym = _classSingle.Synonym,
+    //        Author = _classSingle.Author,
+    //        AuthorYear = _classSingle.AuthorYear,
+    //        Info = _classSingle.Info,
+    //        Valid = _classSingle.Valid,
+    //        ValidYear = _classSingle.ValidYear,
+    //        EngName = _classSingle.EngName,
+    //        GerName = _classSingle.GerName,
+    //        FraName = _classSingle.FraName,
+    //        PorName = _classSingle.PorName,
+    //        Memo = _classSingle.Memo,
+    //        WriterDate = _classSingle.WriterDate,
+    //        UpdaterDate = _classSingle.UpdaterDate,
+    //        //------------------------------- 
+
+    //        RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
+    //        PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
+    //        SubphylumTree = GenrateModels.GenSubphylums.GenerateSubphylums(_subphylumSingle),
+    //        SuperclassTree = GenrateModels.GenSuperclasses.GenerateSuperclasses(_superclassSingle),
+    //        ClassTree = GenrateModels.GenClasses.GenerateClasses(_classSingle)
+    //    };
+    //}
+
+    //public static async Task<Tbl21ClassesPdfModel> GetClassDetailsAsync(int classId)
+    //{
+    //    #region [Private Data Members]
+
+    //    var dataService = App.GetService<IDataService>();
+
+    //    #endregion [Private Data Members]
+
+    //    ClearAllCollections();
+
+    //    _classSingle = await dataService.GetClassByIdAsync(classId);
+    //    var superclassId = _classSingle.SuperclassId;
+    //    SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
+    //    var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
+    //    SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
+    //    var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
+    //    PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
+    //    var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
+    //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+
+    //    _regnumSingle = dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
+    //    _phylumSingle = dataService.GetPhylumSingleByPhylumIdAndHash(phylumId);
+    //    _subphylumSingle = dataService.GetSubphylumSingleBySubphylumIdAndHash(subphylumId);
+
+    //    //direct children
+    //    SubclassesCollection = new ObservableCollection<Tbl24Subclass>(
+    //        await dataService.GetSubclassesByClassIdAsync(classId));
+
+    //    //-----------------------------------------------------------------------------
+    //    ExpertsCollection = new ObservableCollection<Tbl90Reference>(
+    //        await dataService.GetExpertReferencesByClassIdAsync(classId));
+
+    //    SourcesCollection = new ObservableCollection<Tbl90Reference>(
+    //        await dataService.GetSourceReferencesByClassIdAsync(classId));
+
+    //    AuthorsCollection = new ObservableCollection<Tbl90Reference>(
+    //        await dataService.GetAuthorReferencesByClassIdAsync(classId));
+    //    //------------------------------------------------------------------------------
+    //    CommentsCollection = new ObservableCollection<Tbl93Comment>(
+    //        await dataService.GetCommentsByClassIdAsync(classId));
+
+    //    _superclassSingle = dataService.GetSuperclassSingleBySuperclassIdAndHash(superclassId);
+
+    //    return new Tbl21ClassesPdfModel
+    //    {
+    //        ClassName = _classSingle.ClassName,
+    //        CountId = _classSingle.CountId,
+    //        Synonym = _classSingle.Synonym,
+    //        Author = _classSingle.Author,
+    //        AuthorYear = _classSingle.AuthorYear,
+    //        Info = _classSingle.Info,
+    //        Valid = _classSingle.Valid,
+    //        ValidYear = _classSingle.ValidYear,
+    //        EngName = _classSingle.EngName,
+    //        GerName = _classSingle.GerName,
+    //        FraName = _classSingle.FraName,
+    //        PorName = _classSingle.PorName,
+    //        Memo = _classSingle.Memo,
+    //        WriterDate = _classSingle.WriterDate,
+    //        UpdaterDate = _classSingle.UpdaterDate,
+    //        //------------------------------- 
+
+    //        RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
+    //        PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
+    //        SubphylumTree = GenrateModels.GenSubphylums.GenerateSubphylums(_subphylumSingle),
+    //        SuperclassTree = GenrateModels.GenSuperclasses.GenerateSuperclasses(_superclassSingle),
+    //        ClassTree = GenrateModels.GenClasses.GenerateClasses(_classSingle)
+    //    };
+    //}
 
     #region "Collections"
     public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;

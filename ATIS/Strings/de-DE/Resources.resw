@@ -174,6 +174,9 @@
   <data name="AppBarButtonAdd.Label" xml:space="preserve">
     <value>Neu</value>
   </data>
+  <data name="AppBarButtonAdd.Label5" xml:space="preserve">
+    <value>Neu</value>
+  </data>
   <data name="AppBarButtonAdd.Label4" xml:space="preserve">
     <value>Neu</value>
   </data>
@@ -183,8 +186,11 @@
   <data name="AppBarButtonAdd.Label2" xml:space="preserve">
     <value>Neu</value>
   </data>
-  <data name="AppBarButtonAdd.Label1" xml:space="preserve">
-    <value>Neu</value>
+  <data name="Atis" xml:space="preserve">
+    <value>ATIS</value>
+  </data>
+  <data name="AtisHeader" xml:space="preserve">
+    <value>Aquaristik Taxonomie Informations System</value>
   </data>
   <data name="AppBarButtonCancel.Label" xml:space="preserve">
     <value>Abbruch</value>
@@ -1800,13 +1806,22 @@
   <data name="TextBlock_ArticelTitle.Text" xml:space="preserve">
     <value>Artikel/Absatz Titel</value>
   </data>
+  <data name="ArticelTitle" xml:space="preserve">
+    <value>Artikel/Absatz Titel</value>
+  </data>
   <data name="TextBlock_Author.Text" xml:space="preserve">
+    <value>Autor</value>
+  </data>
+  <data name="Author" xml:space="preserve">
     <value>Autor</value>
   </data>
   <data name="TextBlock_Author_Year.Text" xml:space="preserve">
     <value>Jahr</value>
   </data>
   <data name="TextBlock_BookName.Text" xml:space="preserve">
+    <value>Journal/Buchtitel</value>
+  </data>
+  <data name="BookName" xml:space="preserve">
     <value>Journal/Buchtitel</value>
   </data>
   <data name="TextBlock_BookName_Page.Text" xml:space="preserve">
@@ -1825,6 +1840,9 @@
     <value>Abbruch</value>
   </data>
   <data name="TextBlock_Class.Text" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="Class" xml:space="preserve">
     <value>Klasse</value>
   </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
@@ -1855,6 +1873,9 @@
     <value>Kommentar ID</value>
   </data>
   <data name="TextBlock_Comments.Text" xml:space="preserve">
+    <value>Kommentare</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
     <value>Kommentare</value>
   </data>
   <data name="TextBlock_Company.Text" xml:space="preserve">
@@ -1914,6 +1935,9 @@
   <data name="TextBlock_Family.Text" xml:space="preserve">
     <value>Familie</value>
   </data>
+  <data name="Family" xml:space="preserve">
+    <value>Familie</value>
+  </data>
   <data name="TextBlock_FamilyId.Text" xml:space="preserve">
     <value>Familie ID</value>
   </data>
@@ -1965,6 +1989,9 @@
   <data name="TextBlock_Genus.Text" xml:space="preserve">
     <value>Gattung</value>
   </data>
+  <data name="Genus" xml:space="preserve">
+    <value>Gattung</value>
+  </data>
   <data name="TextBlock_GenusId.Text" xml:space="preserve">
     <value>Gattung ID</value>
   </data>
@@ -1987,6 +2014,9 @@
     <value>Vorkommen ID</value>
   </data>
   <data name="TextBlock_Geographics.Text" xml:space="preserve">
+    <value>Vorkommen</value>
+  </data>
+  <data name="Geographics" xml:space="preserve">
     <value>Vorkommen</value>
   </data>
   <data name="TextBlock_GermanName.Text" xml:space="preserve">
@@ -2016,6 +2046,9 @@
   <data name="TextBlock_Images.Text" xml:space="preserve">
     <value>Bilder/Videos</value>
   </data>
+  <data name="Images" xml:space="preserve">
+    <value>Bilder/Videos</value>
+  </data>
   <data name="TextBlock_Importer.Text" xml:space="preserve">
     <value>Importeur</value>
   </data>
@@ -2025,7 +2058,13 @@
   <data name="TextBlock_Info.Text" xml:space="preserve">
     <value>Information</value>
   </data>
+  <data name="Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
   <data name="TextBlock_Infraclass.Text" xml:space="preserve">
+    <value>Infraklasse</value>
+  </data>
+  <data name="Infraclass" xml:space="preserve">
     <value>Infraklasse</value>
   </data>
   <data name="TextBlock_Infraclasses.Text" xml:space="preserve">
@@ -2044,6 +2083,9 @@
     <value>Infrafamilien</value>
   </data>
   <data name="TextBlock_Infrafamily.Text" xml:space="preserve">
+    <value>Infrafamilie</value>
+  </data>
+  <data name="Infrafamily" xml:space="preserve">
     <value>Infrafamilie</value>
   </data>
   <data name="TextBlock_InfrafamilyId.Text" xml:space="preserve">
@@ -2070,6 +2112,9 @@
   <data name="TextBlock_Infratribus.Text" xml:space="preserve">
     <value>Infratribus</value>
   </data>
+  <data name="Infratribus" xml:space="preserve">
+    <value>Infratribus</value>
+  </data>
   <data name="TextBlock_InfratribusId.Text" xml:space="preserve">
     <value>Infratribus ID</value>
   </data>
@@ -2086,6 +2131,9 @@
     <value>Infratribus Detail</value>
   </data>
   <data name="TextBlock_Isbn.Text" xml:space="preserve">
+    <value>ISBN/ISSN</value>
+  </data>
+  <data name="Isbn" xml:space="preserve">
     <value>ISBN/ISSN</value>
   </data>
   <data name="TextBlock_Language.Text" xml:space="preserve">
@@ -2122,6 +2170,9 @@
     <value>Map</value>
   </data>
   <data name="TextBlock_Memo.Text" xml:space="preserve">
+    <value>Memo</value>
+  </data>
+  <data name="Memo" xml:space="preserve">
     <value>Memo</value>
   </data>
   <data name="TextBlock_MemoBreeding.Text" xml:space="preserve">
@@ -2178,6 +2229,9 @@
   <data name="TextBlock_Name.Text" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="TextBlock_NameId.Text" xml:space="preserve">
     <value>Name ID</value>
   </data>
@@ -2185,6 +2239,9 @@
     <value>Name </value>
   </data>
   <data name="TextBlock_Names.Text" xml:space="preserve">
+    <value>Namen</value>
+  </data>
+  <data name="Names" xml:space="preserve">
     <value>Namen</value>
   </data>
   <data name="TextBlock_Newsletter.Text" xml:space="preserve">
@@ -2196,7 +2253,13 @@
   <data name="TextBlock_Notes.Text" xml:space="preserve">
     <value>Notizen</value>
   </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notizen</value>
+  </data>
   <data name="TextBlock_Ordo.Text" xml:space="preserve">
+    <value>Ordnung</value>
+  </data>
+  <data name="Ordo" xml:space="preserve">
     <value>Ordnung</value>
   </data>
   <data name="TextBlock_OrdoId.Text" xml:space="preserve">
@@ -2225,6 +2288,12 @@
   </data>
   <data name="TextBlock_Phylum.Text" xml:space="preserve">
     <value>Stamm</value>
+  </data>
+  <data name="Phylum" xml:space="preserve">
+    <value>Stamm</value>
+  </data>
+  <data name="PdfExport_Hidden" xml:space="preserve">
+    <value>Keine PDF Datei</value>
   </data>
   <data name="TestKey" xml:space="preserve">
     <value>Hallo</value>
@@ -2256,7 +2325,13 @@
   <data name="TextBlock_PublicationPlace.Text" xml:space="preserve">
     <value>Verlag Ort</value>
   </data>
+  <data name="PublicationPlace" xml:space="preserve">
+    <value>Verlag Ort</value>
+  </data>
   <data name="TextBlock_Publisher.Text" xml:space="preserve">
+    <value>Verleger</value>
+  </data>
+  <data name="Publisher" xml:space="preserve">
     <value>Verleger</value>
   </data>
   <data name="TextBlock_Publisherplace.Text" xml:space="preserve">
@@ -2388,6 +2463,9 @@
   <data name="TextBlock_Subfamily.Text" xml:space="preserve">
     <value>Unterfamilie</value>
   </data>
+  <data name="Subfamily" xml:space="preserve">
+    <value>Unterfamilie</value>
+  </data>
   <data name="TextBlock_SubfamilyId.Text" xml:space="preserve">
     <value>Unterfamilie ID</value>
   </data>
@@ -2398,6 +2476,9 @@
     <value>Unterfamilie/Familien</value>
   </data>
   <data name="TextBlock_Subordo.Text" xml:space="preserve">
+    <value>Unterordnung</value>
+  </data>
+  <data name="Subordo" xml:space="preserve">
     <value>Unterordnung</value>
   </data>
   <data name="TextBlock_SubordoId.Text" xml:space="preserve">
@@ -2433,6 +2514,9 @@
   <data name="TextBlock_Subtribus.Text" xml:space="preserve">
     <value>Untertribus</value>
   </data>
+  <data name="Subtribus" xml:space="preserve">
+    <value>Untertribus</value>
+  </data>
   <data name="TextBlock_SubtribusId.Text" xml:space="preserve">
     <value>Untertribus ID</value>
   </data>
@@ -2460,6 +2544,9 @@
   <data name="TextBlock_Superfamily.Text" xml:space="preserve">
     <value>Überfamilie</value>
   </data>
+  <data name="Superfamily" xml:space="preserve">
+    <value>Überfamilie</value>
+  </data>
   <data name="TextBlock_SuperfamilyId.Text" xml:space="preserve">
     <value>Überfamilie ID</value>
   </data>
@@ -2470,6 +2557,9 @@
     <value>Überfamilie/Infraordnungen</value>
   </data>
   <data name="TextBlock_Supertribus.Text" xml:space="preserve">
+    <value>Übertribus</value>
+  </data>
+  <data name="Supertribus" xml:space="preserve">
     <value>Übertribus</value>
   </data>
   <data name="TextBlock_SupertribusId.Text" xml:space="preserve">
@@ -2496,6 +2586,12 @@
   <data name="TextBlock_Synonyms.Text" xml:space="preserve">
     <value>Synonyme</value>
   </data>
+  <data name="Synonyms" xml:space="preserve">
+    <value>Synonyme</value>
+  </data>
+  <data name="Synonym" xml:space="preserve">
+    <value>Synonym</value>
+  </data>
   <data name="TextBlock_Technik.Text" xml:space="preserve">
     <value>Technik</value>
   </data>
@@ -2509,6 +2605,9 @@
     <value>Handelsname</value>
   </data>
   <data name="TextBlock_Tribus.Text" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="Tribus" xml:space="preserve">
     <value>Tribus</value>
   </data>
   <data name="TextBlock_TribusId.Text" xml:space="preserve">
@@ -2528,6 +2627,9 @@
   </data>
   <data name="TextBlock_UserProfileId.Text" xml:space="preserve">
     <value>Nutzerprofile ID</value>
+  </data>
+  <data name="Useful" xml:space="preserve">
+    <value>Sinnvoll</value>
   </data>
   <data name="TextBlock_UserProfileName.Text" xml:space="preserve">
     <value>Nutzerprofile Name</value>
@@ -3174,10 +3276,16 @@
   <data name="TextBlock_DirectChildren.Text" xml:space="preserve">
     <value>Direkte Nachkommen</value>
   </data>
+  <data name="DirectChildren" xml:space="preserve">
+    <value>Direkte Nachkommen</value>
+  </data>
   <data name="TextBlock_Diseases.Text" xml:space="preserve">
     <value>Krankheiten</value>
   </data>
   <data name="TextBlock_Experts.Text" xml:space="preserve">
+    <value>Experte(n):</value>
+  </data>
+  <data name="Experts" xml:space="preserve">
     <value>Experte(n):</value>
   </data>
   <data name="TextBlock_NamesReport.Text" xml:space="preserve">
@@ -3186,13 +3294,25 @@
   <data name="TextBlock_Publications.Text" xml:space="preserve">
     <value>Verlag(e):</value>
   </data>
+  <data name="Publications" xml:space="preserve">
+    <value>Verlag(e):</value>
+  </data>
   <data name="TextBlock_References.Text" xml:space="preserve">
+    <value>Bezüge</value>
+  </data>
+  <data name="References" xml:space="preserve">
     <value>Bezüge</value>
   </data>
   <data name="TextBlock_OtherSources.Text" xml:space="preserve">
     <value>Andere Quelle(n):</value>
   </data>
-  <data name="TextBlock_Species.Text" xml:space="preserve">
+  <data name="OtherSources" xml:space="preserve">
+    <value>Andere Quelle(n):</value>
+  </data>
+  <data name="Species" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="TextBlock_Species.Text1" xml:space="preserve">
     <value>Art</value>
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">
@@ -3204,10 +3324,19 @@
   <data name="TextBlock_TaxonomicHierarchy.Text" xml:space="preserve">
     <value>Taxonomie Hierarchy</value>
   </data>
+  <data name="TaxonomicHierarchy" xml:space="preserve">
+    <value>Taxonomie Hierarchy</value>
+  </data>
+  <data name="TaxonomicId" xml:space="preserve">
+    <value>Taxonomie ID: </value>
+  </data>
   <data name="TextBlock_TaxonomicId.Text" xml:space="preserve">
     <value>Taxonomie ID: </value>
   </data>
   <data name="TextBlock_TaxonomicRank.Text" xml:space="preserve">
+    <value>Taxonomie Rang: </value>
+  </data>
+  <data name="TaxonomicRank" xml:space="preserve">
     <value>Taxonomie Rang: </value>
   </data>
   <data name="AppBarButtonPdf.Content" xml:space="preserve">
@@ -3225,13 +3354,22 @@
   <data name="TextBlock_Subspecies.Text" xml:space="preserve">
     <value>Unterart</value>
   </data>
+  <data name="Subspecies" xml:space="preserve">
+    <value>Unterart</value>
+  </data>
   <data name="TextBlock_WorthKnowing.Text" xml:space="preserve">
     <value>Wichtig zu wissen</value>
   </data>
   <data name="TextBlock_Regnum.Text" xml:space="preserve">
     <value>Reich</value>
   </data>
+  <data name="Regnum" xml:space="preserve">
+    <value>Reich</value>
+  </data>
   <data name="TextBlock_Subclass.Text" xml:space="preserve">
+    <value>Unterklasse</value>
+  </data>
+  <data name="Subclass" xml:space="preserve">
     <value>Unterklasse</value>
   </data>
   <data name="TextBlock_Subdivision.Text" xml:space="preserve">
@@ -3240,16 +3378,28 @@
   <data name="TextBlock_Subphylum.Text" xml:space="preserve">
     <value>Unterstamm</value>
   </data>
+  <data name="Subphylum" xml:space="preserve">
+    <value>Unterstamm</value>
+  </data>
   <data name="TextBlock_Superclass.Text" xml:space="preserve">
     <value>Überklasse</value>
   </data>
+  <data name="Superclass" xml:space="preserve">
+    <value>Überklasse</value>
+  </data>
   <data name="TextBlock_Legio.Text" xml:space="preserve">
+    <value>Überordnung</value>
+  </data>
+  <data name="Legio" xml:space="preserve">
     <value>Überordnung</value>
   </data>
   <data name="TextBlock_Ordo1.Text" xml:space="preserve">
     <value>Ordnung</value>
   </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
+    <value>Infraordnung</value>
+  </data>
+  <data name="Infraordo" xml:space="preserve">
     <value>Infraordnung</value>
   </data>
   <data name="TextBlock_Family1.Text" xml:space="preserve">
@@ -4101,19 +4251,37 @@
   <data name="TextBlock_TaxonomicStatus.Text" xml:space="preserve">
     <value>Taxonomie Status: </value>
   </data>
+  <data name="TaxonomicStatus" xml:space="preserve">
+    <value>Taxonomie Status: </value>
+  </data>
   <data name="TextBlock_CurrentStanding.Text" xml:space="preserve">
+    <value>Gültig</value>
+  </data>
+  <data name="CurrentStanding" xml:space="preserve">
     <value>Gültig</value>
   </data>
   <data name="TextBlock_DataQualityIndicator.Text" xml:space="preserve">
     <value>Datenqualität Indikatoren</value>
   </data>
+  <data name="DataQualityIndicator" xml:space="preserve">
+    <value>Datenqualität Indikatoren</value>
+  </data>
   <data name="TextBlock_RecordCredibilityRating.Text" xml:space="preserve">
+    <value>Record Credibility Rating</value>
+  </data>
+  <data name="RecordCredibilityRating" xml:space="preserve">
     <value>Record Credibility Rating</value>
   </data>
   <data name="TextBlock_RecordUpdate.Text" xml:space="preserve">
     <value>Record Update</value>
   </data>
+  <data name="RecordUpdate" xml:space="preserve">
+    <value>Record Update</value>
+  </data>
   <data name="TextBlock_TaxonomyAndNomenclatura.Text" xml:space="preserve">
+    <value>Taxonomie und Nomenclatura</value>
+  </data>
+  <data name="TaxonomyAndNomenclatura" xml:space="preserve">
     <value>Taxonomie und Nomenclatura</value>
   </data>
   <data name="TextBlock_Kingdom.Text" xml:space="preserve">
@@ -4164,10 +4332,16 @@
   <data name="TextBlock_PublicationDate.Text" xml:space="preserve">
     <value>Veröffentlichung Datum:</value>
   </data>
+  <data name="PublicationDate" xml:space="preserve">
+    <value>Veröffentlichung Datum:</value>
+  </data>
   <data name="TextBlock_BookName_Journal.Text" xml:space="preserve">
     <value>Journal/Buchname, Vol. No.:</value>
   </data>
   <data name="TextBlock_Pages.Text" xml:space="preserve">
+    <value>Seite(n):</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
     <value>Seite(n):</value>
   </data>
   <data name="TextBlock_Publisher1.Text" xml:space="preserve">
@@ -4185,13 +4359,25 @@
   <data name="TextBlock_Referencefor.Text" xml:space="preserve">
     <value>Bezug zu:</value>
   </data>
+  <data name="Referencefor" xml:space="preserve">
+    <value>Bezug zu:</value>
+  </data>
   <data name="TextBlock_Expert.Text" xml:space="preserve">
+    <value>Experte:</value>
+  </data>
+  <data name="Expert" xml:space="preserve">
     <value>Experte:</value>
   </data>
   <data name="TextBlock_Source.Text" xml:space="preserve">
     <value>Quelle:</value>
   </data>
+  <data name="Source" xml:space="preserve">
+    <value>Quelle:</value>
+  </data>
   <data name="TextBlock_Acquired.Text" xml:space="preserve">
+    <value>Erworben:</value>
+  </data>
+  <data name="Acquired" xml:space="preserve">
     <value>Erworben:</value>
   </data>
   <data name="TextBlock_RefAuthors.Text" xml:space="preserve">
@@ -4316,6 +4502,9 @@
   </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>Nein</value>
+  </data>
+  <data name="Dialog_Info" xml:space="preserve">
+    <value>Information</value>
   </data>
   <data name="Dialog_Error_DeleteFailed" xml:space="preserve">
     <value>Löschen fehlgeschlagen.</value>
@@ -4535,5 +4724,8 @@
   </data>
   <data name="Save_Confirm_Message" xml:space="preserve">
     <value>Möchten Sie die Änderungen wirklich speichern?</value>
+  </data>
+  <data name="AppBarButtonAdd.Label1" xml:space="preserve">
+    <value>Neu</value>
   </data>
 </root>

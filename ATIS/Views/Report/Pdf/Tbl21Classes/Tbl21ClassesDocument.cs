@@ -3,13 +3,14 @@ using System.Globalization;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-
+using WinUI3Localizer;
 
 namespace ATIS.Views.Report.Pdf.Tbl21Classes;
 
 public class Tbl21ClassesDocument : IDocument
 {
     private Tbl21ClassesPdfModel Model { get; }
+    private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
     private static int _tabLeftRel;
     private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
@@ -49,26 +50,24 @@ public class Tbl21ClassesDocument : IDocument
 
     private void ComposeHeader(IContainer container)
     {
-        //  CompHeaders.Header(container, TextHight);
-        // evtl icon
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.Atis).FontSize(18).SemiBold();
+                    text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
-                    text.Span(Strings.StringsRes.AtisHeader).FontSize(TextHight).SemiBold();
-                    text.Span("                     ");
+                    text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
+                    text.Span("  ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
-
                 });
+
                 column.Item().Text(text =>
                 {
-                    text.Span($"{Model.ClassName}").FontSize(TextHight).SemiBold().Italic();
-                    text.Span($" {Model.Author}").FontSize(TextHight).SemiBold();
-                    text.Span($" {Model.AuthorYear}").FontSize(TextHight).SemiBold();
+                    text.Span(Model.ClassName ?? string.Empty).FontSize(TextHight).SemiBold().Italic();
+                    text.Span($" {Model.Author ?? string.Empty}").FontSize(TextHight).SemiBold();
+                    text.Span($" {Model.AuthorYear ?? string.Empty}").FontSize(TextHight).SemiBold();
                 });
             });
         });
@@ -123,15 +122,9 @@ public class Tbl21ClassesDocument : IDocument
         {
             row.RelativeItem().Column(column =>
             {
-                //column.Item().Text(text =>
-                //{
-                //    text.Span($"{Model.ClassName}").FontSize(TextHight).SemiBold().Italic();
-                //    text.Span($" {Model.Author}").FontSize(TextHight).SemiBold();
-                //    text.Span($" {Model.AuthorYear}").FontSize(TextHight).SemiBold();
-                //});
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.ReportTaxonomicId);
+                    text.Span(Loc("TaxonomicId"));
                     text.Span($"{Model.CountId}");
                 });
             });
@@ -152,7 +145,7 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoNomen).FontSize(TextHight).SemiBold();
+                    table.Cell().Text(Loc("TaxonomyAndNomenclatura")).FontSize(TextHight).SemiBold();
                 });
 
                 column.Item().Table(table =>
@@ -164,8 +157,8 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Regnum);
-                    table.Cell().Text($@"{Model.RegnumTree?.RegnumName} {Model.RegnumTree?.Subregnum}");
+                    table.Cell().Text(Loc("Regnum"));
+                    table.Cell().Text($@"{Model.RegnumTree?.RegnumName ?? string.Empty} {Model.RegnumTree?.Subregnum ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -176,8 +169,8 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoRank);
-                    table.Cell().Text(Strings.StringsRes.Class);
+                    table.Cell().Text(Loc("TaxonomicRank"));
+                    table.Cell().Text(Loc("Class"));
                 });
                 column.Item().Table(table =>
                 {
@@ -188,8 +181,58 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportSynonyms);
-                    table.Cell().Text($"{Model.Synonym}");
+                    table.Cell().Text(Loc("Synonyms"));
+                    table.Cell().Text($"{Model.Synonym ?? string.Empty}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+
+                    var names = new List<string>();
+
+                    if (!string.IsNullOrWhiteSpace(Model.EngName))
+                        names.Add($"{Model.EngName} [ENG]");
+
+                    if (!string.IsNullOrWhiteSpace(Model.GerName))
+                        names.Add($"{Model.GerName} [GER]");
+
+                    if (!string.IsNullOrWhiteSpace(Model.FraName))
+                        names.Add($"{Model.FraName} [FRA]");
+
+                    if (!string.IsNullOrWhiteSpace(Model.PorName))
+                        names.Add($"{Model.PorName} [SPA]");
+
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Names"));
+                    table.Cell().Text(string.Join(" ", names));
+                });
+
+                //column.Item().Table(table =>
+                //{
+                //    table.ColumnsDefinition(columns =>
+                //    {
+                //        columns.ConstantColumn(TabLeftRel8);
+                //        columns.ConstantColumn(TabRightRel8);
+                //        columns.RelativeColumn();
+                //    });
+                //    table.Cell().Text("");
+                //    table.Cell().Text(Loc("Names"));
+                //    table.Cell().Text($"{Model.EngName}[ENG] {Model.GerName}[GER] {Model.FraName}[FRA] {Model.PorName}[SPA]");
+                //});
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("TaxoStatus")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -200,8 +243,8 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportNames);
-                    table.Cell().Text($"{Model.EngName}[ENG] {Model.GerName}[GER] {Model.FraName}[FRA] {Model.PorName}[SPA]");
+                    table.Cell().Text(Loc("CurrentStanding"));
+                    table.Cell().Text($"{Model.Valid} {Model.ValidYear ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -211,19 +254,7 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoStatus).SemiBold();
-                });
-                column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                    {
-                        columns.ConstantColumn(TabLeftRel8);
-                        columns.ConstantColumn(TabRightRel8);
-                        columns.RelativeColumn();
-                    });
-                    table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportCurrentStand);
-                    table.Cell().Text($"{Model.Valid} {Model.ValidYear}");
+                    table.Cell().Text(Loc("DataQualityIndicator")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -233,17 +264,7 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportDataQualiIndicator).SemiBold();
-                });
-                column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                    {
-                        columns.ConstantColumn(TabLeftRel8);
-                        columns.RelativeColumn();
-                    });
-                    table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordCrediRate);
+                    table.Cell().Text(Loc("CredibilityRating"));
                 });
                 column.Item().Table(table =>
                 {
@@ -254,7 +275,7 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordUpdate);
+                    table.Cell().Text(Loc("RecordUpdate"));
                     table.Cell().Text($"{Model.UpdaterDate:d}");
                 });
                 column.Item().Table(table =>
@@ -266,8 +287,8 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportInfo);
-                    table.Cell().Text($"{Model.Info}");
+                    table.Cell().Text(Loc("Info"));
+                    table.Cell().Text($"{Model.Info ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -278,8 +299,8 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportMemo);
-                    table.Cell().Text($"{Model.Memo}");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.Memo ?? string.Empty}");
                 });
             });
         });
@@ -309,26 +330,12 @@ public class Tbl21ClassesDocument : IDocument
                     _tabRightRel -= 4;
                     CompTaxoHieras.ComposeTaxoHierPhylum(column, _tabLeftRel, _tabRightRel, Model.PhylumTree);
                 }
-
-                //if (Model.DivisionTree != null && !string.IsNullOrWhiteSpace(Model.DivisionTree!.DivisionName))
-                //{
-                //    _tabLeftRel += 4;
-                //    _tabRightRel -= 4;
-                //    CompTaxoHieras.ComposeTaxoHierDivision(column, _tabLeftRel, _tabRightRel, Model.DivisionTree);
-                //}
-
                 if (Model.SubphylumTree != null && !string.IsNullOrWhiteSpace(Model.SubphylumTree!.SubphylumName))
                 {
                     _tabLeftRel += 4;
                     _tabRightRel -= 4;
                     CompTaxoHieras.ComposeTaxoHierSubphylum(column, _tabLeftRel, _tabRightRel, Model.SubphylumTree);
                 }
-                //if (Model.SubdivisionTree != null && !string.IsNullOrWhiteSpace(Model.SubdivisionTree!.SubdivisionName))
-                //{
-                //    _tabLeftRel += 4;
-                //    _tabRightRel -= 4;
-                //    CompTaxoHieras.ComposeTaxoHierSubdivision(column, _tabLeftRel, _tabRightRel, Model.SubdivisionTree);
-                //}
                 if (Model.SuperclassTree != null)
                 {
                     _tabLeftRel += 4;
@@ -378,8 +385,8 @@ public class Tbl21ClassesDocument : IDocument
             foreach (var item in Tbl21ClassesDocumentDataSource.SubclassesCollection)
             {
                 table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.Subclass);
-                table.Cell().Text($"{item.SubclassName} {item.Author} {item.AuthorYear}");
+                table.Cell().Text(Loc("Subclass"));
+                table.Cell().Text($"{item.SubclassName ?? string.Empty} {item.Author ?? string.Empty} {item.AuthorYear ?? string.Empty}");
             }
         });
     }
@@ -397,9 +404,7 @@ public class Tbl21ClassesDocument : IDocument
     private void ComposeReferencesExperts(IContainer container)
     {
         if (Tbl21ClassesDocumentDataSource.ExpertsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -417,20 +422,20 @@ public class Tbl21ClassesDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportExpert);
-                        table.Cell().Text(item.Tbl90RefExperts.RefExpertName);
+                        table.Cell().Text(Loc("Expert"));
+                        table.Cell().Text(item.Tbl90RefExperts?.RefExpertName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefExperts.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefExperts?.Notes ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 3)
                     {
@@ -442,7 +447,6 @@ public class Tbl21ClassesDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderReferencesOtherSources(IContainer container)
     {
         CompHeaders.HeaderReferencesOtherSources(container, TabLeftRel8);
@@ -451,9 +455,7 @@ public class Tbl21ClassesDocument : IDocument
     private void ComposeReferencesOtherSources(IContainer container)
     {
         if (Tbl21ClassesDocumentDataSource.SourcesCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -463,6 +465,7 @@ public class Tbl21ClassesDocument : IDocument
                 columns.ConstantColumn(TabRightRel8);
                 columns.RelativeColumn();
             });
+
             foreach (var item in Tbl21ClassesDocumentDataSource.SourcesCollection)
             {
                 for (var i = 0; i < 5; i++)
@@ -470,26 +473,26 @@ public class Tbl21ClassesDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportSource);
-                        table.Cell().Text(item.Tbl90RefSources.RefSourceName);
+                        table.Cell().Text(Loc("Source"));
+                        table.Cell().Text(item.Tbl90RefSources?.RefSourceName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportAcquired);
-                        table.Cell().Text(item.Tbl90RefSources.SourceYear);
+                        table.Cell().Text(Loc("Acquired"));
+                        table.Cell().Text(item.Tbl90RefSources?.SourceYear ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefSources.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefSources?.Notes ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 4)
                     {
@@ -501,7 +504,6 @@ public class Tbl21ClassesDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderReferencesPublications(IContainer container)
     {
         CompHeaders.HeaderReferencesPublications(container, TabLeftRel8);
@@ -510,9 +512,7 @@ public class Tbl21ClassesDocument : IDocument
     private void ComposeReferencesPublications(IContainer container)
     {
         if (Tbl21ClassesDocumentDataSource.AuthorsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -530,62 +530,62 @@ public class Tbl21ClassesDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportAuthor);
-                        table.Cell().Text(item.Tbl90RefAuthors.RefAuthorName);
+                        table.Cell().Text(Loc("Author"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.RefAuthorName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublicationDate);
-                        table.Cell().Text(item.Tbl90RefAuthors.PublicationYear);
+                        table.Cell().Text(Loc("PublicationDate"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.PublicationYear ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportArticleTitle);
-                        table.Cell().Text(item.Tbl90RefAuthors.ArticelTitle);
+                        table.Cell().Text(Loc("ArticleTitle"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.ArticelTitle ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportBookName);
-                        table.Cell().Text(item.Tbl90RefAuthors.BookName);
+                        table.Cell().Text(Loc("BookName"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.BookName ?? string.Empty);
                     }
                     if (i == 4)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPages);
-                        table.Cell().Text(item.Tbl90RefAuthors.Page1);
+                        table.Cell().Text(Loc("Pages"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Page1 ?? string.Empty);
                     }
                     if (i == 5)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublisher);
-                        table.Cell().Text(item.Tbl90RefAuthors.Publisher);
+                        table.Cell().Text(Loc("Publisher"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Publisher ?? string.Empty);
                     }
                     if (i == 6)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublicationPlace);
-                        table.Cell().Text(item.Tbl90RefAuthors.PublicationPlace);
+                        table.Cell().Text(Loc("PublicationPlace"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.PublicationPlace ?? string.Empty);
                     }
                     if (i == 7)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportIsbn);
-                        table.Cell().Text(item.Tbl90RefAuthors.ISBN);
+                        table.Cell().Text(Loc("Isbn"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.ISBN ?? string.Empty);
                     }
                     if (i == 8)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefAuthors.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Notes ?? string.Empty);
                     }
                     if (i == 9)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 10)
                     {
@@ -597,7 +597,6 @@ public class Tbl21ClassesDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderComments(IContainer container)
     {
         CompHeaders.HeaderComments(container, TabLeftRel4, TextHight);
@@ -606,9 +605,7 @@ public class Tbl21ClassesDocument : IDocument
     private void ComposeComments(IContainer container)
     {
         if (Tbl21ClassesDocumentDataSource.CommentsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -626,19 +623,17 @@ public class Tbl21ClassesDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportInfo);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Info"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 1)
                     {
-
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportMemo);
-                        table.Cell().Text(item.Memo);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.Memo ?? string.Empty);
                     }
                     if (i == 2)
                     {
-
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -647,5 +642,4 @@ public class Tbl21ClassesDocument : IDocument
             }
         });
     }
-
 }
