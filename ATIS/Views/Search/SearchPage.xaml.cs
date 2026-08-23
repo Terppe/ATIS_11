@@ -2,8 +2,10 @@
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Search.DetailPages;
-using ATIS.Views.Search.DetailViewModels;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using WinRT.Interop;
+using Windows.Storage.Pickers;
 
 namespace ATIS.Views.Search;
 
@@ -154,5 +156,54 @@ public sealed partial class SearchPage : Page
         }
         System.Diagnostics.Debug.WriteLine(e.AddedItems[0]?.GetType().FullName);
         ResultList.SelectedItem = null;
+    }
+
+    //private async void OnPrintListClick(object sender, RoutedEventArgs e)
+    //{
+    //    var visibleItems = ResultList.Items.Cast<object>().ToList();
+    //    await ViewModel.PrintListAsync(visibleItems);
+    //}
+
+    private static string SanitizeFileNamePart(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "All";
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var cleaned = new string(value
+            .Where(c => !invalidChars.Contains(c))
+            .ToArray());
+
+        return string.IsNullOrWhiteSpace(cleaned) ? "All" : cleaned.Trim();
+    }
+
+    private async void OnPrintListClick(object sender, RoutedEventArgs e)
+    {
+        var visibleItems = ResultList.Items.Cast<object>().ToList();
+
+        var document = ViewModel.CreateSearchListDocument(visibleItems);
+        if (document == null)
+            return;
+
+        var savePicker = new FileSavePicker();
+        savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+
+        var tableName = string.IsNullOrWhiteSpace(ViewModel.SelectedTable)
+            ? "Search"
+            : ViewModel.SelectedTable;
+
+        var searchText = SanitizeFileNamePart(ViewModel.SearchText);
+
+        savePicker.SuggestedFileName = $"{tableName}_List_{searchText}_{DateTime.Now:yyyyMMdd_HHmmss}";
+        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
+
+        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(savePicker, hwnd);
+
+        var file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+            return;
+
+        document.GeneratePdf(file.Path);
     }
 }

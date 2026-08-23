@@ -1,14 +1,19 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Helpers;
+using ATIS.Views.Report.Pdf.Tbl21Classes;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
+
 
 namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
 
-public class TblFoodsDocument : IDocument
+public class Tbl03RegnumsDocument : IDocument
 {
-    private TblFoodsPdfModel Model { get; }
+    private Tbl03RegnumsPdfModel Model { get; }
+    private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
     private static int _tabLeftRel;
     private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
@@ -19,12 +24,28 @@ public class TblFoodsDocument : IDocument
     private static readonly int TabRightRel8 = _tabRightRel - 8;
     private const int TextHight = 12;
 
-    public TblFoodsDocument(TblFoodsPdfModel model)
+    public Tbl03RegnumsDocument(Tbl03RegnumsPdfModel model)
     {
         Model = model;
     }
-
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
+
+    private static string FormatValidity(bool? valid, string? validYear)
+    {
+        string status = valid switch
+        {
+            true => Loc("Valid"),
+            false => Loc("Invalid"),
+            null => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(status))
+            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+
+        return string.IsNullOrWhiteSpace(validYear)
+            ? status
+            : $"{status} {Loc("Since")} {validYear}";
+    }
 
     public void Compose(IDocumentContainer container)
     {
@@ -46,33 +67,30 @@ public class TblFoodsDocument : IDocument
                 });
             });
     }
+
     private void ComposeHeader(IContainer container)
     {
-        //  CompHeaders.Header(container, TextHight);
-        // evtl icon
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.Atis).FontSize(18).SemiBold();
+                    text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
-                    text.Span(Strings.StringsRes.AtisHeader).FontSize(TextHight).SemiBold();
-                    text.Span("                     ");
+                    text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
+                    text.Span("  ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
-
                 });
+
                 column.Item().Text(text =>
                 {
-                    text.Span($"{Model.RegnumName}").FontSize(TextHight).SemiBold().Italic();
-                    text.Span($" {Model.Subregnum}").FontSize(TextHight).SemiBold().Italic();
-                    text.Span($" {Model.Author}").FontSize(TextHight).SemiBold();
-                    text.Span($" {Model.AuthorYear}").FontSize(TextHight).SemiBold();
+                    text.Span(Model.RegnumName ?? string.Empty).FontSize(TextHight).SemiBold().Italic();
+                    text.Span($" {Model.Author ?? string.Empty}").FontSize(TextHight).SemiBold();
+                    text.Span($" {Model.AuthorYear ?? string.Empty}").FontSize(TextHight).SemiBold();
                 });
             });
         });
-
     }
 
     private void ComposeContent(IContainer container)
@@ -94,47 +112,43 @@ public class TblFoodsDocument : IDocument
             //Direct Children
             column.Item().Element(ComposeHeaderChildren);
             column.Spacing(5);
-            column.Item().Element(ComposeChildrenPhylumContent);
-            column.Spacing(5);
-            column.Item().Element(ComposeChildrenDivisionContent);
+            column.Item().Element(ComposeChildrenContent);
             column.Spacing(5);
 
             //Refernces
             column.Item().Element(ComposeHeaderReferences);
             column.Spacing(5);
+
             //Refernces Experts
             column.Item().Element(ComposeHeaderReferencesExperts);
             column.Item().Element(ComposeReferencesExperts);
             column.Spacing(5);
+
             //Refernces Sources
             column.Item().Element(ComposeHeaderReferencesOtherSources);
             column.Item().Element(ComposeReferencesOtherSources);
             column.Spacing(5);
+
             //Refernces Authors
             column.Item().Element(ComposeHeaderReferencesPublications);
             column.Item().Element(ComposeReferencesPublications);
             column.Spacing(5);
+
             //Comments
             column.Item().Element(ComposeHeaderComments);
             column.Item().Element(ComposeComments);
         });
     }
+
     private void ComposeHeaderTaxoNomen(IContainer container)
     {
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
-                //column.Item().Text(text =>
-                //{
-                //    text.Span($"{Model.RegnumName}").FontSize(TextHight).SemiBold().Italic();
-                //    text.Span($" {Model.Subregnum}").FontSize(TextHight).SemiBold().Italic();
-                //    text.Span($" {Model.Author}").FontSize(TextHight).SemiBold();
-                //    text.Span($" {Model.AuthorYear}").FontSize(TextHight).SemiBold();
-                //});
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.ReportTaxonomicId);
+                    text.Span(Loc("TaxonomicId"));
                     text.Span($"{Model.CountId}");
                 });
             });
@@ -155,7 +169,7 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoNomen).FontSize(TextHight).SemiBold();
+                    table.Cell().Text(Loc("TaxonomyAndNomenclatura")).FontSize(TextHight).SemiBold();
                 });
 
                 column.Item().Table(table =>
@@ -167,8 +181,8 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Regnum);
-                    table.Cell().Text($@"{Model.RegnumTree?.RegnumName} {Model.RegnumTree?.Subregnum}");
+                    table.Cell().Text(Loc("Regnum"));
+                    table.Cell().Text($@"{Model.RegnumTree?.RegnumName ?? string.Empty} {Model.RegnumTree?.Subregnum ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -179,8 +193,8 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoRank);
-                    table.Cell().Text(Strings.StringsRes.Regnum);
+                    table.Cell().Text(Loc("TaxonomicRank"));
+                    table.Cell().Text(Loc("Regnum"));
                 });
                 column.Item().Table(table =>
                 {
@@ -191,8 +205,32 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportSynonyms);
-                    table.Cell().Text($"{Model.Synonym}");
+                    table.Cell().Text(Loc("Synonyms"));
+                    table.Cell().Text($"{Model.Synonym ?? string.Empty}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Names"));
+                    table.Cell().Text(NamesFormatter.Format(Model.EngName, Model.GerName, Model.FraName, Model.PorName));
+                });
+
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("TaxoStatus")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -203,8 +241,8 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportNames);
-                    table.Cell().Text($"{Model.EngName}[ENG] {Model.GerName}[GER] {Model.FraName}[FRA] {Model.PorName}[SPA]");
+                    table.Cell().Text(Loc("CurrentStanding"));
+                    table.Cell().Text(ValidityFormatter.Format(Model.Valid, Model.ValidYear));
                 });
                 column.Item().Table(table =>
                 {
@@ -214,19 +252,7 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoStatus).SemiBold();
-                });
-                column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                    {
-                        columns.ConstantColumn(TabLeftRel8);
-                        columns.ConstantColumn(TabRightRel8);
-                        columns.RelativeColumn();
-                    });
-                    table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportCurrentStand);
-                    table.Cell().Text($"{Model.Valid} {Model.ValidYear}");
+                    table.Cell().Text(Loc("DataQualityIndicator")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -236,17 +262,7 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportDataQualiIndicator).SemiBold();
-                });
-                column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                    {
-                        columns.ConstantColumn(TabLeftRel8);
-                        columns.RelativeColumn();
-                    });
-                    table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordCrediRate);
+                    table.Cell().Text(Loc("CredibilityRating"));
                 });
                 column.Item().Table(table =>
                 {
@@ -257,7 +273,7 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordUpdate);
+                    table.Cell().Text(Loc("RecordUpdate"));
                     table.Cell().Text($"{Model.UpdaterDate:d}");
                 });
                 column.Item().Table(table =>
@@ -269,8 +285,8 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportInfo);
-                    table.Cell().Text($"{Model.Info}");
+                    table.Cell().Text(Loc("Info"));
+                    table.Cell().Text($"{Model.Info ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -281,8 +297,8 @@ public class TblFoodsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportMemo);
-                    table.Cell().Text($"{Model.Memo}");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.Memo ?? string.Empty}");
                 });
             });
         });
@@ -293,42 +309,62 @@ public class TblFoodsDocument : IDocument
         CompHeaders.HeaderTaxoHiera(container, TabLeftRel4, TextHight);
     }
 
+    private static bool IsVisibleTaxonName(string? name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
+
     private void ComposeTaxoHieraContent(IContainer container)
     {
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
-                if (Model.RegnumTree != null && !string.IsNullOrWhiteSpace(Model.RegnumTree!.RegnumName))
+                var visibleIndex = 0;
+                var reportPdfRightTab = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
+
+                void ComposeVisibleTaxon(string? name, Action<int, int> composeAction, bool rememberAsLast = false)
                 {
-                    _tabLeftRel += 8;
-                    _tabRightRel -= 8;
-                    _tabLeftLastRel = _tabLeftRel;
-                    _tabRightLastRel = _tabRightRel;
-                    CompTaxoHieras.ComposeTaxoHierRegnum(column, _tabLeftRel, _tabRightRel, Model.RegnumTree);
+                    if (!IsVisibleTaxonName(name))
+                        return;
+
+                    var left = 8 + (visibleIndex++ * 4);
+                    var right = Math.Max(0, reportPdfRightTab - left);
+
+                    if (rememberAsLast)
+                    {
+                        _tabLeftLastRel = left;
+                        _tabRightLastRel = right;
+                    }
+
+                    composeAction(left, right);
                 }
 
+                ComposeVisibleTaxon(
+                    Model.RegnumTree?.RegnumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierRegnum(column, left, right, Model.RegnumTree!),
+                    rememberAsLast: true);
             });
-            _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
-            _tabLeftRel = 0;
         });
     }
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        if (TblFoodsDocumentDataSource.PhylumsCollection.Count == 0 && TblFoodsDocumentDataSource.DivisionsCollection.Count == 0)
+        if (Tbl21ClassesDocumentDataSource.SubclassesCollection?.Count is not > 0)
         {
             return;
         }
 
         CompHeaders.HeaderChildren(container, _tabRightRel, TextHight);
     }
-    private void ComposeChildrenPhylumContent(IContainer container)
+    private void ComposeChildrenContent(IContainer container)
     {
-        if (TblFoodsDocumentDataSource.PhylumsCollection.Count == 0)
-        {
+        var visibleItems = Tbl03RegnumsDocumentDataSource.PhylumsCollection
+            .Where(x => IsVisibleTaxonName(x.PhylumName))
+            .ToList();
+
+        if (visibleItems.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -339,56 +375,38 @@ public class TblFoodsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in TblFoodsDocumentDataSource.PhylumsCollection)
+            foreach (var item in visibleItems)
             {
                 table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.Phylum);
-                table.Cell().Text($"{item.PhylumName} {item.Author} {item.AuthorYear}");
+                table.Cell().Text(Loc("Phylum"));
+                table.Cell().Text($"{item.PhylumName ?? string.Empty} {item.Author ?? string.Empty} {item.AuthorYear ?? string.Empty}");
             }
         });
     }
-    private void ComposeChildrenDivisionContent(IContainer container)
-    {
-        if (TblFoodsDocumentDataSource.DivisionsCollection.Count == 0)
-        {
-            return;
-        }
-
-        container.Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(_tabLeftLastRel + 4);
-                columns.ConstantColumn(_tabRightLastRel - 4);
-                columns.RelativeColumn();
-            });
-
-            foreach (var item in TblFoodsDocumentDataSource.DivisionsCollection)
-            {
-                table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.Division);
-                table.Cell().Text($"{item.DivisionName} {item.Author} {item.AuthorYear}");
-            }
-        });
-    }
-
 
     private void ComposeHeaderReferences(IContainer container)
     {
+        var hasExperts = Tbl03RegnumsDocumentDataSource.ExpertsCollection?.Count > 0;
+        var hasSources = Tbl03RegnumsDocumentDataSource.SourcesCollection?.Count > 0;
+        var hasAuthors = Tbl03RegnumsDocumentDataSource.AuthorsCollection?.Count > 0;
+
+        if (!hasExperts && !hasSources && !hasAuthors)
+            return;
+
         CompHeaders.HeaderHeaderReferences(container, TabLeftRel4, TextHight);
     }
-
     private void ComposeHeaderReferencesExperts(IContainer container)
     {
+        if (Tbl03RegnumsDocumentDataSource.ExpertsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesExperts(container, TabLeftRel8);
     }
 
     private void ComposeReferencesExperts(IContainer container)
     {
-        if (TblFoodsDocumentDataSource.ExpertsCollection.Count == 0)
-        {
+        if (Tbl03RegnumsDocumentDataSource.ExpertsCollection.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -399,27 +417,27 @@ public class TblFoodsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in TblFoodsDocumentDataSource.ExpertsCollection)
+            foreach (var item in Tbl03RegnumsDocumentDataSource.ExpertsCollection)
             {
                 for (var i = 0; i < 4; i++)
                 {
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportExpert);
-                        table.Cell().Text(item.Tbl90RefExperts.RefExpertName);
+                        table.Cell().Text(Loc("Expert"));
+                        table.Cell().Text(item.Tbl90RefExperts?.RefExpertName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefExperts.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefExperts?.Notes ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 3)
                     {
@@ -431,18 +449,18 @@ public class TblFoodsDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderReferencesOtherSources(IContainer container)
     {
+        if (Tbl03RegnumsDocumentDataSource.SourcesCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesOtherSources(container, TabLeftRel8);
     }
 
     private void ComposeReferencesOtherSources(IContainer container)
     {
-        if (TblFoodsDocumentDataSource.SourcesCollection.Count == 0)
-        {
+        if (Tbl03RegnumsDocumentDataSource.SourcesCollection.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -453,33 +471,33 @@ public class TblFoodsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in TblFoodsDocumentDataSource.SourcesCollection)
+            foreach (var item in Tbl03RegnumsDocumentDataSource.SourcesCollection)
             {
                 for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportSource);
-                        table.Cell().Text(item.Tbl90RefSources.RefSourceName);
+                        table.Cell().Text(Loc("Source"));
+                        table.Cell().Text(item.Tbl90RefSources?.RefSourceName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportAcquired);
-                        table.Cell().Text(item.Tbl90RefSources.SourceYear);
+                        table.Cell().Text(Loc("Acquired"));
+                        table.Cell().Text(item.Tbl90RefSources?.SourceYear ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefSources.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefSources?.Notes ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 4)
                     {
@@ -491,18 +509,18 @@ public class TblFoodsDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderReferencesPublications(IContainer container)
     {
+        if (Tbl03RegnumsDocumentDataSource.AuthorsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesPublications(container, TabLeftRel8);
     }
 
     private void ComposeReferencesPublications(IContainer container)
     {
-        if (TblFoodsDocumentDataSource.AuthorsCollection.Count == 0)
-        {
+        if (Tbl21ClassesDocumentDataSource.AuthorsCollection.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -513,69 +531,69 @@ public class TblFoodsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in TblFoodsDocumentDataSource.AuthorsCollection)
+            foreach (var item in Tbl03RegnumsDocumentDataSource.AuthorsCollection)
             {
                 for (var i = 0; i < 11; i++)
                 {
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportAuthor);
-                        table.Cell().Text(item.Tbl90RefAuthors.RefAuthorName);
+                        table.Cell().Text(Loc("Author"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.RefAuthorName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublicationDate);
-                        table.Cell().Text(item.Tbl90RefAuthors.PublicationYear);
+                        table.Cell().Text(Loc("PublicationDate"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.PublicationYear ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportArticleTitle);
-                        table.Cell().Text(item.Tbl90RefAuthors.ArticelTitle);
+                        table.Cell().Text(Loc("ArticleTitle"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.ArticelTitle ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportBookName);
-                        table.Cell().Text(item.Tbl90RefAuthors.BookName);
+                        table.Cell().Text(Loc("BookName"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.BookName ?? string.Empty);
                     }
                     if (i == 4)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPages);
-                        table.Cell().Text(item.Tbl90RefAuthors.Page1);
+                        table.Cell().Text(Loc("Pages"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Page1 ?? string.Empty);
                     }
                     if (i == 5)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublisher);
-                        table.Cell().Text(item.Tbl90RefAuthors.Publisher);
+                        table.Cell().Text(Loc("Publisher"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Publisher ?? string.Empty);
                     }
                     if (i == 6)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublicationPlace);
-                        table.Cell().Text(item.Tbl90RefAuthors.PublicationPlace);
+                        table.Cell().Text(Loc("PublicationPlace"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.PublicationPlace ?? string.Empty);
                     }
                     if (i == 7)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportIsbn);
-                        table.Cell().Text(item.Tbl90RefAuthors.ISBN);
+                        table.Cell().Text(Loc("Isbn"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.ISBN ?? string.Empty);
                     }
                     if (i == 8)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefAuthors.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Notes ?? string.Empty);
                     }
                     if (i == 9)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 10)
                     {
@@ -587,19 +605,18 @@ public class TblFoodsDocument : IDocument
             }
         });
     }
-
-
     private void ComposeHeaderComments(IContainer container)
     {
+        if (Tbl03RegnumsDocumentDataSource.CommentsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderComments(container, TabLeftRel4, TextHight);
     }
 
     private void ComposeComments(IContainer container)
     {
-        if (TblFoodsDocumentDataSource.CommentsCollection.Count == 0)
-        {
+        if (Tbl03RegnumsDocumentDataSource.CommentsCollection.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -610,21 +627,21 @@ public class TblFoodsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in TblFoodsDocumentDataSource.CommentsCollection)
+            foreach (var item in Tbl03RegnumsDocumentDataSource.CommentsCollection)
             {
                 for (var i = 0; i < 3; i++)
                 {
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportInfo);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Info"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportMemo);
-                        table.Cell().Text(item.Memo);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.Memo ?? string.Empty);
                     }
                     if (i == 2)
                     {
@@ -636,5 +653,4 @@ public class TblFoodsDocument : IDocument
             }
         });
     }
-
 }

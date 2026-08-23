@@ -7,6 +7,8 @@ using ATIS.Views.Taxonomy;
 using QuestPDF.Fluent;
 using WinUI3Localizer;
 
+//    Tbl21ClassDetailViewModel Skriptdatum:  23.08.2026   18:32    
+
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl21ClassDetailViewModel : ObservableObject
@@ -19,7 +21,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     public string Title => $"Class: {ClassSelected?.ClassName}";
 
     // -----------------------------
-    //  SELECTED CLASS
+    //  SELECTED Class
     // -----------------------------
     public Tbl21Class ClassSelected { get; }
 
@@ -30,6 +32,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     public Tbl06Phylum? PhylumSelected { get; private set; }
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
     public Tbl18Superclass? SuperclassSelected { get; private set; }
+    public Tbl24Subclass? SubclassSelected { get; private set; }
 
     // -----------------------------
     //  Breadcrumb
@@ -80,8 +83,8 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         ClassSelected = selectedClass;
         _dataService = dataService;
 
-     //   ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
+
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
@@ -238,6 +241,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         Tbl06Phylum? phylum = null;
         Tbl03Regnum? regnum = null;
 
+        // technisch laden
         if (ClassSelected.SuperclassId != 0)
             superclass = await _dataService.GetSuperclassByIdAsync(ClassSelected.SuperclassId);
 
@@ -250,7 +254,8 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         if (phylum?.RegnumId != 0)
             regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
 
-        int visibleIndex = 0;
+        // sichtbare Reihenfolge aufbauen
+        var visibleIndex = 0;
 
         if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
@@ -305,7 +310,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     }
 
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (SUBCLASS)
+    //  LOAD DIRECT CHILDREN (Subclass)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -318,9 +323,9 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         SubclassItems.Clear();
         HasDirectChildren = false;
 
-        var subclasses = await _dataService.GetSubclassesByClassIdAsync(ClassSelected.ClassId);
+        var subclass = await _dataService.GetSubclassesByClassIdAsync(ClassSelected.ClassId);
 
-        var visibleItems = subclasses
+        var visibleItems = subclass
             .Where(x => IsVisibleTaxonName(x.SubclassName))
             .ToList();
 
@@ -383,7 +388,6 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  PDF EXPORT
     // -----------------------------
-
     private async Task ExportPdfAsync()
     {
         if (ClassSelected == null || ClassSelected.ClassId == 0)
@@ -421,11 +425,13 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
 
             document.GeneratePdf(filePath);
 
+            var loc1 = Localizer.Get();
+
             var successDialog = new ContentDialog
             {
-                Title = "PDF exportiert",
-                Content = $"Die PDF wurde erstellt:\n{filePath}",
-                CloseButtonText = "OK",
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
                 XamlRoot = App.MainPageInstance.Content.XamlRoot
             };
 
@@ -434,106 +440,17 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
 
             var errorDialog = new ContentDialog
             {
-                Title = "PDF-Fehler",
-                Content = ex.ToString(),
-                CloseButtonText = "OK",
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
                 XamlRoot = App.MainPageInstance.Content.XamlRoot
             };
 
             await errorDialog.ShowAsync();
         }
     }
-    //private async Task ExportPdfAsync()
-    //{
-    //    if (ClassSelected == null || ClassSelected.ClassId == 0)
-    //        return;
-
-    //    try
-    //    {
-    //        var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(ClassSelected.ClassId);
-    //        var document = new Tbl21ClassesDocument(model);
-
-    //        var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-    //        var safeTitle = string.IsNullOrWhiteSpace(ClassSelected.ClassName)
-    //            ? $"Class_{ClassSelected.ClassId}"
-    //            : string.Concat(ClassSelected.ClassName.Split(Path.GetInvalidFileNameChars()));
-
-    //        var fileName = $"{safeTitle}_{ClassSelected.ClassId}.pdf";
-    //        var filePath = Path.Combine(desktopPath, fileName);
-
-    //        document.GeneratePdf(filePath);
-
-    //        var successDialog = new ContentDialog
-    //        {
-    //            Title = "PDF exportiert",
-    //            Content = $"Die PDF wurde erstellt:\n{filePath}",
-    //            CloseButtonText = "OK",
-    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
-    //        };
-
-    //        await successDialog.ShowAsync();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-    //        var errorDialog = new ContentDialog
-    //        {
-    //            Title = "PDF-Fehler",
-    //            Content = ex.ToString(),
-    //            CloseButtonText = "OK",
-    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
-    //        };
-
-    //        await errorDialog.ShowAsync();
-    //    }
-    //}
-
-
-    //private async Task ExportPdfAsync()
-    //{
-    //    if (ClassSelected == null || ClassSelected.ClassId == 0)
-    //        return;
-
-    //    try
-    //    {
-    //        var model = await Tbl21ClassesDocumentDataSource.GetClassDetailsAsync(ClassSelected.ClassId);
-    //        var document = new Tbl21ClassesDocument(model);
-
-    //        var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-    //        var safeTitle = string.IsNullOrWhiteSpace(ClassSelected.ClassName)
-    //            ? $"Class_{ClassSelected.ClassId}"
-    //            : string.Concat(ClassSelected.ClassName.Split(Path.GetInvalidFileNameChars()));
-
-    //        var fileName = $"{safeTitle}_{ClassSelected.ClassId}.pdf";
-    //        var filePath = Path.Combine(desktopPath, fileName);
-
-    //        document.GeneratePdf(filePath);
-
-    //        var successDialog = new ContentDialog
-    //        {
-    //            Title = "PDF exportiert",
-    //            Content = $"Die PDF wurde erstellt:\n{filePath}",
-    //            CloseButtonText = "OK",
-    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
-    //        };
-
-    //        await successDialog.ShowAsync();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        var errorDialog = new ContentDialog
-    //        {
-    //            Title = "PDF-Fehler",
-    //            Content = ex.ToString(),
-    //            CloseButtonText = "OK",
-    //            XamlRoot = App.MainPageInstance.Content.XamlRoot
-    //        };
-
-    //        await errorDialog.ShowAsync();
-    //    }
-    //}
 }

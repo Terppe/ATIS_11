@@ -9,7 +9,7 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!--  Tbl21ClassDetailPage.xaml  Skriptdatum:  15.08.2026   18:32  -->
+    <!-- Tbl21ClassDetailPage.xaml  Skriptdatum:  23.08.2026   18:32   -->
 
     <Page.Resources>
         <ResourceDictionary>
@@ -47,7 +47,7 @@
 
             <Button Margin="10,5,0,5"
                     HorizontalAlignment="Right"
-                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                    Click="ExportPdfButton_Click">
                 <StackPanel Orientation="Horizontal"
                             Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
@@ -55,15 +55,15 @@
                 </StackPanel>
             </Button>
 
-            <Button Margin="10,5,0,5"
-                    HorizontalAlignment="Right"
-                    Click="PrintButton_Click">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <FontIcon Glyph="&#xE749;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
-                </StackPanel>
-            </Button>
+            <!--<Button Margin="10,5,0,5"  für später und andere nutzung
+            HorizontalAlignment="Right"
+            Click="PrintButton_Click">
+            <StackPanel Orientation="Horizontal"
+            Spacing="6">
+            <FontIcon Glyph="&#xE749;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Print" />
+            </StackPanel>
+            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->
@@ -100,7 +100,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--  ALLE ROWS WIE IM ALTEN WINDOW  -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />

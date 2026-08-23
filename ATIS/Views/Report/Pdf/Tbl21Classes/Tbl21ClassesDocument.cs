@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Helpers;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -27,6 +28,22 @@ public class Tbl21ClassesDocument : IDocument
     }
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
+    private static string FormatValidity(bool? valid, string? validYear)
+    {
+        string status = valid switch
+        {
+            true => Loc("Valid"),
+            false => Loc("Invalid"),
+            null => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(status))
+            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+
+        return string.IsNullOrWhiteSpace(validYear)
+            ? status
+            : $"{status} {Loc("Since")} {validYear}";
+    }
     public void Compose(IDocumentContainer container)
     {
         container
@@ -193,37 +210,11 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
 
-                    var names = new List<string>();
-
-                    if (!string.IsNullOrWhiteSpace(Model.EngName))
-                        names.Add($"{Model.EngName} [ENG]");
-
-                    if (!string.IsNullOrWhiteSpace(Model.GerName))
-                        names.Add($"{Model.GerName} [GER]");
-
-                    if (!string.IsNullOrWhiteSpace(Model.FraName))
-                        names.Add($"{Model.FraName} [FRA]");
-
-                    if (!string.IsNullOrWhiteSpace(Model.PorName))
-                        names.Add($"{Model.PorName} [SPA]");
-
                     table.Cell().Text("");
                     table.Cell().Text(Loc("Names"));
-                    table.Cell().Text(string.Join(" ", names));
+                    table.Cell().Text(NamesFormatter.Format(Model.EngName, Model.GerName, Model.FraName, Model.PorName));
                 });
 
-                //column.Item().Table(table =>
-                //{
-                //    table.ColumnsDefinition(columns =>
-                //    {
-                //        columns.ConstantColumn(TabLeftRel8);
-                //        columns.ConstantColumn(TabRightRel8);
-                //        columns.RelativeColumn();
-                //    });
-                //    table.Cell().Text("");
-                //    table.Cell().Text(Loc("Names"));
-                //    table.Cell().Text($"{Model.EngName}[ENG] {Model.GerName}[GER] {Model.FraName}[FRA] {Model.PorName}[SPA]");
-                //});
                 column.Item().Table(table =>
                 {
                     table.ColumnsDefinition(columns =>
@@ -244,7 +235,7 @@ public class Tbl21ClassesDocument : IDocument
                     });
                     table.Cell().Text("");
                     table.Cell().Text(Loc("CurrentStanding"));
-                    table.Cell().Text($"{Model.Valid} {Model.ValidYear ?? string.Empty}");
+                    table.Cell().Text(ValidityFormatter.Format(Model.Valid, Model.ValidYear));
                 });
                 column.Item().Table(table =>
                 {
@@ -311,67 +302,78 @@ public class Tbl21ClassesDocument : IDocument
         CompHeaders.HeaderTaxoHiera(container, TabLeftRel4, TextHight);
     }
 
+    private static bool IsVisibleTaxonName(string? name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
+
     private void ComposeTaxoHieraContent(IContainer container)
     {
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
-                if (Model.RegnumTree != null && !string.IsNullOrWhiteSpace(Model.RegnumTree!.RegnumName))
+                var visibleIndex = 0;
+                var reportPdfRightTab = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
+
+                void ComposeVisibleTaxon(string? name, Action<int, int> composeAction, bool rememberAsLast = false)
                 {
-                    _tabLeftRel += 8;
-                    _tabRightRel -= 8;
-                    CompTaxoHieras.ComposeTaxoHierRegnum(column, _tabLeftRel, _tabRightRel, Model.RegnumTree);
+                    if (!IsVisibleTaxonName(name))
+                        return;
+
+                    var left = 8 + (visibleIndex++ * 4);
+                    var right = Math.Max(0, reportPdfRightTab - left);
+
+                    if (rememberAsLast)
+                    {
+                        _tabLeftLastRel = left;
+                        _tabRightLastRel = right;
+                    }
+
+                    composeAction(left, right);
                 }
 
-                if (Model.PhylumTree != null && !string.IsNullOrWhiteSpace(Model.PhylumTree!.PhylumName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierPhylum(column, _tabLeftRel, _tabRightRel, Model.PhylumTree);
-                }
-                if (Model.SubphylumTree != null && !string.IsNullOrWhiteSpace(Model.SubphylumTree!.SubphylumName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierSubphylum(column, _tabLeftRel, _tabRightRel, Model.SubphylumTree);
-                }
-                if (Model.SuperclassTree != null)
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierSuperclass(column, _tabLeftRel, _tabRightRel, Model.SuperclassTree);
-                }
-                if (Model.ClassTree != null)
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    _tabLeftLastRel = _tabLeftRel;
-                    _tabRightLastRel = _tabRightRel;
-                    CompTaxoHieras.ComposeTaxoHierClass(column, _tabLeftRel, _tabRightRel, Model.ClassTree);
-                }
+                ComposeVisibleTaxon(
+                    Model.RegnumTree?.RegnumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierRegnum(column, left, right, Model.RegnumTree!));
+
+                ComposeVisibleTaxon(
+                    Model.PhylumTree?.PhylumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierPhylum(column, left, right, Model.PhylumTree!));
+
+                ComposeVisibleTaxon(
+                    Model.SubphylumTree?.SubphylumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierSubphylum(column, left, right, Model.SubphylumTree!));
+
+                ComposeVisibleTaxon(
+                    Model.SuperclassTree?.SuperclassName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierSuperclass(column, left, right, Model.SuperclassTree!));
+
+                ComposeVisibleTaxon(
+                    Model.ClassTree?.ClassName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierClass(column, left, right, Model.ClassTree!),
+                    rememberAsLast: true);
             });
-            _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
-            _tabLeftRel = 0;
         });
     }
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        if (Tbl21ClassesDocumentDataSource.SubclassesCollection.Count == 0)
+        if (Tbl21ClassesDocumentDataSource.SubclassesCollection?.Count is not > 0)
         {
             return;
         }
 
         CompHeaders.HeaderChildren(container, _tabRightRel, TextHight);
     }
-
     private void ComposeChildrenContent(IContainer container)
     {
-        if (Tbl21ClassesDocumentDataSource.SubclassesCollection.Count == 0)
-        {
+        var visibleItems = Tbl21ClassesDocumentDataSource.SubclassesCollection
+            .Where(x => IsVisibleTaxonName(x.SubclassName))
+            .ToList();
+
+        if (visibleItems.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -382,7 +384,7 @@ public class Tbl21ClassesDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl21ClassesDocumentDataSource.SubclassesCollection)
+            foreach (var item in visibleItems)
             {
                 table.Cell().Text("");
                 table.Cell().Text(Loc("Subclass"));
@@ -393,11 +395,20 @@ public class Tbl21ClassesDocument : IDocument
 
     private void ComposeHeaderReferences(IContainer container)
     {
+        var hasExperts = Tbl21ClassesDocumentDataSource.ExpertsCollection?.Count > 0;
+        var hasSources = Tbl21ClassesDocumentDataSource.SourcesCollection?.Count > 0;
+        var hasAuthors = Tbl21ClassesDocumentDataSource.AuthorsCollection?.Count > 0;
+
+        if (!hasExperts && !hasSources && !hasAuthors)
+            return;
+
         CompHeaders.HeaderHeaderReferences(container, TabLeftRel4, TextHight);
     }
-
     private void ComposeHeaderReferencesExperts(IContainer container)
     {
+        if (Tbl21ClassesDocumentDataSource.ExpertsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesExperts(container, TabLeftRel8);
     }
 
@@ -449,6 +460,9 @@ public class Tbl21ClassesDocument : IDocument
     }
     private void ComposeHeaderReferencesOtherSources(IContainer container)
     {
+        if (Tbl21ClassesDocumentDataSource.SourcesCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesOtherSources(container, TabLeftRel8);
     }
 
@@ -506,6 +520,9 @@ public class Tbl21ClassesDocument : IDocument
     }
     private void ComposeHeaderReferencesPublications(IContainer container)
     {
+        if (Tbl21ClassesDocumentDataSource.AuthorsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesPublications(container, TabLeftRel8);
     }
 
@@ -599,6 +616,9 @@ public class Tbl21ClassesDocument : IDocument
     }
     private void ComposeHeaderComments(IContainer container)
     {
+        if (Tbl21ClassesDocumentDataSource.CommentsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderComments(container, TabLeftRel4, TextHight);
     }
 

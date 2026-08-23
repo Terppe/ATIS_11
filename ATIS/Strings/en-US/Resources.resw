@@ -2295,6 +2295,18 @@
   <data name="PdfExport_Hidden" xml:space="preserve">
     <value>PdfExport Hidden</value>
   </data>
+  <data name="PdfExport_Success" xml:space="preserve">
+    <value>Pdf Export Successfull</value>
+  </data>
+  <data name="PdfExport_Error" xml:space="preserve">
+    <value>Pdf Export Error</value>
+  </data>
+  <data name="PdfExport_Success_Title" xml:space="preserve">
+    <value>Pdf Export</value>
+  </data>
+  <data name="PdfExport_Error_Title" xml:space="preserve">
+    <value>Pdf Error during export</value>
+  </data>
   <data name="TestKey" xml:space="preserve">
     <value>Hello</value>
   </data>
@@ -2631,6 +2643,12 @@
   <data name="Useful" xml:space="preserve">
     <value>Useful</value>
   </data>
+  <data name="Valid" xml:space="preserve">
+    <value>valid</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>invalid</value>
+  </data>
   <data name="TextBlock_UserProfileName.Text" xml:space="preserve">
     <value>Userprofile Name</value>
   </data>
@@ -2639,9 +2657,6 @@
   </data>
   <data name="TextBlock_Year.Text" xml:space="preserve">
     <value>Year</value>
-  </data>
-  <data name="Year.Text1" xml:space="preserve">
-    <value>Valid/Year</value>
   </data>
   <data name="TextBlock_Valid.Text" xml:space="preserve">
     <value>Valid</value>
@@ -4373,6 +4388,9 @@
   </data>
   <data name="Source" xml:space="preserve">
     <value>Source:</value>
+  </data>
+  <data name="Since" xml:space="preserve">
+    <value>since</value>
   </data>
   <data name="TextBlock_Acquired.Text" xml:space="preserve">
     <value>Acquired:</value>

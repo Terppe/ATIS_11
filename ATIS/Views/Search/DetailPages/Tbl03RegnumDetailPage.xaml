@@ -9,6 +9,9 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
+    <!-- Tbl03RegnumDetailPage.xaml  Skriptdatum:  30.12.2024  12:32     -->
+
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -53,15 +56,15 @@
                 </StackPanel>
             </Button>
 
-            <Button Margin="10,5,0,5"
-                    HorizontalAlignment="Right"
-                    Click="PrintButton_Click">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <FontIcon Glyph="&#xE749;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
-                </StackPanel>
-            </Button>
+            <!--<Button Margin="10,5,0,5"
+            HorizontalAlignment="Right"
+            Click="PrintButton_Click">
+            <StackPanel Orientation="Horizontal"
+            Spacing="6">
+            <FontIcon Glyph="&#xE749;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Print" />
+            </StackPanel>
+            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->
@@ -126,9 +129,27 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!--  HEADER CLASS  -->
+                <!--  HEADER Regnum  -->
                 <ListView Grid.Row="0"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -158,8 +179,18 @@
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <!--  REGNUM DETAILS  -->
-                <ListView Grid.Row="4"
+                <!--<ListView Grid.Row="4"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0"
+                ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+                ItemsSource="{x:Bind ViewModel.RegnumItems}"
+                Style="{StaticResource AtisListViewStyleCompactTaxo}" />-->
+
+                <!--  Weitere Controls  -->
+
+                <!--  Regnum DETAILS  -->
+                <ListView Grid.Row="9"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
@@ -245,6 +276,7 @@
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
 
             </Grid>
+
         </ScrollViewer>
         <!--  2. 🔥 Modernes Lade Overlay  -->
         <components:LoadingOverlayControl Grid.Row="0"

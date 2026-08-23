@@ -2,40 +2,28 @@
 using WinUI3Localizer;
 
 namespace ATIS.Views.Report;
+
 public abstract class CompTaxoHieras
 {
     private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
     }
-    public static void ComposeTaxoHierRegnum(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Regnum modelRegnumTree)
-    {
-        if (modelRegnumTree == null || !IsVisibleTaxonName(modelRegnumTree.RegnumName))
-            return;
 
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Regnum"));
-            table.Cell()
-                .Text(
-                    $"{modelRegnumTree.RegnumName ?? string.Empty} {modelRegnumTree.Subregnum ?? string.Empty} {modelRegnumTree.Author ?? string.Empty}" +
-                    $" {modelRegnumTree.AuthorYear ?? string.Empty} {modelRegnumTree.EngName ?? string.Empty} {modelRegnumTree.GerName ?? string.Empty}" +
-                    $" {modelRegnumTree.FraName ?? string.Empty} {modelRegnumTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierPhylum(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Phylum modelPhylumTree)
+    private static string JoinParts(params string?[] parts)
     {
-        if (modelPhylumTree == null || !IsVisibleTaxonName(modelPhylumTree.PhylumName))
-            return;
+        return string.Join(" ", parts.Where(x => !string.IsNullOrWhiteSpace(x)));
+    }
 
+    private static void ComposeTaxoRow(
+        ColumnDescriptor column,
+        int tabLeftRel,
+        int tabRightRel,
+        string labelKey,
+        string text)
+    {
         column.Item().Table(table =>
         {
             table.ColumnsDefinition(columns =>
@@ -44,515 +32,235 @@ public abstract class CompTaxoHieras
                 columns.ConstantColumn(tabRightRel);
                 columns.RelativeColumn();
             });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Phylum"));
-            table.Cell().Text($"{modelPhylumTree.PhylumName ?? string.Empty} {modelPhylumTree.Author ?? string.Empty} {modelPhylumTree.AuthorYear ?? string.Empty}" +
-                              $" {modelPhylumTree.EngName ?? string.Empty} {modelPhylumTree.GerName ?? string.Empty}" +
-                              $" {modelPhylumTree.FraName ?? string.Empty} {modelPhylumTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierSubphylum(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Subphylum modelSubphylumTree)
-    {
-        if (modelSubphylumTree == null || !IsVisibleTaxonName(modelSubphylumTree.SubphylumName))
-            return;
 
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
             table.Cell().Text("");
-            table.Cell().Text(Loc("Subphylum"));
-            table.Cell().Text($"{modelSubphylumTree.SubphylumName ?? string.Empty} {modelSubphylumTree.Author ?? string.Empty} {modelSubphylumTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSubphylumTree.EngName ?? string.Empty} {modelSubphylumTree.GerName ?? string.Empty}" +
-                              $" {modelSubphylumTree.FraName ?? string.Empty} {modelSubphylumTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierSuperclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Superclass modelSuperclassTree)
-    {
-        if (modelSuperclassTree == null || !IsVisibleTaxonName(modelSuperclassTree.SuperclassName))
-            return;
-
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Superclass"));
-            table.Cell().Text($"{modelSuperclassTree.SuperclassName ?? string.Empty} {modelSuperclassTree.Author ?? string.Empty} {modelSuperclassTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSuperclassTree.EngName ?? string.Empty} {modelSuperclassTree.GerName ?? string.Empty}" +
-                              $" {modelSuperclassTree.FraName ?? string.Empty} {modelSuperclassTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierClass(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Class modelClassTree)
-    {
-        if (modelClassTree == null || !IsVisibleTaxonName(modelClassTree.ClassName))
-            return;
-
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Class"));
-            table.Cell().Text($"{modelClassTree.ClassName ?? string.Empty} {modelClassTree.Author ?? string.Empty} {modelClassTree.AuthorYear ?? string.Empty}" +
-                              $" {modelClassTree.EngName ?? string.Empty} {modelClassTree.GerName ?? string.Empty}" +
-                              $" {modelClassTree.FraName ?? string.Empty} {modelClassTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierSubclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Subclass modelSubclassTree)
-    {
-        if (modelSubclassTree == null || !IsVisibleTaxonName(modelSubclassTree.SubclassName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Subclass"));
-            table.Cell().Text(
-                $"{modelSubclassTree.SubclassName ?? string.Empty} {modelSubclassTree.Author ?? string.Empty} {modelSubclassTree.AuthorYear ?? string.Empty}" +
-                $" {modelSubclassTree.EngName ?? string.Empty} {modelSubclassTree.GerName ?? string.Empty}" +
-                $" {modelSubclassTree.FraName ?? string.Empty} {modelSubclassTree.PorName ?? string.Empty}");
+            table.Cell().Text(Loc(labelKey));
+            table.Cell().Text(text);
         });
     }
 
-    public static void ComposeTaxoHierInfraclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Infraclass modelInfraclassTree)
+    public static void ComposeTaxoHierRegnum(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Regnum model)
     {
-        if (modelInfraclassTree == null || !IsVisibleTaxonName(modelInfraclassTree.InfraclassName))
+        if (model == null || !IsVisibleTaxonName(model.RegnumName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Infraclass"));
-            table.Cell().Text($"{modelInfraclassTree.InfraclassName ?? string.Empty} {modelInfraclassTree.Author ?? string.Empty} {modelInfraclassTree.AuthorYear ?? string.Empty}" +
-                              $" {modelInfraclassTree.EngName ?? string.Empty} {modelInfraclassTree.GerName ?? string.Empty}" +
-                              $" {modelInfraclassTree.FraName ?? string.Empty} {modelInfraclassTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Regnum",
+            JoinParts(model.RegnumName, model.Subregnum, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierLegio(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Legio modelLegioTree)
+    public static void ComposeTaxoHierPhylum(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Phylum model)
     {
-        if (modelLegioTree == null || !IsVisibleTaxonName(modelLegioTree.LegioName))
+        if (model == null || !IsVisibleTaxonName(model.PhylumName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Legio"));
-            table.Cell().Text($"{modelLegioTree.LegioName ?? string.Empty} {modelLegioTree.Author ?? string.Empty} {modelLegioTree.AuthorYear ?? string.Empty}" +
-                              $" {modelLegioTree.EngName ?? string.Empty} {modelLegioTree.GerName ?? string.Empty}" +
-                              $" {modelLegioTree.FraName ?? string.Empty} {modelLegioTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierOrdo(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Ordo modelOrdoTree)
-    {
-        if (modelOrdoTree == null || !IsVisibleTaxonName(modelOrdoTree.OrdoName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Ordo"));
-            table.Cell().Text($"{modelOrdoTree.OrdoName ?? string.Empty} {modelOrdoTree.Author ?? string.Empty} {modelOrdoTree.AuthorYear ?? string.Empty}" +
-                              $" {modelOrdoTree.EngName ?? string.Empty} {modelOrdoTree.GerName ?? string.Empty}" +
-                              $" {modelOrdoTree.FraName ?? string.Empty} {modelOrdoTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Phylum",
+            JoinParts(model.PhylumName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierSubordo(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Subordo modelSubordoTree)
+    public static void ComposeTaxoHierSubphylum(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subphylum model)
     {
-        if (modelSubordoTree == null || !IsVisibleTaxonName(modelSubordoTree.SubordoName))
+        if (model == null || !IsVisibleTaxonName(model.SubphylumName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Subordo"));
-            table.Cell().Text($"{modelSubordoTree.SubordoName ?? string.Empty} {modelSubordoTree.Author ?? string.Empty} {modelSubordoTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSubordoTree.EngName ?? string.Empty} {modelSubordoTree.GerName ?? string.Empty}" +
-                              $" {modelSubordoTree.FraName ?? string.Empty} {modelSubordoTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierInfraordo(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Infraordo modelInfraordoTree)
-    {
-        if (modelInfraordoTree == null || !IsVisibleTaxonName(modelInfraordoTree.InfraordoName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Infraordo"));
-            table.Cell().Text($"{modelInfraordoTree.InfraordoName ?? string.Empty}   {modelInfraordoTree.Author ?? string.Empty} {modelInfraordoTree.AuthorYear ?? string.Empty}" +
-                              $" {modelInfraordoTree.EngName ?? string.Empty} {modelInfraordoTree.GerName ?? string.Empty}" +
-                              $" {modelInfraordoTree.FraName ?? string.Empty} {modelInfraordoTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierSuperfamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Superfamily modelSuperfamilyTree)
-    {
-        if (modelSuperfamilyTree == null || !IsVisibleTaxonName(modelSuperfamilyTree.SuperfamilyName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Superfamily"));
-            table.Cell().Text($"{modelSuperfamilyTree.SuperfamilyName ?? string.Empty} {modelSuperfamilyTree.Author ?? string.Empty} {modelSuperfamilyTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSuperfamilyTree.EngName ?? string.Empty} {modelSuperfamilyTree.GerName ?? string.Empty}" +
-                              $" {modelSuperfamilyTree.FraName ?? string.Empty} {modelSuperfamilyTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierFamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel,
-        PdfModels.Family modelFamilyTree)
-    {
-        if (modelFamilyTree == null || !IsVisibleTaxonName(modelFamilyTree.FamilyName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Family"));
-            table.Cell().Text($"{modelFamilyTree.FamilyName ?? string.Empty} {modelFamilyTree.Author ?? string.Empty} {modelFamilyTree.AuthorYear ?? string.Empty}" +
-                              $" {modelFamilyTree.EngName ?? string.Empty} {modelFamilyTree.GerName ?? string.Empty}" +
-                              $" {modelFamilyTree.FraName ?? string.Empty} {modelFamilyTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierSubfamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subfamily modelSubfamilyTree)
-    {
-        if (modelSubfamilyTree == null || !IsVisibleTaxonName(modelSubfamilyTree.SubfamilyName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Subfamily"));
-            table.Cell().Text($"{modelSubfamilyTree.SubfamilyName ?? string.Empty} {modelSubfamilyTree.Author ?? string.Empty} {modelSubfamilyTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSubfamilyTree.EngName ?? string.Empty} {modelSubfamilyTree.GerName ?? string.Empty}" +
-                              $" {modelSubfamilyTree.FraName ?? string.Empty} {modelSubfamilyTree.PorName ?? string.Empty}");
-        });
-    }
-    public static void ComposeTaxoHierInfrafamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Infrafamily modelInfrafamilyTree)
-    {
-        if (modelInfrafamilyTree == null || !IsVisibleTaxonName(modelInfrafamilyTree.InfrafamilyName))
-            return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Infrafamily"));
-            table.Cell().Text($"{modelInfrafamilyTree.InfrafamilyName ?? string.Empty} {modelInfrafamilyTree.Author ?? string.Empty} {modelInfrafamilyTree.AuthorYear ?? string.Empty}" +
-                              $" {modelInfrafamilyTree.EngName ?? string.Empty} {modelInfrafamilyTree.GerName ?? string.Empty}" +
-                              $" {modelInfrafamilyTree.FraName ?? string.Empty} {modelInfrafamilyTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Subphylum",
+            JoinParts(model.SubphylumName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-
-    public static void ComposeTaxoHierSupertribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Supertribus modelSupertribusTree)
+    public static void ComposeTaxoHierSuperclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Superclass model)
     {
-        if (modelSupertribusTree == null || !IsVisibleTaxonName(modelSupertribusTree.SupertribusName))
+        if (model == null || !IsVisibleTaxonName(model.SuperclassName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Supertribus"));
-            table.Cell().Text($"{modelSupertribusTree.SupertribusName ?? string.Empty} {modelSupertribusTree.Author ?? string.Empty} {modelSupertribusTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSupertribusTree.EngName ?? string.Empty} {modelSupertribusTree.GerName ?? string.Empty}" +
-                              $" {modelSupertribusTree.FraName ?? string.Empty} {modelSupertribusTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Superclass",
+            JoinParts(model.SuperclassName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierTribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Tribus modelTribusTree)
+    public static void ComposeTaxoHierClass(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Class model)
     {
-        if (modelTribusTree == null || !IsVisibleTaxonName(modelTribusTree.TribusName))
+        if (model == null || !IsVisibleTaxonName(model.ClassName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Tribus"));
-            table.Cell().Text($"{modelTribusTree.TribusName ?? string.Empty} {modelTribusTree.Author ?? string.Empty} {modelTribusTree.AuthorYear ?? string.Empty}" +
-                              $" {modelTribusTree.EngName ?? string.Empty} {modelTribusTree.GerName ?? string.Empty}" +
-                              $" {modelTribusTree.FraName ?? string.Empty} {modelTribusTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Class",
+            JoinParts(model.ClassName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierSubtribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subtribus modelSubtribusTree)
+    public static void ComposeTaxoHierSubclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subclass model)
     {
-        if (modelSubtribusTree == null || !IsVisibleTaxonName(modelSubtribusTree.SubtribusName))
+        if (model == null || !IsVisibleTaxonName(model.SubclassName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Subtribus"));
-            table.Cell().Text($"{modelSubtribusTree.SubtribusName ?? string.Empty} {modelSubtribusTree.Author ?? string.Empty} {modelSubtribusTree.AuthorYear ?? string.Empty}" +
-                              $" {modelSubtribusTree.EngName ?? string.Empty} {modelSubtribusTree.GerName ?? string.Empty}" +
-                              $" {modelSubtribusTree.FraName ?? string.Empty} {modelSubtribusTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Subclass",
+            JoinParts(model.SubclassName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierInfratribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Infratribus modelInfratribusTree)
+    public static void ComposeTaxoHierInfraclass(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Infraclass model)
     {
-        if (modelInfratribusTree == null || !IsVisibleTaxonName(modelInfratribusTree.InfratribusName))
+        if (model == null || !IsVisibleTaxonName(model.InfraclassName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Infratribus"));
-            table.Cell().Text($"{modelInfratribusTree.InfratribusName ?? string.Empty} {modelInfratribusTree.Author ?? string.Empty} {modelInfratribusTree.AuthorYear ?? string.Empty}" +
-                              $" {modelInfratribusTree.EngName ?? string.Empty} {modelInfratribusTree.GerName ?? string.Empty}" +
-                              $" {modelInfratribusTree.FraName ?? string.Empty} {modelInfratribusTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Infraclass",
+            JoinParts(model.InfraclassName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierGenus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Genus modelGenusTree)
+    public static void ComposeTaxoHierLegio(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Legio model)
     {
-        if (modelGenusTree == null || !IsVisibleTaxonName(modelGenusTree.GenusName))
+        if (model == null || !IsVisibleTaxonName(model.LegioName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Genus"));
-            table.Cell().Text($"{modelGenusTree.GenusName ?? string.Empty} {modelGenusTree.Author ?? string.Empty} {modelGenusTree.AuthorYear ?? string.Empty}" +
-                              $" {modelGenusTree.EngName ?? string.Empty} {modelGenusTree.GerName ?? string.Empty}" +
-                              $" {modelGenusTree.FraName ?? string.Empty} {modelGenusTree.PorName ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Legio",
+            JoinParts(model.LegioName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Species modelSpeciesTree)
+    public static void ComposeTaxoHierOrdo(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Ordo model)
     {
-        if (modelSpeciesTree == null || !IsVisibleTaxonName(modelSpeciesTree.SpeciesName))
+        if (model == null || !IsVisibleTaxonName(model.OrdoName))
             return;
-        if (string.IsNullOrEmpty(modelSpeciesTree.Subspecies))
-        {
-            column.Item().Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(tabLeftRel);
-                    columns.ConstantColumn(tabRightRel);
-                    columns.RelativeColumn();
-                });
-                table.Cell().Text("");
-                table.Cell().Text(Loc("Species"));
-                table.Cell().Text($"{modelSpeciesTree.Tbl66Genusses?.GenusName ?? string.Empty} {modelSpeciesTree.SpeciesName ?? string.Empty}" +
-                                  $" {modelSpeciesTree.Author ?? string.Empty} {modelSpeciesTree.AuthorYear ?? string.Empty}");
-            });
-        }
-        else
-        {
-            column.Item().Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(tabLeftRel);
-                    columns.ConstantColumn(tabRightRel);
-                    columns.RelativeColumn();
-                });
-                table.Cell().Text("");
-                table.Cell().Text(Loc("Species"));
-                table.Cell().Text($"{modelSpeciesTree.Tbl66Genusses?.GenusName ?? string.Empty} {modelSpeciesTree.SpeciesName ?? string.Empty}" +
-                                  $" {modelSpeciesTree.Author ?? string.Empty} {modelSpeciesTree.AuthorYear ?? string.Empty}");
-            });
-            column.Item().Table(table =>
-            {
-                table.ColumnsDefinition(columns =>
-                {
-                    columns.ConstantColumn(tabLeftRel+4);
-                    columns.ConstantColumn(tabRightRel-4);
-                    columns.RelativeColumn();
-                });
-                table.Cell().Text("");
-                table.Cell().Text(Loc("Subspecies"));
-                table.Cell().Text($"{modelSpeciesTree.Tbl66Genusses?.GenusName ?? string.Empty} {modelSpeciesTree.SpeciesName ?? string.Empty}" +
-                                  $" {modelSpeciesTree.Subspecies ?? string.Empty} {modelSpeciesTree.Divers ?? string.Empty}" +
-                                  $" {modelSpeciesTree.Author ?? string.Empty} {modelSpeciesTree.AuthorYear ?? string.Empty}");
-            });
-        }
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Ordo",
+            JoinParts(model.OrdoName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    //public static void ComposeTaxoHierPlSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.PlSpecies modelPlSpeciesTree)
-    //{
-    //    if (string.IsNullOrEmpty(modelPlSpeciesTree.Subspecies))
-    //    {
-    //        column.Item().Table(table =>
-    //        {
-    //            table.ColumnsDefinition(columns =>
-    //            {
-    //                columns.ConstantColumn(tabLeftRel);
-    //                columns.ConstantColumn(tabRightRel);
-    //                columns.RelativeColumn();
-    //            });
-    //            table.Cell().Text("");
-    //            table.Cell().Text(Strings.StringsRes.PlSpecies);
-    //            table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
-    //                              $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
-    //        });
-    //    }
-    //    else
-    //    {
-    //        column.Item().Table(table =>
-    //        {
-    //            table.ColumnsDefinition(columns =>
-    //            {
-    //                columns.ConstantColumn(tabLeftRel);
-    //                columns.ConstantColumn(tabRightRel);
-    //                columns.RelativeColumn();
-    //            });
-    //            table.Cell().Text("");
-    //            table.Cell().Text(Strings.StringsRes.PlSpecies);
-    //            table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
-    //                              $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
-    //        });
-    //        column.Item().Table(table =>
-    //        {
-    //            table.ColumnsDefinition(columns =>
-    //            {
-    //                columns.ConstantColumn(tabLeftRel + 4);
-    //                columns.ConstantColumn(tabRightRel - 4);
-    //                columns.RelativeColumn();
-    //            });
-    //            table.Cell().Text("");
-    //            table.Cell().Text(Strings.StringsRes.Subspecies);
-    //            table.Cell().Text($"{modelPlSpeciesTree.Tbl66Genusses?.GenusName} {modelPlSpeciesTree.PlSpeciesName}" +
-    //                              $" {modelPlSpeciesTree.Subspecies} {modelPlSpeciesTree.Divers}" +
-    //                              $" {modelPlSpeciesTree.Author} {modelPlSpeciesTree.AuthorYear}");
-    //        });
-    //    }
-    //}
-
-    public static void ComposeTaxoHierSynonym(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Synonym modelSynonymsTree)
+    public static void ComposeTaxoHierSubordo(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subordo model)
     {
-        if (modelSynonymsTree == null || !IsVisibleTaxonName(modelSynonymsTree.SynonymName))
+        if (model == null || !IsVisibleTaxonName(model.SubordoName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Synonym"));
-            table.Cell().Text($"{modelSynonymsTree?.SynonymName ?? string.Empty} {modelSynonymsTree?.Author ?? string.Empty} {modelSynonymsTree?.AuthorYear ?? string.Empty}");
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Subordo",
+            JoinParts(model.SubordoName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
     }
 
-    public static void ComposeTaxoHierName(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Name modelNamesTree)
+    public static void ComposeTaxoHierInfraordo(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Infraordo model)
     {
-        if (modelNamesTree == null || !IsVisibleTaxonName(modelNamesTree.NameName))
+        if (model == null || !IsVisibleTaxonName(model.InfraordoName))
             return;
-        column.Item().Table(table =>
-        {
-            table.ColumnsDefinition(columns =>
-            {
-                columns.ConstantColumn(tabLeftRel);
-                columns.ConstantColumn(tabRightRel);
-                columns.RelativeColumn();
-            });
-            table.Cell().Text("");
-            table.Cell().Text(Loc("Name"));
-            table.Cell().Text($"{modelNamesTree.NameName ?? string.Empty} [{modelNamesTree.Language ?? string.Empty}]"); 
-        });
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Infraordo",
+            JoinParts(model.InfraordoName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierSuperfamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Superfamily model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.SuperfamilyName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Superfamily",
+            JoinParts(model.SuperfamilyName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierFamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Family model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.FamilyName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Family",
+            JoinParts(model.FamilyName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierSubfamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subfamily model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.SubfamilyName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Subfamily",
+            JoinParts(model.SubfamilyName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierInfrafamily(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Infrafamily model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.InfrafamilyName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Infrafamily",
+            JoinParts(model.InfrafamilyName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierSupertribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Supertribus model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.SupertribusName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Supertribus",
+            JoinParts(model.SupertribusName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierTribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Tribus model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.TribusName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Tribus",
+            JoinParts(model.TribusName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierSubtribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Subtribus model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.SubtribusName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Subtribus",
+            JoinParts(model.SubtribusName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierInfratribus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Infratribus model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.InfratribusName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Infratribus",
+            JoinParts(model.InfratribusName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierGenus(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Genus model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.GenusName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Genus",
+            JoinParts(model.GenusName, model.Author, model.AuthorYear, model.EngName, model.GerName, model.FraName, model.PorName));
+    }
+
+    public static void ComposeTaxoHierSpecies(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Species model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.SpeciesName))
+            return;
+
+        var speciesText = JoinParts(
+            model.Tbl66Genusses?.GenusName,
+            model.SpeciesName,
+            model.Author,
+            model.AuthorYear);
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Species", speciesText);
+
+        if (string.IsNullOrWhiteSpace(model.Subspecies))
+            return;
+
+        var subspeciesText = JoinParts(
+            model.Tbl66Genusses?.GenusName,
+            model.SpeciesName,
+            model.Subspecies,
+            model.Divers,
+            model.Author,
+            model.AuthorYear);
+
+        ComposeTaxoRow(column, tabLeftRel + 4, tabRightRel - 4, "Subspecies", subspeciesText);
+    }
+
+    public static void ComposeTaxoHierSynonym(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Synonym model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.SynonymName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Synonym",
+            JoinParts(model.SynonymName, model.Author, model.AuthorYear));
+    }
+
+    public static void ComposeTaxoHierName(ColumnDescriptor column, int tabLeftRel, int tabRightRel, PdfModels.Name model)
+    {
+        if (model == null || !IsVisibleTaxonName(model.NameName))
+            return;
+
+        ComposeTaxoRow(column, tabLeftRel, tabRightRel, "Name",
+            JoinParts(model.NameName, string.IsNullOrWhiteSpace(model.Language) ? null : $"[{model.Language}]"));
     }
 }

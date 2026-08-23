@@ -1075,3 +1075,40 @@ Bei regnum wird name nicht angezeigt bei control
 20.08.2026 18:30 Uhr ClassPDF fast ok überall strings.Res austauschen gegen loc und in Resourcedatei anlegen
 ----------------------------------------
 21.08.2026 18:30 Uhr überall strings.Res austauschen gegen loc und in Resourcedatei anlegen. Taxonomy in Classdocument und CompTaxoHieras noch nicht fertig
+----------------------------------------
+22.08.2026 13:30 Uhr PDF Class ist fertig und muss mit Generator für alle anderen nachgezogen werden
+----------------------------------------
+22.08.2026 15:30 Uhr SearchPage mit PDF-Liste  speichern.
+
+Für einzelne Treffer:
+Rechtsklick → Detail öffnen
+Rechtsklick → Detail-PDF
+Rechtsklick → ID kopieren
+Für ganze Liste:
+zusätzlicher Button Drucken
+zusätzlicher Button CSV/Excel Export
+PDF für andere Tabellen außer Class
+    private static string FormatValidity(bool? valid, string? validYear)
+    {
+        string status = valid switch
+        {
+            true => Loc("Valid"),
+            false => Loc("Invalid"),
+            null => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(status))
+            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+
+        return string.IsNullOrWhiteSpace(validYear)
+            ? status
+            : $"{status} {Loc("Since")} {validYear}";
+    }
+einbauen in DetailClassPage bzw. Control
+----------------------------------------
+23.08.2026 09:30 Uhr Valid und Names als Formatter in Control und PDF eingebaut.
+----------------------------------------
+23.08.2026 12:30 Uhr Umbenennen von Control. ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl in TemplateTbl21ClassTaxoNomenHeaderControl
+Alle Controls sortierbar gemacht
+----------------------------------------
+23.08.2026 15:30 Uhr Generator mit class füllen Templates TaxoNom von Generator eingefügt. Jetzt Detailpages und Document aus generator übertragen

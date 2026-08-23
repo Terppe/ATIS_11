@@ -2,10 +2,10 @@
 using ATIS.Views.Search;
 using ATIS.Views.Search.DetailViewModels;
 using ATIS.Views.Taxonomy;
-using Microsoft.UI;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI.Text;
+using Microsoft.UI;
 
 namespace ATIS.Views.Report.DataTemplateHyperlink;
 
@@ -168,5 +168,4 @@ public sealed partial class TemplateTbl21ClassWithOptionalHyperlinkControl : Use
 
         await BreadcrumbNavigationRouter.NavigateAsync(crumb);
     }
-
 }

@@ -415,54 +415,34 @@
                                        TribusTemplate="{StaticResource TribusTemplate}" />
     </Page.Resources>
 
-    <!--<Grid Padding="12"
-    RowDefinitions="Auto,*">
-    <Grid Grid.Row="0"
-    Padding="8"
-    ColumnDefinitions="Auto,12,*">
-    <ComboBox x:Name="TableCombo"
-    Grid.Column="0"
-    Width="150"
-    ItemsSource="{x:Bind ViewModel.Tables}"
-    SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
-    SelectionChanged="OnTableSelectionChanged" />
-
-    <AutoSuggestBox x:Name="SearchBox"
-    Grid.Column="2"
-    MinWidth="150"
-    MaxWidth="300"
-    QuerySubmitted="OnSearchQuerySubmitted"
-    Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" />
-    </Grid>
-
-    <ListView x:Name="ResultList"
-    Grid.Row="1"
-    Margin="8,4,8,8"
-    IsItemClickEnabled="True"
-    ItemTemplateSelector="{StaticResource SearchSelector}"
-    ItemsSource="{x:Bind ViewModel.Results}"
-    SelectionChanged="OnRowSelected"
-    SelectionMode="Single" />
-    </Grid>-->
 
     <Grid Padding="12"
           RowDefinitions="Auto,*">
 
         <StackPanel Padding="8"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    Spacing="10">
 
-            <!--  ComboBox: Tabellenwahl  -->
             <ComboBox x:Name="TableCombo"
                       Width="150"
                       ItemsSource="{x:Bind ViewModel.Tables}"
                       SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
                       SelectionChanged="OnTableSelectionChanged" />
 
-            <!--  AutoSuggestBox: Suche  -->
             <AutoSuggestBox x:Name="SearchBox"
-                            Width="150" Margin="25,0,0,0"
+                            Width="150"
                             QuerySubmitted="OnSearchQuerySubmitted"
                             Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" />
+
+            <Button Margin="10,0,0,0"
+                    Click="OnPrintListClick"
+                    IsEnabled="{x:Bind ViewModel.CanPrintClassList, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE749;" />
+                    <TextBlock Text="PDF Liste" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <!--  Ergebnisliste  -->

@@ -4,7 +4,7 @@
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace ATIS.Views.Report.DataTemplateHyperlink;
-public sealed partial class ReportItemTemplateHyperlinkSpeciesSubControl : UserControl
+public sealed partial class TemplateTbl75SpeciesSubWithOptionalHyperlinkControl : UserControl
 {
     #region [Private Data Members]
     public ReportViewModel ViewModel { get; set; }
@@ -13,7 +13,7 @@ public sealed partial class ReportItemTemplateHyperlinkSpeciesSubControl : UserC
 
     #region [Constructor]
 
-    public ReportItemTemplateHyperlinkSpeciesSubControl()
+    public TemplateTbl75SpeciesSubWithOptionalHyperlinkControl()
     {
         ViewModel = App.GetService<ReportViewModel>();
         InitializeComponent();

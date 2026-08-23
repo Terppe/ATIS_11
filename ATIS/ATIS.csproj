@@ -49,7 +49,7 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
-		<PackageReference Include="log4net" Version="3.3.2" />
+		<PackageReference Include="log4net" Version="3.4.0" />
 		<PackageReference Include="MailKit" Version="4.17.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
@@ -337,7 +337,7 @@
 	<Page Update="Views\Database\Tbl68SpeciesgroupListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfratribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl63InfratribusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl54SupertribusWithOptionalHyperlinkControl.xaml">
@@ -400,130 +400,130 @@
 	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyTribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl57TribusTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySupertribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl54SupertribusTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySuperfamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl42SuperfamilyTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl18SuperclassTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubtribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl60SubtribusTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl12SubphylumTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubordoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl36SubordoTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubfamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl48SubfamilyTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl24SubclassTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySpeciesControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl03RegnumTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl06PhylumTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyOrdoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl33OrdoTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyLegioControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl30LegioTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfratribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl63InfratribusTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraordoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl39InfraordoTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfrafamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl51InfrafamilyTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl27InfraclassTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl66GenusTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl45FamilyTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl21ClassTaxoNomenHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderTribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl57TribusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSupertribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl54SupertribusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSuperfamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl42SuperfamilyHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSuperclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl18SuperclassHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubtribusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl60SubtribusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubphylumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl12SubphylumHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubordoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl36SubordoHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubfamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl48SubfamilyHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl24SubclassHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSpeciesSubsControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl75SpeciesSubHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSpeciesControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl75SpeciesHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderRegnumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl03RegnumHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPhylumControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl06PhylumHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderOrdoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl33OrdoHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderLegioControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl30LegioHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfraordoControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl39InfraordoHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfrafamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl51InfrafamilyHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfraclassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl27InfraclassHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderGenusControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl66GenusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFamilyControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl45FamilyHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderClassControl.xaml">
+	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl21ClassHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\ContentDialogs\SignInContentDialog.xaml">
@@ -722,57 +722,13 @@
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyClassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyFamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyGenusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraclassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfrafamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfraordoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyInfratribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyLegioControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyOrdoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyPhylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyRegnumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubclassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubordoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubphylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySubtribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySuperclassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySuperfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodySupertribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderBodyTribusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderClassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderFamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderGenusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfraclassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfrafamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfraordoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderInfratribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderLegioControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderOrdoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderPhylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderRegnumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSpeciesControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSpeciesSubsControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubclassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubordoControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubphylumControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSubtribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSuperclassControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSuperfamilyControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderSupertribusControl.xaml" />
-		<None Remove="Views\Report\DataTemplateHeader\ReportItemTemplateHeaderTribusControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblFoods\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Report\Pdf\TblMiscellaneous\ReportMiscellaneoussesWindow.xaml" />
-		<None Remove="Views\Report\ReportPages\Tbl21ClassReportPage.xaml" />
 		<None Remove="Views\Report\ReportResources.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateFiSpeciesControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateGeographicControl.xaml" />
@@ -1010,12 +966,6 @@
 
 <ItemGroup>
   <Page Update="Views\Report\ReportResources.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
-</ItemGroup>
-
-<ItemGroup>
-  <Page Update="Views\Report\ReportPages\Tbl21ClassReportPage.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
 </ItemGroup>
