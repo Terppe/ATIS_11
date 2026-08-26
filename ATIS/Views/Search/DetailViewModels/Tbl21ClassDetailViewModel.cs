@@ -7,12 +7,14 @@ using ATIS.Views.Taxonomy;
 using QuestPDF.Fluent;
 using WinUI3Localizer;
 
-//    Tbl21ClassDetailViewModel Skriptdatum:  23.08.2026   18:32    
+
+//    Tbl21ClassDetailViewModel Skriptdatum:  26.08.2026   18:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl21ClassDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -23,7 +25,8 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Class
     // -----------------------------
-    public Tbl21Class ClassSelected { get; }
+    public Tbl21Class? ClassSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -33,7 +36,6 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
     public Tbl18Superclass? SuperclassSelected { get; private set; }
     public Tbl24Subclass? SubclassSelected { get; private set; }
-
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -42,7 +44,6 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -74,7 +75,6 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
 
-
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
@@ -88,10 +88,8 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
-
     private bool _isInitialized;
     private bool _isInitializing;
-
     public async Task InitializeAsync()
     {
         if (_isInitialized || _isInitializing) return;
@@ -114,13 +112,16 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
@@ -167,15 +168,12 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
             });
         }
 
-        if (ClassSelected != null)
+        Breadcrumb.Add(new BreadcrumbItem
         {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = ClassSelected.ClassName,
-                EntityType = "Class",
-                EntityId = ClassSelected.ClassId
-            });
-        }
+            Label = ClassSelected.ClassName,
+            EntityType = "Class",
+            EntityId = ClassSelected.ClassId
+        });
 
         // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
@@ -184,7 +182,6 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
             if (x.EntityType == "Class" && x.EntityId == ClassSelected.ClassId)
                 Breadcrumb.RemoveAt(i);
         }
-
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
@@ -207,14 +204,26 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
                 break;
 
+            case "Class":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
+                break;
+
+            case "Subclass":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
+                break;
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
     private void ExecuteBack()
     {
         var frame = App.MainPageInstance?.NavFrame;
         if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -385,7 +394,7 @@ public sealed class Tbl21ClassDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
     private async Task ExportPdfAsync()

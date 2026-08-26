@@ -1,13 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl12Subphylums;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
+
+
+//    Tbl12SubphylumDetailViewModel Skriptdatum:  15.06.2024  12:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -16,9 +23,10 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     public string Title => $"Subphylum: {SubphylumSelected?.SubphylumName}";
 
     // -----------------------------
-    //  SELECTED SUBPHYLUM
+    //  SELECTED Subphylum
     // -----------------------------
-    public Tbl12Subphylum SubphylumSelected { get; }
+    public Tbl12Subphylum? SubphylumSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -26,16 +34,12 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     public Tbl03Regnum? RegnumSelected { get; private set; }
     public Tbl06Phylum? PhylumSelected { get; private set; }
     public Tbl18Superclass? SuperclassSelected { get; private set; }
-
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -60,11 +64,10 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -74,7 +77,7 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         SubphylumSelected = selectedSubphylum;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -103,18 +106,20 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -137,30 +142,20 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
             });
         }
 
-        if (SubphylumSelected != null)
+        Breadcrumb.Add(new BreadcrumbItem
         {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = SubphylumSelected.SubphylumName,
-                EntityType = "Subphylum",
-                EntityId = SubphylumSelected.SubphylumId
-            });
-        }
+            Label = SubphylumSelected.SubphylumName,
+            EntityType = "Subphylum",
+            EntityId = SubphylumSelected.SubphylumId
+        });
 
-        if (SuperclassSelected != null)
-        {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = SuperclassSelected.SuperclassName,
-                EntityType = "Superclass",
-                EntityId = SuperclassSelected.SuperclassId
-            });
-        }
         // <<< HIER: aktuellen Knoten entfernen
-        Breadcrumb = new ObservableCollection<BreadcrumbItem>(
-            Breadcrumb.Where(x => !(x.EntityType == "Subphylum" && x.EntityId == SubphylumSelected.SubphylumId)));
-
-
+        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
+        {
+            var x = Breadcrumb[i];
+            if (x.EntityType == "Subphylum" && x.EntityId == SubphylumSelected.SubphylumId)
+                Breadcrumb.RemoveAt(i);
+        }
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
@@ -175,13 +170,23 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
                 break;
 
+            case "Subphylum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                break;
+
+            case "Superclass":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
+                break;
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
 
@@ -214,8 +219,8 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         if (phylum?.RegnumId != 0)
             regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
 
-        // sichtbare Reihenfolge
-        int visibleIndex = 0;
+        // sichtbare Reihenfolge aufbauen
+        var visibleIndex = 0;
 
         if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
@@ -248,7 +253,7 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     }
 
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (SUPERCLASS)
+    //  LOAD DIRECT CHILDREN (Superclass)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -256,15 +261,14 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-
     private async void LoadDirectChildren()
     {
         SuperclassItems.Clear();
-
-        var superclasses = await _dataService.GetSuperclassesBySubphylumIdAsync(SubphylumSelected.SubphylumId);
         HasDirectChildren = false;
 
-        var visibleItems = superclasses
+        var superclass = await _dataService.GetSuperclassesBySubphylumIdAsync(SubphylumSelected.SubphylumId);
+
+        var visibleItems = superclass
             .Where(x => IsVisibleTaxonName(x.SuperclassName))
             .ToList();
 
@@ -324,64 +328,72 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
-
-    // -----------------------------
-    //  NAVIGATION (Hyperlink)
-    // -----------------------------
-    private async Task NavigateToRegnumAsync(int regnumId)
-    {
-        var selectedRegnum = await _dataService.GetRegnumByIdAsync(regnumId);
-
-        var vm = new Tbl03RegnumDetailViewModel(selectedRegnum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), vm);
-    }
-
-    private async Task NavigateToPhylumAsync(int phylumId)
-    {
-        var selectedPhylum = await _dataService.GetPhylumByIdAsync(phylumId);
-
-        var vm = new Tbl06PhylumDetailViewModel(selectedPhylum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), vm);
-    }
-    private async Task NavigateToSubphylumAsync(int subphylumId)
-    {
-        var selectedSubphylum = await _dataService.GetSubphylumByIdAsync(subphylumId);
-
-        var vm = new Tbl12SubphylumDetailViewModel(selectedSubphylum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), vm);
-    }
-
-    private async Task NavigateToSuperclassAsync(int superclassId)
-    {
-        var selectedSuperclass = await _dataService.GetSuperclassByIdAsync(superclassId);
-        if (selectedSuperclass == null)
+        if (SubphylumSelected == null || SubphylumSelected.SubphylumId == 0)
             return;
 
-        var vm = new Tbl18SuperclassDetailViewModel(selectedSuperclass, _dataService);
+        try
+        {
+            var model = await Tbl12SubphylumsDocumentDataSource.GetSubphylumDetailsAsync(SubphylumSelected.SubphylumId);
 
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), vm);
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl12SubphylumsDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SubphylumSelected.SubphylumName)
+                ? $"Subphylum_{SubphylumSelected.SubphylumId}"
+                : string.Concat(SubphylumSelected.SubphylumName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SubphylumSelected.SubphylumId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
-
-    private async Task NavigateToClassAsync(int classId)
-    {
-        var selectedClass = await _dataService.GetClassByIdAsync(classId);
-        if (selectedClass == null)
-            return;
-
-        var vm = new Tbl21ClassDetailViewModel(selectedClass, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), vm);
-    }
-
-
 }

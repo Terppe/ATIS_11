@@ -2,7 +2,8 @@
 using ATIS.Interfaces;
 using ATIS.Models;
 
-//    Tbl21ClassesDocumentDataSourceSkriptdatum:  23.08.2026   18:32    
+
+//    Tbl21ClassesDocumentDataSourceSkriptdatum:  26.08.2026   18:32    
 
 namespace ATIS.Views.Report.Pdf.Tbl21Classes;
 
@@ -16,8 +17,9 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
     private static Tbl21Class _classSingle = new();
 
 
-    //    Part 1
-    
+    //    Part 1    
+
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -30,7 +32,6 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
         ClearAllCollections();
 
         var classSingle = await dataService.GetClassByIdAsync(classId);
-
         if (classSingle == null)
             return null;
 
@@ -47,10 +48,9 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
 
         if (_phylumSingle?.RegnumId != 0)
             _regnumSingle = await dataService.GetRegnumByIdAsync(_phylumSingle.RegnumId);
-
         SubclassesCollection = new ObservableCollection<Tbl24Subclass>(
-            (await dataService.GetSubclassesByClassIdAsync(classId))
-            .Where(x => IsVisibleTaxonName(x.SubclassName)));
+                    (await dataService.GetSubclassesByClassIdAsync(classId))
+                    .Where(x => IsVisibleTaxonName(x.SubclassName)));
 
         ExpertsCollection = new ObservableCollection<Tbl90Reference>(
             await dataService.GetExpertReferencesByClassIdAsync(classId));
@@ -63,7 +63,6 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByClassIdAsync(classId));
-
 
         return new Tbl21ClassesPdfModel
         {
@@ -80,7 +79,9 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
             FraName = _classSingle.FraName,
             PorName = _classSingle.PorName,
             Memo = _classSingle.Memo,
+            Writer = _classSingle.Writer,
             WriterDate = _classSingle.WriterDate,
+            Updater = _classSingle.Updater,
             UpdaterDate = _classSingle.UpdaterDate,
 
             RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
@@ -88,26 +89,17 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
             SubphylumTree = GenrateModels.GenSubphylums.GenerateSubphylums(_subphylumSingle),
             SuperclassTree = GenrateModels.GenSuperclasses.GenerateSuperclasses(_superclassSingle),
             ClassTree = GenrateModels.GenClasses.GenerateClasses(_classSingle)
-
         };
     }
 
     #region "Collections"
     public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = new();
-
     public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = new();
-
     public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = new();
-
-    public static ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = new();
-
-    public static ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = new();
-
     public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = new();
-
     public static ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = new();
-
     public static ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = new();
+
     public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = new();
 
     public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = new();
@@ -115,7 +107,7 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
     public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = new();
 
     public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = new();
-    #endregion "Collections"          
+    #endregion "Collections"               
 
     public static void ClearAllCollections()
     {
@@ -128,16 +120,13 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
         SubclassesCollection?.Clear();
         ClassesCollection?.Clear();
         SuperclassesCollection?.Clear();
-        SubdivisionsCollection?.Clear();
         SubphylumsCollection?.Clear();
-        DivisionsCollection?.Clear();
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
 
-        CommentsCollection?.Clear();
         ExpertsCollection?.Clear();
         SourcesCollection?.Clear();
         AuthorsCollection?.Clear();
+        CommentsCollection?.Clear();
     }
-
 }

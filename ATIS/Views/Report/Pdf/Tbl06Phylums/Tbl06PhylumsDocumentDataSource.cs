@@ -1,56 +1,56 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
 
 
-//    Tbl06PhylumsDocumentDataSourceSkriptdatum:  16.06.2023  12:32    
+//    Tbl06PhylumsDocumentDataSourceSkriptdatum:  15.06.2024  12:32    
 
 namespace ATIS.Views.Report.Pdf.Tbl06Phylums;
 
 public abstract class Tbl06PhylumsDocumentDataSource : ObservableObject
 {
-    #region [Private Data Members]   
 
     private static Tbl03Regnum _regnumSingle = new();
     private static Tbl06Phylum _phylumSingle = new();
 
 
-    #endregion [Private Data Members]      
-
     //    Part 1    
 
 
-    public static Tbl06PhylumsPdfModel GetPhylumDetails(int phylumId)
-
+    private static bool IsVisibleTaxonName(string? name)
     {
-        #region [Private Data Members]
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
 
+    public static async Task<Tbl06PhylumsPdfModel?> GetPhylumDetailsAsync(int phylumId)
+    {
         var dataService = App.GetService<IDataService>();
-
-        #endregion [Private Data Members]
 
         ClearAllCollections();
 
-        PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-        var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-        RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        var phylumSingle = await dataService.GetPhylumByIdAsync(phylumId);
+        if (phylumSingle == null)
+            return null;
 
-        _regnumSingle = dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
-        _phylumSingle = dataService.GetPhylumSingleByPhylumIdAndHash(phylumId);
+        _phylumSingle = phylumSingle;
 
-        //direct children
-        SubphylumsCollection = dataService.CollSubphylumsByPhylumIdAndHash(phylumId);
+        if (_phylumSingle?.RegnumId != 0)
+            _regnumSingle = await dataService.GetRegnumByIdAsync(_phylumSingle.RegnumId);
+        SubphylumsCollection = new ObservableCollection<Tbl12Subphylum>(
+                    (await dataService.GetSubphylumsByPhylumIdAsync(phylumId))
+                    .Where(x => IsVisibleTaxonName(x.SubphylumName)));
 
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsByPhylumId(phylumId);
-        SourcesCollection = dataService.CollSourcesByPhylumId(phylumId);
-        AuthorsCollection = dataService.CollAuthorsByPhylumId(phylumId);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsByPhylumId(phylumId);
+        ExpertsCollection = new ObservableCollection<Tbl90Reference>(
+            await dataService.GetExpertReferencesByPhylumIdAsync(phylumId));
 
-        _phylumSingle = dataService.GetPhylumSingleByPhylumId(phylumId);
-        _regnumSingle = dataService.GetRegnumSingleByRegnumId(regnumId);
+        SourcesCollection = new ObservableCollection<Tbl90Reference>(
+            await dataService.GetSourceReferencesByPhylumIdAsync(phylumId));
+
+        AuthorsCollection = new ObservableCollection<Tbl90Reference>(
+            await dataService.GetAuthorReferencesByPhylumIdAsync(phylumId));
+
+        CommentsCollection = new ObservableCollection<Tbl93Comment>(
+            await dataService.GetCommentsByPhylumIdAsync(phylumId));
 
         return new Tbl06PhylumsPdfModel
         {
@@ -67,9 +67,10 @@ public abstract class Tbl06PhylumsDocumentDataSource : ObservableObject
             FraName = _phylumSingle.FraName,
             PorName = _phylumSingle.PorName,
             Memo = _phylumSingle.Memo,
+            Writer = _phylumSingle.Writer,
             WriterDate = _phylumSingle.WriterDate,
+            Updater = _phylumSingle.Updater,
             UpdaterDate = _phylumSingle.UpdaterDate,
-            //------------------------------- 
 
             RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
             PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
@@ -77,21 +78,18 @@ public abstract class Tbl06PhylumsDocumentDataSource : ObservableObject
     }
 
     #region "Collections"
+    public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = null!;
-    #endregion "Collections"          
+    public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = new();
+    #endregion "Collections"               
 
     public static void ClearAllCollections()
     {
@@ -102,10 +100,9 @@ public abstract class Tbl06PhylumsDocumentDataSource : ObservableObject
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
 
-        CommentsCollection?.Clear();
         ExpertsCollection?.Clear();
         SourcesCollection?.Clear();
         AuthorsCollection?.Clear();
+        CommentsCollection?.Clear();
     }
-
 }

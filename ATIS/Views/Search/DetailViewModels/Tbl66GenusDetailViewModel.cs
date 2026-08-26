@@ -44,6 +44,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     public Tbl57Tribus? TribusSelected { get; private set; }
     public Tbl60Subtribus? SubtribusSelected { get; private set; }
     public Tbl63Infratribus? InfratribusSelected { get; private set; }
+    public Tbl75Species? SpeciesSelected { get; private set; }
 
     // -----------------------------
     //  Breadcrumb

@@ -2242,7 +2242,7 @@
     <value>Names</value>
   </data>
   <data name="Names" xml:space="preserve">
-    <value>Names</value>
+    <value>Common Name(s)</value>
   </data>
   <data name="TextBlock_Newsletter.Text" xml:space="preserve">
     <value>Newsletter</value>
@@ -2599,7 +2599,7 @@
     <value>Synonyms</value>
   </data>
   <data name="Synonyms" xml:space="preserve">
-    <value>Synonyms</value>
+    <value>Synonym(s)</value>
   </data>
   <data name="Synonym" xml:space="preserve">
     <value>Synonym</value>

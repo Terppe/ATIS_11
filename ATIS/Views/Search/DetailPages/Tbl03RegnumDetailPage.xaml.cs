@@ -1,14 +1,12 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Views.Report.Pdf.Tbl03Regnums;
-using ATIS.Views.Report.Pdf.Tbl21Classes;
 using ATIS.Views.Search.DetailViewModels;
-using Microsoft.UI.Xaml.Data;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
-//  Tbl03RegnumDetailPage.xaml.cs Skriptdatum:  30.12.2024  12:32       
+//  Tbl03RegnumDetailPage.xaml.cs Skriptdatum:  24.08.2026  12:32       
 
 namespace ATIS.Views.Search.DetailPages;
 
@@ -155,10 +153,5 @@ public sealed partial class Tbl03RegnumDetailPage : Page
             .ToArray());
 
         return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
-    }
-
-    private void PrintButton_Click(object sender, RoutedEventArgs e)
-    {
-        throw new NotImplementedException();
     }
 }

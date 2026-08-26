@@ -1,14 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Report.Pdf.Tbl03Regnums;
+using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using ExCSS;
 using QuestPDF.Fluent;
 using WinUI3Localizer;
 
-//    Tbl03RegnumDetailViewModel Skriptdatum:  30.12.2024  12:32      
+//    Tbl03RegnumDetailViewModel Skriptdatum:  24.08.2026  12:32      
 
 namespace ATIS.Views.Search.DetailViewModels;
 
@@ -20,28 +19,18 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     //  TITLE
     // -----------------------------
     public string Title => $"Regnum: {RegnumSelected?.RegnumName}";
-
     // -----------------------------
     //  SELECTED Regnum
     // -----------------------------
-    public Tbl03Regnum RegnumSelected { get; }
-
+    public Tbl03Regnum? RegnumSelected { get; }
     // -----------------------------
     //  TAXONOMY OBJECTS
     // -----------------------------
     public Tbl06Phylum? PhylumSelected { get; private set; }
-    public Tbl12Subphylum? SubphylumSelected { get; private set; }
-    public Tbl18Superclass? SuperclassSelected { get; private set; }
-
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -64,11 +53,10 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -83,7 +71,6 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
-
     private bool _isInitialized;
     private bool _isInitializing;
     public async Task InitializeAsync()
@@ -108,51 +95,39 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
         Breadcrumb.Clear();
 
-        if (RegnumSelected != null)
+        Breadcrumb.Add(new BreadcrumbItem
         {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = RegnumSelected.RegnumName,
-                EntityType = "Regnum",
-                EntityId = RegnumSelected.RegnumId
-            });
-        }
+            Label = RegnumSelected.RegnumName,
+            EntityType = "Regnum",
+            EntityId = RegnumSelected.RegnumId
+        });
 
-        if (PhylumSelected != null)
-        {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = PhylumSelected.PhylumName,
-                EntityType = "Phylum",
-                EntityId = PhylumSelected.PhylumId
-            });
-        }
+
         // <<< HIER: aktuellen Knoten entfernen
-        Breadcrumb = new ObservableCollection<BreadcrumbItem>(
-            Breadcrumb.Where(x => !(x.EntityType == "Regnum" && x.EntityId == RegnumSelected.RegnumId)));
-
-
+        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
+        {
+            var x = Breadcrumb[i];
+            if (x.EntityType == "Regnum" && x.EntityId == RegnumSelected.RegnumId)
+                Breadcrumb.RemoveAt(i);
+        }
     }
-    private void ExecuteBack()
-    {
-        var frame = App.MainPageInstance.NavFrame;
 
-        if (frame.CanGoBack)
-            frame.GoBack();
-    }
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
     {
         switch (item.EntityType)
@@ -161,8 +136,23 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
 
+            case "Phylum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                break;
+
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+    private void ExecuteBack()
+    {
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
+            frame.GoBack();
+    }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -179,8 +169,9 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     private async Task LoadTaxonomy()
     {
         RegnumItems.Clear();
+        // sichtbare Reihenfolge aufbauen
 
-        int visibleIndex = 0;
+        var visibleIndex = 0;
 
         RegnumItems.Add(new TaxonomyLine<Tbl03Regnum>
         {
@@ -188,11 +179,10 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
-        await Task.CompletedTask;
     }
+
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (PHYLUM)
+    //  LOAD DIRECT CHILDREN (Phylum)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -200,15 +190,14 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-
     private async void LoadDirectChildren()
     {
         PhylumItems.Clear();
-
-        var phylums = await _dataService.GetPhylumsByRegnumIdAsync(RegnumSelected.RegnumId);
         HasDirectChildren = false;
 
-        var visibleItems = phylums
+        var phylum = await _dataService.GetPhylumsByRegnumIdAsync(RegnumSelected.RegnumId);
+
+        var visibleItems = phylum
             .Where(x => IsVisibleTaxonName(x.PhylumName))
             .ToList();
 

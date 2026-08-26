@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Globalization;
 using ATIS.Helpers;
-using ATIS.Views.Report.Pdf.Tbl21Classes;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -79,13 +78,15 @@ public class Tbl03RegnumsDocument : IDocument
                     text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
                     text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
-                    text.Span("  ");
+                    text.Span("                                   ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
                 });
 
                 column.Item().Text(text =>
                 {
                     text.Span(Model.RegnumName ?? string.Empty).FontSize(TextHight).SemiBold().Italic();
+                    text.Span("  ");
+                    text.Span(Model.Subregnum ?? string.Empty).FontSize(TextHight).SemiBold().Italic();
                     text.Span($" {Model.Author ?? string.Empty}").FontSize(TextHight).SemiBold();
                     text.Span($" {Model.AuthorYear ?? string.Empty}").FontSize(TextHight).SemiBold();
                 });
@@ -230,7 +231,7 @@ public class Tbl03RegnumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Loc("TaxoStatus")).SemiBold();
+                    table.Cell().Text(Loc("TaxonomicStatus")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -262,7 +263,7 @@ public class Tbl03RegnumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Loc("CredibilityRating"));
+                    table.Cell().Text(Loc("RecordCredibilityRating"));
                 });
                 column.Item().Table(table =>
                 {
@@ -350,7 +351,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        if (Tbl21ClassesDocumentDataSource.SubclassesCollection?.Count is not > 0)
+        if (Tbl03RegnumsDocumentDataSource.PhylumsCollection?.Count is not > 0)
         {
             return;
         }
@@ -519,7 +520,7 @@ public class Tbl03RegnumsDocument : IDocument
 
     private void ComposeReferencesPublications(IContainer container)
     {
-        if (Tbl21ClassesDocumentDataSource.AuthorsCollection.Count == 0)
+        if (Tbl03RegnumsDocumentDataSource.AuthorsCollection.Count == 0)
             return;
 
         container.Table(table =>

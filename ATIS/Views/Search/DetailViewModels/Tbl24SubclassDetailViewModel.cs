@@ -1,8 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl24Subclasses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
+
 
 //    Tbl24SubclassDetailViewModel Skriptdatum:  15.08.2026  18:32    
 
@@ -10,6 +14,7 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl24SubclassDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -20,7 +25,8 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Subclass
     // -----------------------------
-    public Tbl24Subclass SubclassSelected { get; }
+    public Tbl24Subclass? SubclassSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -30,7 +36,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
     public Tbl18Superclass? SuperclassSelected { get; private set; }
     public Tbl21Class? ClassSelected { get; private set; }
-
+    public Tbl27Infraclass? InfraclassSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -40,8 +46,6 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraclassCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -52,7 +56,6 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl21Class>> ClassItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl24Subclass>> SubclassItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl27Infraclass>> InfraclassItems { get; } = new();
-
 
     // -----------------------------
     //  REFERENCES
@@ -70,11 +73,10 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -84,7 +86,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
         SubclassSelected = selectedSubclass;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -113,18 +115,20 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -176,6 +180,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
                 EntityId = ClassSelected.ClassId
             });
         }
+
         Breadcrumb.Add(new BreadcrumbItem
         {
             Label = SubclassSelected.SubclassName,
@@ -183,7 +188,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
             EntityId = SubclassSelected.SubclassId
         });
 
-
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -215,6 +220,14 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
             case "Class":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
                 break;
+
+            case "Subclass":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
+                break;
+
+            case "Infraclass":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -223,11 +236,11 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -250,8 +263,7 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
         ClassItems.Clear();
         SubclassItems.Clear();
 
-        Tbl24Subclass? subclass = null;
-        Tbl21Class? classe1 = null;
+        Tbl21Class? classe = null;
         Tbl18Superclass? superclass = null;
         Tbl12Subphylum? subphylum = null;
         Tbl06Phylum? phylum = null;
@@ -259,10 +271,10 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
 
         // technisch laden
         if (SubclassSelected.ClassId != 0)
-            classe1 = await _dataService.GetClassByIdAsync(SubclassSelected.ClassId);
+            classe = await _dataService.GetClassByIdAsync(SubclassSelected.ClassId);
 
-        if (classe1?.SuperclassId != 0)
-            superclass = await _dataService.GetSuperclassByIdAsync(classe1.SuperclassId);
+        if (classe?.SuperclassId != 0)
+            superclass = await _dataService.GetSuperclassByIdAsync(classe.SuperclassId);
 
         if (superclass?.SubphylumId != 0)
             subphylum = await _dataService.GetSubphylumByIdAsync(superclass.SubphylumId);
@@ -320,16 +332,17 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
             });
         }
 
-        if (classe1 != null && IsVisibleTaxonName(classe1.ClassName))
+        if (classe != null && IsVisibleTaxonName(classe.ClassName))
         {
-            ClassSelected = classe1;
+            ClassSelected = classe;
             ClassItems.Add(new TaxonomyLine<Tbl21Class>
             {
-                Item = classe1,
+                Item = classe,
                 HeaderMargin = CreateHeaderMargin(visibleIndex++),
                 ShowAsHyperlink = true
             });
         }
+
 
         SubclassItems.Add(new TaxonomyLine<Tbl24Subclass>
         {
@@ -337,11 +350,10 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (INFRACLASS)
+    //  LOAD DIRECT CHILDREN (Infraclass)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -416,12 +428,72 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (SubclassSelected == null || SubclassSelected.SubclassId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl24SubclassesDocumentDataSource.GetSubclassDetailsAsync(SubclassSelected.SubclassId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl24SubclassesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SubclassSelected.SubclassName)
+                ? $"Subclass_{SubclassSelected.SubclassId}"
+                : string.Concat(SubclassSelected.SubclassName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SubclassSelected.SubclassId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

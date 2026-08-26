@@ -1,14 +1,16 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Views.Report.Pdf.Tbl21Classes;
 using ATIS.Views.Search.DetailViewModels;
+using Microsoft.UI.Xaml.Data;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
-//  Tbl21ClassDetailPage.xaml.cs Skriptdatum:  23.08.2026   18:32     
+//  Tbl21ClassDetailPage.xaml.cs Skriptdatum:  26.08.2026   18:32     
 
 namespace ATIS.Views.Search.DetailPages;
+
 
 public sealed partial class Tbl21ClassDetailPage : Page
 {
@@ -27,7 +29,6 @@ public sealed partial class Tbl21ClassDetailPage : Page
     }
 
     public Tbl21ClassDetailViewModel ViewModel { get; private set; }
-
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -57,7 +58,6 @@ public sealed partial class Tbl21ClassDetailPage : Page
                 ViewModel.IsLoading = false;
         }
     }
-
 
     public Task OnNavigateBreadcrumbAsync(BreadcrumbItem item)
     {

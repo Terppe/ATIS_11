@@ -1,13 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl06Phylums;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
+
+
+//    Tbl06PhylumDetailViewModel Skriptdatum:  15.06.2024  12:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl06PhylumDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -16,26 +23,21 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     public string Title => $"Phylum: {PhylumSelected?.PhylumName}";
 
     // -----------------------------
-    //  SELECTED PHYLUM
+    //  SELECTED Phylum
     // -----------------------------
-    public Tbl06Phylum PhylumSelected { get; set; }
+    public Tbl06Phylum? PhylumSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
     // -----------------------------
     public Tbl03Regnum? RegnumSelected { get; private set; }
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
-    public Tbl18Superclass? SuperclassSelected { get; private set; }
-
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -59,11 +61,10 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -73,7 +74,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         PhylumSelected = selectedPhylum;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -102,18 +103,20 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -126,20 +129,20 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
             });
         }
 
-        if (PhylumSelected != null)
+        Breadcrumb.Add(new BreadcrumbItem
         {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = PhylumSelected.PhylumName,
-                EntityType = "Phylum",
-                EntityId = PhylumSelected.PhylumId
-            });
-        }
+            Label = PhylumSelected.PhylumName,
+            EntityType = "Phylum",
+            EntityId = PhylumSelected.PhylumId
+        });
 
         // <<< HIER: aktuellen Knoten entfernen
-        Breadcrumb = new ObservableCollection<BreadcrumbItem>(
-            Breadcrumb.Where(x => !(x.EntityType == "Phylum" && x.EntityId == PhylumSelected.PhylumId)));
-
+        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
+        {
+            var x = Breadcrumb[i];
+            if (x.EntityType == "Phylum" && x.EntityId == PhylumSelected.PhylumId)
+                Breadcrumb.RemoveAt(i);
+        }
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
@@ -150,13 +153,23 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
 
+            case "Phylum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                break;
+
+            case "Subphylum":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                break;
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
 
@@ -184,8 +197,9 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         if (PhylumSelected.RegnumId != 0)
             regnum = await _dataService.GetRegnumByIdAsync(PhylumSelected.RegnumId);
 
-        // sichtbare Reihenfolge
-        int visibleIndex = 0;
+
+        // sichtbare Reihenfolge aufbauen
+        var visibleIndex = 0;
 
         if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
@@ -205,8 +219,9 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
             ShowAsHyperlink = false
         });
     }
+
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (SUBPHYLUM)
+    //  LOAD DIRECT CHILDREN (Subphylum)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -214,13 +229,12 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-
     private async void LoadDirectChildren()
     {
         SubphylumItems.Clear();
+        HasDirectChildren = false;
 
         var subphylum = await _dataService.GetSubphylumsByPhylumIdAsync(PhylumSelected.PhylumId);
-        HasDirectChildren = false;
 
         var visibleItems = subphylum
             .Where(x => IsVisibleTaxonName(x.SubphylumName))
@@ -282,62 +296,72 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
-
-    // -----------------------------
-    //  NAVIGATION (Hyperlink)
-    // -----------------------------
-    private async Task NavigateToRegnumAsync(int regnumId)
-    {
-        var selectedRegnum = await _dataService.GetRegnumByIdAsync(regnumId);
-
-        var vm = new Tbl03RegnumDetailViewModel(selectedRegnum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), vm);
-    }
-
-    private async Task NavigateToPhylumAsync(int phylumId)
-    {
-        var selectedPhylum = await _dataService.GetPhylumByIdAsync(phylumId);
-
-        var vm = new Tbl06PhylumDetailViewModel(selectedPhylum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), vm);
-    }
-    private async Task NavigateToSubphylumAsync(int subphylumId)
-    {
-        var selectedSubphylum = await _dataService.GetSubphylumByIdAsync(subphylumId);
-
-        var vm = new Tbl12SubphylumDetailViewModel(selectedSubphylum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), vm);
-    }
-
-    private async Task NavigateToSuperclassAsync(int superclassId)
-    {
-        var selectedSuperclass = await _dataService.GetSuperclassByIdAsync(superclassId);
-        if (selectedSuperclass == null)
+        if (PhylumSelected == null || PhylumSelected.PhylumId == 0)
             return;
 
-        var vm = new Tbl18SuperclassDetailViewModel(selectedSuperclass, _dataService);
+        try
+        {
+            var model = await Tbl06PhylumsDocumentDataSource.GetPhylumDetailsAsync(PhylumSelected.PhylumId);
 
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), vm);
-    }
+            if (model == null)
+            {
+                var loc = Localizer.Get();
 
-    private async Task NavigateToClassAsync(int classId)
-    {
-        var selectedClass = await _dataService.GetClassByIdAsync(classId);
-        if (selectedClass == null)
-            return;
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
 
-        var vm = new Tbl21ClassDetailViewModel(selectedClass, _dataService);
+                await infoDialog.ShowAsync();
+                return;
+            }
 
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), vm);
+            var document = new Tbl06PhylumsDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(PhylumSelected.PhylumName)
+                ? $"Phylum_{PhylumSelected.PhylumId}"
+                : string.Concat(PhylumSelected.PhylumName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{PhylumSelected.PhylumId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
 }

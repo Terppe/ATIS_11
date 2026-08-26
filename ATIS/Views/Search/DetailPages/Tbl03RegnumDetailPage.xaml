@@ -9,8 +9,7 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!-- Tbl03RegnumDetailPage.xaml  Skriptdatum:  30.12.2024  12:32     -->
-
+    <!--  Tbl03RegnumDetailPage.xaml  Skriptdatum:  24.08.2026  12:32  -->
 
     <Page.Resources>
         <ResourceDictionary>
@@ -48,7 +47,7 @@
 
             <Button Margin="10,5,0,5"
                     HorizontalAlignment="Right"
-                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                    Click="ExportPdfButton_Click">
                 <StackPanel Orientation="Horizontal"
                             Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
@@ -56,7 +55,7 @@
                 </StackPanel>
             </Button>
 
-            <!--<Button Margin="10,5,0,5"
+            <!--<Button Margin="10,5,0,5"  für später und andere nutzung
             HorizontalAlignment="Right"
             Click="PrintButton_Click">
             <StackPanel Orientation="Horizontal"
@@ -101,7 +100,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--  ALLE ROWS WIE IM ALTEN WINDOW  -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -179,24 +177,23 @@
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <!--<ListView Grid.Row="4"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="0"
-                ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
-                ItemsSource="{x:Bind ViewModel.RegnumItems}"
-                Style="{StaticResource AtisListViewStyleCompactTaxo}" />-->
-
-                <!--  Weitere Controls  -->
-
-                <!--  Regnum DETAILS  -->
-                <ListView Grid.Row="9"
+                <ListView Grid.Row="4"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
                           ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
                           ItemsSource="{x:Bind ViewModel.RegnumItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <!--  Regnum DETAILS  -->
+                <!--
+                <ListView Grid.Row="9"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0"
+                ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+                ItemsSource="{x:Bind ViewModel.RegnumItems}"
+                Style="{StaticResource AtisListViewStyleCompactTaxo}" />-->
 
                 <!--  DIRECT CHILDREN  -->
                 <TextBlock Grid.Row="11"

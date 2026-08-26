@@ -9,6 +9,9 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
+    <!--  Tbl06PhylumDetailPage.xaml  Skriptdatum:  15.06.2024  12:32  -->
+
+
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -45,7 +48,7 @@
 
             <Button Margin="10,5,0,5"
                     HorizontalAlignment="Right"
-                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                    Click="ExportPdfButton_Click">
                 <StackPanel Orientation="Horizontal"
                             Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
@@ -53,15 +56,15 @@
                 </StackPanel>
             </Button>
 
-            <Button Margin="10,5,0,5"
-                    HorizontalAlignment="Right"
-                    Click="PrintButton_Click">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <FontIcon Glyph="&#xE749;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
-                </StackPanel>
-            </Button>
+            <!--<Button Margin="10,5,0,5"
+            HorizontalAlignment="Right"
+            Click="PrintButton_Click">
+            <StackPanel Orientation="Horizontal"
+            Spacing="6">
+            <FontIcon Glyph="&#xE749;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Print" />
+            </StackPanel>
+            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->
@@ -123,9 +126,30 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!--  HEADER PHYLUM  -->
+                <!--  HEADER Phylum  -->
                 <ListView Grid.Row="0"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -163,8 +187,10 @@
                           ItemsSource="{x:Bind ViewModel.RegnumItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--  PHYLUM DETAILS  -->
-                <ListView Grid.Row="5"
+                <!--  Weitere Controls  -->
+
+                <!--  Phylum DETAILS  -->
+                <ListView Grid.Row="9"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
@@ -250,6 +276,7 @@
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
 
             </Grid>
+
         </ScrollViewer>
         <!--  2. 🔥 Modernes Lade Overlay  -->
         <components:LoadingOverlayControl Grid.Row="0"

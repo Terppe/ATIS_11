@@ -2242,7 +2242,7 @@
     <value>Namen</value>
   </data>
   <data name="Names" xml:space="preserve">
-    <value>Namen</value>
+    <value>Gebräuchliche Name(n)</value>
   </data>
   <data name="TextBlock_Newsletter.Text" xml:space="preserve">
     <value>Newsletter</value>
@@ -2599,7 +2599,7 @@
     <value>Synonyme</value>
   </data>
   <data name="Synonyms" xml:space="preserve">
-    <value>Synonyme</value>
+    <value>Synonyme(e)</value>
   </data>
   <data name="Synonym" xml:space="preserve">
     <value>Synonym</value>
@@ -4282,13 +4282,13 @@
     <value>Datenqualitätindikatore</value>
   </data>
   <data name="TextBlock_RecordCredibilityRating.Text" xml:space="preserve">
-    <value>Record Credibility Rating</value>
+    <value>Glaubhafte Datensatzeinstufung</value>
   </data>
   <data name="RecordCredibilityRating" xml:space="preserve">
     <value>Glaubhafte Datensatzeinstufung</value>
   </data>
   <data name="TextBlock_RecordUpdate.Text" xml:space="preserve">
-    <value>Record Update</value>
+    <value>Datensatz aktualisiert</value>
   </data>
   <data name="RecordUpdate" xml:space="preserve">
     <value>Datensatz aktualisiert</value>

@@ -1112,3 +1112,7 @@ einbauen in DetailClassPage bzw. Control
 Alle Controls sortierbar gemacht
 ----------------------------------------
 23.08.2026 15:30 Uhr Generator mit class füllen Templates TaxoNom von Generator eingefügt. Jetzt Detailpages und Document aus generator übertragen
+----------------------------------------
+24.08.2026 14:30 Uhr Generator muss detailierter sein, sonst fehler. Class Basis.Generator bei DetailVM weiter
+----------------------------------------
+25.08.2026 14:30 Uhr Bei Dokument weiter mit generator bis Tbl24Subclasses fertig

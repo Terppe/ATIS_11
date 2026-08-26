@@ -1,14 +1,18 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Helpers;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
+
 
 namespace ATIS.Views.Report.Pdf.Tbl12Subphylums;
 
 public class Tbl12SubphylumsDocument : IDocument
 {
     private Tbl12SubphylumsPdfModel Model { get; }
+    private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
     private static int _tabLeftRel;
     private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
@@ -24,6 +28,23 @@ public class Tbl12SubphylumsDocument : IDocument
         Model = model;
     }
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
+
+    private static string FormatValidity(bool? valid, string? validYear)
+    {
+        string status = valid switch
+        {
+            true => Loc("Valid"),
+            false => Loc("Invalid"),
+            null => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(status))
+            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+
+        return string.IsNullOrWhiteSpace(validYear)
+            ? status
+            : $"{status} {Loc("Since")} {validYear}";
+    }
 
     public void Compose(IDocumentContainer container)
     {
@@ -45,28 +66,27 @@ public class Tbl12SubphylumsDocument : IDocument
                 });
             });
     }
+
     private void ComposeHeader(IContainer container)
     {
-        //  CompHeaders.Header(container, TextHight);
-        // evtl icon
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.Atis).FontSize(18).SemiBold();
+                    text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
-                    text.Span(Strings.StringsRes.AtisHeader).FontSize(TextHight).SemiBold();
-                    text.Span("                     ");
+                    text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
+                    text.Span("                                   ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
-
                 });
+
                 column.Item().Text(text =>
                 {
-                    text.Span($"{Model.SubphylumName}").FontSize(TextHight).SemiBold().Italic();
-                    text.Span($" {Model.Author}").FontSize(TextHight).SemiBold();
-                    text.Span($" {Model.AuthorYear}").FontSize(TextHight).SemiBold();
+                    text.Span(Model.SubphylumName ?? string.Empty).FontSize(TextHight).SemiBold().Italic();
+                    text.Span($" {Model.Author ?? string.Empty}").FontSize(TextHight).SemiBold();
+                    text.Span($" {Model.AuthorYear ?? string.Empty}").FontSize(TextHight).SemiBold();
                 });
             });
         });
@@ -97,18 +117,22 @@ public class Tbl12SubphylumsDocument : IDocument
             //Refernces
             column.Item().Element(ComposeHeaderReferences);
             column.Spacing(5);
+
             //Refernces Experts
             column.Item().Element(ComposeHeaderReferencesExperts);
             column.Item().Element(ComposeReferencesExperts);
             column.Spacing(5);
+
             //Refernces Sources
             column.Item().Element(ComposeHeaderReferencesOtherSources);
             column.Item().Element(ComposeReferencesOtherSources);
             column.Spacing(5);
+
             //Refernces Authors
             column.Item().Element(ComposeHeaderReferencesPublications);
             column.Item().Element(ComposeReferencesPublications);
             column.Spacing(5);
+
             //Comments
             column.Item().Element(ComposeHeaderComments);
             column.Item().Element(ComposeComments);
@@ -121,15 +145,9 @@ public class Tbl12SubphylumsDocument : IDocument
         {
             row.RelativeItem().Column(column =>
             {
-                //column.Item().Text(text =>
-                //{
-                //    text.Span($"{Model.SubphylumName}").FontSize(TextHight).SemiBold().Italic();
-                //    text.Span($" {Model.Author}").FontSize(TextHight).SemiBold();
-                //    text.Span($" {Model.AuthorYear}").FontSize(TextHight).SemiBold();
-                //});
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.ReportTaxonomicId);
+                    text.Span(Loc("TaxonomicId"));
                     text.Span($"{Model.CountId}");
                 });
             });
@@ -150,7 +168,7 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoNomen).FontSize(TextHight).SemiBold();
+                    table.Cell().Text(Loc("TaxonomyAndNomenclatura")).FontSize(TextHight).SemiBold();
                 });
 
                 column.Item().Table(table =>
@@ -162,8 +180,8 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Regnum);
-                    table.Cell().Text($@"{Model.RegnumTree?.RegnumName} {Model.RegnumTree?.Subregnum}");
+                    table.Cell().Text(Loc("Regnum"));
+                    table.Cell().Text($@"{Model.RegnumTree?.RegnumName ?? string.Empty} {Model.RegnumTree?.Subregnum ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -174,8 +192,8 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoRank);
-                    table.Cell().Text(Strings.StringsRes.Subphylum);
+                    table.Cell().Text(Loc("TaxonomicRank"));
+                    table.Cell().Text(Loc("Subphylum"));
                 });
                 column.Item().Table(table =>
                 {
@@ -186,8 +204,32 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportSynonyms);
-                    table.Cell().Text($"{Model.Synonym}");
+                    table.Cell().Text(Loc("Synonyms"));
+                    table.Cell().Text($"{Model.Synonym ?? string.Empty}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Names"));
+                    table.Cell().Text(NamesFormatter.Format(Model.EngName, Model.GerName, Model.FraName, Model.PorName));
+                });
+
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("TaxonomicStatus")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -198,8 +240,8 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportNames);
-                    table.Cell().Text($"{Model.EngName}[ENG] {Model.GerName}[GER] {Model.FraName}[FRA] {Model.PorName}[SPA]");
+                    table.Cell().Text(Loc("CurrentStanding"));
+                    table.Cell().Text(ValidityFormatter.Format(Model.Valid, Model.ValidYear));
                 });
                 column.Item().Table(table =>
                 {
@@ -209,19 +251,7 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportTaxoStatus).SemiBold();
-                });
-                column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                    {
-                        columns.ConstantColumn(TabLeftRel8);
-                        columns.ConstantColumn(TabRightRel8);
-                        columns.RelativeColumn();
-                    });
-                    table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportCurrentStand);
-                    table.Cell().Text($"{Model.Valid} {Model.ValidYear}");
+                    table.Cell().Text(Loc("DataQualityIndicator")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -231,17 +261,7 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportDataQualiIndicator).SemiBold();
-                });
-                column.Item().Table(table =>
-                {
-                    table.ColumnsDefinition(columns =>
-                    {
-                        columns.ConstantColumn(TabLeftRel8);
-                        columns.RelativeColumn();
-                    });
-                    table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordCrediRate);
+                    table.Cell().Text(Loc("RecordCredibilityRating"));
                 });
                 column.Item().Table(table =>
                 {
@@ -252,7 +272,7 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordUpdate);
+                    table.Cell().Text(Loc("RecordUpdate"));
                     table.Cell().Text($"{Model.UpdaterDate:d}");
                 });
                 column.Item().Table(table =>
@@ -264,8 +284,8 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportInfo);
-                    table.Cell().Text($"{Model.Info}");
+                    table.Cell().Text(Loc("Info"));
+                    table.Cell().Text($"{Model.Info ?? string.Empty}");
                 });
                 column.Item().Table(table =>
                 {
@@ -276,8 +296,8 @@ public class Tbl12SubphylumsDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportMemo);
-                    table.Cell().Text($"{Model.Memo}");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.Memo ?? string.Empty}");
                 });
             });
         });
@@ -288,63 +308,71 @@ public class Tbl12SubphylumsDocument : IDocument
         CompHeaders.HeaderTaxoHiera(container, TabLeftRel4, TextHight);
     }
 
+    private static bool IsVisibleTaxonName(string? name)
+    {
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
+
     private void ComposeTaxoHieraContent(IContainer container)
     {
         container.Row(row =>
         {
             row.RelativeItem().Column(column =>
             {
-                if (Model.RegnumTree != null && !string.IsNullOrWhiteSpace(Model.RegnumTree!.RegnumName))
+                var visibleIndex = 0;
+                var reportPdfRightTab = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
+
+                void ComposeVisibleTaxon(string? name, Action<int, int> composeAction, bool rememberAsLast = false)
                 {
-                    _tabLeftRel += 8;
-                    _tabRightRel -= 8;
-                    CompTaxoHieras.ComposeTaxoHierRegnum(column, _tabLeftRel, _tabRightRel, Model.RegnumTree);
+                    if (!IsVisibleTaxonName(name))
+                        return;
+
+                    var left = 8 + (visibleIndex++ * 4);
+                    var right = Math.Max(0, reportPdfRightTab - left);
+
+                    if (rememberAsLast)
+                    {
+                        _tabLeftLastRel = left;
+                        _tabRightLastRel = right;
+                    }
+
+                    composeAction(left, right);
                 }
 
-                if (Model.PhylumTree != null && !string.IsNullOrWhiteSpace(Model.PhylumTree!.PhylumName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    CompTaxoHieras.ComposeTaxoHierPhylum(column, _tabLeftRel, _tabRightRel, Model.PhylumTree);
-                }
+                ComposeVisibleTaxon(
+                    Model.RegnumTree?.RegnumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierRegnum(column, left, right, Model.RegnumTree!));
 
-                //if (Model.DivisionTree != null && !string.IsNullOrWhiteSpace(Model.DivisionTree!.DivisionName))
-                //{
-                //    _tabLeftRel += 4;
-                //    _tabRightRel -= 4;
-                //    CompTaxoHieras.ComposeTaxoHierDivision(column, _tabLeftRel, _tabRightRel, Model.DivisionTree);
-                //}
+                ComposeVisibleTaxon(
+                    Model.PhylumTree?.PhylumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierPhylum(column, left, right, Model.PhylumTree!));
 
-                if (Model.SubphylumTree != null && !string.IsNullOrWhiteSpace(Model.SubphylumTree!.SubphylumName))
-                {
-                    _tabLeftRel += 4;
-                    _tabRightRel -= 4;
-                    _tabLeftLastRel = _tabLeftRel;
-                    _tabRightLastRel = _tabRightRel;
-                    CompTaxoHieras.ComposeTaxoHierSubphylum(column, _tabLeftRel, _tabRightRel, Model.SubphylumTree);
-                }
+                ComposeVisibleTaxon(
+                    Model.SubphylumTree?.SubphylumName,
+                    (left, right) => CompTaxoHieras.ComposeTaxoHierSubphylum(column, left, right, Model.SubphylumTree!),
+                    rememberAsLast: true);
+
             });
-            _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab"));
-            _tabLeftRel = 0;
         });
     }
 
     private void ComposeHeaderChildren(IContainer container)
     {
-        if (Tbl12SubphylumsDocumentDataSource.SuperclassesCollection.Count == 0)
+        if (Tbl12SubphylumsDocumentDataSource.SuperclassesCollection?.Count is not > 0)
         {
             return;
         }
 
         CompHeaders.HeaderChildren(container, _tabRightRel, TextHight);
     }
-
     private void ComposeChildrenContent(IContainer container)
     {
-        if (Tbl12SubphylumsDocumentDataSource.SuperclassesCollection.Count == 0)
-        {
+        var visibleItems = Tbl12SubphylumsDocumentDataSource.SuperclassesCollection
+            .Where(x => IsVisibleTaxonName(x.SuperclassName))
+            .ToList();
+
+        if (visibleItems.Count == 0)
             return;
-        }
 
         container.Table(table =>
         {
@@ -355,31 +383,38 @@ public class Tbl12SubphylumsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl12SubphylumsDocumentDataSource.SuperclassesCollection)
+            foreach (var item in visibleItems)
             {
                 table.Cell().Text("");
-                table.Cell().Text(Strings.StringsRes.Superclass);
-                table.Cell().Text($"{item.SuperclassName} {item.Author} {item.AuthorYear}");
+                table.Cell().Text(Loc("Superclass"));
+                table.Cell().Text($"{item.SuperclassName ?? string.Empty} {item.Author ?? string.Empty} {item.AuthorYear ?? string.Empty}");
             }
         });
     }
 
     private void ComposeHeaderReferences(IContainer container)
     {
+        var hasExperts = Tbl12SubphylumsDocumentDataSource.ExpertsCollection?.Count > 0;
+        var hasSources = Tbl12SubphylumsDocumentDataSource.SourcesCollection?.Count > 0;
+        var hasAuthors = Tbl12SubphylumsDocumentDataSource.AuthorsCollection?.Count > 0;
+
+        if (!hasExperts && !hasSources && !hasAuthors)
+            return;
+
         CompHeaders.HeaderHeaderReferences(container, TabLeftRel4, TextHight);
     }
-
     private void ComposeHeaderReferencesExperts(IContainer container)
     {
+        if (Tbl12SubphylumsDocumentDataSource.ExpertsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesExperts(container, TabLeftRel8);
     }
 
     private void ComposeReferencesExperts(IContainer container)
     {
         if (Tbl12SubphylumsDocumentDataSource.ExpertsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -397,20 +432,20 @@ public class Tbl12SubphylumsDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportExpert);
-                        table.Cell().Text(item.Tbl90RefExperts.RefExpertName);
+                        table.Cell().Text(Loc("Expert"));
+                        table.Cell().Text(item.Tbl90RefExperts?.RefExpertName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefExperts.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefExperts?.Notes ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 3)
                     {
@@ -422,18 +457,18 @@ public class Tbl12SubphylumsDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderReferencesOtherSources(IContainer container)
     {
+        if (Tbl12SubphylumsDocumentDataSource.SourcesCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesOtherSources(container, TabLeftRel8);
     }
 
     private void ComposeReferencesOtherSources(IContainer container)
     {
         if (Tbl12SubphylumsDocumentDataSource.SourcesCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -451,26 +486,26 @@ public class Tbl12SubphylumsDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportSource);
-                        table.Cell().Text(item.Tbl90RefSources.RefSourceName);
+                        table.Cell().Text(Loc("Source"));
+                        table.Cell().Text(item.Tbl90RefSources?.RefSourceName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportAcquired);
-                        table.Cell().Text(item.Tbl90RefSources.SourceYear);
+                        table.Cell().Text(Loc("Acquired"));
+                        table.Cell().Text(item.Tbl90RefSources?.SourceYear ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefSources.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefSources?.Notes ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 4)
                     {
@@ -482,18 +517,18 @@ public class Tbl12SubphylumsDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderReferencesPublications(IContainer container)
     {
+        if (Tbl12SubphylumsDocumentDataSource.AuthorsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderReferencesPublications(container, TabLeftRel8);
     }
 
     private void ComposeReferencesPublications(IContainer container)
     {
         if (Tbl12SubphylumsDocumentDataSource.AuthorsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -511,62 +546,62 @@ public class Tbl12SubphylumsDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportAuthor);
-                        table.Cell().Text(item.Tbl90RefAuthors.RefAuthorName);
+                        table.Cell().Text(Loc("Author"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.RefAuthorName ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublicationDate);
-                        table.Cell().Text(item.Tbl90RefAuthors.PublicationYear);
+                        table.Cell().Text(Loc("PublicationDate"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.PublicationYear ?? string.Empty);
                     }
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportArticleTitle);
-                        table.Cell().Text(item.Tbl90RefAuthors.ArticelTitle);
+                        table.Cell().Text(Loc("ArticleTitle"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.ArticelTitle ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportBookName);
-                        table.Cell().Text(item.Tbl90RefAuthors.BookName);
+                        table.Cell().Text(Loc("BookName"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.BookName ?? string.Empty);
                     }
                     if (i == 4)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPages);
-                        table.Cell().Text(item.Tbl90RefAuthors.Page1);
+                        table.Cell().Text(Loc("Pages"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Page1 ?? string.Empty);
                     }
                     if (i == 5)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublisher);
-                        table.Cell().Text(item.Tbl90RefAuthors.Publisher);
+                        table.Cell().Text(Loc("Publisher"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Publisher ?? string.Empty);
                     }
                     if (i == 6)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportPublicationPlace);
-                        table.Cell().Text(item.Tbl90RefAuthors.PublicationPlace);
+                        table.Cell().Text(Loc("PublicationPlace"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.PublicationPlace ?? string.Empty);
                     }
                     if (i == 7)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportIsbn);
-                        table.Cell().Text(item.Tbl90RefAuthors.ISBN);
+                        table.Cell().Text(Loc("Isbn"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.ISBN ?? string.Empty);
                     }
                     if (i == 8)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportNotes);
-                        table.Cell().Text(item.Tbl90RefAuthors.Notes);
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Tbl90RefAuthors?.Notes ?? string.Empty);
                     }
                     if (i == 9)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportRefFor);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 10)
                     {
@@ -578,18 +613,18 @@ public class Tbl12SubphylumsDocument : IDocument
             }
         });
     }
-
     private void ComposeHeaderComments(IContainer container)
     {
+        if (Tbl12SubphylumsDocumentDataSource.CommentsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderComments(container, TabLeftRel4, TextHight);
     }
 
     private void ComposeComments(IContainer container)
     {
         if (Tbl12SubphylumsDocumentDataSource.CommentsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -607,14 +642,14 @@ public class Tbl12SubphylumsDocument : IDocument
                     if (i == 0)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportInfo);
-                        table.Cell().Text(item.Info);
+                        table.Cell().Text(Loc("Info"));
+                        table.Cell().Text(item.Info ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Strings.StringsRes.ReportMemo);
-                        table.Cell().Text(item.Memo);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.Memo ?? string.Empty);
                     }
                     if (i == 2)
                     {
@@ -626,5 +661,4 @@ public class Tbl12SubphylumsDocument : IDocument
             }
         });
     }
-
 }

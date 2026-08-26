@@ -1,13 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl18Superclasses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
+
+
+//    Tbl18SuperclassDetailViewModel Skriptdatum:  15.06.2024  12:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -16,9 +23,10 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
     public string Title => $"Superclass: {SuperclassSelected?.SuperclassName}";
 
     // -----------------------------
-    //  SELECTED SUPERCLASS
+    //  SELECTED Superclass
     // -----------------------------
-    public Tbl18Superclass SuperclassSelected { get; }
+    public Tbl18Superclass? SuperclassSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -26,7 +34,7 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
     public Tbl03Regnum? RegnumSelected { get; private set; }
     public Tbl06Phylum? PhylumSelected { get; private set; }
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
-
+    public Tbl21Class? ClassSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -34,8 +42,6 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -61,11 +67,10 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -75,12 +80,11 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
         SuperclassSelected = selectedSuperclass;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
-
     private bool _isInitialized;
     private bool _isInitializing;
     public async Task InitializeAsync()
@@ -105,18 +109,20 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -149,20 +155,20 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
             });
         }
 
-        if (SuperclassSelected != null)
+        Breadcrumb.Add(new BreadcrumbItem
         {
-            Breadcrumb.Add(new BreadcrumbItem
-            {
-                Label = SuperclassSelected.SuperclassName,
-                EntityType = "Superclass",
-                EntityId = SuperclassSelected.SuperclassId
-            });
-        }
+            Label = SuperclassSelected.SuperclassName,
+            EntityType = "Superclass",
+            EntityId = SuperclassSelected.SuperclassId
+        });
+
         // <<< HIER: aktuellen Knoten entfernen
-        Breadcrumb = new ObservableCollection<BreadcrumbItem>(
-            Breadcrumb.Where(x => !(x.EntityType == "Superclass" && x.EntityId == SuperclassSelected.SuperclassId)));
-
-
+        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
+        {
+            var x = Breadcrumb[i];
+            if (x.EntityType == "Superclass" && x.EntityId == SuperclassSelected.SuperclassId)
+                Breadcrumb.RemoveAt(i);
+        }
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
@@ -181,13 +187,23 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
                 break;
 
+            case "Superclass":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
+                break;
+
+            case "Class":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
+                break;
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
 
@@ -226,7 +242,7 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
             regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
 
         // sichtbare Reihenfolge aufbauen
-        int visibleIndex = 0;
+        var visibleIndex = 0;
 
         if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
@@ -270,7 +286,7 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
     }
 
     // -----------------------------
-    //  LOAD DIRECT CHILDREN (SUPERCLASS)
+    //  LOAD DIRECT CHILDREN (Class)
     // -----------------------------
     private bool _hasDirectChildren;
     public bool HasDirectChildren
@@ -278,15 +294,14 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-
     private async void LoadDirectChildren()
     {
         ClassItems.Clear();
-
-        var classes = await _dataService.GetClassesBySuperclassIdAsync(SuperclassSelected.SuperclassId);
         HasDirectChildren = false;
 
-        var visibleItems = classes
+        var classe = await _dataService.GetClassesBySuperclassIdAsync(SuperclassSelected.SuperclassId);
+
+        var visibleItems = classe
             .Where(x => IsVisibleTaxonName(x.ClassName))
             .ToList();
 
@@ -346,58 +361,72 @@ public sealed class Tbl18SuperclassDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
+        if (SuperclassSelected == null || SuperclassSelected.SuperclassId == 0)
+            return;
+
+        try
+        {
+            var model = await Tbl18SuperclassesDocumentDataSource.GetSuperclassDetailsAsync(SuperclassSelected.SuperclassId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl18SuperclassesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SuperclassSelected.SuperclassName)
+                ? $"Superclass_{SuperclassSelected.SuperclassId}"
+                : string.Concat(SuperclassSelected.SuperclassName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SuperclassSelected.SuperclassId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
-
-    // -----------------------------
-    //  NAVIGATION (Hyperlink)
-    // -----------------------------
-    private async Task NavigateToRegnumAsync(int regnumId)
-    {
-        var selectedRegnum = await _dataService.GetRegnumByIdAsync(regnumId);
-
-        var vm = new Tbl03RegnumDetailViewModel(selectedRegnum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), vm);
-    }
-
-    private async Task NavigateToPhylumAsync(int phylumId)
-    {
-        var selectedPhylum = await _dataService.GetPhylumByIdAsync(phylumId);
-
-        var vm = new Tbl06PhylumDetailViewModel(selectedPhylum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), vm);
-    }
-    private async Task NavigateToSubphylumAsync(int subphylumId)
-    {
-        var selectedSubphylum = await _dataService.GetSubphylumByIdAsync(subphylumId);
-
-        var vm = new Tbl12SubphylumDetailViewModel(selectedSubphylum, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), vm);
-    }
-
-    private async Task NavigateToSuperclassAsync(int superclassId)
-    {
-        var selectedSuperclass = await _dataService.GetSuperclassByIdAsync(superclassId);
-
-        var vm = new Tbl18SuperclassDetailViewModel(selectedSuperclass, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), vm);
-    }
-    private async Task NavigateToClassAsync(int classId)
-    {
-        var selectedClass = await _dataService.GetClassByIdAsync(classId);
-
-        var vm = new Tbl21ClassDetailViewModel(selectedClass, _dataService);
-
-        App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), vm);
-    }
-
 }

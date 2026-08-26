@@ -9,7 +9,8 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!-- Tbl21ClassDetailPage.xaml  Skriptdatum:  23.08.2026   18:32   -->
+    <!-- Tbl21ClassDetailPage.xaml  Skriptdatum:  26.08.2026   18:32   -->
+
 
     <Page.Resources>
         <ResourceDictionary>
@@ -152,7 +153,7 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-15,0,0,0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHeaderClass}"
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderClass}"              
                           ItemsSource="{x:Bind ViewModel.ClassItems}" />
 
                 <!--  HEADER TAXONOMY  -->
@@ -209,71 +210,76 @@
                           ItemsSource="{x:Bind ViewModel.SuperclassItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--  CLASS DETAILS  -->
-                <ListView Grid.Row="9"
+                <!--  Class DETAILS  -->
+
+                <ListView Grid.Row="8"     
+    
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"               
                           ItemsSource="{x:Bind ViewModel.ClassItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  DIRECT CHILDREN  -->
-                <TextBlock Grid.Row="11"
+
+                <TextBlock Grid.Row="9"     
+    
                            Grid.Column="1"
                            Margin="0,5,0,5"
                            loc:Uids.Uid="TextBlock_DirectChildren"
                            FontWeight="Bold"
                            Visibility="{x:Bind ViewModel.HasDirectChildren, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                <ListView Grid.Row="12"
+                <ListView Grid.Row="10"     
+    
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubclass}"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubclass}"               
                           ItemsSource="{x:Bind ViewModel.SubclassItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  REFERENCES  -->
-                <TextBlock Grid.Row="14"
+                <TextBlock Grid.Row="27"
                            Grid.Column="0"
                            loc:Uids.Uid="TextBlock_References"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <TextBlock Grid.Row="15"
+                <TextBlock Grid.Row="28"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_Experts"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="16"
+                <ListView Grid.Row="29"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
                           ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
 
-                <TextBlock Grid.Row="17"
+                <TextBlock Grid.Row="30"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_OtherSources"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="18"
+                <ListView Grid.Row="31"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
                           ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
 
-                <TextBlock Grid.Row="19"
+                <TextBlock Grid.Row="32"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_Publications"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="20"
+                <ListView Grid.Row="33"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
@@ -281,14 +287,14 @@
                           ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
 
                 <!--  COMMENTS  -->
-                <TextBlock Grid.Row="21"
+                <TextBlock Grid.Row="34"
                            Grid.Column="0"
                            Margin="0,0,0,10"
                            loc:Uids.Uid="TextBlock_Comments"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="22"
+                <ListView Grid.Row="35"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
@@ -296,6 +302,7 @@
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
 
             </Grid>
+
         </ScrollViewer>
         <!--  2. 🔥 Modernes Lade Overlay  -->
         <components:LoadingOverlayControl Grid.Row="0"
@@ -303,4 +310,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>
+</Page>     

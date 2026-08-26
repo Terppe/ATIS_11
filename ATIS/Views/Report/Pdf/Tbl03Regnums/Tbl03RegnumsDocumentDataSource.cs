@@ -1,10 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Views.Report.Pdf.Tbl66Genusses;
 
-
-//    Tbl03RegnumsDocumentDataSourceSkriptdatum:  30.12.2024  12:32      
+//    Tbl03RegnumsDocumentDataSourceSkriptdatum:  24.08.2026  12:32      
 
 namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
 
@@ -35,6 +33,9 @@ public abstract class Tbl03RegnumsDocumentDataSource : ObservableObject
 
         _regnumSingle = regnumSingle;
 
+        PhylumsCollection = new ObservableCollection<Tbl06Phylum>(
+            (await dataService.GetPhylumsByRegnumIdAsync(regnumId))
+            .Where(x => IsVisibleTaxonName(x.PhylumName)));
 
         ExpertsCollection = new ObservableCollection<Tbl90Reference>(
             await dataService.GetExpertReferencesByRegnumIdAsync(regnumId));
@@ -52,6 +53,7 @@ public abstract class Tbl03RegnumsDocumentDataSource : ObservableObject
         return new Tbl03RegnumsPdfModel
         {
             RegnumName = _regnumSingle.RegnumName,
+            Subregnum = _regnumSingle.Subregnum,
             CountId = _regnumSingle.CountId,
             Synonym = _regnumSingle.Synonym,
             Author = _regnumSingle.Author,
@@ -80,15 +82,6 @@ public abstract class Tbl03RegnumsDocumentDataSource : ObservableObject
 
     public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = new();
-
-    public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = new();
-
-    public static ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = new();
-
-    public static ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = new();
-
-
     public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = new();
 
     public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = new();
@@ -103,17 +96,13 @@ public abstract class Tbl03RegnumsDocumentDataSource : ObservableObject
     {
         _regnumSingle = new Tbl03Regnum();
 
-        SubclassesCollection?.Clear();
-        ClassesCollection?.Clear();
-        SuperclassesCollection?.Clear();
-        SubphylumsCollection?.Clear();
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
 
-        CommentsCollection?.Clear();
         ExpertsCollection?.Clear();
         SourcesCollection?.Clear();
         AuthorsCollection?.Clear();
+        CommentsCollection?.Clear();
     }
 
 }

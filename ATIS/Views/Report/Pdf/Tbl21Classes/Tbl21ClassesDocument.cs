@@ -6,6 +6,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 
+
 namespace ATIS.Views.Report.Pdf.Tbl21Classes;
 
 public class Tbl21ClassesDocument : IDocument
@@ -44,6 +45,7 @@ public class Tbl21ClassesDocument : IDocument
             ? status
             : $"{status} {Loc("Since")} {validYear}";
     }
+
     public void Compose(IDocumentContainer container)
     {
         container
@@ -76,7 +78,7 @@ public class Tbl21ClassesDocument : IDocument
                     text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
                     text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
-                    text.Span("  ");
+                    text.Span("                                   ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
                 });
 
@@ -115,18 +117,22 @@ public class Tbl21ClassesDocument : IDocument
             //Refernces
             column.Item().Element(ComposeHeaderReferences);
             column.Spacing(5);
+
             //Refernces Experts
             column.Item().Element(ComposeHeaderReferencesExperts);
             column.Item().Element(ComposeReferencesExperts);
             column.Spacing(5);
+
             //Refernces Sources
             column.Item().Element(ComposeHeaderReferencesOtherSources);
             column.Item().Element(ComposeReferencesOtherSources);
             column.Spacing(5);
+
             //Refernces Authors
             column.Item().Element(ComposeHeaderReferencesPublications);
             column.Item().Element(ComposeReferencesPublications);
             column.Spacing(5);
+
             //Comments
             column.Item().Element(ComposeHeaderComments);
             column.Item().Element(ComposeComments);
@@ -223,7 +229,7 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Loc("TaxoStatus")).SemiBold();
+                    table.Cell().Text(Loc("TaxonomicStatus")).SemiBold();
                 });
                 column.Item().Table(table =>
                 {
@@ -255,7 +261,7 @@ public class Tbl21ClassesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Loc("CredibilityRating"));
+                    table.Cell().Text(Loc("RecordCredibilityRating"));
                 });
                 column.Item().Table(table =>
                 {
@@ -353,6 +359,7 @@ public class Tbl21ClassesDocument : IDocument
                     Model.ClassTree?.ClassName,
                     (left, right) => CompTaxoHieras.ComposeTaxoHierClass(column, left, right, Model.ClassTree!),
                     rememberAsLast: true);
+
             });
         });
     }
