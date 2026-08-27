@@ -9,7 +9,7 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!-- Tbl21ClassDetailPage.xaml  Skriptdatum:  26.08.2026   18:32   -->
+    <!--  Tbl21ClassDetailPage.xaml  Skriptdatum:  26.08.2026   18:32  -->
 
 
     <Page.Resources>
@@ -153,7 +153,7 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-15,0,0,0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHeaderClass}"              
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderClass}"
                           ItemsSource="{x:Bind ViewModel.ClassItems}" />
 
                 <!--  HEADER TAXONOMY  -->
@@ -212,31 +212,28 @@
 
                 <!--  Class DETAILS  -->
 
-                <ListView Grid.Row="8"     
-    
+                <ListView Grid.Row="8"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"               
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"
                           ItemsSource="{x:Bind ViewModel.ClassItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  DIRECT CHILDREN  -->
 
-                <TextBlock Grid.Row="9"     
-    
+                <TextBlock Grid.Row="9"
                            Grid.Column="1"
                            Margin="0,5,0,5"
                            loc:Uids.Uid="TextBlock_DirectChildren"
                            FontWeight="Bold"
                            Visibility="{x:Bind ViewModel.HasDirectChildren, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                <ListView Grid.Row="10"     
-    
+                <ListView Grid.Row="10"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubclass}"               
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubclass}"
                           ItemsSource="{x:Bind ViewModel.SubclassItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
@@ -310,4 +307,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>     
+</Page>

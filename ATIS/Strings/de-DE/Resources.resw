@@ -2599,7 +2599,7 @@
     <value>Synonyme</value>
   </data>
   <data name="Synonyms" xml:space="preserve">
-    <value>Synonyme(e)</value>
+    <value>Synonym(e)</value>
   </data>
   <data name="Synonym" xml:space="preserve">
     <value>Synonym</value>
@@ -3327,7 +3327,7 @@
   <data name="Species" xml:space="preserve">
     <value>Art</value>
   </data>
-  <data name="TextBlock_Species.Text1" xml:space="preserve">
+  <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Art</value>
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">

@@ -1,13 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl33Ordos;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
+
+
+//    Tbl33OrdoDetailViewModel Skriptdatum:  15.06.2024  10:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
-public class Tbl33OrdoDetailViewModel : ObservableObject
+public sealed class Tbl33OrdoDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -16,9 +23,10 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     public string Title => $"Ordo: {OrdoSelected?.OrdoName}";
 
     // -----------------------------
-    //  SELECTED ORDO
+    //  SELECTED Ordo
     // -----------------------------
-    public Tbl33Ordo OrdoSelected { get; }
+    public Tbl33Ordo? OrdoSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -31,7 +39,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     public Tbl24Subclass? SubclassSelected { get; private set; }
     public Tbl27Infraclass? InfraclassSelected { get; private set; }
     public Tbl30Legio? LegioSelected { get; private set; }
-
+    public Tbl36Subordo? SubordoSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -44,7 +52,6 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraclassCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToLegioCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToOrdoCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -75,11 +82,10 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -89,7 +95,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
         OrdoSelected = selectedOrdo;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -118,18 +124,20 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -181,6 +189,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
                 EntityId = ClassSelected.ClassId
             });
         }
+
         if (SubclassSelected != null)
         {
 
@@ -221,6 +230,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             EntityId = OrdoSelected.OrdoId
         });
 
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -260,19 +270,31 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             case "Infraclass":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
                 break;
+
             case "Legio":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl30LegioDetailPage), item.EntityId);
                 break;
 
+            case "Ordo":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl33OrdoDetailPage), item.EntityId);
+                break;
+
+            case "Subordo":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl36SubordoDetailPage), item.EntityId);
+                break;
         }
     }
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -298,18 +320,17 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
         LegioItems.Clear();
         OrdoItems.Clear();
 
-        Tbl33Ordo? ordo = null;
         Tbl30Legio? legio = null;
         Tbl27Infraclass? infraclass = null;
         Tbl24Subclass? subclass = null;
-        Tbl21Class? class1 = null;
+        Tbl21Class? classe = null;
         Tbl18Superclass? superclass = null;
         Tbl12Subphylum? subphylum = null;
         Tbl06Phylum? phylum = null;
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (OrdoSelected.OrdoId != 0)
+        if (OrdoSelected.LegioId != 0)
             legio = await _dataService.GetLegioByIdAsync(OrdoSelected.LegioId);
 
         if (legio.InfraclassId != 0)
@@ -319,10 +340,10 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             subclass = await _dataService.GetSubclassByIdAsync(infraclass.SubclassId);
 
         if (subclass.ClassId != 0)
-            class1 = await _dataService.GetClassByIdAsync(subclass.ClassId);
+            classe = await _dataService.GetClassByIdAsync(subclass.ClassId);
 
-        if (class1?.SuperclassId != 0)
-            superclass = await _dataService.GetSuperclassByIdAsync(class1.SuperclassId);
+        if (classe?.SuperclassId != 0)
+            superclass = await _dataService.GetSuperclassByIdAsync(classe.SuperclassId);
 
         if (superclass?.SubphylumId != 0)
             subphylum = await _dataService.GetSubphylumByIdAsync(superclass.SubphylumId);
@@ -380,12 +401,12 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             });
         }
 
-        if (class1 != null && IsVisibleTaxonName(class1.ClassName))
+        if (classe != null && IsVisibleTaxonName(classe.ClassName))
         {
-            ClassSelected = class1;
+            ClassSelected = classe;
             ClassItems.Add(new TaxonomyLine<Tbl21Class>
             {
-                Item = class1,
+                Item = classe,
                 HeaderMargin = CreateHeaderMargin(visibleIndex++),
                 ShowAsHyperlink = true
             });
@@ -430,7 +451,6 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -471,6 +491,7 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
 
         HasDirectChildren = true;
     }
+
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
@@ -508,12 +529,72 @@ public class Tbl33OrdoDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (OrdoSelected == null || OrdoSelected.OrdoId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl33OrdosDocumentDataSource.GetOrdoDetailsAsync(OrdoSelected.OrdoId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl33OrdosDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(OrdoSelected.OrdoName)
+                ? $"Ordo_{OrdoSelected.OrdoId}"
+                : string.Concat(OrdoSelected.OrdoName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{OrdoSelected.OrdoId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl36Subordos;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using static ATIS.Views.Report.PdfModels;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 
 //    Tbl36SubordoDetailViewModel Skriptdatum:  15.06.2024  10:32    
@@ -12,6 +14,7 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl36SubordoDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -22,7 +25,8 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Subordo
     // -----------------------------
-    public Tbl36Subordo SubordoSelected { get; }
+    public Tbl36Subordo? SubordoSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -36,6 +40,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     public Tbl27Infraclass? InfraclassSelected { get; private set; }
     public Tbl30Legio? LegioSelected { get; private set; }
     public Tbl33Ordo? OrdoSelected { get; private set; }
+    public Tbl39Infraordo? InfraordoSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -49,7 +54,6 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToLegioCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToOrdoCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubordoCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -81,7 +85,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -94,7 +98,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
         SubordoSelected = selectedSubordo;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -123,18 +127,20 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -238,7 +244,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
             EntityId = SubordoSelected.SubordoId
         });
 
-
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -290,6 +296,10 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
             case "Subordo":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl36SubordoDetailPage), item.EntityId);
                 break;
+
+            case "Infraordo":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl39InfraordoDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -298,11 +308,11 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -329,7 +339,6 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
         OrdoItems.Clear();
         SubordoItems.Clear();
 
-        Tbl36Subordo? subordo = null;
         Tbl33Ordo? ordo = null;
         Tbl30Legio? legio = null;
         Tbl27Infraclass? infraclass = null;
@@ -341,7 +350,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (SubordoSelected.SubordoId != 0)
+        if (SubordoSelected.OrdoId != 0)
             ordo = await _dataService.GetOrdoByIdAsync(SubordoSelected.OrdoId);
 
         if (ordo.LegioId != 0)
@@ -448,7 +457,6 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
             });
         }
 
-
         if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
             LegioSelected = legio;
@@ -477,7 +485,6 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -556,12 +563,72 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (SubordoSelected == null || SubordoSelected.SubordoId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl36SubordosDocumentDataSource.GetSubordoDetailsAsync(SubordoSelected.SubordoId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl36SubordosDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SubordoSelected.SubordoName)
+                ? $"Subordo_{SubordoSelected.SubordoId}"
+                : string.Concat(SubordoSelected.SubordoName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SubordoSelected.SubordoId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

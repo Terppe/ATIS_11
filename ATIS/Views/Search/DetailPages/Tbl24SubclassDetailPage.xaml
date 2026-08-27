@@ -48,7 +48,7 @@
 
             <Button Margin="10,5,0,5"
                     HorizontalAlignment="Right"
-                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                    Click="ExportPdfButton_Click">
                 <StackPanel Orientation="Horizontal"
                             Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
@@ -188,7 +188,37 @@
                           ItemsSource="{x:Bind ViewModel.RegnumItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--  Weitere Controls  -->
+                <ListView Grid.Row="5"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkPhylum}"
+                          ItemsSource="{x:Bind ViewModel.PhylumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="6"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubphylum}"
+                          ItemsSource="{x:Bind ViewModel.SubphylumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="7"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSuperclass}"
+                          ItemsSource="{x:Bind ViewModel.SuperclassItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="8"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkClass}"
+                          ItemsSource="{x:Bind ViewModel.ClassItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  Subclass DETAILS  -->
                 <ListView Grid.Row="9"

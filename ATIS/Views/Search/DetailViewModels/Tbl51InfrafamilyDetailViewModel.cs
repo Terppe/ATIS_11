@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl51Infrafamilies;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using static ATIS.Views.Report.PdfModels;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 
 //    Tbl51InfrafamilyDetailViewModel Skriptdatum:  18.08.2026  10:32    
@@ -12,6 +14,7 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -22,7 +25,8 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Infrafamily
     // -----------------------------
-    public Tbl51Infrafamily InfrafamilySelected { get; }
+    public Tbl51Infrafamily? InfrafamilySelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -41,6 +45,7 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
     public Tbl42Superfamily? SuperfamilySelected { get; private set; }
     public Tbl45Family? FamilySelected { get; private set; }
     public Tbl48Subfamily? SubfamilySelected { get; private set; }
+    public Tbl54Supertribus? SupertribusSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -59,8 +64,6 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToFamilyCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubfamilyCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfrafamilyCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSupertribusCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -97,7 +100,7 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -110,7 +113,7 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
         InfrafamilySelected = selectedInfrafamily;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -139,18 +142,20 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -309,7 +314,7 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
             EntityId = InfrafamilySelected.InfrafamilyId
         });
 
-
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -381,6 +386,10 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
             case "Infrafamily":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl51InfrafamilyDetailPage), item.EntityId);
                 break;
+
+            case "Supertribus":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl54SupertribusDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -389,11 +398,11 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -425,7 +434,6 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
         SubfamilyItems.Clear();
         InfrafamilyItems.Clear();
 
-        Tbl51Infrafamily? infrafamily = null;
         Tbl48Subfamily? subfamily = null;
         Tbl45Family? family = null;
         Tbl42Superfamily? superfamily = null;
@@ -442,7 +450,7 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (InfrafamilySelected.InfrafamilyId != 0)
+        if (InfrafamilySelected.SubfamilyId != 0)
             subfamily = await _dataService.GetSubfamilyByIdAsync(InfrafamilySelected.SubfamilyId);
 
         if (subfamily.FamilyId != 0)
@@ -564,7 +572,6 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
             });
         }
 
-
         if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
             LegioSelected = legio;
@@ -649,7 +656,6 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -728,12 +734,72 @@ public sealed class Tbl51InfrafamilyDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (InfrafamilySelected == null || InfrafamilySelected.InfrafamilyId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl51InfrafamiliesDocumentDataSource.GetInfrafamilyDetailsAsync(InfrafamilySelected.InfrafamilyId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl51InfrafamiliesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(InfrafamilySelected.InfrafamilyName)
+                ? $"Infrafamily_{InfrafamilySelected.InfrafamilyId}"
+                : string.Concat(InfrafamilySelected.InfrafamilyName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{InfrafamilySelected.InfrafamilyId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

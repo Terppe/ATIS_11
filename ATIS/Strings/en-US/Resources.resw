@@ -3327,7 +3327,7 @@
   <data name="Species" xml:space="preserve">
     <value>Species</value>
   </data>
-  <data name="TextBlock_Species.Text1" xml:space="preserve">
+  <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Species</value>
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">

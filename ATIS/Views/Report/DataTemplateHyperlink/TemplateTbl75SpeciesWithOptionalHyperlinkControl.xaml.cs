@@ -5,6 +5,7 @@ using ATIS.Views.Taxonomy;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI.Text;
+using ATIS.Helpers;
 using Microsoft.UI;
 
 namespace ATIS.Views.Report.DataTemplateHyperlink;
@@ -84,33 +85,34 @@ public sealed partial class TemplateTbl75SpeciesWithOptionalHyperlinkControl : U
 
     private void UpdateAdditionalText()
     {
-        if (TbAuthorDisplay == null || TbLanguageNamesDisplay == null || TbSpeciesLine == null)
+        if (TbSpecies == null || TbAuthorDisplay == null || TbLanguageNamesDisplay == null || TbSpeciesLine == null)
             return;
 
         if (DataContext is not TaxonomyLine<Tbl75Species> line || line.Item == null)
         {
+            TbSpecies.Text = string.Empty;
             TbAuthorDisplay.Text = string.Empty;
             TbLanguageNamesDisplay.Text = string.Empty;
             TbSpeciesLine.Text = string.Empty;
             return;
         }
 
+        var genusName = line.Item.GenusName;
+        var genusObject = line.Item.Genus;
+
+        TbSpecies.Text = line.Item.GenusSpeciesFullName;
+
         TbAuthorDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedParts(
             " - ",
             line.Item.Author,
             line.Item.AuthorYear);
 
-        //TbLanguageNamesDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedList(
-        //    " - ",
-        //    line.Item.EngName,
-        //    line.Item.GerName,
-        //    line.Item.FraName,
-        //    line.Item.PorName);
+        TbLanguageNamesDisplay.Text = string.Empty;
 
         var parts = new List<string>();
 
-        if (!string.IsNullOrWhiteSpace(line.Item.SpeciesName))
-            parts.Add(line.Item.SpeciesName);
+        if (!string.IsNullOrWhiteSpace(line.Item.GenusSpeciesFullName))
+            parts.Add(line.Item.GenusSpeciesFullName);
 
         var authorPart = string.Join(" ",
             new[] { line.Item.Author, line.Item.AuthorYear }
@@ -119,15 +121,54 @@ public sealed partial class TemplateTbl75SpeciesWithOptionalHyperlinkControl : U
         if (!string.IsNullOrWhiteSpace(authorPart))
             parts.Add(authorPart);
 
-        //var languagePart = string.Join(", ",
-        //    new[] { line.Item.EngName, line.Item.GerName, line.Item.FraName, line.Item.PorName }
-        //        .Where(x => !string.IsNullOrWhiteSpace(x)));
-
-        //if (!string.IsNullOrWhiteSpace(languagePart))
-        //    parts.Add(languagePart);
-
         TbSpeciesLine.Text = string.Join(" - ", parts);
     }
+
+    //{
+    //    if (TbAuthorDisplay == null || TbLanguageNamesDisplay == null || TbSpeciesLine == null)
+    //        return;
+
+    //    if (DataContext is not TaxonomyLine<Tbl75Species> line || line.Item == null)
+    //    {
+    //        TbAuthorDisplay.Text = string.Empty;
+    //        TbLanguageNamesDisplay.Text = string.Empty;
+    //        TbSpeciesLine.Text = string.Empty;
+    //        return;
+    //    }
+
+    //    TbAuthorDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedParts(
+    //        " - ",
+    //        line.Item.Author,
+    //        line.Item.AuthorYear);
+
+    //    //TbLanguageNamesDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedList(
+    //    //    " - ",
+    //    //    line.Item.EngName,
+    //    //    line.Item.GerName,
+    //    //    line.Item.FraName,
+    //    //    line.Item.PorName);
+
+    //    var parts = new List<string>();
+
+    //    if (!string.IsNullOrWhiteSpace(line.Item.SpeciesName))
+    //        parts.Add(line.Item.SpeciesName);
+
+    //    var authorPart = string.Join(" ",
+    //        new[] { line.Item.Author, line.Item.AuthorYear }
+    //            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    //    if (!string.IsNullOrWhiteSpace(authorPart))
+    //        parts.Add(authorPart);
+
+    //    //var languagePart = string.Join(", ",
+    //    //    new[] { line.Item.EngName, line.Item.GerName, line.Item.FraName, line.Item.PorName }
+    //    //        .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    //    //if (!string.IsNullOrWhiteSpace(languagePart))
+    //    //    parts.Add(languagePart);
+
+    //    TbSpeciesLine.Text = string.Join(" - ", parts);
+    //}
 
     private void UpdateContentMode()
     {

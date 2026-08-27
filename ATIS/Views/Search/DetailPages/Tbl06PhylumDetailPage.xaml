@@ -187,8 +187,6 @@
                           ItemsSource="{x:Bind ViewModel.RegnumItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--  Weitere Controls  -->
-
                 <!--  Phylum DETAILS  -->
                 <ListView Grid.Row="9"
                           Grid.Column="0"

@@ -1,22 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
 
 
-//    Tbl54SupertribussesDocumentDataSourceSkriptdatum:  16.06.2023  10:32    
+//    Tbl54SupertribussesDocumentDataSourceSkriptdatum:  18.18.2026  10:32    
 
 namespace ATIS.Views.Report.Pdf.Tbl54Supertribusses;
 
 public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
 {
-    #region [Private Data Members]   
 
     private static Tbl03Regnum _regnumSingle = new();
     private static Tbl06Phylum _phylumSingle = new();
-    private static Tbl09Division _divisionSingle = new();
     private static Tbl12Subphylum _subphylumSingle = new();
-    private static Tbl15Subdivision _subdivisionSingle = new();
     private static Tbl18Superclass _superclassSingle = new();
     private static Tbl21Class _classSingle = new();
     private static Tbl24Subclass _subclassSingle = new();
@@ -32,122 +28,85 @@ public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
     private static Tbl54Supertribus _supertribusSingle = new();
 
 
-    #endregion [Private Data Members]      
-
-
     //    Part 1    
 
 
-    public static Tbl54SupertribussesPdfModel GetSupertribusDetails(int supertribusId)
-
+    private static bool IsVisibleTaxonName(string? name)
     {
-        #region [Private Data Members]
+        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
+    }
 
+    public static async Task<Tbl54SupertribussesPdfModel?> GetSupertribusDetailsAsync(int supertribusId)
+    {
         var dataService = App.GetService<IDataService>();
-        //var context = new AtisDbContext();
-        //var fishId = 0;
-        //var plantId = 0;
-
-        #endregion [Private Data Members]
 
         ClearAllCollections();
 
-        //if (context.Tbl15Subdivisions != null)
-        //{
-        //    var plantaeRegnum = context.Tbl15Subdivisions.FirstOrDefault(e => e.SubdivisionName == "Plantae#Regnum#");
-        //    if (plantaeRegnum != null)
-        //    {
-        //        plantId = plantaeRegnum.SubdivisionId;
-        //    }
-        //}
+        var supertribusSingle = await dataService.GetSupertribusByIdAsync(supertribusId);
+        if (supertribusSingle == null)
+            return null;
 
-        //if (context.Tbl12Subphylums != null)
-        //{
-        //    var animaliaRegnum = context.Tbl12Subphylums.FirstOrDefault(e => e.SubphylumName == "Animalia#Regnum#");
+        _supertribusSingle = supertribusSingle;
 
-        //    if (animaliaRegnum != null)
-        //    {
-        //        fishId = animaliaRegnum.SubphylumId;
-        //    }
-        //}
+        if (_supertribusSingle.InfrafamilyId != 0)
+            _infrafamilySingle = await dataService.GetInfrafamilyByIdAsync(_supertribusSingle.InfrafamilyId) ?? new Tbl51Infrafamily();
 
-        SupertribussesCollection = dataService.CollSupertribussesBySupertribusIdAndHash(supertribusId);
-        var infrafamilyId = dataService.InfrafamilyIdFromSupertribussesCollectionSelect(supertribusId);
-        InfrafamiliesCollection = dataService.CollInfrafamiliesByInfrafamilyIdAndHash(infrafamilyId);
-        var subfamilyId = dataService.SubfamilyIdFromInfrafamiliesCollectionSelect(infrafamilyId);
-        SubfamiliesCollection = dataService.CollSubfamiliesBySubfamilyIdAndHash(subfamilyId);
-        var familyId = dataService.FamilyIdFromSubfamiliesCollectionSelect(subfamilyId);
-        FamiliesCollection = dataService.CollFamiliesByFamilyIdAndHash(familyId);
-        var superfamilyId = dataService.SuperfamilyIdFromFamiliesCollectionSelect(familyId);
-        SuperfamiliesCollection = dataService.CollSuperfamiliesBySuperfamilyIdAndHash(superfamilyId);
-        var infraordoId = dataService.InfraordoIdFromSuperfamiliesCollectionSelect(superfamilyId);
-        InfraordosCollection = dataService.CollInfraordosByInfraordoIdAndHash(infraordoId);
-        var subordoId = dataService.SubordoIdFromInfraordosCollectionSelect(infraordoId);
-        SubordosCollection = dataService.CollSubordosBySubordoIdAndHash(subordoId);
-        var ordoId = dataService.OrdoIdFromSubordosCollectionSelect(subordoId);
-        OrdosCollection = dataService.CollOrdosByOrdoIdAndHash(ordoId);
-        var legioId = dataService.LegioIdFromOrdosCollectionSelect(ordoId);
-        LegiosCollection = dataService.CollLegiosByLegioIdAndHash(legioId);
-        var infraclassId = dataService.InfraclassIdFromLegiosCollectionSelect(legioId);
-        InfraclassesCollection = dataService.CollInfraclassesByInfraclassIdAndHash(infraclassId);
-        var subclassId = dataService.SubclassIdFromInfraclassesCollectionSelect(infraclassId);
-        SubclassesCollection = dataService.CollSubclassesBySubclassIdAndHash(subclassId);
-        var classId = dataService.ClassIdFromSubclassesCollectionSelect(subclassId);
-        ClassesCollection = dataService.CollClassesByClassIdAndHash(classId);
-        var superclassId = dataService.SuperclassIdFromClassesCollectionSelect(classId);
-        SuperclassesCollection = dataService.CollSuperclassesBySuperclassIdAndHash(superclassId);
-        var subphylumId = dataService.SubphylumIdFromSuperclassesCollectionSelect(superclassId);
-        //var subdivisionId = dataService.SubdivisionIdFromSuperclassesCollectionSelect(superclassId);
+        if (_infrafamilySingle.SubfamilyId != 0)
+            _subfamilySingle = await dataService.GetSubfamilyByIdAsync(_infrafamilySingle.SubfamilyId) ?? new Tbl48Subfamily();
 
-        //if (subphylumId == fishId)  //Basis #Subphylum#
-        //{
-        //    SubdivisionsCollection = dataService.CollSubdivisionsBySubdivisionIdAndHash(subdivisionId);
-        //    var divisionId = dataService.DivisionIdFromSubdivisionsCollectionSelect(subdivisionId);
-        //    DivisionsCollection = dataService.CollDivisionsByDivisionIdAndHash(divisionId);
-        //    var regnumId = dataService.RegnumIdFromDivisionsCollectionSelect(divisionId);
-        //    RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        if (_subfamilySingle.FamilyId != 0)
+            _familySingle = await dataService.GetFamilyByIdAsync(_subfamilySingle.FamilyId) ?? new Tbl45Family();
 
-        //    _regnumSingle = dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
-        //    _divisionSingle = dataService.GetDivisionSingleByDivisionIdAndHash(divisionId);
-        //    _subdivisionSingle = dataService.GetSubdivisionSingleBySubdivisionIdAndHash(subdivisionId);
+        if (_familySingle.SuperfamilyId != 0)
+            _superfamilySingle = await dataService.GetSuperfamilyByIdAsync(_familySingle.SuperfamilyId) ?? new Tbl42Superfamily();
 
-        //}
-        //if (subdivisionId == plantId)  //Basis #Subdivision#
-        {
-            SubphylumsCollection = dataService.CollSubphylumsBySubphylumIdAndHash(subphylumId);
-            var phylumId = dataService.PhylumIdFromSubphylumsCollectionSelect(subphylumId);
-            PhylumsCollection = dataService.CollPhylumsByPhylumIdAndHash(phylumId);
-            var regnumId = dataService.RegnumIdFromPhylumsCollectionSelect(phylumId);
-            RegnumsCollection = dataService.CollRegnumsByRegnumIdAndHash(regnumId);
+        if (_superfamilySingle.InfraordoId != 0)
+            _infraordoSingle = await dataService.GetInfraordoByIdAsync(_superfamilySingle.InfraordoId) ?? new Tbl39Infraordo();
 
-            _regnumSingle = dataService.GetRegnumSingleByRegnumIdAndHash(regnumId);
-            _phylumSingle = dataService.GetPhylumSingleByPhylumIdAndHash(phylumId);
-            _subphylumSingle = dataService.GetSubphylumSingleBySubphylumIdAndHash(subphylumId);
-        }
+        if (_infraordoSingle.SubordoId != 0)
+            _subordoSingle = await dataService.GetSubordoByIdAsync(_infraordoSingle.SubordoId) ?? new Tbl36Subordo();
 
-        //direct children
-        TribussesCollection = dataService.CollTribussesBySupertribusIdAndHash(supertribusId);
+        if (_subordoSingle.OrdoId != 0)
+            _ordoSingle = await dataService.GetOrdoByIdAsync(_subordoSingle.OrdoId) ?? new Tbl33Ordo();
 
-        //-----------------------------------------------------------------------------
-        ExpertsCollection = dataService.CollExpertsBySupertribusId(supertribusId);
-        SourcesCollection = dataService.CollSourcesBySupertribusId(supertribusId);
-        AuthorsCollection = dataService.CollAuthorsBySupertribusId(supertribusId);
-        //------------------------------------------------------------------------------
-        CommentsCollection = dataService.CollCommentsBySupertribusId(supertribusId);
+        if (_ordoSingle.LegioId != 0)
+            _legioSingle = await dataService.GetLegioByIdAsync(_ordoSingle.LegioId) ?? new Tbl30Legio();
 
-        _supertribusSingle = dataService.GetSupertribusSingleBySupertribusIdAndHash(supertribusId);
-        _infrafamilySingle = dataService.GetInfrafamilySingleByInfrafamilyIdAndHash(infrafamilyId);
-        _subfamilySingle = dataService.GetSubfamilySingleBySubfamilyIdAndHash(subfamilyId);
-        _familySingle = dataService.GetFamilySingleByFamilyIdAndHash(familyId);
-        _superfamilySingle = dataService.GetSuperfamilySingleBySuperfamilyIdAndHash(superfamilyId);
-        _infraordoSingle = dataService.GetInfraordoSingleByInfraordoIdAndHash(infraordoId);
-        _subordoSingle = dataService.GetSubordoSingleBySubordoIdAndHash(subordoId);
-        _ordoSingle = dataService.GetOrdoSingleByOrdoIdAndHash(ordoId);
-        _legioSingle = dataService.GetLegioSingleByLegioIdAndHash(legioId);
-        _infraclassSingle = dataService.GetInfraclassSingleByInfraclassIdAndHash(infraclassId);
-        _subclassSingle = dataService.GetSubclassSingleBySubclassIdAndHash(subclassId);
-        _classSingle = dataService.GetClassSingleByClassIdAndHash(classId);
-        _superclassSingle = dataService.GetSuperclassSingleBySuperclassIdAndHash(superclassId);
+        if (_legioSingle.InfraclassId != 0)
+            _infraclassSingle = await dataService.GetInfraclassByIdAsync(_legioSingle.InfraclassId) ?? new Tbl27Infraclass();
+
+        if (_infraclassSingle.SubclassId != 0)
+            _subclassSingle = await dataService.GetSubclassByIdAsync(_infraclassSingle.SubclassId) ?? new Tbl24Subclass();
+
+        if (_subclassSingle.ClassId != 0)
+            _classSingle = await dataService.GetClassByIdAsync(_subclassSingle.ClassId) ?? new Tbl21Class();
+
+        if (_classSingle.SuperclassId != 0)
+            _superclassSingle = await dataService.GetSuperclassByIdAsync(_classSingle.SuperclassId) ?? new Tbl18Superclass();
+
+        if (_superclassSingle.SubphylumId != 0)
+            _subphylumSingle = await dataService.GetSubphylumByIdAsync(_superclassSingle.SubphylumId) ?? new Tbl12Subphylum();
+
+        if (_subphylumSingle.PhylumId != 0)
+            _phylumSingle = await dataService.GetPhylumByIdAsync(_subphylumSingle.PhylumId) ?? new Tbl06Phylum();
+
+        if (_phylumSingle.RegnumId != 0)
+            _regnumSingle = await dataService.GetRegnumByIdAsync(_phylumSingle.RegnumId) ?? new Tbl03Regnum();
+        TribussesCollection = new ObservableCollection<Tbl57Tribus>(
+                    (await dataService.GetTribussesBySupertribusIdAsync(supertribusId))
+                    .Where(x => IsVisibleTaxonName(x.TribusName)));
+
+        ExpertsCollection = new ObservableCollection<Tbl90Reference>(
+            await dataService.GetExpertReferencesBySupertribusIdAsync(supertribusId));
+
+        SourcesCollection = new ObservableCollection<Tbl90Reference>(
+            await dataService.GetSourceReferencesBySupertribusIdAsync(supertribusId));
+
+        AuthorsCollection = new ObservableCollection<Tbl90Reference>(
+            await dataService.GetAuthorReferencesBySupertribusIdAsync(supertribusId));
+
+        CommentsCollection = new ObservableCollection<Tbl93Comment>(
+            await dataService.GetCommentsBySupertribusIdAsync(supertribusId));
 
         return new Tbl54SupertribussesPdfModel
         {
@@ -164,15 +123,14 @@ public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
             FraName = _supertribusSingle.FraName,
             PorName = _supertribusSingle.PorName,
             Memo = _supertribusSingle.Memo,
+            Writer = _supertribusSingle.Writer,
             WriterDate = _supertribusSingle.WriterDate,
+            Updater = _supertribusSingle.Updater,
             UpdaterDate = _supertribusSingle.UpdaterDate,
-            //------------------------------- 
 
             RegnumTree = GenrateModels.GenRegnums.GenerateRegnums(_regnumSingle),
             PhylumTree = GenrateModels.GenPhylums.GeneratePhylums(_phylumSingle),
             SubphylumTree = GenrateModels.GenSubphylums.GenerateSubphylums(_subphylumSingle),
-            //DivisionTree = GenrateModels.GenDivisions.GenerateDivisions(_divisionSingle),
-            //SubdivisionTree = GenrateModels.GenSubdivisions.GenerateSubdivisions(_subdivisionSingle),
             SuperclassTree = GenrateModels.GenSuperclasses.GenerateSuperclasses(_superclassSingle),
             ClassTree = GenrateModels.GenClasses.GenerateClasses(_classSingle),
             SubclassTree = GenrateModels.GenSubclasses.GenerateSubclasses(_subclassSingle),
@@ -185,60 +143,37 @@ public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
             FamilyTree = GenrateModels.GenFamilies.GenerateFamilies(_familySingle),
             SubfamilyTree = GenrateModels.GenSubfamilies.GenerateSubfamilies(_subfamilySingle),
             InfrafamilyTree = GenrateModels.GenInfrafamilies.GenerateInfrafamilies(_infrafamilySingle),
-            SupertribusTree = GenrateModels.GenSupertribusses.GenerateSupertribusses(_supertribusSingle)
+            SupertribusTree = GenrateModels.GenSupertribusses.GenerateSupertribusses(_supertribusSingle),
         };
     }
 
     #region "Collections"
+    public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl27Infraclass> InfraclassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl30Legio> LegiosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl33Ordo> OrdosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl36Subordo> SubordosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl39Infraordo> InfraordosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl42Superfamily> SuperfamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl45Family> FamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl48Subfamily> SubfamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl51Infrafamily> InfrafamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl54Supertribus> SupertribussesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl57Tribus> TribussesCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl09Division> DivisionsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl15Subdivision> SubdivisionsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl27Infraclass> InfraclassesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl30Legio> LegiosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl33Ordo> OrdosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl36Subordo> SubordosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl39Infraordo> InfraordosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl42Superfamily> SuperfamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl45Family> FamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl48Subfamily> SubfamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl51Infrafamily> InfrafamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl54Supertribus> SupertribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl57Tribus> TribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl60Subtribus> SubtribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = null!;
-    #endregion "Collections"          
+    public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = new();
+    #endregion "Collections"               
 
     public static void ClearAllCollections()
     {
@@ -255,14 +190,10 @@ public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
         _subclassSingle = new Tbl24Subclass();
         _classSingle = new Tbl21Class();
         _superclassSingle = new Tbl18Superclass();
-        _subdivisionSingle = new Tbl15Subdivision();
-        _divisionSingle = new Tbl09Division();
         _subphylumSingle = new Tbl12Subphylum();
         _phylumSingle = new Tbl06Phylum();
         _regnumSingle = new Tbl03Regnum();
 
-        SubtribussesCollection?.Clear();
-        TribussesCollection?.Clear();
         SupertribussesCollection?.Clear();
         InfrafamiliesCollection?.Clear();
         SubfamiliesCollection?.Clear();
@@ -276,16 +207,13 @@ public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
         SubclassesCollection?.Clear();
         ClassesCollection?.Clear();
         SuperclassesCollection?.Clear();
-        SubdivisionsCollection?.Clear();
         SubphylumsCollection?.Clear();
-        DivisionsCollection?.Clear();
         PhylumsCollection?.Clear();
         RegnumsCollection?.Clear();
 
-        CommentsCollection?.Clear();
         ExpertsCollection?.Clear();
         SourcesCollection?.Clear();
         AuthorsCollection?.Clear();
+        CommentsCollection?.Clear();
     }
-
 }

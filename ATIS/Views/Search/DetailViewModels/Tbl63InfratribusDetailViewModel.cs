@@ -1,16 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl63Infratribusses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 
-//    Tbl63InfratribusDetailViewModel Skriptdatum:  16.08.2026  10:32    
+//    Tbl63InfratribusDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -21,12 +25,13 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Infratribus
     // -----------------------------
-    public Tbl63Infratribus InfratribusSelected { get; }
+    public Tbl63Infratribus? InfratribusSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
     // -----------------------------
-    // -----------------------------
+
     public Tbl03Regnum? RegnumSelected { get; private set; }
     public Tbl06Phylum? PhylumSelected { get; private set; }
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
@@ -45,8 +50,7 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
     public Tbl54Supertribus? SupertribusSelected { get; private set; }
     public Tbl57Tribus? TribusSelected { get; private set; }
     public Tbl60Subtribus? SubtribusSelected { get; private set; }
-
-
+    public Tbl66Genus? GenusSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -69,8 +73,6 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToTribusCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubtribusCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfratribusCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToGenusCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -111,7 +113,7 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -124,7 +126,7 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
         InfratribusSelected = selectedInfratribus;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -153,18 +155,20 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -360,7 +364,6 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             });
         }
 
-
         Breadcrumb.Add(new BreadcrumbItem
         {
             Label = InfratribusSelected.InfratribusName,
@@ -368,7 +371,7 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             EntityId = InfratribusSelected.InfratribusId
         });
 
-
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -456,6 +459,10 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             case "Infratribus":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl63InfratribusDetailPage), item.EntityId);
                 break;
+
+            case "Genus":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl66GenusDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -464,11 +471,11 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -504,7 +511,6 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
         SubtribusItems.Clear();
         InfratribusItems.Clear();
 
-        Tbl63Infratribus? infratribus = null;
         Tbl60Subtribus? subtribus = null;
         Tbl57Tribus? tribus = null;
         Tbl54Supertribus? supertribus = null;
@@ -525,7 +531,7 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (InfratribusSelected.InfratribusId != 0)
+        if (InfratribusSelected.SubtribusId != 0)
             subtribus = await _dataService.GetSubtribusByIdAsync(InfratribusSelected.SubtribusId);
 
         if (subtribus.TribusId != 0)
@@ -659,7 +665,6 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             });
         }
 
-
         if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
             LegioSelected = legio;
@@ -788,7 +793,6 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -867,12 +871,72 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (InfratribusSelected == null || InfratribusSelected.InfratribusId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl63InfratribussesDocumentDataSource.GetInfratribusDetailsAsync(InfratribusSelected.InfratribusId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl63InfratribussesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(InfratribusSelected.InfratribusName)
+                ? $"Infratribus_{InfratribusSelected.InfratribusId}"
+                : string.Concat(InfratribusSelected.InfratribusName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{InfratribusSelected.InfratribusId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

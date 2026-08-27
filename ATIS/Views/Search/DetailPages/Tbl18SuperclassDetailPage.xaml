@@ -187,7 +187,21 @@
                           ItemsSource="{x:Bind ViewModel.RegnumItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--  Weitere Controls  -->
+                <ListView Grid.Row="5"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkPhylum}"
+                          ItemsSource="{x:Bind ViewModel.PhylumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
+
+                <ListView Grid.Row="6"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSubphylum}"
+                          ItemsSource="{x:Bind ViewModel.SubphylumItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  Superclass DETAILS  -->
                 <ListView Grid.Row="9"

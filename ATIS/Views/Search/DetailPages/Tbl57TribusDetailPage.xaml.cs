@@ -1,6 +1,11 @@
 ﻿using ATIS.Interfaces;
+using ATIS.Views.Report.Pdf.Tbl57Tribusses;
 using ATIS.Views.Search.DetailViewModels;
 using Microsoft.UI.Xaml.Data;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 //  Tbl57TribusDetailPage.xaml.cs Skriptdatum:  18.08.2026  10:32     
 
@@ -10,7 +15,7 @@ namespace ATIS.Views.Search.DetailPages;
 public sealed partial class Tbl57TribusDetailPage : Page
 {
     public Func<BreadcrumbItem, Task> NavigateBreadcrumbAsync { get; }
-    private IDataService _dataService;
+    private readonly IDataService _dataService;
 
     public Tbl57TribusDetailPage()
     {
@@ -29,20 +34,21 @@ public sealed partial class Tbl57TribusDetailPage : Page
     {
         base.OnNavigatedTo(e);
 
-        if (e.Parameter is not int id) return;
+        if (e.Parameter is not int id)
+            return;
 
-        // falls ViewModel schon existiert:
         ViewModel.IsLoading = true;
 
         try
         {
             var selected = await _dataService.GetTribusByIdAsync(id);
-            if (selected == null) return;
+            if (selected == null)
+                return;
 
             ViewModel = new Tbl57TribusDetailViewModel(selected, _dataService);
             DataContext = ViewModel;
 
-            ViewModel.IsLoading = true; // nach New nochmal sicher setzen
+            ViewModel.IsLoading = true;
             await ViewModel.InitializeAsync();
             Bindings.Update();
         }
@@ -55,45 +61,98 @@ public sealed partial class Tbl57TribusDetailPage : Page
 
     public Task OnNavigateBreadcrumbAsync(BreadcrumbItem item)
     {
-        // gleiche Logik wie Breadcrumb_Click / bestehende Navigation
         return ViewModel.NavigateBreadcrumbAsync(item);
     }
 
-    private void ExecuteBack()
+    private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        var frame = App.MainPageInstance.NavFrame;
+        var document = await CreateDetailDocumentAsync();
+        if (document == null)
+            return;
 
-        if (frame.CanGoBack)
-            frame.GoBack();
-    }
-    private async void PrintButton_Click(object sender, RoutedEventArgs e)
-    {
-        await PrintCurrentReviewAsync();
-    }
-    private Task PrintCurrentReviewAsync()
-    {
-        // TODO
-        return Task.CompletedTask;
-    }
-    private void OpenPdf_Click(object sender, RoutedEventArgs e)
-    {
-        // Frame?.Navigate(typeof(Tbl57TribusReportPage), $"{_entityType}|{_entityId}");
+        var tribusName = SanitizeFileNamePart(GetCurrentTribusName());
+        var suggestedFileName = $"Tribus_Detail_{tribusName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await SaveDocumentAsPdfAsync(document, suggestedFileName);
     }
 
+    //für später andere nutzung, z.B. Drucken
+    //private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    //{
+    //    await PrintCurrentReviewAsync();
+    //}
+
+    //private async Task PrintCurrentReviewAsync()
+    //{
+    //    var document = await CreateDetailDocumentAsync();
+    //    if (document == null)
+    //        return;
+
+    //    var tribusName = SanitizeFileNamePart(GetCurrentTribusName());
+    //    var suggestedFileName = $"Tribus_Detail_{tribusName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+    //    await SaveDocumentAsPdfAsync(document, suggestedFileName);
+    //}
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
         if (sender is HyperlinkButton button)
         {
             var label = button.Content?.ToString();
-
             var item = ViewModel.Breadcrumb.FirstOrDefault(x => x.Label == label);
 
             if (item != null)
-            {
-
                 await ViewModel.NavigateBreadcrumbAsync(item);
-            }
         }
+    }
+
+    private async Task<IDocument?> CreateDetailDocumentAsync()
+    {
+        if (ViewModel?.TribusSelected == null)
+            return null;
+
+        var pdfModel = await Tbl57TribussesDocumentDataSource.GetTribusDetailsAsync(ViewModel.TribusSelected.TribusId);
+        if (pdfModel == null)
+            return null;
+
+        return new Tbl57TribussesDocument(pdfModel);
+    }
+
+    private string? GetCurrentTribusName()
+    {
+        return ViewModel?.TribusSelected?.TribusName;
+    }
+
+    private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)
+    {
+        var savePicker = new FileSavePicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = suggestedFileName
+        };
+
+        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
+
+        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(savePicker, hwnd);
+
+        var file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+            return;
+
+        document.GeneratePdf(file.Path);
+    }
+
+    private static string SanitizeFileNamePart(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "Unknown";
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var cleaned = new string(value
+            .Where(c => !invalidChars.Contains(c))
+            .ToArray());
+
+        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
     }
 }

@@ -31,8 +31,15 @@
                            Foreground="DarkBlue"
                            Tag="{Binding Item.SpeciesId, Mode=OneWay}"
                            Tapped="TextBlock_Tapped"
-                           Text="{Binding Item.SpeciesName, Mode=OneWay}"
                            TextDecorations="Underline" />
+
+                <!--<TextBlock x:Name="TbSpecies"
+                           Grid.Column="0"
+                           Foreground="DarkBlue"
+                           Tag="{Binding Item.SpeciesId, Mode=OneWay}"
+                           Tapped="TextBlock_Tapped"
+                           Text="{Binding Item.SpeciesName, Mode=OneWay}"
+                           TextDecorations="Underline" />-->
 
                 <TextBlock x:Name="TbAuthorDisplay"
                            Grid.Column="1"
@@ -56,7 +63,7 @@
         <!--<RelativePanel>
             <TextBlock x:Name="TbSpecies"
                        Width="Auto"
-                       Text="{Binding Tbl66Genusses.GenusName}" />
+                       Text="{Binding Item.Tbl66Genusses.GenusName}" />
             <TextBlock x:Name="TbSpeciesName"
                        Margin="2,0,0,0"
                        RelativePanel.RightOf="TbSpecies"

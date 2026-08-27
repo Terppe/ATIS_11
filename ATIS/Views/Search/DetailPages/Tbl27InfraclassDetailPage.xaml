@@ -7,8 +7,10 @@
       xmlns:loc="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:search="using:ATIS.Views.Search"
-      x:Name="RootPage"
       mc:Ignorable="d">
+
+    <!--  Tbl27InfraclassDetailPage.xaml  Skriptdatum:  15.06.2024  18:32  -->
+
 
     <Page.Resources>
         <ResourceDictionary>
@@ -46,7 +48,7 @@
 
             <Button Margin="10,5,0,5"
                     HorizontalAlignment="Right"
-                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                    Click="ExportPdfButton_Click">
                 <StackPanel Orientation="Horizontal"
                             Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
@@ -54,15 +56,15 @@
                 </StackPanel>
             </Button>
 
-            <Button Margin="10,5,0,5"
-                    HorizontalAlignment="Right"
-                    Click="PrintButton_Click">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <FontIcon Glyph="&#xE749;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
-                </StackPanel>
-            </Button>
+            <!--<Button Margin="10,5,0,5"
+            HorizontalAlignment="Right"
+            Click="PrintButton_Click">
+            <StackPanel Orientation="Horizontal"
+            Spacing="6">
+            <FontIcon Glyph="&#xE749;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Print" />
+            </StackPanel>
+            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->
@@ -99,8 +101,28 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--  ALLE ROWS  -->
+                <!--  ALLE ROWS WIE IM ALTEN WINDOW  -->
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -127,7 +149,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <!--  HEADER INFRACLASS  -->
+                <!--  HEADER Infraclass  -->
                 <ListView Grid.Row="0"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -205,7 +227,7 @@
                           ItemsSource="{x:Bind ViewModel.SubclassItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--  INFRACLASS DETAILS  -->
+                <!--  Infraclass DETAILS  -->
                 <ListView Grid.Row="10"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -215,14 +237,14 @@
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  DIRECT CHILDREN  -->
-                <TextBlock Grid.Row="12"
+                <TextBlock Grid.Row="11"
                            Grid.Column="1"
                            Margin="0,5,0,5"
                            loc:Uids.Uid="TextBlock_DirectChildren"
                            FontWeight="Bold"
                            Visibility="{x:Bind ViewModel.HasDirectChildren, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                <ListView Grid.Row="13"
+                <ListView Grid.Row="12"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
@@ -231,45 +253,45 @@
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
                 <!--  REFERENCES  -->
-                <TextBlock Grid.Row="15"
+                <TextBlock Grid.Row="14"
                            Grid.Column="0"
                            loc:Uids.Uid="TextBlock_References"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <TextBlock Grid.Row="16"
+                <TextBlock Grid.Row="15"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_Experts"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="17"
+                <ListView Grid.Row="16"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
                           ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
 
-                <TextBlock Grid.Row="18"
+                <TextBlock Grid.Row="17"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_OtherSources"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="19"
+                <ListView Grid.Row="18"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
                           ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
 
-                <TextBlock Grid.Row="20"
+                <TextBlock Grid.Row="19"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_Publications"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="21"
+                <ListView Grid.Row="20"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
@@ -277,14 +299,14 @@
                           ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
 
                 <!--  COMMENTS  -->
-                <TextBlock Grid.Row="22"
+                <TextBlock Grid.Row="21"
                            Grid.Column="0"
                            Margin="0,0,0,10"
                            loc:Uids.Uid="TextBlock_Comments"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="23"
+                <ListView Grid.Row="22"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
@@ -292,6 +314,7 @@
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
 
             </Grid>
+
         </ScrollViewer>
         <!--  2. 🔥 Modernes Lade Overlay  -->
         <components:LoadingOverlayControl Grid.Row="0"

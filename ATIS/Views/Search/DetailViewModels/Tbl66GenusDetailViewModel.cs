@@ -1,15 +1,20 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl66Genusses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
-//    Tbl66GenusDetailViewModel Skriptdatum:  16.08.2026  10:32    
+
+//    Tbl66GenusDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl66GenusDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -20,7 +25,8 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Genus
     // -----------------------------
-    public Tbl66Genus GenusSelected { get; }
+    public Tbl66Genus? GenusSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -45,7 +51,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     public Tbl60Subtribus? SubtribusSelected { get; private set; }
     public Tbl63Infratribus? InfratribusSelected { get; private set; }
     public Tbl75Species? SpeciesSelected { get; private set; }
-
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -69,8 +74,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubtribusCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfratribusCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToGenusCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSpeciesCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -112,7 +115,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -125,7 +128,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         GenusSelected = selectedGenus;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -154,18 +157,20 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -379,7 +384,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
             EntityId = GenusSelected.GenusId
         });
 
-
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -472,6 +477,9 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl66GenusDetailPage), item.EntityId);
                 break;
 
+            case "Species":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl75SpeciesDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -480,11 +488,11 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -521,7 +529,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         InfratribusItems.Clear();
         GenusItems.Clear();
 
-        Tbl66Genus? genus = null;
         Tbl63Infratribus? infratribus = null;
         Tbl60Subtribus? subtribus = null;
         Tbl57Tribus? tribus = null;
@@ -543,7 +550,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (GenusSelected.GenusId != 0)
+        if (GenusSelected.InfratribusId != 0)
             infratribus = await _dataService.GetInfratribusByIdAsync(GenusSelected.InfratribusId);
 
         if (infratribus.SubtribusId != 0)
@@ -679,7 +686,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
 
         if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
@@ -820,7 +826,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -899,12 +904,72 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (GenusSelected == null || GenusSelected.GenusId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl66GenussesDocumentDataSource.GetGenusDetailsAsync(GenusSelected.GenusId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl66GenussesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(GenusSelected.GenusName)
+                ? $"Genus_{GenusSelected.GenusId}"
+                : string.Concat(GenusSelected.GenusName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{GenusSelected.GenusId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

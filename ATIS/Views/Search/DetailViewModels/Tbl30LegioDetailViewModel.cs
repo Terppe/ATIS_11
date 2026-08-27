@@ -1,8 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl30Legios;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
+
 
 //    Tbl30LegioDetailViewModel Skriptdatum:  15.06.2024  10:32    
 
@@ -10,6 +14,7 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl30LegioDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -20,7 +25,8 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Legio
     // -----------------------------
-    public Tbl30Legio LegioSelected { get; }
+    public Tbl30Legio? LegioSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -32,7 +38,7 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     public Tbl21Class? ClassSelected { get; private set; }
     public Tbl24Subclass? SubclassSelected { get; private set; }
     public Tbl27Infraclass? InfraclassSelected { get; private set; }
-
+    public Tbl33Ordo? OrdoSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -44,7 +50,6 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubclassCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraclassCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToLegioCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -74,11 +79,10 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
 
     // -----------------------------
     //  CONSTRUCTOR
@@ -88,7 +92,7 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
         LegioSelected = selectedLegio;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -117,7 +121,6 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
@@ -125,10 +128,13 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
+
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -180,6 +186,7 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
                 EntityId = ClassSelected.ClassId
             });
         }
+
         if (SubclassSelected != null)
         {
 
@@ -209,6 +216,7 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
             EntityId = LegioSelected.LegioId
         });
 
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -244,8 +252,17 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
             case "Subclass":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
                 break;
+
             case "Infraclass":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
+                break;
+
+            case "Legio":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl30LegioDetailPage), item.EntityId);
+                break;
+
+            case "Ordo":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl33OrdoDetailPage), item.EntityId);
                 break;
         }
     }
@@ -255,11 +272,11 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -284,7 +301,6 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
         InfraclassItems.Clear();
         LegioItems.Clear();
 
-        Tbl30Legio? legio = null;
         Tbl27Infraclass? infraclass = null;
         Tbl24Subclass? subclass = null;
         Tbl21Class? classe = null;
@@ -294,7 +310,7 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (LegioSelected.LegioId != 0)
+        if (LegioSelected.InfraclassId != 0)
             infraclass = await _dataService.GetInfraclassByIdAsync(LegioSelected.InfraclassId);
 
         if (infraclass.SubclassId != 0)
@@ -401,7 +417,6 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -442,6 +457,7 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
 
         HasDirectChildren = true;
     }
+
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
@@ -479,12 +495,72 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (LegioSelected == null || LegioSelected.LegioId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl30LegiosDocumentDataSource.GetLegioDetailsAsync(LegioSelected.LegioId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl30LegiosDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(LegioSelected.LegioName)
+                ? $"Legio_{LegioSelected.LegioId}"
+                : string.Concat(LegioSelected.LegioName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{LegioSelected.LegioId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

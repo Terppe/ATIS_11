@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl54Supertribusses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using static ATIS.Views.Report.PdfModels;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 
 //    Tbl54SupertribusDetailViewModel Skriptdatum:  18.18.2026  10:32    
@@ -12,6 +14,7 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
 {
+
     private readonly IDataService _dataService;
 
     // -----------------------------
@@ -22,7 +25,8 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Supertribus
     // -----------------------------
-    public Tbl54Supertribus SupertribusSelected { get; }
+    public Tbl54Supertribus? SupertribusSelected { get; }
+
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -42,6 +46,7 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
     public Tbl45Family? FamilySelected { get; private set; }
     public Tbl48Subfamily? SubfamilySelected { get; private set; }
     public Tbl51Infrafamily? InfrafamilySelected { get; private set; }
+    public Tbl57Tribus? TribusSelected { get; private set; }
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -61,8 +66,6 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubfamilyCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfrafamilyCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSupertribusCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToTribusCommand { get; }
-
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -100,7 +103,7 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
     // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -113,7 +116,7 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
         SupertribusSelected = selectedSupertribus;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -142,18 +145,20 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -323,7 +328,7 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
             EntityId = SupertribusSelected.SupertribusId
         });
 
-
+        // <<< HIER: aktuellen Knoten entfernen
         for (int i = Breadcrumb.Count - 1; i >= 0; i--)
         {
             var x = Breadcrumb[i];
@@ -399,6 +404,10 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
             case "Supertribus":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl54SupertribusDetailPage), item.EntityId);
                 break;
+
+            case "Tribus":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl57TribusDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -407,11 +416,11 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -444,7 +453,6 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
         InfrafamilyItems.Clear();
         SupertribusItems.Clear();
 
-        Tbl54Supertribus? supertribus = null;
         Tbl51Infrafamily? infrafamily = null;
         Tbl48Subfamily? subfamily = null;
         Tbl45Family? family = null;
@@ -462,7 +470,7 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (SupertribusSelected.SupertribusId != 0)
+        if (SupertribusSelected.InfrafamilyId != 0)
             infrafamily = await _dataService.GetInfrafamilyByIdAsync(SupertribusSelected.InfrafamilyId);
 
         if (infrafamily.SubfamilyId != 0)
@@ -587,7 +595,6 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
             });
         }
 
-
         if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
             LegioSelected = legio;
@@ -683,7 +690,6 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -762,12 +768,72 @@ public sealed class Tbl54SupertribusDetailViewModel : ObservableObject
             CommentItems.Add(item);
     }
 
-    // -----------------------------
+    // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
-    }
+        if (SupertribusSelected == null || SupertribusSelected.SupertribusId == 0)
+            return;
 
+        try
+        {
+            var model = await Tbl54SupertribussesDocumentDataSource.GetSupertribusDetailsAsync(SupertribusSelected.SupertribusId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl54SupertribussesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SupertribusSelected.SupertribusName)
+                ? $"Supertribus_{SupertribusSelected.SupertribusId}"
+                : string.Concat(SupertribusSelected.SupertribusName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SupertribusSelected.SupertribusId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
+    }
 }

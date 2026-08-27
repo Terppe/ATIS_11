@@ -1115,4 +1115,6 @@ Alle Controls sortierbar gemacht
 ----------------------------------------
 24.08.2026 14:30 Uhr Generator muss detailierter sein, sonst fehler. Class Basis.Generator bei DetailVM weiter
 ----------------------------------------
-25.08.2026 14:30 Uhr Bei Dokument weiter mit generator bis Tbl24Subclasses fertig
+26.08.2026 14:30 Uhr Bei Dokument weiter mit generator bis Tbl24Subclasses fertig + Nuget 1x
+----------------------------------------
+27.08.2026 14:30 Uhr weiter ab Tbl27Infraclasses bis Genus und angefanbe species . Tbl66Genus wird nicht angezeigt bei species
