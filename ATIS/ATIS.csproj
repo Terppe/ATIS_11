@@ -723,6 +723,9 @@
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml" />
+		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml" />
+		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSubTaxoNomenHeaderControl.xaml" />
+		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSynonymsControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml" />
@@ -782,6 +785,7 @@
 		<None Remove="Views\Search\DetailPages\Tbl63InfratribusDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl66GenusDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl75SpeciesDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\Tbl75SpeciesSubDetailPage.xaml" />
 		<None Remove="Views\Search\DetailWindows\DetailWindow.xaml" />
 		<None Remove="Views\Search\SearchItemTemplateTblFoodControl.xaml" />
 		<None Remove="Views\Search\SearchPage.xaml" />
@@ -842,6 +846,30 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSynonymsControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSubTaxoNomenHeaderControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\Tbl75SpeciesSubDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

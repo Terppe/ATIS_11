@@ -225,6 +225,20 @@
         <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesTaxoNomenHeaderControl />
     </DataTemplate>
 
+    <DataTemplate x:Key="ReportItemTemplateHeaderTaxoNomenHeaderBodySubspecies">
+        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesSubTaxoNomenHeaderControl />
+    </DataTemplate>
+
+    <DataTemplate x:Key="ReportItemTemplateTbl75SpeciesSynonyms">
+        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesSynonymsControl
+            Species="{Binding Item}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="ReportItemTemplateTbl75SpeciesNames">
+        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesNamesControl
+            Species="{Binding Item}" />
+    </DataTemplate>
+
     <!--  Hyperlink-ListViews  -->
     <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum">
         <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl  />
@@ -290,7 +304,7 @@
         <dataTemplateHyperlink:TemplateTbl75SpeciesWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSpeciesSub">
-        <dataTemplateHyperlink:TemplateTbl75SpeciesSubWithOptionalHyperlinkControl  />
+        <dataTemplateHyperlink:TemplateTbl75SpeciesSubWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
 
     <!--  Rest-ListViews  -->

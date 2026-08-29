@@ -73,17 +73,28 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // SpeciesFullName (computed)
     // ---------------------------------------------------------
-//    [NotMapped] public string SpeciesFullName => $"{SpeciesName} {Subspecies} {Divers}".Trim();
+    [NotMapped]
+    public bool IsSubspecies => !string.IsNullOrWhiteSpace(Subspecies);
+
     [NotMapped]
     public string SpeciesFullName => string.Join(" ",
         new[] { SpeciesName, Subspecies, Divers }
             .Where(x => !string.IsNullOrWhiteSpace(x)));
-    //   [NotMapped] public string GenusSpeciesFullName => $"{Genus?.GenusName} {SpeciesName} {Subspecies} {Divers}".Trim();
+
+    [NotMapped]
+    public string GenusSpeciesName => string.Join(" ",
+        new[] { Genus?.GenusName, SpeciesName }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
     [NotMapped]
     public string GenusSpeciesFullName => string.Join(" ",
         new[] { Genus?.GenusName, SpeciesName, Subspecies, Divers }
             .Where(x => !string.IsNullOrWhiteSpace(x)));
-    // ---------------------------------------------------------
+
+    [NotMapped]
+    public string SubspeciesDiversName => string.Join(" ",
+        new[] { Subspecies, Divers }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));    // ---------------------------------------------------------
     // GenusId (Pflicht)
     // ---------------------------------------------------------
     private int _genusId;

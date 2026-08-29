@@ -6,6 +6,7 @@ using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
 using QuestPDF.Fluent;
 using WinUI3Localizer;
+using static ATIS.Views.Report.PdfModels;
 
 
 //    Tbl66GenusDetailViewModel Skriptdatum:  18.08.2026  10:32    
@@ -856,6 +857,8 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
 
         foreach (var item in visibleItems)
         {
+            item.Genus = GenusSelected;
+
             SpeciesItems.Add(new TaxonomyLine<Tbl75Species>
             {
                 Item = item,
@@ -866,7 +869,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
 
         HasDirectChildren = true;
     }
-
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------

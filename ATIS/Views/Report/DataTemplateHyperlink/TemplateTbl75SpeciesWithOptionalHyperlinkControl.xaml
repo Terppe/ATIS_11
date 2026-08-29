@@ -26,20 +26,20 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
+                <!--<TextBlock x:Name="TbSpecies"
+                Grid.Column="0"
+                Foreground="DarkBlue"
+                Tag="{Binding Item.SpeciesId, Mode=OneWay}"
+                Tapped="TextBlock_Tapped"
+                TextDecorations="Underline" />-->
+
                 <TextBlock x:Name="TbSpecies"
                            Grid.Column="0"
                            Foreground="DarkBlue"
                            Tag="{Binding Item.SpeciesId, Mode=OneWay}"
                            Tapped="TextBlock_Tapped"
+                           Text="{Binding Item.GenusSpeciesFullName, Mode=OneWay}"
                            TextDecorations="Underline" />
-
-                <!--<TextBlock x:Name="TbSpecies"
-                           Grid.Column="0"
-                           Foreground="DarkBlue"
-                           Tag="{Binding Item.SpeciesId, Mode=OneWay}"
-                           Tapped="TextBlock_Tapped"
-                           Text="{Binding Item.SpeciesName, Mode=OneWay}"
-                           TextDecorations="Underline" />-->
 
                 <TextBlock x:Name="TbAuthorDisplay"
                            Grid.Column="1"
@@ -61,20 +61,20 @@
         </Grid>
 
         <!--<RelativePanel>
-            <TextBlock x:Name="TbSpecies"
-                       Width="Auto"
-                       Text="{Binding Item.Tbl66Genusses.GenusName}" />
-            <TextBlock x:Name="TbSpeciesName"
-                       Margin="2,0,0,0"
-                       RelativePanel.RightOf="TbSpecies"
-                       Text="{Binding SpeciesName}" />
-            <TextBlock x:Name="TbSubspecies"
-                       Margin="2,0,0,0"
-                       RelativePanel.RightOf="TbSpeciesName"
-                       Text="{Binding Subspecies}" />
-            <TextBlock Margin="2,0,0,0"
-                       RelativePanel.RightOf="TbSubspecies"
-                       Text="{Binding Divers}" />
+        <TextBlock x:Name="TbSpecies"
+        Width="Auto"
+        Text="{Binding Item.Tbl66Genusses.GenusName}" />
+        <TextBlock x:Name="TbSpeciesName"
+        Margin="2,0,0,0"
+        RelativePanel.RightOf="TbSpecies"
+        Text="{Binding SpeciesName}" />
+        <TextBlock x:Name="TbSubspecies"
+        Margin="2,0,0,0"
+        RelativePanel.RightOf="TbSpeciesName"
+        Text="{Binding Subspecies}" />
+        <TextBlock Margin="2,0,0,0"
+        RelativePanel.RightOf="TbSubspecies"
+        Text="{Binding Divers}" />
         </RelativePanel>-->
 
     </Grid>

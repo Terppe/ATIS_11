@@ -814,6 +814,7 @@ public interface IDataService
     Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync();
     Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search);
     Task<Tbl75Species> GetSpeciesByIdAsync(int id);
+    Task<Tbl75Species> GetSpeciesWithGenusByIdAsync(int id);
     Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species entity);
     Task DeleteSpeciesAsync(int id);
     Task<bool> SpeciesExistsAsync(Tbl75Species entity);
@@ -862,7 +863,7 @@ public interface IDataService
     #endregion Species
 
     #region Name                  
-
+    //alt------------------------
     ObservableCollection<Tbl78Name> GetNameAsync();
     ObservableCollection<Tbl78Name> GetNameAsync(int nameid);
     ObservableCollection<Tbl78Name> GetNameAsync(string search);

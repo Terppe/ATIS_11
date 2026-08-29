@@ -29,7 +29,6 @@
         </Grid.RowDefinitions>
 
         <!--  BUTTON-LEISTE  -->
-        <!--  BUTTON-LEISTE  -->
         <StackPanel Grid.Row="0"
                     Orientation="Horizontal">
 
@@ -49,7 +48,7 @@
 
             <Button Margin="10,5,0,5"
                     HorizontalAlignment="Right"
-                    Command="{x:Bind ViewModel.ExportPdfCommand}">
+                    Click="ExportPdfButton_Click">
                 <StackPanel Orientation="Horizontal"
                             Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
@@ -57,15 +56,15 @@
                 </StackPanel>
             </Button>
 
-            <Button Margin="10,5,0,5"
-                    HorizontalAlignment="Right"
-                    Click="PrintButton_Click">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <FontIcon Glyph="&#xE749;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
-                </StackPanel>
-            </Button>
+            <!--<Button Margin="10,5,0,5"
+            HorizontalAlignment="Right"
+            Click="PrintButton_Click">
+            <StackPanel Orientation="Horizontal"
+            Spacing="6">
+            <FontIcon Glyph="&#xE749;" />
+            <TextBlock loc:Uids.Uid="TextBlock_Print" />
+            </StackPanel>
+            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->
@@ -102,7 +101,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--  ALLE ROWS WIE IM ALTEN WINDOW  -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -158,7 +156,7 @@
                           ItemTemplate="{StaticResource ReportItemTemplateHeaderSpecies}"
                           ItemsSource="{x:Bind ViewModel.SpeciesItems}" />
 
-                <!--  HEADER TAXONOMY  -->
+                <!--  HEADER TAXONOMY     hier fehlt Synonyme und namen -->
                 <ListView Grid.Row="1"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -357,15 +355,15 @@
                            FontWeight="Bold"
                            Visibility="{x:Bind ViewModel.HasDirectChildren, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                <!--<ListView Grid.Row="26"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="0"
-                ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSpeciesSub}"
-                ItemsSource="{x:Bind ViewModel.SpeciesSubItems}"
-                Style="{StaticResource AtisListViewStyleCompactTaxo}" />-->
+                <ListView Grid.Row="26"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkSpeciesSub}"
+                          ItemsSource="{x:Bind ViewModel.SpeciesSubItems}"
+                          Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--<ListView Grid.Row="12"
+                <!--<ListView Grid.Row="27"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Margin="0"
@@ -423,45 +421,45 @@
 
 
                 <!--  REFERENCES  -->
-                <TextBlock Grid.Row="28"
+                <TextBlock Grid.Row="31"
                            Grid.Column="0"
                            loc:Uids.Uid="TextBlock_References"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <TextBlock Grid.Row="29"
+                <TextBlock Grid.Row="32"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_Experts"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="30"
+                <ListView Grid.Row="33"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefExpert}"
                           ItemsSource="{x:Bind ViewModel.ReferenceExpertItems}" />
 
-                <TextBlock Grid.Row="31"
+                <TextBlock Grid.Row="34"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_OtherSources"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="32"
+                <ListView Grid.Row="35"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefSource}"
                           ItemsSource="{x:Bind ViewModel.ReferenceSourceItems}" />
 
-                <TextBlock Grid.Row="33"
+                <TextBlock Grid.Row="36"
                            Grid.Column="0"
                            Margin="8,0,0,10"
                            loc:Uids.Uid="TextBlock_Publications"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="34"
+                <ListView Grid.Row="37"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
@@ -469,72 +467,19 @@
                           ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
 
                 <!--  COMMENTS  -->
-                <TextBlock Grid.Row="35"
+                <TextBlock Grid.Row="38"
                            Grid.Column="0"
                            Margin="0,0,0,10"
                            loc:Uids.Uid="TextBlock_Comments"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="36"
+                <ListView Grid.Row="39"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
-
-                <!--<TextBlock Grid.Row="38"
-                Grid.Column="0"
-                Margin="0,0,0,10"
-                loca:Uids.Uid="TextBlock_GeographicsInformation"
-                FontSize="18"
-                FontWeight="Bold" />
-                <ListView Grid.Row="39"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="-12,0,0,0"
-                ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                ItemTemplate="{StaticResource ReportItemTemplateGeographic}"
-                ItemsSource="{x:Bind ViewModel.GeographicItems}" />
-                <TextBlock Grid.Row="40"
-                Grid.Column="0"
-                Margin="0,0,0,10"
-                loca:Uids.Uid="TextBlock_ImagesInformation"
-                FontSize="18"
-                FontWeight="Bold" />
-                <ListView Grid.Row="41"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="-12,0,0,0"
-                ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                ItemTemplate="{StaticResource ReportItemTemplateImage}"
-                ItemsSource="{x:Bind ViewModel.ImageItems}" />
-                <TextBlock Grid.Row="42"
-                Grid.Column="0"
-                Margin="0,0,0,10"
-                loca:Uids.Uid="TextBlock_Comments"
-                FontSize="18"
-                FontWeight="Bold" />
-                <ListView Grid.Row="43"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="-12,-12,10,10"
-                ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
-                ItemsSource="{x:Bind ViewModel.CommentItems}" />
-                <TextBlock Grid.Row="44"
-                Grid.Column="0"
-                Margin="0,0,0,10"
-                loca:Uids.Uid="TextBlock_WorthKnowing"
-                FontSize="18"
-                FontWeight="Bold" />
-                <ListView Grid.Row="45"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="-12,-12,10,10"
-                ItemTemplate="{StaticResource ReportItemTemplateSpecies}"
-                ItemsSource="{x:Bind ViewModel.SpeciesItems}" />-->
-
-
             </Grid>
 
         </ScrollViewer>

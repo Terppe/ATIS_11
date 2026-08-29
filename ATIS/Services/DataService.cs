@@ -6233,6 +6233,19 @@ public partial class DataService : ObservableObject, IDataService
             .FirstOrDefaultAsync(x => x.SpeciesId == id);
     }
     // ---------------------------------------------------------                  
+    // GetSpeciesWithGenusByIdAsync(int id)
+    // ---------------------------------------------------------                 
+
+    public async Task<Tbl75Species?> GetSpeciesWithGenusByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .AsNoTracking()
+            .Include(x => x.Genus)
+            .FirstOrDefaultAsync(x => x.SpeciesId == id);
+    }
+    // ---------------------------------------------------------                  
     // DeleteSpeciesAsync(int id)
     // ---------------------------------------------------------                 
     public async Task DeleteSpeciesAsync(int id)

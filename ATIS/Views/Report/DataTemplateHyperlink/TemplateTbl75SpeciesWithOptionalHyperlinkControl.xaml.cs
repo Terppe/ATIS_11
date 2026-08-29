@@ -97,10 +97,7 @@ public sealed partial class TemplateTbl75SpeciesWithOptionalHyperlinkControl : U
             return;
         }
 
-        var genusName = line.Item.GenusName;
-        var genusObject = line.Item.Genus;
-
-        TbSpecies.Text = line.Item.GenusSpeciesFullName;
+        var test = line.Item.GenusSpeciesFullName;
 
         TbAuthorDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedParts(
             " - ",

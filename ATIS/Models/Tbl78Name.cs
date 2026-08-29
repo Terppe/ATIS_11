@@ -1,12 +1,7 @@
-﻿
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ATIS.Interfaces;
 using ATIS.Views.Base;
-using CommunityToolkit.Mvvm.ComponentModel;
-using global::ATIS.Interfaces;
 
 namespace ATIS.Models;
 
@@ -110,9 +105,9 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         }
     }
 
-    private string _memo;
+    private string? _memo;
     [StringLength(1000)]
-    public string Memo
+    public string? Memo
     {
         get => _memo;
         set

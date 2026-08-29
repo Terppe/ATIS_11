@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using Microsoft.UI.Xaml.Media;
-using static ATIS.Views.Report.PdfModels;
-
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 //    Tbl75SpeciesDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
@@ -23,7 +23,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // -----------------------------
     //  SELECTED Species
     // -----------------------------
-    public Tbl75Species SpeciesSelected { get; }
+    public Tbl75Species? SpeciesSelected { get; }
 
     // -----------------------------
     //  TAXONOMY OBJECTS
@@ -97,6 +97,8 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl63Infratribus>> InfratribusItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl66Genus>> GenusItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl75Species>> SpeciesItems { get; } = new();
+    public ObservableCollection<TaxonomyLine<Tbl75Species>> SpeciesSubItems { get; } = new();
+    //public ObservableCollection<TaxonomyLine<Tbl81Image>> ImageItems { get; } = new();
 
     // -----------------------------
     //  REFERENCES
@@ -112,9 +114,14 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = new();
 
     // -----------------------------
+    //  NAMES
+    // -----------------------------
+    public ObservableCollection<Tbl78Name> NameItems { get; } = new();
+
+    // -----------------------------
     //  COMMANDS
     // -----------------------------
-    public IRelayCommand ExportPdfCommand { get; }
+    public IAsyncRelayCommand ExportPdfCommand { get; }
 
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
@@ -127,7 +134,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         SpeciesSelected = selectedSpecies;
         _dataService = dataService;
 
-        ExportPdfCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExportPdf);
+        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -141,7 +148,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-    //        LoadDirectChildren();   SpeciesSub
+            LoadDirectChildren();  // SpeciesSub
             LoadReferences();
             LoadComments();
             //LoadNames;
@@ -167,6 +174,10 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+    // -----------------------------
+    //  BREADCRUMB
+    // -----------------------------
+
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
     private void BuildBreadcrumb()
@@ -492,6 +503,10 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
             case "Species":
                 App.MainPageInstance.NavFrame.Navigate(typeof(Tbl75SpeciesDetailPage), item.EntityId);
                 break;
+
+            case "Subspecies":
+                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl75SpeciesSubDetailPage), item.EntityId);
+                break;
         }
     }
 
@@ -500,9 +515,8 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // ---------------------------------------------------------
     private void ExecuteBack()
     {
-        var frame = App.MainPageInstance.NavFrame;
-
-        if (frame.CanGoBack)
+        var frame = App.MainPageInstance?.NavFrame;
+        if (frame?.CanGoBack == true)
             frame.GoBack();
     }
     private static bool IsVisibleTaxonName(string? name)
@@ -566,8 +580,11 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
 
         // technisch laden
         if (SpeciesSelected.SpeciesId != 0)
+        {
             genus = await _dataService.GetGenusByIdAsync(SpeciesSelected.GenusId);
-
+            if (genus != null)
+                SpeciesSelected.Genus = genus;
+        }
         if (genus.InfratribusId != 0)
             infratribus = await _dataService.GetInfratribusByIdAsync(genus.InfratribusId);
 
@@ -868,15 +885,65 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
+    private async void LoadDirectChildren()
+    {
+        SpeciesSubItems.Clear();
+        HasDirectChildren = false;
+
+        if (SpeciesSelected == null || SpeciesSelected.IsSubspecies)
+            return;
+
+        var species = await _dataService.GetSpeciessesByGenusIdAsync(SpeciesSelected.GenusId);
+
+        var visibleItems = species
+            .Where(x =>
+                x.SpeciesId != SpeciesSelected.SpeciesId &&
+                x.IsSubspecies &&
+                string.Equals(x.SpeciesName?.Trim(),
+                    SpeciesSelected.SpeciesName?.Trim(),
+                    StringComparison.OrdinalIgnoreCase) &&
+                IsVisibleTaxonName(x.SpeciesName))
+            .ToList();
+
+        if (visibleItems.Count == 0)
+            return;
+
+        var parentLeft = SpeciesItems.Count > 0 ? SpeciesItems[0].HeaderMargin.Left : 8;
+        var childMargin = new Thickness(parentLeft + 8, 0, 0, 0);
+
+        foreach (var item in visibleItems)
+        {
+            item.Genus = SpeciesSelected.Genus;
+
+            SpeciesSubItems.Add(new TaxonomyLine<Tbl75Species>
+            {
+                Item = item,
+                HeaderMargin = childMargin,
+                ShowAsHyperlink = false
+            });
+        }
+
+        HasDirectChildren = true;
+    }
     //private async void LoadDirectChildren()
     //{
-    //    NameItems.Clear();
+    //    SpeciesSubItems.Clear();
     //    HasDirectChildren = false;
 
-    //    var name = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+    //    if (SpeciesSelected == null || !string.IsNullOrWhiteSpace(SpeciesSelected.Subspecies))
+    //        return;
 
-    //    var visibleItems = name
-    //        .Where(x => IsVisibleTaxonName(x.NameName))
+    //    var species = await _dataService.GetSpeciessesByGenusIdAsync(SpeciesSelected.GenusId);
+
+    //    var visibleItems = species
+    //        .Where(x =>
+    //            x.SpeciesId != SpeciesSelected.SpeciesId &&
+    //            !string.IsNullOrWhiteSpace(x.Subspecies) &&
+    //            string.Equals(
+    //                x.SpeciesName?.Trim(),
+    //                SpeciesSelected.SpeciesName?.Trim(),
+    //                StringComparison.OrdinalIgnoreCase) &&
+    //            IsVisibleTaxonName(x.SpeciesName))
     //        .ToList();
 
     //    if (visibleItems.Count == 0)
@@ -887,7 +954,9 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
 
     //    foreach (var item in visibleItems)
     //    {
-    //        NameItems.Add(new TaxonomyLine<Tbl78Name>
+    //        item.Genus = GenusSelected;
+
+    //        SpeciesSubItems.Add(new TaxonomyLine<Tbl75Species>
     //        {
     //            Item = item,
     //            HeaderMargin = childMargin,
@@ -936,11 +1005,82 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     }
 
     // -----------------------------
+    //  LOAD NAMES
+    // -----------------------------
+    private async void LoadNames()
+    {
+        var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        foreach (var item in names)
+            NameItems.Add(item);
+    }
+
+    // -----------------------------
     //  PDF EXPORT
     // -----------------------------
-    private void ExportPdf()
+    private async Task ExportPdfAsync()
     {
-        // Hier später QuestPDF oder Syncfusion einbauen
+        if (SpeciesSelected == null || SpeciesSelected.SpeciesId == 0)
+            return;
+
+        try
+        {
+            var model = await Tbl75SpeciessesDocumentDataSource.GetSpeciesDetailsAsync(SpeciesSelected.SpeciesId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl75SpeciessesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SpeciesSelected.SpeciesName)
+                ? $"Species_{SpeciesSelected.SpeciesId}"
+                : string.Concat(SpeciesSelected.SpeciesName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SpeciesSelected.SpeciesId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
 
 }

@@ -41,7 +41,7 @@ public abstract class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
     //    Part 1    
 
 
-    public static Tbl75SpeciesSubsPdfModel GetSpeciesSubDetails(int speciesId)
+    public static Tbl75SpeciesSubsPdfModel GetSpeciesSubsDetails(int speciesId)
     {
         #region [Private Data Members]
 

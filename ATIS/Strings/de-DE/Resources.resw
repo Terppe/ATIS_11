@@ -2049,6 +2049,9 @@
   <data name="Images" xml:space="preserve">
     <value>Bilder/Videos</value>
   </data>
+  <data name="ImporterWithYear" xml:space="preserve">
+    <value>Importeur und Jahr</value>
+  </data>
   <data name="TextBlock_Importer.Text" xml:space="preserve">
     <value>Importeur</value>
   </data>
@@ -2174,6 +2177,9 @@
   </data>
   <data name="Memo" xml:space="preserve">
     <value>Memo</value>
+  </data>
+  <data name="MemoSpecies" xml:space="preserve">
+    <value>Memo Art</value>
   </data>
   <data name="TextBlock_MemoBreeding.Text" xml:space="preserve">
     <value>Memo Zucht</value>
@@ -2621,6 +2627,9 @@
   </data>
   <data name="Tribus" xml:space="preserve">
     <value>Tribus</value>
+  </data>
+  <data name="TradeName" xml:space="preserve">
+    <value>Handelsname</value>
   </data>
   <data name="TextBlock_TribusId.Text" xml:space="preserve">
     <value>Tribus ID</value>

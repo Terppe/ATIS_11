@@ -1118,3 +1118,9 @@ Alle Controls sortierbar gemacht
 26.08.2026 14:30 Uhr Bei Dokument weiter mit generator bis Tbl24Subclasses fertig + Nuget 1x
 ----------------------------------------
 27.08.2026 14:30 Uhr weiter ab Tbl27Infraclasses bis Genus und angefanbe species . Tbl66Genus wird nicht angezeigt bei species
+----------------------------------------
+28.08.2026 14:30 Uhr Species und SpeciesSub zeigt bei  Children nur Author an nicht namen Version 190
+----------------------------------------
+29.08.2026 14:30 Uhr Species und SpeciesSub Pagen fertig. jetzt noch Names und Synonyms und PDF
+----------------------------------------
+29.08.2026 17:30 Uhr Names eingefügt bei Speciescontrol. fehlt noch synonyms und PDF.

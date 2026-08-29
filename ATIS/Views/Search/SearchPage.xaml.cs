@@ -150,8 +150,16 @@ public sealed partial class SearchPage : Page
                 break;
 
             case Tbl75Species species:
-                App.MainPageInstance.NavFrame.Navigate(
-                    typeof(Tbl75SpeciesDetailPage), species.SpeciesId);
+                if (species.IsSubspecies)
+                {
+                    App.MainPageInstance.NavFrame.Navigate(
+                        typeof(Tbl75SpeciesSubDetailPage), species.SpeciesId);
+                }
+                else
+                {
+                    App.MainPageInstance.NavFrame.Navigate(
+                        typeof(Tbl75SpeciesDetailPage), species.SpeciesId);
+                }
                 break;
         }
         System.Diagnostics.Debug.WriteLine(e.AddedItems[0]?.GetType().FullName);
