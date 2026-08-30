@@ -3,6 +3,7 @@ using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Search.DetailViewModels;
 using QuestPDF.Infrastructure;
 using Windows.Storage.Pickers;
+using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 using QuestPDF.Fluent;
 using WinRT.Interop;
 
@@ -67,7 +68,7 @@ public sealed partial class Tbl75SpeciesSubDetailPage : Page
             return;
 
         var speciesName = SanitizeFileNamePart(GetCurrentSpeciesName());
-        var suggestedFileName = $"Species_Detail_{speciesName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+        var suggestedFileName = $"Subspecies_Detail_{speciesName}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
         await SaveDocumentAsPdfAsync(document, suggestedFileName);
     }
@@ -104,19 +105,19 @@ public sealed partial class Tbl75SpeciesSubDetailPage : Page
 
     private async Task<IDocument?> CreateDetailDocumentAsync()
     {
-        if (ViewModel?.SpeciesSelected == null)
+        if (ViewModel?.SpeciesSubSelected == null)
             return null;
 
-        var pdfModel = await Tbl75SpeciessesDocumentDataSource.GetSpeciesDetailsAsync(ViewModel.SpeciesSelected.SpeciesId);
+        var pdfModel = await Tbl75SpeciesSubsDocumentDataSource.GetSpeciesSubDetailsAsync(ViewModel.SpeciesSubSelected.SpeciesId);
         if (pdfModel == null)
             return null;
 
-        return new Tbl75SpeciessesDocument(pdfModel);
+        return new Tbl75SpeciesSubsDocument(pdfModel);
     }
 
     private string? GetCurrentSpeciesName()
     {
-        return ViewModel?.SpeciesSelected?.SpeciesName;
+        return ViewModel?.SpeciesSubSelected?.GenusSpeciesFullName;
     }
 
     private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)

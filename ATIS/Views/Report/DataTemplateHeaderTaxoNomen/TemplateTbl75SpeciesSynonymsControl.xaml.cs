@@ -1,12 +1,19 @@
-﻿using ATIS.Models;
+﻿using ATIS.Interfaces;
+using ATIS.Models;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace ATIS.Views.Report.DataTemplateHeaderTaxoNomen;
 
 public sealed partial class TemplateTbl75SpeciesSynonymsControl : UserControl
 {
+    private readonly IDataService _dataService;
+
     public TemplateTbl75SpeciesSynonymsControl()
     {
         InitializeComponent();
+        _dataService = App.Services.GetRequiredService<IDataService>();
         Loaded += OnLoaded;
     }
 
@@ -23,25 +30,50 @@ public sealed partial class TemplateTbl75SpeciesSynonymsControl : UserControl
             typeof(TemplateTbl75SpeciesSynonymsControl),
             new PropertyMetadata(null, OnSpeciesChanged));
 
-    private static void OnSpeciesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void OnSpeciesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is TemplateTbl75SpeciesSynonymsControl control)
-            control.UpdateDisplay();
+            await control.UpdateDisplayAsync();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        UpdateDisplay();
+        await UpdateDisplayAsync();
     }
 
-    private void UpdateDisplay()
+    private async Task UpdateDisplayAsync()
     {
-        if (SynonymsTextBlock == null)
+        if (SynonymsTextBlock == null || Species == null)
+        {
+            if (SynonymsTextBlock != null)
+                SynonymsTextBlock.Text = string.Empty;
             return;
+        }
 
-        // Platzhalter, bis die Extra-Tabelle angebunden ist
-        SynonymsTextBlock.Text = string.Empty;
+        var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(Species.SpeciesId);
 
-     //   SynonymsTextBlock.Text = Species?.Synonym ?? string.Empty;
+        SynonymsTextBlock.Text = string.Join(
+            Environment.NewLine,
+            synonyms
+                .Where(x => !string.IsNullOrWhiteSpace(x.SynonymName))
+                .Select(FormatSynonym));
+    }
+
+    private static string FormatSynonym(Tbl84Synonym synonym)
+    {
+        var name = synonym.SynonymName?.Trim() ?? string.Empty;
+
+        var authorParts = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(synonym.Author))
+            authorParts.Add(synonym.Author.Trim());
+
+        if (!string.IsNullOrWhiteSpace(synonym.AuthorYear))
+            authorParts.Add(synonym.AuthorYear.Trim());
+
+        if (authorParts.Count == 0)
+            return name;
+
+        return $"{name} - {string.Join(" ", authorParts)}";
     }
 }

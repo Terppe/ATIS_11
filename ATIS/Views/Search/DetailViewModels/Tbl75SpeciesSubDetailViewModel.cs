@@ -74,6 +74,11 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubspeciesCommand { get; }
 
     // -----------------------------
+    //  BREADCRUMP
+    // -----------------------------
+    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
+
+    // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
     public ObservableCollection<TaxonomyLine<Tbl03Regnum>> RegnumItems { get; } = new();
@@ -98,8 +103,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl66Genus>> GenusItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl75Species>> SpeciesItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl75Species>> SpeciesSubItems { get; } = new();
-    //public ObservableCollection<TaxonomyLine<Tbl78Name>> NameItems { get; } = new();
-    //public ObservableCollection<TaxonomyLine<Tbl81Image>> ImageItems { get; } = new();
 
     // -----------------------------
     //  REFERENCES
@@ -107,18 +110,31 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
-    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
-
-    // -----------------------------
-    //  COMMENTS
-    // -----------------------------
-    public ObservableCollection<Tbl93Comment> CommentItems { get; } = new();
 
     // -----------------------------
     //  NAMES
     // -----------------------------
     public ObservableCollection<Tbl78Name> NameItems { get; } = new();
 
+    // -----------------------------
+    //  IMAGES
+    // -----------------------------
+    public ObservableCollection<Tbl81Image> ImageItems { get; } = new();
+
+    // -----------------------------
+    //  SYNONYMS
+    // -----------------------------
+    public ObservableCollection<Tbl84Synonym> SynonymItems { get; } = new();
+
+    // -----------------------------
+    //  GEOGRAPHICS
+    // -----------------------------
+    public ObservableCollection<Tbl87Geographic> GeographicItems { get; } = new();
+
+    // -----------------------------
+    //  COMMENTS
+    // -----------------------------
+    public ObservableCollection<Tbl93Comment> CommentItems { get; } = new();
     // -----------------------------
     //  COMMANDS
     // -----------------------------
@@ -149,13 +165,12 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-     //       LoadDirectChildren();  // SpeciesSub
             LoadReferences();
+            LoadNames();
+            LoadImages();
+            LoadSynonyms();
+            LoadGeographics();
             LoadComments();
-            //LoadNames;
-            //LoadedImages;
-            //LoadSynonyms;
-            //LoadGeographics;
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -531,6 +546,10 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         if (frame?.CanGoBack == true)
             frame.GoBack();
     }
+
+    // -----------------------------
+    //  LOAD TAXONOMY
+    // -----------------------------
     private static bool IsVisibleTaxonName(string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
@@ -541,9 +560,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         return new Thickness(8 + (visibleIndex * 8), 0, 0, 0);
     }
 
-    // -----------------------------
-    //  LOAD TAXONOMY
-    // -----------------------------
     private async Task LoadTaxonomy()
     {
         RegnumItems.Clear();
@@ -902,6 +918,9 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
 
     }
 
+    // -------------------------
+    // LOAD REFERENCES
+    // -------------------------
     private async void LoadReferences()
     {
         // -------------------------
@@ -927,26 +946,73 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     }
 
     // -----------------------------
+    //  LOAD NAMES
+    // -----------------------------
+    private async void LoadNames()
+    {
+        var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        NameItems.Clear();
+        foreach (var item in names)
+            NameItems.Add(item);
+    }
+
+    // -----------------------------
+    //  LOAD IMAGES
+    // -----------------------------
+    private async void LoadImages()
+    {
+        var images = await _dataService.GetImagesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+
+        ImageItems.Clear();
+        foreach (var image in images)
+            ImageItems.Add(image);
+    }
+
+    // -----------------------------
+    //  LOAD SYNONYMS
+    // -----------------------------
+    private async void LoadSynonyms()
+    {
+        var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        SynonymItems.Clear();
+        foreach (var item in synonyms)
+            SynonymItems.Add(item);
+    }
+
+    // -----------------------------
+    //  LOAD GEOGRAPHICS
+    // -----------------------------
+    private async void LoadGeographics()
+    {
+        var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        GeographicItems.Clear();
+        foreach (var item in geographics)
+            GeographicItems.Add(item);
+    }
+
+
+    // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
     private async void LoadComments()
     {
-        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
+        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
         foreach (var item in comments)
             CommentItems.Add(item);
     }
+
 
     // -----------------------------
     //  PDF EXPORT
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        if (SpeciesSelected == null || SpeciesSelected.SpeciesId == 0)
+        if (SpeciesSubSelected == null || SpeciesSubSelected.SpeciesId == 0)
             return;
 
         try
         {
-            var model = Tbl75SpeciesSubsDocumentDataSource.GetSpeciesSubsDetails(SpeciesSubSelected.SpeciesId);
+            var model = await Tbl75SpeciesSubsDocumentDataSource.GetSpeciesSubDetailsAsync(SpeciesSubSelected.SpeciesId);
 
             if (model == null)
             {
@@ -971,7 +1037,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
                 ? $"Species_{SpeciesSubSelected.SpeciesId}"
                 : string.Concat(SpeciesSubSelected.SpeciesName.Split(Path.GetInvalidFileNameChars()));
 
-            var fileName = $"{safeTitle}_{SpeciesSelected.SpeciesId}.pdf";
+            var fileName = $"{safeTitle}_{SpeciesSubSelected.SpeciesId}.pdf";
             var filePath = Path.Combine(desktopPath, fileName);
 
             document.GeneratePdf(filePath);

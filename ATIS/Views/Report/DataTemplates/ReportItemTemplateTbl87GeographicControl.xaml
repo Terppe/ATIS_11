@@ -3,6 +3,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
@@ -11,61 +12,92 @@
             <ColumnDefinition Width="260" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel>
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0">
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
-                       FontWeight="Bold"
-                       Text="Geographic Division:" />
+                       loc:Uids.Uid="TextBlock_Address" />
         </StackPanel>
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1">
+            <TextBlock Width="Auto"
+                       Text="{Binding Address}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
         <StackPanel Grid.Row="1"
                     Grid.Column="0">
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
-                       Text="Continent:" />
+                       loc:Uids.Uid="TextBlock_Continent" />
         </StackPanel>
         <StackPanel Grid.Row="1"
                     Grid.Column="1">
             <TextBlock Width="Auto"
-                       Text="{Binding Info}"
+                       Text="{Binding Continent}"
                        TextWrapping="Wrap" />
         </StackPanel>
-        <!--<StackPanel Grid.Row="2"
+
+        <StackPanel Grid.Row="2"
                     Grid.Column="0">
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
-                       Text="Continent:" />
+                       loc:Uids.Uid="TextBlock_Jurisdiction" />
         </StackPanel>
         <StackPanel Grid.Row="2"
                     Grid.Column="1">
             <TextBlock Width="Auto"
-                       Text="{Binding Info}"
+                       Text="{Binding Jurisdiction}"
                        TextWrapping="Wrap" />
-        </StackPanel>-->
+        </StackPanel>
+
         <StackPanel Grid.Row="3"
                     Grid.Column="0">
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
-                       FontWeight="Bold"
-                       Text="Juridiction/Origin:" />
+                       loc:Uids.Uid="TextBlock_Country" />
         </StackPanel>
+        <StackPanel Grid.Row="3"
+                    Grid.Column="1">
+            <TextBlock Width="Auto"
+                       Text="{Binding Country}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
         <StackPanel Grid.Row="4"
                     Grid.Column="0">
             <TextBlock Width="Auto"
-                       Margin="8,0,0,5"
-                       Text="Country:" />
+                       Margin="8,0,0,0"
+                       loc:Uids.Uid="Info" />
         </StackPanel>
         <StackPanel Grid.Row="4"
                     Grid.Column="1">
             <TextBlock Width="Auto"
+                       Text="{Binding Info}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="5"
+                    Grid.Column="0">
+            <TextBlock Width="Auto"
+                       Margin="8,0,0,5"
+                       loc:Uids.Uid="Notes" />
+        </StackPanel>
+        <StackPanel Grid.Row="5"
+                    Grid.Column="1">
+            <TextBlock Width="Auto"
                        Margin="0,0,0,5"
-                       Text="{Binding Country}"
+                       Text="{Binding Memo}"
                        TextWrapping="Wrap" />
         </StackPanel>
     </Grid>

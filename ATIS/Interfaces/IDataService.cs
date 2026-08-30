@@ -875,7 +875,6 @@ public interface IDataService
     #endregion Name
 
     #region Image                  
-
     ObservableCollection<Tbl81Image> GetImageAsync();
     ObservableCollection<Tbl81Image> GetImageAsync(int imageid);
     ObservableCollection<Tbl81Image> GetImageAsync(string search);

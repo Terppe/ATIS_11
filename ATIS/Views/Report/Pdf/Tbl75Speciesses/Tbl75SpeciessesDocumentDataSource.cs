@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
 
 
 //    Tbl75SpeciessesDocumentDataSourceSkriptdatum:  18.08.2026  10:32    
@@ -114,9 +113,21 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
         if (_phylumSingle.RegnumId != 0)
             _regnumSingle = await dataService.GetRegnumByIdAsync(_phylumSingle.RegnumId) ?? new Tbl03Regnum();
 
-        //NamesCollection = new ObservableCollection<Tbl78Name>(
-        //    (await dataService.GetNamesBySpeciesIdAsync(speciesId))
-        //    .Where(x => IsVisibleTaxonName(x.NameName)));
+        NamesCollection = new ObservableCollection<Tbl78Name>(
+            (await dataService.GetNamesBySpeciesIdAsync(speciesId))
+            .Where(x => IsVisibleTaxonName(x.NameName)));
+
+        ImagesCollection = new ObservableCollection<Tbl81Image>(
+            (await dataService.GetImagesBySpeciesIdAsync(speciesId))
+            .Where(x => IsVisibleTaxonName(x.Info)));
+
+        SynonymsCollection = new ObservableCollection<Tbl84Synonym>(
+            (await dataService.GetSynonymsBySpeciesIdAsync(speciesId))
+            .Where(x => IsVisibleTaxonName(x.SynonymName)));
+
+        GeographicsCollection = new ObservableCollection<Tbl87Geographic>(
+            (await dataService.GetGeographicsBySpeciesIdAsync(speciesId))
+            .Where(x => IsVisibleTaxonName(x.Info)));
 
         ExpertsCollection = new ObservableCollection<Tbl90Reference>(
             await dataService.GetExpertReferencesBySpeciesIdAsync(speciesId));
@@ -213,71 +224,48 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
             InfratribusTree = GenrateModels.GenInfratribusses.GenerateInfratribusses(_infratribusSingle),
             GenusTree = GenrateModels.GenGenusses.GenerateGenusses(_genusSingle),
             SpeciesTree = GenrateModels.GenSpeciesses.GenerateSpeciesses(_speciesSingle),
-            //SynonymsTree = GenrateModels.GenSynonyms.GenerateSynonyms(_synonymSingle),
-            //NamesTree = GenrateModels.GenNames.GenerateNames(_nameSingle),
+            SynonymsTree = GenrateModels.GenSynonyms.GenerateSynonyms(_synonymSingle),
+            NamesTree = GenrateModels.GenNames.GenerateNames(_nameSingle),
         };
     }
 
     #region "Collections"
 
-    public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl27Infraclass> InfraclassesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl30Legio> LegiosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl33Ordo> OrdosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl36Subordo> SubordosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl39Infraordo> InfraordosCollection { get; set; } = new();
+    public static ObservableCollection<Tbl42Superfamily> SuperfamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl45Family> FamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl48Subfamily> SubfamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl51Infrafamily> InfrafamiliesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl54Supertribus> SupertribussesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl57Tribus> TribussesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl60Subtribus> SubtribussesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl63Infratribus> InfratribussesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl66Genus> GenussesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl75Species> SpeciessesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl75Species> SpeciesSubsCollection { get; set; } = new();
+    public static ObservableCollection<Tbl78Name> NamesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl81Image> ImagesCollection { get; set; } = new();
+    public static ObservableCollection<Tbl84Synonym> SynonymsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl87Geographic> GeographicsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = new();
 
-    public static ObservableCollection<Tbl24Subclass> SubclassesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl27Infraclass> InfraclassesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl30Legio> LegiosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl33Ordo> OrdosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl36Subordo> SubordosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl39Infraordo> InfraordosCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl42Superfamily> SuperfamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl45Family> FamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl48Subfamily> SubfamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl51Infrafamily> InfrafamiliesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl54Supertribus> SupertribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl57Tribus> TribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl60Subtribus> SubtribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl63Infratribus> InfratribussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl66Genus> GenussesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl75Species> SpeciessesCollection { get; set; } = null!;
-    public static ObservableCollection<Tbl75Species> SpeciesSubsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl78Name> NamesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl81Image> ImagesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl84Synonym> SynonymsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl87Geographic> GeographicsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> AuthorsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> SourcesCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl90Reference> ExpertsCollection { get; set; } = null!;
-
-    public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = null!;
+    public static ObservableCollection<Tbl93Comment> CommentsCollection { get; set; } = new();
     #endregion "Collections"          
 
     public static void ClearAllCollections()
@@ -331,10 +319,9 @@ public abstract class Tbl75SpeciessesDocumentDataSource : ObservableObject
         ImagesCollection?.Clear();
         NamesCollection?.Clear();
 
-        CommentsCollection?.Clear();
         ExpertsCollection?.Clear();
         SourcesCollection?.Clear();
         AuthorsCollection?.Clear();
-
+        CommentsCollection?.Clear();
     }
 }

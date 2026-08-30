@@ -25,16 +25,19 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
         <StackPanel>
             <TextBlock Width="Auto"
                        Margin="8,0,0,0"
                        loca:Uids.Uid="TextBlock_Name" />
         </StackPanel>
+
         <StackPanel Grid.Row="0"
                     Grid.Column="1">
             <TextBlock Width="Auto"
                        Text="{Binding ImageId}" />
         </StackPanel>
+
         <StackPanel Grid.Row="1"
                     Grid.Column="1">
             <Border Name="Border1"
@@ -42,45 +45,53 @@
                 <Image Name="img"
                        Width="300"
                        Height="200"
-                       Source="{Binding Filestream, Converter={StaticResource ResourceKey=ImageSourceConverter}}"
+                       Source="{Binding Filestream, Converter={StaticResource ImageSourceConverter}}"
                        Stretch="Uniform" />
             </Border>
         </StackPanel>
+
         <StackPanel Grid.Row="2"
                     Grid.Column="0">
             <TextBlock Margin="8,0,0,0"
                        loca:Uids.Uid="TextBlock_ShotDate" />
         </StackPanel>
+
         <StackPanel Grid.Row="2"
                     Grid.Column="1">
             <TextBlock Width="Auto"
                        Text="{Binding ShotDate}" />
         </StackPanel>
+
         <StackPanel Grid.Row="3"
                     Grid.Column="0">
             <TextBlock Margin="8,0,0,0"
                        loca:Uids.Uid="TextBlock_ImageMimeType" />
         </StackPanel>
+
         <StackPanel Grid.Row="3"
                     Grid.Column="1">
             <TextBlock Width="Auto"
                        Text="{Binding ImageMimeType}" />
         </StackPanel>
+
         <StackPanel Grid.Row="4"
                     Grid.Column="0">
             <TextBlock Margin="8,0,0,0"
                        loca:Uids.Uid="TextBlock_Info" />
         </StackPanel>
+
         <StackPanel Grid.Row="4"
                     Grid.Column="1">
             <TextBlock Width="Auto"
                        Text="{Binding Info}" />
         </StackPanel>
+
         <StackPanel Grid.Row="5"
                     Grid.Column="0">
             <TextBlock Margin="8,0,0,0"
                        loca:Uids.Uid="TextBlock_Notes" />
         </StackPanel>
+
         <StackPanel Grid.Row="5"
                     Grid.Column="1">
             <TextBlock Width="Auto"

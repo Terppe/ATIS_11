@@ -308,20 +308,17 @@
     </DataTemplate>
 
     <!--  Rest-ListViews  -->
-    <DataTemplate x:Key="ReportItemTemplateSpecies">
+    <DataTemplate x:Key="ReportItemTemplateTbl75Species">
         <dataTemplates1:ReportItemTemplateTbl75SpeciesControl />
     </DataTemplate>
-    <DataTemplate x:Key="ReportItemTemplateName">
+    <DataTemplate x:Key="ReportItemTemplateTbl78Name">
         <dataTemplates1:ReportItemTemplateTbl78NameControl />
     </DataTemplate>
-    <DataTemplate x:Key="ReportItemTemplateImage">
+    <DataTemplate x:Key="ReportItemTemplateTbl81Image">
         <dataTemplates1:ReportItemTemplateTbl81ImageControl />
     </DataTemplate>
-    <DataTemplate x:Key="ReportItemTemplateSynonym">
+    <DataTemplate x:Key="ReportItemTemplateTbl84Synonym">
         <dataTemplates1:ReportItemTemplateTbl84SynonymControl />
-    </DataTemplate>
-    <DataTemplate x:Key="ReportItemTemplateGeographic">
-        <dataTemplates1:ReportItemTemplateTbl87GeographicControl />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateTbl87Geographic">
         <dataTemplates1:ReportItemTemplateTbl87GeographicControl />

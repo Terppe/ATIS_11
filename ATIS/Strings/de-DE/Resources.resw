@@ -1788,6 +1788,9 @@
   <data name="TextBlock_Address.Text" xml:space="preserve">
     <value>Addresse</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
   <data name="TextBlock_Add.Text" xml:space="preserve">
     <value>Neu</value>
   </data>
@@ -1884,7 +1887,13 @@
   <data name="TextBlock_Continent.Text" xml:space="preserve">
     <value>Erdteil</value>
   </data>
+  <data name="Continent" xml:space="preserve">
+    <value>Erdteil</value>
+  </data>
   <data name="TextBlock_Country.Text" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="Country" xml:space="preserve">
     <value>Land</value>
   </data>
   <data name="TextBlock_CountryId.Text" xml:space="preserve">
@@ -2031,6 +2040,9 @@
   <data name="TextBlock_Http.Text" xml:space="preserve">
     <value>Http</value>
   </data>
+  <data name="Http" xml:space="preserve">
+    <value>Http</value>
+  </data>
   <data name="TextBlock_Husbandry.Text" xml:space="preserve">
     <value>Haltung</value>
   </data>
@@ -2048,6 +2060,9 @@
   </data>
   <data name="Images" xml:space="preserve">
     <value>Bilder/Videos</value>
+  </data>
+  <data name="ImageMimeType" xml:space="preserve">
+    <value>Bild Mime Type</value>
   </data>
   <data name="ImporterWithYear" xml:space="preserve">
     <value>Importeur und Jahr</value>
@@ -2130,6 +2145,9 @@
   <data name="TextBlock_Infratribusses.Text" xml:space="preserve">
     <value>Infratribusse</value>
   </data>
+  <data name="TextBlock_Jurisdiction.Text" xml:space="preserve">
+    <value>Zuständigkeit</value>
+  </data>
   <data name="TextBlock_InfratribusDetail.Text" xml:space="preserve">
     <value>Infratribus Detail</value>
   </data>
@@ -2146,10 +2164,13 @@
     <value>Sprachen</value>
   </data>
   <data name="TextBlock_Latitude.Text" xml:space="preserve">
-    <value>Latitude</value>
+    <value>Breitengrad</value>
   </data>
   <data name="TextBlock_Latitude_Longitude.Text" xml:space="preserve">
-    <value>Latitude/Longitude</value>
+    <value>Breitengrad/Längengrad</value>
+  </data>
+  <data name="LatitudeLongitude" xml:space="preserve">
+    <value>Breitengrad/Längengrad</value>
   </data>
   <data name="TextBlock_LegioId.Text" xml:space="preserve">
     <value>Überordnung ID</value>
@@ -2167,7 +2188,7 @@
     <value>Fisch/Becken Länge</value>
   </data>
   <data name="TextBlock_Longitude.Text" xml:space="preserve">
-    <value>Longitude</value>
+    <value>Längengrad</value>
   </data>
   <data name="TextBlock_Map.Text" xml:space="preserve">
     <value>Map</value>
@@ -2178,8 +2199,47 @@
   <data name="Memo" xml:space="preserve">
     <value>Memo</value>
   </data>
+  <data name="MemoFood" xml:space="preserve">
+    <value>Memo Futter</value>
+  </data>
+  <data name="MemoGlobal" xml:space="preserve">
+    <value>Memo Allgemein</value>
+  </data>
+  <data name="MemoColor" xml:space="preserve">
+    <value>Memo Farbe</value>
+  </data>
+  <data name="MemoCulture" xml:space="preserve">
+    <value>Memo Nachzucht</value>
+  </data>
+  <data name="MemoDimorphism" xml:space="preserve">
+    <value>Memo Geschlechtsunterschied</value>
+  </data>
+  <data name="MemoBreeding" xml:space="preserve">
+    <value>Memo Zucht</value>
+  </data>
+  <data name="MemoBuilt" xml:space="preserve">
+    <value>Memo Gestalt</value>
+  </data>
+  <data name="MemoHusbandry" xml:space="preserve">
+    <value>Memo Haltung</value>
+  </data>
+  <data name="MemoTechnic" xml:space="preserve">
+    <value>Memo Technik</value>
+  </data>
+  <data name="MemoRegion" xml:space="preserve">
+    <value>Memo Bereich</value>
+  </data>
+  <data name="MemoReproduction" xml:space="preserve">
+    <value>Memo Vermehren</value>
+  </data>
   <data name="MemoSpecies" xml:space="preserve">
     <value>Memo Art</value>
+  </data>
+  <data name="MemoSpecial" xml:space="preserve">
+    <value>Memo Besonderes</value>
+  </data>
+  <data name="MemoSozial" xml:space="preserve">
+    <value>Memo Soziales Verhalten</value>
   </data>
   <data name="TextBlock_MemoBreeding.Text" xml:space="preserve">
     <value>Memo Zucht</value>
@@ -2292,6 +2352,18 @@
   <data name="TextBlock_Ph.Text" xml:space="preserve">
     <value>Ph</value>
   </data>
+  <data name="Ph12" xml:space="preserve">
+    <value>Ph 1 / Ph 2</value>
+  </data>
+  <data name="Temp12" xml:space="preserve">
+    <value>Temp 1 / Temp 2</value>
+  </data>
+  <data name="Hardness12" xml:space="preserve">
+    <value>Härte 1 / Härte 2</value>
+  </data>
+  <data name="CarboHardness12" xml:space="preserve">
+    <value>Karbonathärte 1 / karbonathärte 2</value>
+  </data>
   <data name="TextBlock_Phylum.Text" xml:space="preserve">
     <value>Stamm</value>
   </data>
@@ -2307,11 +2379,17 @@
   <data name="PdfExport_Error" xml:space="preserve">
     <value>PDF Datei Fehler beim Export</value>
   </data>
+  <data name="PdfImage_Error" xml:space="preserve">
+    <value>PDF Datei Fehler beim Image erzeugen</value>
+  </data>
   <data name="PdfExport_Success_Title" xml:space="preserve">
     <value>PDF Datei exportieren</value>
   </data>
   <data name="PdfExport_Error_Title" xml:space="preserve">
     <value>PDF Fehler beim Datei exportieren</value>
+  </data>
+  <data name="PdfImage_Error_Title" xml:space="preserve">
+    <value>PDF Fehler Bild</value>
   </data>
   <data name="TestKey" xml:space="preserve">
     <value>Hallo</value>
@@ -2405,6 +2483,15 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
+  </data>
+  <data name="RegionTop" xml:space="preserve">
+    <value>Bereich oben</value>
+  </data>
+  <data name="RegionMiddle" xml:space="preserve">
+    <value>Bereich mittig</value>
+  </data>
+  <data name="RegionBottom" xml:space="preserve">
+    <value>Bereich unten</value>
   </data>
   <data name="TextBlock_Refresh.Text" xml:space="preserve">
     <value>Aktualisieren</value>
@@ -2613,6 +2700,9 @@
   <data name="TextBlock_Technik.Text" xml:space="preserve">
     <value>Technik</value>
   </data>
+  <data name="Technic" xml:space="preserve">
+    <value>Technik</value>
+  </data>
   <data name="TextBlock_Temp.Text" xml:space="preserve">
     <value>Temperatur</value>
   </data>
@@ -2627,6 +2717,9 @@
   </data>
   <data name="Tribus" xml:space="preserve">
     <value>Tribus</value>
+  </data>
+  <data name="TypeSpecies" xml:space="preserve">
+    <value>Typart</value>
   </data>
   <data name="TradeName" xml:space="preserve">
     <value>Handelsname</value>
@@ -3389,6 +3482,9 @@
   </data>
   <data name="Regnum" xml:space="preserve">
     <value>Reich</value>
+  </data>
+  <data name="ShotDate" xml:space="preserve">
+    <value>Aufgenommen am</value>
   </data>
   <data name="TextBlock_Subclass.Text" xml:space="preserve">
     <value>Unterklasse</value>
@@ -4236,11 +4332,23 @@
   <data name="TextBlock_FishLength.Text" xml:space="preserve">
     <value>Fischlänge (cm)</value>
   </data>
+  <data name="FishLength" xml:space="preserve">
+    <value>Fischlänge (cm)</value>
+  </data>
   <data name="TextBlock_PlantLength.Text" xml:space="preserve">
     <value>Pflanzenlänge (cm)</value>
   </data>
   <data name="TextBlock_BasinLength.Text" xml:space="preserve">
     <value>Beckenlänge (cm)</value>
+  </data>
+  <data name="BasinLength" xml:space="preserve">
+    <value>Beckenlänge (cm)</value>
+  </data>
+  <data name="BasinHeight" xml:space="preserve">
+    <value>Beckenhöhe (cm)</value>
+  </data>
+  <data name="PlantLength" xml:space="preserve">
+    <value>Pflanzenhöhe (cm)</value>
   </data>
   <data name="TextBlock_BasinHeight.Text" xml:space="preserve">
     <value>Beckenhöhe (cm)</value>
@@ -4311,6 +4419,18 @@
   <data name="TextBlock_Kingdom.Text" xml:space="preserve">
     <value>Reich</value>
   </data>
+  <data name="Karnivore" xml:space="preserve">
+    <value>Limnivore</value>
+  </data>
+  <data name="Herbivore" xml:space="preserve">
+    <value>Pflanzenfresser</value>
+  </data>
+  <data name="Limnivore" xml:space="preserve">
+    <value>Pflanzenfresser</value>
+  </data>
+  <data name="Omnivore" xml:space="preserve">
+    <value>Omnivore</value>
+  </data>
   <data name="TextBlock_MemoRegion.Text" xml:space="preserve">
     <value>Memo Region</value>
   </data>
@@ -4321,6 +4441,12 @@
     <value>L-Nummer/Original</value>
   </data>
   <data name="TextBlock_LDANummer.Text" xml:space="preserve">
+    <value>LDA-Nummer/Original</value>
+  </data>
+  <data name="LdaNumberLdaOrigin" xml:space="preserve">
+    <value>LDA-Nummer/Original</value>
+  </data>
+  <data name="LNumberLOrigin" xml:space="preserve">
     <value>LDA-Nummer/Original</value>
   </data>
   <data name="TextBlock_PlSpecies.Text" xml:space="preserve">
@@ -4373,9 +4499,6 @@
   </data>
   <data name="TextBlock_PublisherPlace1.Text" xml:space="preserve">
     <value>Verlag Ort:</value>
-  </data>
-  <data name="TextBlock_Isbn1.Text" xml:space="preserve">
-    <value>ISBN/ISSN:</value>
   </data>
   <data name="TextBlock_Notes1.Text" xml:space="preserve">
     <value>Notizen:</value>
@@ -4490,6 +4613,18 @@
   </data>
   <data name="Dialog_Yes" xml:space="preserve">
     <value>Ja</value>
+  </data>
+  <data name="Difficult1" xml:space="preserve">
+    <value>Schwierigkeit 1</value>
+  </data>
+  <data name="Difficult2" xml:space="preserve">
+    <value>Schwierigkeit 2</value>
+  </data>
+  <data name="Difficult3" xml:space="preserve">
+    <value>Schwierigkeit 3</value>
+  </data>
+  <data name="Difficult4" xml:space="preserve">
+    <value>Schwierigkeit 4</value>
   </data>
   <data name="Dialog_Delete_Title" xml:space="preserve">
     <value>Gelöscht</value>

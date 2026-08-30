@@ -99,4 +99,8 @@ public class Tbl75SpeciessesPdfModel
     public PdfModels.Infratribus? InfratribusTree { get; set; }
     public PdfModels.Genus? GenusTree { get; set; }
     public PdfModels.Species? SpeciesTree { get; set; }
+    public PdfModels.Name? NamesTree { get; set; }
+    public PdfModels.Image? ImagesTree { get; set; }
+    public PdfModels.Synonym? SynonymsTree { get; set; }
+    public PdfModels.Geographic? GeographicsTree { get; set; }
 }

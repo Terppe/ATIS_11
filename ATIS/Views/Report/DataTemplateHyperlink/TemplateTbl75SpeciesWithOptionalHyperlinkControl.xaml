@@ -26,13 +26,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--<TextBlock x:Name="TbSpecies"
-                Grid.Column="0"
-                Foreground="DarkBlue"
-                Tag="{Binding Item.SpeciesId, Mode=OneWay}"
-                Tapped="TextBlock_Tapped"
-                TextDecorations="Underline" />-->
-
                 <TextBlock x:Name="TbSpecies"
                            Grid.Column="0"
                            Foreground="DarkBlue"

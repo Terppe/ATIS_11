@@ -991,7 +991,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string SpeciesFullName => $"{Tbl66Genusses.GenusName} {SpeciesName} {Subspecies} {Divers}";
+     //   public string SpeciesFullName => $"{Tbl66Genusses.GenusName} {SpeciesName} {Subspecies} {Divers}";
 
         public int GenusId
         {
@@ -1261,11 +1261,7 @@ public class PdfModels
         {
             get; set;
         }
-        public int FiSpeciesId
-        {
-            get; set;
-        }
-        public int PlSpeciesId
+        public int SpeciesId
         {
             get; set;
         }
@@ -1311,17 +1307,12 @@ public class PdfModels
         }
         //     public byte[] RowVersion { get; set; }
 
-        [ForeignKey("FiSpeciesId")]
-        public virtual Tbl75Species Tbl69FiSpeciesses
+        [ForeignKey("SpeciesId")]
+        public virtual Tbl75Species Tbl75Speciesses
         {
             get; set;
         }
 
-        [ForeignKey("PlSpeciesId")]
-        public virtual Tbl75Species Tbl72PlSpeciesses
-        {
-            get; set;
-        }
 
 
     }
@@ -1331,11 +1322,7 @@ public class PdfModels
         {
             get; set;
         }
-        public int FiSpeciesId
-        {
-            get; set;
-        }
-        public int PlSpeciesId
+        public int SpeciesId
         {
             get; set;
         }
@@ -1397,17 +1384,12 @@ public class PdfModels
         }
         //     public byte[] RowVersion { get; set; }
 
-        [ForeignKey("FiSpeciesId")]
-        public virtual Tbl75Species Tbl69FiSpeciesses
+        [ForeignKey("SpeciesId")]
+        public virtual Tbl75Species Tbl75Speciesses
         {
             get; set;
         }
 
-        [ForeignKey("PlSpeciesId")]
-        public virtual Tbl75Species Tbl72PlSpeciesses
-        {
-            get; set;
-        }
 
 
     }
@@ -1421,11 +1403,7 @@ public class PdfModels
         {
             get; set;
         }
-        public int FiSpeciesId
-        {
-            get; set;
-        }
-        public int PlSpeciesId
+        public int SpeciesId
         {
             get; set;
         }
@@ -1475,18 +1453,11 @@ public class PdfModels
         }
         //   public byte[] RowVersion { get; set; }
 
-        [ForeignKey("FiSpeciesId")]
-        public virtual Tbl75Species Tbl69FiSpeciesses
+        [ForeignKey("SpeciesId")]
+        public virtual Tbl75Species Tbl75Speciesses
         {
             get; set;
         }
-
-        [ForeignKey("PlSpeciesId")]
-        public virtual Tbl75Species Tbl72PlSpeciesses
-        {
-            get; set;
-        }
-
 
     }
     public class Geographic
@@ -1504,11 +1475,7 @@ public class PdfModels
         {
             get; set;
         }
-        public int FiSpeciesId
-        {
-            get; set;
-        }
-        public int PlSpeciesId
+        public int SpeciesId
         {
             get; set;
         }
@@ -1607,13 +1574,6 @@ public class PdfModels
         {
             get; set;
         }
-
-        //[ForeignKey("PlSpeciesId")]
-        //public virtual Tbl75Species Tbl72PlSpeciesses
-        //{
-        //    get; set;
-        //}
-
 
     }
 

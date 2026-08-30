@@ -9,7 +9,7 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!-- Tbl75SpeciesDetailPage.xaml  Skriptdatum:  18.08.2026  10:32   -->
+    <!--  Tbl75SpeciesDetailPage.xaml  Skriptdatum:  18.08.2026  10:32  -->
 
 
     <Page.Resources>
@@ -156,7 +156,7 @@
                           ItemTemplate="{StaticResource ReportItemTemplateHeaderSpecies}"
                           ItemsSource="{x:Bind ViewModel.SpeciesItems}" />
 
-                <!--  HEADER TAXONOMY     hier fehlt Synonyme und namen -->
+                <!--  HEADER TAXONOMY     hier fehlt Synonyme und namen  -->
                 <ListView Grid.Row="1"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -466,15 +466,45 @@
                           ItemTemplate="{StaticResource ReportItemTemplateTbl90RefAuthor}"
                           ItemsSource="{x:Bind ViewModel.ReferenceAuthorItems}" />
 
-                <!--  COMMENTS  -->
+                <!--  IMAGES  -->
                 <TextBlock Grid.Row="38"
+                           Grid.Column="0"
+                           Margin="0,0,0,10"
+                           loc:Uids.Uid="TextBlock_Images"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="39"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl81Image}"
+                          ItemsSource="{x:Bind ViewModel.ImageItems}" />
+
+                <!--  GEOGRAPHICS  -->
+                <TextBlock Grid.Row="40"
+                           Grid.Column="0"
+                           Margin="0,0,0,10"
+                           loc:Uids.Uid="TextBlock_Geographics"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="41"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl87Geographic}"
+                          ItemsSource="{x:Bind ViewModel.GeographicItems}" />
+
+                <!--  COMMENTS  -->
+                <TextBlock Grid.Row="42"
                            Grid.Column="0"
                            Margin="0,0,0,10"
                            loc:Uids.Uid="TextBlock_Comments"
                            FontSize="18"
                            FontWeight="Bold" />
 
-                <ListView Grid.Row="39"
+                <ListView Grid.Row="43"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-12,-12,10,10"

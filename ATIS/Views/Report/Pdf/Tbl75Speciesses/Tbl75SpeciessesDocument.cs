@@ -5,7 +5,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
-using static System.Net.Mime.MediaTypeNames;
+using Image = QuestPDF.Infrastructure.Image;
 
 namespace ATIS.Views.Report.Pdf.Tbl75Speciesses;
 public class Tbl75SpeciessesDocument : IDocument
@@ -138,18 +138,19 @@ public class Tbl75SpeciessesDocument : IDocument
             column.Item().Element(ComposeReferencesPublications);
             column.Spacing(5);
             //Geographics
-            //column.Item().Element(ComposeHeaderGeographics);
-            //column.Item().Element(ComposeGeographics);
+            column.Item().Element(ComposeHeaderGeographics);
+            column.Item().Element(ComposeGeographics);
             //Images
-            //column.Item().Element(ComposeHeaderImages);
-            //column.Item().Element(ComposeImages);
+            column.Item().Element(ComposeHeaderImages);
+            column.Item().Element(ComposeImages);
             //Comments
             column.Item().Element(ComposeHeaderComments);
             column.Item().Element(ComposeComments);
+
             //usefull information
-            //column.Item().Element(ComposeHeaderUsefulInfos);
-            //column.Item().Element(ComposeUsefulInfos);
-            //column.Item().Element(ComposePlantUsefulInfos);
+            column.Item().Element(ComposeHeaderUsefulInfos);
+            column.Item().Element(ComposeUsefulInfos);
+            column.Item().Element(ComposePlantUsefulInfos);
         });
     }
 
@@ -800,175 +801,197 @@ public class Tbl75SpeciessesDocument : IDocument
         });
     }
 
-    //private void ComposeHeaderGeographics(IContainer container)
-    //{
-    //    CompHeaders.HeaderGeographics(container, TabLeftRel4, TextHight);
-    //}
-    //private void ComposeGeographics(IContainer container)
-    //{
-    //    if (Tbl75SpeciessesDocumentDataSource.GeographicsCollection.Count == 0)
-    //    {
-    //        return;
-    //    }
+    private void ComposeHeaderGeographics(IContainer container)
+    {
+        CompHeaders.HeaderGeographics(container, TabLeftRel4, TextHight);
+    }
+    private void ComposeGeographics(IContainer container)
+    {
+        if (Tbl75SpeciessesDocumentDataSource.GeographicsCollection.Count == 0)
+        {
+            return;
+        }
 
-    //    container.Table(table =>
-    //    {
-    //        table.ColumnsDefinition(columns =>
-    //        {
-    //            columns.ConstantColumn(TabLeftRel8);
-    //            columns.ConstantColumn(TabRightRel8);
-    //            columns.RelativeColumn();
-    //        });
+        container.Table(table =>
+        {
+            table.ColumnsDefinition(columns =>
+            {
+                columns.ConstantColumn(TabLeftRel8);
+                columns.ConstantColumn(TabRightRel8);
+                columns.RelativeColumn();
+            });
 
-    //        foreach (var item in Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
-    //        {
+            foreach (var item in Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
+            {
 
-    //            for (var i = 0; i < 10; i++)
-    //            {
-    //                if (i == 0)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportAddress);
-    //                    table.Cell().Text(item.Address);
-    //                }
-    //                if (i == 1)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportContinent);
-    //                    table.Cell().Text(item.Continent);
-    //                }
-    //                if (i == 2)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportCountry);
-    //                    table.Cell().Text(item.Country);
-    //                }
-    //                if (i == 3)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportHttp);
-    //                    table.Cell().Text(item.Http);
-    //                }
-    //                if (i == 4)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportLatitudeLongitude);
-    //                    table.Cell().Text($"{item.Latitude}  //  {item.Longitude}");
-    //                }
-    //                if (i == 5)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text($"{item.Latitude1}  //  {item.Longitude1}");
-    //                }
-    //                if (i == 6)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text($"{item.Latitude2}  //  {item.Longitude2}");
-    //                }
-    //                if (i == 7)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text($"{item.Latitude3}  //  {item.Longitude3}");
-    //                }
-    //                if (i == 8)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                    table.Cell().Text(item.Memo);
-    //                }
-    //                if (i == 9)
-    //                {
-    //                    table.Cell().Text(" ");
-    //                    table.Cell().Text(" ");
-    //                    table.Cell().Text(" ");
-    //                }
-    //            }
-    //        }
-    //    });
-    //}
+                for (var i = 0; i < 10; i++)
+                {
+                    if (i == 0)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Address"));
+                        table.Cell().Text(item.Address);
+                    }
+                    if (i == 1)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Continent"));
+                        table.Cell().Text(item.Continent);
+                    }
+                    if (i == 2)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Country"));
+                        table.Cell().Text(item.Country);
+                    }
+                    if (i == 3)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Http"));
+                        table.Cell().Text(item.Http);
+                    }
+                    if (i == 4)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("LatitudeLongitude"));
+                        table.Cell().Text($"{item.Latitude}  //  {item.Longitude}");
+                    }
+                    if (i == 5)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text("");
+                        table.Cell().Text($"{item.Latitude1}  //  {item.Longitude1}");
+                    }
+                    if (i == 6)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text("");
+                        table.Cell().Text($"{item.Latitude2}  //  {item.Longitude2}");
+                    }
+                    if (i == 7)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text("");
+                        table.Cell().Text($"{item.Latitude3}  //  {item.Longitude3}");
+                    }
+                    if (i == 8)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.Memo);
+                    }
+                    if (i == 9)
+                    {
+                        table.Cell().Text(" ");
+                        table.Cell().Text(" ");
+                        table.Cell().Text(" ");
+                    }
+                }
+            }
+        });
+    }
 
-    //private void ComposeHeaderImages(IContainer container)
-    //{
-    //    CompHeaders.HeaderImages(container, TabLeftRel4, TextHight);
-    //}
+    private void ComposeHeaderImages(IContainer container)
+    {
+        CompHeaders.HeaderImages(container, TabLeftRel4, TextHight);
+    }
 
-    //private void ComposeImages(IContainer container)
-    //{
-    //    if (Tbl75SpeciessesDocumentDataSource.ImagesCollection.Count == 0)
-    //    {
-    //        return;
-    //    }
+    private void ComposeImages(IContainer container)
+    {
+        if (Tbl75SpeciessesDocumentDataSource.ImagesCollection.Count == 0)
+        {
+            return;
+        }
 
-    //    container.Table(table =>
-    //    {
-    //        table.ColumnsDefinition(columns =>
-    //        {
-    //            columns.ConstantColumn(TabLeftRel8);
-    //            columns.ConstantColumn(TabRightRel8);
-    //            columns.RelativeColumn();
-    //        });
+        container.Table(table =>
+        {
+            table.ColumnsDefinition(columns =>
+            {
+                columns.ConstantColumn(TabLeftRel8);
+                columns.ConstantColumn(TabRightRel8);
+                columns.RelativeColumn();
+            });
 
-    //        foreach (var item in Tbl75SpeciessesDocumentDataSource.ImagesCollection)
-    //        {
-    //            for (var i = 0; i < 6; i++)
-    //            {
-    //                if (i == 0)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text("");
-    //                    //       table.Cell().Text(Placeholders.LoremIpsum());
-    //                    //       table.Cell().Image(Placeholders.Image(200, 100));
-    //                    table.Cell().Image(item.Filestream!).FitArea();
-    //                }
-    //                if (i == 1)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportImageShot);
-    //                    table.Cell().Text(item.ShotDate.ToString());
-    //                }
-    //                if (i == 2)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportImageMimeType);
-    //                    table.Cell().Text(item.ImageMimeType);
-    //                }
-    //                if (i == 3)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportInfo);
-    //                    table.Cell().Text(item.Info);
-    //                }
-    //                if (i == 4)
-    //                {
-    //                    table.Cell().Text("");
-    //                    table.Cell().Text(Strings.StringsRes.ReportNotes);
-    //                    table.Cell().Text(item.Memo);
-    //                }
-    //                if (i == 5)
-    //                {
-    //                    table.Cell().Text(" ");
-    //                    table.Cell().Text(" ");
-    //                    table.Cell().Text(" ");
-    //                }
-    //            }
-    //        }
-    //    });
+            foreach (var item in Tbl75SpeciessesDocumentDataSource.ImagesCollection)
+            {
+                for (var i = 0; i < 6; i++)
+                {
+                    if (i == 0)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text("");
+                        if (item.Filestream != null)
+                        {
+                            try
+                            {
+                                using var ms = new MemoryStream(item.Filestream);
+                                using var img = Image.FromStream(ms); // Test: ist es ein echtes Bild?
 
-    //}
+                                table.Cell().Image(item.Filestream).FitArea();
+                            }
+                            catch (Exception ex)
+                            {
+                                var loc = Localizer.Get();
+
+                                var errorDialog = new ContentDialog
+                                {
+                                    Title = loc.GetLocalizedString("PdfImage_Error_Title"),
+                                    Content = string.Format(loc.GetLocalizedString("PdfImage_Error"), ex.ToString()),
+                                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                                };
+
+                                 errorDialog.ShowAsync();
+                            }
+                        }
+                    }
+                    if (i == 1)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("ShotDate"));
+                        table.Cell().Text(item.ShotDate.ToString() ?? string.Empty);
+                    }
+                    if (i == 2)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("ImageMimeType"));
+                        table.Cell().Text(item.ImageMimeType ?? string.Empty);
+                    }
+                    if (i == 3)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Info"));
+                        table.Cell().Text(item.Info ?? string.Empty);
+                    }
+                    if (i == 4)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Notes"));
+                        table.Cell().Text(item.Memo ?? string.Empty);
+                    }
+                    if (i == 5)
+                    {
+                        table.Cell().Text(" ");
+                        table.Cell().Text(" ");
+                        table.Cell().Text(" ");
+                    }
+                }
+            }
+        });
+
+    }
 
     private void ComposeHeaderComments(IContainer container)
     {
+        if (Tbl75SpeciessesDocumentDataSource.CommentsCollection?.Count is not > 0)
+            return;
+
         CompHeaders.HeaderComments(container, TabLeftRel4, TextHight);
     }
     private void ComposeComments(IContainer container)
     {
         if (Tbl75SpeciessesDocumentDataSource.CommentsCollection.Count == 0)
-        {
             return;
-        }
 
         container.Table(table =>
         {
@@ -1005,752 +1028,752 @@ public class Tbl75SpeciessesDocument : IDocument
             }
         });
     }
-    //private void ComposeHeaderUsefulInfos(IContainer container)
-    //{
-    //    CompHeaders.HeaderUsefulInfos(container, TabLeftRel4, TextHight);
-    //}
+    private void ComposeHeaderUsefulInfos(IContainer container)
+    {
+        CompHeaders.HeaderUsefulInfos(container, TabLeftRel4, TextHight);
+    }
 
-    //private void ComposeUsefulInfos(IContainer container)
-    //{
-    //    if (Model.Creature == "Plantae")
-    //    {
-    //        return;
-    //    }
+    private void ComposeUsefulInfos(IContainer container)
+    {
+        if (Model.Creature == "Plantae")
+        {
+            return;
+        }
 
-    //    container.Row(row =>
-    //    {
-    //        row.RelativeItem().Column(column =>
-    //        {
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportTechnic).SemiBold();
-    //            });
+        container.Row(row =>
+        {
+            row.RelativeItem().Column(column =>
+            {
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Technic")).SemiBold();
+                });
 
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportLNumberLOrigin);
-    //                table.Cell().Text($"{Model.LNumber} / {Model.LOrigin}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportLdaNumberLdaOrigin);
-    //                table.Cell().Text($"{Model.LdaNumber} / {Model.LdaOrigin}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportBasinLength);
-    //                table.Cell().Text($"{Model.BasinLength}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportFishLength);
-    //                table.Cell().Text($"{Model.FishLength}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportKarnivore);
-    //                table.Cell().Text($"{Model.Karnivore}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportHerbivore);
-    //                table.Cell().Text($"{Model.Herbivore}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportLimnivore);
-    //                table.Cell().Text($"{Model.Limnivore}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportOmnivore);
-    //                table.Cell().Text($"{Model.Omnivore}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoFood).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo).SemiBold(); 
-    //                table.Cell().Text($"{Model.MemoFoods}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult1);
-    //                table.Cell().Text($"{Model.Difficult1}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult2);
-    //                table.Cell().Text($"{Model.Difficult2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult3);
-    //                table.Cell().Text($"{Model.Difficult3}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult4);
-    //                table.Cell().Text($"{Model.Difficult4}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportRegionTop);
-    //                table.Cell().Text($"{Model.RegionTop}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportRegionMiddle);
-    //                table.Cell().Text($"{Model.RegionMiddle}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportRegionBottom);
-    //                table.Cell().Text($"{Model.RegionBottom}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoRegion).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo).SemiBold();
-    //                table.Cell().Text($"{Model.MemoRegion}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportPh12);
-    //                table.Cell().Text($"{Model.Ph1}/{Model.Ph2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportTemp12);
-    //                table.Cell().Text($"{Model.Temp1}/{Model.Temp2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportHardness12);
-    //                table.Cell().Text($"{Model.Hardness1}/{Model.Hardness2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportCarboHardness12);
-    //                table.Cell().Text($"{Model.CarboHardness1}/{Model.CarboHardness2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportTypeSpecies);
-    //                table.Cell().Text($"{Model.TypeSpecies}");
-    //            });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("LNumberLOrigin"));
+                    table.Cell().Text($"{Model.LNumber} / {Model.LOrigin}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("LdaNumberLdaOrigin"));
+                    table.Cell().Text($"{Model.LdaNumber} / {Model.LdaOrigin}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("BasinLength"));
+                    table.Cell().Text($"{Model.BasinLength}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("FishLength"));
+                    table.Cell().Text($"{Model.FishLength}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Karnivore"));
+                    table.Cell().Text($"{Model.Karnivore}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Herbivore"));
+                    table.Cell().Text($"{Model.Herbivore}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Limnivore"));
+                    table.Cell().Text($"{Model.Limnivore}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Omnivore"));
+                    table.Cell().Text($"{Model.Omnivore}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoFood")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo")).SemiBold();
+                    table.Cell().Text($"{Model.MemoFoods}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult1"));
+                    table.Cell().Text($"{Model.Difficult1}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult2"));
+                    table.Cell().Text($"{Model.Difficult2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult3"));
+                    table.Cell().Text($"{Model.Difficult3}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult4"));
+                    table.Cell().Text($"{Model.Difficult4}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("RegionTop"));
+                    table.Cell().Text($"{Model.RegionTop}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("RegionMiddle"));
+                    table.Cell().Text($"{Model.RegionMiddle}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("RegionBottom"));
+                    table.Cell().Text($"{Model.RegionBottom}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoRegion")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo")).SemiBold();
+                    table.Cell().Text($"{Model.MemoRegion}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Ph12"));
+                    table.Cell().Text($"{Model.Ph1}/{Model.Ph2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Temp12"));
+                    table.Cell().Text($"{Model.Temp1}/{Model.Temp2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Hardness12"));
+                    table.Cell().Text($"{Model.Hardness1}/{Model.Hardness2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("CarboHardness12"));
+                    table.Cell().Text($"{Model.CarboHardness1}/{Model.CarboHardness2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("TypeSpecies"));
+                    table.Cell().Text($"{Model.TypeSpecies}");
+                });
 
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoTechnic).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoTech}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoHusbandry).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoHusbandry}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoColor).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoColor}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoBreeding).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoBreeding}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoBuilt).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoBuilt}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoSozial).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoSozial}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoDimorphism).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoDomorphism}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoSpecial).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoSpecial}");
-    //            });
-    //        });
-    //    });
-    //}
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoTechnic")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoTech}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoHusbandry")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoHusbandry}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoColor")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoColor}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoBreeding")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoBreeding}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoBuilt")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoBuilt}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoSozial")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoSozial}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoDimorphism")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoDomorphism}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoSpecial")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoSpecial}");
+                });
+            });
+        });
+    }
 
-    //private void ComposePlantUsefulInfos(IContainer container)
-    //{
-    //    if (Model.Creature != "Plantae")
-    //    {
-    //        return;
-    //    }
+    private void ComposePlantUsefulInfos(IContainer container)
+    {
+        if (Model.Creature != "Plantae")
+        {
+            return;
+        }
 
-    //    container.Row(row =>
-    //    {
-    //        row.RelativeItem().Column(column =>
-    //        {
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportTechnic).SemiBold();
-    //            });
+        container.Row(row =>
+        {
+            row.RelativeItem().Column(column =>
+            {
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Technic")).SemiBold();
+                });
 
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportBasinHeight);
-    //                table.Cell().Text($"{Model.BasinHeight}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportPlantLength);
-    //                table.Cell().Text($"{Model.PlantLength}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult1);
-    //                table.Cell().Text($"{Model.Difficult1}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult2);
-    //                table.Cell().Text($"{Model.Difficult2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult3);
-    //                table.Cell().Text($"{Model.Difficult3}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportDifficult4);
-    //                table.Cell().Text($"{Model.Difficult4}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportPh12);
-    //                table.Cell().Text($"{Model.Ph1}/{Model.Ph2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportTemp12);
-    //                table.Cell().Text($"{Model.Temp1}/{Model.Temp2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportHardness12);
-    //                table.Cell().Text($"{Model.Hardness1}/{Model.Hardness2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportCarboHardness12);
-    //                table.Cell().Text($"{Model.CarboHardness1}/{Model.CarboHardness2}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoReproduction).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoReproduction}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoCulture).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoCulture}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoBuilt).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoBuilt}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoColor).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoColor}");
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemoGlobal).SemiBold();
-    //            });
-    //            column.Item().Table(table =>
-    //            {
-    //                table.ColumnsDefinition(columns =>
-    //                {
-    //                    columns.ConstantColumn(TabLeftRel8);
-    //                    columns.ConstantColumn(TabRightRel8);
-    //                    columns.RelativeColumn();
-    //                });
-    //                table.Cell().Text("");
-    //                table.Cell().Text(Strings.StringsRes.ReportMemo);
-    //                table.Cell().Text($"{Model.MemoGlobal}");
-    //            });
-    //        });
-    //    });
-    //}
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("BasinHeight"));
+                    table.Cell().Text($"{Model.BasinHeight}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("PlantLength"));
+                    table.Cell().Text($"{Model.PlantLength}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult1"));
+                    table.Cell().Text($"{Model.Difficult1}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult2"));
+                    table.Cell().Text($"{Model.Difficult2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult3"));
+                    table.Cell().Text($"{Model.Difficult3}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Difficult4"));
+                    table.Cell().Text($"{Model.Difficult4}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Ph12"));
+                    table.Cell().Text($"{Model.Ph1}/{Model.Ph2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Temp12"));
+                    table.Cell().Text($"{Model.Temp1}/{Model.Temp2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Hardness12"));
+                    table.Cell().Text($"{Model.Hardness1}/{Model.Hardness2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("CarboHardness12"));
+                    table.Cell().Text($"{Model.CarboHardness1}/{Model.CarboHardness2}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoReproduction")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoReproduction}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoCulture")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoCulture}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoBuilt")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoBuilt}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoColor")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoColor}");
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("MemoGlobal")).SemiBold();
+                });
+                column.Item().Table(table =>
+                {
+                    table.ColumnsDefinition(columns =>
+                    {
+                        columns.ConstantColumn(TabLeftRel8);
+                        columns.ConstantColumn(TabRightRel8);
+                        columns.RelativeColumn();
+                    });
+                    table.Cell().Text("");
+                    table.Cell().Text(Loc("Memo"));
+                    table.Cell().Text($"{Model.MemoGlobal}");
+                });
+            });
+        });
+    }
 
 }

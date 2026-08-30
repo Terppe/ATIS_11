@@ -1124,3 +1124,10 @@ Alle Controls sortierbar gemacht
 29.08.2026 14:30 Uhr Species und SpeciesSub Pagen fertig. jetzt noch Names und Synonyms und PDF
 ----------------------------------------
 29.08.2026 17:30 Uhr Names eingefügt bei Speciescontrol. fehlt noch synonyms und PDF.
+----------------------------------------
+30.08.2026 11:30 Uhr Synonyms eingefügt bei Speciescontrol. fehlt noch PDF. Fehler noch bei Subspecies bei Anzeige ganzen namen.
+Loc muss noch generell ind Species und Subspecies Dokument eingefügt werden
+jetzt noch Image und Geographics
+----------------------------------------
+30.08.2026 13:30 Uhr Image und Geographic einfügen in Species und Subspecies Page und PDF. DetailPages mit PDF erstmal fertig.
+jetzt die SpeciesPage weiter bearbeiten

@@ -99,16 +99,16 @@
             <TextBlock Margin="8,0,0,0"
                        loc:Uids.Uid="TextBlock_RecordUpdate" />
         </StackPanel>
-        <StackPanel Grid.Row="8"
+        <StackPanel Grid.Row="7"
                     Grid.Column="1">
             <TextBlock Text="{Binding Item.UpdaterDate}" />
         </StackPanel>
-        <StackPanel Grid.Row="6"
+        <StackPanel Grid.Row="8"
                     Grid.Column="0">
             <TextBlock Margin="8,0,0,0"
                        loc:Uids.Uid="TextBlock_TradeName" />
         </StackPanel>
-        <StackPanel Grid.Row="6"
+        <StackPanel Grid.Row="8"
                     Grid.Column="1">
             <TextBlock Text="{Binding Item.TradeName}"
                        TextWrapping="Wrap" />

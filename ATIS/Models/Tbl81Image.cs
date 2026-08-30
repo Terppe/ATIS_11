@@ -52,9 +52,9 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     // FIELDS
     // ---------------------------------------------------------
     public int SpeciesId { get; set; }
-    public int FoodId { get; set; }
-    public int DiseaseId { get; set; }
-    public int MiscellaneousId { get; set; }
+    public int? FoodId { get; set; }
+    public int? DiseaseId { get; set; }
+    public int? MiscellaneousId { get; set; }
 
     [Required]
     public int CountId { get; set; }
@@ -107,12 +107,12 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
         }
     }
 
-    public byte[] ImageData { get; set; }
+    public byte[]? ImageData { get; set; }
 
     [StringLength(50)]
-    public string ImageMimeType { get; set; }
+    public string? ImageMimeType { get; set; }
 
-    public byte[] Filestream { get; set; }
+    public byte[]? Filestream { get; set; }
     public Guid FilestreamId { get; set; }
 
     // ---------------------------------------------------------
@@ -121,12 +121,12 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     [ForeignKey("SpeciesId")]
     public virtual Tbl75Species Species { get; set; }
 
-    [NotMapped] public string SpeciesName => Species?.SpeciesName;
+    [NotMapped] public string? SpeciesName => Species?.SpeciesName;
 
     // (Food, Disease, Misc kommen später als Modelle)
-    [NotMapped] public string FoodName { get; set; }
-    [NotMapped] public string DiseaseName { get; set; }
-    [NotMapped] public string MiscName { get; set; }
+    [NotMapped] public string? FoodName { get; set; }
+    [NotMapped] public string? DiseaseName { get; set; }
+    [NotMapped] public string? MiscName { get; set; }
 
     // ---------------------------------------------------------
     // VALIDATION

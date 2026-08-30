@@ -6345,7 +6345,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
     public async Task<IEnumerable<Tbl84Synonym>> GetSynonymsBySpeciesIdAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
@@ -6363,7 +6362,8 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl87Geographics
             .Where(x => x.SpeciesId == speciesId)
-            .OrderBy(x => x.Info)
+            .OrderBy(x => x.Country)
+            .ThenBy(x => x.Address)
             .AsNoTracking()
             .ToListAsync();
     }
