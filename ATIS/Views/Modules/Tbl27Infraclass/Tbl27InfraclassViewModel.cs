@@ -41,8 +41,17 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
 
     public async Task LoadSubclassLookupAsync()
     {
-        SubclassList = await _lookupService.GetSubclassListAsync();
-        SubclassLookup = await _lookupService.GetSubclassLookupAsync();
+        var list = await _lookupService.GetSubclassListAsync();
+        var lookup = await _lookupService.GetSubclassLookupAsync();
+
+        SubclassList.Clear();
+        foreach (var item in list)
+        {
+            SubclassList.Add(item);
+        }
+
+        SubclassLookup = lookup;
+        OnPropertyChanged(nameof(SubclassLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -280,6 +289,11 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
         }
 
         var saved = await Data.UpsertInfraclassAsync(item);
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

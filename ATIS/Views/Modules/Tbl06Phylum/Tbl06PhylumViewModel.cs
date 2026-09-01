@@ -43,8 +43,17 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
 
     public async Task LoadRegnumLookupAsync()
     {
-        RegnumList = await _lookupService.GetRegnumListAsync();
-        RegnumLookup = await _lookupService.GetRegnumLookupAsync();
+        var list = await _lookupService.GetRegnumListAsync();
+        var lookup = await _lookupService.GetRegnumLookupAsync();
+
+        RegnumList.Clear();
+        foreach (var item in list)
+        {
+            RegnumList.Add(item);
+        }
+
+        RegnumLookup = lookup;
+        OnPropertyChanged(nameof(RegnumLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         }
 
         var saved = await Data.UpsertPhylumAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

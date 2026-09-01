@@ -41,8 +41,17 @@ public class Tbl21ClassViewModel : BaseBossListViewModel<Models.Tbl21Class>
 
     public async Task LoadSuperclassLookupAsync()
     {
-        SuperclassList = await _lookupService.GetSuperclassListAsync();
-        SuperclassLookup = await _lookupService.GetSuperclassLookupAsync();
+        var list = await _lookupService.GetSuperclassListAsync();
+        var lookup = await _lookupService.GetSuperclassLookupAsync();
+
+        SuperclassList.Clear();
+        foreach (var item in list)
+        {
+            SuperclassList.Add(item);
+        }
+
+        SuperclassLookup = lookup;
+        OnPropertyChanged(nameof(SuperclassLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -280,6 +289,12 @@ public class Tbl21ClassViewModel : BaseBossListViewModel<Models.Tbl21Class>
         }
 
         var saved = await Data.UpsertClassAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

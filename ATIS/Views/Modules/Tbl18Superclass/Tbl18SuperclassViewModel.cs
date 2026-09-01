@@ -43,8 +43,17 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
 
     public async Task LoadSubphylumLookupAsync()
     {
-        SubphylumList = await _lookupService.GetSubphylumListAsync();
-        SubphylumLookup = await _lookupService.GetSubphylumLookupAsync();
+        var list = await _lookupService.GetSubphylumListAsync();
+        var lookup = await _lookupService.GetSubphylumLookupAsync();
+
+        SubphylumList.Clear();
+        foreach (var item in list)
+        {
+            SubphylumList.Add(item);
+        }
+
+        SubphylumLookup = lookup;
+        OnPropertyChanged(nameof(SubphylumLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
         }
 
         var saved = await Data.UpsertSuperclassAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

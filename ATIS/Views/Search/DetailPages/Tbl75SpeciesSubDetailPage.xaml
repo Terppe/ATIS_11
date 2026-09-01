@@ -1,16 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Page
-    x:Class="ATIS.Views.Search.DetailPages.Tbl75SpeciesSubDetailPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:components="using:ATIS.DesignSystem.Components"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loc="using:WinUI3Localizer"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:search="using:ATIS.Views.Search"
-    mc:Ignorable="d">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ATIS.Views.Search.DetailPages.Tbl75SpeciesSubDetailPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:components="using:ATIS.DesignSystem.Components"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:loc="using:WinUI3Localizer"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:search="using:ATIS.Views.Search"
+      mc:Ignorable="d">
 
-    <!-- Tbl75SpeciesDetailPage.xaml  Skriptdatum:  18.08.2026  10:32   -->
+    <!--  Tbl75SpeciesDetailPage.xaml  Skriptdatum:  18.08.2026  10:32  -->
 
 
     <Page.Resources>
@@ -103,6 +102,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -446,6 +447,21 @@
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
+
+                <!--  USEFUL  -->
+                <TextBlock Grid.Row="44"
+                           Grid.Column="0"
+                           Margin="0,0,0,10"
+                           loc:Uids.Uid="TextBlock_WorthKnowing"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="45"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl75Species}"
+                          ItemsSource="{x:Bind ViewModel.SpeciesSubItems}" />
             </Grid>
 
         </ScrollViewer>

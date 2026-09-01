@@ -48,6 +48,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     public Tbl60Subtribus? SubtribusSelected { get; private set; }
     public Tbl63Infratribus? InfratribusSelected { get; private set; }
     public Tbl66Genus? GenusSelected { get; private set; }
+
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
@@ -72,11 +73,6 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfratribusCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToGenusCommand { get; }
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSpeciesCommand { get; }
-
-    // -----------------------------
-    //  BREADCRUMP
-    // -----------------------------
-    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
 
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
@@ -105,13 +101,6 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl75Species>> SpeciesSubItems { get; } = new();
 
     // -----------------------------
-    //  REFERENCES
-    // -----------------------------
-    public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
-    public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
-    public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
-
-    // -----------------------------
     //  NAMES
     // -----------------------------
     public ObservableCollection<Tbl78Name> NameItems { get; } = new();
@@ -130,6 +119,18 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     //  GEOGRAPHICS
     // -----------------------------
     public ObservableCollection<Tbl87Geographic> GeographicItems { get; } = new();
+
+    // -----------------------------
+    //  BREADCRUMP
+    // -----------------------------
+    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
+
+    // -----------------------------
+    //  REFERENCES
+    // -----------------------------
+    public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
+    public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
+    public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
 
     // -----------------------------
     //  COMMENTS
@@ -167,6 +168,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         {
             await LoadTaxonomy();
             LoadDirectChildren();  // SpeciesSub
+            LoadReferences();
             LoadNames();
             LoadImages();
             LoadSynonyms();
@@ -199,7 +201,6 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -973,6 +974,16 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     }
 
     // -----------------------------
+    //  LOAD COMMENTS
+    // -----------------------------
+    private async void LoadComments()
+    {
+        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        foreach (var item in comments)
+            CommentItems.Add(item);
+    }
+
+    // -----------------------------
     //  LOAD NAMES
     // -----------------------------
     private async void LoadNames()
@@ -1016,19 +1027,6 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         GeographicItems.Clear();
         foreach (var item in geographics)
             GeographicItems.Add(item);
-
-        // Debug
-        System.Diagnostics.Debug.WriteLine($"GeographicItems.Count = {GeographicItems.Count}");
-    }
-
-    // -----------------------------
-    //  LOAD COMMENTS
-    // -----------------------------
-    private async void LoadComments()
-    {
-        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
-        foreach (var item in comments)
-            CommentItems.Add(item);
     }
 
     // -----------------------------

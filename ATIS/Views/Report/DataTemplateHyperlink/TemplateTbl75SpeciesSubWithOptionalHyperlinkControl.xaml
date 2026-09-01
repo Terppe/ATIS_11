@@ -92,7 +92,8 @@
         </StackPanel>
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal">
-            --><!--<TextBlock Width="Auto">
+    -->
+    <!--<TextBlock Width="Auto">
             <Hyperlink>
             <Hyperlink.Inlines>
             <Run Text="{Binding Tbl66Genusses.GenusName}" />
@@ -104,7 +105,8 @@
             <Run Text="{Binding Divers}" />
             </Hyperlink.Inlines>
             </Hyperlink>
-            </TextBlock>--><!--
+            </TextBlock>-->
+    <!--
             <RelativePanel>
                 <TextBlock x:Name="TbSpecies"
                            Width="Auto"

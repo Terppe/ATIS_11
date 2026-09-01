@@ -43,8 +43,17 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
 
     public async Task LoadSubtribusLookupAsync()
     {
-        SubtribusList = await _lookupService.GetSubtribusListAsync();
-        SubtribusLookup = await _lookupService.GetSubtribusLookupAsync();
+        var list = await _lookupService.GetSubtribusListAsync();
+        var lookup = await _lookupService.GetSubtribusLookupAsync();
+
+        SubtribusList.Clear();
+        foreach (var item in list)
+        {
+            SubtribusList.Add(item);
+        }
+
+        SubtribusLookup = lookup;
+        OnPropertyChanged(nameof(SubtribusLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,9 +312,13 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         }
 
         var saved = await Data.UpsertInfratribusAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
         return saved;
     }
-
     protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl63Infratribus item)
     {
         if (_wasEmptyBeforeSave && IsBossMode)

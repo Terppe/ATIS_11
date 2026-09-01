@@ -143,9 +143,9 @@ public class Tbl75SpeciesSubsDocument : IDocument
             column.Item().Element(ComposeHeaderComments);
             column.Item().Element(ComposeComments);
             //usefull information
-            //column.Item().Element(ComposeHeaderUsefulInfos);
-            //column.Item().Element(ComposeUsefulInfos);
-            //column.Item().Element(ComposePlantUsefulInfos);
+            column.Item().Element(ComposeHeaderUsefulInfos);
+            column.Item().Element(ComposeUsefulInfos);
+            column.Item().Element(ComposePlantUsefulInfos);
         });
     }
 

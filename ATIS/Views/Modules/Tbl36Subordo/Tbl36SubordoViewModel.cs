@@ -43,8 +43,17 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
 
     public async Task LoadOrdoLookupAsync()
     {
-        OrdoList = await _lookupService.GetOrdoListAsync();
-        OrdoLookup = await _lookupService.GetOrdoLookupAsync();
+        var list = await _lookupService.GetOrdoListAsync();
+        var lookup = await _lookupService.GetOrdoLookupAsync();
+
+        OrdoList.Clear();
+        foreach (var item in list)
+        {
+            OrdoList.Add(item);
+        }
+
+        OrdoLookup = lookup;
+        OnPropertyChanged(nameof(OrdoLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
         }
 
         var saved = await Data.UpsertSubordoAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

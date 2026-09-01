@@ -43,8 +43,17 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
 
     public async Task LoadSubordoLookupAsync()
     {
-        SubordoList = await _lookupService.GetSubordoListAsync();
-        SubordoLookup = await _lookupService.GetSubordoLookupAsync();
+        var list = await _lookupService.GetSubordoListAsync();
+        var lookup = await _lookupService.GetSubordoLookupAsync();
+
+        SubordoList.Clear();
+        foreach (var item in list)
+        {
+            SubordoList.Add(item);
+        }
+
+        SubordoLookup = lookup;
+        OnPropertyChanged(nameof(SubordoLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
         }
 
         var saved = await Data.UpsertInfraordoAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

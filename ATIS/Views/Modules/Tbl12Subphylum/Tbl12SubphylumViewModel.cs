@@ -43,8 +43,17 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
 
     public async Task LoadPhylumLookupAsync()
     {
-        PhylumList = await _lookupService.GetPhylumListAsync();
-        PhylumLookup = await _lookupService.GetPhylumLookupAsync();
+        var list = await _lookupService.GetPhylumListAsync();
+        var lookup = await _lookupService.GetPhylumLookupAsync();
+
+        PhylumList.Clear();
+        foreach (var item in list)
+        {
+            PhylumList.Add(item);
+        }
+
+        PhylumLookup = lookup;
+        OnPropertyChanged(nameof(PhylumLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
         }
 
         var saved = await Data.UpsertSubphylumAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

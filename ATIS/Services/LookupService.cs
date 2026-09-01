@@ -72,6 +72,159 @@ public class LookupService
     private ObservableCollection<Models.Tbl90RefSource>? _refSourceListCache;
 
     //--------------------------------------------------------------------
+    public void InvalidateRegnumCache()
+    {
+        _regnumLookupCache = null;
+        _regnumListCache = null;
+    }
+    public void InvalidatePhylumCache()
+    {
+        _phylumLookupCache = null;
+        _phylumListCache = null;
+    }
+    public void InvalidateSubphylumCache()
+    {
+        _subphylumLookupCache = null;
+        _subphylumListCache = null;
+    }
+    public void InvalidateSuperclassCache()
+    {
+        _superclassLookupCache = null;
+        _superclassListCache = null;
+    }
+    public void InvalidateClassCache()
+    {
+        _classLookupCache = null;
+        _classListCache = null;
+    }
+    public void InvalidateSubclassCache()
+    {
+        _subclassLookupCache = null;
+        _subclassListCache = null;
+    }
+    public void InvalidateInfraclassCache()
+    {
+        _infraclassLookupCache = null;
+        _infraclassListCache = null;
+    }
+    public void InvalidateLegioCache()
+    {
+        _legioLookupCache = null;
+        _legioListCache = null;
+    }
+    public void InvalidateOrdoCache()
+    {
+        _ordoLookupCache = null;
+        _ordoListCache = null;
+    }
+    public void InvalidateSubordoCache()
+    {
+        _subordoLookupCache = null;
+        _subordoListCache = null;
+    }
+    public void InvalidateInfraordoCache()
+    {
+        _infraordoLookupCache = null;
+        _infraordoListCache = null;
+    }
+    public void InvalidateSuperfamilyCache()
+    {
+        _superfamilyLookupCache = null;
+        _superfamilyListCache = null;
+    }
+    public void InvalidateFamilyCache()
+    {
+        _familyLookupCache = null;
+        _familyListCache = null;
+    }
+    public void InvalidateSubfamilyCache()
+    {
+        _subfamilyLookupCache = null;
+        _subfamilyListCache = null;
+    }
+    public void InvalidateInfrafamilyCache()
+    {
+        _infrafamilyLookupCache = null;
+        _infrafamilyListCache = null;
+    }
+    public void InvalidateSupertribusCache()
+    {
+        _supertribusLookupCache = null;
+        _supertribusListCache = null;
+    }
+    public void InvalidateTribusCache()
+    {
+        _tribusLookupCache = null;
+        _tribusListCache = null;
+    }
+    public void InvalidateSubtribusCache()
+    {
+        _subtribusLookupCache = null;
+        _subtribusListCache = null;
+    }
+    public void InvalidateInfratribusCache()
+    {
+        _infratribusLookupCache = null;
+        _infratribusListCache = null;
+    }
+    public void InvalidateGenusCache()
+    {
+        _genusLookupCache = null;
+        _genusListCache = null;
+    }
+    public void InvalidateSpeciesCache()
+    {
+        _speciesLookupCache = null;
+        _speciesListCache = null;
+    }
+    //--------------------------------------------------------------------
+    public void InvalidateRefExpertCache()
+    {
+        _refExpertLookupCache = null;
+        _refExpertListCache = null;
+    }
+    public void InvalidateRefSourceCache()
+    {
+        _refSourceLookupCache = null;
+        _refSourceListCache = null;
+    }
+    public void InvalidateRefAuthorCache()
+    {
+        _refAuthorLookupCache = null;
+        _refAuthorListCache = null;
+    }
+
+    //--------------------------------------------------------------------
+    public void InvalidateAllCaches()
+    {
+        InvalidateRegnumCache();
+        InvalidatePhylumCache();
+        InvalidateSubphylumCache();
+        InvalidateSuperclassCache();
+        InvalidateClassCache();
+        InvalidateSubclassCache();
+        InvalidateInfraclassCache();
+        InvalidateLegioCache();
+        InvalidateOrdoCache();
+        InvalidateSubordoCache();
+        InvalidateInfraordoCache();
+        InvalidateSuperfamilyCache();
+        InvalidateFamilyCache();
+        InvalidateSubfamilyCache();
+        InvalidateInfrafamilyCache();
+        InvalidateSupertribusCache();
+        InvalidateTribusCache();
+        InvalidateSubtribusCache();
+        InvalidateInfratribusCache();
+        InvalidateGenusCache();
+        InvalidateSpeciesCache();
+        //--------------------------------------------------------------------
+        InvalidateRefExpertCache();
+        InvalidateRefSourceCache();
+        InvalidateRefAuthorCache();
+    }
+
+    //--------------------------------------------------------------------
     public async Task<Dictionary<int, string?>> GetRegnumLookupAsync()
     {
         if (_regnumLookupCache == null)

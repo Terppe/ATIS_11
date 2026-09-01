@@ -43,8 +43,17 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 
     public async Task LoadInfratribusLookupAsync()
     {
-        InfratribusList = await _lookupService.GetInfratribusListAsync();
-        InfratribusLookup = await _lookupService.GetInfratribusLookupAsync();
+        var list = await _lookupService.GetInfratribusListAsync();
+        var lookup = await _lookupService.GetInfratribusLookupAsync();
+
+        InfratribusList.Clear();
+        foreach (var item in list)
+        {
+            InfratribusList.Add(item);
+        }
+
+        InfratribusLookup = lookup;
+        OnPropertyChanged(nameof(InfratribusLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         }
 
         var saved = await Data.UpsertGenusAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

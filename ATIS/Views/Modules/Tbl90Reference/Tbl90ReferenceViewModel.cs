@@ -20,25 +20,84 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl90RefAuthor> RefAuthorsList { get; } = new();
     public ObservableCollection<Models.Tbl90RefExpert> RefExpertsList { get; } = new();
     public ObservableCollection<Models.Tbl90RefSource> RefSourcesList { get; } = new();
+    public Dictionary<int, string?> RefAuthorLookup { get; private set; } = new();
+    public Dictionary<int, string?> RefExpertLookup { get; private set; } = new();
+    public Dictionary<int, string?> RefSourceLookup { get; private set; } = new();
 
     public async Task LoadReferenceLookupsAsync()
     {
+        var listrefauthor = await _lookupService.GetRefAuthorListAsync();
+        var lookuprefauthor = await _lookupService.GetRefAuthorLookupAsync();
+
         RefAuthorsList.Clear();
+        foreach (var item in listrefauthor)
+        {
+            RefAuthorsList.Add(item);
+        }
+
+        RefAuthorLookup = lookuprefauthor;
+
+        OnPropertyChanged(nameof(RefAuthorLookup));
+        //---------------------------------------------
+        var listrefexpert = await _lookupService.GetRefExpertListAsync();
+        var lookuprefexpert = await _lookupService.GetRefExpertLookupAsync();
+
         RefExpertsList.Clear();
+        foreach (var item in listrefexpert)
+        {
+            RefExpertsList.Add(item);
+        }
+
+        RefExpertLookup = lookuprefexpert;
+
+        OnPropertyChanged(nameof(RefExpertLookup));
+        //---------------------------------------------
+        var listrefsource = await _lookupService.GetRefSourceListAsync();
+        var lookuprefsource = await _lookupService.GetRefSourceLookupAsync();
+
         RefSourcesList.Clear();
+        foreach (var item in listrefsource)
+        {
+            RefSourcesList.Add(item);
+        }
 
-        var authors = await _lookupService.GetRefAuthorListAsync();
-        var experts = await _lookupService.GetRefExpertListAsync();
-        var sources = await _lookupService.GetRefSourceListAsync();
+        RefSourceLookup = lookuprefsource;
 
-        foreach (var a in authors) RefAuthorsList.Add(a);
-        foreach (var e in experts) RefExpertsList.Add(e);
-        foreach (var s in sources) RefSourcesList.Add(s);
+        OnPropertyChanged(nameof(RefSourceLookup));
     }
+
+    //public async Task LoadReferenceLookupsAsync()
+    //{
+    //    RefAuthorsList.Clear();
+    //    RefExpertsList.Clear();
+    //    RefSourcesList.Clear();
+
+    //    var authorslist = await _lookupService.GetRefAuthorListAsync();
+    //    var expertslist = await _lookupService.GetRefExpertListAsync();
+    //    var sourceslist = await _lookupService.GetRefSourceListAsync();
+    //    var lookupauthor = await _lookupService.GetRefAuthorLookupAsync();
+    //    var lookupexpert = await _lookupService.GetRefExpertLookupAsync();
+    //    var lookupsource = await _lookupService.GetRefSourceLookupAsync();
+
+    //    foreach (var a in authorslist) RefAuthorsList.Add(a);
+    //    foreach (var e in expertslist) RefExpertsList.Add(e);
+    //    foreach (var s in sourceslist) RefSourcesList.Add(s);
+
+    //    RefAuthorLookup = lookupauthor;
+    //    RefExpertLookup = lookupexpert;
+    //    RefSourceLookup = lookupsource;
+
+    //    OnPropertyChanged(nameof(RefAuthorsList));
+    //    OnPropertyChanged(nameof(RefExpertsList));
+    //    OnPropertyChanged(nameof(RefSourcesList));
+
+    //    OnPropertyChanged(nameof(RefAuthorLookup));
+    //    OnPropertyChanged(nameof(RefExpertLookup));
+    //    OnPropertyChanged(nameof(RefSourceLookup));
+    //}
 
     // ---------------------------------------------------------
     // CTOR
@@ -55,11 +114,6 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         _lookupService = lookupService;
     }
 
-    //public override async Task LoadLookupsAsync()
-    //{
-    //    await LoadReferenceLookupsAsync();
-    //}
-
     public async Task LoadAsync()
     {
         _currentParentId = 0;
@@ -69,7 +123,6 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         await LoadReferenceLookupsAsync();
 
         SelectedItem = null;
-        //  IsDetailVisible = false;
     }
 
     // ---------------------------------------------------------
@@ -140,15 +193,8 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
 
         DataSetCount = Items.Count;
 
-        //if (Items.Any())
-        //{
-        //    SelectedItem = Items.First();
-        //    IsDetailVisible = true;
-        //}
-
         SelectedItem = null;
         Item = null;
-        //  IsDetailVisible = false;
     }
 
     // ---------------------------------------------------------
@@ -183,8 +229,6 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
     protected override async Task OnSelectedItemChangedAsync()
     {
         Item = SelectedItem;   // ⭐ EditControl bekommt Daten
-
-        //  IsDetailVisible = SelectedItem != null;
 
         // Comments haben keine Children
         await Task.CompletedTask;
@@ -223,6 +267,11 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         }
 
         var saved = await Data.UpsertReferenceAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
 
         if (_activeLoader != null)
         {

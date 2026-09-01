@@ -544,37 +544,10 @@ public class Tbl75SpeciessesDocument : IDocument
             {
                 table.Cell().Text("");
                 table.Cell().Text(Loc("Subspecies"));
-  //              table.Cell().Text($"{item.Tbl66Genusses.GenusName ?? string.Empty}{item.SpeciesName ?? string.Empty} {item.Subspecies ?? string.Empty} {item.Divers ?? string.Empty}");
+                table.Cell().Text($"{item.GenusName ?? string.Empty}{item.SpeciesName ?? string.Empty} {item.Subspecies ?? string.Empty} {item.Divers ?? string.Empty}");
             }
         });
     }
-
-    //private void ComposeChildrenContent(IContainer container)
-    //{
-    //    if (!string.IsNullOrEmpty(Model.SpeciesTree?.Subspecies))
-    //    {
-    //        return;
-    //    }
-    //    container.Table(table =>
-    //    {
-    //        table.ColumnsDefinition(columns =>
-    //        {
-    //            columns.ConstantColumn(_tabLeftLastRel + 4);
-    //            columns.ConstantColumn(_tabRightLastRel - 4);
-    //            columns.RelativeColumn();
-    //        });
-
-    //        foreach (var item in Tbl75SpeciessesDocumentDataSource.SpeciesSubsCollection)
-    //        {
-    //            table.Cell().Text("");
-    //            table.Cell().Text(Strings.StringsRes.Subspecies);
-    //            table.Cell().Text($"{item.Genus.GenusName} {item.SpeciesName}" +
-    //                              $" {item.Subspecies} {item.Divers} {item.Author} {item.AuthorYear}");
-    //            //     table.Cell().Text($"{item.Tbl66Genusses.GenusName} {item.FiSpeciesName} {item.Subspecies} {item.Divers} {item.Author} {item.AuthorYear}");
-
-    //        }
-    //    });
-    //}
 
     private void ComposeHeaderReferences(IContainer container)
     {
@@ -978,7 +951,6 @@ public class Tbl75SpeciessesDocument : IDocument
                 }
             }
         });
-
     }
 
     private void ComposeHeaderComments(IContainer container)
@@ -1775,5 +1747,4 @@ public class Tbl75SpeciessesDocument : IDocument
             });
         });
     }
-
 }

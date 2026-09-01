@@ -41,8 +41,17 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
 
     public async Task LoadInfraclassLookupAsync()
     {
-        InfraclassList = await _lookupService.GetInfraclassListAsync();
-        InfraclassLookup = await _lookupService.GetInfraclassLookupAsync();
+        var list = await _lookupService.GetInfraclassListAsync();
+        var lookup = await _lookupService.GetInfraclassLookupAsync();
+
+        InfraclassList.Clear();
+        foreach (var item in list)
+        {
+            InfraclassList.Add(item);
+        }
+
+        InfraclassLookup = lookup;
+        OnPropertyChanged(nameof(InfraclassLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -280,6 +289,12 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
         }
 
         var saved = await Data.UpsertLegioAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

@@ -43,8 +43,17 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
 
     public async Task LoadSuperfamilyLookupAsync()
     {
-        SuperfamilyList = await _lookupService.GetSuperfamilyListAsync();
-        SuperfamilyLookup = await _lookupService.GetSuperfamilyLookupAsync();
+        var list = await _lookupService.GetSuperfamilyListAsync();
+        var lookup = await _lookupService.GetSuperfamilyLookupAsync();
+
+        SuperfamilyList.Clear();
+        foreach (var item in list)
+        {
+            SuperfamilyList.Add(item);
+        }
+
+        SuperfamilyLookup = lookup;
+        OnPropertyChanged(nameof(SuperfamilyLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         }
 
         var saved = await Data.UpsertFamilyAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

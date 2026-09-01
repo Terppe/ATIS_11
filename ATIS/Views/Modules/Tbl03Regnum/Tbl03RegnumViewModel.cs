@@ -279,6 +279,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         }
 
         var saved = await Data.UpsertRegnumAsync(item);
+
         return saved;
     }
 

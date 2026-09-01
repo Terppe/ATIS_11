@@ -43,8 +43,17 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
 
     public async Task LoadSubfamilyLookupAsync()
     {
-        SubfamilyList = await _lookupService.GetSubfamilyListAsync();
-        SubfamilyLookup = await _lookupService.GetSubfamilyLookupAsync();
+        var list = await _lookupService.GetSubfamilyListAsync();
+        var lookup = await _lookupService.GetSubfamilyLookupAsync();
+
+        SubfamilyList.Clear();
+        foreach (var item in list)
+        {
+            SubfamilyList.Add(item);
+        }
+
+        SubfamilyLookup = lookup;
+        OnPropertyChanged(nameof(SubfamilyLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
         }
 
         var saved = await Data.UpsertInfrafamilyAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

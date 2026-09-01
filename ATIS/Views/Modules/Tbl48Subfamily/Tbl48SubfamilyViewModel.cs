@@ -43,8 +43,17 @@ public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfami
 
     public async Task LoadFamilyLookupAsync()
     {
-        FamilyList = await _lookupService.GetFamilyListAsync();
-        FamilyLookup = await _lookupService.GetFamilyLookupAsync();
+        var list = await _lookupService.GetFamilyListAsync();
+        var lookup = await _lookupService.GetFamilyLookupAsync();
+
+        FamilyList.Clear();
+        foreach (var item in list)
+        {
+            FamilyList.Add(item);
+        }
+
+        FamilyLookup = lookup;
+        OnPropertyChanged(nameof(FamilyLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfami
         }
 
         var saved = await Data.UpsertSubfamilyAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

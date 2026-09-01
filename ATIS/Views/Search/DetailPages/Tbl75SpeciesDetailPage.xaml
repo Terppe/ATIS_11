@@ -146,6 +146,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <!--  HEADER Species  -->
@@ -156,7 +158,7 @@
                           ItemTemplate="{StaticResource ReportItemTemplateHeaderSpecies}"
                           ItemsSource="{x:Bind ViewModel.SpeciesItems}" />
 
-                <!--  HEADER TAXONOMY     hier fehlt Synonyme und namen  -->
+                <!--  HEADER TAXONOMY  -->
                 <ListView Grid.Row="1"
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
@@ -363,63 +365,6 @@
                           ItemsSource="{x:Bind ViewModel.SpeciesSubItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
-                <!--<ListView Grid.Row="27"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="0"
-                ItemTemplate="{StaticResource ReportItemTemplateHyperlinkName}"
-                ItemsSource="{x:Bind ViewModel.NameItems}"
-                Style="{StaticResource AtisListViewStyleCompactTaxo}" />-->
-
-                <!--<TextBlock x:Name="TbDirectChildren"
-                Grid.Row="29"
-                Grid.Column="1"
-                Width="Auto"
-                Margin="0,5,0,10"
-                loca:Uids.Uid="TextBlock_DirectChildren"
-                FontWeight="Bold" />
-                <ListView Grid.Row="30"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="-12,0,0,0"
-                ItemContainerStyle="{StaticResource NoSpacesListViewItemStyle}"
-                ItemsSource="{x:Bind ViewModel.SpeciesSubItems}"
-                SelectedItem="{x:Bind ViewModel.SpeciesSubSelected, Mode=TwoWay}"
-                SelectedValuePath="SpeciesId">
-                <ListView.ItemTemplate>
-                <DataTemplate>
-                <Grid>
-                <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="260" />
-                <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <StackPanel>
-                <TextBlock Width="Auto"
-                Margin="176,0,0,0"
-                loca:Uids.Uid="TextBlock_Subspecies" />
-                </StackPanel>
-                <StackPanel Grid.Column="1"
-                Orientation="Horizontal">
-                <TextBlock Text="{Binding SpeciesId}"
-                Visibility="Collapsed" />
-                <TextBlock Text="{Binding Tbl66Genusses.GenusName}" />
-                <TextBlock Margin="2,0,0,0"
-                Text="{Binding SpeciesName}" />
-                <TextBlock Margin="2,0,0,0"
-                Text="{Binding Subspecies}" />
-                <TextBlock Margin="2,0,0,0"
-                Text="{Binding Divers}" />
-                <TextBlock Margin="2,0,0,0"
-                Text="{Binding Author}" />
-                <TextBlock Margin="2,0,0,0"
-                Text="{Binding AuthorYear}" />
-                </StackPanel>
-                </Grid>
-                </DataTemplate>
-                </ListView.ItemTemplate>
-                </ListView>-->
-
-
                 <!--  REFERENCES  -->
                 <TextBlock Grid.Row="31"
                            Grid.Column="0"
@@ -510,6 +455,21 @@
                           Margin="-12,-12,10,10"
                           ItemTemplate="{StaticResource ReportItemTemplateTbl93Comment}"
                           ItemsSource="{x:Bind ViewModel.CommentItems}" />
+
+                <!--  USEFUL  -->
+                <TextBlock Grid.Row="44"
+                           Grid.Column="0"
+                           Margin="0,0,0,10"
+                           loc:Uids.Uid="TextBlock_WorthKnowing"
+                           FontSize="18"
+                           FontWeight="Bold" />
+
+                <ListView Grid.Row="45"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="-12,-12,10,10"
+                          ItemTemplate="{StaticResource ReportItemTemplateTbl75Species}"
+                          ItemsSource="{x:Bind ViewModel.SpeciesItems}" />
             </Grid>
 
         </ScrollViewer>

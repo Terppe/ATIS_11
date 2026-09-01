@@ -44,7 +44,8 @@ public sealed partial class Tbl75SpeciesDetailPage : Page
             if (selected == null)
                 return;
 
-            ViewModel = new Tbl75SpeciesDetailViewModel(selected, _dataService); DataContext = ViewModel;
+            ViewModel = new Tbl75SpeciesDetailViewModel(selected, _dataService);
+            DataContext = ViewModel;
 
             ViewModel.IsLoading = true;
             await ViewModel.InitializeAsync();

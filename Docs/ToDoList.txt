@@ -1130,4 +1130,6 @@ Loc muss noch generell ind Species und Subspecies Dokument eingefügt werden
 jetzt noch Image und Geographics
 ----------------------------------------
 30.08.2026 13:30 Uhr Image und Geographic einfügen in Species und Subspecies Page und PDF. DetailPages mit PDF erstmal fertig.
-jetzt die SpeciesPage weiter bearbeiten
+jetzt die SpeciesPage weiter bearbeiten. generator noch aktualisieren.
+----------------------------------------
+31.08.2026 13:30 Uhr Cache für LookUp geändert und nun weiter mit Species. Vorher noch Versuch bei Infratribus Pivot => Tabview ändern.

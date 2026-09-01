@@ -96,7 +96,7 @@ public partial class App : Application
         Services = ConfigureServices();
         QuestPDF.Settings.License = LicenseType.Community;
         QuestPDF.Settings.CheckIfAllTextGlyphsAreAvailable = false;
-        QuestPDF.Settings.EnableDebugging = true;
+        QuestPDF.Settings.EnableDebugging = false;
         QuestPDF.Settings.UseEnvironmentFonts = false;
         UnhandledException += App_UnhandledException;
     }

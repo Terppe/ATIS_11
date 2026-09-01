@@ -1,11 +1,12 @@
 ﻿using ATIS.Interfaces;
-using ATIS.Views.Report.Pdf.Tbl75Speciesses;
+using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 using ATIS.Views.Search.DetailViewModels;
+using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using Windows.Storage.Pickers;
-using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
-using QuestPDF.Fluent;
 using WinRT.Interop;
+
+//  Tbl75SpeciesSubDetailPage.xaml.cs Skriptdatum:  18.08.2026  10:32     
 
 namespace ATIS.Views.Search.DetailPages;
 

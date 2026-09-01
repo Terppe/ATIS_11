@@ -4,8 +4,6 @@ using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-using ATIS.Views.Modules.Tbl90Reference;
-using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,7 +13,6 @@ namespace ATIS.Views.Modules.Tbl90RefExpert;
 
 public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpert>
 {
-    private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
 
@@ -195,6 +192,7 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
         }
 
         var saved = await Data.UpsertRefExpertAsync(item);
+
         return saved;
     }
 

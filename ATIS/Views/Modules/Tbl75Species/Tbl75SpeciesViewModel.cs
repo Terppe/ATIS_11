@@ -9,9 +9,9 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
-
-//    Tbl75SpeciesViewModel Skriptdatum:  15.12.2025  10:32    
+//    Tbl75SpeciesViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl75Species;
 
@@ -24,7 +24,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl75Species>>>? _activeLoader;
-
+    private readonly Action<string> _langHandler;
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
@@ -42,8 +42,17 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
     public async Task LoadGenusLookupAsync()
     {
-        GenusList = await _lookupService.GetGenusListAsync();
-        GenusLookup = await _lookupService.GetGenusLookupAsync();
+        var list = await _lookupService.GetGenusListAsync();
+        var lookup = await _lookupService.GetGenusLookupAsync();
+
+        GenusList.Clear();
+        foreach (var item in list)
+        {
+            GenusList.Add(item);
+        }
+
+        GenusLookup = lookup;
+        OnPropertyChanged(nameof(GenusLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -67,8 +76,28 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Species ID");
-        RegisterHeader("Name", "Species Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SpeciesId")) ? "Id" : loc.GetLocalizedString("HeaderSort_SpeciesId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SpeciesName")) ? "Name" : loc.GetLocalizedString("HeaderSort_SpeciesName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               
@@ -281,6 +310,12 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         }
 
         var saved = await Data.UpsertSpeciesAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

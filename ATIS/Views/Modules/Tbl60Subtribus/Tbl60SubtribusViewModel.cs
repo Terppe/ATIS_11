@@ -43,8 +43,17 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
     public async Task LoadTribusLookupAsync()
     {
-        TribusList = await _lookupService.GetTribusListAsync();
-        TribusLookup = await _lookupService.GetTribusLookupAsync();
+        var list = await _lookupService.GetTribusListAsync();
+        var lookup = await _lookupService.GetTribusLookupAsync();
+
+        TribusList.Clear();
+        foreach (var item in list)
+        {
+            TribusList.Add(item);
+        }
+
+        TribusLookup = lookup;
+        OnPropertyChanged(nameof(TribusLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         }
 
         var saved = await Data.UpsertSubtribusAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

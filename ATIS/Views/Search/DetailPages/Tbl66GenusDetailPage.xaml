@@ -9,7 +9,7 @@
       xmlns:search="using:ATIS.Views.Search"
       mc:Ignorable="d">
 
-    <!-- Tbl66GenusDetailPage.xaml  Skriptdatum:  16.08.2026  10:32   -->
+    <!--  Tbl66GenusDetailPage.xaml  Skriptdatum:  16.08.2026  10:32  -->
 
 
     <Page.Resources>
@@ -154,7 +154,7 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="-15,0,0,0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHeaderGenus}"              
+                          ItemTemplate="{StaticResource ReportItemTemplateHeaderGenus}"
                           ItemsSource="{x:Bind ViewModel.GenusItems}" />
 
                 <!--  HEADER TAXONOMY  -->
@@ -336,7 +336,7 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkGenus}"               
+                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkGenus}"
                           ItemsSource="{x:Bind ViewModel.GenusItems}"
                           Style="{StaticResource AtisListViewStyleCompactTaxo}" />
 
@@ -426,4 +426,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>     
+</Page>

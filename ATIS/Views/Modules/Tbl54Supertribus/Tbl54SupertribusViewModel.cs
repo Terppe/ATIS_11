@@ -43,8 +43,17 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
 
     public async Task LoadInfrafamilyLookupAsync()
     {
-        InfrafamilyList = await _lookupService.GetInfrafamilyListAsync();
-        InfrafamilyLookup = await _lookupService.GetInfrafamilyLookupAsync();
+        var list = await _lookupService.GetInfrafamilyListAsync();
+        var lookup = await _lookupService.GetInfrafamilyLookupAsync();
+
+        InfrafamilyList.Clear();
+        foreach (var item in list)
+        {
+            InfrafamilyList.Add(item);
+        }
+
+        InfrafamilyLookup = lookup;
+        OnPropertyChanged(nameof(InfrafamilyLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl54SupertribusViewModel : BaseBossListViewModel<Models.Tbl54Super
         }
 
         var saved = await Data.UpsertSupertribusAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

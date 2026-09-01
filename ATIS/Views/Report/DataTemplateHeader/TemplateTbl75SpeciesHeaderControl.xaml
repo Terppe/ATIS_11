@@ -22,7 +22,7 @@
                     Orientation="Horizontal">
             <TextBlock FontWeight="Bold"
                        Style="{StaticResource BodyTextStyle}"
-                       Text="{Binding Item.GenusSpeciesFullName }" />
+                       Text="{Binding Item.GenusSpeciesFullName}" />
             <!--<TextBlock FontWeight="Bold"
                        Style="{StaticResource BodyTextStyle}"
                        Text="{Binding Item.GenusName}" />

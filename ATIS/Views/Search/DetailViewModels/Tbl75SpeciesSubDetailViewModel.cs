@@ -7,6 +7,8 @@ using ATIS.Views.Taxonomy;
 using QuestPDF.Fluent;
 using WinUI3Localizer;
 
+//    Tbl75SpeciesSubDetailViewModel Skriptdatum:  18.08.2026  10:32    
+
 namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
@@ -16,7 +18,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     //  TITLE
     // -----------------------------
-    public string Title => $"Subspecies: {SpeciesSubSelected?.SpeciesName + SpeciesSubSelected?.Subspecies}";
+    public string Title => $"Subspecies: {SpeciesSubSelected?.SpeciesName + " " + SpeciesSubSelected?.Subspecies +" " + SpeciesSubSelected.Divers}";
 
     // -----------------------------
     //  SELECTED Species
@@ -74,11 +76,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubspeciesCommand { get; }
 
     // -----------------------------
-    //  BREADCRUMP
-    // -----------------------------
-    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
-
-    // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
     public ObservableCollection<TaxonomyLine<Tbl03Regnum>> RegnumItems { get; } = new();
@@ -105,13 +102,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl75Species>> SpeciesSubItems { get; } = new();
 
     // -----------------------------
-    //  REFERENCES
-    // -----------------------------
-    public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
-    public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
-    public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
-
-    // -----------------------------
     //  NAMES
     // -----------------------------
     public ObservableCollection<Tbl78Name> NameItems { get; } = new();
@@ -130,6 +120,17 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     //  GEOGRAPHICS
     // -----------------------------
     public ObservableCollection<Tbl87Geographic> GeographicItems { get; } = new();
+
+    // -----------------------------
+    //  BREADCRUMP
+    // -----------------------------
+    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
+    // -----------------------------
+    //  REFERENCES
+    // -----------------------------
+    public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
+    public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
+    public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
 
     // -----------------------------
     //  COMMENTS
@@ -198,7 +199,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
 
     private void BuildBreadcrumb()
     {
-        //Initialisierung der Breadcrumb-Navigation
         Breadcrumb.Clear();
 
         if (RegnumSelected != null)
@@ -946,11 +946,21 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     }
 
     // -----------------------------
+    //  LOAD COMMENTS
+    // -----------------------------
+    private async void LoadComments()
+    {
+        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
+        foreach (var item in comments)
+            CommentItems.Add(item);
+    }
+
+    // -----------------------------
     //  LOAD NAMES
     // -----------------------------
     private async void LoadNames()
     {
-        var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         NameItems.Clear();
         foreach (var item in names)
             NameItems.Add(item);
@@ -961,7 +971,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     private async void LoadImages()
     {
-        var images = await _dataService.GetImagesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        var images = await _dataService.GetImagesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
 
         ImageItems.Clear();
         foreach (var image in images)
@@ -973,7 +983,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     private async void LoadSynonyms()
     {
-        var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         SynonymItems.Clear();
         foreach (var item in synonyms)
             SynonymItems.Add(item);
@@ -984,23 +994,11 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     private async void LoadGeographics()
     {
-        var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+        var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         GeographicItems.Clear();
         foreach (var item in geographics)
             GeographicItems.Add(item);
     }
-
-
-    // -----------------------------
-    //  LOAD COMMENTS
-    // -----------------------------
-    private async void LoadComments()
-    {
-        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
-        foreach (var item in comments)
-            CommentItems.Add(item);
-    }
-
 
     // -----------------------------
     //  PDF EXPORT
@@ -1056,7 +1054,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
             var loc = Localizer.Get();
 
             var errorDialog = new ContentDialog
@@ -1070,5 +1067,4 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
             await errorDialog.ShowAsync();
         }
     }
-
 }

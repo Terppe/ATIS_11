@@ -41,8 +41,17 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
 
     public async Task LoadClassLookupAsync()
     {
-        ClassList = await _lookupService.GetClassListAsync();
-        ClassLookup = await _lookupService.GetClassLookupAsync();
+        var list = await _lookupService.GetClassListAsync();
+        var lookup = await _lookupService.GetClassLookupAsync();
+
+        ClassList.Clear();
+        foreach (var item in list)
+        {
+            ClassList.Add(item);
+        }
+
+        ClassLookup = lookup;
+        OnPropertyChanged(nameof(ClassLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -280,6 +289,12 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
         }
 
         var saved = await Data.UpsertSubclassAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

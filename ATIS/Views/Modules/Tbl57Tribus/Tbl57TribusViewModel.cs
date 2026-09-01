@@ -43,8 +43,17 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
 
     public async Task LoadSupertribusLookupAsync()
     {
-        SupertribusList = await _lookupService.GetSupertribusListAsync();
-        SupertribusLookup = await _lookupService.GetSupertribusLookupAsync();
+        var list = await _lookupService.GetSupertribusListAsync();
+        var lookup = await _lookupService.GetSupertribusLookupAsync();
+
+        SupertribusList.Clear();
+        foreach (var item in list)
+        {
+            SupertribusList.Add(item);
+        }
+
+        SupertribusLookup = lookup;
+        OnPropertyChanged(nameof(SupertribusLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
         }
 
         var saved = await Data.UpsertTribusAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

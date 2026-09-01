@@ -43,8 +43,17 @@ public class Tbl42SuperfamilyViewModel : BaseBossListViewModel<Models.Tbl42Super
 
     public async Task LoadInfraordoLookupAsync()
     {
-        InfraordoList = await _lookupService.GetInfraordoListAsync();
-        InfraordoLookup = await _lookupService.GetInfraordoLookupAsync();
+        var list = await _lookupService.GetInfraordoListAsync();
+        var lookup = await _lookupService.GetInfraordoLookupAsync();
+
+        InfraordoList.Clear();
+        foreach (var item in list)
+        {
+            InfraordoList.Add(item);
+        }
+
+        InfraordoLookup = lookup;
+        OnPropertyChanged(nameof(InfraordoLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -303,6 +312,12 @@ public class Tbl42SuperfamilyViewModel : BaseBossListViewModel<Models.Tbl42Super
         }
 
         var saved = await Data.UpsertSuperfamilyAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 

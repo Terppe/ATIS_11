@@ -41,8 +41,17 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
 
     public async Task LoadLegioLookupAsync()
     {
-        LegioList = await _lookupService.GetLegioListAsync();
-        LegioLookup = await _lookupService.GetLegioLookupAsync();
+        var list = await _lookupService.GetLegioListAsync();
+        var lookup = await _lookupService.GetLegioLookupAsync();
+
+        LegioList.Clear();
+        foreach (var item in list)
+        {
+            LegioList.Add(item);
+        }
+
+        LegioLookup = lookup;
+        OnPropertyChanged(nameof(LegioLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -280,6 +289,12 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
         }
 
         var saved = await Data.UpsertOrdoAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 
