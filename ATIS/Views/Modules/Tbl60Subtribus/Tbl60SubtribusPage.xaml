@@ -9,8 +9,7 @@
       xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-      x:Name="RootPage"
-      DataContext="{Binding SubtribusViewModel}">
+      x:Name="RootPage">
 
     <!--  Tbl60SubtribusPage Skriptdatum:  18.08.2026  10:32  -->
 
@@ -99,98 +98,159 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit Subtribus  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Subtribus">
-                                <ScrollViewer Padding="1">
-                                    <tbl60Subtribus:Tbl60SubtribusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
+                        <!--  Headerleiste  -->
+                        <ScrollViewer Grid.Row="0"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      HorizontalScrollMode="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      VerticalScrollMode="Disabled"
+                                      ZoomMode="Disabled">
+                            <StackPanel Margin="0,10,0,0"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
 
-                            <!--  Comments Subtribus  -->
-                            <PivotItem x:Name="CommentsSubtribusPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-                                <Grid DataContext="{Binding SubtribusCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="EditSubtribusTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="0">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Edit_Subtribus" />
+                                        <Border x:Name="EditSubtribusTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <Button x:Name="CommentsSubtribusTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="1">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsSubtribusTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                                <Button x:Name="ReferencesSubtribusTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="2">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesSubtribusTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                            <!--  References Subtribus  -->
-                            <PivotItem x:Name="ReferencesSubtribusPivot"
-                                       loc:Uids.Uid="PivotItem_References">
+                                <Button x:Name="InfratribusTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="3">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Infratribus" />
+                                        <Border x:Name="InfratribusTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                <Grid DataContext="{Binding SubtribusReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="CommentsInfratribusTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="4">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsInfratribusTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                <Button x:Name="ReferencesInfratribusTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="5">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesInfratribusTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="1">
+
+                            <ScrollViewer x:Name="EditSubtribusContent"
+                                          Padding="1">
+                                <tbl60Subtribus:Tbl60SubtribusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
+
+                            <Grid x:Name="CommentsSubtribusContent"
+                                  DataContext="{Binding SubtribusCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="ReferencesSubtribusContent"
+                                  DataContext="{Binding SubtribusReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                                                            Grid.Row="0" />
+
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="InfratribusContent"
+                                  DataContext="{Binding InfratribusViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl63Infratribus:Tbl63InfratribusParentControl x:Name="InfratribusParentControl"
                                                                                 Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                <tbl63Infratribus:Tbl63InfratribusEditControl Grid.Row="1"
                                                                               Item="{Binding SelectedItem}"
                                                                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            </Grid>
 
-                            <!--  Infratribus  -->
-                            <PivotItem x:Name="InfratribusPivot"
-                                       loc:Uids.Uid="PivotItem_Edit_Infratribus">
+                            <Grid x:Name="CommentsInfratribusContent"
+                                  DataContext="{Binding InfratribusViewModel.InfratribusCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                <Grid RowDefinitions="Auto,*">
-                                    <tbl63Infratribus:Tbl63InfratribusParentControl x:Name="InfratribusParentControl"
-                                                                                    Grid.Row="0"
-                                                                                    DataContext="{Binding InfratribusViewModel}" />
+                            <Grid x:Name="ReferencesInfratribusContent"
+                                  DataContext="{Binding InfratribusViewModel.InfratribusReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
 
-                                    <tbl63Infratribus:Tbl63InfratribusEditControl Grid.Row="1"
-                                                                                  DataContext="{Binding InfratribusViewModel}"
-                                                                                  Item="{Binding SelectedItem}"
-                                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
-
-                            <!--  Comments Infratribus  -->
-                            <PivotItem x:Name="CommentsInfratribusPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-
-                                <Grid DataContext="{Binding InfratribusViewModel.InfratribusCommentViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-
-                            <!--  References Infratribus  -->
-                            <PivotItem x:Name="ReferencesInfratribusPivot"
-                                       loc:Uids.Uid="PivotItem_References">
-
-                                <Grid DataContext="{Binding InfratribusViewModel.InfratribusReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-                        </Pivot>
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>

@@ -39,5 +39,7 @@
     <converters:BoolToRedBrushConverter x:Key="BoolToRedBrushConverter" />
     <converters:CommentToEditControlConverter x:Key="CommentToEditControlConverter" />
     <converters:BoolToInvertedVisibilityConverter x:Key="BoolToInvertedVisibilityConverter" />
+    <converters:IndexToVisibilityConverter x:Key="IndexToVisibilityConverter" />
+    <converters:IndexToBooleanConverter x:Key="IndexToBooleanConverter" />
 </ResourceDictionary>
 

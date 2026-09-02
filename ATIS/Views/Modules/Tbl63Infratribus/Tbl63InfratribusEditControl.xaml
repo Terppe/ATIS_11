@@ -179,30 +179,95 @@
                      Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap" />
 
-            <!--  Language Pivot  -->
-            <Pivot>
-                <PivotItem loc:Uids.Uid="PivotItem_EngName">
-                    <TextBox loc:Uids.Uid="TextBox_EngName"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-                <PivotItem loc:Uids.Uid="PivotItem_GerName">
-                    <TextBox loc:Uids.Uid="TextBox_GerName"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-                <PivotItem loc:Uids.Uid="PivotItem_FraName">
-                    <TextBox loc:Uids.Uid="TextBox_FraName"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-                <PivotItem loc:Uids.Uid="PivotItem_SpaName">
-                    <TextBox loc:Uids.Uid="TextBox_SpaName"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
+            <!--  Language Tab  -->
+            <Grid RowDefinitions="Auto, Auto">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="4">
+                    <Button x:Name="EngNameTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_EnglishName" />
+                            <Border x:Name="EngNameTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
 
-            </Pivot>
+                    <Button x:Name="GerNameTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_GermanName" />
+                            <Border x:Name="GerNameTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="FraNameTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="2">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_FrenchName" />
+                            <Border x:Name="FraNameTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="SpaNameTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="3">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_SpanishName" />
+                            <Border x:Name="SpaNameTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Grid x:Name="TabContentGrid"
+                      Grid.Row="1">
+
+                    <Grid x:Name="EngNameGrid">
+                        <TextBox loc:Uids.Uid="TextBox_EngName"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+
+                    <Grid x:Name="GerNameGrid"
+                          Visibility="Collapsed">
+                        <TextBox loc:Uids.Uid="TextBox_GerName"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+
+                    <Grid x:Name="FraNameGrid"
+                          Visibility="Collapsed">
+                        <TextBox loc:Uids.Uid="TextBox_FraName"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+
+                    <Grid x:Name="SpaNameGrid"
+                          Visibility="Collapsed">
+                        <TextBox loc:Uids.Uid="TextBox_SpaName"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+
+                </Grid>
+            </Grid>
 
             <!--  Memo  -->
             <TextBox MinWidth="200"

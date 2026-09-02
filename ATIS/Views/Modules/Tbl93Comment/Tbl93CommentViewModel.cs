@@ -37,6 +37,15 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     }
 
     // ---------------------------------------------------------
+    // UI-Zustand vorbereiten
+    // ---------------------------------------------------------
+    public void PrepareViewState()
+    {
+        SelectedItem = null;
+        Item = null;
+    }
+
+    // ---------------------------------------------------------
     // LOAD FOR EACH PARENT TYPE
     // ---------------------------------------------------------
     public async Task LoadForRegnumAsync(int id)
@@ -138,8 +147,17 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     public Models.Tbl93Comment? Item
     {
         get => _item;
-        set => SetProperty(ref _item, value);
+        set
+        {
+            if (SetProperty(ref _item, value))
+            {
+                OnPropertyChanged(nameof(HasActiveItem));
+            }
+        }
     }
+
+    public bool HasActiveItem => Item != null;
+
     protected override async Task OnSelectedItemChangedAsync()
     {
         Item = SelectedItem;   // ⭐ EditControl bekommt Daten

@@ -1467,6 +1467,21 @@
   <data name="PivotItem_Edit_Infratribus.Header" xml:space="preserve">
     <value>Edit Infratribus</value>
   </data>
+  <data name="TextBlock_Edit_Infratribus.Text" xml:space="preserve">
+    <value>Edit Infratribus</value>
+  </data>
+  <data name="TextBlock_Edit_Subtribus.Text" xml:space="preserve">
+    <value>Edit Subtribus</value>
+  </data>
+  <data name="TextBlock_Edit_Tribus.Text" xml:space="preserve">
+    <value>Edit Tribus</value>
+  </data>
+  <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
+    <value>Edit Supertribus</value>
+  </data>
+  <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
+    <value>Edit Genus</value>
+  </data>
   <data name="PivotItem_Edit_Infrafamily.Header" xml:space="preserve">
     <value>Edit Infrafamily</value>
   </data>

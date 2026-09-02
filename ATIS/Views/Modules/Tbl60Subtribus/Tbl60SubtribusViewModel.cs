@@ -105,6 +105,10 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
+    {
+        SelectedDetailPivotIndex = index;
+    });
 
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
@@ -317,7 +321,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 

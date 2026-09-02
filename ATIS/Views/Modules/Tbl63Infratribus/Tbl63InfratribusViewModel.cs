@@ -105,7 +105,10 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
+    {
+        SelectedDetailPivotIndex = index;
+    });
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
     {
@@ -166,6 +169,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
 
         // optional: Suchmodus aktivieren
         await ReloadAsync();
+
     }
 
     // ---------------------------------------------------------

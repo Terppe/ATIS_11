@@ -1467,6 +1467,21 @@
   <data name="PivotItem_Edit_Infratribus.Header" xml:space="preserve">
     <value>Bearbeiten Infratribus</value>
   </data>
+  <data name="TextBlock_Edit_Infratribus.Text" xml:space="preserve">
+    <value>Bearbeiten Infratribus</value>
+  </data>
+  <data name="TextBlock_Edit_Subtribus.Text" xml:space="preserve">
+    <value>Bearbeiten Untertribus</value>
+  </data>
+  <data name="TextBlock_Edit_Tribus.Text" xml:space="preserve">
+    <value>Bearbeiten Tribus</value>
+  </data>
+  <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
+    <value>Bearbeiten Übertribus</value>
+  </data>
+  <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
+    <value>Bearbeiten Gattung</value>
+  </data>
   <data name="PivotItem_Edit_Infrafamily.Header" xml:space="preserve">
     <value>Bearbeiten Infrafamily</value>
   </data>
@@ -1936,7 +1951,7 @@
     <value>Abteilung/Reiche</value>
   </data>
   <data name="TextBlock_EnglishName.Text" xml:space="preserve">
-    <value>Englisch Name</value>
+    <value>Englischer Name</value>
   </data>
   <data name="TextBlock_Families.Text" xml:space="preserve">
     <value>Familien</value>
@@ -1984,7 +1999,7 @@
     <value>Nahrung</value>
   </data>
   <data name="TextBlock_FrenchName.Text" xml:space="preserve">
-    <value>Franz. Name</value>
+    <value>Französischer Name</value>
   </data>
   <data name="TextBlock_Gender.Text" xml:space="preserve">
     <value>Geschlecht</value>
@@ -2866,7 +2881,7 @@
     <value>Art Name</value>
   </data>
   <data name="TextBox_FraName.Header" xml:space="preserve">
-    <value>Franz. Name</value>
+    <value>Französischer Name</value>
   </data>
   <data name="TextBox_GenusName.Header" xml:space="preserve">
     <value>Gattung Name</value>

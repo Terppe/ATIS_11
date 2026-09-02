@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using ATIS.Views.Modules.Tbl63Infratribus;
+using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
 
 
 //    Tbl60SubtribusPage Skriptdatum:  18.08.2026  10:32    
@@ -8,8 +11,7 @@ namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusPage : Page
 {
-    private object? _commentsHeaderText;
-    private object? _referencesHeaderText;
+
     public Tbl60SubtribusViewModel ViewModel { get; }
 
     // ---------------------------------------------------------
@@ -26,6 +28,8 @@ public sealed partial class Tbl60SubtribusPage : Page
         Loaded += SubtribusPage_Loaded;
     }
 
+    private Tbl60SubtribusViewModel Vm => (Tbl60SubtribusViewModel)DataContext;
+
     // ---------------------------------------------------------
     // PAGE LOADED
     // ---------------------------------------------------------
@@ -39,17 +43,12 @@ public sealed partial class Tbl60SubtribusPage : Page
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
 
-        // Wichtig: lokalisierte Header einmal merken
-        _commentsHeaderText = CommentsInfratribusPivot.Header;
-        _referencesHeaderText = ReferencesInfratribusPivot.Header;
-
-        // Start: ausblenden
-        UpdateInfratribusTabs(false);
-
         Vm.InfratribusViewModel.PropertyChanged += InfratribusViewModel_PropertyChanged;
 
-        // Falls schon selektiert, wieder einblenden
         UpdateInfratribusTabs(Vm.InfratribusViewModel.SelectedItem != null);
+        PrepareCurrentTabState();
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
     // ---------------------------------------------------------                   
@@ -61,26 +60,91 @@ public sealed partial class Tbl60SubtribusPage : Page
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
+    // ---------------------------------------------------------                   
+    // TABSTATE, STYLE, CLICK-EVENTS
+    // ---------------------------------------------------------                   
+    private void PrepareCurrentTabState()
+    {
+        switch (Vm.SelectedDetailPivotIndex)
+        {
+            case 1:
+                Vm.SubtribusCommentViewModel.PrepareViewState();
+                break;
+
+            case 2:
+                Vm.SubtribusReferenceViewModel.PrepareViewState();
+                break;
+
+            case 4:
+                Vm.InfratribusViewModel.InfratribusCommentViewModel.PrepareViewState();
+                break;
+
+            case 5:
+                Vm.InfratribusViewModel.InfratribusReferenceViewModel.PrepareViewState();
+                break;
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            Vm.SelectedDetailPivotIndex = index;
+
+            PrepareCurrentTabState();
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+
     // ------------------------------------------------------------------------------------------------------------------------
-    // COMMENTS + REFERENCES PIVOTS VON Infratribus VERWALTEN
+    // Infratribus  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
     // ------------------------------------------------------------------------------------------------------------------------
 
     private void UpdateInfratribusTabs(bool hasSelection)
     {
-        CommentsInfratribusPivot.IsEnabled = hasSelection;
-        ReferencesInfratribusPivot.IsEnabled = hasSelection;
+        CommentsInfratribusTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesInfratribusTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
 
-        // Nicht mehr mit Uid zur Laufzeit arbeiten, sondern mit gecachtem Header und WinUI3Localizer
+        CommentsInfratribusTab.IsEnabled = hasSelection;
+        ReferencesInfratribusTab.IsEnabled = hasSelection;
 
-        CommentsInfratribusPivot.Header = hasSelection ? _commentsHeaderText : string.Empty;
-        ReferencesInfratribusPivot.Header = hasSelection ? _referencesHeaderText : string.Empty;
+        if (!hasSelection && Vm.SelectedDetailPivotIndex >= 4)
+            Vm.SelectedDetailPivotIndex = 3;
 
-        if (!hasSelection && DetailPivot.SelectedIndex >= 4)
-            DetailPivot.SelectedIndex = 3; // Infratribus
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
+    }
+
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(EditSubtribusTab, EditSubtribusTabUnderline, Vm.SelectedDetailPivotIndex == 0);
+        SetTabButtonStyle(CommentsSubtribusTab, CommentsSubtribusTabUnderline, Vm.SelectedDetailPivotIndex == 1);
+        SetTabButtonStyle(ReferencesSubtribusTab, ReferencesSubtribusTabUnderline, Vm.SelectedDetailPivotIndex == 2);
+        SetTabButtonStyle(InfratribusTab, InfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 3);
+        SetTabButtonStyle(CommentsInfratribusTab, CommentsInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 4);
+        SetTabButtonStyle(ReferencesInfratribusTab, ReferencesInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 5);
+    }
+
+    private void UpdateDetailContentVisibility()
+    {
+        EditSubtribusContent.Visibility = Vm.SelectedDetailPivotIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsSubtribusContent.Visibility = Vm.SelectedDetailPivotIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSubtribusContent.Visibility = Vm.SelectedDetailPivotIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        InfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  
-    // PROPERTCHANGED
+    // PROPERTY CHANGED
     // ---------------------------------------------------------                  
     private void InfratribusViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -95,8 +159,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // NAVIGATED FROM
     // ---------------------------------------------------------
 
-    private Tbl60SubtribusViewModel Vm => (Tbl60SubtribusViewModel)DataContext;
-
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         if (DataContext is Tbl60SubtribusViewModel vm)
@@ -104,7 +166,4 @@ public sealed partial class Tbl60SubtribusPage : Page
 
         base.OnNavigatedFrom(e);
     }
-
-
-
 }

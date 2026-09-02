@@ -105,6 +105,10 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
+    {
+        SelectedDetailPivotIndex = index;
+    });
 
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
@@ -317,7 +321,6 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -382,7 +385,5 @@ public class Tbl57TribusViewModel : BaseBossListViewModel<Models.Tbl57Tribus>
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
 
 }

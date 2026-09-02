@@ -1,11 +1,15 @@
-﻿//    Tbl60SubtribusEditControl Skriptdatum:  25.06.2026  10:32    
+﻿using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
+
+
+//    Tbl60SubtribusEditControl Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl60Subtribus;
 
 public sealed partial class Tbl60SubtribusEditControl : UserControl
 {
     public Tbl60SubtribusViewModel? ViewModel => DataContext as Tbl60SubtribusViewModel;
-
     // ---------------------------------------------------------
     // CONSTRUCTOR
     // ---------------------------------------------------------
@@ -13,8 +17,14 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     public Tbl60SubtribusEditControl()
     {
         InitializeComponent();
+        SelectedTabIndex = 0;
+        Loaded += Tbl60SubtribusEditControl_Loaded;
     }
-
+    private void Tbl60SubtribusEditControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
+    }
 
     // ---------------------------------------------------------
     // DEPENDENCY PROPERTY: ITEM
@@ -56,9 +66,9 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
         // Deshalb bleibt diese Methode LEER.
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // VALDATINHELPER
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
     {
@@ -77,9 +87,9 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
             VisualStateManager.GoToState(box, "Normal", true);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // SUBTRIBUSNAME VALIDATION
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     private void SubtribusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -91,9 +101,9 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
         UpdateValidationState(SubtribusNameBox, Item?.HasSubtribusNameError ?? false);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // VALID YEAR VALIDATION
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     private void ValidYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -105,9 +115,9 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
     // AUTHOR YEAR VALIDATION
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                   
 
     private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
@@ -118,8 +128,42 @@ public sealed partial class Tbl60SubtribusEditControl : UserControl
     {
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
+
+    // ---------------------------------------------------------                   
+    // DETAIL TAB VALIDATION
+    // ---------------------------------------------------------                   
+    private int SelectedTabIndex = 0;
+
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            SelectedTabIndex = index;
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(EngNameTab, EngNameTabUnderline, SelectedTabIndex == 0);
+        SetTabButtonStyle(GerNameTab, GerNameTabUnderline, SelectedTabIndex == 1);
+        SetTabButtonStyle(FraNameTab, FraNameTabUnderline, SelectedTabIndex == 2);
+        SetTabButtonStyle(SpaNameTab, SpaNameTabUnderline, SelectedTabIndex == 3);
+    }
+    private void UpdateDetailContentVisibility()
+    {
+        EngNameGrid.Visibility = SelectedTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        GerNameGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        FraNameGrid.Visibility = SelectedTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        SpaNameGrid.Visibility = SelectedTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+    }
 }
-
-
-
-

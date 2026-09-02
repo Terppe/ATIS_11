@@ -105,6 +105,10 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
+    {
+        SelectedDetailPivotIndex = index;
+    });
 
     private int _selectedDetailPivotIndex;
     public int SelectedDetailPivotIndex
@@ -317,7 +321,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
