@@ -29,7 +29,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel InfraordoCommentViewModel { get; }
     public Tbl90ReferenceViewModel InfraordoReferenceViewModel { get; }
     public Tbl42SuperfamilyViewModel SuperfamilyViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl36Subordo> SubordoList { get; private set; } = new();
     public Dictionary<int, string?> SubordoLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl39InfraordoViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -105,14 +101,18 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -121,13 +121,13 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = InfraordoReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = SuperfamilyViewModel.SuperfamilyReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -171,14 +171,12 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForSubordoAsync(int subordoId)
         => await LoadInternalAsync(subordoId, Data.GetInfraordoForSubordoAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl39Infraordo>>> loader)
@@ -196,7 +194,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl39Infraordo>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -218,7 +215,7 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -237,7 +234,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await InfraordoCommentViewModel.LoadForInfraordoAsync(entityId);
@@ -270,7 +266,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl39Infraordo item, string column)
         => column switch
         {
@@ -283,7 +278,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -302,7 +296,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl39Infraordo?> SaveItemAsync(Models.Tbl39Infraordo item)
     {
         if (string.IsNullOrWhiteSpace(item.InfraordoName))
@@ -317,7 +310,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -335,7 +327,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl39Infraordo item)
     {
         if (item.InfraordoId == 0)
@@ -365,7 +356,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -377,12 +367,9 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

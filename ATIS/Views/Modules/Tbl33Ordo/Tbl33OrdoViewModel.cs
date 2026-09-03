@@ -8,6 +8,7 @@ using ATIS.Views.Modules.Tbl36Subordo;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
 //    Tbl33OrdoViewModel Skriptdatum:  15.06.2024  10:32    
@@ -23,11 +24,11 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl33Ordo>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel OrdoCommentViewModel { get; }
     public Tbl90ReferenceViewModel OrdoReferenceViewModel { get; }
     public Tbl36SubordoViewModel SubordoViewModel { get; }
@@ -35,7 +36,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl30Legio> LegioList { get; private set; } = new();
     public Dictionary<int, string?> LegioLookup { get; private set; } = new();
 
@@ -57,7 +57,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl33OrdoViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -75,21 +74,45 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Ordo ID");
-        RegisterHeader("Name", "Ordo Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_OrdoId")) ? "Id" : loc.GetLocalizedString("HeaderSort_OrdoId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_OrdoName")) ? "Name" : loc.GetLocalizedString("HeaderSort_OrdoName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -98,13 +121,13 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = OrdoReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = SubordoViewModel.SubordoReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -148,14 +171,12 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForLegioAsync(int legioId)
         => await LoadInternalAsync(legioId, Data.GetOrdoForLegioAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl33Ordo>>> loader)
@@ -173,7 +194,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl33Ordo>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -195,7 +215,7 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -214,7 +234,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await OrdoCommentViewModel.LoadForOrdoAsync(entityId);
@@ -247,7 +266,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl33Ordo item, string column)
         => column switch
         {
@@ -260,7 +278,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -279,7 +296,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl33Ordo?> SaveItemAsync(Models.Tbl33Ordo item)
     {
         if (string.IsNullOrWhiteSpace(item.OrdoName))
@@ -294,7 +310,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -312,7 +327,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl33Ordo item)
     {
         if (item.OrdoId == 0)
@@ -342,7 +356,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -354,12 +367,9 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

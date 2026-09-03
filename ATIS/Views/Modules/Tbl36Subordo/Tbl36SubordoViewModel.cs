@@ -29,7 +29,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel SubordoCommentViewModel { get; }
     public Tbl90ReferenceViewModel SubordoReferenceViewModel { get; }
     public Tbl39InfraordoViewModel InfraordoViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl33Ordo> OrdoList { get; private set; } = new();
     public Dictionary<int, string?> OrdoLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl36SubordoViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -105,14 +101,18 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -121,13 +121,13 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = SubordoReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = InfraordoViewModel.InfraordoReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -171,14 +171,12 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForOrdoAsync(int ordoId)
         => await LoadInternalAsync(ordoId, Data.GetSubordoForOrdoAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl36Subordo>>> loader)
@@ -196,7 +194,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl36Subordo>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -218,7 +215,7 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -237,7 +234,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SubordoCommentViewModel.LoadForSubordoAsync(entityId);
@@ -270,7 +266,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl36Subordo item, string column)
         => column switch
         {
@@ -283,7 +278,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -302,7 +296,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl36Subordo?> SaveItemAsync(Models.Tbl36Subordo item)
     {
         if (string.IsNullOrWhiteSpace(item.SubordoName))
@@ -317,7 +310,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -335,7 +327,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl36Subordo item)
     {
         if (item.SubordoId == 0)
@@ -365,7 +356,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -377,12 +367,9 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

@@ -1470,6 +1470,15 @@
   <data name="TextBlock_Edit_Infratribus.Text" xml:space="preserve">
     <value>Edit Infratribus</value>
   </data>
+  <data name="TextBlock_Edit_Infrafamily.Text" xml:space="preserve">
+    <value>Edit Infrafamily</value>
+  </data>
+  <data name="TextBlock_Edit_Infraordo.Text" xml:space="preserve">
+    <value>Edit Infraordo</value>
+  </data>
+  <data name="TextBlock_Edit_Infraclass.Text" xml:space="preserve">
+    <value>Edit Infraclass</value>
+  </data>
   <data name="TextBlock_Edit_Subtribus.Text" xml:space="preserve">
     <value>Edit Subtribus</value>
   </data>
@@ -1479,8 +1488,44 @@
   <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
     <value>Edit Supertribus</value>
   </data>
+  <data name="TextBlock_Edit_Superclass.Text" xml:space="preserve">
+    <value>Edit Superclass</value>
+  </data>
+  <data name="TextBlock_Edit_Superfamily.Text" xml:space="preserve">
+    <value>Edit Superfamily</value>
+  </data>
   <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
     <value>Edit Genus</value>
+  </data>
+  <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
+    <value>Edit Class</value>
+  </data>
+  <data name="TextBlock_Edit_Regnum.Text" xml:space="preserve">
+    <value>Edit Regnum</value>
+  </data>
+  <data name="TextBlock_Edit_Species.Text" xml:space="preserve">
+    <value>Edit Species</value>
+  </data>
+  <data name="TextBlock_Edit_Phylum.Text" xml:space="preserve">
+    <value>Edit Phylum</value>
+  </data>
+  <data name="TextBlock_Edit_Ordo.Text" xml:space="preserve">
+    <value>Edit Ordo</value>
+  </data>
+  <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
+    <value>Edit Legio</value>
+  </data>
+  <data name="TextBlock_Edit_Subphylum.Text" xml:space="preserve">
+    <value>Edit Subphylum</value>
+  </data>
+  <data name="TextBlock_Edit_Subclass.Text" xml:space="preserve">
+    <value>Edit Subclass</value>
+  </data>
+  <data name="TextBlock_Edit_Subspecies.Text" xml:space="preserve">
+    <value>Edit Subspecies</value>
+  </data>
+  <data name="TextBlock_Edit_Subordo.Text" xml:space="preserve">
+    <value>Edit Subordo</value>
   </data>
   <data name="PivotItem_Edit_Infrafamily.Header" xml:space="preserve">
     <value>Edit Infrafamily</value>

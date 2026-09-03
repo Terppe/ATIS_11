@@ -8,6 +8,7 @@ using ATIS.Views.Modules.Tbl33Ordo;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
 //    Tbl30LegioViewModel Skriptdatum:  15.06.2024  10:32    
@@ -23,11 +24,11 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl30Legio>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel LegioCommentViewModel { get; }
     public Tbl90ReferenceViewModel LegioReferenceViewModel { get; }
     public Tbl33OrdoViewModel OrdoViewModel { get; }
@@ -35,7 +36,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl27Infraclass> InfraclassList { get; private set; } = new();
     public Dictionary<int, string?> InfraclassLookup { get; private set; } = new();
 
@@ -57,7 +57,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl30LegioViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -75,21 +74,45 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Legio ID");
-        RegisterHeader("Name", "Legio Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_LegioId")) ? "Id" : loc.GetLocalizedString("HeaderSort_LegioId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_LegioName")) ? "Name" : loc.GetLocalizedString("HeaderSort_LegioName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -98,13 +121,13 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = LegioReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = OrdoViewModel.OrdoReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -148,14 +171,12 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForInfraclassAsync(int infraclassId)
         => await LoadInternalAsync(infraclassId, Data.GetLegioForInfraclassAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl30Legio>>> loader)
@@ -173,7 +194,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl30Legio>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -195,7 +215,7 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -214,7 +234,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await LegioCommentViewModel.LoadForLegioAsync(entityId);
@@ -247,7 +266,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl30Legio item, string column)
         => column switch
         {
@@ -260,7 +278,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -279,7 +296,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl30Legio?> SaveItemAsync(Models.Tbl30Legio item)
     {
         if (string.IsNullOrWhiteSpace(item.LegioName))
@@ -294,7 +310,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -312,7 +327,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl30Legio item)
     {
         if (item.LegioId == 0)
@@ -342,7 +356,6 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -354,12 +367,9 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

@@ -9,8 +9,7 @@
       xmlns:tbl30Legio="using:ATIS.Views.Modules.Tbl30Legio"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-      x:Name="RootPage"
-      DataContext="{Binding InfraclassViewModel}">
+      x:Name="RootPage">
 
     <!--  Tbl27InfraclassPage Skriptdatum:  15.06.2024  18:32  -->
 
@@ -99,98 +98,159 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit Infraclass  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Infraclass">
-                                <ScrollViewer Padding="1">
-                                    <tbl27Infraclass:Tbl27InfraclassEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
+                        <!--  Headerleiste  -->
+                        <ScrollViewer Grid.Row="0"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      HorizontalScrollMode="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      VerticalScrollMode="Disabled"
+                                      ZoomMode="Disabled">
+                            <StackPanel Margin="0,10,0,10"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
 
-                            <!--  Comments Infraclass  -->
-                            <PivotItem x:Name="CommentsInfraclassPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-                                <Grid DataContext="{Binding InfraclassCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="EditInfraclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="0">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Edit_Infraclass" />
+                                        <Border x:Name="EditInfraclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <Button x:Name="CommentsInfraclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="1">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsInfraclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                                <Button x:Name="ReferencesInfraclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="2">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesInfraclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                            <!--  References Infraclass  -->
-                            <PivotItem x:Name="ReferencesInfraclassPivot"
-                                       loc:Uids.Uid="PivotItem_References">
+                                <Button x:Name="LegioTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="3">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Legio" />
+                                        <Border x:Name="LegioTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                <Grid DataContext="{Binding InfraclassReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="CommentsLegioTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="4">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsLegioTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                                Grid.Row="0" />
+                                <Button x:Name="ReferencesLegioTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="5">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesLegioTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            </StackPanel>
+                        </ScrollViewer>
 
-                            <!--  Legio  -->
-                            <PivotItem x:Name="LegioPivot"
-                                       loc:Uids.Uid="PivotItem_Edit_Legio">
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="1">
 
-                                <Grid RowDefinitions="Auto,*">
-                                    <tbl30Legio:Tbl30LegioParentControl x:Name="LegioParentControl"
-                                                                        Grid.Row="0"
-                                                                        DataContext="{Binding LegioViewModel}" />
+                            <ScrollViewer x:Name="EditInfraclassContent"
+                                          Padding="1">
+                                <tbl27Infraclass:Tbl27InfraclassEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
 
-                                    <tbl30Legio:Tbl30LegioEditControl Grid.Row="1"
-                                                                      DataContext="{Binding LegioViewModel}"
-                                                                      Item="{Binding SelectedItem}"
-                                                                      Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            <Grid x:Name="CommentsInfraclassContent"
+                                  DataContext="{Binding InfraclassCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                            <!--  Comments Legio  -->
-                            <PivotItem x:Name="CommentsLegioPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
+                            <Grid x:Name="ReferencesInfraclassContent"
+                                  DataContext="{Binding InfraclassReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                                                            Grid.Row="0" />
 
-                                <Grid DataContext="{Binding LegioViewModel.LegioCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                            <Grid x:Name="LegioContent"
+                                  DataContext="{Binding LegioViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl30Legio:Tbl30LegioParentControl x:Name="LegioParentControl"
+                                                                    Grid.Row="0" />
+                                <tbl30Legio:Tbl30LegioEditControl Grid.Row="1"
+                                                                  Item="{Binding SelectedItem}"
+                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Grid x:Name="CommentsLegioContent"
+                                  DataContext="{Binding LegioViewModel.LegioCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                </Grid>
-                            </PivotItem>
+                            <Grid x:Name="ReferencesLegioContent"
+                                  DataContext="{Binding LegioViewModel.LegioReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
 
-                            <!--  References Legio  -->
-                            <PivotItem x:Name="ReferencesLegioPivot"
-                                       loc:Uids.Uid="PivotItem_References">
-
-                                <Grid DataContext="{Binding LegioViewModel.LegioReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-                        </Pivot>
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>

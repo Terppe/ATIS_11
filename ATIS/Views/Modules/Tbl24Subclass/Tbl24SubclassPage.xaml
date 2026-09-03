@@ -9,10 +9,9 @@
       xmlns:tbl27Infraclass="using:ATIS.Views.Modules.Tbl27Infraclass"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-      x:Name="RootPage"
-      DataContext="{Binding SubclassViewModel}">
+      x:Name="RootPage">
 
-    <!--    Tbl24SubclassPage Skriptdatum:  15.06.2024  18:32 -->
+    <!--  Tbl24SubclassPage Skriptdatum:  15.08.2026  18:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -99,98 +98,159 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit Subclass  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Subclass">
-                                <ScrollViewer Padding="1">
-                                    <tbl24Subclass:Tbl24SubclassEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
+                        <!--  Headerleiste  -->
+                        <ScrollViewer Grid.Row="0"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      HorizontalScrollMode="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      VerticalScrollMode="Disabled"
+                                      ZoomMode="Disabled">
+                            <StackPanel Margin="0,10,0,10"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
 
-                            <!--  Comments Subclass  -->
-                            <PivotItem x:Name="CommentsSubclassPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-                                <Grid DataContext="{Binding SubclassCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="EditSubclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="0">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Edit_Subclass" />
+                                        <Border x:Name="EditSubclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <Button x:Name="CommentsSubclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="1">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsSubclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                                <Button x:Name="ReferencesSubclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="2">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesSubclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                            <!--  References Subclass  -->
-                            <PivotItem x:Name="ReferencesSubclassPivot"
-                                       loc:Uids.Uid="PivotItem_References">
+                                <Button x:Name="InfraclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="3">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Infraclass" />
+                                        <Border x:Name="InfraclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                <Grid DataContext="{Binding SubclassReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="CommentsInfraclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="4">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsInfraclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                                Grid.Row="0" />
+                                <Button x:Name="ReferencesInfraclassTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="5">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesInfraclassTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            </StackPanel>
+                        </ScrollViewer>
 
-                            <!--  Infraclass -->
-                            <PivotItem x:Name="InfraclassPivot"
-                                       loc:Uids.Uid="PivotItem_Edit_Infraclass">
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="1">
 
-                                <Grid RowDefinitions="Auto,*">
-                                    <tbl27Infraclass:Tbl27InfraclassParentControl x:Name="InfraclassParentControl"
-                                                                                    Grid.Row="0"
-                                                                                    DataContext="{Binding InfraclassViewModel}" />
+                            <ScrollViewer x:Name="EditSubclassContent"
+                                          Padding="1">
+                                <tbl24Subclass:Tbl24SubclassEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
 
-                                    <tbl27Infraclass:Tbl27InfraclassEditControl Grid.Row="1"
-                                                                                  DataContext="{Binding InfraclassViewModel}"
-                                                                                  Item="{Binding SelectedItem}"
-                                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            <Grid x:Name="CommentsSubclassContent"
+                                  DataContext="{Binding SubclassCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                            <!--  Comments Infraclass  -->
-                            <PivotItem x:Name="CommentsInfraclassPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
+                            <Grid x:Name="ReferencesSubclassContent"
+                                  DataContext="{Binding SubclassReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                                                            Grid.Row="0" />
 
-                                <Grid DataContext="{Binding InfraclassViewModel.InfraclassCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                            <Grid x:Name="InfraclassContent"
+                                  DataContext="{Binding InfraclassViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl27Infraclass:Tbl27InfraclassParentControl x:Name="InfraclassParentControl"
+                                                                              Grid.Row="0" />
+                                <tbl27Infraclass:Tbl27InfraclassEditControl Grid.Row="1"
+                                                                            Item="{Binding SelectedItem}"
+                                                                            Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Grid x:Name="CommentsInfraclassContent"
+                                  DataContext="{Binding InfraclassViewModel.InfraclassCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                </Grid>
-                            </PivotItem>
+                            <Grid x:Name="ReferencesInfraclassContent"
+                                  DataContext="{Binding InfraclassViewModel.InfraclassReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
 
-                            <!--  References Infraclass  -->
-                            <PivotItem x:Name="ReferencesInfraclassPivot"
-                                       loc:Uids.Uid="PivotItem_References">
-
-                                <Grid DataContext="{Binding InfraclassViewModel.InfraclassReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-                        </Pivot>
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>
@@ -202,4 +262,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>  
+</Page>

@@ -1146,3 +1146,5 @@ Das spart dir später viel Sucherei.
 Von Tribus-Genus pages nachgezogen. Jetzt aus Infratribus alle Pivots rausnehmen und Generator ändern und dann alle nachziehen
 ----------------------------------------
 03.09.2026 14:30 Uhr Alle Änderungen vorgenommen und im Generator gespeichert. In resource-datei eingeben Edit_Genus usw. von Species bis Famile fertig
+----------------------------------------
+03.09.2026 16:30 Uhr Superfamile - Regnum. Regnum noch nicht ok, vergleichen mit Vorversion Subregnum

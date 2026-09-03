@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using ATIS.Views.Modules.Tbl42Superfamily;
+using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
 
 
 //    Tbl39InfraordoPage Skriptdatum:  15.06.2024  10:32    
@@ -8,14 +11,12 @@ namespace ATIS.Views.Modules.Tbl39Infraordo;
 
 public sealed partial class Tbl39InfraordoPage : Page
 {
-    private object? _commentsHeaderText;
-    private object? _referencesHeaderText;
+
     public Tbl39InfraordoViewModel ViewModel { get; }
 
     // ---------------------------------------------------------
     // CONSTRUCTOR
     // ---------------------------------------------------------
-
     public Tbl39InfraordoPage()
     {
         InitializeComponent();
@@ -26,10 +27,11 @@ public sealed partial class Tbl39InfraordoPage : Page
         Loaded += InfraordoPage_Loaded;
     }
 
+    private Tbl39InfraordoViewModel Vm => (Tbl39InfraordoViewModel)DataContext;
+
     // ---------------------------------------------------------
     // PAGE LOADED
     // ---------------------------------------------------------
-
     private async void InfraordoPage_Loaded(object sender, RoutedEventArgs e)
     {
         Loaded -= InfraordoPage_Loaded;
@@ -39,48 +41,106 @@ public sealed partial class Tbl39InfraordoPage : Page
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
 
-        // Wichtig: lokalisierte Header einmal merken
-        _commentsHeaderText = CommentsSuperfamilyPivot.Header;
-        _referencesHeaderText = ReferencesSuperfamilyPivot.Header;
-
-        // Start: ausblenden
-        UpdateSuperfamilyTabs(false);
-
         Vm.SuperfamilyViewModel.PropertyChanged += SuperfamilyViewModel_PropertyChanged;
 
-        // Falls schon selektiert, wieder einblenden
         UpdateSuperfamilyTabs(Vm.SuperfamilyViewModel.SelectedItem != null);
+        PrepareCurrentTabState();
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
     // ---------------------------------------------------------                   
     // QUERY-SUBMITTED
     // ---------------------------------------------------------                   
-
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    // COMMENTS + REFERENCES PIVOTS VON Superfamily VERWALTEN
-    // ------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // TABSTATE, STYLE, CLICK-EVENTS
+    // ---------------------------------------------------------                   
+    private void PrepareCurrentTabState()
+    {
+        switch (Vm.SelectedDetailTabIndex)
+        {
+            case 1:
+                Vm.InfraordoCommentViewModel.PrepareViewState();
+                break;
 
+            case 2:
+                Vm.InfraordoReferenceViewModel.PrepareViewState();
+                break;
+
+            case 4:
+                Vm.SuperfamilyViewModel.SuperfamilyCommentViewModel.PrepareViewState();
+                break;
+
+            case 5:
+                Vm.SuperfamilyViewModel.SuperfamilyReferenceViewModel.PrepareViewState();
+                break;
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            Vm.SelectedDetailTabIndex = index;
+
+            PrepareCurrentTabState();
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    // Superfamily  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
+    // ------------------------------------------------------------------------------------------------------------------------
     private void UpdateSuperfamilyTabs(bool hasSelection)
     {
-        CommentsSuperfamilyPivot.IsEnabled = hasSelection;
-        ReferencesSuperfamilyPivot.IsEnabled = hasSelection;
+        CommentsSuperfamilyTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSuperfamilyTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
 
-        // Nicht mehr mit Uid zur Laufzeit arbeiten, sondern mit gecachtem Header und WinUI3Localizer
+        CommentsSuperfamilyTab.IsEnabled = hasSelection;
+        ReferencesSuperfamilyTab.IsEnabled = hasSelection;
 
-        CommentsSuperfamilyPivot.Header = hasSelection ? _commentsHeaderText : string.Empty;
-        ReferencesSuperfamilyPivot.Header = hasSelection ? _referencesHeaderText : string.Empty;
+        if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
+            Vm.SelectedDetailTabIndex = 3;
 
-        if (!hasSelection && DetailPivot.SelectedIndex >= 4)
-            DetailPivot.SelectedIndex = 3; // Superfamily
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
+    }
+
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(EditInfraordoTab, EditInfraordoTabUnderline, Vm.SelectedDetailTabIndex == 0);
+        SetTabButtonStyle(CommentsInfraordoTab, CommentsInfraordoTabUnderline, Vm.SelectedDetailTabIndex == 1);
+        SetTabButtonStyle(ReferencesInfraordoTab, ReferencesInfraordoTabUnderline, Vm.SelectedDetailTabIndex == 2);
+        SetTabButtonStyle(SuperfamilyTab, SuperfamilyTabUnderline, Vm.SelectedDetailTabIndex == 3);
+        SetTabButtonStyle(CommentsSuperfamilyTab, CommentsSuperfamilyTabUnderline, Vm.SelectedDetailTabIndex == 4);
+        SetTabButtonStyle(ReferencesSuperfamilyTab, ReferencesSuperfamilyTabUnderline, Vm.SelectedDetailTabIndex == 5);
+    }
+
+    private void UpdateDetailContentVisibility()
+    {
+        EditInfraordoContent.Visibility = Vm.SelectedDetailTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsInfraordoContent.Visibility = Vm.SelectedDetailTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesInfraordoContent.Visibility = Vm.SelectedDetailTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        SuperfamilyContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsSuperfamilyContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSuperfamilyContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  
-    // PROPERTCHANGED
+    // PROPERTY CHANGED
     // ---------------------------------------------------------                  
     private void SuperfamilyViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -94,9 +154,6 @@ public sealed partial class Tbl39InfraordoPage : Page
     // ---------------------------------------------------------         
     // NAVIGATED FROM
     // ---------------------------------------------------------
-
-    private Tbl39InfraordoViewModel Vm => (Tbl39InfraordoViewModel)DataContext;
-
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         if (DataContext is Tbl39InfraordoViewModel vm)
@@ -104,7 +161,4 @@ public sealed partial class Tbl39InfraordoPage : Page
 
         base.OnNavigatedFrom(e);
     }
-
-
-
 }

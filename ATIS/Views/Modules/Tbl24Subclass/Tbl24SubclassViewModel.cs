@@ -8,9 +8,10 @@ using ATIS.Views.Modules.Tbl27Infraclass;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
-//    Tbl24SubclassViewModel Skriptdatum:  15.06.2024  18:32    
+//    Tbl24SubclassViewModel Skriptdatum:  15.08.2026  18:32    
 
 namespace ATIS.Views.Modules.Tbl24Subclass;
 
@@ -23,11 +24,11 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl24Subclass>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel SubclassCommentViewModel { get; }
     public Tbl90ReferenceViewModel SubclassReferenceViewModel { get; }
     public Tbl27InfraclassViewModel InfraclassViewModel { get; }
@@ -35,7 +36,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl21Class> ClassList { get; private set; } = new();
     public Dictionary<int, string?> ClassLookup { get; private set; } = new();
 
@@ -57,7 +57,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl24SubclassViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -75,21 +74,45 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Subclass ID");
-        RegisterHeader("Name", "Subclass Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SubclassId")) ? "Id" : loc.GetLocalizedString("HeaderSort_SubclassId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SubclassName")) ? "Name" : loc.GetLocalizedString("HeaderSort_SubclassName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -98,13 +121,13 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = SubclassReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = InfraclassViewModel.InfraclassReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -148,14 +171,12 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForClassAsync(int classeId)
         => await LoadInternalAsync(classeId, Data.GetSubclassForClassAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl24Subclass>>> loader)
@@ -173,7 +194,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl24Subclass>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -195,7 +215,7 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -214,7 +234,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SubclassCommentViewModel.LoadForSubclassAsync(entityId);
@@ -247,7 +266,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl24Subclass item, string column)
         => column switch
         {
@@ -260,7 +278,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -279,7 +296,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl24Subclass?> SaveItemAsync(Models.Tbl24Subclass item)
     {
         if (string.IsNullOrWhiteSpace(item.SubclassName))
@@ -294,7 +310,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -312,7 +327,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl24Subclass item)
     {
         if (item.SubclassId == 0)
@@ -342,7 +356,6 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -354,12 +367,9 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

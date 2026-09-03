@@ -8,7 +8,7 @@ using ATIS.Views.Modules.Tbl12Subphylum;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
-using WinUI3Localizer; 
+using WinUI3Localizer;
 
 
 //    Tbl06PhylumViewModel Skriptdatum:  15.06.2024  12:32    
@@ -29,7 +29,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel PhylumCommentViewModel { get; }
     public Tbl90ReferenceViewModel PhylumReferenceViewModel { get; }
     public Tbl12SubphylumViewModel SubphylumViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl03Regnum> RegnumList { get; private set; } = new();
     public Dictionary<int, string?> RegnumLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl06PhylumViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -86,10 +83,9 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         ApplyHeaders();
     }
 
-    // ---------------------------------------------------------               
+    // ---------------------------------------------------------                  
     // SORTING HEADERS
-    // ---------------------------------------------------------               
-
+    // ---------------------------------------------------------    
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -105,14 +101,18 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -121,13 +121,13 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = PhylumReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = SubphylumViewModel.SubphylumReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -171,14 +171,12 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForRegnumAsync(int regnumId)
         => await LoadInternalAsync(regnumId, Data.GetPhylumForRegnumAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl06Phylum>>> loader)
@@ -196,7 +194,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl06Phylum>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -218,7 +215,7 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -237,7 +234,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await PhylumCommentViewModel.LoadForPhylumAsync(entityId);
@@ -270,7 +266,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl06Phylum item, string column)
         => column switch
         {
@@ -283,7 +278,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -302,7 +296,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl06Phylum?> SaveItemAsync(Models.Tbl06Phylum item)
     {
         if (string.IsNullOrWhiteSpace(item.PhylumName))
@@ -317,7 +310,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -335,7 +327,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl06Phylum item)
     {
         if (item.PhylumId == 0)
@@ -365,7 +356,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -377,12 +367,9 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

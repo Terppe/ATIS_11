@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
 using ATIS.Views.Modules.Tbl12Subphylum;
+using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
 
 
 //    Tbl06PhylumPage Skriptdatum:  15.06.2024  12:32    
@@ -8,14 +11,12 @@ namespace ATIS.Views.Modules.Tbl06Phylum;
 
 public sealed partial class Tbl06PhylumPage : Page
 {
-    private object? _commentsHeaderText;
-    private object? _referencesHeaderText;
+
     public Tbl06PhylumViewModel ViewModel { get; }
 
     // ---------------------------------------------------------
     // CONSTRUCTOR
     // ---------------------------------------------------------
-
     public Tbl06PhylumPage()
     {
         InitializeComponent();
@@ -26,10 +27,11 @@ public sealed partial class Tbl06PhylumPage : Page
         Loaded += PhylumPage_Loaded;
     }
 
+    private Tbl06PhylumViewModel Vm => (Tbl06PhylumViewModel)DataContext;
+
     // ---------------------------------------------------------
     // PAGE LOADED
     // ---------------------------------------------------------
-
     private async void PhylumPage_Loaded(object sender, RoutedEventArgs e)
     {
         Loaded -= PhylumPage_Loaded;
@@ -39,48 +41,106 @@ public sealed partial class Tbl06PhylumPage : Page
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
 
-        // Wichtig: lokalisierte Header einmal merken
-        _commentsHeaderText = CommentsSubphylumPivot.Header;
-        _referencesHeaderText = ReferencesSubphylumPivot.Header;
-
-        // Start: ausblenden
-        UpdateSubphylumTabs(false);
-
         Vm.SubphylumViewModel.PropertyChanged += SubphylumViewModel_PropertyChanged;
 
-        // Falls schon selektiert, wieder einblenden
         UpdateSubphylumTabs(Vm.SubphylumViewModel.SelectedItem != null);
+        PrepareCurrentTabState();
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
     // ---------------------------------------------------------                   
     // QUERY-SUBMITTED
     // ---------------------------------------------------------                   
-
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------
-    // COMMENTS + REFERENCES PIVOTS VON Subphylum VERWALTEN
-    // ------------------------------------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------                   
+    // TABSTATE, STYLE, CLICK-EVENTS
+    // ---------------------------------------------------------                   
+    private void PrepareCurrentTabState()
+    {
+        switch (Vm.SelectedDetailTabIndex)
+        {
+            case 1:
+                Vm.PhylumCommentViewModel.PrepareViewState();
+                break;
 
+            case 2:
+                Vm.PhylumReferenceViewModel.PrepareViewState();
+                break;
+
+            case 4:
+                Vm.SubphylumViewModel.SubphylumCommentViewModel.PrepareViewState();
+                break;
+
+            case 5:
+                Vm.SubphylumViewModel.SubphylumReferenceViewModel.PrepareViewState();
+                break;
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            Vm.SelectedDetailTabIndex = index;
+
+            PrepareCurrentTabState();
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------
+    // Subphylum  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
+    // ------------------------------------------------------------------------------------------------------------------------
     private void UpdateSubphylumTabs(bool hasSelection)
     {
-        CommentsSubphylumPivot.IsEnabled = hasSelection;
-        ReferencesSubphylumPivot.IsEnabled = hasSelection;
+        CommentsSubphylumTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSubphylumTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
 
-        // Nicht mehr mit Uid zur Laufzeit arbeiten, sondern mit gecachtem Header und WinUI3Localizer
+        CommentsSubphylumTab.IsEnabled = hasSelection;
+        ReferencesSubphylumTab.IsEnabled = hasSelection;
 
-        CommentsSubphylumPivot.Header = hasSelection ? _commentsHeaderText : string.Empty;
-        ReferencesSubphylumPivot.Header = hasSelection ? _referencesHeaderText : string.Empty;
+        if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
+            Vm.SelectedDetailTabIndex = 3;
 
-        if (!hasSelection && DetailPivot.SelectedIndex >= 4)
-            DetailPivot.SelectedIndex = 3; // Subphylum
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
+    }
+
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(EditPhylumTab, EditPhylumTabUnderline, Vm.SelectedDetailTabIndex == 0);
+        SetTabButtonStyle(CommentsPhylumTab, CommentsPhylumTabUnderline, Vm.SelectedDetailTabIndex == 1);
+        SetTabButtonStyle(ReferencesPhylumTab, ReferencesPhylumTabUnderline, Vm.SelectedDetailTabIndex == 2);
+        SetTabButtonStyle(SubphylumTab, SubphylumTabUnderline, Vm.SelectedDetailTabIndex == 3);
+        SetTabButtonStyle(CommentsSubphylumTab, CommentsSubphylumTabUnderline, Vm.SelectedDetailTabIndex == 4);
+        SetTabButtonStyle(ReferencesSubphylumTab, ReferencesSubphylumTabUnderline, Vm.SelectedDetailTabIndex == 5);
+    }
+
+    private void UpdateDetailContentVisibility()
+    {
+        EditPhylumContent.Visibility = Vm.SelectedDetailTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsPhylumContent.Visibility = Vm.SelectedDetailTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesPhylumContent.Visibility = Vm.SelectedDetailTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        SubphylumContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsSubphylumContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSubphylumContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  
-    // PROPERTCHANGED
+    // PROPERTY CHANGED
     // ---------------------------------------------------------                  
     private void SubphylumViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -94,9 +154,6 @@ public sealed partial class Tbl06PhylumPage : Page
     // ---------------------------------------------------------         
     // NAVIGATED FROM
     // ---------------------------------------------------------
-
-    private Tbl06PhylumViewModel Vm => (Tbl06PhylumViewModel)DataContext;
-
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         if (DataContext is Tbl06PhylumViewModel vm)
@@ -104,7 +161,4 @@ public sealed partial class Tbl06PhylumPage : Page
 
         base.OnNavigatedFrom(e);
     }
-
-
-
 }

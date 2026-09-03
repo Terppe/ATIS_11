@@ -29,7 +29,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel SuperclassCommentViewModel { get; }
     public Tbl90ReferenceViewModel SuperclassReferenceViewModel { get; }
     public Tbl21ClassViewModel ClassViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl12Subphylum> SubphylumList { get; private set; } = new();
     public Dictionary<int, string?> SubphylumLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl18SuperclassViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -105,14 +101,18 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -121,13 +121,13 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = SuperclassReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = ClassViewModel.ClassReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -171,14 +171,12 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForSubphylumAsync(int subphylumId)
         => await LoadInternalAsync(subphylumId, Data.GetSuperclassForSubphylumAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl18Superclass>>> loader)
@@ -196,7 +194,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl18Superclass>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -218,7 +215,7 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -237,7 +234,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SuperclassCommentViewModel.LoadForSuperclassAsync(entityId);
@@ -270,7 +266,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl18Superclass item, string column)
         => column switch
         {
@@ -283,7 +278,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -302,7 +296,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl18Superclass?> SaveItemAsync(Models.Tbl18Superclass item)
     {
         if (string.IsNullOrWhiteSpace(item.SuperclassName))
@@ -317,7 +310,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -335,7 +327,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl18Superclass item)
     {
         if (item.SuperclassId == 0)
@@ -365,7 +356,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -377,12 +367,9 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

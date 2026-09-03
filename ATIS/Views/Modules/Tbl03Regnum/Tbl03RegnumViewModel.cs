@@ -11,12 +11,13 @@ using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
 
-//    Tbl03RegnumViewModel Skriptdatum:  30.12.2024  12:32      
+//    Tbl03RegnumViewModel Skriptdatum:  24.08.2026  12:32      
 
 namespace ATIS.Views.Modules.Tbl03Regnum;
 
 public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 {
+    private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
 
@@ -28,16 +29,34 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel RegnumCommentViewModel { get; }
     public Tbl90ReferenceViewModel RegnumReferenceViewModel { get; }
     public Tbl06PhylumViewModel PhylumViewModel { get; }
 
+    //// ---------------------------------------------------------
+    //// LOOKUPS
+    //// ---------------------------------------------------------
+    //public ObservableCollection<Models.NULL> NULLList { get; private set; } = new();
+    //public Dictionary<int, string?> NULLLookup { get; private set; } = new();
+
+    //public async Task LoadNULLLookupAsync()
+    //{
+    //    var list = await _lookupService.GetNULLListAsync();
+    //    var lookup = await _lookupService.GetNULLLookupAsync();
+
+    //    NULLList.Clear();
+    //    foreach (var item in list)
+    //    {
+    //        NULLList.Add(item);
+    //    }
+
+    //    NULLLookup = lookup;
+    //    OnPropertyChanged(nameof(NULLLookup));
+    //}
 
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl03RegnumViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -46,6 +65,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
+        _lookupService = lookupService;
 
         RegnumCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
         RegnumReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
@@ -63,10 +83,9 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         ApplyHeaders();
     }
 
-    // ---------------------------------------------------------               
+    // ---------------------------------------------------------                  
     // SORTING HEADERS
-    // ---------------------------------------------------------               
-
+    // ---------------------------------------------------------    
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -78,17 +97,22 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     {
         App.LanguageChanged -= _langHandler;
     }
+
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -97,13 +121,13 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = RegnumReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = PhylumViewModel.PhylumReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -134,6 +158,8 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         _activeLoader = null;
         _currentParentId = 0;
 
+     //   await LoadNULLLookupAsync();
+
         Items = new ObservableCollection<Models.Tbl03Regnum>();
 
         OnPropertyChanged(nameof(HasItems));
@@ -142,10 +168,15 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         await ReloadAsync();
     }
 
+    //// ---------------------------------------------------------
+    //// LOAD FOR VK 
+    //// ---------------------------------------------------------
+    //public async Task LoadForNULLAsync(int NULLId)
+    //    => await LoadInternalAsync(NULLId, Data.GetRegnumForNULLAsync);
+
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl03Regnum>>> loader)
@@ -163,7 +194,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl03Regnum>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -185,7 +215,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -204,13 +234,12 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await RegnumCommentViewModel.LoadForRegnumAsync(entityId);
         await RegnumReferenceViewModel.LoadForRegnumAsync(entityId);
 
- //       await PhylumViewModel.LoadRegnumLookupAsync();
+        await PhylumViewModel.LoadRegnumLookupAsync();
         await PhylumViewModel.LoadForRegnumAsync(entityId);
 
 
@@ -237,7 +266,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl03Regnum item, string column)
         => column switch
         {
@@ -250,7 +278,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -262,14 +289,13 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 
         return new Models.Tbl03Regnum
         {
-            RegnumId = _currentParentId
+            //NULLId = _currentParentId
         };
     }
 
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl03Regnum?> SaveItemAsync(Models.Tbl03Regnum item)
     {
         if (string.IsNullOrWhiteSpace(item.RegnumName))
@@ -280,6 +306,10 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 
         var saved = await Data.UpsertRegnumAsync(item);
 
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
         return saved;
     }
 
@@ -297,7 +327,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl03Regnum item)
     {
         if (item.RegnumId == 0)
@@ -327,7 +356,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -339,12 +367,9 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

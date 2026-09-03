@@ -1470,6 +1470,15 @@
   <data name="TextBlock_Edit_Infratribus.Text" xml:space="preserve">
     <value>Bearbeiten Infratribus</value>
   </data>
+  <data name="TextBlock_Edit_Infrafamily.Text" xml:space="preserve">
+    <value>Bearbeiten Infrafamilie</value>
+  </data>
+  <data name="TextBlock_Edit_Infraordo.Text" xml:space="preserve">
+    <value>Bearbeiten Infraordnung</value>
+  </data>
+  <data name="TextBlock_Edit_Infraclass.Text" xml:space="preserve">
+    <value>Bearbeiten Infraklasse</value>
+  </data>
   <data name="TextBlock_Edit_Subtribus.Text" xml:space="preserve">
     <value>Bearbeiten Untertribus</value>
   </data>
@@ -1479,8 +1488,44 @@
   <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
     <value>Bearbeiten Übertribus</value>
   </data>
+  <data name="TextBlock_Edit_Superclass.Text" xml:space="preserve">
+    <value>Bearbeiten Überklasse</value>
+  </data>
+  <data name="TextBlock_Edit_Superfamily.Text" xml:space="preserve">
+    <value>Bearbeiten Überfamilie</value>
+  </data>
   <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
     <value>Bearbeiten Gattung</value>
+  </data>
+  <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
+    <value>Bearbeiten Klasse</value>
+  </data>
+  <data name="TextBlock_Edit_Regnum.Text" xml:space="preserve">
+    <value>Bearbeiten Reich</value>
+  </data>
+  <data name="TextBlock_Edit_Species.Text" xml:space="preserve">
+    <value>Bearbeiten Art</value>
+  </data>
+  <data name="TextBlock_Edit_Phylum.Text" xml:space="preserve">
+    <value>Bearbeiten Stamm</value>
+  </data>
+  <data name="TextBlock_Edit_Ordo.Text" xml:space="preserve">
+    <value>Bearbeiten Ordnung</value>
+  </data>
+  <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
+    <value>Bearbeiten Übewrordnung</value>
+  </data>
+  <data name="TextBlock_Edit_Subphylum.Text" xml:space="preserve">
+    <value>Bearbeiten Unterstamm</value>
+  </data>
+  <data name="TextBlock_Edit_Subclass.Text" xml:space="preserve">
+    <value>Bearbeiten Unterklasse</value>
+  </data>
+  <data name="TextBlock_Edit_Subspecies.Text" xml:space="preserve">
+    <value>Bearbeiten Unterart</value>
+  </data>
+  <data name="TextBlock_Edit_Subordo.Text" xml:space="preserve">
+    <value>Bearbeiten Unterordnung</value>
   </data>
   <data name="PivotItem_Edit_Infrafamily.Header" xml:space="preserve">
     <value>Bearbeiten Infrafamily</value>

@@ -806,6 +806,7 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
+	<Folder Include="Views\Modules\Tbl68Speciesgroup\" />
 	<Folder Include="Views\Modules\Tbl87Geographic\" />
 	<Folder Include="Views\Modules\Tbl84Synonym\" />
 	<Folder Include="Views\Modules\Tbl81Image\" />

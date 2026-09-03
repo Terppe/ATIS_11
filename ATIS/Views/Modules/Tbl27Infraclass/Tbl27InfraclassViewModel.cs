@@ -8,6 +8,7 @@ using ATIS.Views.Modules.Tbl30Legio;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
 
 //    Tbl27InfraclassViewModel Skriptdatum:  15.06.2024  18:32    
@@ -23,11 +24,11 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl27Infraclass>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel InfraclassCommentViewModel { get; }
     public Tbl90ReferenceViewModel InfraclassReferenceViewModel { get; }
     public Tbl30LegioViewModel LegioViewModel { get; }
@@ -35,7 +36,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl24Subclass> SubclassList { get; private set; } = new();
     public Dictionary<int, string?> SubclassLookup { get; private set; } = new();
 
@@ -57,7 +57,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl27InfraclassViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -75,21 +74,45 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Infraclass ID");
-        RegisterHeader("Name", "Infraclass Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_InfraclassId")) ? "Id" : loc.GetLocalizedString("HeaderSort_InfraclassId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_InfraclassName")) ? "Name" : loc.GetLocalizedString("HeaderSort_InfraclassName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -98,13 +121,13 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = InfraclassReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = LegioViewModel.LegioReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -148,14 +171,12 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForSubclassAsync(int subclassId)
         => await LoadInternalAsync(subclassId, Data.GetInfraclassForSubclassAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl27Infraclass>>> loader)
@@ -173,7 +194,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl27Infraclass>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -195,7 +215,7 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -214,7 +234,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await InfraclassCommentViewModel.LoadForInfraclassAsync(entityId);
@@ -247,7 +266,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl27Infraclass item, string column)
         => column switch
         {
@@ -260,7 +278,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -279,7 +296,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl27Infraclass?> SaveItemAsync(Models.Tbl27Infraclass item)
     {
         if (string.IsNullOrWhiteSpace(item.InfraclassName))
@@ -289,11 +305,11 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
         }
 
         var saved = await Data.UpsertInfraclassAsync(item);
+
         if (saved != null)
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -311,7 +327,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl27Infraclass item)
     {
         if (item.InfraclassId == 0)
@@ -341,7 +356,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -353,12 +367,9 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }
