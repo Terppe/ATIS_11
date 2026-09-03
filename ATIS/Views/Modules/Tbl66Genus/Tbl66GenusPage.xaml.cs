@@ -17,7 +17,6 @@ public sealed partial class Tbl66GenusPage : Page
     // ---------------------------------------------------------
     // CONSTRUCTOR
     // ---------------------------------------------------------
-
     public Tbl66GenusPage()
     {
         InitializeComponent();
@@ -33,7 +32,6 @@ public sealed partial class Tbl66GenusPage : Page
     // ---------------------------------------------------------
     // PAGE LOADED
     // ---------------------------------------------------------
-
     private async void GenusPage_Loaded(object sender, RoutedEventArgs e)
     {
         Loaded -= GenusPage_Loaded;
@@ -54,7 +52,6 @@ public sealed partial class Tbl66GenusPage : Page
     // ---------------------------------------------------------                   
     // QUERY-SUBMITTED
     // ---------------------------------------------------------                   
-
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         await ViewModel.ApplyFilterAsync(sender.Text);
@@ -65,7 +62,7 @@ public sealed partial class Tbl66GenusPage : Page
     // ---------------------------------------------------------                   
     private void PrepareCurrentTabState()
     {
-        switch (Vm.SelectedDetailPivotIndex)
+        switch (Vm.SelectedDetailTabIndex)
         {
             case 1:
                 Vm.GenusCommentViewModel.PrepareViewState();
@@ -96,7 +93,7 @@ public sealed partial class Tbl66GenusPage : Page
             button.Tag is string tagText &&
             int.TryParse(tagText, out int index))
         {
-            Vm.SelectedDetailPivotIndex = index;
+            Vm.SelectedDetailTabIndex = index;
 
             PrepareCurrentTabState();
             UpdateTabButtonStates();
@@ -107,7 +104,6 @@ public sealed partial class Tbl66GenusPage : Page
     // ------------------------------------------------------------------------------------------------------------------------
     // Species  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
     // ------------------------------------------------------------------------------------------------------------------------
-
     private void UpdateSpeciesTabs(bool hasSelection)
     {
         CommentsSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
@@ -116,8 +112,8 @@ public sealed partial class Tbl66GenusPage : Page
         CommentsSpeciesTab.IsEnabled = hasSelection;
         ReferencesSpeciesTab.IsEnabled = hasSelection;
 
-        if (!hasSelection && Vm.SelectedDetailPivotIndex >= 4)
-            Vm.SelectedDetailPivotIndex = 3;
+        if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
+            Vm.SelectedDetailTabIndex = 3;
 
         UpdateTabButtonStates();
         UpdateDetailContentVisibility();
@@ -125,22 +121,22 @@ public sealed partial class Tbl66GenusPage : Page
 
     private void UpdateTabButtonStates()
     {
-        SetTabButtonStyle(EditGenusTab, EditGenusTabUnderline, Vm.SelectedDetailPivotIndex == 0);
-        SetTabButtonStyle(CommentsGenusTab, CommentsGenusTabUnderline, Vm.SelectedDetailPivotIndex == 1);
-        SetTabButtonStyle(ReferencesGenusTab, ReferencesGenusTabUnderline, Vm.SelectedDetailPivotIndex == 2);
-        SetTabButtonStyle(SpeciesTab, SpeciesTabUnderline, Vm.SelectedDetailPivotIndex == 3);
-        SetTabButtonStyle(CommentsSpeciesTab, CommentsSpeciesTabUnderline, Vm.SelectedDetailPivotIndex == 4);
-        SetTabButtonStyle(ReferencesSpeciesTab, ReferencesSpeciesTabUnderline, Vm.SelectedDetailPivotIndex == 5);
+        SetTabButtonStyle(EditGenusTab, EditGenusTabUnderline, Vm.SelectedDetailTabIndex == 0);
+        SetTabButtonStyle(CommentsGenusTab, CommentsGenusTabUnderline, Vm.SelectedDetailTabIndex == 1);
+        SetTabButtonStyle(ReferencesGenusTab, ReferencesGenusTabUnderline, Vm.SelectedDetailTabIndex == 2);
+        SetTabButtonStyle(SpeciesTab, SpeciesTabUnderline, Vm.SelectedDetailTabIndex == 3);
+        SetTabButtonStyle(CommentsSpeciesTab, CommentsSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 4);
+        SetTabButtonStyle(ReferencesSpeciesTab, ReferencesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 5);
     }
 
     private void UpdateDetailContentVisibility()
     {
-        EditGenusContent.Visibility = Vm.SelectedDetailPivotIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsGenusContent.Visibility = Vm.SelectedDetailPivotIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesGenusContent.Visibility = Vm.SelectedDetailPivotIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
-        SpeciesContent.Visibility = Vm.SelectedDetailPivotIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsSpeciesContent.Visibility = Vm.SelectedDetailPivotIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesSpeciesContent.Visibility = Vm.SelectedDetailPivotIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
+        EditGenusContent.Visibility = Vm.SelectedDetailTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsGenusContent.Visibility = Vm.SelectedDetailTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesGenusContent.Visibility = Vm.SelectedDetailTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        SpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  
@@ -158,7 +154,6 @@ public sealed partial class Tbl66GenusPage : Page
     // ---------------------------------------------------------         
     // NAVIGATED FROM
     // ---------------------------------------------------------
-
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         if (DataContext is Tbl66GenusViewModel vm)

@@ -32,26 +32,15 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
                     <Grid Background="Transparent">
-                        <StackPanel Spacing="4">
-                            <ContentPresenter x:Name="ContentPresenter"
-                                          Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center" />
-                            <Border x:Name="SelectionIndicator"
-                                Height="3"
-                                Background="Transparent"
-                                CornerRadius="2" />
-                        </StackPanel>
 
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CheckStates">
                                 <VisualState x:Name="Checked">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SelectionIndicator"
-                                                                   Storyboard.TargetProperty="Background">
+                                                                       Storyboard.TargetProperty="Background">
                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                Value="{ThemeResource AccentFillColorDefaultBrush}" />
+                                                                    Value="{ThemeResource AccentFillColorDefaultBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
@@ -63,29 +52,43 @@
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
-                                                                   Storyboard.TargetProperty="Opacity">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="0.85" />
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="0.85" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
-                                                                   Storyboard.TargetProperty="Opacity">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="0.7" />
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="0.7" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter"
-                                                                   Storyboard.TargetProperty="Opacity">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="0.4" />
+                                                                       Storyboard.TargetProperty="Opacity">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="0.4" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
+                        <StackPanel Spacing="4">
+                            <ContentPresenter x:Name="ContentPresenter"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <Border x:Name="SelectionIndicator"
+                                    Height="3"
+                                    Background="Transparent"
+                                    CornerRadius="2" />
+                        </StackPanel>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

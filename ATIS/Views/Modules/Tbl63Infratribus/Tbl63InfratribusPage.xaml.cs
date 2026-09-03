@@ -4,12 +4,14 @@ using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
 
+
 //    Tbl63InfratribusPage Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl63Infratribus;
 
 public sealed partial class Tbl63InfratribusPage : Page
 {
+
     public Tbl63InfratribusViewModel ViewModel { get; }
 
     // ---------------------------------------------------------
@@ -60,7 +62,7 @@ public sealed partial class Tbl63InfratribusPage : Page
     // ---------------------------------------------------------                   
     private void PrepareCurrentTabState()
     {
-        switch (Vm.SelectedDetailPivotIndex)
+        switch (Vm.SelectedDetailTabIndex)
         {
             case 1:
                 Vm.InfratribusCommentViewModel.PrepareViewState();
@@ -91,7 +93,7 @@ public sealed partial class Tbl63InfratribusPage : Page
             button.Tag is string tagText &&
             int.TryParse(tagText, out int index))
         {
-            Vm.SelectedDetailPivotIndex = index;
+            Vm.SelectedDetailTabIndex = index;
 
             PrepareCurrentTabState();
             UpdateTabButtonStates();
@@ -100,7 +102,7 @@ public sealed partial class Tbl63InfratribusPage : Page
     }
 
     // ------------------------------------------------------------------------------------------------------------------------
-    // Genus-UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
+    // Genus  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
     // ------------------------------------------------------------------------------------------------------------------------
     private void UpdateGenusTabs(bool hasSelection)
     {
@@ -110,8 +112,8 @@ public sealed partial class Tbl63InfratribusPage : Page
         CommentsGenusTab.IsEnabled = hasSelection;
         ReferencesGenusTab.IsEnabled = hasSelection;
 
-        if (!hasSelection && Vm.SelectedDetailPivotIndex >= 4)
-            Vm.SelectedDetailPivotIndex = 3;
+        if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
+            Vm.SelectedDetailTabIndex = 3;
 
         UpdateTabButtonStates();
         UpdateDetailContentVisibility();
@@ -119,27 +121,27 @@ public sealed partial class Tbl63InfratribusPage : Page
 
     private void UpdateTabButtonStates()
     {
-        SetTabButtonStyle(EditInfratribusTab, EditInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 0);
-        SetTabButtonStyle(CommentsInfratribusTab, CommentsInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 1);
-        SetTabButtonStyle(ReferencesInfratribusTab, ReferencesInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 2);
-        SetTabButtonStyle(GenusTab, GenusTabUnderline, Vm.SelectedDetailPivotIndex == 3);
-        SetTabButtonStyle(CommentsGenusTab, CommentsGenusTabUnderline, Vm.SelectedDetailPivotIndex == 4);
-        SetTabButtonStyle(ReferencesGenusTab, ReferencesGenusTabUnderline, Vm.SelectedDetailPivotIndex == 5);
+        SetTabButtonStyle(EditInfratribusTab, EditInfratribusTabUnderline, Vm.SelectedDetailTabIndex == 0);
+        SetTabButtonStyle(CommentsInfratribusTab, CommentsInfratribusTabUnderline, Vm.SelectedDetailTabIndex == 1);
+        SetTabButtonStyle(ReferencesInfratribusTab, ReferencesInfratribusTabUnderline, Vm.SelectedDetailTabIndex == 2);
+        SetTabButtonStyle(GenusTab, GenusTabUnderline, Vm.SelectedDetailTabIndex == 3);
+        SetTabButtonStyle(CommentsGenusTab, CommentsGenusTabUnderline, Vm.SelectedDetailTabIndex == 4);
+        SetTabButtonStyle(ReferencesGenusTab, ReferencesGenusTabUnderline, Vm.SelectedDetailTabIndex == 5);
     }
 
     private void UpdateDetailContentVisibility()
     {
-        EditInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
-        GenusContent.Visibility = Vm.SelectedDetailPivotIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsGenusContent.Visibility = Vm.SelectedDetailPivotIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesGenusContent.Visibility = Vm.SelectedDetailPivotIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
+        EditInfratribusContent.Visibility = Vm.SelectedDetailTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsInfratribusContent.Visibility = Vm.SelectedDetailTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesInfratribusContent.Visibility = Vm.SelectedDetailTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        GenusContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsGenusContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesGenusContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
-    
-    // ---------------------------------------------------------
+
+    // ---------------------------------------------------------                  
     // PROPERTY CHANGED
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     private void GenusViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Tbl66GenusViewModel.SelectedItem))

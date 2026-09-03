@@ -9,10 +9,9 @@
       xmlns:tbl78Name="using:ATIS.Views.Modules.Tbl78Name"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-      x:Name="RootPage"
-      DataContext="{Binding SpeciesViewModel}">
+      x:Name="RootPage">
 
-    <!--  Tbl75SpeciesPage Skriptdatum:  15.12.2025  10:32  -->
+    <!--  Tbl75SpeciesPage Skriptdatum:  18.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -99,98 +98,159 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit Species  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Species">
-                                <ScrollViewer Padding="1">
-                                    <tbl75Species:Tbl75SpeciesEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
+                        <!--  Headerleiste  -->
+                        <ScrollViewer Grid.Row="0"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      HorizontalScrollMode="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      VerticalScrollMode="Disabled"
+                                      ZoomMode="Disabled">
+                            <StackPanel Margin="0,10,0,10"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
 
-                            <!--  Comments Species  -->
-                            <PivotItem x:Name="CommentsSpeciesPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-                                <Grid DataContext="{Binding SpeciesCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="EditSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="0">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Edit_Species" />
+                                        <Border x:Name="EditSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <Button x:Name="CommentsSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="1">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                                <Button x:Name="ReferencesSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="2">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                            <!--  References Species  -->
-                            <PivotItem x:Name="ReferencesSpeciesPivot"
-                                       loc:Uids.Uid="PivotItem_References">
+                                <Button x:Name="NameTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="3">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Name" />
+                                        <Border x:Name="NameTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                <Grid DataContext="{Binding SpeciesReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="CommentsNameTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="4">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsNameTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                                Grid.Row="0" />
+                                <Button x:Name="ReferencesNameTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="5">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesNameTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            </StackPanel>
+                        </ScrollViewer>
 
-                            <!--  Name  -->
-                            <!--<PivotItem x:Name="NamePivot"
-                            loc:Uids.Uid="PivotItem_Edit_Name">
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="1">
 
-                            <Grid RowDefinitions="Auto,*">
-                            <tbl78Name:Tbl78NameParentControl x:Name="NameParentControl"
-                            Grid.Row="0"
-                            DataContext="{Binding NameViewModel}" />
+                            <ScrollViewer x:Name="EditSpeciesContent"
+                                          Padding="1">
+                                <tbl75Species:Tbl75SpeciesEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
 
-                            <tbl78Name:Tbl78NameEditControl Grid.Row="1"
-                            DataContext="{Binding NameViewModel}"
-                            Item="{Binding SelectedItem}"
-                            Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Grid x:Name="CommentsSpeciesContent"
+                                  DataContext="{Binding SpeciesCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
-                            </PivotItem>-->
 
-                            <!--  Comments Name  -->
-                            <PivotItem x:Name="CommentsNamePivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
+                            <Grid x:Name="ReferencesSpeciesContent"
+                                  DataContext="{Binding SpeciesReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                                                            Grid.Row="0" />
 
-                                <Grid DataContext="{Binding NameViewModel.NameCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                            <!--<Grid x:Name="NameContent"
+                                  DataContext="{Binding NameViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl78Name:Tbl78NameParentControl x:Name="NameParentControl"
+                                                                    Grid.Row="0" />
+                                <tbl78Name:Tbl78NameEditControl Grid.Row="1"
+                                                                  Item="{Binding SelectedItem}"
+                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>-->
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Grid x:Name="CommentsNameContent"
+                                  DataContext="{Binding NameViewModel.NameCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                </Grid>
-                            </PivotItem>
+                            <Grid x:Name="ReferencesNameContent"
+                                  DataContext="{Binding NameViewModel.NameReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
 
-                            <!--  References Name  -->
-                            <PivotItem x:Name="ReferencesNamePivot"
-                                       loc:Uids.Uid="PivotItem_References">
-
-                                <Grid DataContext="{Binding NameViewModel.NameReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-                        </Pivot>
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>

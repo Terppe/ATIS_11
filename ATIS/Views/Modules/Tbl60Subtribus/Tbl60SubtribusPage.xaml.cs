@@ -17,7 +17,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ---------------------------------------------------------
     // CONSTRUCTOR
     // ---------------------------------------------------------
-
     public Tbl60SubtribusPage()
     {
         InitializeComponent();
@@ -33,7 +32,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ---------------------------------------------------------
     // PAGE LOADED
     // ---------------------------------------------------------
-
     private async void SubtribusPage_Loaded(object sender, RoutedEventArgs e)
     {
         Loaded -= SubtribusPage_Loaded;
@@ -54,7 +52,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ---------------------------------------------------------                   
     // QUERY-SUBMITTED
     // ---------------------------------------------------------                   
-
     private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         await ViewModel.ApplyFilterAsync(sender.Text);
@@ -65,7 +62,7 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ---------------------------------------------------------                   
     private void PrepareCurrentTabState()
     {
-        switch (Vm.SelectedDetailPivotIndex)
+        switch (Vm.SelectedDetailTabIndex)
         {
             case 1:
                 Vm.SubtribusCommentViewModel.PrepareViewState();
@@ -96,7 +93,7 @@ public sealed partial class Tbl60SubtribusPage : Page
             button.Tag is string tagText &&
             int.TryParse(tagText, out int index))
         {
-            Vm.SelectedDetailPivotIndex = index;
+            Vm.SelectedDetailTabIndex = index;
 
             PrepareCurrentTabState();
             UpdateTabButtonStates();
@@ -107,7 +104,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ------------------------------------------------------------------------------------------------------------------------
     // Infratribus  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
     // ------------------------------------------------------------------------------------------------------------------------
-
     private void UpdateInfratribusTabs(bool hasSelection)
     {
         CommentsInfratribusTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
@@ -116,8 +112,8 @@ public sealed partial class Tbl60SubtribusPage : Page
         CommentsInfratribusTab.IsEnabled = hasSelection;
         ReferencesInfratribusTab.IsEnabled = hasSelection;
 
-        if (!hasSelection && Vm.SelectedDetailPivotIndex >= 4)
-            Vm.SelectedDetailPivotIndex = 3;
+        if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
+            Vm.SelectedDetailTabIndex = 3;
 
         UpdateTabButtonStates();
         UpdateDetailContentVisibility();
@@ -125,22 +121,22 @@ public sealed partial class Tbl60SubtribusPage : Page
 
     private void UpdateTabButtonStates()
     {
-        SetTabButtonStyle(EditSubtribusTab, EditSubtribusTabUnderline, Vm.SelectedDetailPivotIndex == 0);
-        SetTabButtonStyle(CommentsSubtribusTab, CommentsSubtribusTabUnderline, Vm.SelectedDetailPivotIndex == 1);
-        SetTabButtonStyle(ReferencesSubtribusTab, ReferencesSubtribusTabUnderline, Vm.SelectedDetailPivotIndex == 2);
-        SetTabButtonStyle(InfratribusTab, InfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 3);
-        SetTabButtonStyle(CommentsInfratribusTab, CommentsInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 4);
-        SetTabButtonStyle(ReferencesInfratribusTab, ReferencesInfratribusTabUnderline, Vm.SelectedDetailPivotIndex == 5);
+        SetTabButtonStyle(EditSubtribusTab, EditSubtribusTabUnderline, Vm.SelectedDetailTabIndex == 0);
+        SetTabButtonStyle(CommentsSubtribusTab, CommentsSubtribusTabUnderline, Vm.SelectedDetailTabIndex == 1);
+        SetTabButtonStyle(ReferencesSubtribusTab, ReferencesSubtribusTabUnderline, Vm.SelectedDetailTabIndex == 2);
+        SetTabButtonStyle(InfratribusTab, InfratribusTabUnderline, Vm.SelectedDetailTabIndex == 3);
+        SetTabButtonStyle(CommentsInfratribusTab, CommentsInfratribusTabUnderline, Vm.SelectedDetailTabIndex == 4);
+        SetTabButtonStyle(ReferencesInfratribusTab, ReferencesInfratribusTabUnderline, Vm.SelectedDetailTabIndex == 5);
     }
 
     private void UpdateDetailContentVisibility()
     {
-        EditSubtribusContent.Visibility = Vm.SelectedDetailPivotIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsSubtribusContent.Visibility = Vm.SelectedDetailPivotIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesSubtribusContent.Visibility = Vm.SelectedDetailPivotIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
-        InfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesInfratribusContent.Visibility = Vm.SelectedDetailPivotIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
+        EditSubtribusContent.Visibility = Vm.SelectedDetailTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsSubtribusContent.Visibility = Vm.SelectedDetailTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesSubtribusContent.Visibility = Vm.SelectedDetailTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        InfratribusContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+        CommentsInfratribusContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        ReferencesInfratribusContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  
@@ -158,7 +154,6 @@ public sealed partial class Tbl60SubtribusPage : Page
     // ---------------------------------------------------------         
     // NAVIGATED FROM
     // ---------------------------------------------------------
-
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         if (DataContext is Tbl60SubtribusViewModel vm)

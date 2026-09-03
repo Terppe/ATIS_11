@@ -29,7 +29,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel InfratribusCommentViewModel { get; }
     public Tbl90ReferenceViewModel InfratribusReferenceViewModel { get; }
     public Tbl66GenusViewModel GenusViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl60Subtribus> SubtribusList { get; private set; } = new();
     public Dictionary<int, string?> SubtribusLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl63InfratribusViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -107,15 +103,16 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------               
     public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        SelectedDetailPivotIndex = index;
+        SelectedDetailTabIndex = index;
     });
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
     {
-        get => _selectedDetailPivotIndex;
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -124,13 +121,13 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = InfratribusReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = GenusViewModel.GenusReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -169,20 +166,17 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
 
         // optional: Suchmodus aktivieren
         await ReloadAsync();
-
     }
 
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForSubtribusAsync(int subtribusId)
         => await LoadInternalAsync(subtribusId, Data.GetInfratribusForSubtribusAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl63Infratribus>>> loader)
@@ -200,7 +194,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl63Infratribus>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -222,7 +215,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -241,7 +234,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await InfratribusCommentViewModel.LoadForInfratribusAsync(entityId);
@@ -274,7 +266,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl63Infratribus item, string column)
         => column switch
         {
@@ -287,7 +278,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -306,7 +296,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl63Infratribus?> SaveItemAsync(Models.Tbl63Infratribus item)
     {
         if (string.IsNullOrWhiteSpace(item.InfratribusName))
@@ -323,6 +312,7 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         }
         return saved;
     }
+
     protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl63Infratribus item)
     {
         if (_wasEmptyBeforeSave && IsBossMode)
@@ -337,7 +327,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl63Infratribus item)
     {
         if (item.InfratribusId == 0)
@@ -367,7 +356,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -379,12 +367,9 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

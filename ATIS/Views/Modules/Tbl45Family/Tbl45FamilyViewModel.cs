@@ -29,7 +29,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel FamilyCommentViewModel { get; }
     public Tbl90ReferenceViewModel FamilyReferenceViewModel { get; }
     public Tbl48SubfamilyViewModel SubfamilyViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl42Superfamily> SuperfamilyList { get; private set; } = new();
     public Dictionary<int, string?> SuperfamilyLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl45FamilyViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -105,14 +101,18 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -121,13 +121,13 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = FamilyReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = SubfamilyViewModel.SubfamilyReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -171,14 +171,12 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForSuperfamilyAsync(int superfamilyId)
         => await LoadInternalAsync(superfamilyId, Data.GetFamilyForSuperfamilyAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl45Family>>> loader)
@@ -196,7 +194,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl45Family>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -218,7 +215,7 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -237,7 +234,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await FamilyCommentViewModel.LoadForFamilyAsync(entityId);
@@ -270,7 +266,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl45Family item, string column)
         => column switch
         {
@@ -283,7 +278,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -302,7 +296,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl45Family?> SaveItemAsync(Models.Tbl45Family item)
     {
         if (string.IsNullOrWhiteSpace(item.FamilyName))
@@ -317,7 +310,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -335,7 +327,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl45Family item)
     {
         if (item.FamilyId == 0)
@@ -365,7 +356,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -377,12 +367,9 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

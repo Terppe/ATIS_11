@@ -29,7 +29,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel GenusCommentViewModel { get; }
     public Tbl90ReferenceViewModel GenusReferenceViewModel { get; }
     public Tbl75SpeciesViewModel SpeciesViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; private set; } = new();
     public Dictionary<int, string?> InfratribusLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl66GenusViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -107,16 +103,16 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------               
     public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        SelectedDetailPivotIndex = index;
+        SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
     {
-        get => _selectedDetailPivotIndex;
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -125,13 +121,13 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = GenusReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = SpeciesViewModel.SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -175,14 +171,12 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForInfratribusAsync(int infratribusId)
         => await LoadInternalAsync(infratribusId, Data.GetGenusForInfratribusAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl66Genus>>> loader)
@@ -200,7 +194,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl66Genus>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -222,7 +215,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -241,7 +234,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await GenusCommentViewModel.LoadForGenusAsync(entityId);
@@ -274,7 +266,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl66Genus item, string column)
         => column switch
         {
@@ -287,7 +278,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -306,7 +296,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl66Genus?> SaveItemAsync(Models.Tbl66Genus item)
     {
         if (string.IsNullOrWhiteSpace(item.GenusName))
@@ -338,7 +327,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl66Genus item)
     {
         if (item.GenusId == 0)
@@ -368,7 +356,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -380,12 +367,9 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

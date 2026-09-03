@@ -29,7 +29,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel SubtribusCommentViewModel { get; }
     public Tbl90ReferenceViewModel SubtribusReferenceViewModel { get; }
     public Tbl63InfratribusViewModel InfratribusViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl57Tribus> TribusList { get; private set; } = new();
     public Dictionary<int, string?> TribusLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl60SubtribusViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -107,16 +103,16 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------               
     public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        SelectedDetailPivotIndex = index;
+        SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
     {
-        get => _selectedDetailPivotIndex;
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -125,13 +121,13 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = SubtribusReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = InfratribusViewModel.InfratribusReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -175,14 +171,12 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForTribusAsync(int tribusId)
         => await LoadInternalAsync(tribusId, Data.GetSubtribusForTribusAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl60Subtribus>>> loader)
@@ -200,7 +194,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl60Subtribus>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -222,7 +215,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -241,7 +234,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SubtribusCommentViewModel.LoadForSubtribusAsync(entityId);
@@ -274,7 +266,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl60Subtribus item, string column)
         => column switch
         {
@@ -287,7 +278,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -306,7 +296,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl60Subtribus?> SaveItemAsync(Models.Tbl60Subtribus item)
     {
         if (string.IsNullOrWhiteSpace(item.SubtribusName))
@@ -338,7 +327,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl60Subtribus item)
     {
         if (item.SubtribusId == 0)
@@ -368,7 +356,6 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -380,12 +367,9 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

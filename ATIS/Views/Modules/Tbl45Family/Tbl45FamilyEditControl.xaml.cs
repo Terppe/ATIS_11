@@ -1,5 +1,9 @@
-﻿
-//    Tbl45FamilyEditControl Skriptdatum:  18.10.2025  10:32    
+﻿using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
+
+
+//    Tbl45FamilyEditControl Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl45Family;
 
@@ -13,6 +17,13 @@ public sealed partial class Tbl45FamilyEditControl : UserControl
     public Tbl45FamilyEditControl()
     {
         InitializeComponent();
+        SelectedTabIndex = 0;
+        Loaded += Tbl45FamilyEditControl_Loaded;
+    }
+    private void Tbl45FamilyEditControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
     // ---------------------------------------------------------
@@ -118,6 +129,41 @@ public sealed partial class Tbl45FamilyEditControl : UserControl
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
 
+    // ---------------------------------------------------------                   
+    // DETAIL TAB VALIDATION
+    // ---------------------------------------------------------                   
+    private int SelectedTabIndex = 0;
 
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            SelectedTabIndex = index;
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
 
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(EngNameTab, EngNameTabUnderline, SelectedTabIndex == 0);
+        SetTabButtonStyle(GerNameTab, GerNameTabUnderline, SelectedTabIndex == 1);
+        SetTabButtonStyle(FraNameTab, FraNameTabUnderline, SelectedTabIndex == 2);
+        SetTabButtonStyle(SpaNameTab, SpaNameTabUnderline, SelectedTabIndex == 3);
+    }
+    private void UpdateDetailContentVisibility()
+    {
+        EngNameGrid.Visibility = SelectedTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        GerNameGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        FraNameGrid.Visibility = SelectedTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+        SpaNameGrid.Visibility = SelectedTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
+    }
 }

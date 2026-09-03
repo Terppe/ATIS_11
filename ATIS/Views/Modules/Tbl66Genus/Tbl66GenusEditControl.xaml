@@ -181,7 +181,8 @@
 
             <!--  Language Tab  -->
             <Grid RowDefinitions="Auto, Auto">
-                <StackPanel Orientation="Horizontal"
+                <StackPanel Margin="0,0,0,10"
+                            Orientation="Horizontal"
                             Spacing="4">
                     <Button x:Name="EngNameTab"
                             Click="DetailTabButton_Click"
@@ -240,29 +241,25 @@
                       Grid.Row="1">
 
                     <Grid x:Name="EngNameGrid">
-                        <TextBox loc:Uids.Uid="TextBox_EngName"
-                                 Style="{StaticResource AtisTextBox}"
+                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
                                  Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Grid x:Name="GerNameGrid"
                           Visibility="Collapsed">
-                        <TextBox loc:Uids.Uid="TextBox_GerName"
-                                 Style="{StaticResource AtisTextBox}"
+                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
                                  Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Grid x:Name="FraNameGrid"
                           Visibility="Collapsed">
-                        <TextBox loc:Uids.Uid="TextBox_FraName"
-                                 Style="{StaticResource AtisTextBox}"
+                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
                                  Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                     <Grid x:Name="SpaNameGrid"
                           Visibility="Collapsed">
-                        <TextBox loc:Uids.Uid="TextBox_SpaName"
-                                 Style="{StaticResource AtisTextBox}"
+                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
                                  Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 

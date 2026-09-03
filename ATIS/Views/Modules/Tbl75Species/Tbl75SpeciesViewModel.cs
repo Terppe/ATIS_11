@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -10,6 +9,7 @@ using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
+
 
 //    Tbl75SpeciesViewModel Skriptdatum:  18.08.2026  10:32    
 
@@ -25,10 +25,10 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl75Species>>>? _activeLoader;
     private readonly Action<string> _langHandler;
+
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel SpeciesCommentViewModel { get; }
     public Tbl90ReferenceViewModel SpeciesReferenceViewModel { get; }
     public Tbl78NameViewModel NameViewModel { get; }
@@ -36,7 +36,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl66Genus> GenusList { get; private set; } = new();
     public Dictionary<int, string?> GenusLookup { get; private set; } = new();
 
@@ -58,7 +57,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl75SpeciesViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -84,10 +82,10 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         ApplyHeaders();
     }
+
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -103,14 +101,18 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -119,14 +121,14 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
 
-        //if (SelectedDetailPivotIndex == 5)
-        //    _ = NameViewModel.NameReferenceViewModel.LoadReferenceLookupsAsync();
+        if (SelectedDetailTabIndex == 5)
+ //           _ = NameViewModel.NameReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
         NewCommand.NotifyCanExecuteChanged();
@@ -169,14 +171,12 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForGenusAsync(int genusId)
         => await LoadInternalAsync(genusId, Data.GetSpeciesForGenusAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl75Species>>> loader)
@@ -194,7 +194,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl75Species>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -216,7 +215,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -235,7 +234,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SpeciesCommentViewModel.LoadForSpeciesAsync(entityId);
@@ -268,7 +266,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl75Species item, string column)
         => column switch
         {
@@ -281,7 +278,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -300,7 +296,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl75Species?> SaveItemAsync(Models.Tbl75Species item)
     {
         if (string.IsNullOrWhiteSpace(item.SpeciesName))
@@ -315,7 +310,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -333,7 +327,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl75Species item)
     {
         if (item.SpeciesId == 0)
@@ -363,7 +356,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -375,12 +367,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

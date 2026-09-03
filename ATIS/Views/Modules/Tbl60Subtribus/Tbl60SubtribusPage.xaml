@@ -108,7 +108,7 @@
                                       VerticalScrollBarVisibility="Disabled"
                                       VerticalScrollMode="Disabled"
                                       ZoomMode="Disabled">
-                            <StackPanel Margin="0,10,0,0"
+                            <StackPanel Margin="0,10,0,10"
                                         Orientation="Horizontal"
                                         Spacing="4">
 

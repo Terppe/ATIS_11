@@ -29,7 +29,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // CHILD-VMs
     // ---------------------------------------------------------
-
     public Tbl93CommentViewModel InfrafamilyCommentViewModel { get; }
     public Tbl90ReferenceViewModel InfrafamilyReferenceViewModel { get; }
     public Tbl54SupertribusViewModel SupertribusViewModel { get; }
@@ -37,7 +36,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-
     public ObservableCollection<Models.Tbl48Subfamily> SubfamilyList { get; private set; } = new();
     public Dictionary<int, string?> SubfamilyLookup { get; private set; } = new();
 
@@ -59,7 +57,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl51InfrafamilyViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -89,7 +86,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
-
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
@@ -105,14 +101,18 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
-        get => _selectedDetailPivotIndex;
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -121,13 +121,13 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
 
-        if (SelectedDetailPivotIndex == 2)
+        if (SelectedDetailTabIndex == 2)
             _ = InfrafamilyReferenceViewModel.LoadReferenceLookupsAsync();
 
-        if (SelectedDetailPivotIndex == 5)
+        if (SelectedDetailTabIndex == 5)
             _ = SupertribusViewModel.SupertribusReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -171,14 +171,12 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
-
     public async Task LoadForSubfamilyAsync(int subfamilyId)
         => await LoadInternalAsync(subfamilyId, Data.GetInfrafamilyForSubfamilyAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
     // ---------------------------------------------------------
-
     private async Task LoadInternalAsync(
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl51Infrafamily>>> loader)
@@ -196,7 +194,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl51Infrafamily>> LoadItemsAsync()
     {
         if (_activeLoader != null && _currentParentId > 0)
@@ -218,7 +215,7 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
         {
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
-            SelectedDetailPivotIndex = 0;
+            SelectedDetailTabIndex = 0;
             return;
         }
 
@@ -237,7 +234,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await InfrafamilyCommentViewModel.LoadForInfrafamilyAsync(entityId);
@@ -270,7 +266,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl51Infrafamily item, string column)
         => column switch
         {
@@ -283,7 +278,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -302,7 +296,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl51Infrafamily?> SaveItemAsync(Models.Tbl51Infrafamily item)
     {
         if (string.IsNullOrWhiteSpace(item.InfrafamilyName))
@@ -317,7 +310,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
         {
             _lookupService.InvalidateAllCaches();
         }
-
         return saved;
     }
 
@@ -335,7 +327,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl51Infrafamily item)
     {
         if (item.InfrafamilyId == 0)
@@ -365,7 +356,6 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -377,12 +367,9 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
         // Parent-Modus bleibt aktiv
         IsInParentMode = true;
 
-        SelectedDetailPivotIndex = 0;
+        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-
-
 }

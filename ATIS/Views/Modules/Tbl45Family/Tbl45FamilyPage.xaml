@@ -9,8 +9,7 @@
       xmlns:tbl48Subfamily="using:ATIS.Views.Modules.Tbl48Subfamily"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-      x:Name="RootPage"
-      DataContext="{Binding FamilyViewModel}">
+      x:Name="RootPage">
 
     <!--  Tbl45FamilyPage Skriptdatum:  18.08.2026  10:32  -->
 
@@ -99,98 +98,159 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               SelectedIndex="{Binding SelectedDetailPivotIndex, Mode=TwoWay}"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit Family  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_Family">
-                                <ScrollViewer Padding="1">
-                                    <tbl45Family:Tbl45FamilyEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
+                        <!--  Headerleiste  -->
+                        <ScrollViewer Grid.Row="0"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      HorizontalScrollMode="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
+                                      VerticalScrollMode="Disabled"
+                                      ZoomMode="Disabled">
+                            <StackPanel Margin="0,10,0,10"
+                                        Orientation="Horizontal"
+                                        Spacing="4">
 
-                            <!--  Comments Family  -->
-                            <PivotItem x:Name="CommentsFamilyPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-                                <Grid DataContext="{Binding FamilyCommentViewModel}"
-                                      RowDefinitions="Auto,*">
+                                <Button x:Name="EditFamilyTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="0">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Edit_Family" />
+                                        <Border x:Name="EditFamilyTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <Button x:Name="CommentsFamilyTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="1">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsFamilyTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
 
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                <Button x:Name="ReferencesFamilyTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="2">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesFamilyTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="SubfamilyTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="3">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Subfamily" />
+                                        <Border x:Name="SubfamilyTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="CommentsSubfamilyTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="4">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border x:Name="CommentsSubfamilyTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="ReferencesSubfamilyTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="5">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_References" />
+                                        <Border x:Name="ReferencesSubfamilyTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="1">
+
+                            <ScrollViewer x:Name="EditFamilyContent"
+                                          Padding="1">
+                                <tbl45Family:Tbl45FamilyEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
+
+                            <Grid x:Name="CommentsFamilyContent"
+                                  DataContext="{Binding FamilyCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="ReferencesFamilyContent"
+                                  DataContext="{Binding FamilyReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
+                                                                            Grid.Row="0" />
+
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="SubfamilyContent"
+                                  DataContext="{Binding SubfamilyViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl48Subfamily:Tbl48SubfamilyParentControl x:Name="SubfamilyParentControl"
+                                                                            Grid.Row="0" />
+                                <tbl48Subfamily:Tbl48SubfamilyEditControl Grid.Row="1"
                                                                           Item="{Binding SelectedItem}"
                                                                           Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
+                            </Grid>
 
-                            <!--  References Family  -->
-                            <PivotItem x:Name="ReferencesFamilyPivot"
-                                       loc:Uids.Uid="PivotItem_References">
+                            <Grid x:Name="CommentsSubfamilyContent"
+                                  DataContext="{Binding SubfamilyViewModel.SubfamilyCommentViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
+                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                                <Grid DataContext="{Binding FamilyReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
+                            <Grid x:Name="ReferencesSubfamilyContent"
+                                  DataContext="{Binding SubfamilyViewModel.SubfamilyReferenceViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
 
-                                    <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                                Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
-
-                            <!--  Subfamily  -->
-                            <PivotItem x:Name="SubfamilyPivot"
-                                       loc:Uids.Uid="PivotItem_Edit_Subfamily">
-
-                                <Grid RowDefinitions="Auto,*">
-                                    <tbl48Subfamily:Tbl48SubfamilyParentControl x:Name="SubfamilyParentControl"
-                                                                                Grid.Row="0"
-                                                                                DataContext="{Binding SubfamilyViewModel}" />
-
-                                    <tbl48Subfamily:Tbl48SubfamilyEditControl Grid.Row="1"
-                                                                              DataContext="{Binding SubfamilyViewModel}"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </Grid>
-                            </PivotItem>
-
-                            <!--  Comments Subfamily  -->
-                            <PivotItem x:Name="CommentsSubfamilyPivot"
-                                       loc:Uids.Uid="PivotItem_Comments">
-
-                                <Grid DataContext="{Binding SubfamilyViewModel.SubfamilyCommentViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-
-                                    <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-
-                            <!--  References Subfamily  -->
-                            <PivotItem x:Name="ReferencesSubfamilyPivot"
-                                       loc:Uids.Uid="PivotItem_References">
-
-                                <Grid DataContext="{Binding SubfamilyViewModel.SubfamilyReferenceViewModel}"
-                                      RowDefinitions="Auto,*">
-
-                                    <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                    <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                              Item="{Binding SelectedItem}"
-                                                                              Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                                </Grid>
-                            </PivotItem>
-                        </Pivot>
+                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
+                                                                          Item="{Binding Item}"
+                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>

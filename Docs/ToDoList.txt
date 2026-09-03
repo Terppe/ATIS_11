@@ -1142,5 +1142,7 @@ EditControl Visibility an HasActiveItem
 beim Tabwechsel PrepareViewState()
 Das spart dir später viel Sucherei.
 ----------------------------------------
-02.09.2026 15:30 Uhr In InfratribusPage und InfratribusEditControl Pivot durch Button ersetzt. Name Pivot aber noch in VM und Codebehind.
+02.09.2026 15:30 Uhr In InfratribusPage und InfratribusEditControl Pivot durch Tab ersetzt. Name Pivot aber noch in VM und Codebehind.
 Von Tribus-Genus pages nachgezogen. Jetzt aus Infratribus alle Pivots rausnehmen und Generator ändern und dann alle nachziehen
+----------------------------------------
+03.09.2026 14:30 Uhr Alle Änderungen vorgenommen und im Generator gespeichert. In resource-datei eingeben Edit_Genus usw. von Species bis Famile fertig
