@@ -794,27 +794,37 @@ public interface IDataService
   //  ObservableCollection<Tbl66Genus> GetGenusAsync(int genusid);
     ObservableCollection<Tbl66Genus> GetGenusAsync(string search);
     ObservableCollection<Tbl66Genus> GetGenusFromInfratribusIdAsync(int infratribusid);
- //   Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus);
- //   Task DeleteGenusAsync(int genusid);
+    //   Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus);
+    //   Task DeleteGenusAsync(int genusid);
 
     #endregion Genus
 
     #region Speciesgroup                  
+    // ---------------------------------------------------------   
+    Task<IEnumerable<Tbl68Speciesgroup>> GetAllSpeciesgroupAsync();
+    Task<IEnumerable<Tbl68Speciesgroup>> SearchSpeciesgroupAsync(string? search);
+    Task<Tbl68Speciesgroup?> GetSpeciesgroupByIdAsync(int id);
+    Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup entity);
+    Task DeleteSpeciesgroupAsync(int id);
+    Task<bool> SpeciesgroupExistsAsync(Tbl68Speciesgroup entity);
 
+    Task<bool> SpeciesgroupHasSpeciesAsync(int speciesgroupId);
+
+    //alt
     ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync();
     ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync(int speciesgroupid);
     ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync(string search);
-    Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup speciesgroup);
-    Task DeleteSpeciesgroupAsync(int speciesgroupid);
+    //Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup speciesgroup);
+    //Task DeleteSpeciesgroupAsync(int speciesgroupid);
 
     #endregion Speciesgroup
 
     #region Species
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync();
-    Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search);
+    Task<IEnumerable<Tbl75Species>> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(string? search);
     Task<Tbl75Species> GetSpeciesByIdAsync(int id);
-    Task<Tbl75Species> GetSpeciesWithGenusByIdAsync(int id);
+    Task<Tbl75Species> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(int id);
     Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species entity);
     Task DeleteSpeciesAsync(int id);
     Task<bool> SpeciesExistsAsync(Tbl75Species entity);

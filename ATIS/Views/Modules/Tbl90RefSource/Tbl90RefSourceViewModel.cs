@@ -4,8 +4,6 @@ using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-using ATIS.Views.Modules.Tbl90Reference;
-using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 
 

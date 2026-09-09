@@ -14,9 +14,9 @@
         <GridLength x:Key="IdWidthResource">120</GridLength>
         <GridLength x:Key="Extra1WidthResource">200</GridLength>
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
-        <GridLength x:Key="Extra3WidthResource">80</GridLength>
-        <GridLength x:Key="Extra4WidthResource">100</GridLength>
-        <GridLength x:Key="Extra5WidthResource">250</GridLength>
+        <GridLength x:Key="Extra3WidthResource">200</GridLength>
+        <GridLength x:Key="Extra4WidthResource">200</GridLength>
+        <GridLength x:Key="Extra5WidthResource">80</GridLength>
         <GridLength x:Key="Extra6WidthResource">100</GridLength>
     </UserControl.Resources>
 
@@ -77,23 +77,29 @@
                        loc:Uids.Uid="TextBlock_SpeciesId"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="1"
-                       loc:Uids.Uid="TextBlock_SpeciesName"
-                       FontWeight="Bold" />
-            <TextBlock Grid.Column="2"
                        loc:Uids.Uid="TextBlock_GenusName"
                        FontWeight="Bold" />
+            <TextBlock Grid.Column="2"
+                       loc:Uids.Uid="TextBlock_SpeciesName"
+                       FontWeight="Bold" />
             <TextBlock Grid.Column="3"
-                       loc:Uids.Uid="TextBlock_Valid"
+                       loc:Uids.Uid="TextBlock_Subspecies"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="4"
-                       loc:Uids.Uid="TextBlock_Year"
+                       loc:Uids.Uid="TextBlock_Divers"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="5"
-                       loc:Uids.Uid="TextBlock_Author"
+                       loc:Uids.Uid="TextBlock_Valid"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="6"
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
+            <!--<TextBlock Grid.Column="7"
+            loc:Uids.Uid="TextBlock_Author"
+            FontWeight="Bold" />
+            <TextBlock Grid.Column="8"
+            loc:Uids.Uid="TextBlock_Year"
+            FontWeight="Bold" />-->
         </Grid>
 
         <!--  LIST  -->
@@ -158,25 +164,31 @@
 
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
-                                   Text="{x:Bind SpeciesName}" />
+                                   Text="{x:Bind GenusName}" />
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
-                                   Text="{x:Bind GenusName}" />
+                                   Text="{x:Bind SpeciesName}" />
+                        <TextBlock Grid.Column="3"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Bind Subspecies}" />
+                        <TextBlock Grid.Column="4"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Bind Divers}" />
 
-                        <CheckBox Grid.Column="3"
+                        <CheckBox Grid.Column="5"
                                   IsChecked="{x:Bind Valid}"
                                   IsEnabled="False"
                                   IsTabStop="False" />
 
-                        <TextBlock Grid.Column="4"
-                                   VerticalAlignment="Center"
-                                   Text="{x:Bind ValidYear}" />
-                        <TextBlock Grid.Column="5"
-                                   VerticalAlignment="Center"
-                                   Text="{x:Bind Author}" />
                         <TextBlock Grid.Column="6"
                                    VerticalAlignment="Center"
-                                   Text="{x:Bind AuthorYear}" />
+                                   Text="{x:Bind ValidYear}" />
+                        <!--<TextBlock Grid.Column="7"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind Author}" />
+                        <TextBlock Grid.Column="8"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind AuthorYear}" />-->
 
                     </Grid>
                 </DataTemplate>

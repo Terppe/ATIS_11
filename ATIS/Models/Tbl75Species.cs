@@ -94,7 +94,9 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     [NotMapped]
     public string SubspeciesDiversName => string.Join(" ",
         new[] { Subspecies, Divers }
-            .Where(x => !string.IsNullOrWhiteSpace(x)));    // ---------------------------------------------------------
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    // ---------------------------------------------------------
     // GenusId (Pflicht)
     // ---------------------------------------------------------
     private int _genusId;
@@ -146,8 +148,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // ValidYear
     // ---------------------------------------------------------
-    [StringLength(4)] private string? _validYear;
-
+    [StringLength(4)]
+    private string? _validYear;
     public string? ValidYear
     {
         get => _validYear;
@@ -169,7 +171,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // TradeName
     // ---------------------------------------------------------
-    [StringLength(100)] private string? _tradeName;
+    [StringLength(100)]
+    private string? _tradeName;
 
     public string? TradeName
     {
@@ -187,12 +190,14 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Author
     // ---------------------------------------------------------
-    [StringLength(60)] public string? Author { get; set; }
+    [StringLength(60)]
+    public string? Author { get; set; }
 
     // ---------------------------------------------------------
     // AuthorYear
     // ---------------------------------------------------------
-    [StringLength(4)] private string? _authorYear;
+    [StringLength(4)]
+    private string? _authorYear;
 
     public string? AuthorYear
     {
@@ -210,7 +215,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Importer
     // ---------------------------------------------------------
-    [StringLength(60)] private string? _importer;
+    [StringLength(60)]
+    private string? _importer;
 
     public string? Importer
     {
@@ -651,7 +657,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-Notify:
+        Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 

@@ -5671,7 +5671,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Infratribus                       
 
     #region Genus                
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllGenusAsync()
     // ---------------------------------------------------------                           
@@ -6058,7 +6057,139 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Genus
 
     #region Speciesgroup                
+    // ---------------------------------------------------------                  
+    // GetAllSpeciesgroupAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl68Speciesgroup>> GetAllSpeciesgroupAsync()
+    {
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl68Speciesgroups
+            .AsNoTracking()
+            .OrderBy(e => e.SpeciesgroupName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchSpeciesgroupWithGenusAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl68Speciesgroup>> SearchSpeciesgroupAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl68Speciesgroup>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl68Speciesgroups
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SpeciesgroupId == id || e.SpeciesgroupName.StartsWith(search))
+                .OrderBy(e => e.SpeciesgroupName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SpeciesgroupName.StartsWith(search))
+            .OrderBy(e => e.SpeciesgroupName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSpeciesgroupAsync(Tbl68Speciesgroup uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup uiEntity)
+    {
+        return UpsertAsync<Tbl68Speciesgroup, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl68Speciesgroup>(),
+            x => x.SpeciesgroupId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SpeciesgroupId == id),
+            MapSpeciesgroupFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSpeciesgroupFields(Tbl68Speciesgroup source, Tbl68Speciesgroup target)
+    // ---------------------------------------------------------                 
+    private static void MapSpeciesgroupFields(Tbl68Speciesgroup source, Tbl68Speciesgroup target)
+    {
+        target.SpeciesgroupName = source.SpeciesgroupName;
+        target.Subspeciesgroup = source.Subspeciesgroup;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Synonym = source.Synonym;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.EngName = source.EngName;
+        target.GerName = source.GerName;
+        target.FraName = source.FraName;
+        target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetSpeciesgroupByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl68Speciesgroup?> GetSpeciesgroupByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl68Speciesgroups
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SpeciesgroupId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSpeciesgroupAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSpeciesgroupAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl68Speciesgroups.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl68Speciesgroups.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl68Speciesgroup entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesgroupExistsAsync(Tbl68Speciesgroup entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl68Speciesgroups.AnyAsync(x =>
+            x.SpeciesgroupName == entity.SpeciesgroupName &&
+            x.Subspeciesgroup == entity.Subspeciesgroup &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Synonym == entity.Synonym &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.EngName == entity.EngName &&
+            x.GerName == entity.GerName &&
+            x.FraName == entity.FraName &&
+            x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.SpeciesgroupId != entity.SpeciesgroupId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasSpeciesAsync(int speciesgroupId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesgroupHasSpeciesAsync(int speciesgroupId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl75Speciesses
+            .AnyAsync(x => x.SpeciesgroupId == speciesgroupId);
+    }
+
+    //alt
     public ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync()
     {
         var collection = new ObservableCollection<Tbl68Speciesgroup>(_context.Tbl68Speciesgroups
@@ -6091,70 +6222,66 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup speciesgroup)
-    {
-        var current = await _context.Tbl68Speciesgroups.FirstOrDefaultAsync(c => c.SpeciesgroupId == speciesgroup.SpeciesgroupId);
-        if (null == current)
-        {
-            speciesgroup.CountId = RandomHelper.Randomnumber();
-            speciesgroup.Writer = Environment.UserName;
-            speciesgroup.WriterDate = DateTime.Now;
-            speciesgroup.Updater = Environment.UserName;
-            speciesgroup.UpdaterDate = DateTime.Now;
-            _context.Tbl68Speciesgroups.Add(speciesgroup);
-        }
-        else
-        {
-            speciesgroup.Updater = Environment.UserName;
-            speciesgroup.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(speciesgroup);
-        }
-        await _context.SaveChangesAsync();
-        return speciesgroup;
-    }
+    //public async Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup speciesgroup)
+    //{
+    //    var current = await _context.Tbl68Speciesgroups.FirstOrDefaultAsync(c => c.SpeciesgroupId == speciesgroup.SpeciesgroupId);
+    //    if (null == current)
+    //    {
+    //        speciesgroup.CountId = RandomHelper.Randomnumber();
+    //        speciesgroup.Writer = Environment.UserName;
+    //        speciesgroup.WriterDate = DateTime.Now;
+    //        speciesgroup.Updater = Environment.UserName;
+    //        speciesgroup.UpdaterDate = DateTime.Now;
+    //        _context.Tbl68Speciesgroups.Add(speciesgroup);
+    //    }
+    //    else
+    //    {
+    //        speciesgroup.Updater = Environment.UserName;
+    //        speciesgroup.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(speciesgroup);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return speciesgroup;
+    //}
 
-    public async Task DeleteSpeciesgroupAsync(int speciesgroupid)
-    {
-        var speciesgroup = await _context.Tbl68Speciesgroups.FirstOrDefaultAsync(b => b.SpeciesgroupId == speciesgroupid);
-        if (speciesgroup != null)
-        {
-            //necessary to delete before
-            //------ FiSpecies -------------
-            //var fispeciess = await _context.Tbl69FiSpeciesses.Where(a => a.SpeciesgroupId == speciesgroupid).ToListAsync();
-            //foreach (var fispecies in fispeciess)
-            //{
-            //    for (var i = 0; i <= fispeciess.Count; i++)
-            //    {
-            //        var fispeciesid = fispecies.FiSpeciesId;
-            //        var singleref = _context.Tbl90References.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
-            //        if (singleref != null)
-            //        {
-            //            _context.Tbl90References.Remove(singleref);
-            //            await _context.SaveChangesAsync();
-            //        }
-            //        var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
-            //        if (singlecom != null)
-            //        {
-            //            _context.Tbl93Comments.Remove(singlecom);
-            //            await _context.SaveChangesAsync();
-            //        }
-            //    }
-            //}
-            //_context.Tbl69FiSpeciesses.RemoveRange(fispeciess);
-            //await _context.SaveChangesAsync();
+    //public async Task DeleteSpeciesgroupAsync(int speciesgroupid)
+    //{
+    //    var speciesgroup = await _context.Tbl68Speciesgroups.FirstOrDefaultAsync(b => b.SpeciesgroupId == speciesgroupid);
+    //    if (speciesgroup != null)
+    //    {
+    //        //necessary to delete before
+    //        //------ FiSpecies -------------
+    //        //var fispeciess = await _context.Tbl69FiSpeciesses.Where(a => a.SpeciesgroupId == speciesgroupid).ToListAsync();
+    //        //foreach (var fispecies in fispeciess)
+    //        //{
+    //        //    for (var i = 0; i <= fispeciess.Count; i++)
+    //        //    {
+    //        //        var fispeciesid = fispecies.FiSpeciesId;
+    //        //        var singleref = _context.Tbl90References.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
+    //        //        if (singleref != null)
+    //        //        {
+    //        //            _context.Tbl90References.Remove(singleref);
+    //        //            await _context.SaveChangesAsync();
+    //        //        }
+    //        //        var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
+    //        //        if (singlecom != null)
+    //        //        {
+    //        //            _context.Tbl93Comments.Remove(singlecom);
+    //        //            await _context.SaveChangesAsync();
+    //        //        }
+    //        //    }
+    //        //}
+    //        //_context.Tbl69FiSpeciesses.RemoveRange(fispeciess);
+    //        //await _context.SaveChangesAsync();
 
-            _context.Tbl68Speciesgroups.Remove(speciesgroup);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //        _context.Tbl68Speciesgroups.Remove(speciesgroup);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Speciesgroup
 
     #region Species
-
-    // ---------------------------------------------------------                  
-    // Species 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSpeciesAsync()
     // ---------------------------------------------------------                           
@@ -6168,9 +6295,9 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
     // ---------------------------------------------------------                  
-    // SearchSpeciesWithGenusAsync(string? search)
+    // GetSpeciesWithGenusAndSpeciesgroupByIdAsync(string? search)
     // ---------------------------------------------------------                 
-    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search)
+    public async Task<IEnumerable<Tbl75Species>> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl75Species>();
@@ -6181,6 +6308,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl75Speciesses
             .Include(x => x.Genus)
+            .Include(x => x.Speciesgroup)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -6215,11 +6343,60 @@ public partial class DataService : ObservableObject, IDataService
     private static void MapSpeciesFields(Tbl75Species source, Tbl75Species target)
     {
         target.SpeciesName = source.SpeciesName;
+        target.Subspecies = source.Subspecies;
+        target.Divers = source.Divers;
         target.GenusId = source.GenusId;
+        target.SpeciesgroupId = source.SpeciesgroupId;
         target.Valid = source.Valid;
         target.ValidYear = source.ValidYear;
+        target.MemoSpecies = source.MemoSpecies;
+        target.TradeName = source.TradeName;
         target.Author = source.Author;
         target.AuthorYear = source.AuthorYear;
+        target.Importer = source.Importer;
+        target.ImportingYear = source.ImportingYear;
+        target.TypeSpecies = source.TypeSpecies;
+        target.LNumber = source.LNumber;
+        target.LOrigin = source.LOrigin;
+        target.LdaNumber = source.LdaNumber;
+        target.LdaOrigin = source.LdaOrigin;
+        target.BasinLength = source.BasinLength;
+        target.FishLength = source.FishLength;
+        target.Karnivore = source.Karnivore;
+        target.Herbivore = source.Herbivore;
+        target.Limnivore = source.Limnivore;
+        target.Omnivore = source.Omnivore;
+        target.MemoFoods = source.MemoFoods;
+        target.Difficult1 = source.Difficult1;
+        target.Difficult2 = source.Difficult2;
+        target.Difficult3 = source.Difficult3;
+        target.Difficult4 = source.Difficult4;
+        target.RegionTop = source.RegionTop;
+        target.RegionMiddle = source.RegionMiddle;
+        target.RegionBottom = source.RegionBottom;
+        target.MemoRegion = source.MemoRegion;
+        target.MemoTech = source.MemoTech;
+        target.Ph1 = source.Ph1;
+        target.Ph2 = source.Ph2;
+        target.Temp1 = source.Temp1;
+        target.Temp2 = source.Temp2;
+        target.Hardness1 = source.Hardness1;
+        target.Hardness2 = source.Hardness2;
+        target.CarboHardness1 = source.CarboHardness1;
+        target.CarboHardness2 = source.CarboHardness2;
+        target.MemoHusbandry = source.MemoHusbandry;
+        target.MemoBreeding = source.MemoBreeding;
+        target.MemoBuilt = source.MemoBuilt;
+        target.MemoColor = source.MemoColor;
+        target.MemoSozial = source.MemoSozial;
+        target.MemoDomorphism = source.MemoDomorphism;
+        target.MemoSpecial = source.MemoSpecial;
+        target.BasinHeight = source.BasinHeight;
+        target.PlantLength = source.PlantLength;
+        target.MemoReproduction = source.MemoReproduction;
+        target.MemoCulture = source.MemoCulture;
+        target.MemoGlobal = source.MemoGlobal;
+        target.Creature = source.Creature;
     }
     // ---------------------------------------------------------                  
     // GetSpeciesByIdAsync(int id)
@@ -6233,16 +6410,17 @@ public partial class DataService : ObservableObject, IDataService
             .FirstOrDefaultAsync(x => x.SpeciesId == id);
     }
     // ---------------------------------------------------------                  
-    // GetSpeciesWithGenusByIdAsync(int id)
+    // GetSpeciesWithGenusAndSpeciesgroupByIdAsync(int id)
     // ---------------------------------------------------------                 
 
-    public async Task<Tbl75Species?> GetSpeciesWithGenusByIdAsync(int id)
+    public async Task<Tbl75Species?> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl75Speciesses
             .AsNoTracking()
             .Include(x => x.Genus)
+            .Include(x => x.Speciesgroup)
             .FirstOrDefaultAsync(x => x.SpeciesId == id);
     }
     // ---------------------------------------------------------                  
@@ -6276,6 +6454,7 @@ public partial class DataService : ObservableObject, IDataService
             x.SpeciesId != entity.SpeciesId
         );
     }
+
 
     // ---------------------------------------------------------                  
     // HasNameAsync(int speciesId)

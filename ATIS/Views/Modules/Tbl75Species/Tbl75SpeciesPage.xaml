@@ -231,16 +231,16 @@
                                                                   Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>-->
 
-                            <Grid x:Name="CommentsNameContent"
+                            <!--<Grid x:Name="CommentsNameContent"
                                   DataContext="{Binding NameViewModel.NameCommentViewModel}"
                                   RowDefinitions="Auto,*">
                                 <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
                                 <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
                                                                       Item="{Binding Item}"
                                                                       Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>
+                            </Grid>-->
 
-                            <Grid x:Name="ReferencesNameContent"
+                            <!--<Grid x:Name="ReferencesNameContent"
                                   DataContext="{Binding NameViewModel.NameReferenceViewModel}"
                                   RowDefinitions="Auto,*">
                                 <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
@@ -248,7 +248,7 @@
                                 <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
                                                                           Item="{Binding Item}"
                                                                           Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>
+                            </Grid>-->
                         </Grid>
                     </Grid>
                 </layout:BaseBossPageLayout.DetailContent>

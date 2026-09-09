@@ -84,6 +84,7 @@ public sealed partial class Tbl75SpeciesPage : Page
     }
     private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
     {
+     //   button.Background = new SolidColorBrush(Colors.GhostWhite);
         button.Background = new SolidColorBrush(Colors.Transparent);
         button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
         underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
@@ -107,11 +108,11 @@ public sealed partial class Tbl75SpeciesPage : Page
     // ------------------------------------------------------------------------------------------------------------------------
     private void UpdateNameTabs(bool hasSelection)
     {
-        CommentsNameTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesNameTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        //CommentsNameTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        //ReferencesNameTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
 
-        CommentsNameTab.IsEnabled = hasSelection;
-        ReferencesNameTab.IsEnabled = hasSelection;
+        //CommentsNameTab.IsEnabled = hasSelection;
+        //ReferencesNameTab.IsEnabled = hasSelection;
 
         if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
             Vm.SelectedDetailTabIndex = 3;
@@ -126,8 +127,8 @@ public sealed partial class Tbl75SpeciesPage : Page
         SetTabButtonStyle(CommentsSpeciesTab, CommentsSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 1);
         SetTabButtonStyle(ReferencesSpeciesTab, ReferencesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 2);
         SetTabButtonStyle(NameTab, NameTabUnderline, Vm.SelectedDetailTabIndex == 3);
-        SetTabButtonStyle(CommentsNameTab, CommentsNameTabUnderline, Vm.SelectedDetailTabIndex == 4);
-        SetTabButtonStyle(ReferencesNameTab, ReferencesNameTabUnderline, Vm.SelectedDetailTabIndex == 5);
+        //SetTabButtonStyle(CommentsNameTab, CommentsNameTabUnderline, Vm.SelectedDetailTabIndex == 4);
+        //SetTabButtonStyle(ReferencesNameTab, ReferencesNameTabUnderline, Vm.SelectedDetailTabIndex == 5);
     }
 
     private void UpdateDetailContentVisibility()
@@ -136,8 +137,8 @@ public sealed partial class Tbl75SpeciesPage : Page
         CommentsSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
         ReferencesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
   //      NameContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
-        CommentsNameContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
-        ReferencesNameContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
+        //CommentsNameContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
+        //ReferencesNameContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  

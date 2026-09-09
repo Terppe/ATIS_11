@@ -65,7 +65,7 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // VALDATINHELPER
+    // VALIDATION HELPER
     // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
@@ -86,7 +86,7 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // SUBTRIBUSNAME VALIDATION
+    // INFRATRIBUSNAME VALIDATION
     // ---------------------------------------------------------                   
 
     private void InfratribusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)

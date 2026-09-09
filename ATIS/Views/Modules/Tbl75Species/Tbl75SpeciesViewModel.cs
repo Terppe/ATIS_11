@@ -4,6 +4,7 @@ using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl68Speciesgroup;
 using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
@@ -31,6 +32,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     public Tbl93CommentViewModel SpeciesCommentViewModel { get; }
     public Tbl90ReferenceViewModel SpeciesReferenceViewModel { get; }
+    public Tbl68SpeciesgroupViewModel SpeciesgroupViewModel { get; }
     public Tbl78NameViewModel NameViewModel { get; }
 
     // ---------------------------------------------------------
@@ -38,6 +40,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     public ObservableCollection<Models.Tbl66Genus> GenusList { get; private set; } = new();
     public Dictionary<int, string?> GenusLookup { get; private set; } = new();
+    //---------------------------------------------------------
+    public ObservableCollection<Models.Tbl68Speciesgroup> SpeciesgroupList { get; private set; } = new();
+    public Dictionary<int, string?> SpeciesgroupLookup { get; private set; } = new();
 
     public async Task LoadGenusLookupAsync()
     {
@@ -52,6 +57,21 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         GenusLookup = lookup;
         OnPropertyChanged(nameof(GenusLookup));
+    }
+    //---------------------------------------------------------
+    public async Task LoadSpeciesgroupLookupAsync()
+    {
+        var list = await _lookupService.GetSpeciesgroupListAsync();
+        var lookup = await _lookupService.GetSpeciesgroupLookupAsync();
+
+        SpeciesgroupList.Clear();
+        foreach (var item in list)
+        {
+            SpeciesgroupList.Add(item);
+        }
+
+        SpeciesgroupLookup = lookup;
+        OnPropertyChanged(nameof(SpeciesgroupLookup));
     }
 
     // ---------------------------------------------------------                   
@@ -69,6 +89,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         SpeciesCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
         SpeciesReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+        SpeciesgroupViewModel = new Tbl68SpeciesgroupViewModel(factory, dialog, coordinator, lookupService, user);
         NameViewModel = new Tbl78NameViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
@@ -159,6 +180,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         _currentParentId = 0;
 
         await LoadGenusLookupAsync();
+        await LoadSpeciesgroupLookupAsync();
 
         Items = new ObservableCollection<Models.Tbl75Species>();
 
@@ -200,7 +222,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchSpeciesWithGenusAsync(SearchText);
+            return await Data.GetSpeciesWithGenusAndSpeciesgroupByIdAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl75Species>();
     }

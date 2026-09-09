@@ -39,7 +39,7 @@ public sealed partial class Tbl75SpeciesSubDetailPage : Page
 
         try
         {
-            var selected = await _dataService.GetSpeciesWithGenusByIdAsync(id);
+            var selected = await _dataService.GetSpeciesWithGenusAndSpeciesgroupByIdAsync(id);
             if (selected == null)
                 return;
 

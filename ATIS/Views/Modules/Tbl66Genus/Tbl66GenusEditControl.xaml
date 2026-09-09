@@ -174,10 +174,9 @@
                      MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Synonym"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
+                     Style="{StaticResource AtisTextBoxWrap}"
                      Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     />
 
             <!--  Language Tab  -->
             <Grid RowDefinitions="Auto, Auto">
@@ -271,10 +270,8 @@
                      MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Memo"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 

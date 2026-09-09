@@ -28,6 +28,7 @@
       xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
       xmlns:tbl90RefAuthor="using:ATIS.Views.Modules.Tbl90RefAuthor"
       xmlns:tbl90RefSource="using:ATIS.Views.Modules.Tbl90RefSource"
+      xmlns:tbl68Speciesgroup="using:ATIS.Views.Modules.Tbl68Speciesgroup"
       NavigationCacheMode="Required"
       mc:Ignorable="d">
 
@@ -43,7 +44,7 @@
                     <tbl75Species:Tbl75SpeciesPage />
                 </TabViewItem>
                 <!--<TabViewItem x:Uid="TabViewItem_PlSpeciesses" IsClosable="False">
-                    <database:Tbl72PlSpeciesListPage />
+                <database:Tbl72PlSpeciesListPage />
                 </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_Genusses"
                              IsClosable="False">
@@ -52,11 +53,11 @@
 
                 <TabViewItem x:Uid="TabViewItem_Speciesgroups"
                              IsClosable="False">
-                    <database:Tbl68SpeciesgroupListPage />
+                    <tbl68Speciesgroup:Tbl68SpeciesgroupPage />
                 </TabViewItem>
                 <!--<TabViewItem Header="Experts"
-                             IsClosable="False">
-                    <database:Tbl90RefExpertListPage />
+                IsClosable="False">
+                <database:Tbl90RefExpertListPage />
                 </TabViewItem>-->
                 <TabViewItem Header="Sources"
                              IsClosable="False">

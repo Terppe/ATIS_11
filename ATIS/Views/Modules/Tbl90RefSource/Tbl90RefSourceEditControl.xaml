@@ -101,7 +101,7 @@
                                Visibility="{Binding Item.HasRefSourceNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  NULL Combo  -->
+                <!--  NULL Combo  --><!--
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
@@ -115,7 +115,7 @@
                               SelectedValue="{Binding Item.NULLId, ElementName=Root, Mode=TwoWay}"
                               SelectedValuePath="NULLId"
                               Style="{StaticResource AtisComboBox}" />
-                </StackPanel>
+                </StackPanel>-->
 
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"

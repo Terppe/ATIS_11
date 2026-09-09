@@ -84,6 +84,27 @@
                          Style="{StaticResource AtisTextBox}"
                          Text="{Binding Item.SpeciesId, ElementName=Root}" />
 
+                <!--  Genus Combo  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+                    <ComboBox x:Name="GenusCombo"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_GenusName"
+                              DisplayMemberPath="GenusName"
+                              ItemsSource="{Binding ViewModel.GenusList, ElementName=Root}"
+                              SelectedValue="{Binding Item.GenusId, ElementName=Root, Mode=TwoWay}"
+                              SelectedValuePath="GenusId"
+                              Style="{StaticResource AtisComboBox}" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.GenusIdError, ElementName=Root}"
+                               Visibility="{Binding Item.HasGenusIdError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+
                 <!--  SpeciesName  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
@@ -101,20 +122,89 @@
                                Visibility="{Binding Item.HasSpeciesNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  Genus Combo  -->
+                <!--  Subspecies  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
-                    <TextBlock Visibility="Collapsed" />
-                    <ComboBox x:Name="GenusCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_GenusName"
-                              DisplayMemberPath="GenusName"
-                              ItemsSource="{Binding ViewModel.GenusList, ElementName=Root}"
-                              SelectedValue="{Binding Item.GenusId, ElementName=Root, Mode=TwoWay}"
-                              SelectedValuePath="GenusId"
-                              Style="{StaticResource AtisComboBox}" />
+                    <TextBox x:Name="SubspeciesBox"
+                             loc:Uids.Uid="TextBox_Subspecies"
+                             CharacterCasing="Lower"
+                             Loaded="SubspeciesBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Subspecies, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="SubspeciesBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.SubspeciesError, ElementName=Root}"
+                               Visibility="{Binding Item.HasSubspeciesError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+
+                <!--  Divers  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="DiversBox"
+                             loc:Uids.Uid="TextBox_Divers"
+                             CharacterCasing="Lower"
+                             Loaded="DiversBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Divers, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="DiversBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.DiversError, ElementName=Root}"
+                               Visibility="{Binding Item.HasDiversError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+
+                <!--  Creature Combo  -->
+                <ComboBox x:Name="ComboCreature"
+                          MinWidth="150"
+                          VerticalAlignment="Center"
+                          loc:Uids.Uid="ComboBox_Creature"
+                          PlaceholderText="Select Creature"
+                          SelectedValue="{Binding Item.Creature, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="ComboCreature_OnSelectionChangedComboBox_SelectionChanged"
+                          Style="{StaticResource AtisComboBox}">
+                    <x:String>Animalia</x:String>
+                    <x:String>Plantae</x:String>
+                    <x:String>Fungi</x:String>
+                    <x:String>Archaea</x:String>
+                    <x:String>Bacteria</x:String>
+                    <x:String>Chromista</x:String>
+                    <x:String>Protozoa</x:String>
+                </ComboBox>
+            </StackPanel>
+            <!--  Valid + ValidYear + Author + AuthorYear  -->
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+
+                <!--  Author + AuthorYear  -->
+                <StackPanel Orientation="Horizontal"
+                            Spacing="4">
+                    <TextBox MinWidth="150"
+                             VerticalAlignment="Top"
+                             loc:Uids.Uid="TextBox_Author"
+                             CharacterCasing="Upper"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <StackPanel MinWidth="60"
+                                VerticalAlignment="Top"
+                                Spacing="4">
+                        <TextBox x:Name="AuthorYearBox"
+                                 loc:Uids.Uid="TextBox_AuthorYear"
+                                 Loaded="AuthorYearBox_OnLoaded"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.AuthorYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="AuthorYearBox_OnTextChanged" />
+                        <TextBlock Height="16"
+                                   FontSize="10"
+                                   Foreground="Red"
+                                   Text="{Binding Item.AuthorYearError, ElementName=Root}"
+                                   Visibility="{Binding Item.HasAuthorYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
                 </StackPanel>
 
                 <!--  Valid  -->
@@ -140,143 +230,588 @@
                                Text="{Binding Item.ValidYearError, ElementName=Root}"
                                Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
-            </StackPanel>
 
-            <!--  Author + AuthorYear  -->
-            <StackPanel Orientation="Horizontal"
-                        Spacing="4">
-                <TextBox MinWidth="150"
-                         VerticalAlignment="Top"
-                         loc:Uids.Uid="TextBox_Author"
-                         CharacterCasing="Upper"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                <StackPanel MinWidth="60"
+                <!--  Speciesgroup Combo  -->
+                <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
-                            Spacing="4">
-                    <TextBox x:Name="AuthorYearBox"
-                             loc:Uids.Uid="TextBox_AuthorYear"
-                             Loaded="AuthorYearBox_OnLoaded"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.AuthorYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="AuthorYearBox_OnTextChanged" />
-                    <TextBlock Height="16"
-                               FontSize="10"
-                               Foreground="Red"
-                               Text="{Binding Item.AuthorYearError, ElementName=Root}"
-                               Visibility="{Binding Item.HasAuthorYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+                    <ComboBox x:Name="SpeciesgroupCombo"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_SpeciesgroupName"
+                              DisplayMemberPath="SpeciesgroupFullName"
+                              ItemsSource="{Binding ViewModel.SpeciesgroupList, ElementName=Root}"
+                              SelectedValue="{Binding Item.SpeciesgroupId, ElementName=Root, Mode=TwoWay}"
+                              SelectedValuePath="SpeciesgroupId"
+                              Style="{StaticResource AtisComboBox}" />
                 </StackPanel>
+
             </StackPanel>
 
-            <!--  Synonym  -->
-            <TextBox MinWidth="200"
-                     MinHeight="75"
-                     MaxHeight="150"
-                     loc:Uids.Uid="TextBox_Synonym"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
-
-            <!--  Language Tab  -->
+            <!--  Rest Tabs  -->
             <Grid RowDefinitions="Auto, Auto">
-                <StackPanel Margin="0,0,0,10"
+                <StackPanel Margin="0,10,0,10"
                             Orientation="Horizontal"
                             Spacing="4">
-                    <Button x:Name="EngNameTab"
+
+                    <Button x:Name="ImporterTab" 
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
                             Tag="0">
                         <StackPanel Spacing="4">
                             <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_EnglishName" />
-                            <Border x:Name="EngNameTabUnderline"
+                                       loc:Uids.Uid="TextBlock_Import" />
+                            <Border x:Name="ImportTabUnderline"
                                     Height="2"
                                     Background="Transparent" />
                         </StackPanel>
                     </Button>
 
-                    <Button x:Name="GerNameTab"
+                    <Button x:Name="SizeTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
                             Tag="1">
                         <StackPanel Spacing="4">
                             <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_GermanName" />
-                            <Border x:Name="GerNameTabUnderline"
+                                       loc:Uids.Uid="TextBlock_Size" />
+                            <Border x:Name="SizeTabUnderline"
                                     Height="2"
                                     Background="Transparent" />
                         </StackPanel>
                     </Button>
 
-                    <Button x:Name="FraNameTab"
+                    <Button x:Name="FoodTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
                             Tag="2">
                         <StackPanel Spacing="4">
                             <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_FrenchName" />
-                            <Border x:Name="FraNameTabUnderline"
+                                       loc:Uids.Uid="TextBlock_Food" />
+                            <Border x:Name="FoodTabUnderline"
                                     Height="2"
                                     Background="Transparent" />
                         </StackPanel>
                     </Button>
 
-                    <Button x:Name="SpaNameTab"
+                    <Button x:Name="TechnicTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
                             Tag="3">
                         <StackPanel Spacing="4">
                             <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_SpanishName" />
-                            <Border x:Name="SpaNameTabUnderline"
+                                       loc:Uids.Uid="TextBlock_Technik" />
+                            <Border x:Name="TechnicTabUnderline"
                                     Height="2"
                                     Background="Transparent" />
                         </StackPanel>
                     </Button>
+
+                    <Button x:Name="HusbandryTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="4">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Husbandry" />
+                            <Border x:Name="HusbandryTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="BreedingTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="5">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Breeding" />
+                            <Border x:Name="BreedingTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="BuiltTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="6">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Built" />
+                            <Border x:Name="BuiltTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="SpecialTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="7">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Special" />
+                            <Border x:Name="SpecialTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ReproductionTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="8">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Reproduction" />
+                            <Border x:Name="ReproductionTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="CultureTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="9">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Culture" />
+                            <Border x:Name="CultureTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="GlobalTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="10">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Global" />
+                            <Border x:Name="GlobalTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
                 </StackPanel>
 
                 <Grid x:Name="TabContentGrid"
                       Grid.Row="1">
 
-                    <Grid x:Name="EngNameGrid">
-                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
-                                 Text="{Binding Item.EngName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Grid x:Name="ImporterGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="4">
+                                <!--  Importer  -->
+                                <StackPanel MinWidth="150"
+                                            VerticalAlignment="Top"
+                                            Spacing="2">
+                                    <TextBox x:Name="ImporterBox"
+                                             loc:Uids.Uid="TextBox_Importer"
+                                             Loaded="ImporterBox_OnLoaded"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding Item.Importer, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             TextChanged="ImporterBox_OnTextChanged" />
+                                    <TextBlock Height="18"
+                                               FontSize="10"
+                                               Foreground="Red"
+                                               Text="{Binding Item.ImporterError, ElementName=Root}"
+                                               Visibility="{Binding Item.HasImporterError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </StackPanel>
+
+                                <!--  ImportingYear  -->
+                                <StackPanel MinWidth="60"
+                                            VerticalAlignment="Top"
+                                            Spacing="2">
+                                    <TextBox x:Name="ImportingYearBox"
+                                             loc:Uids.Uid="TextBox_ImportingYear"
+                                             Loaded="ImportingYearBox_OnLoaded"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding Item.ImportingYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             TextChanged="ImportingYearBox_OnTextChanged" />
+                                    <TextBlock Height="16"
+                                               FontSize="10"
+                                               Foreground="Red"
+                                               Text="{Binding Item.ImportingYearError, ElementName=Root}"
+                                               Visibility="{Binding Item.HasImportingYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!--  TradeName  -->
+                            <StackPanel MinWidth="150"
+                                        VerticalAlignment="Top"
+                                        Spacing="2">
+                                <TextBox x:Name="TradeNameBox"
+                                         loc:Uids.Uid="TextBox_TradeName"
+                                         Loaded="TradeNameBox_OnLoaded"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.TradeName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="TradeNameBox_OnTextChanged" />
+                                <TextBlock Height="18"
+                                           FontSize="10"
+                                           Foreground="Red"
+                                           Text="{Binding Item.TradeNameError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasTradeNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </StackPanel>
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoSpecies"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoSpecies, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
                     </Grid>
 
-                    <Grid x:Name="GerNameGrid"
+                    <Grid x:Name="SizeGrid"
                           Visibility="Collapsed">
-                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
-                                 Text="{Binding Item.GerName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="4">
+
+                            <TextBox x:Name="FishLengthTextSpecies"
+                                     loc:Uids.Uid="TextBox_FishLength"
+                                     Style="{StaticResource AtisTextBox}"
+                                     Text="{Binding Item.FishLength, ElementName=Root, Converter={StaticResource ResourceKey=DoubleToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox x:Name="BasinLengthTextSpecies"
+                                     loc:Uids.Uid="TextBox_BasinLength"
+                                     Style="{StaticResource AtisTextBox}"
+                                     Text="{Binding Item.BasinLength, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox x:Name="PlantLengthTextSpecies"
+                                     loc:Uids.Uid="TextBox_PlantLength"
+                                     RelativePanel.RightOf="FishLengthTextSpecies"
+                                     Style="{StaticResource AtisTextBox}"
+                                     Text="{Binding Item.PlantLength, ElementName=Root, Converter={StaticResource ResourceKey=DoubleToStringConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox x:Name="BasinHeightTextSpecies"
+                                     loc:Uids.Uid="TextBox_BasinHeight"
+                                     Style="{StaticResource AtisTextBox}"
+                                     Text="{Binding Item.BasinHeight, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <StackPanel MinWidth="150"
+                                        VerticalAlignment="Top"
+                                        Spacing="2">
+                                <TextBox x:Name="LNumberBox"
+                                         loc:Uids.Uid="TextBox_LNumber"
+                                         Loaded="LNumberBox_OnLoaded"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.LNumber, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="LNumberBox_OnTextChanged" />
+                                <TextBlock Height="18"
+                                           FontSize="10"
+                                           Foreground="Red"
+                                           Text="{Binding Item.LNumberError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasLNumberError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </StackPanel>
+                            <StackPanel MinWidth="150"
+                                        VerticalAlignment="Top"
+                                        Spacing="2">
+                                <TextBox x:Name="LOriginBox"
+                                         loc:Uids.Uid="TextBox_LOrigin"
+                                         Loaded="LOriginBox_OnLoaded"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.LOrigin, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="LOriginBox_OnTextChanged" />
+                                <TextBlock Height="18"
+                                           FontSize="10"
+                                           Foreground="Red"
+                                           Text="{Binding Item.LOriginError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasLOriginError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </StackPanel>
+
+                            <StackPanel MinWidth="150"
+                                        VerticalAlignment="Top"
+                                        Spacing="2">
+                                <TextBox x:Name="LdaNumberBox"
+                                         loc:Uids.Uid="TextBox_LdaNumber"
+                                         Loaded="LdaNumberBox_OnLoaded"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.LdaNumber, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="LdaNumberBox_OnTextChanged" />
+                                <TextBlock Height="18"
+                                           FontSize="10"
+                                           Foreground="Red"
+                                           Text="{Binding Item.LdaNumberError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasLdaNumberError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </StackPanel>
+
+                            <StackPanel MinWidth="150"
+                                        VerticalAlignment="Top"
+                                        Spacing="2">
+                                <TextBox x:Name="LdaOriginBox"
+                                         loc:Uids.Uid="TextBox_LdaOrigin"
+                                         Loaded="LdaOriginBox_OnLoaded"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.LdaOrigin, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="LdaOriginBox_OnTextChanged" />
+                                <TextBlock Height="18"
+                                           FontSize="10"
+                                           Foreground="Red"
+                                           Text="{Binding Item.LdaOriginError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasLdaOriginError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
 
-                    <Grid x:Name="FraNameGrid"
+                    <Grid x:Name="FoodGrid"
                           Visibility="Collapsed">
-                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
-                                 Text="{Binding Item.FraName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="4">
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Karnivore"
+                                          IsChecked="{Binding Item.Karnivore, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Herbivore"
+                                          IsChecked="{Binding Item.Herbivore, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Limnivore"
+                                          IsChecked="{Binding Item.Limnivore, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Omnivore"
+                                          IsChecked="{Binding Item.Omnivore, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                            </StackPanel>
+                            <TextBox MinWidth="200"
+                                     MinHeight="152"
+                                     MaxHeight="304"
+                                     loc:Uids.Uid="TextBox_MemoFoods"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoFoods, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </StackPanel>
                     </Grid>
 
-                    <Grid x:Name="SpaNameGrid"
+                    <Grid x:Name="TechnicGrid"
                           Visibility="Collapsed">
-                        <TextBox Style="{StaticResource AtisTextBoxNoHeader}"
-                                 Text="{Binding Item.PorName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="4">
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Difficult1"
+                                          IsChecked="{Binding Item.Difficult1, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Difficult2"
+                                          IsChecked="{Binding Item.Difficult2, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Difficult3"
+                                          IsChecked="{Binding Item.Difficult3, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_Difficult4"
+                                          IsChecked="{Binding Item.Difficult4, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="4">
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_RegionTop"
+                                          IsChecked="{Binding Item.RegionTop, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_RegionMiddle"
+                                          IsChecked="{Binding Item.RegionMiddle, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                                <CheckBox MinWidth="60"
+                                          VerticalAlignment="Bottom"
+                                          loc:Uids.Uid="CheckBox_RegionBottom"
+                                          IsChecked="{Binding Item.RegionBottom, ElementName=Root, Mode=TwoWay}"
+                                          Style="{StaticResource AtisCheckBox}" />
+                            </StackPanel>
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoRegion"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoRegion, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="4">
+                                <TextBox loc:Uids.Uid="TextBox_Ph1"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Ph1, Converter={StaticResource ResourceKey=DoubleToStringConverter}, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_Ph2"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Ph2, Converter={StaticResource ResourceKey=DoubleToStringConverter}, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_Temp1"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Temp1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_Temp2"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Temp2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_Hardness1"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Hardness1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_Hardness2"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Hardness2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_CarboHardness1"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.CarboHardness1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBox loc:Uids.Uid="TextBox_CarboHardness2"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.CarboHardness2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoTech"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoTech, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="HusbandryGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="152"
+                                     MaxHeight="304"
+                                     loc:Uids.Uid="TextBox_MemoHusbandry"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoHusbandry, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="BreedingGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="152"
+                                     MaxHeight="304"
+                                     loc:Uids.Uid="TextBox_MemoBreeding"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoBreeding, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="BuiltGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoBuilt"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoBuilt, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoColor"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoColor, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoSozial"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoSozial, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_MemoDomorphism"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoDomorphism, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="SpecialGrid"
+                          Visibility="Collapsed">
+                        <TextBox
+                            MinWidth="200"
+                                 MinHeight="152"
+                                 MaxHeight="304"
+                                 loc:Uids.Uid="TextBox_MemoSpecial"
+                                 Style="{StaticResource AtisTextBoxWrap}"
+                                 Text="{Binding Item.MemoSpecial, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+
+                    <!--  Plant  -->
+                    <Grid x:Name="ReproductionGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="152"
+                                     MaxHeight="304"
+                                     loc:Uids.Uid="TextBox_MemoReproduction"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoReproduction, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!--  Plant  -->
+                    <Grid x:Name="CultureGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="152"
+                                     MaxHeight="304"
+                                     loc:Uids.Uid="TextBox_MemoCulture"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoCulture, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <!--  Plant  -->
+                    <Grid x:Name="GlobalGrid"
+                          Visibility="Collapsed">
+                        <StackPanel Orientation="Vertical"
+                                    Spacing="4">
+
+                            <TextBox MinWidth="200"
+                                     MinHeight="152"
+                                     MaxHeight="304"
+                                     loc:Uids.Uid="TextBox_MemoGlobal"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.MemoGlobal, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
                     </Grid>
 
                 </Grid>
             </Grid>
-
-            <!--  Memo  -->
-            <TextBox MinWidth="200"
-                     MinHeight="75"
-                     MaxHeight="150"
-                     loc:Uids.Uid="TextBox_Memo"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
-
         </StackPanel>
 
     </Border>
+
 </UserControl>

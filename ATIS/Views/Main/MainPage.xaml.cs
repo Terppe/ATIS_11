@@ -40,6 +40,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
+using ATIS.Views.Modules.Tbl68Speciesgroup;
 using WinRT.Interop;
 using WinUI3Localizer;
 using static ATIS.Views.Report.PdfModels;
@@ -433,7 +434,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavSpeciesgroup.Content)
         {
-            NavFrame.Navigate(typeof(Tbl68SpeciesgroupListPage));
+            NavFrame.Navigate(typeof(Tbl68SpeciesgroupPage));
             return;
         }
 

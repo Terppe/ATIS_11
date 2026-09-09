@@ -264,7 +264,7 @@ public sealed class SearchPageViewModel : ObservableObject
             }
             case "Species":
             {
-                var items = await _dataService.SearchSpeciesWithGenusAsync(SearchText);
+                var items = await _dataService.GetSpeciesWithGenusAndSpeciesgroupByIdAsync(SearchText);
                 foreach (var item in items)
                 {
                     if (item.SpeciesName.Contains('#')) continue;

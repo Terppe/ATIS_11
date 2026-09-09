@@ -301,7 +301,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavSpeciesgroup"
                                             loc:Uids.Uid="Nav_Speciesgroup"
-                                            Tag="ATIS.Views.Database.Tbl68SpeciesgroupListPage">
+                                            Tag="ATIS.Views.Modules.Tbl68Speciesgroup.Tbl68SpeciesgroupPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />

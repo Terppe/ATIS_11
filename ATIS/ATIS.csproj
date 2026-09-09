@@ -56,7 +56,7 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.11" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2526" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="MimeKit" Version="4.17.0" />
@@ -78,7 +78,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4129.50" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4191.47" ExcludeAssets="buildTransitive" />
 		<PackageReference Include="WinUIEx" Version="2.9.3" />
 	</ItemGroup>
 
@@ -332,9 +332,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Database\Tbl78NameListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl68SpeciesgroupListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl63InfratribusHeaderControl.xaml">
@@ -610,7 +607,6 @@
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
-		<None Remove="Views\Database\Tbl68SpeciesgroupListPage.xaml" />
 		<None Remove="Views\Database\Tbl78NameListPage.xaml" />
 		<None Remove="Views\Database\Tbl81ImageListPage.xaml" />
 		<None Remove="Views\Database\Tbl84SynonymListPage.xaml" />
@@ -706,6 +702,10 @@
 		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusPage.xaml" />
 		<None Remove="Views\Modules\Tbl66Genus\Tbl66GenusParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupPage.xaml" />
+		<None Remove="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesPage.xaml" />
@@ -806,7 +806,6 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
-	<Folder Include="Views\Modules\Tbl68Speciesgroup\" />
 	<Folder Include="Views\Modules\Tbl87Geographic\" />
 	<Folder Include="Views\Modules\Tbl84Synonym\" />
 	<Folder Include="Views\Modules\Tbl81Image\" />
@@ -847,6 +846,30 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

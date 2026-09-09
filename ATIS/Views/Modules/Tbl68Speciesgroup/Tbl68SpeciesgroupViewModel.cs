@@ -1,0 +1,368 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Windows.Input;
+using ATIS.Interfaces;
+using ATIS.Services;
+using ATIS.Views.Base;
+using ATIS.Views.Modules.Hierarchy;
+using ATIS.Views.Modules.Tbl75Species;
+using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl93Comment;
+using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
+
+namespace ATIS.Views.Modules.Tbl68Speciesgroup;
+
+public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Speciesgroup>
+{
+    private readonly LookupService _lookupService;
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
+
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.Tbl68Speciesgroup>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
+
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+    public Tbl75SpeciesViewModel SpeciesViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+    //public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; private set; } = new();
+    //public Dictionary<int, string?> InfratribusLookup { get; private set; } = new();
+
+    //public async Task LoadInfratribusLookupAsync()
+    //{
+    //    var list = await _lookupService.GetInfratribusListAsync();
+    //    var lookup = await _lookupService.GetInfratribusLookupAsync();
+
+    //    InfratribusList.Clear();
+    //    foreach (var item in list)
+    //    {
+    //        InfratribusList.Add(item);
+    //    }
+
+    //    InfratribusLookup = lookup;
+    //    OnPropertyChanged(nameof(InfratribusLookup));
+    //}
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+    public Tbl68SpeciesgroupViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookupService,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
+    {
+        _lookupService = lookupService;
+
+    //    SpeciesViewModel = new Tbl75SpeciesViewModel(factory, dialog, coordinator, lookupService, user);
+
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SpeciesgroupId")) ? "Id" : loc.GetLocalizedString("HeaderSort_SpeciesgroupId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_SpeciesgroupName")) ? "Name" : loc.GetLocalizedString("HeaderSort_SpeciesgroupName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
+    }
+
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------               
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
+    {
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailTabIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
+
+        //if (SelectedDetailTabIndex == 2)
+        //    _ = GenusReferenceViewModel.LoadReferenceLookupsAsync();
+
+        //if (SelectedDetailTabIndex == 5)
+        //    _ = SpeciesViewModel.SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+
+ //   public bool IsSpeciesParentSelected => SpeciesViewModel.SelectedItem != null;
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+        // Boss-Start: Parent-Kontext löschen
+        _activeLoader = null;
+        _currentParentId = 0;
+
+   //     await LoadInfratribusLookupAsync();
+
+        Items = new ObservableCollection<Models.Tbl68Speciesgroup>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
+
+    // ---------------------------------------------------------
+    // LOAD FOR VK 
+    // ---------------------------------------------------------
+    //public async Task LoadForInfratribusAsync(int infratribusId)
+    //    => await LoadInternalAsync(infratribusId, Data.GetGenusForInfratribusAsync);
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.Tbl68Speciesgroup>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl68Speciesgroup>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+    protected override async Task<IEnumerable<Models.Tbl68Speciesgroup>> LoadItemsAsync()
+    {
+        //if (_activeLoader != null && _currentParentId > 0)
+        //    return await _activeLoader(_currentParentId);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchSpeciesgroupAsync(SearchText);
+
+        return Items ?? Enumerable.Empty<Models.Tbl68Speciesgroup>();
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
+      //      await ClearChildCollectionsAsync();
+            SelectedDetailTabIndex = 0;
+            return;
+        }
+
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        if (IsInParentMode)
+        {
+    //        await LoadChildrenAsync(GetId(SelectedItem));
+            return;
+        }
+
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+       // await LoadChildrenAsync(GetId(SelectedItem));
+    }
+
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+    //protected override async Task LoadChildrenAsync(int entityId)
+    //{
+    //    await SpeciesViewModel.LoadSpeciesgroupLookupAsync();
+    //    await SpeciesViewModel.LoadForSpeciesgroupAsync(entityId);
+
+
+    //    // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+    //    SpeciesViewModel.IsInParentMode = true;
+    //}
+
+    //protected override Task ClearChildCollectionsAsync()
+    //{
+    //    SpeciesViewModel.Items?.Clear();
+
+    //    if (IsBossMode)
+    //    {
+    //        SpeciesViewModel.SelectedItem = null;
+    //    }
+
+    //    return Task.CompletedTask;
+    //}
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+    protected override object GetSortKey(Models.Tbl68Speciesgroup item, string column)
+        => column switch
+        {
+            "Id" => item.SpeciesgroupId,
+            "Name" => item.SpeciesgroupName ?? "",
+            _ => ""
+        };
+
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+    protected override Task NewAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    protected override Models.Tbl68Speciesgroup? CreateNewItem()
+    {
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
+
+        //return new Models.Tbl68Speciesgroup
+        //{
+        //    InfratribusId = _currentParentId
+        //};
+        return null;
+    }
+
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
+    protected override async Task<Models.Tbl68Speciesgroup?> SaveItemAsync(Models.Tbl68Speciesgroup item)
+    {
+        if (string.IsNullOrWhiteSpace(item.SpeciesgroupName))
+        {
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
+        }
+
+        var saved = await Data.UpsertSpeciesgroupAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+        return saved;
+    }
+
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl68Speciesgroup item)
+    {
+        if (_wasEmptyBeforeSave && IsBossMode)
+        {
+            SearchText = item.SpeciesgroupName;
+            IsInParentMode = false;
+        }
+
+        return Task.CompletedTask;
+    }
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
+    protected override async Task<bool> DeleteItemAsync(Models.Tbl68Speciesgroup item)
+    {
+        if (item.SpeciesgroupId == 0)
+            return false;
+
+        if (await Data.SpeciesgroupHasSpeciesAsync(item.SpeciesgroupId))
+        {
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
+        await Data.DeleteSpeciesgroupAsync(item.SpeciesgroupId);
+        return true;
+    }
+
+    protected override Task<bool> ConfirmSaveAsync(Models.Tbl68Speciesgroup item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
+
+    protected override Task<bool> ConfirmDeleteAsync(Models.Tbl68Speciesgroup item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override int GetId(Models.Tbl68Speciesgroup item)
+        => item.SpeciesgroupId;
+
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+    private void ExecuteBack()
+    {
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
+
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
+
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailTabIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+}

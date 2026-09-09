@@ -38,6 +38,7 @@ public class LookupService
     private Dictionary<int, string?>? _subtribusLookupCache;
     private Dictionary<int, string?>? _infratribusLookupCache;
     private Dictionary<int, string?>? _genusLookupCache;
+    private Dictionary<int, string?>? _speciesgroupLookupCache;
     private Dictionary<int, string?>? _speciesLookupCache;
 
     private Dictionary<int, string?>? _refAuthorLookupCache;
@@ -65,6 +66,7 @@ public class LookupService
     private ObservableCollection<Models.Tbl60Subtribus>? _subtribusListCache;
     private ObservableCollection<Models.Tbl63Infratribus>? _infratribusListCache;
     private ObservableCollection<Models.Tbl66Genus>? _genusListCache;
+    private ObservableCollection<Models.Tbl68Speciesgroup>? _speciesgroupListCache;
     private ObservableCollection<Models.Tbl75Species>? _speciesListCache;
 
     private ObservableCollection<Models.Tbl90RefAuthor>? _refAuthorListCache;
@@ -172,6 +174,11 @@ public class LookupService
         _genusLookupCache = null;
         _genusListCache = null;
     }
+    public void InvalidateSpeciesgroupCache()
+    {
+        _speciesgroupLookupCache = null;
+        _speciesgroupListCache = null;
+    }
     public void InvalidateSpeciesCache()
     {
         _speciesLookupCache = null;
@@ -217,6 +224,7 @@ public class LookupService
         InvalidateSubtribusCache();
         InvalidateInfratribusCache();
         InvalidateGenusCache();
+        InvalidateSpeciesgroupCache();
         InvalidateSpeciesCache();
         //--------------------------------------------------------------------
         InvalidateRefExpertCache();
@@ -424,6 +432,16 @@ public class LookupService
             _genusLookupCache = list.ToDictionary(x => x.GenusId, x => x.GenusName);
         }
         return _genusLookupCache;
+    }
+    public async Task<Dictionary<int, string?>> GetSpeciesgroupLookupAsync()
+    {
+        if (_speciesgroupLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSpeciesgroupAsync();
+            _speciesgroupLookupCache = list.ToDictionary(x => x.SpeciesgroupId, x => x.SpeciesgroupName);
+        }
+        return _speciesgroupLookupCache;
     }
     public async Task<Dictionary<int, string?>> GetSpeciesLookupAsync()
     {
@@ -668,6 +686,16 @@ public class LookupService
             _genusListCache = new ObservableCollection<Models.Tbl66Genus>(list);
         }
         return _genusListCache;
+    }
+    public async Task<ObservableCollection<Models.Tbl68Speciesgroup>> GetSpeciesgroupListAsync()
+    {
+        if (_speciesgroupListCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllSpeciesgroupAsync();
+            _speciesgroupListCache = new ObservableCollection<Models.Tbl68Speciesgroup>(list);
+        }
+        return _speciesgroupListCache;
     }
     public async Task<ObservableCollection<Models.Tbl75Species>> GetSpeciesListAsync()
     {

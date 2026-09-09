@@ -33,6 +33,7 @@ using ATIS.Views.Modules.Tbl51Infrafamily;
 using ATIS.Views.Modules.Tbl54Supertribus;
 using ATIS.Views.Modules.Tbl57Tribus;
 using ATIS.Views.Modules.Tbl66Genus;
+using ATIS.Views.Modules.Tbl68Speciesgroup;
 using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl90RefExpert;
@@ -301,10 +302,10 @@ public partial class App : Application
         services.AddTransient<Tbl60SubtribusViewModel>();
         services.AddTransient<Tbl63InfratribusViewModel>();
         services.AddTransient<Tbl66GenusViewModel>();
+        services.AddTransient<Tbl68SpeciesgroupViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
         services.AddTransient<Tbl78NameViewModel>();
 
-        services.AddTransient<Tbl68SpeciesgroupAltViewModel>();
         services.AddTransient<Tbl78NameAltViewModel>();
         services.AddTransient<Tbl81ImageAltViewModel>();
         services.AddTransient<Tbl84SynonymAltViewModel>();

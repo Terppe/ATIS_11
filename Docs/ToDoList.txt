@@ -1148,3 +1148,15 @@ Von Tribus-Genus pages nachgezogen. Jetzt aus Infratribus alle Pivots rausnehmen
 03.09.2026 14:30 Uhr Alle Änderungen vorgenommen und im Generator gespeichert. In resource-datei eingeben Edit_Genus usw. von Species bis Famile fertig
 ----------------------------------------
 03.09.2026 16:30 Uhr Superfamile - Regnum. Regnum noch nicht ok, vergleichen mit Vorversion Subregnum
+----------------------------------------
+04.09.2026 16:30 Uhr Nuget eredigt. Microsoft.Windows.SDK.BuildTools 10.0.28000.2705. vorher startete nicht.
+----------------------------------------
+04.09.2026 17:30 Uhr Tbl75Species Page und... editcontrol begonnen
+----------------------------------------
+06.09.2026 10:30 Uhr Tbl75Editcontrol aktualisiert. Boss und parent fehlt noch und bei Editcontrol die Validationfelder einfügen
+----------------------------------------
+06.09.2026 12:30 Uhr ParentControl + BossControl ändern
+----------------------------------------
+08.09.2026 09:30 Uhr Speciesgroup page usw. Boss erzeugt und SpeciesPage und editcontrol weiter entwickelt. TextBoxen mit Wrap noch nicht ok
+----------------------------------------
+09.09.2026 09:30 Uhr WrapTextboxen gelöst und jetzt fehler bei Reference im Genuseditcontrol, die 3 Tabellen RefExpert, RefSource, RefAuthor werden nicht angezeigt

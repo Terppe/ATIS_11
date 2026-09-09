@@ -41,5 +41,6 @@
     <converters:BoolToInvertedVisibilityConverter x:Key="BoolToInvertedVisibilityConverter" />
     <converters:IndexToVisibilityConverter x:Key="IndexToVisibilityConverter" />
     <converters:IndexToBooleanConverter x:Key="IndexToBooleanConverter" />
+    <converters:DoubleToStringConverter x:Key="DoubleToStringConverter" />
 </ResourceDictionary>
 

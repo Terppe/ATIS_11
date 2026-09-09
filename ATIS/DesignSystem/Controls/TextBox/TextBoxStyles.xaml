@@ -112,14 +112,11 @@
 
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-
-
                         <!--  HEADER  -->
                         <TextBlock x:Name="HeaderElement"
                                    Grid.Row="0"
                                    Margin="0,0,0,4"
                                    Text="{TemplateBinding Header}" />
-
                         <!--  TEXTBOX  -->
                         <Border x:Name="BorderElement"
                                 Grid.Row="1"
@@ -210,6 +207,223 @@
         </Setter>
 
     </Style>
+
+    <Style x:Key="AtisTextBoxWrap"
+           BasedOn="{x:Null}"
+           TargetType="TextBox">
+        <!--  Basis wie AtisTextBox  -->
+        <Setter Property="Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource AtisTextBoxForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="FontSize" Value="14" />
+        <!--  Wrap-spezifisch  -->
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid x:Name="RootGrid"
+                          RowDefinitions="Auto,*">
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+                                        <Setter Target="BorderElement.BorderThickness" Value="1" />
+                                        <Setter Target="BorderElement.Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Focused">
+                                    <VisualState.Setters>
+                                        <Setter Target="BorderElement.BorderBrush" Value="#0067C0" />
+                                        <Setter Target="BorderElement.BorderThickness" Value="2" />
+                                        <!--  Fokus-Hintergrund explizit gleich lassen  -->
+                                        <Setter Target="BorderElement.Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+                                        <Setter Target="BorderElement.BorderThickness" Value="1" />
+                                        <Setter Target="BorderElement.Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="BorderElement.Opacity" Value="0.6" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <!--  optional Header  -->
+                        <TextBlock x:Name="HeaderElement"
+                                   Grid.Row="0"
+                                   Margin="0,0,0,4"
+                                   Text="{TemplateBinding Header}" />
+                        <!--  Eingabefläche  -->
+                        <Border x:Name="BorderElement"
+                                Grid.Row="1"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <!--  Wichtig: TextBox braucht diesen Part-Namen  -->
+                            <ScrollViewer x:Name="ContentElement"
+                                          Background="{x:Null}"
+                                          BorderThickness="0"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Visible" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+    <!--  Gemeinsame Basis  -->
+    <!--<Style x:Key="AtisTextBoxBase"
+    BasedOn="{x:Null}"
+    TargetType="TextBox">
+    <Setter Property="Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
+    <Setter Property="Foreground" Value="{ThemeResource AtisTextBoxForegroundBrush}" />
+    <Setter Property="BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Padding" Value="10,6" />
+    <Setter Property="FontSize" Value="14" />
+    <Setter Property="MinHeight" Value="32" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>-->
+
+    <!--  Mit Header  -->
+    <!--<Style x:Key="AtisTextBox"
+    BasedOn="{StaticResource AtisTextBoxBase}"
+    TargetType="TextBox">
+    <Setter Property="Template">
+    <Setter.Value>
+    <ControlTemplate TargetType="TextBox">
+    <Grid x:Name="RootGrid"
+    RowDefinitions="Auto,Auto,*">
+    <VisualStateManager.VisualStateGroups>
+    <VisualStateGroup x:Name="CommonStates">
+    <VisualState x:Name="Normal">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+    <Setter Target="BorderElement.BorderThickness" Value="1" />
+    </VisualState.Setters>
+    </VisualState>
+    <VisualState x:Name="Focused">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource TextControlBorderBrushFocused}" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    </VisualState.Setters>
+    </VisualState>
+    <VisualState x:Name="Invalid">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="Red" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    </VisualState.Setters>
+    </VisualState>
+    </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    <TextBlock x:Name="HeaderElement"
+    Grid.Row="0"
+    Margin="0,0,0,4"
+    Text="{TemplateBinding Header}" />
+
+    <Border x:Name="BorderElement"
+    Grid.Row="1"
+    MinHeight="30"
+    Padding="{TemplateBinding Padding}"
+    Background="{TemplateBinding Background}"
+    BorderBrush="{TemplateBinding BorderBrush}"
+    BorderThickness="{TemplateBinding BorderThickness}"
+    CornerRadius="6">
+    <ScrollViewer x:Name="ContentElement"
+    Padding="0"
+    Background="{x:Null}"
+    BorderThickness="0"
+    VerticalScrollBarVisibility="Hidden">
+    <ContentPresenter />
+    </ScrollViewer>
+    </Border>
+    </Grid>
+    </ControlTemplate>
+    </Setter.Value>
+    </Setter>
+    </Style>-->
+
+    <!--  Ohne Header  -->
+    <!--<Style x:Key="AtisTextBoxNoHeader"
+    BasedOn="{StaticResource AtisTextBoxBase}"
+    TargetType="TextBox">
+    <Setter Property="Template">
+    <Setter.Value>
+    <ControlTemplate TargetType="TextBox">
+    <Grid x:Name="RootGrid">
+    <VisualStateManager.VisualStateGroups>
+    <VisualStateGroup x:Name="CommonStates">
+    <VisualState x:Name="Normal">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+    <Setter Target="BorderElement.BorderThickness" Value="1" />
+    </VisualState.Setters>
+    </VisualState>
+    <VisualState x:Name="Focused">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource TextControlBorderBrushFocused}" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    </VisualState.Setters>
+    </VisualState>
+    <VisualState x:Name="Invalid">
+    <VisualState.Setters>
+    <Setter Target="BorderElement.BorderBrush" Value="Red" />
+    <Setter Target="BorderElement.BorderThickness" Value="2" />
+    </VisualState.Setters>
+    </VisualState>
+    </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
+    <Border x:Name="BorderElement"
+    MinHeight="30"
+    Padding="{TemplateBinding Padding}"
+    Background="{TemplateBinding Background}"
+    BorderBrush="{TemplateBinding BorderBrush}"
+    BorderThickness="{TemplateBinding BorderThickness}"
+    CornerRadius="6">
+    <ScrollViewer x:Name="ContentElement"
+    Padding="0"
+    Background="{x:Null}"
+    BorderThickness="0"
+    VerticalScrollBarVisibility="Hidden">
+    <ContentPresenter />
+    </ScrollViewer>
+    </Border>
+    </Grid>
+    </ControlTemplate>
+    </Setter.Value>
+    </Setter>
+    </Style>-->
+
+
+
 
 
 
