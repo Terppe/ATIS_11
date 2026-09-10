@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
@@ -27,45 +28,76 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
 
     public async Task LoadReferenceLookupsAsync()
     {
-        var listrefauthor = await _lookupService.GetRefAuthorListAsync();
-        var lookuprefauthor = await _lookupService.GetRefAuthorLookupAsync();
+        var authorListTask = _lookupService.GetRefAuthorListAsync();
+        var expertListTask = _lookupService.GetRefExpertListAsync();
+        var sourceListTask = _lookupService.GetRefSourceListAsync();
+
+        var authorLookupTask = _lookupService.GetRefAuthorLookupAsync();
+        var expertLookupTask = _lookupService.GetRefExpertLookupAsync();
+        var sourceLookupTask = _lookupService.GetRefSourceLookupAsync();
+
+        await Task.WhenAll(authorListTask, expertListTask, sourceListTask,
+            authorLookupTask, expertLookupTask, sourceLookupTask);
 
         RefAuthorsList.Clear();
-        foreach (var item in listrefauthor)
-        {
-            RefAuthorsList.Add(item);
-        }
-
-        RefAuthorLookup = lookuprefauthor;
-
-        OnPropertyChanged(nameof(RefAuthorLookup));
-        //---------------------------------------------
-        var listrefexpert = await _lookupService.GetRefExpertListAsync();
-        var lookuprefexpert = await _lookupService.GetRefExpertLookupAsync();
+        foreach (var item in (await authorListTask) ?? new()) RefAuthorsList.Add(item);
 
         RefExpertsList.Clear();
-        foreach (var item in listrefexpert)
-        {
-            RefExpertsList.Add(item);
-        }
-
-        RefExpertLookup = lookuprefexpert;
-
-        OnPropertyChanged(nameof(RefExpertLookup));
-        //---------------------------------------------
-        var listrefsource = await _lookupService.GetRefSourceListAsync();
-        var lookuprefsource = await _lookupService.GetRefSourceLookupAsync();
+        foreach (var item in (await expertListTask) ?? new()) RefExpertsList.Add(item);
 
         RefSourcesList.Clear();
-        foreach (var item in listrefsource)
-        {
-            RefSourcesList.Add(item);
-        }
+        foreach (var item in (await sourceListTask) ?? new()) RefSourcesList.Add(item);
 
-        RefSourceLookup = lookuprefsource;
+        RefAuthorLookup = (await authorLookupTask) ?? new();
+        RefExpertLookup = (await expertLookupTask) ?? new();
+        RefSourceLookup = (await sourceLookupTask) ?? new();
 
+        OnPropertyChanged(nameof(RefAuthorLookup));
+        OnPropertyChanged(nameof(RefExpertLookup));
         OnPropertyChanged(nameof(RefSourceLookup));
     }
+
+    //public async Task LoadReferenceLookupsAsync()
+    //{
+    //    var listrefauthor = await _lookupService.GetRefAuthorListAsync();
+    //    var lookuprefauthor = await _lookupService.GetRefAuthorLookupAsync();
+
+    //    RefAuthorsList.Clear();
+    //    foreach (var item in listrefauthor)
+    //    {
+    //        RefAuthorsList.Add(item);
+    //    }
+
+    //    RefAuthorLookup = lookuprefauthor;
+
+    //    OnPropertyChanged(nameof(RefAuthorLookup));
+    //    //---------------------------------------------
+    //    var listrefexpert = await _lookupService.GetRefExpertListAsync();
+    //    var lookuprefexpert = await _lookupService.GetRefExpertLookupAsync();
+
+    //    RefExpertsList.Clear();
+    //    foreach (var item in listrefexpert)
+    //    {
+    //        RefExpertsList.Add(item);
+    //    }
+
+    //    RefExpertLookup = lookuprefexpert;
+
+    //    OnPropertyChanged(nameof(RefExpertLookup));
+    //    //---------------------------------------------
+    //    var listrefsource = await _lookupService.GetRefSourceListAsync();
+    //    var lookuprefsource = await _lookupService.GetRefSourceLookupAsync();
+
+    //    RefSourcesList.Clear();
+    //    foreach (var item in listrefsource)
+    //    {
+    //        RefSourcesList.Add(item);
+    //    }
+
+    //    RefSourceLookup = lookuprefsource;
+
+    //    OnPropertyChanged(nameof(RefSourceLookup));
+    //}
 
     //public async Task LoadReferenceLookupsAsync()
     //{
@@ -122,6 +154,8 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         await LoadReferenceLookupsAsync();
 
         SelectedItem = null;
+
+
     }
 
     // ---------------------------------------------------------

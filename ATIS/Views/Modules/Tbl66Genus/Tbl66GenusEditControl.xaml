@@ -175,8 +175,7 @@
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Synonym"
                      Style="{StaticResource AtisTextBoxWrap}"
-                     Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     />
+                     Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!--  Language Tab  -->
             <Grid RowDefinitions="Auto, Auto">

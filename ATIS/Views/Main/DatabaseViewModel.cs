@@ -9,9 +9,7 @@ public partial class DatabaseViewModel : ObservableObject //, INavigationAware
     private readonly IDataService _dataService;
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
-    public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = [];
-    public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = [];
     public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = [];
     public ObservableCollection<Tbl21Class> ClassItems { get; } = [];
     public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = [];
@@ -407,12 +405,6 @@ public partial class DatabaseViewModel : ObservableObject //, INavigationAware
         set => SetProperty(ref _phylumSelected, value);
     }
 
-    private Tbl09Division _divisionSelected = null!;
-    public Tbl09Division DivisionSelected
-    {
-        get => _divisionSelected;
-        set => SetProperty(ref _divisionSelected, value);
-    }
 
     private Tbl90Reference _referenceSelected = null!;
     public Tbl90Reference ReferenceSelected
@@ -493,15 +485,6 @@ public partial class DatabaseViewModel : ObservableObject //, INavigationAware
         }
     }
 
-    private ObservableCollection<Tbl09Division> _tbl09DivisionsList;
-    public ObservableCollection<Tbl09Division> Tbl09DivisionsList
-    {
-        get => _tbl09DivisionsList;
-        set
-        {
-            _tbl09DivisionsList = value; OnPropertyChanged(nameof(Tbl09DivisionsList));
-        }
-    }
 
     private ObservableCollection<Tbl90RefSource> _tbl90SourcesAllList = null!;
     public ObservableCollection<Tbl90RefSource> Tbl90SourcesAllList

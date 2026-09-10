@@ -25,10 +25,10 @@
       xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
       xmlns:tbl63Infratribus="using:ATIS.Views.Modules.Tbl63Infratribus"
       xmlns:tbl66Genus="using:ATIS.Views.Modules.Tbl66Genus"
+      xmlns:tbl68Speciesgroup="using:ATIS.Views.Modules.Tbl68Speciesgroup"
       xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
       xmlns:tbl90RefAuthor="using:ATIS.Views.Modules.Tbl90RefAuthor"
       xmlns:tbl90RefSource="using:ATIS.Views.Modules.Tbl90RefSource"
-      xmlns:tbl68Speciesgroup="using:ATIS.Views.Modules.Tbl68Speciesgroup"
       NavigationCacheMode="Required"
       mc:Ignorable="d">
 

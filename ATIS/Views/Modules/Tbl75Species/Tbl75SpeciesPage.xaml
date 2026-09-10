@@ -164,27 +164,40 @@
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="CommentsNameTab"
+                                <Button x:Name="ImageTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
                                         Tag="4">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Comments" />
-                                        <Border x:Name="CommentsNameTabUnderline"
+                                                   loc:Uids.Uid="TextBlock_Images" />
+                                        <Border x:Name="ImageTabUnderline"
                                                 Height="2"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="ReferencesNameTab"
+                                <Button x:Name="SynonymTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
                                         Tag="5">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_References" />
-                                        <Border x:Name="ReferencesNameTabUnderline"
+                                                   loc:Uids.Uid="TextBlock_Synonyms" />
+                                        <Border x:Name="SynonymTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="GeographicTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="5">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Geographics" />
+                                        <Border x:Name="GeographicTabUnderline"
                                                 Height="2"
                                                 Background="Transparent" />
                                     </StackPanel>
@@ -231,24 +244,36 @@
                                                                   Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>-->
 
-                            <!--<Grid x:Name="CommentsNameContent"
-                                  DataContext="{Binding NameViewModel.NameCommentViewModel}"
+                            <!--<Grid x:Name="ImageContent"
+                                  DataContext="{Binding ImageViewModel}"
                                   RowDefinitions="Auto,*">
-                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                      Item="{Binding Item}"
-                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <tbl78Name:Tbl81ImageParentControl x:Name="ImageParentControl"
+                                                                    Grid.Row="0" />
+                                <tbl78Name:Tbl81ImageEditControl Grid.Row="1"
+                                                                  Item="{Binding SelectedItem}"
+                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>-->
 
-                            <!--<Grid x:Name="ReferencesNameContent"
-                                  DataContext="{Binding NameViewModel.NameReferenceViewModel}"
+                            <!--<Grid x:Name="SynonymContent"
+                                  DataContext="{Binding SynonymViewModel}"
                                   RowDefinitions="Auto,*">
-                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                          Item="{Binding Item}"
-                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <tbl78Name:Tbl84SynonymParentControl x:Name="SynonymParentControl"
+                                                                    Grid.Row="0" />
+                                <tbl78Name:Tbl84SynonymEditControl Grid.Row="1"
+                                                                  Item="{Binding SelectedItem}"
+                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>-->
+
+                            <!--<Grid x:Name="GeographicContent"
+                                  DataContext="{Binding GeographicViewModel}"
+                                  RowDefinitions="Auto,*">
+                                <tbl78Name:Tbl84GeographicParentControl x:Name="GeographicParentControl"
+                                                                    Grid.Row="0" />
+                                <tbl78Name:Tbl84GeographicEditControl Grid.Row="1"
+                                                                  Item="{Binding SelectedItem}"
+                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>-->
+
                         </Grid>
                     </Grid>
                 </layout:BaseBossPageLayout.DetailContent>

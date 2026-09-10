@@ -59,11 +59,11 @@ public class Tbl90Reference : ObservableObject, IDataService.IAuditable, IHierar
         set => SetProperty(ref _countId, value);
     }
 
-    // ---------------------------------------------------------
-    // Valid (Pflicht)
-    // ---------------------------------------------------------
-    private bool _valid;
-    public bool Valid
+    // ---------------------------------------------------------                  
+    // Valid
+    // ---------------------------------------------------------                  
+    private bool? _valid;
+    public bool? Valid
     {
         get => _valid;
         set => SetProperty(ref _valid, value);

@@ -52,10 +52,10 @@
 		<PackageReference Include="log4net" Version="3.4.0" />
 		<PackageReference Include="MailKit" Version="4.17.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.11" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
@@ -320,18 +320,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Database\TblCountryListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl87GeographicListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl84SynonymListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl81ImageListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Database\Tbl78NameListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl63InfratribusHeaderControl.xaml">
@@ -607,10 +595,6 @@
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
-		<None Remove="Views\Database\Tbl78NameListPage.xaml" />
-		<None Remove="Views\Database\Tbl81ImageListPage.xaml" />
-		<None Remove="Views\Database\Tbl84SynonymListPage.xaml" />
-		<None Remove="Views\Database\Tbl87GeographicListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListPage.xaml" />
 		<None Remove="Views\Database\TblCountryListTestPage.xaml" />
 		<None Remove="Views\Database\TblUserProfileListPage.xaml" />

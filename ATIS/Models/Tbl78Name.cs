@@ -62,12 +62,25 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         }
     }
 
-    public int SpeciesId { get; set; }
+    private int? _speciesId;
+    public int? SpeciesId
+    {
+        get => _speciesId;
+        set => SetProperty(ref _speciesId, value);
+    }
 
     [Required]
     public int CountId { get; set; }
 
-    public bool Valid { get; set; }
+    // ---------------------------------------------------------                  
+    // Valid
+    // ---------------------------------------------------------                  
+    private bool? _valid;
+    public bool? Valid
+    {
+        get => _valid;
+        set => SetProperty(ref _valid, value);
+    }
 
     private string? _validYear;
     [StringLength(4)]

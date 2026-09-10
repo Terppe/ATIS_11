@@ -14,9 +14,7 @@ public class SpeciesViewModel : ObservableObject
     private readonly AtisDbContext _context = new();
     public ObservableCollection<Tbl03Regnum> RegnumItems { get; } = [];
     public ObservableCollection<Tbl06Phylum> PhylumItems { get; } = [];
-    public ObservableCollection<Tbl09Division> DivisionItems { get; } = [];
     public ObservableCollection<Tbl12Subphylum> SubphylumItems { get; } = [];
-    public ObservableCollection<Tbl15Subdivision> SubdivisionItems { get; } = [];
     public ObservableCollection<Tbl18Superclass> SuperclassItems { get; } = [];
     public ObservableCollection<Tbl21Class> ClassItems { get; } = [];
     public ObservableCollection<Tbl24Subclass> SubclassItems { get; } = [];
@@ -219,9 +217,6 @@ public class SpeciesViewModel : ObservableObject
 
     #endregion Public Commands to change TabItems
 
-
-    #region All Properties
-
     #region [Propertys]
 
     public bool IsModified { get; set; }
@@ -282,12 +277,6 @@ public class SpeciesViewModel : ObservableObject
         set => SetProperty(ref _phylumSelected, value);
     }
 
-    private Tbl09Division _divisionSelected = null!;
-    public Tbl09Division DivisionSelected
-    {
-        get => _divisionSelected;
-        set => SetProperty(ref _divisionSelected, value);
-    }
 
 
     #endregion
@@ -335,15 +324,6 @@ public class SpeciesViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl09Division> _tbl09DivisionsList;
-    public ObservableCollection<Tbl09Division> Tbl09DivisionsList
-    {
-        get => _tbl09DivisionsList;
-        set
-        {
-            _tbl09DivisionsList = value; OnPropertyChanged(nameof(Tbl09DivisionsList));
-        }
-    }
 
     private ObservableCollection<Tbl90RefSource> _tbl90SourcesAllList = null!;
     public ObservableCollection<Tbl90RefSource> Tbl90SourcesAllList
@@ -445,26 +425,8 @@ public class SpeciesViewModel : ObservableObject
             }
         }
     }
-    private void RefreshDivisionItems()
-    {
-        DivisionItems.Clear();
-        if (Tbl09DivisionsList != null)
-        {
-            foreach (var item in Tbl09DivisionsList)
-            {
-                DivisionItems.Add(item);
-            }
-
-            if (Tbl09DivisionsList.Count == 0) return;
-            if (DivisionSelected == null && Tbl09DivisionsList.Count != 0)
-            {
-                DivisionSelected = DivisionItems.FirstOrDefault()!;
-            }
-        }
-    }
 
 
-    #endregion
 
     #endregion
 

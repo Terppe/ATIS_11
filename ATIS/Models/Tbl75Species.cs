@@ -140,10 +140,15 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     [NotMapped] public string? CountIdError { get; set; }
     [NotMapped] public bool HasCountIdError { get; set; }
 
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------                  
     // Valid
-    // ---------------------------------------------------------
-    public bool Valid { get; set; }
+    // ---------------------------------------------------------                  
+    private bool? _valid;
+    public bool? Valid
+    {
+        get => _valid;
+        set => SetProperty(ref _valid, value);
+    }
 
     // ---------------------------------------------------------
     // ValidYear

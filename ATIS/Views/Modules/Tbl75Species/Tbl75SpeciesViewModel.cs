@@ -95,8 +95,8 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "Id");
-        RegisterHeader("Name", "Name");
+        RegisterHeader("Id", "Species ID");
+        RegisterHeader("Name", "Species Name");
 
         _langHandler = _ => ApplyHeaders();
         App.LanguageChanged += _langHandler;

@@ -1500,6 +1500,12 @@
   <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
     <value>Edit Supertribus</value>
   </data>
+  <data name="TextBlock_Edit_Speciesgroup.Text" xml:space="preserve">
+    <value>Edit Speciesgroup</value>
+  </data>
+  <data name="TextBlock_Edit_Synonym.Text" xml:space="preserve">
+    <value>Edit Synonym</value>
+  </data>
   <data name="TextBlock_Edit_Superclass.Text" xml:space="preserve">
     <value>Edit Superclass</value>
   </data>
@@ -1508,6 +1514,9 @@
   </data>
   <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
     <value>Edit Genus</value>
+  </data>
+  <data name="TextBlock_Edit_Geographic.Text" xml:space="preserve">
+    <value>Edit Geographic</value>
   </data>
   <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
     <value>Edit Class</value>
@@ -1524,14 +1533,26 @@
   <data name="TextBlock_Edit_Ordo.Text" xml:space="preserve">
     <value>Edit Ordo</value>
   </data>
+  <data name="TextBlock_Edit_Name.Text" xml:space="preserve">
+    <value>Edit Name</value>
+  </data>
+  <data name="TextBlock_Edit_Family.Text" xml:space="preserve">
+    <value>Edit Family</value>
+  </data>
   <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
     <value>Edit Legio</value>
+  </data>
+  <data name="TextBlock_Edit_Image.Text" xml:space="preserve">
+    <value>Edit Image/Video</value>
   </data>
   <data name="TextBlock_Edit_Subphylum.Text" xml:space="preserve">
     <value>Edit Subphylum</value>
   </data>
   <data name="TextBlock_Edit_Subclass.Text" xml:space="preserve">
     <value>Edit Subclass</value>
+  </data>
+  <data name="TextBlock_Edit_Subfamily.Text" xml:space="preserve">
+    <value>Edit Subfamily</value>
   </data>
   <data name="TextBlock_Edit_Subspecies.Text" xml:space="preserve">
     <value>Edit Subspecies</value>

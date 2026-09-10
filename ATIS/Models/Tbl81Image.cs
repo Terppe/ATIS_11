@@ -59,7 +59,15 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     [Required]
     public int CountId { get; set; }
 
-    public bool? Valid { get; set; }
+    // ---------------------------------------------------------                  
+    // Valid
+    // ---------------------------------------------------------                  
+    private bool? _valid;
+    public bool? Valid
+    {
+        get => _valid;
+        set => SetProperty(ref _valid, value);
+    }
 
     private string? _validYear;
     [StringLength(4)]

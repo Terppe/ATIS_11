@@ -1500,6 +1500,12 @@
   <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
     <value>Bearbeiten Übertribus</value>
   </data>
+  <data name="TextBlock_Edit_Speciesgroup.Text" xml:space="preserve">
+    <value>Bearbeiten Artengruppe</value>
+  </data>
+  <data name="TextBlock_Edit_Synonym.Text" xml:space="preserve">
+    <value>Bearbeiten Synonym</value>
+  </data>
   <data name="TextBlock_Edit_Superclass.Text" xml:space="preserve">
     <value>Bearbeiten Überklasse</value>
   </data>
@@ -1508,6 +1514,9 @@
   </data>
   <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
     <value>Bearbeiten Gattung</value>
+  </data>
+  <data name="TextBlock_Edit_Geographic.Text" xml:space="preserve">
+    <value>Bearbeiten Verbreitung</value>
   </data>
   <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
     <value>Bearbeiten Klasse</value>
@@ -1524,14 +1533,26 @@
   <data name="TextBlock_Edit_Ordo.Text" xml:space="preserve">
     <value>Bearbeiten Ordnung</value>
   </data>
+  <data name="TextBlock_Edit_Name.Text" xml:space="preserve">
+    <value>Bearbeiten Name</value>
+  </data>
+  <data name="TextBlock_Edit_Family.Text" xml:space="preserve">
+    <value>Bearbeiten Familie</value>
+  </data>
   <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
     <value>Bearbeiten Übewrordnung</value>
+  </data>
+  <data name="TextBlock_Edit_Image.Text" xml:space="preserve">
+    <value>Bearbeiten Bild/Video</value>
   </data>
   <data name="TextBlock_Edit_Subphylum.Text" xml:space="preserve">
     <value>Bearbeiten Unterstamm</value>
   </data>
   <data name="TextBlock_Edit_Subclass.Text" xml:space="preserve">
     <value>Bearbeiten Unterklasse</value>
+  </data>
+  <data name="TextBlock_Edit_Subfamily.Text" xml:space="preserve">
+    <value>Bearbeiten Unterfamilie</value>
   </data>
   <data name="TextBlock_Edit_Subspecies.Text" xml:space="preserve">
     <value>Bearbeiten Unterart</value>

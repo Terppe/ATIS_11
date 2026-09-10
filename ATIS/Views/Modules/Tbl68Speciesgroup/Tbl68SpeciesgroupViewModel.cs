@@ -1,56 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-using ATIS.Views.Modules.Tbl75Species;
-using ATIS.Views.Modules.Tbl90Reference;
-using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
+
+
+//    Tbl68SpeciesgroupViewModel Skriptdatum:  10.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl68Speciesgroup;
 
 public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Speciesgroup>
 {
-    private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
-
-    private int _currentParentId;
     private bool _wasEmptyBeforeSave;
-    private Func<int, Task<IEnumerable<Models.Tbl68Speciesgroup>>>? _activeLoader;
     private readonly Action<string> _langHandler;
-
-    // ---------------------------------------------------------
-    // CHILD-VMs
-    // ---------------------------------------------------------
-    public Tbl75SpeciesViewModel SpeciesViewModel { get; }
-
-    // ---------------------------------------------------------
-    // LOOKUPS
-    // ---------------------------------------------------------
-    //public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; private set; } = new();
-    //public Dictionary<int, string?> InfratribusLookup { get; private set; } = new();
-
-    //public async Task LoadInfratribusLookupAsync()
-    //{
-    //    var list = await _lookupService.GetInfratribusListAsync();
-    //    var lookup = await _lookupService.GetInfratribusLookupAsync();
-
-    //    InfratribusList.Clear();
-    //    foreach (var item in list)
-    //    {
-    //        InfratribusList.Add(item);
-    //    }
-
-    //    InfratribusLookup = lookup;
-    //    OnPropertyChanged(nameof(InfratribusLookup));
-    //}
 
     // ---------------------------------------------------------                   
     // CTOR
@@ -63,10 +30,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
-        _lookupService = lookupService;
-
-    //    SpeciesViewModel = new Tbl75SpeciesViewModel(factory, dialog, coordinator, lookupService, user);
-
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
@@ -97,11 +60,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
-    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
-    {
-        SelectedDetailTabIndex = index;
-    });
-
     private int _selectedDetailTabIndex;
     public int SelectedDetailTabIndex
     {
@@ -117,16 +75,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
 
     private void UpdateButtonStates()
     {
-        // Tab 0 = Boss-Modus
-        IsInParentMode = SelectedDetailTabIndex != 0;
-
-        //if (SelectedDetailTabIndex == 2)
-        //    _ = GenusReferenceViewModel.LoadReferenceLookupsAsync();
-
-        //if (SelectedDetailTabIndex == 5)
-        //    _ = SpeciesViewModel.SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
-
-        UpdateRefreshState();
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
@@ -140,7 +88,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         }
     }
 
- //   public bool IsSpeciesParentSelected => SpeciesViewModel.SelectedItem != null;
     public bool IsDetailVisible => SelectedItem != null;
     public bool IsEditMode => SelectedItem != null;
     public bool HasItems => Items != null && Items.Count > 0;
@@ -150,13 +97,10 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
     // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
-        // Boss-Start: Parent-Kontext löschen
-        _activeLoader = null;
-        _currentParentId = 0;
-
-   //     await LoadInfratribusLookupAsync();
 
         Items = new ObservableCollection<Models.Tbl68Speciesgroup>();
+
+        DataSetCount = Items.Count;
 
         OnPropertyChanged(nameof(HasItems));
 
@@ -165,36 +109,10 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
     }
 
     // ---------------------------------------------------------
-    // LOAD FOR VK 
-    // ---------------------------------------------------------
-    //public async Task LoadForInfratribusAsync(int infratribusId)
-    //    => await LoadInternalAsync(infratribusId, Data.GetGenusForInfratribusAsync);
-
-    // ---------------------------------------------------------
-    // INTERNAL LOADER (Boss + Parent)
-    // ---------------------------------------------------------
-    private async Task LoadInternalAsync(
-        int parentId,
-        Func<int, Task<IEnumerable<Models.Tbl68Speciesgroup>>> loader)
-    {
-        _currentParentId = parentId;
-        _activeLoader = loader;
-
-        var items = await loader(parentId);
-        Items = new ObservableCollection<Models.Tbl68Speciesgroup>(items);
-        OnPropertyChanged(nameof(HasItems));
-
-        DataSetCount = Items.Count;
-    }
-
-    // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
     protected override async Task<IEnumerable<Models.Tbl68Speciesgroup>> LoadItemsAsync()
     {
-        //if (_activeLoader != null && _currentParentId > 0)
-        //    return await _activeLoader(_currentParentId);
-
         if (!string.IsNullOrWhiteSpace(SearchText))
             return await Data.SearchSpeciesgroupAsync(SearchText);
 
@@ -210,47 +128,18 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         if (SelectedItem == null)
         {
             OnPropertyChanged(nameof(IsDetailVisible));
-      //      await ClearChildCollectionsAsync();
-            SelectedDetailTabIndex = 0;
-            return;
         }
-
-        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
-        if (IsInParentMode)
-        {
-    //        await LoadChildrenAsync(GetId(SelectedItem));
-            return;
-        }
-
-        // 3. Boss-Modus → volle Detail-Logik
-        OnPropertyChanged(nameof(IsDetailVisible));
-       // await LoadChildrenAsync(GetId(SelectedItem));
     }
 
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-    //protected override async Task LoadChildrenAsync(int entityId)
-    //{
-    //    await SpeciesViewModel.LoadSpeciesgroupLookupAsync();
-    //    await SpeciesViewModel.LoadForSpeciesgroupAsync(entityId);
+    protected override async Task LoadChildrenAsync(int entityId)
+    {
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
+    }
 
-
-    //    // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
-    //    SpeciesViewModel.IsInParentMode = true;
-    //}
-
-    //protected override Task ClearChildCollectionsAsync()
-    //{
-    //    SpeciesViewModel.Items?.Clear();
-
-    //    if (IsBossMode)
-    //    {
-    //        SpeciesViewModel.SelectedItem = null;
-    //    }
-
-    //    return Task.CompletedTask;
-    //}
 
     // ---------------------------------------------------------
     // SORTING
@@ -272,15 +161,14 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         return Task.CompletedTask;
     }
 
-    protected override Models.Tbl68Speciesgroup? CreateNewItem()
+    protected override Models.Tbl68Speciesgroup CreateNewItem()
     {
         _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-        //return new Models.Tbl68Speciesgroup
-        //{
-        //    InfratribusId = _currentParentId
-        //};
-        return null;
+        return new Models.Tbl68Speciesgroup
+        {
+           // SpeciesgroupId = _currentParentId
+        };
     }
 
     // ---------------------------------------------------------
@@ -296,10 +184,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
 
         var saved = await Data.UpsertSpeciesgroupAsync(item);
 
-        if (saved != null)
-        {
-            _lookupService.InvalidateAllCaches();
-        }
         return saved;
     }
 
@@ -322,12 +206,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         if (item.SpeciesgroupId == 0)
             return false;
 
-        if (await Data.SpeciesgroupHasSpeciesAsync(item.SpeciesgroupId))
-        {
-            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
-            return false;
-        }
-
         await Data.DeleteSpeciesgroupAsync(item.SpeciesgroupId);
         return true;
     }
@@ -337,11 +215,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
 
     protected override Task<bool> ConfirmDeleteAsync(Models.Tbl68Speciesgroup item)
         => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
-
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        throw new NotImplementedException();
-    }
 
     protected override int GetId(Models.Tbl68Speciesgroup item)
         => item.SpeciesgroupId;
@@ -356,11 +229,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
 
         // ⭐ Detail schließen
         OnPropertyChanged(nameof(IsDetailVisible));
-
-        // Parent-Modus bleibt aktiv
-        IsInParentMode = true;
-
-        SelectedDetailTabIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();

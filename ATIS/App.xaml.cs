@@ -306,11 +306,6 @@ public partial class App : Application
         services.AddTransient<Tbl75SpeciesViewModel>();
         services.AddTransient<Tbl78NameViewModel>();
 
-        services.AddTransient<Tbl78NameAltViewModel>();
-        services.AddTransient<Tbl81ImageAltViewModel>();
-        services.AddTransient<Tbl84SynonymAltViewModel>();
-        services.AddTransient<Tbl87GeographicAltViewModel>();
-
         services.AddTransient<Tbl90ReferenceViewModel>();
         services.AddTransient<Tbl90RefAuthorViewModel>();
         services.AddTransient<Tbl90RefExpertViewModel>();

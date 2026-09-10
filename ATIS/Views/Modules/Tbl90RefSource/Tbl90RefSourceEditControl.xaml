@@ -101,7 +101,8 @@
                                Visibility="{Binding Item.HasRefSourceNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  NULL Combo  --><!--
+                <!--  NULL Combo  -->
+                <!--
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">

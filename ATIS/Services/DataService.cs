@@ -7413,6 +7413,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+    //---------------------------------------------------------
     public async Task DeleteReferencesAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9135,23 +9136,6 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    public ObservableCollection<Tbl09Division> GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl09Divisions != null)
-        {
-            var collection = new ObservableCollection<Tbl09Division>(_context.Tbl09Divisions
-                .Where(e => e.DivisionName.StartsWith(filterText) &&
-                            e.DivisionName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.DivisionName));
-            return collection;
-        }
-        return null!;
-    }
 
     public ObservableCollection<Tbl12Subphylum> GetTbl12SubphylumsCollectionOrderBySubphylumNameFromFilterText(string filterText)
     {
@@ -9171,23 +9155,6 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    public ObservableCollection<Tbl15Subdivision> GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl15Subdivisions != null)
-        {
-            var collection = new ObservableCollection<Tbl15Subdivision>(_context.Tbl15Subdivisions
-                .Where(e => e.SubdivisionName.StartsWith(filterText) &&
-                            e.SubdivisionName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SubdivisionName));
-            return collection;
-        }
-        return null!;
-    }
 
     public ObservableCollection<Tbl18Superclass> GetTbl18SuperclassesCollectionOrderBySuperclassNameFromFilterText(string filterText)
     {
@@ -9799,20 +9766,6 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
         ;
     }
-    public ObservableCollection<Tbl09Division> CollDivisionsByRegnumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl09Divisions != null)
-        {
-            var collection = new ObservableCollection<Tbl09Division>(context.Tbl09Divisions
-                .Where(e => e.RegnumId == id &&
-                            e.DivisionName.Contains(Value) == false)
-                .OrderBy(a => a.DivisionName));
-            return collection;
-        }
-        return null!;
-    }
     //References
     public ObservableCollection<Tbl90Reference> CollExpertsByRegnumId(int id)
     {
@@ -10293,19 +10246,6 @@ public partial class DataService : ObservableObject, IDataService
             var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
                 .Where(e => e.SubphylumId == id &&
                             e.SubphylumName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl15Subdivision> CollSubdivisionsBySubdivisionIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl15Subdivisions != null)
-        {
-            var collection = new ObservableCollection<Tbl15Subdivision>(context.Tbl15Subdivisions
-                .Where(e => e.SubdivisionId == id &&
-                            e.SubdivisionName.Contains(Value) == false));
             return collection;
         }
         return null!;
@@ -13007,15 +12947,7 @@ public partial class DataService : ObservableObject, IDataService
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl09Division> Tbl09DivisionsList
-    {
-        get; set;
-    } = null!;
 
-    public ObservableCollection<Tbl15Subdivision> Tbl15SubdivisionsList
-    {
-        get; set;
-    } = null!;
 
     public ObservableCollection<Tbl18Superclass> Tbl18SuperclassesList
     {
@@ -13167,15 +13099,6 @@ public partial class DataService : ObservableObject, IDataService
         get; set;
     } = null!;
 
-    public ObservableCollection<Tbl09Division> DivisionsCollection
-    {
-        get; set;
-    } = null!;
-
-    public ObservableCollection<Tbl15Subdivision> SubdivisionsCollection
-    {
-        get; set;
-    } = null!;
 
     public ObservableCollection<Tbl18Superclass> SuperclassesCollection
     {

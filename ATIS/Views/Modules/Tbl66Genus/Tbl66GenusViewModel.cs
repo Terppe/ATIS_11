@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -53,7 +54,10 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         InfratribusLookup = lookup;
         OnPropertyChanged(nameof(InfratribusLookup));
     }
-
+    public async Task LoadReferenceLookupsAsync()
+    {
+        await GenusReferenceViewModel.LoadReferenceLookupsAsync();
+    }
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
@@ -81,6 +85,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         App.LanguageChanged += _langHandler;
 
         ApplyHeaders();
+
     }
 
     // ---------------------------------------------------------                  
@@ -114,27 +119,25 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         {
             if (SetProperty(ref _selectedDetailTabIndex, value))
             {
-                UpdateButtonStates();
+                _ = UpdateButtonStatesAsync();
             }
         }
     }
 
-    private void UpdateButtonStates()
+    private async Task UpdateButtonStatesAsync()
     {
-        // Tab 0 = Boss-Modus
         IsInParentMode = SelectedDetailTabIndex != 0;
 
         if (SelectedDetailTabIndex == 2)
-            _ = GenusReferenceViewModel.LoadReferenceLookupsAsync();
+            await GenusReferenceViewModel.LoadReferenceLookupsAsync();
 
         if (SelectedDetailTabIndex == 5)
-            _ = SpeciesViewModel.SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
+            await SpeciesViewModel.SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
     public async Task ApplyFilterAsync(string? filter)
     {
         if (IsBossMode)
@@ -159,8 +162,9 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         _currentParentId = 0;
 
         await LoadInfratribusLookupAsync();
-
-        Items = new ObservableCollection<Models.Tbl66Genus>();
+        
+        
+            Items = new ObservableCollection<Models.Tbl66Genus>();
 
         OnPropertyChanged(nameof(HasItems));
 

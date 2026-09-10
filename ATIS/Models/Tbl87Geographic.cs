@@ -113,7 +113,15 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
     public double Longitude3 { get; set; }
     public double ZoomLevel { get; set; }
 
-    public bool? Valid { get; set; }
+    // ---------------------------------------------------------                  
+    // Valid
+    // ---------------------------------------------------------                  
+    private bool? _valid;
+    public bool? Valid
+    {
+        get => _valid;
+        set => SetProperty(ref _valid, value);
+    }
 
     private string? _validYear;
     [StringLength(4)]

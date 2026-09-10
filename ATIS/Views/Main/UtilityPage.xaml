@@ -16,22 +16,22 @@
                  MinHeight="475"
                  IsAddTabButtonVisible="False">
             <TabView.TabItems>
-                <TabViewItem x:Uid="TabViewItem_Names"
-                             IsClosable="False">
-                    <database:Tbl78NameListPage />
-                </TabViewItem>
-                <TabViewItem x:Uid="TabViewItem_Images"
-                             IsClosable="False">
-                    <database:Tbl81ImageListPage />
-                </TabViewItem>
-                <TabViewItem x:Uid="TabViewItem_Synonyms"
-                             IsClosable="False">
-                    <database:Tbl84SynonymListPage />
-                </TabViewItem>
-                <TabViewItem x:Uid="TabViewItem_Geographics"
-                             IsClosable="False">
-                    <database:Tbl87GeographicListPage />
-                </TabViewItem>
+                <!--<TabViewItem x:Uid="TabViewItem_Names"
+                IsClosable="False">
+                <database:Tbl78NameListPage />
+                </TabViewItem>-->
+                <!--<TabViewItem x:Uid="TabViewItem_Images"
+                IsClosable="False">
+                <database:Tbl81ImageListPage />
+                </TabViewItem>-->
+                <!--<TabViewItem x:Uid="TabViewItem_Synonyms"
+                IsClosable="False">
+                <database:Tbl84SynonymListPage />
+                </TabViewItem>-->
+                <!--<TabViewItem x:Uid="TabViewItem_Geographics"
+                IsClosable="False">
+                <database:Tbl87GeographicListPage />
+                </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_RefAuthors"
                              IsClosable="False">
                     <tbl90RefAuthor:Tbl90RefAuthorPage />
@@ -45,12 +45,12 @@
                     <tbl90RefSource:Tbl90RefSourcePage />
                 </TabViewItem>
                 <!--<TabViewItem x:Uid="TabViewItem_References"
-                             IsClosable="False">
-                    <tbl90Reference:Tbl90ReferencePage />
+                IsClosable="False">
+                <tbl90Reference:Tbl90ReferencePage />
                 </TabViewItem>-->
                 <!--<TabViewItem x:Uid="TabViewItem_Comments"
-                             IsClosable="False">
-                    <tbl93Comment:Tbl93CommentPage />
+                IsClosable="False">
+                <tbl93Comment:Tbl93CommentPage />
                 </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_Countries"
                              IsClosable="False">

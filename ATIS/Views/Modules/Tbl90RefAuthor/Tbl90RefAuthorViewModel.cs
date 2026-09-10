@@ -113,6 +113,7 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
         OnPropertyChanged(nameof(IsDetailVisible));
     }
 
+
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------

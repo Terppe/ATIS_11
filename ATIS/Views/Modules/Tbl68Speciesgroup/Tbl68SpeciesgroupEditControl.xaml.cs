@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using ATIS.Views.Modules.Tbl66Genus;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Text;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+//    Tbl68SpeciesgroupEditControl Skriptdatum:  10.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl68Speciesgroup;
 
@@ -117,14 +103,15 @@ public sealed partial class Tbl68SpeciesgroupEditControl : UserControl
     // ---------------------------------------------------------                   
     // SUBSPECIESGROUP VALIDATION
     // ---------------------------------------------------------                   
-    private void SubspeciesgroupBox_OnTextChanged(object sender, TextChangedEventArgs e)
+
+    private void SubspeciesgroupNameBox_OnLoaded(object sender, RoutedEventArgs e)
     {
-        UpdateValidationState(SubspeciesgroupBox, Item?.HasSubspeciesgroupError ?? false);
+        UpdateValidationState(SubspeciesgroupNameBox, Item?.HasSubspeciesgroupError ?? false);
     }
 
-    private void SubspeciesgroupBox_OnLoaded(object sender, RoutedEventArgs e)
+    private void SubspeciesgroupNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        UpdateValidationState(SubspeciesgroupBox, Item?.HasSubspeciesgroupError ?? false);
+        UpdateValidationState(SubspeciesgroupNameBox, Item?.HasSubspeciesgroupError ?? false);
     }
 
     // ---------------------------------------------------------                   
@@ -154,6 +141,7 @@ public sealed partial class Tbl68SpeciesgroupEditControl : UserControl
     {
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
+
 
     // ---------------------------------------------------------                   
     // DETAIL TAB VALIDATION
@@ -192,4 +180,5 @@ public sealed partial class Tbl68SpeciesgroupEditControl : UserControl
         FraNameGrid.Visibility = SelectedTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
         SpaNameGrid.Visibility = SelectedTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
     }
+
 }

@@ -1145,9 +1145,7 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
 
     ObservableCollection<Tbl03Regnum> GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(string filterText);
     ObservableCollection<Tbl06Phylum> GetTbl06PhylumsCollectionOrderByPhylumNameFromFilterText(string filterText);
-    ObservableCollection<Tbl09Division> GetTbl09DivisionsCollectionOrderByDivisionNameFromFilterText(string filterText);
     ObservableCollection<Tbl12Subphylum> GetTbl12SubphylumsCollectionOrderBySubphylumNameFromFilterText(string filterText);
-    ObservableCollection<Tbl15Subdivision> GetTbl15SubdivisionsCollectionOrderBySubdivisionNameFromFilterText(string filterText);
     ObservableCollection<Tbl18Superclass> GetTbl18SuperclassesCollectionOrderBySuperclassNameFromFilterText(string filterText);
     ObservableCollection<Tbl21Class> GetTbl21ClassesCollectionOrderByClassNameFromFilterText(string filterText);
     ObservableCollection<Tbl24Subclass> GetTbl24SubclassesCollectionOrderBySubclassNameFromFilterText(string filterText);
@@ -1190,7 +1188,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumId(int id);
     //direct children
     ObservableCollection<Tbl06Phylum> CollPhylumsByRegnumIdAndHash(int id);
-    ObservableCollection<Tbl09Division> CollDivisionsByRegnumIdAndHash(int id);
     //References
     ObservableCollection<Tbl90Reference> CollExpertsByRegnumId(int id);
     ObservableCollection<Tbl90Reference> CollSourcesByRegnumId(int id);
@@ -1218,24 +1215,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     ObservableCollection<Tbl93Comment> CollCommentsByPhylumId(int id);
     #endregion Phylum
 
-    //#region Division
-    //Tbl09Division GetDivisionSingleByDivisionIdAndHash(int id);
-    //Tbl09Division GetDivisionSingleByDivisionId(int id);
-
-    //ObservableCollection<Tbl09Division> CollDivisionsByDivisionId(int id);
-    ////direct children
-    //ObservableCollection<Tbl15Subdivision> CollSubdivisionsByDivisionIdAndHash(int id);
-    ////Function
-    //int RegnumIdFromDivisionsCollectionSelect(int id);
-    ////ForeignKey
-    ////References
-    //ObservableCollection<Tbl90Reference> CollExpertsByDivisionId(int id);
-    //ObservableCollection<Tbl90Reference> CollSourcesByDivisionId(int id);
-    //ObservableCollection<Tbl90Reference> CollAuthorsByDivisionId(int id);
-    ////Comments
-    //ObservableCollection<Tbl93Comment> CollCommentsByDivisionId(int id);
-    //#endregion Division
-
     #region Subphylum
     Tbl12Subphylum GetSubphylumSingleBySubphylumIdAndHash(int id);
     Tbl12Subphylum GetSubphylumSingleBySubphylumId(int id);
@@ -1255,25 +1234,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     ObservableCollection<Tbl93Comment> CollCommentsBySubphylumId(int id);
     #endregion Subphylum
 
-    //#region Subdivision
-    //Tbl15Subdivision GetSubdivisionSingleBySubdivisionIdAndHash(int id);
-    //Tbl15Subdivision GetSubdivisionSingleBySubdivisionId(int id);
-
-    //ObservableCollection<Tbl15Subdivision> CollSubdivisionsBySubdivisionId(int id);
-    ////direct children
-    //ObservableCollection<Tbl18Superclass> CollSuperclassesBySubdivisionIdAndHash(int id);
-    ////Function
-    //int DivisionIdFromSubdivisionsCollectionSelect(int id);
-    ////ForeignKey
-    //ObservableCollection<Tbl09Division> CollDivisionsByDivisionIdAndHash(int id);
-    ////References
-    //ObservableCollection<Tbl90Reference> CollExpertsBySubdivisionId(int id);
-    //ObservableCollection<Tbl90Reference> CollSourcesBySubdivisionId(int id);
-    //ObservableCollection<Tbl90Reference> CollAuthorsBySubdivisionId(int id);
-    ////Comments
-    //ObservableCollection<Tbl93Comment> CollCommentsBySubdivisionId(int id);
-    //#endregion Subdivision
-
     #region Superclass
     Tbl18Superclass GetSuperclassSingleBySuperclassIdAndHash(int id);
     ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassId(int id);
@@ -1284,7 +1244,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     int SubphylumIdFromSuperclassesCollectionSelect(int id);
     //ForeignKey
     ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumIdAndHash(int id);
-    ObservableCollection<Tbl15Subdivision> CollSubdivisionsBySubdivisionIdAndHash(int id);
     //References
     ObservableCollection<Tbl90Reference> CollExpertsBySuperclassId(int id);
     ObservableCollection<Tbl90Reference> CollSourcesBySuperclassId(int id);

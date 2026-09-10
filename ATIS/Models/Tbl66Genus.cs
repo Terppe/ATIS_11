@@ -89,8 +89,8 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------                  
     // Valid
     // ---------------------------------------------------------                  
-    private bool _valid;
-    public bool Valid
+    private bool? _valid;
+    public bool? Valid
     {
         get => _valid;
         set => SetProperty(ref _valid, value);

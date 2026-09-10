@@ -150,8 +150,8 @@ public class Tbl90RefSource : ObservableObject, IDataService.IAuditable, IHierar
     // ---------------------------------------------------------
     // Valid
     // ---------------------------------------------------------
-    private bool _valid;
-    public bool Valid
+    private bool? _valid;
+    public bool? Valid
     {
         get => _valid;
         set => SetProperty(ref _valid, value);

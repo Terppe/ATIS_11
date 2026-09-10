@@ -563,22 +563,22 @@ public sealed partial class MainPage : Page
         //---------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavNames.Content)
         {
-            NavFrame.Navigate(typeof(Tbl78NameListPage));
+    //        NavFrame.Navigate(typeof(Tbl78NamePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavImages.Content)
         {
-            NavFrame.Navigate(typeof(Tbl81ImageListPage));
+  //          NavFrame.Navigate(typeof(Tbl81ImagePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSynonyms.Content)
         {
-            NavFrame.Navigate(typeof(Tbl84SynonymListPage));
+   //         NavFrame.Navigate(typeof(Tbl84SynonymPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavGeographics.Content)
         {
-            NavFrame.Navigate(typeof(Tbl87GeographicListPage));
+   //         NavFrame.Navigate(typeof(Tbl87GeographicPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavReferences.Content)

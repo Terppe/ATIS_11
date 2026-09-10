@@ -1159,4 +1159,7 @@ Von Tribus-Genus pages nachgezogen. Jetzt aus Infratribus alle Pivots rausnehmen
 ----------------------------------------
 08.09.2026 09:30 Uhr Speciesgroup page usw. Boss erzeugt und SpeciesPage und editcontrol weiter entwickelt. TextBoxen mit Wrap noch nicht ok
 ----------------------------------------
-09.09.2026 09:30 Uhr WrapTextboxen gelöst und jetzt fehler bei Reference im Genuseditcontrol, die 3 Tabellen RefExpert, RefSource, RefAuthor werden nicht angezeigt
+09.09.2026 09:30 Uhr WrapTextboxen gelöst und jetzt fehler bei Reference im Genuseditcontrol,
+die 3 Tabellen RefExpert, RefSource, RefAuthor werden nicht angezeigt. resorce edit_Regnum-Edit_Species fehlt noch
+----------------------------------------
+10.09.2026 09:30 Uhr Nuget und aufgeräumt Vms und Pages mit ..Alt.. entfernt. SpeciesgroupPage neu gemacht.

@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
 using ATIS.Views.Base;
 using WinUI3Localizer;
-using static ATIS.Views.Report.PdfModels;
 
 namespace ATIS.Models;
 

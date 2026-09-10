@@ -121,8 +121,8 @@ public class Tbl68Speciesgroup : ObservableObject, IDataService.IAuditable, IHie
     // ---------------------------------------------------------                  
     // Valid
     // ---------------------------------------------------------                  
-    private bool _valid;
-    public bool Valid
+    private bool? _valid;
+    public bool? Valid
     {
         get => _valid;
         set => SetProperty(ref _valid, value);

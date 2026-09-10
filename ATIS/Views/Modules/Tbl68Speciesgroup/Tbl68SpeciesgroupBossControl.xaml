@@ -18,8 +18,7 @@
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
         <GridLength x:Key="Extra5WidthResource">250</GridLength>
-        <GridLength x:Key="Extra6WidthResource">100</GridLength>
-        <GridLength x:Key="Extra7WidthResource">80</GridLength>
+        <GridLength x:Key="Extra6WidthResource">80</GridLength>
     </UserControl.Resources>
 
     <Grid Padding="2"
@@ -35,7 +34,6 @@
                 <ColumnDefinition Width="{StaticResource Extra4WidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra5WidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra6WidthResource}" />
-                <ColumnDefinition Width="{StaticResource Extra7WidthResource}" />
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
@@ -73,10 +71,6 @@
                        loc:Uids.Uid="TextBlock_Author"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="6"
-                       Margin="0,6,0,0"
-                       loc:Uids.Uid="TextBlock_Author"
-                       FontWeight="Bold" />
-            <TextBlock Grid.Column="7"
                        Margin="0,6,0,0"
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
@@ -140,7 +134,6 @@
                             <ColumnDefinition Width="{StaticResource Extra4WidthResource}" />
                             <ColumnDefinition Width="{StaticResource Extra5WidthResource}" />
                             <ColumnDefinition Width="{StaticResource Extra6WidthResource}" />
-                            <ColumnDefinition Width="{StaticResource Extra7WidthResource}" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0"
