@@ -86,7 +86,7 @@ public sealed partial class Tbl63InfratribusEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // INFRATRIBUSNAME VALIDATION
+    // Infratribus NAME VALIDATION
     // ---------------------------------------------------------                   
 
     private void InfratribusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)

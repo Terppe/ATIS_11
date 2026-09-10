@@ -134,10 +134,9 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-    protected override async Task LoadChildrenAsync(int entityId)
+    protected override Task LoadChildrenAsync(int entityId)
     {
-        // optional: Suchmodus aktivieren
-        await ReloadAsync();
+        return Task.CompletedTask;
     }
 
 
@@ -167,7 +166,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
 
         return new Models.Tbl68Speciesgroup
         {
-           // SpeciesgroupId = _currentParentId
         };
     }
 

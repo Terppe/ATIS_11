@@ -1163,3 +1163,5 @@ Von Tribus-Genus pages nachgezogen. Jetzt aus Infratribus alle Pivots rausnehmen
 die 3 Tabellen RefExpert, RefSource, RefAuthor werden nicht angezeigt. resorce edit_Regnum-Edit_Species fehlt noch
 ----------------------------------------
 10.09.2026 09:30 Uhr Nuget und aufgeräumt Vms und Pages mit ..Alt.. entfernt. SpeciesgroupPage neu gemacht.
+----------------------------------------
+10.09.2026 14:30 Uhr Generator fertig bis auf RefExpert, RefSource, RefAuthor.Genus und Species und dann Name -Geographic

@@ -6,9 +6,6 @@
       xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
       xmlns:tbl68Speciesgroup="using:ATIS.Views.Modules.Tbl68Speciesgroup"
-      xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
-      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
-      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       x:Name="RootPage">
 
     <!--  Tbl68SpeciesgroupPage Skriptdatum:  10.09.2026  10:32  -->

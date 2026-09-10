@@ -1,6 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<UserControl
-    x:Class="ATIS.Views.Modules.Tbl68Speciesgroup.Tbl68SpeciesgroupBossControl"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.Tbl68Speciesgroup.Tbl68SpeciesgroupBossControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,7 +8,7 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
-    <!--  Tbl66GenusBossControl Skriptdatum:  13.06.2024  10:32  -->
+    <!--  Tbl68SpeciesgroupBossControl Skriptdatum:  10.09.2026  10:32  -->
 
     <UserControl.Resources>
         <GridLength x:Key="IdWidthResource">120</GridLength>
