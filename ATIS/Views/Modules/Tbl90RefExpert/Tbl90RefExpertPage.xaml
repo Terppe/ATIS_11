@@ -6,10 +6,9 @@
       xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
       xmlns:tbl90RefExpert="using:ATIS.Views.Modules.Tbl90RefExpert"
-      x:Name="RootPage"
-      DataContext="{Binding RefExpertViewModel}">
+      x:Name="RootPage">
 
-    <!--    Tbl90RefExpertPage Skriptdatum:  06.01.2025  10:32 -->
+    <!--  Tbl90RefExpertPage Skriptdatum:  11.09.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -96,20 +95,19 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit RefExpert  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_RefExpert">
-                                <ScrollViewer Padding="1">
-                                    <tbl90RefExpert:Tbl90RefExpertEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="0">
 
-                        </Pivot>
+                            <ScrollViewer x:Name="EditRefExpertContent"
+                                          Padding="1">
+                                <tbl90RefExpert:Tbl90RefExpertEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
+
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>

@@ -1,14 +1,10 @@
-﻿using System.ComponentModel;
-
-
-//    Tbl90RefExpertPage Skriptdatum:  06.01.2025  10:32    
+﻿
+//    Tbl90RefExpertPage Skriptdatum:  11.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefExpert;
 
 public sealed partial class Tbl90RefExpertPage : Page
 {
-    private object? _commentsHeaderText;
-    private object? _referencesHeaderText;
     public Tbl90RefExpertViewModel ViewModel { get; }
 
     // ---------------------------------------------------------
@@ -24,6 +20,8 @@ public sealed partial class Tbl90RefExpertPage : Page
 
         Loaded += RefExpertPage_Loaded;
     }
+
+    private Tbl90RefExpertViewModel Vm => (Tbl90RefExpertViewModel)DataContext;
 
     // ---------------------------------------------------------
     // PAGE LOADED

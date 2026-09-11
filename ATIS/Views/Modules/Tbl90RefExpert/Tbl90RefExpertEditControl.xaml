@@ -5,7 +5,7 @@
              xmlns:loc="using:WinUI3Localizer"
              x:Name="Root">
 
-    <!--    Tbl90RefExpertEditControl Skriptdatum:  06.01.2025  10:32 -->
+    <!--  Tbl90RefExpertEditControl Skriptdatum:  11.09.2026  10:32  -->
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -72,7 +72,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--  ID + Name   -->
+            <!--  ID + Name  -->
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
 
@@ -132,12 +132,10 @@
                      MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Memo"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 
     </Border>
-</UserControl>  
+</UserControl>

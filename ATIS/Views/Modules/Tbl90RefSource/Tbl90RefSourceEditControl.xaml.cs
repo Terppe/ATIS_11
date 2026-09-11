@@ -1,5 +1,5 @@
 ﻿
-//    Tbl90RefSourceEditControl Skriptdatum:   06.01.2025  10:32    
+//    Tbl90RefSourceEditControl Skriptdatum:   11.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefSource;
 
@@ -56,7 +56,7 @@ public sealed partial class Tbl90RefSourceEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // VALDATINHELPER
+    // VALIDATION HELPER
     // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
@@ -77,7 +77,7 @@ public sealed partial class Tbl90RefSourceEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // SUBTRIBUSNAME VALIDATION
+    // RefSource NAME VALIDATION
     // ---------------------------------------------------------                   
 
     private void RefSourceNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -89,4 +89,19 @@ public sealed partial class Tbl90RefSourceEditControl : UserControl
     {
         UpdateValidationState(RefSourceNameBox, Item?.HasRefSourceNameError ?? false);
     }
+
+    // ---------------------------------------------------------                   
+    // SOURCE YEAR VALIDATION
+    // ---------------------------------------------------------                   
+
+    private void SourceYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(SourceYearBox, Item?.HasSourceYearError ?? false);
+    }
+
+    private void SourceYearBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(SourceYearBox, Item?.HasSourceYearError ?? false);
+    }
+
 }

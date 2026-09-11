@@ -4,30 +4,31 @@ using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
+
+
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
-
-//    Tbl90RefAuthorViewModel Skriptdatum:  06.01.2025  10:32    
+//    Tbl90RefAuthorViewModel Skriptdatum:  11.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefAuthor;
 
 public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuthor>
 {
+
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
-
-    private int _currentParentId;
     private bool _wasEmptyBeforeSave;
- //   private Func<int, Task<IEnumerable<Models.Tbl90RefAuthor>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
-
     public Tbl90RefAuthorViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
         HierarchyCoordinator coordinator,
+        LookupService lookupService,
         IUserService user)
         : base(new DataService(factory, user), dialog, coordinator)
     {
@@ -35,8 +36,53 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "RefAuthor ID");
-        RegisterHeader("Name", "RefAuthor Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_RefAuthorId")) ? "Id" : loc.GetLocalizedString("HeaderSort_RefAuthorId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_RefAuthorName")) ? "Name" : loc.GetLocalizedString("HeaderSort_RefAuthorName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
+    }
+
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------                   
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailTabIndex, value))
+            {
+                UpdateButtonStates();
+            }
+        }
+    }
+
+    private void UpdateButtonStates()
+    {
+
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
 
     public async Task ApplyFilterAsync(string? filter)
@@ -57,10 +103,9 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
-        // Boss-Start: Parent-Kontext löschen
-        _currentParentId = 0;
 
         Items = new ObservableCollection<Models.Tbl90RefAuthor>();
+        DataSetCount = Items.Count;
 
         OnPropertyChanged(nameof(HasItems));
 
@@ -69,26 +114,8 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     }
 
     // ---------------------------------------------------------
-    // INTERNAL LOADER (Boss + Parent)
-    // ---------------------------------------------------------
-
-    private async Task LoadInternalAsync(
-        int parentId,
-        Func<int, Task<IEnumerable<Models.Tbl90RefAuthor>>> loader)
-    {
-        _currentParentId = parentId;
-
-        var items = await loader(parentId);
-        Items = new ObservableCollection<Models.Tbl90RefAuthor>(items);
-        OnPropertyChanged(nameof(HasItems));
-
-        DataSetCount = Items.Count;
-    }
-
-    // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
-
     protected override async Task<IEnumerable<Models.Tbl90RefAuthor>> LoadItemsAsync()
     {
         if (!string.IsNullOrWhiteSpace(SearchText))
@@ -106,18 +133,20 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
         if (SelectedItem == null)
         {
             OnPropertyChanged(nameof(IsDetailVisible));
-            return;
         }
-
-        // 3. Boss-Modus → volle Detail-Logik
-        OnPropertyChanged(nameof(IsDetailVisible));
     }
 
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+    protected override Task LoadChildrenAsync(int entityId)
+    {
+        return Task.CompletedTask;
+    }
 
     // ---------------------------------------------------------
     // SORTING
     // ---------------------------------------------------------
-
     protected override object GetSortKey(Models.Tbl90RefAuthor item, string column)
         => column switch
         {
@@ -130,7 +159,6 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -142,14 +170,13 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
 
         return new Models.Tbl90RefAuthor
         {
-            RefAuthorId = _currentParentId
+            //  NULLId = _currentParentId
         };
     }
 
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl90RefAuthor?> SaveItemAsync(Models.Tbl90RefAuthor item)
     {
         if (string.IsNullOrWhiteSpace(item.RefAuthorName))
@@ -159,6 +186,7 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
         }
 
         var saved = await Data.UpsertRefAuthorAsync(item);
+
         return saved;
     }
 
@@ -176,7 +204,6 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     // ---------------------------------------------------------
     // DELETE
     // ---------------------------------------------------------
-
     protected override async Task<bool> DeleteItemAsync(Models.Tbl90RefAuthor item)
     {
         if (item.RefAuthorId == 0)
@@ -192,18 +219,12 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     protected override Task<bool> ConfirmDeleteAsync(Models.Tbl90RefAuthor item)
         => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
 
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        throw new NotImplementedException();
-    }
-
     protected override int GetId(Models.Tbl90RefAuthor item)
         => item.RefAuthorId;
 
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-
     private void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
@@ -212,11 +233,7 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
         // ⭐ Detail schließen
         OnPropertyChanged(nameof(IsDetailVisible));
 
-        // Parent-Modus bleibt aktiv
-        IsInParentMode = true;
-
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
 }

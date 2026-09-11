@@ -5,9 +5,9 @@ using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
 using Microsoft.EntityFrameworkCore;
+using WinUI3Localizer;
 
-
-//    Tbl90RefExpertViewModel Skriptdatum:  06.01.2025  10:32    
+//    Tbl90RefExpertViewModel Skriptdatum:  11.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefExpert;
 
@@ -15,9 +15,8 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
 {
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
-
-    private int _currentParentId;
     private bool _wasEmptyBeforeSave;
+    private readonly Action<string> _langHandler;
 
     // ---------------------------------------------------------                   
     // CTOR
@@ -33,21 +32,41 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
-        RegisterHeader("Id", "RefExpert ID");
-        RegisterHeader("Name", "RefExpert Name");
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
+    }
+
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_RefExpertId")) ? "Id" : loc.GetLocalizedString("HeaderSort_RefExpertId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_RefExpertName")) ? "Name" : loc.GetLocalizedString("HeaderSort_RefExpertName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
     }
 
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------               
 
-    private int _selectedDetailPivotIndex;
-    public int SelectedDetailPivotIndex
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
     {
-        get => _selectedDetailPivotIndex;
+        get => _selectedDetailTabIndex;
         set
         {
-            if (SetProperty(ref _selectedDetailPivotIndex, value))
+            if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
             }
@@ -56,10 +75,6 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
 
     private void UpdateButtonStates()
     {
-        // Pivot 0 = Boss-Modus
-        IsInParentMode = SelectedDetailPivotIndex != 0;
-
-        UpdateRefreshState();
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
@@ -82,32 +97,13 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
     // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
-        // Boss-Start: Parent-Kontext löschen
-        _currentParentId = 0;
-
         Items = new ObservableCollection<Models.Tbl90RefExpert>();
+        DataSetCount = Items.Count;
 
         OnPropertyChanged(nameof(HasItems));
 
         // optional: Suchmodus aktivieren
         await ReloadAsync();
-    }
-
-    // ---------------------------------------------------------
-    // INTERNAL LOADER (Boss + Parent)
-    // ---------------------------------------------------------
-
-    private async Task LoadInternalAsync(
-        int parentId,
-        Func<int, Task<IEnumerable<Models.Tbl90RefExpert>>> loader)
-    {
-        _currentParentId = parentId;
-
-        var items = await loader(parentId);
-        Items = new ObservableCollection<Models.Tbl90RefExpert>(items);
-        OnPropertyChanged(nameof(HasItems));
-
-        DataSetCount = Items.Count;
     }
 
     // ---------------------------------------------------------
@@ -132,19 +128,15 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
         if (SelectedItem == null)
         {
             OnPropertyChanged(nameof(IsDetailVisible));
-            SelectedDetailPivotIndex = 0;
-            return;
         }
+    }
 
-        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
-        if (IsInParentMode)
-        {
-            await LoadChildrenAsync(GetId(SelectedItem));
-            return;
-        }
-
-        // 3. Boss-Modus → volle Detail-Logik
-        OnPropertyChanged(nameof(IsDetailVisible));
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+    protected override Task LoadChildrenAsync(int entityId)
+    {
+        return Task.CompletedTask;
     }
 
     // ---------------------------------------------------------
@@ -175,7 +167,7 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
 
         return new Models.Tbl90RefExpert
         {
-            RefExpertId = _currentParentId
+           // RefExpertId = _currentParentId
         };
     }
 
@@ -226,11 +218,6 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
     protected override Task<bool> ConfirmDeleteAsync(Models.Tbl90RefExpert item)
         => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
 
-    protected override async Task LoadChildrenAsync(int entityId)
-    {
-        throw new NotImplementedException();
-    }
-
     protected override int GetId(Models.Tbl90RefExpert item)
         => item.RefExpertId;
 
@@ -245,11 +232,6 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
 
         // ⭐ Detail schließen
         OnPropertyChanged(nameof(IsDetailVisible));
-
-        // Parent-Modus bleibt aktiv
-        IsInParentMode = true;
-
-        SelectedDetailPivotIndex = 0;
 
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();

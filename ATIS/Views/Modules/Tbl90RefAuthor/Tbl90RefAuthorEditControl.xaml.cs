@@ -1,5 +1,5 @@
 ﻿
-//    Tbl90RefAuthorEditControl Skriptdatum:  06.01.2025  10:32    
+//    Tbl90RefAuthorEditControl Skriptdatum:  11.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefAuthor;
 
@@ -8,7 +8,7 @@ public sealed partial class Tbl90RefAuthorEditControl : UserControl
     public Tbl90RefAuthorViewModel? ViewModel => DataContext as Tbl90RefAuthorViewModel;
     // ---------------------------------------------------------
     // CONSTRUCTOR
-    // ---------------------------------------------------------
+    // ---------------------------------------------------------  
 
     public Tbl90RefAuthorEditControl()
     {
@@ -56,7 +56,7 @@ public sealed partial class Tbl90RefAuthorEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // VALDATINHELPER
+    // VALIDATION HELPER
     // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
@@ -77,7 +77,7 @@ public sealed partial class Tbl90RefAuthorEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // SUBTRIBUSNAME VALIDATION
+    // RefAuthor NAME VALIDATION
     // ---------------------------------------------------------                   
 
     private void RefAuthorNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -104,13 +104,18 @@ public sealed partial class Tbl90RefAuthorEditControl : UserControl
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
 
-    private void PublicationYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
-    {
-        UpdateValidationState(PublicationYearBox, Item?.HasPublicationYearError ?? false);
-    }
+    // ---------------------------------------------------------                   
+    // PUBLICATION YEAR VALIDATION
+    // ---------------------------------------------------------                   
 
     private void PublicationYearBox_OnLoaded(object sender, RoutedEventArgs e)
     {
         UpdateValidationState(PublicationYearBox, Item?.HasPublicationYearError ?? false);
     }
+
+    private void PublicationYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(PublicationYearBox, Item?.HasPublicationYearError ?? false);
+    }
 }
+

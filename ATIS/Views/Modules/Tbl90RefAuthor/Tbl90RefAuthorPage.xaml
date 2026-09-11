@@ -5,11 +5,11 @@
       xmlns:components="using:ATIS.DesignSystem.Components"
       xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
-      xmlns:tbl90RefAuthor="using:ATIS.Views.Modules.Tbl90RefAuthor"
-      x:Name="RootPage"
-      DataContext="{Binding RefAuthorViewModel}">
+      xmlns:tbl90RefAuthor="using:ATIS.Views.Modules.Tbl90RefAuthor"     
+    
+      x:Name="RootPage">
 
-    <!--  Tbl90RefAuthorPage Skriptdatum:  06.01.2025  10:32  -->
+    <!--    Tbl90RefAuthorPage Skriptdatum:  11.09.2026  10:32 -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -96,19 +96,19 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid>
-                        <Pivot x:Name="DetailPivot"
-                               Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*"
+                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                            <!--  Edit RefAuthor  -->
-                            <PivotItem loc:Uids.Uid="PivotItem_Edit_RefAuthor">
-                                <ScrollViewer Padding="1">
-                                    <tbl90RefAuthor:Tbl90RefAuthorEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
-                                </ScrollViewer>
-                            </PivotItem>
-                        </Pivot>
+                        <!--  Inhalte  -->
+                        <Grid Grid.Row="0">
+
+                            <ScrollViewer x:Name="EditRefAuthorContent"
+                                          Padding="1">
+                                <tbl90RefAuthor:Tbl90RefAuthorEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
+                            </ScrollViewer>
+
+                        </Grid>
                     </Grid>
-
                 </layout:BaseBossPageLayout.DetailContent>
 
             </layout:BaseBossPageLayout>
@@ -120,4 +120,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>
+</Page>  

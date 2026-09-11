@@ -5,7 +5,7 @@
              xmlns:loc="using:WinUI3Localizer"
              x:Name="Root">
 
-    <!--  Tbl90RefAuthorEditControl Skriptdatum:  06.01.2025  10:32  -->
+    <!--  Tbl90RefAuthorEditControl Skriptdatum:  11.09.2026  10:32  -->
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -126,92 +126,90 @@
                                Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  PublicationYear  -->
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+
+                <!--  ArticelTitle  -->
+                <TextBox loc:Uids.Uid="TextBox_ArticelTitle"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.ArticelTitle, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!--  Page  -->
+                <TextBox loc:Uids.Uid="TextBox_Page"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.Page1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
             </StackPanel>
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
-                <StackPanel MinWidth="60"
-                            VerticalAlignment="Top"
-                            Spacing="2">
-                    <TextBox x:Name="PublicationYearBox"
-                             loc:Uids.Uid="TextBox_PublicationYear"
-                             Loaded="PublicationYearBox_OnLoaded"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.PublicationYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="PublicationYearBox_OnTextChanged" />
-                    <TextBlock Height="16"
-                               FontSize="10"
-                               Foreground="Red"
-                               Text="{Binding Item.ValidYearError, ElementName=Root}"
-                               Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                <!--  Publisher  -->
+                <TextBox loc:Uids.Uid="TextBox_Publisher"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.Publisher, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!--  PublicationPlace  -->
+                <TextBox loc:Uids.Uid="TextBox_PublicationPlace"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.PublicationPlace, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <!--  PublicationYear  -->
+                <StackPanel Orientation="Horizontal"
+                            Spacing="4">
+                    <StackPanel MinWidth="60"
+                                VerticalAlignment="Top"
+                                Spacing="2">
+                        <TextBox x:Name="PublicationYearBox"
+                                 loc:Uids.Uid="TextBox_PublicationYear"
+                                 Loaded="PublicationYearBox_OnLoaded"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.PublicationYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="PublicationYearBox_OnTextChanged" />
+                        <TextBlock Height="16"
+                                   FontSize="10"
+                                   Foreground="Red"
+                                   Text="{Binding Item.ValidYearError, ElementName=Root}"
+                                   Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
                 </StackPanel>
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
 
                 <!--  BookName  -->
                 <TextBox loc:Uids.Uid="TextBox_BookName"
                          Style="{StaticResource AtisTextBox}"
                          Text="{Binding Item.BookName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            </StackPanel>
-            <StackPanel>
-                <TextBox loc:Uids.Uid="TextBox_ArticelTitle"
+                <!--  ISBN  -->
+                <TextBox loc:Uids.Uid="TextBox_ISBN"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.ArticelTitle, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            </StackPanel>
-            <StackPanel Orientation="Horizontal"
-                        Spacing="4">
-                <TextBox loc:Uids.Uid="TextBox_Publisher"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.Publisher, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox loc:Uids.Uid="TextBox_PublicationPlace"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.PublicationPlace, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                         Text="{Binding Item.ISBN, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </StackPanel>
 
-            <!--  Language Pivot  -->
-            <Pivot>
-                <PivotItem loc:Uids.Uid="PivotItem_EngName">
-                    <TextBox loc:Uids.Uid="TextBox_ISBN"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.ISBN, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-                <PivotItem loc:Uids.Uid="PivotItem_GerName">
-                    <TextBox loc:Uids.Uid="TextBox_Info"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-                <PivotItem loc:Uids.Uid="PivotItem_FraName">
-                    <TextBox loc:Uids.Uid="TextBox_Page"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.Page1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-                <PivotItem loc:Uids.Uid="PivotItem_SpaName">
-                    <TextBox loc:Uids.Uid="TextBox_Publisher"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.Publisher, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </PivotItem>
-
-            </Pivot>
+            <!--  Info  -->
+            <TextBox loc:Uids.Uid="TextBox_Info"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!--  Notes  -->
             <TextBox MinWidth="200"
                      MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Notes"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Notes, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Notes, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <!--  Memo  -->
             <TextBox MinWidth="200"
                      MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Memo"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 

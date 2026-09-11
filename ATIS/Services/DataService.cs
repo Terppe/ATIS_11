@@ -7551,6 +7551,14 @@ public partial class DataService : ObservableObject, IDataService
         target.RefAuthorName = source.RefAuthorName;
         target.Valid = source.Valid;
         target.ValidYear = source.ValidYear;
+        target.Publisher = source.Publisher;
+        target.PublicationYear = source.PublicationYear;
+        target.PublicationPlace = source.PublicationPlace;
+        target.Page1 = source.Page1;
+        target.ArticelTitle = source.ArticelTitle;
+        target.BookName = source.BookName;
+        target.ISBN = source.ISBN;
+        target.Notes = source.Notes;
         target.Info = source.Info;
         target.Memo = source.Memo;
     }

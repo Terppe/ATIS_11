@@ -697,14 +697,17 @@
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorPage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90Reference\Tbl90ReferenceEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90Reference\Tbl90ReferenceParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertPage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefExpert\Tbl90RefExpertParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
+		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml" />
@@ -830,6 +833,24 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿
-//    Tbl90RefExpertEditControl Skriptdatum:  06.01.2025  10:32    
+//    Tbl90RefExpertEditControl Skriptdatum:  11.09.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl90RefExpert;
 
@@ -56,7 +56,7 @@ public sealed partial class Tbl90RefExpertEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // VALDATINHELPER
+    // VALIDATION HELPER
     // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
@@ -77,7 +77,7 @@ public sealed partial class Tbl90RefExpertEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // SUBTRIBUSNAME VALIDATION
+    // RefExpert NAME VALIDATION
     // ---------------------------------------------------------                   
 
     private void RefExpertNameBox_OnTextChanged(object sender, TextChangedEventArgs e)

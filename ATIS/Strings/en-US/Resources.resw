@@ -3183,6 +3183,9 @@
   <data name="TextBox_PublicationPlace.Header" xml:space="preserve">
     <value>Publication Place</value>
   </data>
+  <data name="TextBox_PublicationYear.Header" xml:space="preserve">
+    <value>Publicationyear</value>
+  </data>
   <data name="TextBox_Publisher.Header" xml:space="preserve">
     <value>Publisher</value>
   </data>

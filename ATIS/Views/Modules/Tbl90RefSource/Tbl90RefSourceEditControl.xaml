@@ -5,7 +5,7 @@
              xmlns:loc="using:WinUI3Localizer"
              x:Name="Root">
 
-    <!--  Tbl90RefSourceEditControl Skriptdatum:   06.01.2025  10:32  -->
+    <!--  Tbl90RefSourceEditControl Skriptdatum:   11.09.2026  10:32  -->
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -101,23 +101,6 @@
                                Visibility="{Binding Item.HasRefSourceNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  NULL Combo  -->
-                <!--
-                <StackPanel MinWidth="150"
-                            VerticalAlignment="Top"
-                            Spacing="2">
-                    <TextBlock Visibility="Collapsed" />
-                    <ComboBox x:Name="NULLCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_NULLName"
-                              DisplayMemberPath="NULLName"
-                              ItemsSource="{Binding ViewModel.NULLList, ElementName=Root}"
-                              SelectedValue="{Binding Item.NULLId, ElementName=Root, Mode=TwoWay}"
-                              SelectedValuePath="NULLId"
-                              Style="{StaticResource AtisComboBox}" />
-                </StackPanel>-->
-
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"
                           VerticalAlignment="Bottom"
@@ -125,9 +108,26 @@
                           IsChecked="{Binding Item.Valid, ElementName=Root, Mode=TwoWay}"
                           Style="{StaticResource AtisCheckBox}" />
 
+                <!--  SourceYear  -->
+                <StackPanel MinWidth="60"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="SourceYearBox"
+                             loc:Uids.Uid="TextBox_SourceYear"
+                             Loaded="SourceYearBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.SourceYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="SourceYearBox_OnTextChanged" />
+                    <TextBlock Height="16"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.SourceYearError, ElementName=Root}"
+                               Visibility="{Binding Item.HasSourceYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
             </StackPanel>
 
-            <!--  Author + AuthorYear  -->
+
+            <!--  Author  -->
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
                 <TextBox MinWidth="150"
@@ -138,15 +138,26 @@
                          Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
+            <!--  Info  -->
+            <TextBox loc:Uids.Uid="TextBox_Info"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <!--  Notes  -->
+            <TextBox MinWidth="200"
+                     MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Notes"
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Notes, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
             <!--  Memo  -->
             <TextBox MinWidth="200"
                      MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Memo"
-                     AcceptsReturn="True"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" />
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 

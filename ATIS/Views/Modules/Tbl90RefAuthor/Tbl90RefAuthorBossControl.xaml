@@ -8,13 +8,14 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
-    <!--  Tbl90RefAuthorBossControl Skriptdatum:  06.01.2025  10:32  -->
+    <!--    Tbl90RefAuthorBossControl Skriptdatum:  11.09.2026  10:32 -->
 
     <UserControl.Resources>
         <GridLength x:Key="IdWidthResource">120</GridLength>
-        <GridLength x:Key="Extra1WidthResource">700</GridLength>
+        <GridLength x:Key="Extra1WidthResource">400</GridLength>
         <GridLength x:Key="Extra2WidthResource">80</GridLength>
         <GridLength x:Key="Extra3WidthResource">100</GridLength>
+        <GridLength x:Key="Extra4WidthResource">200</GridLength>
     </UserControl.Resources>
 
     <Grid Padding="2"
@@ -22,11 +23,13 @@
 
         <!--  HEADER  -->
         <Grid Padding="0">
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource IdWidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra1WidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra2WidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra3WidthResource}" />
+                <ColumnDefinition Width="{StaticResource Extra4WidthResource}" />
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0"
@@ -54,6 +57,10 @@
             <TextBlock Grid.Column="3"
                        Margin="0,6,0,0"
                        loc:Uids.Uid="TextBlock_Year"
+                       FontWeight="Bold" />
+            <TextBlock Grid.Column="4"
+                       Margin="0,6,0,0"
+                       loc:Uids.Uid="TextBlock_Author"
                        FontWeight="Bold" />
         </Grid>
 
@@ -112,6 +119,7 @@
                             <ColumnDefinition Width="{StaticResource Extra1WidthResource}" />
                             <ColumnDefinition Width="{StaticResource Extra2WidthResource}" />
                             <ColumnDefinition Width="{StaticResource Extra3WidthResource}" />
+                            <ColumnDefinition Width="{StaticResource Extra4WidthResource}" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0"
@@ -121,6 +129,7 @@
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind RefAuthorName}" />
+
                         <CheckBox Grid.Column="2"
                                   IsChecked="{x:Bind Valid}"
                                   IsEnabled="False"
@@ -128,6 +137,10 @@
                         <TextBlock Grid.Column="3"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind ValidYear}" />
+                        <TextBlock Grid.Column="4"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Bind Publisher}" />
+
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -140,4 +153,4 @@
 
         </ListView>
     </Grid>
-</UserControl>
+</UserControl>    

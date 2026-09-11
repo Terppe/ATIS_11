@@ -236,6 +236,7 @@ public class Tbl90RefSource : ObservableObject, IDataService.IAuditable, IHierar
         OnPropertyChanged($"Has{propertyName}Error");
     }
 
+
     private void ValidateRefSourceName()
     {
         ClearErrors(nameof(RefSourceName));
