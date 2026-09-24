@@ -209,9 +209,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         => await LoadInternalAsync(genusId, Data.GetSpeciesForGenusAsync);
     public async Task LoadForSpeciesgroupAsync(int speciesgroupId)
         => await LoadInternalAsync(speciesgroupId, Data.GetSpeciesForSpeciesgroupAsync);
-    //public async Task LoadForNameAsync(int name)
-    //    => await LoadInternalAsync(nameId, Data.GetSpeciesForNameAsync);
-
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
@@ -273,7 +270,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-    // Tbl75SpeciesViewModel
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SpeciesCommentViewModel.LoadForSpeciesAsync(entityId);
@@ -297,19 +293,23 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         SpeciesgroupViewModel.IsInParentMode = true; // nur falls wirklich verwendet
     }
+
     protected override Task ClearChildCollectionsAsync()
     {
         SpeciesCommentViewModel.Items?.Clear();
         SpeciesReferenceViewModel.Items?.Clear();
         NameViewModel.Items?.Clear();
         ImageViewModel.Items?.Clear();
-
+        SynonymViewModel.Items?.Clear();
+        GeographicViewModel.Items?.Clear();
         if (IsBossMode)
         {
             SpeciesCommentViewModel.SelectedItem = null;
             SpeciesReferenceViewModel.SelectedItem = null;
             NameViewModel.SelectedItem = null;
             ImageViewModel.SelectedItem = null;
+            SynonymViewModel.SelectedItem = null;
+            GeographicViewModel.SelectedItem = null;
         }
 
         return Task.CompletedTask;
@@ -385,6 +385,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
             return false;
 
         if (await Data.SpeciesHasNameAsync(item.SpeciesId) ||
+            await Data.SpeciesHasImageAsync(item.SpeciesId) ||
+            await Data.SpeciesHasSynonymAsync(item.SpeciesId) ||
+            await Data.SpeciesHasGeographicAsync(item.SpeciesId) ||
             await Data.SpeciesHasReferenceAsync(item.SpeciesId) ||
             await Data.SpeciesHasCommentAsync(item.SpeciesId))
         {

@@ -47,6 +47,7 @@ using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
@@ -91,15 +92,22 @@ public partial class App : Application
 
         Services = ConfigureServices();
         QuestPDF.Settings.License = LicenseType.Community;
-        QuestPDF.Settings.CheckIfAllTextGlyphsAreAvailable = false;
-        QuestPDF.Settings.EnableDebugging = false;
-        QuestPDF.Settings.UseEnvironmentFonts = false;
+        QuestPDF.Settings.ThrowOnMissingTextGlyphs = false;
+        QuestPDF.Settings.UseSystemFonts = false;
+        QuestPDF.Settings.EnableDetailedLayoutErrors = false;
+
         UnhandledException += App_UnhandledException;
+
+#if DEBUG
         AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
         {
-            System.Diagnostics.Debug.WriteLine($"[FirstChance] {e.Exception.GetType().Name}: {e.Exception.Message}");
+            if (e.Exception is System.Net.Sockets.SocketException)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[FirstChance] {e.Exception.GetType().Name}: {e.Exception.Message}");
+            }
         };
-
+#endif
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
             System.Diagnostics.Debug.WriteLine($"[Unhandled] {e.ExceptionObject}");
@@ -110,7 +118,6 @@ public partial class App : Application
             System.Diagnostics.Debug.WriteLine($"[UnobservedTask] {e.Exception}");
             e.SetObserved();
         };
-
     }
 
     // ---------------------------------------------------------
@@ -120,6 +127,29 @@ public partial class App : Application
     // Window erstellen
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+
+        var connected = await new AtisDbContext().Database.CanConnectAsync();
+        System.Diagnostics.Debug.WriteLine($"[DB] connected={connected}");
+        //var factory =
+        //    Services.GetRequiredService<IDbContextFactory<AtisDbContext>>();
+
+        //try
+        //{
+        //    await using var db = await factory.CreateDbContextAsync();
+
+        //    var connected = await db.Database.CanConnectAsync();
+
+        //    System.Diagnostics.Debug.WriteLine(
+        //        $"[DB] CanConnect = {connected}");
+        //}
+        //catch (Exception ex)
+        //{
+        //    System.Diagnostics.Debug.WriteLine(
+        //        $"[DB] Verbindungsfehler: {ex}");
+        //}
+
+
+
         // 1. Localizer EINMAL initialisieren
         await InitializeLocalizer();
 
@@ -368,9 +398,17 @@ public partial class App : Application
     {
         // Initialize a "Strings" folder in the executables folder.
         StringsFolderPath = Path.Combine(AppContext.BaseDirectory, "Strings");
-        _ = await new LocalizerBuilder()
+
+        if (!Directory.Exists(StringsFolderPath))
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"[Localizer] Pfad fehlt: {StringsFolderPath}");
+            return;
+        }
+
+        await new LocalizerBuilder()
             .AddStringResourcesFolderForLanguageDictionaries(StringsFolderPath)
-            
+
             //later to use for DataGridTemplateColumn, DataGridTextColumn, DataGridComboBoxColumn, DataGridCheckBoxColumn
             .AddLocalizationAction(
                 new LocalizationActions.ActionItem(
@@ -439,15 +477,6 @@ public partial class App : Application
                             target.Inlines.Add(new Run() { Text = arguments.Value });
                         }
                     }))
-            //.AddLocalizationAction(new LocalizationActions.ActionItem(
-            //    typeof(ComboBox),
-            //    arguments =>
-            //    {
-            //        if (arguments.DependencyObject is ComboBox target)
-            //        {
-            //            target.Header = arguments.Value;
-            //        }
-            //    }))
             .SetOptions(options =>
             {
                 //    options.DefaultLanguage = "de-DE";
@@ -523,7 +552,21 @@ public partial class App : Application
 
         Debug.WriteLine("========================================");
     }
-// ---------------------------------------------------------
+    private static async Task ObserveBackgroundTaskAsync(
+        Task task,
+        string operation)
+    {
+        try
+        {
+            await task;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"[{operation}] Hintergrundfehler: {ex}");
+        }
+    }
+    // ---------------------------------------------------------
     // 10. Helper
     // ---------------------------------------------------------
 

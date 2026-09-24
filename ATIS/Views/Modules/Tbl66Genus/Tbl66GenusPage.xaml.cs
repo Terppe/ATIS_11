@@ -84,6 +84,18 @@ public sealed partial class Tbl66GenusPage : Page
                 Vm.SpeciesViewModel.NameViewModel.PrepareViewState();
                 break;
 
+            case 7:
+                Vm.SpeciesViewModel.ImageViewModel.PrepareViewState();
+                break;
+
+            case 8:
+                Vm.SpeciesViewModel.SynonymViewModel.PrepareViewState();
+                break;
+
+            case 9:
+                Vm.SpeciesViewModel.GeographicViewModel.PrepareViewState();
+                break;
+
         }
     }
     private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
@@ -114,11 +126,17 @@ public sealed partial class Tbl66GenusPage : Page
         CommentsSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
         ReferencesSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
         NamesSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        ImagesSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        SynonymsSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        GeographicsSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
 
 
         CommentsSpeciesTab.IsEnabled = hasSelection;
         ReferencesSpeciesTab.IsEnabled = hasSelection;
         NamesSpeciesTab.IsEnabled = hasSelection;
+        ImagesSpeciesTab.IsEnabled = hasSelection;
+        SynonymsSpeciesTab.IsEnabled = hasSelection;
+        GeographicsSpeciesTab.IsEnabled = hasSelection;
 
 
         if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
@@ -137,6 +155,9 @@ public sealed partial class Tbl66GenusPage : Page
         SetTabButtonStyle(CommentsSpeciesTab, CommentsSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 4);
         SetTabButtonStyle(ReferencesSpeciesTab, ReferencesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 5);
         SetTabButtonStyle(NamesSpeciesTab, NamesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 6);
+        SetTabButtonStyle(ImagesSpeciesTab, ImagesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 7);
+        SetTabButtonStyle(SynonymsSpeciesTab, SynonymsSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 8);
+        SetTabButtonStyle(GeographicsSpeciesTab, GeographicsSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 9);
     }
 
     private void UpdateDetailContentVisibility()
@@ -148,6 +169,9 @@ public sealed partial class Tbl66GenusPage : Page
         CommentsSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
         ReferencesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
         NamesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 6 ? Visibility.Visible : Visibility.Collapsed;
+        ImagesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 7 ? Visibility.Visible : Visibility.Collapsed;
+        SynonymsSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 8 ? Visibility.Visible : Visibility.Collapsed;
+        GeographicsSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 9 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  

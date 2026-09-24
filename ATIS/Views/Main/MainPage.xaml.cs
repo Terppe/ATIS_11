@@ -47,7 +47,6 @@ using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
 using WinRT.Interop;
 using WinUI3Localizer;
-using static ATIS.Views.Report.PdfModels;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
 using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 

@@ -6466,6 +6466,33 @@ public partial class DataService : ObservableObject, IDataService
             .AnyAsync(x => x.SpeciesId == speciesId);
     }
     // ---------------------------------------------------------                  
+    // HasImageAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesHasImageAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl81Images
+            .AnyAsync(x => x.SpeciesId == speciesId);
+    }
+    // ---------------------------------------------------------                  
+    // HasSynonymAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesHasSynonymAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl84Synonyms
+            .AnyAsync(x => x.SpeciesId == speciesId);
+    }
+    // ---------------------------------------------------------                  
+    // HasGeographicAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SpeciesHasGeographicAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+        return await context.Tbl87Geographics
+            .AnyAsync(x => x.SpeciesId == speciesId);
+    }
+    // ---------------------------------------------------------                  
     // HasReferenceAsync(int speciesId)
     // ---------------------------------------------------------                 
     public async Task<bool> SpeciesHasReferenceAsync(int speciesId)

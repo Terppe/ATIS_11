@@ -73,17 +73,24 @@ public sealed class Tbl75SpeciesTabController
     {
         _page.NameTab.Visibility = Visibility.Visible;
         _page.NameTab.IsEnabled = true;
+        _page.ImageTab.Visibility = Visibility.Visible;
+        _page.ImageTab.IsEnabled = true;
+        _page.SynonymTab.Visibility = Visibility.Visible;
+        _page.SynonymTab.IsEnabled = true;
+        _page.GeographicTab.Visibility = Visibility.Visible;
+        _page.GeographicTab.IsEnabled = true;
 
-        _page.ImageTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
-        _page.SynonymTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
-        _page.GeographicTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        //    _page.ImageTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        //_page.ImageTab.Visibility = Visibility.Visible;
+        //_page.SynonymTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        //_page.GeographicTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
 
-        _page.ImageTab.IsEnabled = hasSelection;
-        _page.SynonymTab.IsEnabled = hasSelection;
-        _page.GeographicTab.IsEnabled = hasSelection;
+        //_page.ImageTab.IsEnabled = hasSelection;
+        //_page.SynonymTab.IsEnabled = hasSelection;
+        //_page.GeographicTab.IsEnabled = hasSelection;
 
-        if (!hasSelection && _vm.SelectedDetailTabIndex >= TabImage)
-            _vm.SelectedDetailTabIndex = TabName;
+        //if (!hasSelection && _vm.SelectedDetailTabIndex >= TabImage)
+        //    _vm.SelectedDetailTabIndex = TabName;
 
         UpdateTabButtonStates();
         UpdateDetailContentVisibility();

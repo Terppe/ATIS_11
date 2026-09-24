@@ -149,27 +149,90 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         }
     }
 
-    private Task CheckSql_DbAsync()
+    private async Task CheckSql_DbAsync()
     {
-        if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
-                Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
+        var serverName = ConfigurationManager.AppSettings.Get("ServerName");
+
+        if (!int.TryParse(
+                ConfigurationManager.AppSettings.Get("Port"),
+                out var port))
         {
-            //           TbDataBase.Text = StringsRes.SqlServerNotRunning;
-        }
-        else
-        {
-            if (!CheckDatabaseExist(ConfigurationManager.AppSettings.Get("ServerName")))
-            {
-                //              TbDataBase.Text = StringsRes.DatabaseNotFound;
-                ;
-            }
+            SimpleLog.Error("Ungültiger Port in AppSettings.");
+            return;
         }
 
-        return Task.CompletedTask;
+        if (!CheckForServer(serverName, port))
+        {
+            return;
+        }
+
+        await CheckDatabaseExistAsync(serverName);
     }
+
+    //private Task CheckSql_DbAsync()
+    //{
+    //    if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
+    //            Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
+    //    {
+    //        //           TbDataBase.Text = StringsRes.SqlServerNotRunning;
+    //    }
+    //    else
+    //    {
+    //        if (!CheckDatabaseExist(ConfigurationManager.AppSettings.Get("ServerName")))
+    //        {
+    //            //              TbDataBase.Text = StringsRes.DatabaseNotFound;
+    //            ;
+    //        }
+    //    }
+
+    //    return Task.CompletedTask;
+    //}
 
 
     //------------------------Check Server and Database-------------------------------
+
+    private async Task<bool> CheckDatabaseExistAsync(string? db)
+    {
+        try
+        {
+            await using var context = new AtisDbContext();
+
+            var dbExists = await context.Database.CanConnectAsync();
+
+            if (!dbExists)
+            {
+                if (!string.IsNullOrWhiteSpace(db))
+                {
+                    await _dialogService.ShowErrorAsync(
+                        "Server_Connect_Title",
+                        "Server_Connect_Message");
+                }
+
+                await _dialogService.ShowYesNoAsync(
+                    "Server_Exist_Title",
+                    "Server_Exist_Question");
+
+                SimpleLog.Error(
+                    $"Datenbank nicht erreichbar: {db}");
+
+                return false;
+            }
+
+            return true;
+        }
+        catch (SqlException ex)
+        {
+            SimpleLog.Error(
+                $"SQL-Server nicht verbunden: {db} - {ex}");
+
+            await _dialogService.ShowYesNoAsync(
+                "Server_Exist_Title",
+                "Server_Exist_Question");
+
+            return false;
+        }
+    }
+
     private static bool CheckForServer(string address, int port)
     {
         var timeout = 500;
@@ -206,8 +269,8 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         }
     }
 
-    //Check if database exist or SQLServer not running
-    private bool CheckDatabaseExist(string db)
+    // Check if database exist or SQLServer not running
+       private bool CheckDatabaseExist(string db)
     {
         var ret = false;
 
@@ -222,7 +285,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
                 if (db != null)
                 {
                     _dialogService.ShowErrorAsync("Server_Connect_Title", "Server_Connect_Message");
-          //          _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
+                    //          _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
                 }
                 _dialogService.ShowYesNoAsync("Server_Exist_Title", "Server_Exist_Question");
                 //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
@@ -236,7 +299,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
             }
             else
             {
- //               TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
+                //               TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
                 ret = true;
             }
         }
@@ -244,7 +307,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         {
             _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
 
-          //  _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
+            //  _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
             //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,
             //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
             _dialogService.ShowYesNoAsync("Server_Exist_Title", "Server_Exist_Question");

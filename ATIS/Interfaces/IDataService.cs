@@ -830,8 +830,11 @@ public interface IDataService
     Task<bool> SpeciesExistsAsync(Tbl75Species entity);
 
     Task<bool> SpeciesHasNameAsync(int speciesId);
+    Task<bool> SpeciesHasImageAsync(int speciesId);
+    Task<bool> SpeciesHasSynonymAsync(int speciesId);
+    Task<bool> SpeciesHasGeographicAsync(int speciesId);
     Task<bool> SpeciesHasReferenceAsync(int speciesId);
-    Task<bool> SpeciesHasCommentAsync(int sspeciesId);
+    Task<bool> SpeciesHasCommentAsync(int speciesId);
 
     Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId);
     Task<IEnumerable<Tbl75Species>> GetSpeciesForSpeciesgroupAsync(int speciesgroupId);

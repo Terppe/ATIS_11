@@ -78,18 +78,10 @@ public partial class AtisDbContext : DbContext
     {
         get; set;
     }
-    //public DbSet<Tbl09Division> Tbl09Divisions
-    //{
-    //    get; set;
-    //}
     public DbSet<Tbl12Subphylum> Tbl12Subphylums
     {
         get; set;
     }
-    //public DbSet<Tbl15Subdivision> Tbl15Subdivisions
-    //{
-    //    get; set;
-    //}
     public DbSet<Tbl18Superclass> Tbl18Superclasses
     {
         get; set;

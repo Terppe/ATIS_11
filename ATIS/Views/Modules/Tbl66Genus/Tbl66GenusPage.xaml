@@ -10,6 +10,9 @@
       xmlns:tbl78Name="using:ATIS.Views.Modules.Tbl78Name"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+      xmlns:tbl81Image="using:ATIS.Views.Modules.Tbl81Image"
+      xmlns:tbl84Synonym="using:ATIS.Views.Modules.Tbl84Synonym"
+      xmlns:tbl87Geographic="using:ATIS.Views.Modules.Tbl87Geographic"
       x:Name="RootPage">
 
     <!--  Tbl66GenusPage Skriptdatum:  18.08.2026  10:32  -->
@@ -198,12 +201,55 @@
                                         Visibility="Collapsed">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Name" />
+                                                   loc:Uids.Uid="TextBlock_Names" />
                                         <Border x:Name="NamesSpeciesTabUnderline"
                                                 Height="2"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
+
+                                <Button x:Name="ImagesSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="7"
+                                        Visibility="Collapsed">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Images" />
+                                        <Border x:Name="ImagesSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="SynonymsSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="8"
+                                        Visibility="Collapsed">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Synonyms" />
+                                        <Border x:Name="SynonymsSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button x:Name="GeographicsSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="9"
+                                        Visibility="Collapsed">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Geographics" />
+                                        <Border x:Name="GeographicsSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
+
                             </StackPanel>
                         </ScrollViewer>
 
@@ -275,6 +321,43 @@
                                                                 Item="{Binding Item}"
                                                                 Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
+
+                            <Grid x:Name="ImagesSpeciesContent"
+                                  DataContext="{Binding SpeciesViewModel.ImageViewModel}"
+                                  RowDefinitions="Auto,*"
+                                  Visibility="Collapsed">
+
+                                <tbl81Image:Tbl81ImageParentControl Grid.Row="0" />
+
+                                <tbl81Image:Tbl81ImageEditControl Grid.Row="1"
+                                                                  Item="{Binding Item}"
+                                                                  Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="SynonymsSpeciesContent"
+                                  DataContext="{Binding SpeciesViewModel.SynonymViewModel}"
+                                  RowDefinitions="Auto,*"
+                                  Visibility="Collapsed">
+
+                                <tbl84Synonym:Tbl84SynonymParentControl Grid.Row="0" />
+
+                                <tbl84Synonym:Tbl84SynonymEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="GeographicsSpeciesContent"
+                                  DataContext="{Binding SpeciesViewModel.GeographicViewModel}"
+                                  RowDefinitions="Auto,*"
+                                  Visibility="Collapsed">
+
+                                <tbl87Geographic:Tbl87GeographicParentControl Grid.Row="0" />
+
+                                <tbl87Geographic:Tbl87GeographicEditControl Grid.Row="1"
+                                                                            Item="{Binding Item}"
+                                                                            Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
                         </Grid>
                     </Grid>
                 </layout:BaseBossPageLayout.DetailContent>

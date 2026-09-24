@@ -202,6 +202,11 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         OnPropertyChanged(nameof(HasItems));
 
         DataSetCount = Items.Count;
+
+        // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
+        SelectedItem = null;
+        Item = null;
+
     }
 
     // ---------------------------------------------------------
@@ -221,27 +226,14 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // SELECTED ITEM
     // ---------------------------------------------------------
-    protected override async Task OnSelectedItemChangedAsync()
+    protected override Task OnSelectedItemChangedAsync()
     {
-        // 1. BACK → SelectedItem == null
-        if (SelectedItem == null)
-        {
-            OnPropertyChanged(nameof(IsDetailVisible));
-            await ClearChildCollectionsAsync();
-            SelectedDetailTabIndex = 0;
-            return;
-        }
+        // Das EditControl arbeitet mit Item,
+        // die Liste mit SelectedItem.
+        Item = SelectedItem;
+        // Tbl81Image hat keine eigenen Children.
 
-        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
-        if (IsInParentMode)
-        {
-            await LoadChildrenAsync(GetId(SelectedItem));
-            return;
-        }
-
-        // 3. Boss-Modus → volle Detail-Logik
-        OnPropertyChanged(nameof(IsDetailVisible));
-        await LoadChildrenAsync(GetId(SelectedItem));
+        return Task.CompletedTask;
     }
 
     // ---------------------------------------------------------
@@ -255,16 +247,37 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     {
         return Task.CompletedTask;
     }
+    private Models.Tbl81Image? _item;
+
+    public Models.Tbl81Image? Item
+    {
+        get => _item;
+        set
+        {
+            if (SetProperty(ref _item, value))
+            {
+                OnPropertyChanged(nameof(HasActiveItem));
+            }
+        }
+    }
+    public bool HasActiveItem => Item != null;
+
     public void PrepareViewState()
     {
-        // Bei null Auswahl auf Edit-Tab zurück
+        // Keine Auswahl: EditControl schließen
         if (SelectedItem == null)
         {
+            Item = null;
             SelectedDetailTabIndex = 0;
             OnPropertyChanged(nameof(IsDetailVisible));
         }
+        else
+        {
+            // Falls bereits ein Datensatz ausgewählt ist,
+            // EditControl mit diesem Datensatz synchronisieren.
+            Item = SelectedItem;
+        }
 
-        // Commands/UI-State auffrischen
         UpdateRefreshState();
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();

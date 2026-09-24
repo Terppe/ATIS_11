@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
 using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
-using Microsoft.UI;
-using Microsoft.UI.Text;
-using Microsoft.UI.Xaml.Media;
+using ATIS.Views.Modules.Tbl84Synonym;
+using ATIS.Views.Modules.Tbl87Geographic;
 
 //    Tbl75SpeciesPage Skriptdatum:  18.08.2026  10:32    
 
@@ -91,6 +90,20 @@ public sealed partial class Tbl75SpeciesPage : Page
             DispatcherQueue.TryEnqueue(() =>
             {
                 _tabs.UpdateNameTabs(Vm.ImageViewModel.SelectedItem != null);
+            });
+        }
+        if (e.PropertyName == nameof(Tbl84SynonymViewModel.SelectedItem))
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                _tabs.UpdateNameTabs(Vm.SynonymViewModel.SelectedItem != null);
+            });
+        }
+        if (e.PropertyName == nameof(Tbl87GeographicViewModel.SelectedItem))
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                _tabs.UpdateNameTabs(Vm.GeographicViewModel.SelectedItem != null);
             });
         }
 

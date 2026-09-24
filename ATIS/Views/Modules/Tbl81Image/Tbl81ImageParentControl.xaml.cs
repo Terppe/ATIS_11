@@ -12,16 +12,39 @@ public sealed partial class Tbl81ImageParentControl : UserControl
     // ---------------------------------------------------------
     // CONSTRUCTOR
     // ---------------------------------------------------------
-
     public Tbl81ImageParentControl()
     {
         InitializeComponent();
+
         Loaded += (_, __) =>
         {
             if (DataContext is Tbl81ImageViewModel vm)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[ImageParent] Loaded: " +
+                    $"Items={vm.Items?.Count ?? -1}, " +
+                    $"DataSetCount={vm.DataSetCount}, " +
+                    $"ParentMode={vm.IsInParentMode}");
+
                 vm.ScrollRequested += (_, __) => ScrollToSelectedItem();
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[ImageParent] Falscher DataContext: " +
+                    $"{DataContext?.GetType().FullName ?? "null"}");
+            }
         };
     }
+    //public Tbl81ImageParentControl()
+    //{
+    //    InitializeComponent();
+    //    Loaded += (_, __) =>
+    //    {
+    //        if (DataContext is Tbl81ImageViewModel vm)
+    //            vm.ScrollRequested += (_, __) => ScrollToSelectedItem();
+    //    };
+    //}
 
     // ---------------------------------------------------------
     // SCROLL TO SELECTED

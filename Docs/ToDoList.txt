@@ -1182,3 +1182,14 @@ Versuch Image, Synonym und Geagraphic in Species anzeigen noch nicht gelöst
 23.09.2026 18:30 Uhr  zurückgesetzt von 218
 ----------------------------------------
 24.09.2026 12:30 Uhr Name-Geographic bei SpeciesPage und Genuspage einfügen. Name funktioniert in SpeciesPage.
+----------------------------------------
+24.09.2026 14:30 Uhr Name funktioniert in SpeciesPage und Genuspage. Jetzt Tbl81Image bis Geographic fertig. Bei MainViewModel
+CheckSql_DbAsync, CheckDatabaseExistAsync, CheckForServer und     <add name="MyDbConnection"
+         connectionString="Data Source=localhost,1433;
+					 Initial Catalog=ATIS34;
+					 Integrated Security=True;
+					 MultipleActiveResultSets=True;
+					 TrustServerCertificate=True"
+         providerName="System.Data.SqlClient" />
+    <add key="ServerName" value="localhost"/> in AppConfig neu eingefügt, da sockketfehler für onnectionString="Data Source=.\MSSQLSERVER,1433; gekommen ist
+
