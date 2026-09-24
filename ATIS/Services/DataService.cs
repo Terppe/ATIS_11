@@ -6500,6 +6500,22 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     // ---------------------------------------------------------                  
+    // GetSpeciesForSpeciesgroupAsync(int speciesgroupId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl75Species>> GetSpeciesForSpeciesgroupAsync(int speciesgroupId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Where(e => e.SpeciesgroupId == speciesgroupId)
+            .Include(e => e.Speciesgroup)
+            .OrderBy(e => e.SpeciesName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+    // ---------------------------------------------------------                  
     // GetNamesBySpeciesIdAsync(int speciesId) FürReportPDF
     // ---------------------------------------------------------                 
 
@@ -6797,6 +6813,136 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Species                       
 
     #region Name                  
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllNameAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl78Name>> GetAllNameAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl78Names
+            .AsNoTracking()
+            .OrderBy(e => e.NameName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchNameWithSpeciesAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl78Name>> SearchNameWithSpeciesAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl78Name>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl78Names
+            .Include(x => x.Species)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.NameId == id || e.NameName.StartsWith(search))
+                .OrderBy(e => e.NameName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.NameName.StartsWith(search))
+            .OrderBy(e => e.NameName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertNameAsync(Tbl78Name uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl78Name> UpsertNameAsync(Tbl78Name uiEntity)
+    {
+        return UpsertAsync<Tbl78Name, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl78Name>(),
+            x => x.NameId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.NameId == id),
+            MapNameFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapNameFields(Tbl78Name source, Tbl78Name target)
+    // ---------------------------------------------------------                 
+    private static void MapNameFields(Tbl78Name source, Tbl78Name target)
+    {
+        target.NameName = source.NameName;
+        target.SpeciesId = source.SpeciesId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Language = source.Language;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetNameByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl78Name?> GetNameByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl78Names
+            .Include(x => x.Species)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.NameId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteNameAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteNameAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl78Names.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl78Names.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl78Name entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> NameExistsAsync(Tbl78Name entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl78Names.AnyAsync(x =>
+            x.NameName == entity.NameName &&
+            x.SpeciesId == entity.SpeciesId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Language == entity.Language &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.NameId != entity.NameId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // GetNameForSpeciesAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl78Name>> GetNameForSpeciesAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl78Names
+            .Where(e => e.SpeciesId == speciesId)
+            .Include(e => e.Species)
+            .OrderBy(e => e.NameName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+    //alt-----------------------------------------------------
 
     public ObservableCollection<Tbl78Name> GetNameAsync()
     {
@@ -6848,42 +6994,197 @@ public partial class DataService : ObservableObject, IDataService
     //    return collection;
     //}
 
-    public async Task<Tbl78Name> UpsertNameAsync(Tbl78Name name)
-    {
-        var current = await _context.Tbl78Names.FirstOrDefaultAsync(c => c.NameId == name.NameId);
-        if (null == current)
-        {
-            name.CountId = RandomHelper.Randomnumber();
-            name.Writer = Environment.UserName;
-            name.WriterDate = DateTime.Now;
-            name.Updater = Environment.UserName;
-            name.UpdaterDate = DateTime.Now;
-            _context.Tbl78Names.Add(name);
-        }
-        else
-        {
-            name.Updater = Environment.UserName;
-            name.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(name);
-        }
-        await _context.SaveChangesAsync();
-        return name;
-    }
+    //public async Task<Tbl78Name> UpsertNameAsync(Tbl78Name name)
+    //{
+    //    var current = await _context.Tbl78Names.FirstOrDefaultAsync(c => c.NameId == name.NameId);
+    //    if (null == current)
+    //    {
+    //        name.CountId = RandomHelper.Randomnumber();
+    //        name.Writer = Environment.UserName;
+    //        name.WriterDate = DateTime.Now;
+    //        name.Updater = Environment.UserName;
+    //        name.UpdaterDate = DateTime.Now;
+    //        _context.Tbl78Names.Add(name);
+    //    }
+    //    else
+    //    {
+    //        name.Updater = Environment.UserName;
+    //        name.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(name);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return name;
+    //}
 
-    public async Task DeleteNameAsync(int nameid)
-    {
-        var names = await _context.Tbl78Names.FirstOrDefaultAsync(b => b.NameId == nameid);
-        if (names != null)
-        {
-            _context.Tbl78Names.Remove(names);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteNameAsync(int nameid)
+    //{
+    //    var names = await _context.Tbl78Names.FirstOrDefaultAsync(b => b.NameId == nameid);
+    //    if (names != null)
+    //    {
+    //        _context.Tbl78Names.Remove(names);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Name
 
-    #region Image                  
+    #region Image
+    // ---------------------------------------------------------                  
+    // Image 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllImageAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl81Image>> GetAllImageAsync()
+    {
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl81Images
+            .AsNoTracking()
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchImageWithSpeciesAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl81Image>> SearchImageWithSpeciesAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl81Image>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl81Images
+            .Include(x => x.Species)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.ImageId == id || e.Info.StartsWith(search))
+                .OrderBy(e => e.Info)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.Info.StartsWith(search))
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertImageAsync(Tbl81Image uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl81Image> UpsertImageAsync(Tbl81Image uiEntity)
+    {
+        return UpsertAsync<Tbl81Image, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl81Image>(),
+            x => x.ImageId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.ImageId == id),
+            MapImageFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapImageFields(Tbl81Image source, Tbl81Image target)
+    // ---------------------------------------------------------                 
+    private static void MapImageFields(Tbl81Image source, Tbl81Image target)
+    {
+        target.SpeciesId = source.SpeciesId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetImageByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl81Image?> GetImageByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images
+            .Include(x => x.Species)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.ImageId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteImageAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteImageAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl81Images.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl81Images.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl81Image entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> ImageExistsAsync(Tbl81Image entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images.AnyAsync(x =>
+            x.SpeciesId == entity.SpeciesId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.ImageId != entity.ImageId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasNameAsync(int imageId)
+    // ---------------------------------------------------------                 
+    //public async Task<bool> ImageHasNameAsync(int imageId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.NULL
+    //        .AnyAsync(x => x.ImageId == imageId);
+    //}
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int imageId)
+    // ---------------------------------------------------------                 
+    //public async Task<bool> ImageHasReferenceAsync(int imageId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.Tbl90References
+    //        .AnyAsync(x => x.ImageId == imageId);
+    //}
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int imageId)
+    // ---------------------------------------------------------                 
+    //public async Task<bool> ImageHasCommentAsync(int imageId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.Tbl93Comments
+    //        .AnyAsync(x => x.ImageId == imageId);
+    //}
+
+    // ---------------------------------------------------------                  
+    // GetImageForSpeciesAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl81Image>> GetImageForSpeciesAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images
+            .Where(e => e.SpeciesId == speciesId)
+            .Include(e => e.Species)
+            .OrderBy(e => e.Info)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+    //alt-----------------------------------------------------
     public ObservableCollection<Tbl81Image> GetImageAsync()
     {
         var collection = new ObservableCollection<Tbl81Image>(_context.Tbl81Images
@@ -6970,20 +7271,157 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    public async Task DeleteImageAsync(int imageid)
-    {
-        var images = await _context.Tbl81Images.FirstOrDefaultAsync(b => b.ImageId == imageid);
-        if (images != null)
-        {
-            _context.Tbl81Images.Remove(images);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteImageAsync(int imageid)
+    //{
+    //    var images = await _context.Tbl81Images.FirstOrDefaultAsync(b => b.ImageId == imageid);
+    //    if (images != null)
+    //    {
+    //        _context.Tbl81Images.Remove(images);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Image                  
 
-    #region Synonym                  
+    #region Synonym
+    // ---------------------------------------------------------                  
+    // Synonym 
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllSynonymAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl84Synonym>> GetAllSynonymAsync()
+    {
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl84Synonyms
+            .AsNoTracking()
+            .OrderBy(e => e.SynonymName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchSynonymWithSpeciesAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl84Synonym>> SearchSynonymWithSpeciesAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl84Synonym>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl84Synonyms
+            .Include(x => x.Species)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.SynonymId == id || e.SynonymName.StartsWith(search))
+                .OrderBy(e => e.SynonymName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.SynonymName.StartsWith(search))
+            .OrderBy(e => e.SynonymName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertSynonymAsync(Tbl84Synonym uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym uiEntity)
+    {
+        return UpsertAsync<Tbl84Synonym, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl84Synonym>(),
+            x => x.SynonymId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.SynonymId == id),
+            MapSynonymFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapSynonymFields(Tbl84Synonym source, Tbl84Synonym target)
+    // ---------------------------------------------------------                 
+    private static void MapSynonymFields(Tbl84Synonym source, Tbl84Synonym target)
+    {
+        target.SynonymName = source.SynonymName;
+        target.SpeciesId = source.SpeciesId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetSynonymByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl84Synonym?> GetSynonymByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl84Synonyms
+            .Include(x => x.Species)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.SynonymId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteSynonymAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteSynonymAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl84Synonyms.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl84Synonyms.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl84Synonym entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> SynonymExistsAsync(Tbl84Synonym entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl84Synonyms.AnyAsync(x =>
+            x.SynonymName == entity.SynonymName &&
+            x.SpeciesId == entity.SpeciesId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.SynonymId != entity.SynonymId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasNameAsync(int synonymId)
+    // ---------------------------------------------------------                 
+
+    // ---------------------------------------------------------                  
+    // GetSynonymForSpeciesAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl84Synonym>> GetSynonymForSpeciesAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl84Synonyms
+            .Where(e => e.SpeciesId == speciesId)
+            .Include(e => e.Species)
+            .OrderBy(e => e.SynonymName)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+    //alt-----------------------------------------------------
     public ObservableCollection<Tbl84Synonym> GetSynonymAsync()
     {
         var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
@@ -7034,42 +7472,200 @@ public partial class DataService : ObservableObject, IDataService
     //    return collection;
     //}
 
-    public async Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym)
-    {
-        var current = await _context.Tbl84Synonyms.FirstOrDefaultAsync(c => c.SynonymId == synonym.SynonymId);
-        if (null == current)
-        {
-            synonym.CountId = RandomHelper.Randomnumber();
-            synonym.Writer = Environment.UserName;
-            synonym.WriterDate = DateTime.Now;
-            synonym.Updater = Environment.UserName;
-            synonym.UpdaterDate = DateTime.Now;
-            _context.Tbl84Synonyms.Add(synonym);
-        }
-        else
-        {
-            synonym.Updater = Environment.UserName;
-            synonym.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(synonym);
-        }
-        await _context.SaveChangesAsync();
-        return synonym;
-    }
+    //public async Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym)
+    //{
+    //    var current = await _context.Tbl84Synonyms.FirstOrDefaultAsync(c => c.SynonymId == synonym.SynonymId);
+    //    if (null == current)
+    //    {
+    //        synonym.CountId = RandomHelper.Randomnumber();
+    //        synonym.Writer = Environment.UserName;
+    //        synonym.WriterDate = DateTime.Now;
+    //        synonym.Updater = Environment.UserName;
+    //        synonym.UpdaterDate = DateTime.Now;
+    //        _context.Tbl84Synonyms.Add(synonym);
+    //    }
+    //    else
+    //    {
+    //        synonym.Updater = Environment.UserName;
+    //        synonym.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(synonym);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return synonym;
+    //}
 
-    public async Task DeleteSynonymAsync(int synonymid)
-    {
-        var synonyms = await _context.Tbl84Synonyms.FirstOrDefaultAsync(b => b.SynonymId == synonymid);
-        if (synonyms != null)
-        {
-            _context.Tbl84Synonyms.Remove(synonyms);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteSynonymAsync(int synonymid)
+    //{
+    //    var synonyms = await _context.Tbl84Synonyms.FirstOrDefaultAsync(b => b.SynonymId == synonymid);
+    //    if (synonyms != null)
+    //    {
+    //        _context.Tbl84Synonyms.Remove(synonyms);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Name                  
 
-    #region Geographic                  
+    #region Geographic
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllGeographicAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<Tbl87Geographic>> GetAllGeographicAsync()
+    {
+        await using var context = _factory.CreateDbContext();
 
+        return await context.Tbl87Geographics
+            .AsNoTracking()
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchGeographicWithSpeciesAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl87Geographic>> SearchGeographicWithSpeciesAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl87Geographic>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.Tbl87Geographics
+            .Include(x => x.Species)
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.GeographicId == id || e.Info.StartsWith(search))
+                .OrderBy(e => e.Info)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.Info.StartsWith(search))
+            .OrderBy(e => e.Info)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertGeographicAsync(Tbl87Geographic uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic uiEntity)
+    {
+        return UpsertAsync<Tbl87Geographic, int>(
+            uiEntity,
+            ctx => ctx.Set<Tbl87Geographic>(),
+            x => x.GeographicId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.GeographicId == id),
+            MapGeographicFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapGeographicFields(Tbl87Geographic source, Tbl87Geographic target)
+    // ---------------------------------------------------------                 
+    private static void MapGeographicFields(Tbl87Geographic source, Tbl87Geographic target)
+    {
+        target.SpeciesId = source.SpeciesId;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.Author = source.Author;
+        target.AuthorYear = source.AuthorYear;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetGeographicByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<Tbl87Geographic?> GetGeographicByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl87Geographics
+            .Include(x => x.Species)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.GeographicId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteGeographicAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteGeographicAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.Tbl87Geographics.FindAsync(id);
+        if (entity != null)
+        {
+            context.Tbl87Geographics.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(Tbl87Geographic entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> GeographicExistsAsync(Tbl87Geographic entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl87Geographics.AnyAsync(x =>
+            x.SpeciesId == entity.SpeciesId &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.Author == entity.Author &&
+            x.AuthorYear == entity.AuthorYear &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.Memo == entity.Memo &&
+            x.GeographicId != entity.GeographicId
+        );
+    }
+
+    // ---------------------------------------------------------                  
+    // HasNameAsync(int geographicId)
+    // ---------------------------------------------------------                 
+    //public async Task<bool> GeographicHasNameAsync(int geographicId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.NULL
+    //        .AnyAsync(x => x.GeographicId == geographicId);
+    //}
+    // ---------------------------------------------------------                  
+    // HasReferenceAsync(int geographicId)
+    // ---------------------------------------------------------                 
+    //public async Task<bool> GeographicHasReferenceAsync(int geographicId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.Tbl90References
+    //        .AnyAsync(x => x.GeographicId == geographicId);
+    //}
+    // ---------------------------------------------------------                  
+    // HasCommentAsync(int geographicId)
+    // ---------------------------------------------------------                 
+    //public async Task<bool> GeographicHasCommentAsync(int geographicId)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+    //    return await context.Tbl93Comments
+    //        .AnyAsync(x => x.GeographicId == geographicId);
+    //}
+
+    // ---------------------------------------------------------                  
+    // GetGeographicForSpeciesAsync(int speciesId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl87Geographic>> GetGeographicForSpeciesAsync(int speciesId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl87Geographics
+            .Where(e => e.SpeciesId == speciesId)
+            .Include(e => e.Species)
+            .OrderBy(e => e.Info)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+
+    //alt-----------------------------------------------------
     public ObservableCollection<Tbl87Geographic> GetGeographicAsync()
     {
         var collection = new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
@@ -7120,37 +7716,37 @@ public partial class DataService : ObservableObject, IDataService
     //    return collection;
     //}
 
-    public async Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic)
-    {
-        var current = await _context.Tbl87Geographics.FirstOrDefaultAsync(c => c.GeographicId == geographic.GeographicId);
-        if (null == current)
-        {
-            geographic.CountId = RandomHelper.Randomnumber();
-            geographic.Writer = Environment.UserName;
-            geographic.WriterDate = DateTime.Now;
-            geographic.Updater = Environment.UserName;
-            geographic.UpdaterDate = DateTime.Now;
-            _context.Tbl87Geographics.Add(geographic);
-        }
-        else
-        {
-            geographic.Updater = Environment.UserName;
-            geographic.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(geographic);
-        }
-        await _context.SaveChangesAsync();
-        return geographic;
-    }
+    //public async Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic)
+    //{
+    //    var current = await _context.Tbl87Geographics.FirstOrDefaultAsync(c => c.GeographicId == geographic.GeographicId);
+    //    if (null == current)
+    //    {
+    //        geographic.CountId = RandomHelper.Randomnumber();
+    //        geographic.Writer = Environment.UserName;
+    //        geographic.WriterDate = DateTime.Now;
+    //        geographic.Updater = Environment.UserName;
+    //        geographic.UpdaterDate = DateTime.Now;
+    //        _context.Tbl87Geographics.Add(geographic);
+    //    }
+    //    else
+    //    {
+    //        geographic.Updater = Environment.UserName;
+    //        geographic.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(geographic);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return geographic;
+    //}
 
-    public async Task DeleteGeographicAsync(int geographicid)
-    {
-        var geographics = await _context.Tbl87Geographics.FirstOrDefaultAsync(b => b.GeographicId == geographicid);
-        if (geographics != null)
-        {
-            _context.Tbl87Geographics.Remove(geographics);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteGeographicAsync(int geographicid)
+    //{
+    //    var geographics = await _context.Tbl87Geographics.FirstOrDefaultAsync(b => b.GeographicId == geographicid);
+    //    if (geographics != null)
+    //    {
+    //        _context.Tbl87Geographics.Remove(geographics);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Image                  
 

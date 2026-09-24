@@ -10,39 +10,6 @@ namespace ATIS.Models;
 public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     // ---------------------------------------------------------
-    // ERROR DICTIONARY (wie Subtribus)
-    // ---------------------------------------------------------
-    private readonly Dictionary<string, List<string>> _errors = new();
-
-    public IReadOnlyDictionary<string, List<string>> Errors => _errors;
-
-    private void AddError(string property, string message)
-    {
-        if (!_errors.ContainsKey(property))
-            _errors[property] = new List<string>();
-
-        if (!_errors[property].Contains(message))
-            _errors[property].Add(message);
-
-        OnPropertyChanged(nameof(HasErrors));
-        OnPropertyChanged($"{property}Error");
-        OnPropertyChanged($"Has{property}Error");
-    }
-
-    private void ClearErrors(string property)
-    {
-        if (_errors.ContainsKey(property))
-        {
-            _errors.Remove(property);
-            OnPropertyChanged(nameof(HasErrors));
-            OnPropertyChanged($"{property}Error");
-            OnPropertyChanged($"Has{property}Error");
-        }
-    }
-
-    public bool HasErrors => _errors.Count > 0;
-
-    // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
     [Key]
@@ -135,6 +102,40 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     [NotMapped] public string? FoodName { get; set; }
     [NotMapped] public string? DiseaseName { get; set; }
     [NotMapped] public string? MiscName { get; set; }
+
+    // ---------------------------------------------------------
+    // ERROR DICTIONARY (wie Subtribus)
+    // ---------------------------------------------------------
+    private readonly Dictionary<string, List<string>> _errors = new();
+
+    public IReadOnlyDictionary<string, List<string>> Errors => _errors;
+
+    private void AddError(string property, string message)
+    {
+        if (!_errors.ContainsKey(property))
+            _errors[property] = new List<string>();
+
+        if (!_errors[property].Contains(message))
+            _errors[property].Add(message);
+
+        OnPropertyChanged(nameof(HasErrors));
+        OnPropertyChanged($"{property}Error");
+        OnPropertyChanged($"Has{property}Error");
+    }
+
+    private void ClearErrors(string property)
+    {
+        if (_errors.ContainsKey(property))
+        {
+            _errors.Remove(property);
+            OnPropertyChanged(nameof(HasErrors));
+            OnPropertyChanged($"{property}Error");
+            OnPropertyChanged($"Has{property}Error");
+        }
+    }
+
+    public bool HasErrors => _errors.Count > 0;
+
 
     // ---------------------------------------------------------
     // VALIDATION

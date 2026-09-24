@@ -8,7 +8,7 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
-    <!--  Tbl66GenusParentControl Skriptdatum:  13.06.2024  10:32  -->
+    <!--    Tbl66GenusParentControl Skriptdatum:  18.08.2026  10:32 -->
 
     <UserControl.Resources>
         <GridLength x:Key="IdWidthResource">120</GridLength>
@@ -17,7 +17,7 @@
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
         <GridLength x:Key="Extra5WidthResource">250</GridLength>
-        <GridLength x:Key="Extra6WidthResource">100</GridLength>
+        <GridLength x:Key="Extra6WidthResource">80</GridLength>
     </UserControl.Resources>
 
     <Grid Padding="2"

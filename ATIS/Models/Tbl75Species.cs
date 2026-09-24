@@ -239,7 +239,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // ImportingYear
     // ---------------------------------------------------------
-    [StringLength(4)] private string? _importingYear;
+    [StringLength(4)]
+    private string? _importingYear;
 
     public string? ImportingYear
     {
@@ -257,7 +258,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // TypeSpecies
     // ---------------------------------------------------------
-    public bool TypeSpecies { get; set; }
+    public bool? TypeSpecies { get; set; }
 
     // ---------------------------------------------------------
     // LNumber (nur Ziffern)
@@ -344,30 +345,31 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Ernährungsformen
     // ---------------------------------------------------------
-    public bool Karnivore { get; set; }
-    public bool Herbivore { get; set; }
-    public bool Limnivore { get; set; }
-    public bool Omnivore { get; set; }
+    public bool? Karnivore { get; set; }
+    public bool? Herbivore { get; set; }
+    public bool? Limnivore { get; set; }
+    public bool? Omnivore { get; set; }
 
     // ---------------------------------------------------------
     // MemoFoods
     // ---------------------------------------------------------
-    [StringLength(1000)] public string? MemoFoods { get; set; }
+    [StringLength(1000)]
+    public string? MemoFoods { get; set; }
 
     // ---------------------------------------------------------
     // Difficult1–4
     // ---------------------------------------------------------
-    public bool Difficult1 { get; set; }
-    public bool Difficult2 { get; set; }
-    public bool Difficult3 { get; set; }
-    public bool Difficult4 { get; set; }
+    public bool? Difficult1 { get; set; }
+    public bool? Difficult2 { get; set; }
+    public bool? Difficult3 { get; set; }
+    public bool? Difficult4 { get; set; }
 
     // ---------------------------------------------------------
     // Region
     // ---------------------------------------------------------
-    public bool RegionTop { get; set; }
-    public bool RegionMiddle { get; set; }
-    public bool RegionBottom { get; set; }
+    public bool? RegionTop { get; set; }
+    public bool? RegionMiddle { get; set; }
+    public bool? RegionBottom { get; set; }
 
     [StringLength(1000)] public string? MemoRegion { get; set; }
 
@@ -408,8 +410,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     [StringLength(1000)] public string? MemoDomorphism { get; set; }
     [StringLength(1000)] public string? MemoSpecial { get; set; }
 
-    public int BasinHeight { get; set; }
-    public decimal PlantLength { get; set; }
+    public int? BasinHeight { get; set; }
+    public decimal? PlantLength { get; set; }
 
     [StringLength(1000)] public string? MemoReproduction { get; set; }
     [StringLength(1000)] public string? MemoCulture { get; set; }
@@ -418,18 +420,13 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Creature (Pflicht)
     // ---------------------------------------------------------
-    [StringLength(100)] private string _creature;
-
-    public string Creature
+    [StringLength(100)]
+    private string _creature = string.Empty;
+    public string? Creature
     {
         get => _creature;
-        set
-        {
-            SetProperty(ref _creature, value);
-            ValidateCreature();
-        }
+        set { SetProperty(ref _creature, value); ValidateCreature(); }
     }
-
     [NotMapped] public string? CreatureError { get; set; }
     [NotMapped] public bool HasCreatureError { get; set; }
 
@@ -635,7 +632,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         if (year < 1500 || year > 2100)
             AddError(nameof(ValidYear), loc.GetLocalizedString("Error_ValidYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(ValidYear));
     }
 
@@ -662,7 +659,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         if (year < 1500 || year > 2100)
             AddError(nameof(AuthorYear), loc.GetLocalizedString("Error_AuthorYear_Range"));
 
-        Notify:
+Notify:
         UpdateErrorProperty(nameof(AuthorYear));
     }
 

@@ -345,6 +345,9 @@
   <data name="ComboBox_SpeciesgroupName.Header" xml:space="preserve">
     <value>Speciesgroup</value>
   </data>
+  <data name="ComboBox_SpeciesName.Header" xml:space="preserve">
+    <value>Species</value>
+  </data>
   <data name="ComboBox_SubclassName.Header" xml:space="preserve">
     <value>Subclass Name</value>
   </data>
@@ -3544,6 +3547,9 @@
     <value>Species</value>
   </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
+    <value>Species</value>
+  </data>
+  <data name="TextBlock_SpeciesName.Text" xml:space="preserve">
     <value>Species</value>
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">

@@ -7,8 +7,11 @@
       xmlns:loc="using:WinUI3Localizer"
       xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
       xmlns:tbl78Name="using:ATIS.Views.Modules.Tbl78Name"
+      xmlns:tbl81Image="using:ATIS.Views.Modules.Tbl81Image"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+      xmlns:tbl84Synonym="using:ATIS.Views.Modules.Tbl84Synonym"
+      xmlns:tbl87Geographic="using:ATIS.Views.Modules.Tbl87Geographic"
       x:Name="RootPage">
 
     <!--  Tbl75SpeciesPage Skriptdatum:  18.08.2026  10:32  -->
@@ -115,12 +118,13 @@
                                 <Button x:Name="EditSpeciesTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="0">
+                                        Tag="0" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Edit_Species" />
                                         <Border x:Name="EditSpeciesTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -128,12 +132,13 @@
                                 <Button x:Name="CommentsSpeciesTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="1">
+                                        Tag="1" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Comments" />
                                         <Border x:Name="CommentsSpeciesTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -141,12 +146,13 @@
                                 <Button x:Name="ReferencesSpeciesTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="2">
+                                        Tag="2" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_References" />
                                         <Border x:Name="ReferencesSpeciesTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -154,12 +160,13 @@
                                 <Button x:Name="NameTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="3">
+                                        Tag="3" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Name" />
                                         <Border x:Name="NameTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -167,12 +174,13 @@
                                 <Button x:Name="ImageTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="4">
+                                        Tag="4" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Images" />
                                         <Border x:Name="ImageTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -180,12 +188,13 @@
                                 <Button x:Name="SynonymTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="5">
+                                        Tag="5" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Synonyms" />
                                         <Border x:Name="SynonymTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -193,12 +202,13 @@
                                 <Button x:Name="GeographicTab"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="5">
+                                        Tag="6" x:FieldModifier="public">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Geographics" />
                                         <Border x:Name="GeographicTabUnderline"
                                                 Height="2"
+                                                x:FieldModifier="public"
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
@@ -210,11 +220,13 @@
                         <Grid Grid.Row="1">
 
                             <ScrollViewer x:Name="EditSpeciesContent"
-                                          Padding="1">
+                                          Padding="1"
+                                          x:FieldModifier="public">
                                 <tbl75Species:Tbl75SpeciesEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
                             </ScrollViewer>
 
                             <Grid x:Name="CommentsSpeciesContent"
+                                  x:FieldModifier="public"
                                   DataContext="{Binding SpeciesCommentViewModel}"
                                   RowDefinitions="Auto,*">
                                 <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
@@ -224,6 +236,7 @@
                             </Grid>
 
                             <Grid x:Name="ReferencesSpeciesContent"
+                                  x:FieldModifier="public"
                                   DataContext="{Binding SpeciesReferenceViewModel}"
                                   RowDefinitions="Auto,*">
                                 <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
@@ -234,45 +247,49 @@
                                                                           Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
 
-                            <!--<Grid x:Name="NameContent"
+                            <Grid x:Name="NameContent"
+                                  x:FieldModifier="public"
                                   DataContext="{Binding NameViewModel}"
                                   RowDefinitions="Auto,*">
                                 <tbl78Name:Tbl78NameParentControl x:Name="NameParentControl"
-                                                                    Grid.Row="0" />
+                                                                  Grid.Row="0" />
                                 <tbl78Name:Tbl78NameEditControl Grid.Row="1"
-                                                                  Item="{Binding SelectedItem}"
-                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
+                                                                Item="{Binding Item}"
+                                                                Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                            <!--<Grid x:Name="ImageContent"
+                            <Grid x:Name="ImageContent"
+                                  x:FieldModifier="public"
                                   DataContext="{Binding ImageViewModel}"
                                   RowDefinitions="Auto,*">
-                                <tbl78Name:Tbl81ImageParentControl x:Name="ImageParentControl"
+                                <tbl81Image:Tbl81ImageParentControl x:Name="ImageParentControl"
                                                                     Grid.Row="0" />
-                                <tbl78Name:Tbl81ImageEditControl Grid.Row="1"
-                                                                  Item="{Binding SelectedItem}"
-                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
+                                <tbl81Image:Tbl81ImageEditControl Grid.Row="1"
+                                                                  Item="{Binding Item}"
+                                                                  Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                            <!--<Grid x:Name="SynonymContent"
+                            <Grid x:Name="SynonymContent"
+                                  x:FieldModifier="public"
                                   DataContext="{Binding SynonymViewModel}"
                                   RowDefinitions="Auto,*">
-                                <tbl78Name:Tbl84SynonymParentControl x:Name="SynonymParentControl"
-                                                                    Grid.Row="0" />
-                                <tbl78Name:Tbl84SynonymEditControl Grid.Row="1"
-                                                                  Item="{Binding SelectedItem}"
-                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
+                                <tbl84Synonym:Tbl84SynonymParentControl x:Name="SynonymParentControl"
+                                                                        Grid.Row="0" />
+                                <tbl84Synonym:Tbl84SynonymEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
-                            <!--<Grid x:Name="GeographicContent"
+                            <Grid x:Name="GeographicContent"
+                                  x:FieldModifier="public"
                                   DataContext="{Binding GeographicViewModel}"
                                   RowDefinitions="Auto,*">
-                                <tbl78Name:Tbl84GeographicParentControl x:Name="GeographicParentControl"
-                                                                    Grid.Row="0" />
-                                <tbl78Name:Tbl84GeographicEditControl Grid.Row="1"
-                                                                  Item="{Binding SelectedItem}"
-                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
+                                <tbl87Geographic:Tbl87GeographicParentControl x:Name="GeographicParentControl"
+                                                                              Grid.Row="0" />
+                                <tbl87Geographic:Tbl87GeographicEditControl Grid.Row="1"
+                                                                            Item="{Binding Item}"
+                                                                            Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
 
                         </Grid>
                     </Grid>

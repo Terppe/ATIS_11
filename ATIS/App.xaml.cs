@@ -36,6 +36,9 @@ using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl68Speciesgroup;
 using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl78Name;
+using ATIS.Views.Modules.Tbl81Image;
+using ATIS.Views.Modules.Tbl84Synonym;
+using ATIS.Views.Modules.Tbl87Geographic;
 using ATIS.Views.Modules.Tbl90RefExpert;
 using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Report;
@@ -92,6 +95,22 @@ public partial class App : Application
         QuestPDF.Settings.EnableDebugging = false;
         QuestPDF.Settings.UseEnvironmentFonts = false;
         UnhandledException += App_UnhandledException;
+        AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"[FirstChance] {e.Exception.GetType().Name}: {e.Exception.Message}");
+        };
+
+        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"[Unhandled] {e.ExceptionObject}");
+        };
+
+        TaskScheduler.UnobservedTaskException += (s, e) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"[UnobservedTask] {e.Exception}");
+            e.SetObserved();
+        };
+
     }
 
     // ---------------------------------------------------------
@@ -305,6 +324,9 @@ public partial class App : Application
         services.AddTransient<Tbl68SpeciesgroupViewModel>();
         services.AddTransient<Tbl75SpeciesViewModel>();
         services.AddTransient<Tbl78NameViewModel>();
+        services.AddTransient<Tbl81ImageViewModel>();
+        services.AddTransient<Tbl84SynonymViewModel>();
+        services.AddTransient<Tbl87GeographicViewModel>();
 
         services.AddTransient<Tbl90ReferenceViewModel>();
         services.AddTransient<Tbl90RefAuthorViewModel>();

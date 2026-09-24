@@ -507,7 +507,7 @@
                             <NavigationViewItem.MenuItems>
                                 <NavigationViewItem x:Name="NavNames"
                                                     loc:Uids.Uid="Nav_Names"
-                                                    Tag="ATIS.Views.Database.Tbl78NameListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl78Name.Tbl78NamePage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -515,7 +515,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavImages"
                                                     loc:Uids.Uid="Nav_Images"
-                                                    Tag="ATIS.Views.Database.Tbl81ImageListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl81Image.Tbl81ImagePage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -523,7 +523,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavSynonyms"
                                                     loc:Uids.Uid="Nav_Synonyms"
-                                                    Tag="ATIS.Views.Database.Tbl84SynonymListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl84Synonym.Tbl84SynonymPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -531,7 +531,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavGeographics"
                                                     loc:Uids.Uid="Nav_Geographics"
-                                                    Tag="ATIS.Views.Database.Tbl87GeographicListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl87Geographic.Tbl87GeographicPage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />

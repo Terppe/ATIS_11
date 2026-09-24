@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.Tbl81Image.Tbl81ImageEditControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="using:WinUI3Localizer"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="Root"
+             mc:Ignorable="d">
+
+    <!--  Tbl81ImageEditControl Skriptdatum:  13.09.2026  10:32  -->
+
+    <Border Padding="4"
+            Background="{ThemeResource ControlFillColorSecondaryBrush}"
+            BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="6">
+
+        <StackPanel Spacing="4">
+
+            <!--  HEADER  -->
+            <Grid Margin="0,0,0,4"
+                  ColumnDefinitions="*,Auto">
+
+                <TextBlock Grid.Column="0"
+                           Margin="8,0,0,0"
+                           loc:Uids.Uid="TextBlock_Image"
+                           Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
+
+                    <!--  BACK  -->
+
+                    <Button Command="{Binding BackCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE72B;" />
+                            <TextBlock Text="Back" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  NEW  -->
+                    <Button Command="{Binding NewCommand}"
+                            Style="{StaticResource AtisPrimaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE710;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  SAVE  -->
+                    <Button Command="{Binding SaveCommand}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74E;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Save" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  DELETE  -->
+                    <Button Command="{Binding DeleteCommand}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74D;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Delete" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+
+            <!--  ID + Name  -->
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+
+                <!--  ID  -->
+                <TextBox MinWidth="110"
+                         VerticalAlignment="Top"
+                         loc:Uids.Uid="TextBox_ImageId"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.ImageId, ElementName=Root}" />
+
+                <!--  ImageName  -->
+                <!--<StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="ImageNameBox"
+                             loc:Uids.Uid="TextBox_ImageName"
+                             Loaded="ImageNameBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.ImageName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="ImageNameBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.ImageNameError, ElementName=Root}"
+                               Visibility="{Binding Item.HasImageNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>-->
+
+                <!--  Species Combo  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+
+                    <ComboBox x:Name="SpeciesCombo"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_SpeciesName"
+                              DisplayMemberPath="SpeciesName"
+                              ItemsSource="{Binding SpeciesList}"
+                              SelectedValue="{Binding Item.SpeciesId, ElementName=Root, Mode=TwoWay}"
+                              SelectedValuePath="SpeciesId"
+                              Style="{StaticResource AtisComboBox}" />
+                </StackPanel>
+
+                <!--  Valid  -->
+                <CheckBox MinWidth="60"
+                          VerticalAlignment="Bottom"
+                          loc:Uids.Uid="CheckBox_Valid"
+                          IsChecked="{Binding Item.Valid, ElementName=Root, Mode=TwoWay}"
+                          Style="{StaticResource AtisCheckBox}" />
+
+                <!--  ValidYear  -->
+                <StackPanel MinWidth="60"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="ValidYearBox"
+                             loc:Uids.Uid="TextBox_ValidYear"
+                             Loaded="ValidYearBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.ValidYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="ValidYearBox_OnTextChanged" />
+                    <TextBlock Height="16"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.ValidYearError, ElementName=Root}"
+                               Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+
+            </StackPanel>
+
+            <!--  Info  -->
+            <TextBox loc:Uids.Uid="TextBox_Info"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+
+            <!--  Memo  -->
+            <TextBox MinWidth="200"
+                     MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Memo"
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        </StackPanel>
+
+    </Border>
+</UserControl>

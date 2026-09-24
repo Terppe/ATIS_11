@@ -7,6 +7,7 @@
       xmlns:loc="using:WinUI3Localizer"
       xmlns:tbl66Genus="using:ATIS.Views.Modules.Tbl66Genus"
       xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
+      xmlns:tbl78Name="using:ATIS.Views.Modules.Tbl78Name"
       xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
       xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       x:Name="RootPage">
@@ -190,6 +191,19 @@
                                     </StackPanel>
                                 </Button>
 
+                                <Button x:Name="NamesSpeciesTab"
+                                        Click="DetailTabButton_Click"
+                                        Style="{StaticResource TabButtonStyle}"
+                                        Tag="6"
+                                        Visibility="Collapsed">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Name" />
+                                        <Border x:Name="NamesSpeciesTabUnderline"
+                                                Height="2"
+                                                Background="Transparent" />
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </ScrollViewer>
 
@@ -248,6 +262,18 @@
                                 <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
                                                                           Item="{Binding Item}"
                                                                           Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+
+                            <Grid x:Name="NamesSpeciesContent"
+                                  DataContext="{Binding SpeciesViewModel.NameViewModel}"
+                                  RowDefinitions="Auto,*"
+                                  Visibility="Collapsed">
+
+                                <tbl78Name:Tbl78NameParentControl Grid.Row="0" />
+
+                                <tbl78Name:Tbl78NameEditControl Grid.Row="1"
+                                                                Item="{Binding Item}"
+                                                                Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
                         </Grid>
                     </Grid>

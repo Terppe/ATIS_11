@@ -6,6 +6,9 @@ using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl68Speciesgroup;
 using ATIS.Views.Modules.Tbl78Name;
+using ATIS.Views.Modules.Tbl81Image;
+using ATIS.Views.Modules.Tbl84Synonym;
+using ATIS.Views.Modules.Tbl87Geographic;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +37,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     public Tbl90ReferenceViewModel SpeciesReferenceViewModel { get; }
     public Tbl68SpeciesgroupViewModel SpeciesgroupViewModel { get; }
     public Tbl78NameViewModel NameViewModel { get; }
+    public Tbl81ImageViewModel ImageViewModel { get; }
+    public Tbl84SynonymViewModel SynonymViewModel { get; }
+    public Tbl87GeographicViewModel GeographicViewModel { get; }
 
     // ---------------------------------------------------------
     // LOOKUPS
@@ -43,6 +49,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     //---------------------------------------------------------
     public ObservableCollection<Models.Tbl68Speciesgroup> SpeciesgroupList { get; private set; } = new();
     public Dictionary<int, string?> SpeciesgroupLookup { get; private set; } = new();
+    //---------------------------------------------------------
 
     public async Task LoadGenusLookupAsync()
     {
@@ -91,6 +98,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         SpeciesReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
         SpeciesgroupViewModel = new Tbl68SpeciesgroupViewModel(factory, dialog, coordinator, lookupService, user);
         NameViewModel = new Tbl78NameViewModel(factory, dialog, coordinator, lookupService, user);
+        ImageViewModel = new Tbl81ImageViewModel(factory, dialog, coordinator, lookupService, user);
+        SynonymViewModel = new Tbl84SynonymViewModel(factory, dialog, coordinator, lookupService, user);
+        GeographicViewModel = new Tbl87GeographicViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -147,8 +157,10 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         if (SelectedDetailTabIndex == 2)
             _ = SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
+        if (SelectedDetailTabIndex == 3)
+            //           _ = NameViewModel.LoadNameLookupsAsync();
 
-        if (SelectedDetailTabIndex == 5)
+            if (SelectedDetailTabIndex == 5)
  //           _ = NameViewModel.NameReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
@@ -195,6 +207,11 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     public async Task LoadForGenusAsync(int genusId)
         => await LoadInternalAsync(genusId, Data.GetSpeciesForGenusAsync);
+    public async Task LoadForSpeciesgroupAsync(int speciesgroupId)
+        => await LoadInternalAsync(speciesgroupId, Data.GetSpeciesForSpeciesgroupAsync);
+    //public async Task LoadForNameAsync(int name)
+    //    => await LoadInternalAsync(nameId, Data.GetSpeciesForNameAsync);
+
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
@@ -256,30 +273,43 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
+    // Tbl75SpeciesViewModel
     protected override async Task LoadChildrenAsync(int entityId)
     {
         await SpeciesCommentViewModel.LoadForSpeciesAsync(entityId);
         await SpeciesReferenceViewModel.LoadForSpeciesAsync(entityId);
 
-        //await NameViewModel.LoadSpeciesLookupAsync();
-        //await NameViewModel.LoadForSpeciesAsync(entityId);
-
-
-        // ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        await NameViewModel.LoadSpeciesLookupAsync();
+        await NameViewModel.LoadForSpeciesAsync(entityId);
         NameViewModel.IsInParentMode = true;
-    }
 
+        await ImageViewModel.LoadSpeciesLookupAsync();
+        await ImageViewModel.LoadForSpeciesAsync(entityId);
+        ImageViewModel.IsInParentMode = true;
+
+        await SynonymViewModel.LoadSpeciesLookupAsync();
+        await SynonymViewModel.LoadForSpeciesAsync(entityId);
+        SynonymViewModel.IsInParentMode = true;
+
+        await GeographicViewModel.LoadSpeciesLookupAsync();
+        await GeographicViewModel.LoadForSpeciesAsync(entityId);
+        GeographicViewModel.IsInParentMode = true;
+
+        SpeciesgroupViewModel.IsInParentMode = true; // nur falls wirklich verwendet
+    }
     protected override Task ClearChildCollectionsAsync()
     {
         SpeciesCommentViewModel.Items?.Clear();
         SpeciesReferenceViewModel.Items?.Clear();
         NameViewModel.Items?.Clear();
+        ImageViewModel.Items?.Clear();
 
         if (IsBossMode)
         {
             SpeciesCommentViewModel.SelectedItem = null;
             SpeciesReferenceViewModel.SelectedItem = null;
             NameViewModel.SelectedItem = null;
+            ImageViewModel.SelectedItem = null;
         }
 
         return Task.CompletedTask;

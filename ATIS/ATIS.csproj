@@ -50,20 +50,20 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="log4net" Version="3.4.0" />
-		<PackageReference Include="MailKit" Version="4.17.0" />
+		<PackageReference Include="MailKit" Version="4.18.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
-		<PackageReference Include="MimeKit" Version="4.17.0" />
+		<PackageReference Include="MimeKit" Version="4.18.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
-		<PackageReference Include="QuestPDF" Version="2026.8.0" />
+		<PackageReference Include="QuestPDF" Version="2026.9.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -694,6 +694,22 @@
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesPage.xaml" />
 		<None Remove="Views\Modules\Tbl75Species\Tbl75SpeciesParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl78Name\Tbl78NameBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl78Name\Tbl78NameEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl78Name\Tbl78NamePage.xaml" />
+		<None Remove="Views\Modules\Tbl78Name\Tbl78NameParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl81Image\Tbl81ImageBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl81Image\Tbl81ImageEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl81Image\Tbl81ImagePage.xaml" />
+		<None Remove="Views\Modules\Tbl81Image\Tbl81ImageParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymPage.xaml" />
+		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicBossControl.xaml" />
+		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicPage.xaml" />
+		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorPage.xaml" />
@@ -793,9 +809,6 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
-	<Folder Include="Views\Modules\Tbl87Geographic\" />
-	<Folder Include="Views\Modules\Tbl84Synonym\" />
-	<Folder Include="Views\Modules\Tbl81Image\" />
 	<Folder Include="Views\Modules\TblCountry\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
@@ -833,6 +846,102 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl81Image\Tbl81ImageParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl81Image\Tbl81ImageBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl81Image\Tbl81ImageEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl81Image\Tbl81ImagePage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl78Name\Tbl78NameParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl78Name\Tbl78NameEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl78Name\Tbl78NameBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl78Name\Tbl78NamePage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

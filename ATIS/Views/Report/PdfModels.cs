@@ -979,15 +979,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string SpeciesName
+        public string? SpeciesName
         {
             get; set;
         }
-        public string Subspecies
+        public string? Subspecies
         {
             get; set;
         }
-        public string Divers
+        public string? Divers
         {
             get; set;
         }
@@ -1009,51 +1009,51 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string MemoSpecies
+        public string? MemoSpecies
         {
             get; set;
         }
-        public string TradeName
+        public string? TradeName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string Importer
+        public string? Importer
         {
             get; set;
         }
-        public string ImportingYear
+        public string? ImportingYear
         {
             get; set;
         }
-        public bool TypeSpecies
+        public bool? TypeSpecies
         {
             get; set;
         }
-        public string LNumber
+        public string? LNumber
         {
             get; set;
         }
-        public string LOrigin
+        public string? LOrigin
         {
             get; set;
         }
-        public string LdaNumber
+        public string? LdaNumber
         {
             get; set;
         }
-        public string LdaOrigin
+        public string? LdaOrigin
         {
             get; set;
         }
@@ -1065,59 +1065,59 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Karnivore
+        public bool? Karnivore
         {
             get; set;
         }
-        public bool Herbivore
+        public bool? Herbivore
         {
             get; set;
         }
-        public bool Limnivore
+        public bool? Limnivore
         {
             get; set;
         }
-        public bool Omnivore
+        public bool? Omnivore
         {
             get; set;
         }
-        public string MemoFoods
+        public string? MemoFoods
         {
             get; set;
         }
-        public bool Difficult1
+        public bool? Difficult1
         {
             get; set;
         }
-        public bool Difficult2
+        public bool? Difficult2
         {
             get; set;
         }
-        public bool Difficult3
+        public bool? Difficult3
         {
             get; set;
         }
-        public bool Difficult4
+        public bool? Difficult4
         {
             get; set;
         }
-        public bool RegionTop
+        public bool? RegionTop
         {
             get; set;
         }
-        public bool RegionMiddle
+        public bool? RegionMiddle
         {
             get; set;
         }
-        public bool RegionBottom
+        public bool? RegionBottom
         {
             get; set;
         }
-        public string MemoRegion
+        public string? MemoRegion
         {
             get; set;
         }
-        public string MemoTech
+        public string? MemoTech
         {
             get; set;
         }
@@ -1227,7 +1227,7 @@ public class PdfModels
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("GenusId")]
-        public virtual Tbl66Genus Tbl66Genusses
+        public virtual Tbl66Genus? Tbl66Genusses
         {
             get; set;
         }

@@ -67,7 +67,7 @@ public sealed partial class Tbl66GenusEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // VALDATINHELPER
+    // VALIDATION HELPER
     // ---------------------------------------------------------                   
 
     private void UpdateValidationState(TextBox box, bool hasError)
@@ -88,7 +88,7 @@ public sealed partial class Tbl66GenusEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // SUBTRIBUSNAME VALIDATION
+    // Genus NAME VALIDATION
     // ---------------------------------------------------------                   
 
     private void GenusNameBox_OnTextChanged(object sender, TextChangedEventArgs e)

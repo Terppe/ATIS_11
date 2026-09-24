@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -126,6 +125,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 
     private async Task UpdateButtonStatesAsync()
     {
+        // Tab 0 = Boss-Modus
         IsInParentMode = SelectedDetailTabIndex != 0;
 
         if (SelectedDetailTabIndex == 2)

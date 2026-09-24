@@ -834,6 +834,7 @@ public interface IDataService
     Task<bool> SpeciesHasCommentAsync(int sspeciesId);
 
     Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId);
+    Task<IEnumerable<Tbl75Species>> GetSpeciesForSpeciesgroupAsync(int speciesgroupId);
 
     //Für ReportPDF
     Task<IEnumerable<Tbl78Name>> GetNamesBySpeciesIdAsync(int speciesId);
@@ -872,50 +873,113 @@ public interface IDataService
 
     #endregion Species
 
-    #region Name                  
+    #region Name
+    // ---------------------------------------------------------   
+    Task<IEnumerable<Tbl78Name>> GetAllNameAsync();
+    Task<IEnumerable<Tbl78Name>> SearchNameWithSpeciesAsync(string? search);
+    Task<Tbl78Name?> GetNameByIdAsync(int id);
+    Task<Tbl78Name> UpsertNameAsync(Tbl78Name entity);
+    Task DeleteNameAsync(int id);
+    Task<bool> NameExistsAsync(Tbl78Name entity);
+
+    //Task<bool> NameHasImageAsync(int nameId);
+    //Task<bool> NameHasReferenceAsync(int nameId);
+    //Task<bool> NameHasCommentAsync(int snameId);
+
+    Task<IEnumerable<Tbl78Name>> GetNameForSpeciesAsync(int speciesId);
+
+
     //alt------------------------
     ObservableCollection<Tbl78Name> GetNameAsync();
     ObservableCollection<Tbl78Name> GetNameAsync(int nameid);
     ObservableCollection<Tbl78Name> GetNameAsync(string search);
     ObservableCollection<Tbl78Name> GetNameFromSpeciesIdAsync(int speciesid);
     //ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid);
-    Task<Tbl78Name> UpsertNameAsync(Tbl78Name name);
-    Task DeleteNameAsync(int nameid);
+    //Task<Tbl78Name> UpsertNameAsync(Tbl78Name name);
+    //Task DeleteNameAsync(int nameid);
 
     #endregion Name
 
-    #region Image                  
+    #region Image
+
+    // ---------------------------------------------------------                  
+    // Image 
+    // ---------------------------------------------------------   
+    Task<IEnumerable<Tbl81Image>> GetAllImageAsync();
+    Task<IEnumerable<Tbl81Image>> SearchImageWithSpeciesAsync(string? search);
+    Task<Tbl81Image?> GetImageByIdAsync(int id);
+    Task<Tbl81Image> UpsertImageAsync(Tbl81Image entity);
+    Task DeleteImageAsync(int id);
+    Task<bool> ImageExistsAsync(Tbl81Image entity);
+
+    //Task<bool> ImageHasNameAsync(int imageId);
+    //Task<bool> ImageHasReferenceAsync(int imageId);
+    //Task<bool> ImageHasCommentAsync(int simageId);
+
+    Task<IEnumerable<Tbl81Image>> GetImageForSpeciesAsync(int speciesId);
+
+    //alr------------------------   
     ObservableCollection<Tbl81Image> GetImageAsync();
     ObservableCollection<Tbl81Image> GetImageAsync(int imageid);
     ObservableCollection<Tbl81Image> GetImageAsync(string search);
     ObservableCollection<Tbl81Image> GetImageFromSpeciesIdAsync(int speciesid);
     //ObservableCollection<Tbl81Image> GetImageFromPlSpeciesIdAsync(int plspeciesid);
     Task<Tbl81Image> UpsertImageAsync(Tbl81Image image, string selectedpath);
-    Task DeleteImageAsync(int imageid);
+    //Task DeleteImageAsync(int imageid);
 
     #endregion Image                  
 
-    #region Synonym                  
+    #region Synonym
+    // ---------------------------------------------------------   
+    Task<IEnumerable<Tbl84Synonym>> GetAllSynonymAsync();
+    Task<IEnumerable<Tbl84Synonym>> SearchSynonymWithSpeciesAsync(string? search);
+    Task<Tbl84Synonym?> GetSynonymByIdAsync(int id);
+    Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym entity);
+    Task DeleteSynonymAsync(int id);
+    Task<bool> SynonymExistsAsync(Tbl84Synonym entity);
 
+    //Task<bool> SynonymHasNameAsync(int synonymId);
+    //Task<bool> SynonymHasReferenceAsync(int synonymId);
+    //Task<bool> SynonymHasCommentAsync(int ssynonymId);
+
+    Task<IEnumerable<Tbl84Synonym>> GetSynonymForSpeciesAsync(int speciesId);
+
+    //alt-----------------------------------
     ObservableCollection<Tbl84Synonym> GetSynonymAsync();
     ObservableCollection<Tbl84Synonym> GetSynonymAsync(int synonymid);
     ObservableCollection<Tbl84Synonym> GetSynonymAsync(string search);
     ObservableCollection<Tbl84Synonym> GetSynonymFromSpeciesIdAsync(int speciesid);
     //ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid);
-    Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym);
-    Task DeleteSynonymAsync(int synonymid);
+    //Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym);
+    //Task DeleteSynonymAsync(int synonymid);
 
     #endregion Synonym
 
-    #region Geographic                  
+    #region Geographic
+    // ---------------------------------------------------------                  
+    // Geographic 
+    // ---------------------------------------------------------   
+    Task<IEnumerable<Tbl87Geographic>> GetAllGeographicAsync();
+    Task<IEnumerable<Tbl87Geographic>> SearchGeographicWithSpeciesAsync(string? search);
+    Task<Tbl87Geographic?> GetGeographicByIdAsync(int id);
+    Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic entity);
+    Task DeleteGeographicAsync(int id);
+    Task<bool> GeographicExistsAsync(Tbl87Geographic entity);
 
+    //Task<bool> GeographicHasNameAsync(int geographicId);
+    //Task<bool> GeographicHasReferenceAsync(int geographicId);
+    //Task<bool> GeographicHasCommentAsync(int sgeographicId);
+
+    Task<IEnumerable<Tbl87Geographic>> GetGeographicForSpeciesAsync(int speciesId);
+
+    //alt-----------------------------------
     ObservableCollection<Tbl87Geographic> GetGeographicAsync();
     ObservableCollection<Tbl87Geographic> GetGeographicAsync(int geographicid);
     ObservableCollection<Tbl87Geographic> GetGeographicAsync(string search);
     ObservableCollection<Tbl87Geographic> GetGeographicFromSpeciesIdAsync(int speciesid);
     //ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid);
-    Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic);
-    Task DeleteGeographicAsync(int geographicid);
+    //Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic);
+    //Task DeleteGeographicAsync(int geographicid);
 
     #endregion Geographic                  
 

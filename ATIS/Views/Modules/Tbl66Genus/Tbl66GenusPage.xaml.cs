@@ -79,6 +79,11 @@ public sealed partial class Tbl66GenusPage : Page
             case 5:
                 Vm.SpeciesViewModel.SpeciesReferenceViewModel.PrepareViewState();
                 break;
+
+            case 6:
+                Vm.SpeciesViewModel.NameViewModel.PrepareViewState();
+                break;
+
         }
     }
     private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
@@ -108,9 +113,13 @@ public sealed partial class Tbl66GenusPage : Page
     {
         CommentsSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
         ReferencesSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+        NamesSpeciesTab.Visibility = hasSelection ? Visibility.Visible : Visibility.Collapsed;
+
 
         CommentsSpeciesTab.IsEnabled = hasSelection;
         ReferencesSpeciesTab.IsEnabled = hasSelection;
+        NamesSpeciesTab.IsEnabled = hasSelection;
+
 
         if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
             Vm.SelectedDetailTabIndex = 3;
@@ -127,6 +136,7 @@ public sealed partial class Tbl66GenusPage : Page
         SetTabButtonStyle(SpeciesTab, SpeciesTabUnderline, Vm.SelectedDetailTabIndex == 3);
         SetTabButtonStyle(CommentsSpeciesTab, CommentsSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 4);
         SetTabButtonStyle(ReferencesSpeciesTab, ReferencesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 5);
+        SetTabButtonStyle(NamesSpeciesTab, NamesSpeciesTabUnderline, Vm.SelectedDetailTabIndex == 6);
     }
 
     private void UpdateDetailContentVisibility()
@@ -137,6 +147,7 @@ public sealed partial class Tbl66GenusPage : Page
         SpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 3 ? Visibility.Visible : Visibility.Collapsed;
         CommentsSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 4 ? Visibility.Visible : Visibility.Collapsed;
         ReferencesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 5 ? Visibility.Visible : Visibility.Collapsed;
+        NamesSpeciesContent.Visibility = Vm.SelectedDetailTabIndex == 6 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     // ---------------------------------------------------------                  

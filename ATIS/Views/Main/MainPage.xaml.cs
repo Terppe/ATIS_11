@@ -41,6 +41,10 @@ using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 using ATIS.Views.Modules.Tbl68Speciesgroup;
+using ATIS.Views.Modules.Tbl78Name;
+using ATIS.Views.Modules.Tbl81Image;
+using ATIS.Views.Modules.Tbl84Synonym;
+using ATIS.Views.Modules.Tbl87Geographic;
 using WinRT.Interop;
 using WinUI3Localizer;
 using static ATIS.Views.Report.PdfModels;
@@ -563,22 +567,22 @@ public sealed partial class MainPage : Page
         //---------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavNames.Content)
         {
-    //        NavFrame.Navigate(typeof(Tbl78NamePage));
+            NavFrame.Navigate(typeof(Tbl78NamePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavImages.Content)
         {
-  //          NavFrame.Navigate(typeof(Tbl81ImagePage));
+            NavFrame.Navigate(typeof(Tbl81ImagePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavSynonyms.Content)
         {
-   //         NavFrame.Navigate(typeof(Tbl84SynonymPage));
+            NavFrame.Navigate(typeof(Tbl84SynonymPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavGeographics.Content)
         {
-   //         NavFrame.Navigate(typeof(Tbl87GeographicPage));
+            NavFrame.Navigate(typeof(Tbl87GeographicPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavReferences.Content)

@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 
 
-//    Tbl66GenusParentControl Skriptdatum:  13.06.2024  10:32    
+//    Tbl66GenusParentControl Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Modules.Tbl66Genus;
 
