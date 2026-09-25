@@ -32,6 +32,9 @@ using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Main;
 
@@ -41,6 +44,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
     private readonly LookupService _lookupService;
     private readonly HierarchyCoordinator _coordinator;
 
+    public string DbExist_SQLActiv { get; set; }
     // -----------------------------
     // Taxonomie-ViewModels
     // -----------------------------
@@ -158,6 +162,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
                 out var port))
         {
             SimpleLog.Error("Ungültiger Port in AppSettings.");
+
             return;
         }
 
@@ -212,18 +217,24 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
                     "Server_Exist_Title",
                     "Server_Exist_Question");
 
-                SimpleLog.Error(
-                    $"Datenbank nicht erreichbar: {db}");
+                SimpleLog.Error($"Datenbank nicht erreichbar: {db}");
+
+                DbExist_SQLActiv = $"Datenbank nicht erreichbar: {db}";
 
                 return false;
             }
+            //noch bearbeiten
+            var loc1 = Localizer.Get();
+            DbExist_SQLActiv = loc1.GetLocalizedString("SQL_Server_Ok");
+        //    DbExist_SQLActiv = $"SQL-Server ok: {db}";
 
             return true;
         }
         catch (SqlException ex)
         {
-            SimpleLog.Error(
-                $"SQL-Server nicht verbunden: {db} - {ex}");
+            SimpleLog.Error($"SQL-Server nicht verbunden: {db} - {ex}");
+
+            DbExist_SQLActiv = $"SQL-Server nicht verbunden: {db}";
 
             await _dialogService.ShowYesNoAsync(
                 "Server_Exist_Title",
@@ -270,7 +281,7 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
     }
 
     // Check if database exist or SQLServer not running
-       private bool CheckDatabaseExist(string db)
+    private bool CheckDatabaseExist(string db)
     {
         var ret = false;
 
@@ -292,6 +303,8 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
                 //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
                 if (true)
                 {
+                    DbExist_SQLActiv = $"Database does not exist - SQL - Server ok: {db}";
+
                     ret = false;
                 }
 
@@ -299,7 +312,8 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
             }
             else
             {
-                //               TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
+                DbExist_SQLActiv = $"SQL-Server ok: {db}";
+               // TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
                 ret = true;
             }
         }

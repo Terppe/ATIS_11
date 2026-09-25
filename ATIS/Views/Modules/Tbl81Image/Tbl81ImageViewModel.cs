@@ -1,12 +1,17 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Windows.Storage.Pickers;
+using ATIS.Helpers;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
 
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Xaml.Media.Imaging;
+using WinRT.Interop;
 using WinUI3Localizer;
 
 //    Tbl81ImageViewModel Skriptdatum:  13.09.2026  10:32    
@@ -15,7 +20,7 @@ namespace ATIS.Views.Modules.Tbl81Image;
 
 public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 {
-
+    private readonly FileOpenPicker _filePicker = new();
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
@@ -298,6 +303,31 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
+    private Image? _image;
+
+    public Image? Image
+    {
+        get => _image;
+        set
+        {
+            if (SetProperty(ref _image, value))
+            {
+            }
+        }
+    }
+
+    private string _selectedPath;
+    public string SelectedPath
+    {
+        get => _selectedPath;
+        set
+        {
+            if (SetProperty(ref _selectedPath, value))
+            {
+            }
+        }
+    }
+
     protected override Task NewAsync()
     {
         return Task.CompletedTask;
@@ -307,10 +337,52 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     {
         _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
+        //New Image search
+        OpenFileDialog(null);
+
         return new Models.Tbl81Image
         {
             SpeciesId = _currentParentId
         };
+
+    }
+    public async void OpenFileDialog(string s)
+    {
+        try
+        {
+            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+            InitializeWithWindow.Initialize(_filePicker, hwnd);
+            _filePicker.FileTypeFilter.Add("*");
+            _filePicker.ViewMode = PickerViewMode.Thumbnail;
+            //_filePicker.FileTypeFilter.Add("*");
+            _filePicker.FileTypeFilter.Add(".jpg");
+            _filePicker.FileTypeFilter.Add(".jpeg");
+            _filePicker.FileTypeFilter.Add(".png");
+            _filePicker.FileTypeFilter.Add(".gif");
+            _filePicker.FileTypeFilter.Add(".jpe");
+            _filePicker.FileTypeFilter.Add(".bmp");
+            _filePicker.FileTypeFilter.Add(".ico");
+            _filePicker.FileTypeFilter.Add(".tif");
+            _filePicker.FileTypeFilter.Add(".tiff");
+            _filePicker.FileTypeFilter.Add(".hpd");
+            _filePicker.FileTypeFilter.Add(".jxr");
+            _filePicker.FileTypeFilter.Add(".wdp");
+            _filePicker.FileTypeFilter.Add(".hpd");
+            var file = await _filePicker.PickSingleFileAsync();
+            if (file != null && file.Path != null)
+            {
+                SelectedPath = file.Path;
+                Image = new Image
+                {
+                    Source = new BitmapImage(new Uri(file.Path))
+                };
+            }
+        }
+        catch (Exception xe)
+        {
+            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            SimpleLog.Log(xe);
+        }
     }
 
     // ---------------------------------------------------------

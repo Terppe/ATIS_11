@@ -89,19 +89,19 @@
 
                 <!--  ImageName  -->
                 <!--<StackPanel MinWidth="150"
-                            VerticalAlignment="Top"
-                            Spacing="2">
-                    <TextBox x:Name="ImageNameBox"
-                             loc:Uids.Uid="TextBox_ImageName"
-                             Loaded="ImageNameBox_OnLoaded"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.ImageName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="ImageNameBox_OnTextChanged" />
-                    <TextBlock Height="18"
-                               FontSize="10"
-                               Foreground="Red"
-                               Text="{Binding Item.ImageNameError, ElementName=Root}"
-                               Visibility="{Binding Item.HasImageNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                VerticalAlignment="Top"
+                Spacing="2">
+                <TextBox x:Name="ImageNameBox"
+                loc:Uids.Uid="TextBox_ImageName"
+                Loaded="ImageNameBox_OnLoaded"
+                Style="{StaticResource AtisTextBox}"
+                Text="{Binding Item.ImageName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextChanged="ImageNameBox_OnTextChanged" />
+                <TextBlock Height="18"
+                FontSize="10"
+                Foreground="Red"
+                Text="{Binding Item.ImageNameError, ElementName=Root}"
+                Visibility="{Binding Item.HasImageNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>-->
 
                 <!--  Species Combo  -->
@@ -144,14 +144,80 @@
                                Text="{Binding Item.ValidYearError, ElementName=Root}"
                                Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
+                <!--  ImageMimeType  -->
+                <ComboBox x:Name="ImageMimeTypeCombo"
+                          MinWidth="90"
+                          VerticalAlignment="Center"
+                          loc:Uids.Uid="ComboBox_ImageMimeType"
+                          PlaceholderText="Select"
+                          SelectedValue="{Binding Item.ImageMimeType, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="ComboImageMimeType_OnSelectionChanged"
+                          Style="{StaticResource AtisComboBox}">
+                    <x:String>jpg</x:String>
+                    <x:String>png</x:String>
+                    <x:String>bmp</x:String>
+                    <x:String>tif</x:String>
+                    <x:String>tiff</x:String>
+                    <x:String>gif</x:String>
+                    <x:String>ico</x:String>
+                    <x:String>jpeg</x:String>
+                    <x:String>webp</x:String>
+                    <x:String>wmf</x:String>
+                    <x:String>wmv</x:String>
+                    <x:String>mpg</x:String>
+                    <x:String>mp4</x:String>
+                    <x:String>avi</x:String>
+                    <x:String>mov</x:String>
+                    <x:String>swf</x:String>
+                    <x:String>flv</x:String>
+                </ComboBox>
 
+                <!--  ShotDate  -->
+                <TextBox loc:Uids.Uid="TextBox_ShotDate"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.ShotDate, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
+
+            <!--  SelectedPath  -->
+            <TextBox loc:Uids.Uid="TextBox_SelectedPath"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{Binding SelectedPath}" />
+
+            <!--  Image/Video  -->
+            <TabView x:Name="TabViewImage"
+                     MinHeight="475"
+                     Background="LightBlue"
+                     IsAddTabButtonVisible="False">
+                <TabView.TabItems>
+                    <TabViewItem Header="Image"
+                                 IsClosable="False">
+                        <Image Name="Image"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Opacity="1"
+                               RenderTransformOrigin="0.5,0.5"
+                               Source="{Binding Item.Filestream, ElementName=Root, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Stretch="Uniform" />
+                    </TabViewItem>
+                    <TabViewItem Header="Video"
+                                 IsClosable="False">
+                        <Image Name="Video"
+                               Margin="5"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Opacity="1"
+                               RenderTransformOrigin="0.5,0.5"
+                               Source="{Binding Item.Filestream, ElementName=Root, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Stretch="Uniform" />
+                    </TabViewItem>
+                </TabView.TabItems>
+            </TabView>
 
             <!--  Info  -->
             <TextBox loc:Uids.Uid="TextBox_Info"
                      Style="{StaticResource AtisTextBox}"
                      Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
 
             <!--  Memo  -->
             <TextBox MinWidth="200"

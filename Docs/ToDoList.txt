@@ -15,12 +15,12 @@ jetzt noch ShowMessageAsync mit resources.resw verbinden. Umstellung von alten S
 ------------------------------------
 ILocalizer localizer = Localizer.Get();
 List<string> localizedColors = colors
-    .Select(x => localizer.GetLocalizedString(x))
-    .ToList();
+	.Select(x => localizer.GetLocalizedString(x))
+	.ToList();
 
-    In this case, we just use the Uid as Name. das ist gelöst. Close App und vom roten X oben rechts klappt wieder nicht. Version soweit fertig um eine Basic1Datagrid1DetailPage und Viewmodel zu erzeugen,
-    die dann als Basis für weitere gleichgelagerte Pages und Viewmodels dienen soll. Später weitere Basic2Datagrid4DetailPages und Viewmodels.
-    ----------------------------------
+	In this case, we just use the Uid as Name. das ist gelöst. Close App und vom roten X oben rechts klappt wieder nicht. Version soweit fertig um eine Basic1Datagrid1DetailPage und Viewmodel zu erzeugen,
+	die dann als Basis für weitere gleichgelagerte Pages und Viewmodels dienen soll. Später weitere Basic2Datagrid4DetailPages und Viewmodels.
+	----------------------------------
 🧱 Warum die Basis zuerst kommen sollte
 Eine Basis‑Page definiert:
 das Layout‑Gerüst
@@ -106,17 +106,17 @@ Bei new wurde im Datagrid am Bottom der leere datensatz angezeigt und dann einso
 DialogService Alle Meldungen (Save‑Prüfung, Existenzprüfung, Fehler, Warnungen, Bestätigungen) sollen . abgeschlossen.
 ---------------------------------------------------------------
 28.02.2026 Refreshbutton fehlt, wird eingebuat. aber probleme mit LoadItemsAsync.     protected override async Task<IEnumerable<Tbl90RefExpert>> LoadItemsAsync()
-        => await _data.GetAllRefExpertAsync();
+		=> await _data.GetAllRefExpertAsync();
 lädt immer alle datensätze. lädt nicht mehr alle datensätze. Fehler beseitigt. Scheint soweit alles zu funktiuonieren.
 ---------------------------------------------------------------
 01.03.2026 12:00 Uhr Anzeige der TextBoxen im detail gelöst. und Fokus auf RefExpertname gelöst.
 ------------------------------------
 02.03.2026 jetzt fehlt noch Validierung. angefangen fehlermeldung wird angezeigt und verschwindet nach eingabe bei RefExpertname.
-     Probleme   <Setter Property="BorderBrush"
-                Value="{Binding Path=(helpers:ValidationHelper.HasError), RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToBrushConverter}}" />
-                versuchen in ein UserControl einzubetten. geändert in CustomControl
-                version mit LabeledTextBoxWithError fast fertig aber noch doppelte RefExpertname anzeige sonst schon ganz gut mit Meldungen "feld darf nicht leer sein und mindestläönge 3 Zeichen, die auch verschwindne ,
-                wenn Feld gefüllt wird. Aber noch nicht fertig. mit Usercontrol sind wir genauso weit, aber es scheint etwas einfacher zu sein
+	 Probleme   <Setter Property="BorderBrush"
+				Value="{Binding Path=(helpers:ValidationHelper.HasError), RelativeSource={RelativeSource Self}, Converter={StaticResource BoolToBrushConverter}}" />
+				versuchen in ein UserControl einzubetten. geändert in CustomControl
+				version mit LabeledTextBoxWithError fast fertig aber noch doppelte RefExpertname anzeige sonst schon ganz gut mit Meldungen "feld darf nicht leer sein und mindestläönge 3 Zeichen, die auch verschwindne ,
+				wenn Feld gefüllt wird. Aber noch nicht fertig. mit Usercontrol sind wir genauso weit, aber es scheint etwas einfacher zu sein
 ------------------------------------------------
 03.03.2026  10.30 Mit usercontrol funktion ok, roter fehlertext und roter rahmen. nur die Backgroundfarbe und die Rahmenfarbe stimmen noch nicht.
 KI sagt geht nur mit CustumControl, was wir schon einmal versucht haben und auch probleme hatten. BorderBrush="#D6D6D6" passt nicht genau
@@ -237,15 +237,15 @@ jedes control muss noch sauber bearbeitet werden.
 --------------------------------------
 18.03.2026 17:30 Uhr Comment so wie Infratribus machen in der Konstruction. als nächstes Comment mit
 <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="IdColumn" />
-            <ColumnDefinition x:Name="FkIdColumn" />
-            <ColumnDefinition x:Name="Extra1Column" />
-            <ColumnDefinition x:Name="Extra2Column" />
-            <ColumnDefinition x:Name="Extra3Column" />
-            <ColumnDefinition x:Name="Extra4Column" />
-            <ColumnDefinition x:Name="Extra5Column" />
-            <ColumnDefinition x:Name="Extra6Column" />
-        </Grid.ColumnDefinitions> ändern 
+			<ColumnDefinition x:Name="IdColumn" />
+			<ColumnDefinition x:Name="FkIdColumn" />
+			<ColumnDefinition x:Name="Extra1Column" />
+			<ColumnDefinition x:Name="Extra2Column" />
+			<ColumnDefinition x:Name="Extra3Column" />
+			<ColumnDefinition x:Name="Extra4Column" />
+			<ColumnDefinition x:Name="Extra5Column" />
+			<ColumnDefinition x:Name="Extra6Column" />
+		</Grid.ColumnDefinitions> ändern 
 -----------------------------------------------
 20.03.2026 11:30 Uhr loc:Uids.Uid eingefügt und TextBoxen in den textBlocks etwas bearbeitet. soweit noch nicht fertig. Version Funktionsfähig ohne CRUD
 ---------------------------------------------
@@ -260,22 +260,22 @@ Jetzt fehlt noch header-Anpassung in comment
 -----------------------------------------------
 24.03.2026 14:30 Uhr SubtribusName in ItemsRepeater und Edit Infratribus eingefügt.
 public Tbl60Subtribus? Subtribus { get; set; }
-    [NotMapped]
-    public string? SubtribusName => Subtribus?.SubtribusName;
+	[NotMapped]
+	public string? SubtribusName => Subtribus?.SubtribusName;
 -----------------------------------------------
 24.03.2026 17:30 Uhr  Fehler bei             private void UpdateTwoWay_13_SelectedValue()
-            {
-                if (this.initialized)
-                {
-                    if (this.dataRoot != null)
-                    {
-                        if (this.dataRoot.Item != null)
-                        {
-                            this.dataRoot.Item.SubtribusId = (global::System.Int32)this.obj13.SelectedValue;
-                        }
-                    }
-                }
-            }
+			{
+				if (this.initialized)
+				{
+					if (this.dataRoot != null)
+					{
+						if (this.dataRoot.Item != null)
+						{
+							this.dataRoot.Item.SubtribusId = (global::System.Int32)this.obj13.SelectedValue;
+						}
+					}
+				}
+			}
 -----------------------------------------------
 25.03.2026 14:30 Uhr Fehler behoben und lauffähig.aber die Abstände zwischen header und ItemsRepeater abstand nicht gleich. angefangen crud für Comment. Add z.B. geht noch nicht
 --------------------------------------------
@@ -307,9 +307,9 @@ Läuft mit Searchbox a Enter. Umstellen auf Dataservice und loc:Uids.Uid und evt
 erscheint der neue datensatz. Also muss ReloadAsync geändert werden. Upsert-Methode geändert. alle CRUD-Funktionen funktionieren
 --------------------------------------------------
 07.04.2026 14:00 Uhr Subtribus mit Combobox und CRUD ok. Änderung evtl bei     [NotMapped]
-    public string? TribusName => Tribus?.TribusName;
-    um den Namen im Listview von Tribus anzuzeigen. nicht gelöst. bei Git versuchen. Sort für Listview eingefügt mit Pfeilen bei ID und Name.
-    Weiter jetzt mit Comment. völliges durcheinander.
+	public string? TribusName => Tribus?.TribusName;
+	um den Namen im Listview von Tribus anzuzeigen. nicht gelöst. bei Git versuchen. Sort für Listview eingefügt mit Pfeilen bei ID und Name.
+	Weiter jetzt mit Comment. völliges durcheinander.
 -----------------------------------------------------
 08.04.2026 14:00 Uhr CommentViewmodel wie SubtribusViewmodel mit etwas weniger Funktionen.
 SubtribusBossControl
@@ -335,8 +335,8 @@ Confirm_Delete_Title → Eliminar registro
 Confirm_Delete_Message → ¿Desea realmente eliminar el registro seleccionado?
 
 Crud bei Subtribus und Comment ok.         <!--  2. 🔥 Modernes Lade Overlay  -->
-        <atis:LoadingOverlayControl Grid.RowSpan="1"
-                                    IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+		<atis:LoadingOverlayControl Grid.RowSpan="1"
+									IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 in Page.jetzt fehlt noch validation
 ------------------------------------------------------------
 Bei Git Comment überarbeitet bis hierher ok light und dark-Mode für Listview im Listviewstyle geändert. jetzt im Darm-mode ok
@@ -348,13 +348,13 @@ aufgeräumt und noch ohne validation, spaltenbreite verschieben im listview und 
 ----------------------------------------------------------------
 21.04.2026 17:00 Uhr Nuget aktualisiert zurückgesetzt, da TribusName aus TribusID klappt .
 [NotMapped]
-    private string? _tribusName;
+	private string? _tribusName;
 [NotMapped]  // ← WICHTIG!
-    public string? TribusName
-    {
-        get => _tribusName;
-        set => SetProperty(ref _tribusName, value);
-    }
+	public string? TribusName
+	{
+		get => _tribusName;
+		set => SetProperty(ref _tribusName, value);
+	}
 [NotMapped] mus s 2x sein. als nächstes die Validierung einbauen.
 --------------------------------------------------------------
 22.04.2026 17:00 Uhr Validation bei subtribus aber noch nicht ganz fehlerfrei bei Github
@@ -480,49 +480,49 @@ weiter gearbeitet mit Species und methoden angeglichen mit Vergleichssoftware
 13.05.2026 14:30 Uhr fehler beseitigen im subtribus und infratribus
 Regnum
  └─ Phylum
-     └─ Subphylum
-            └─ Superclass
-                 └─ Class
-                     └─ Subclass
-                         └─ Infraclass
-                             └─ Legio
-                                 └─ Ordo
-                                     └─ Subordo
-                                         └─ Infraordo
-                                             └─ Superfamily
-                                                 └─ Family
-                                                     └─ Subfamily
-                                                         └─ Infrafamily
-                                                             └─ Supertribus
-                                                                 └─ Tribus
-                                                                     └─ Subtribus
-                                                                         └─ Infratribus
-                                                                             └─ Genus
-                                                                                 └─ Species
+	 └─ Subphylum
+			└─ Superclass
+				 └─ Class
+					 └─ Subclass
+						 └─ Infraclass
+							 └─ Legio
+								 └─ Ordo
+									 └─ Subordo
+										 └─ Infraordo
+											 └─ Superfamily
+												 └─ Family
+													 └─ Subfamily
+														 └─ Infrafamily
+															 └─ Supertribus
+																 └─ Tribus
+																	 └─ Subtribus
+																		 └─ Infratribus
+																			 └─ Genus
+																				 └─ Species
 LoadForAsync in BaseViewmodel eingefügt. und generisch ATIS.Core.Taxonomy.     //public static readonly IReadOnlyList<string> Levels =
-    //[
-    //    "Regnum",
-    //    "Phylum",
-    //    "Subphylum",
-    //    "Superclass",
-    //    "Class",
-    //    "Subclass",
-    //    "Infraclass",
-    //    "Legio",
-    //    "Ordo",
-    //    "Subordo",
-    //    "Infraordo",
-    //    "Superfamily",
-    //    "Family",
-    //    "Subfamily",
-    //    "Infrafamily",
-    //    "Supertribus",
-    //    "Tribus",
-    //    "Subtribus",
-    //    "Infratribus",
-    //    "Genus",
-    //    "Species"
-    //];
+	//[
+	//    "Regnum",
+	//    "Phylum",
+	//    "Subphylum",
+	//    "Superclass",
+	//    "Class",
+	//    "Subclass",
+	//    "Infraclass",
+	//    "Legio",
+	//    "Ordo",
+	//    "Subordo",
+	//    "Infraordo",
+	//    "Superfamily",
+	//    "Family",
+	//    "Subfamily",
+	//    "Infrafamily",
+	//    "Supertribus",
+	//    "Tribus",
+	//    "Subtribus",
+	//    "Infratribus",
+	//    "Genus",
+	//    "Species"
+	//];
 ------------------------------------------------- Pipeline noch nicht ganz fertig. Dataservice
 14.05.2026 14:00 Uhr Neue TaxonomyBuilder erzeugt. Comments und References müssen anders angesprochen werden.
 TabView in der page per SelectedTabIndex aufrufen. Grosser Umbau. Alle Ordner erzeugt und Im MainViewmodel die Taxonomie installert.
@@ -535,26 +535,26 @@ Jetzt geht neu Subtribus, aber comment und reference noch nicht
 17.05.2026 13:00 Uhr Kleine Änderungen gemacht, aber nur Neu bei Subtribus und neu beu Infratribus funktioniert.
 Ki von GitHub angefragt neue Struktur Regnum (0)
   ↓ Phylum (1)
-    ↓ Subphylum (2)
-      ↓ Superclass (3)
-        ↓ Class (4)
-          ↓ Subclass (5)
-            ↓ Infraclass (6)
-              ↓ Legio (7)
-                ↓ Ordo (8)
-                  ↓ Subordo (9)
-                    ↓ Infraordo (10)
-                      ↓ Superfamily (11)
-                        ↓ Family (12)
-                          ↓ Subfamily (13)
-                            ↓ Infrafamily (14)
-                              ↓ Supertribus (15)
-                                ↓ Tribus (16)           ← Dein "Parent"
-                                  ↓ Subtribus (17)     ← Dein "CurrentLevel"
-                                    ↓ Infratribus (18) ← Child
-                                      ↓ Genus (19)     ← Kind von Infratribus
-                                        ↓ Species (20)
-    --------------------------------------------------- fehler
+	↓ Subphylum (2)
+	  ↓ Superclass (3)
+		↓ Class (4)
+		  ↓ Subclass (5)
+			↓ Infraclass (6)
+			  ↓ Legio (7)
+				↓ Ordo (8)
+				  ↓ Subordo (9)
+					↓ Infraordo (10)
+					  ↓ Superfamily (11)
+						↓ Family (12)
+						  ↓ Subfamily (13)
+							↓ Infrafamily (14)
+							  ↓ Supertribus (15)
+								↓ Tribus (16)           ← Dein "Parent"
+								  ↓ Subtribus (17)     ← Dein "CurrentLevel"
+									↓ Infratribus (18) ← Child
+									  ↓ Genus (19)     ← Kind von Infratribus
+										↓ Species (20)
+	--------------------------------------------------- fehler
 18.05.2026 19:00 Uhr Mit Git wieder weiter. Lauffähig genus - tribus. muss aber noch aufgeräumt werden und die comments, references und VK noch getestet und angepasst werden
 LookupService installiert zeigt die Tribusall in combobox nicht an. kein leeres fenster wird angezeigt
 -------------------------------------------------------
@@ -732,45 +732,45 @@ Bei Löschen und Refresh wird das Subtribuslistview geleert
 Comments und References werden in Liste angezeigt, aber bei fokus nicht im Editcontrol angezeigt
 ----------------------------------------
 07.06.2026 14:00 Uhr bei Subtribusvm auch     private static IDataService CreateDataService(IUserService user)
-        => new DataService(new AtisDbContext(), user);
+		=> new DataService(new AtisDbContext(), user);
 wie bei CommentListVm und ReferenceListVm. LookupService auch mit eigenem DataService versehen.
 mit einem Dataservice gibt es immer wieder Probleme. deshalb als nächstes Umstellen im Dataservice auf Factory tribus bis genus umgebaut auf Factory
 ----------------------------------------
 08.06.2026 14:00 Uhr überall auf
 IDbContextFactory<AtisDbContext> factory,
-        IDialogService dialog,
-        HierarchyCoordinator coordinator,
-        LookupService lookup,
-        IUserService user)
-        : base(new DataService(factory, user), dialog, coordinator)
+		IDialogService dialog,
+		HierarchyCoordinator coordinator,
+		LookupService lookup,
+		IUserService user)
+		: base(new DataService(factory, user), dialog, coordinator)
 umgestellt. Schablone für ..ListVm   public TblXXListViewModel(
-    IDbContextFactory<AtisDbContext> factory,
-    IUserService user,
-    IDialogService dialog)
-    : base(
-        new DataService(factory, user),
-        dialog,
-        parentId =>
-        {
-            var data = new DataService(factory, user);
-            return data.GetXXForParentAsync(parentId);
-        })
+	IDbContextFactory<AtisDbContext> factory,
+	IUserService user,
+	IDialogService dialog)
+	: base(
+		new DataService(factory, user),
+		dialog,
+		parentId =>
+		{
+			var data = new DataService(factory, user);
+			return data.GetXXForParentAsync(parentId);
+		})
 {
-    _data = new DataService(factory, user);
+	_data = new DataService(factory, user);
 }
 Schablone für Vm public TblXXViewModel(
-    IDbContextFactory<AtisDbContext> factory,
-    IDialogService dialog,
-    HierarchyCoordinator coordinator,
-    LookupService lookup,
-    IUserService user)
-    : base(new DataService(factory, user), dialog, coordinator)
+	IDbContextFactory<AtisDbContext> factory,
+	IDialogService dialog,
+	HierarchyCoordinator coordinator,
+	LookupService lookup,
+	IUserService user)
+	: base(new DataService(factory, user), dialog, coordinator)
 {
-    Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
-    Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
-    ...
-    IsDetailVisible = false;
-    IsEditVisible = false;
+	Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
+	Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
+	...
+	IsDetailVisible = false;
+	IsEditVisible = false;
 } Fehler noch bei speichern,
 dort wird nach sichern der einzelne datensatz angezeigt und in Searchbox der InfratribusName, was nur passieren soll, wenn Searchbox leer ist.
 Comments Tabview und ReferenceTabview wird nur die Liste angezeigt mit leerem editcontrol, das bei Enter in der Liste nicht gefüllt wird. bei enter
@@ -794,63 +794,63 @@ Tbl60Subtribuspage.xaml.cs subtribus mit comments und references ok aber save, d
 14.06.2026 09:00 Uhr Reference mit allen funktionen als parent in Subtribus ok.
 Blueprint  public async Task LoadParentAsync<TParent>(int parentId)
 {
-    _currentParentId = parentId;
+	_currentParentId = parentId;
 
-    if (typeof(TParent) == typeof(Tbl60Subtribus))
-        CurrentParentKind = ParentKind.Subtribus;
-    else if (typeof(TParent) == typeof(Tbl63Infratribus))
-        CurrentParentKind = ParentKind.Infratribus;
-    else if (typeof(TParent) == typeof(Tbl66Genus))
-        CurrentParentKind = ParentKind.Genus;
-    else if (typeof(TParent) == typeof(Tbl70Species))
-        CurrentParentKind = ParentKind.Species;
-    else
-        CurrentParentKind = ParentKind.None;
+	if (typeof(TParent) == typeof(Tbl60Subtribus))
+		CurrentParentKind = ParentKind.Subtribus;
+	else if (typeof(TParent) == typeof(Tbl63Infratribus))
+		CurrentParentKind = ParentKind.Infratribus;
+	else if (typeof(TParent) == typeof(Tbl66Genus))
+		CurrentParentKind = ParentKind.Genus;
+	else if (typeof(TParent) == typeof(Tbl70Species))
+		CurrentParentKind = ParentKind.Species;
+	else
+		CurrentParentKind = ParentKind.None;
 
-    var items = _loadByParent != null
-        ? await _loadByParent(parentId)
-        : Enumerable.Empty<TModel>();
+	var items = _loadByParent != null
+		? await _loadByParent(parentId)
+		: Enumerable.Empty<TModel>();
 
-    Items = new ObservableCollection<TModel>(items);
-    DataSetCount = Items.Count;
+	Items = new ObservableCollection<TModel>(items);
+	DataSetCount = Items.Count;
 }
 protected override async Task<IEnumerable<TModel>> LoadItemsAsync()
 {
-    if (_loadByParent != null && _currentParentId > 0)
-        return await _loadByParent(_currentParentId);
+	if (_loadByParent != null && _currentParentId > 0)
+		return await _loadByParent(_currentParentId);
 
-    return Items ?? Enumerable.Empty<TModel>();
+	return Items ?? Enumerable.Empty<TModel>();
 }
 protected override async Task<TModel?> SaveItemAsync(TModel item)
 {
-    if (!Validate(item))
-        return null;
+	if (!Validate(item))
+		return null;
 
-    SetParentFk(item);
+	SetParentFk(item);
 
-    var saved = await Data.UpsertAsync(item);
-    return saved;
+	var saved = await Data.UpsertAsync(item);
+	return saved;
 }
 private void SetParentFk(TModel item)
 {
-    switch (CurrentParentKind)
-    {
-        case ParentKind.Subtribus:
-            item.SubtribusId = _currentParentId;
-            break;
+	switch (CurrentParentKind)
+	{
+		case ParentKind.Subtribus:
+			item.SubtribusId = _currentParentId;
+			break;
 
-        case ParentKind.Infratribus:
-            item.InfratribusId = _currentParentId;
-            break;
+		case ParentKind.Infratribus:
+			item.InfratribusId = _currentParentId;
+			break;
 
-        case ParentKind.Genus:
-            item.GenusId = _currentParentId;
-            break;
+		case ParentKind.Genus:
+			item.GenusId = _currentParentId;
+			break;
 
-        case ParentKind.Species:
-            item.SpeciesId = _currentParentId;
-            break;
-    }
+		case ParentKind.Species:
+			item.SpeciesId = _currentParentId;
+			break;
+	}
 }
 Reference und Comment funktionalität ok. Vms noch nicht gleich.
 ----------------------------------------
@@ -865,9 +865,9 @@ Reference und Comment funktionalität ok. Vms noch nicht gleich.
  ├── Comments Subtribus
  ├── References Subtribus
  └── Infratribus
-       ├── Edit Infratribus
-       ├── Comments Infratribus
-       └── References Infratribus
+	   ├── Edit Infratribus
+	   ├── Comments Infratribus
+	   └── References Infratribus
 wird alles angezeigt
 ----------------------------------------
 20.06.2026 15:00 Uhr fehler. In Subtribuspage werden InfratribusComments und InfratribusReferences nicht gefunden.
@@ -892,13 +892,13 @@ infratribusComment und Infratribusreference. Jetzt läuft bei Subtribus alles un
 ----------------------------------------
 24.06.2026 13:30 Uhr Tribus-Species alle Methoden geändert, aber noch einzelnr Fehler im verhalten.Alle Models aktalisiert. z.t. fehlt     public Tbl60Subtribus? Subtribus { get; set; }
 
-    [NotMapped]
-    public string? SubtribusName => Subtribus?.SubtribusName;
-    // ---------------------------------------------------------
-    // IHierarchicalEntity IMPLEMENTATION
-    // ---------------------------------------------------------
-    public int GetEntityId() => InfratribusId;
-    public string GetDisplayName() => InfratribusName ?? $"Infratribus {InfratribusId}";
+	[NotMapped]
+	public string? SubtribusName => Subtribus?.SubtribusName;
+	// ---------------------------------------------------------
+	// IHierarchicalEntity IMPLEMENTATION
+	// ---------------------------------------------------------
+	public int GetEntityId() => InfratribusId;
+	public string GetDisplayName() => InfratribusName ?? $"Infratribus {InfratribusId}";
 ----------------------------------------
 27.06.2026 13:30 Uhr zurückgesetzt von version 116. Lauffähig ist subtribus. jetzt fangen wir wieder an, in BaseBossVM zu verlagern, LoopupService
 und Sort. Verstecken von Header der pivods bei parentComment un Parentreferencen, wenn ein datensatz bei ParentInfratribus ausgewählkt ist
@@ -1010,17 +1010,17 @@ Besser vielleicht Pivots und elegantere Dataservice-Suche. Gute Basis für die n
 28.07.2026 6:30 Uhr ListSubTitleStyle alle neu anlegen oder ich muss alle ändern dann geht es weiter mit DetailPages
 ----------------------------------------
 29.07.2026 6:30 Uhr Margin="{StaticResource XSmallLeftTopRightBottomMargin}"  Style="{StaticResource ListTitleStyle}" Margin="{StaticResource SmallLeftMargin}"
-                       Style="{StaticResource ListSubTitleStyle}"
+					   Style="{StaticResource ListSubTitleStyle}"
 ResourceDictionary.xaml geändert. jetzt geht es weiter mit DetailPagesRegnum
 ----------------------------------------
 02.08.2026 09:30 Uhr Von Version 008_Altern überspielt
 Ausgangspunkt:
-                <ListView Grid.Row="4"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          Margin="-12,0,0,0"
-                          ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
-                          ItemsSource="{x:Bind ViewModel.RegnumItems}" />
+				<ListView Grid.Row="4"
+						  Grid.Column="0"
+						  Grid.ColumnSpan="2"
+						  Margin="-12,0,0,0"
+						  ItemTemplate="{StaticResource ReportItemTemplateHyperlinkRegnum}"
+						  ItemsSource="{x:Bind ViewModel.RegnumItems}" />
 In ReportItemTemplateHyperlinkRegnum muss Margin="TaxMargin,0,0,0" . PropertyTaxMargin = 8.
 In ReportItemTemplateHyperlinkPhylumControl  muss Margin="TaxMargin,0,0,0" . public Property TaxMargin = 16 sein, wenn ein datensatz vorhanden ist.                      
 DetailPages und DetailVMs angelegt noch nicht fehlerfrei.BuildBreadcrumb
@@ -1088,22 +1088,22 @@ Für ganze Liste:
 zusätzlicher Button Drucken
 zusätzlicher Button CSV/Excel Export
 PDF für andere Tabellen außer Class
-    private static string FormatValidity(bool? valid, string? validYear)
-    {
-        string status = valid switch
-        {
-            true => Loc("Valid"),
-            false => Loc("Invalid"),
-            null => string.Empty
-        };
+	private static string FormatValidity(bool? valid, string? validYear)
+	{
+		string status = valid switch
+		{
+			true => Loc("Valid"),
+			false => Loc("Invalid"),
+			null => string.Empty
+		};
 
-        if (string.IsNullOrWhiteSpace(status))
-            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+		if (string.IsNullOrWhiteSpace(status))
+			return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
 
-        return string.IsNullOrWhiteSpace(validYear)
-            ? status
-            : $"{status} {Loc("Since")} {validYear}";
-    }
+		return string.IsNullOrWhiteSpace(validYear)
+			? status
+			: $"{status} {Loc("Since")} {validYear}";
+	}
 einbauen in DetailClassPage bzw. Control
 ----------------------------------------
 23.08.2026 09:30 Uhr Valid und Names als Formatter in Control und PDF eingebaut.
@@ -1185,11 +1185,12 @@ Versuch Image, Synonym und Geagraphic in Species anzeigen noch nicht gelöst
 ----------------------------------------
 24.09.2026 14:30 Uhr Name funktioniert in SpeciesPage und Genuspage. Jetzt Tbl81Image bis Geographic fertig. Bei MainViewModel
 CheckSql_DbAsync, CheckDatabaseExistAsync, CheckForServer und     <add name="MyDbConnection"
-         connectionString="Data Source=localhost,1433;
+		 connectionString="Data Source=localhost,1433;
 					 Initial Catalog=ATIS34;
 					 Integrated Security=True;
 					 MultipleActiveResultSets=True;
 					 TrustServerCertificate=True"
-         providerName="System.Data.SqlClient" />
-    <add key="ServerName" value="localhost"/> in AppConfig neu eingefügt, da sockketfehler für onnectionString="Data Source=.\MSSQLSERVER,1433; gekommen ist
-
+		 providerName="System.Data.SqlClient" />
+	<add key="ServerName" value="localhost"/> in AppConfig neu eingefügt, da sockketfehler für onnectionString="Data Source=.\MSSQLSERVER,1433; gekommen ist
+----------------------------------------
+25.09.2026 18:30 Uhr NameEditcontrol komplett, ImageEditcontrol angefangen

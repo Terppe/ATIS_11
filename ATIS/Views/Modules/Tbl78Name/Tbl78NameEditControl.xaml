@@ -144,11 +144,21 @@
                                Text="{Binding Item.ValidYearError, ElementName=Root}"
                                Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
-                <!--  Language  -->
-                <TextBox loc:Uids.Uid="TextBox_Language"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.Language, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                <!--  Language  -->
+                <ComboBox x:Name="LanguageCombo"
+                          MinWidth="80"
+                          VerticalAlignment="Center"
+                          loc:Uids.Uid="ComboBox_Language"
+                          PlaceholderText="Select"
+                          SelectedValue="{Binding Item.Language, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="ComboLanguage_OnSelectionChanged"
+                          Style="{StaticResource AtisComboBox}">
+                    <x:String>GER</x:String>
+                    <x:String>ENG</x:String>
+                    <x:String>FRA</x:String>
+                    <x:String>SPA</x:String>
+                </ComboBox>
             </StackPanel>
 
             <!--  Info  -->

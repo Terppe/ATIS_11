@@ -158,12 +158,19 @@
                             </MenuFlyoutItem>
                         </MenuBarItem>
                     </MenuBar>
+                    <!--<TextBlock Text="{Binding DbExist_SQLActiv, Mode=OneWay}"
+                    Width="Auto"
+                    Margin="10,16,10,0"
+                    HorizontalAlignment="Left"
+                    Foreground="Green"
+                    TextWrapping="NoWrap"
+                    Visibility="Visible" />-->
                     <TextBlock x:Name="TbDataBase"
                                Width="Auto"
                                Margin="10,16,10,0"
                                HorizontalAlignment="Left"
                                loc:Uids.Uid="TextBlock_DbExist_SQLActiv"
-                               Foreground="Red"
+                               Foreground="Green"
                                TextWrapping="NoWrap"
                                Visibility="Visible" />
                     <AutoSuggestBox Name="SearchSearchBox"

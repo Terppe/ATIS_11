@@ -130,6 +130,7 @@ public partial class App : Application
 
         var connected = await new AtisDbContext().Database.CanConnectAsync();
         System.Diagnostics.Debug.WriteLine($"[DB] connected={connected}");
+
         //var factory =
         //    Services.GetRequiredService<IDbContextFactory<AtisDbContext>>();
 
@@ -137,10 +138,10 @@ public partial class App : Application
         //{
         //    await using var db = await factory.CreateDbContextAsync();
 
-        //    var connected = await db.Database.CanConnectAsync();
+        //    var connected1 = await db.Database.CanConnectAsync();
 
         //    System.Diagnostics.Debug.WriteLine(
-        //        $"[DB] CanConnect = {connected}");
+        //        $"[DB] CanConnect = {connected1}");
         //}
         //catch (Exception ex)
         //{

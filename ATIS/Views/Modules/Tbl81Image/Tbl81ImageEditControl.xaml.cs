@@ -91,6 +91,61 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     }
 
 
+    private void ComboImageMimeType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
 
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "jpg":
+                break;
+            case "png":
+                break;
+            case "bmp":
+                break;
+            case "tif":
+                break;
+            case "tiff":
+                break;
+            case "gif":
+                break;
+            case "ico":
+                break;
+            case "jpeg":
+                break;
+            case "webp":
+                break;
+            case "wmf":
+                break;
+            case "wmv":
+                break;
+            case "mpg":
+                break;
+            case "mp4":
+                break;
+            case "avi":
+                break;
+            case "mov":
+                break;
+            case "swf":
+                break;
+            case "flv":
+                break;
+        }
 
+        //var cmb = sender as ComboBox;
+        //if (cmb != null)
+        //{
+        //    handle = !cmb.IsDropDownOpen;
+        //}
+
+        //Handle();
+    }
 }

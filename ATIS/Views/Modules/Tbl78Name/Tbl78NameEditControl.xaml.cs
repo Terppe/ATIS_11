@@ -104,5 +104,36 @@ public sealed partial class Tbl78NameEditControl : UserControl
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
 
+    private void ComboLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "GER":
+                break;
+            case "ENG":
+                break;
+            case "FRA":
+                break;
+            case "SPA":
+                break;
+        }
+
+        //var cmb = sender as ComboBox;
+        //if (cmb != null)
+        //{
+        //    handle = !cmb.IsDropDownOpen;
+        //}
+
+        //Handle();
+    }
 }
 

@@ -3546,6 +3546,9 @@
   <data name="Species" xml:space="preserve">
     <value>Art</value>
   </data>
+  <data name="SQL_Server_Ok" xml:space="preserve">
+    <value>SQL-Server läuft</value>
+  </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Art</value>
   </data>
