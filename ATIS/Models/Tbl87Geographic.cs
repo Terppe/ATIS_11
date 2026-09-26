@@ -9,39 +9,6 @@ namespace ATIS.Models;
 public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     // ---------------------------------------------------------
-    // ERROR DICTIONARY (wie Subtribus)
-    // ---------------------------------------------------------
-    private readonly Dictionary<string, List<string>> _errors = new();
-
-    public IReadOnlyDictionary<string, List<string>> Errors => _errors;
-
-    private void AddError(string property, string message)
-    {
-        if (!_errors.ContainsKey(property))
-            _errors[property] = new List<string>();
-
-        if (!_errors[property].Contains(message))
-            _errors[property].Add(message);
-
-        OnPropertyChanged(nameof(HasErrors));
-        OnPropertyChanged($"{property}Error");
-        OnPropertyChanged($"Has{property}Error");
-    }
-
-    private void ClearErrors(string property)
-    {
-        if (_errors.ContainsKey(property))
-        {
-            _errors.Remove(property);
-            OnPropertyChanged(nameof(HasErrors));
-            OnPropertyChanged($"{property}Error");
-            OnPropertyChanged($"Has{property}Error");
-        }
-    }
-
-    public bool HasErrors => _errors.Count > 0;
-
-    // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
     [Key]
@@ -86,7 +53,38 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    public int SpeciesId { get; set; }
+    // ---------------------------------------------------------
+    // SpeciesId (Pflicht)
+    // ---------------------------------------------------------
+    private int? _speciesId;
+    public int? SpeciesId
+    {
+        get => _speciesId;
+        set => SetProperty(ref _speciesId, value);
+    }
+
+    public Tbl75Species? Species { get; set; }
+
+    [NotMapped]
+    public string? GenusName => Species?.GenusName;
+
+    [NotMapped]
+    public string? SpeciesName => Species?.SpeciesName;
+
+    [NotMapped]
+    public string? Subspecies => Species?.Subspecies;
+
+    [NotMapped]
+    public string? Divers => Species?.Divers;
+
+    [NotMapped]
+    public string GenusSpeciesFullName => string.Join(" ",
+        new[] { GenusName, SpeciesName, Subspecies, Divers }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    // ---------------------------------------------------------
+    // CountId (Pflicht)
+    // ---------------------------------------------------------
 
     [Required]
     public int CountId { get; set; }
@@ -206,11 +204,37 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
     // ---------------------------------------------------------
     // NAVIGATION
     // ---------------------------------------------------------
-    [ForeignKey("SpeciesId")]
-    public virtual Tbl75Species Species { get; set; }
 
-    [NotMapped]
-    public string SpeciesName => Species?.SpeciesName;
+    private readonly Dictionary<string, List<string>> _errors = new();
+
+    public IReadOnlyDictionary<string, List<string>> Errors => _errors;
+
+    private void AddError(string property, string message)
+    {
+        if (!_errors.ContainsKey(property))
+            _errors[property] = new List<string>();
+
+        if (!_errors[property].Contains(message))
+            _errors[property].Add(message);
+
+        OnPropertyChanged(nameof(HasErrors));
+        OnPropertyChanged($"{property}Error");
+        OnPropertyChanged($"Has{property}Error");
+    }
+
+    private void ClearErrors(string property)
+    {
+        if (_errors.ContainsKey(property))
+        {
+            _errors.Remove(property);
+            OnPropertyChanged(nameof(HasErrors));
+            OnPropertyChanged($"{property}Error");
+            OnPropertyChanged($"Has{property}Error");
+        }
+    }
+
+    public bool HasErrors => _errors.Count > 0;
+
 
     // ---------------------------------------------------------
     // VALIDATION METHODS

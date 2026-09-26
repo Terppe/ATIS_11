@@ -223,7 +223,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchImageWithSpeciesAsync(SearchText);
+            return await Data.SearchImageWithSpeciesAndGenusAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl81Image>();
     }

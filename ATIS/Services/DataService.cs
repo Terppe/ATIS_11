@@ -6854,9 +6854,9 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
     // ---------------------------------------------------------                  
-    // SearchNameWithSpeciesAsync(string? search)
+    // SearchNameWithSpeciesAndGenusAsync(string? search)
     // ---------------------------------------------------------                 
-    public async Task<IEnumerable<Tbl78Name>> SearchNameWithSpeciesAsync(string? search)
+    public async Task<IEnumerable<Tbl78Name>> SearchNameWithSpeciesAndGenusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl78Name>();
@@ -6867,6 +6867,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl78Names
             .Include(x => x.Species)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -6877,10 +6878,12 @@ public partial class DataService : ObservableObject, IDataService
                 .ToListAsync();
         }
 
-        return await query
+        var result = await query
             .Where(e => e.NameName.StartsWith(search))
             .OrderBy(e => e.NameName)
             .ToListAsync();
+
+        return result;
     }
     // ---------------------------------------------------------                  
     // UpsertNameAsync(Tbl78Name uiEntity)
@@ -6917,6 +6920,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl78Names
             .Include(x => x.Species)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.NameId == id);
     }
@@ -6963,6 +6967,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl78Names
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
+            .ThenInclude(s => s.Genus)
             .OrderBy(e => e.NameName)
             .AsNoTracking()
             .ToListAsync();
@@ -7056,8 +7061,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Name
 
     #region Image
-    // ---------------------------------------------------------                  
-    // Image 
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllImageAsync()
@@ -7074,7 +7077,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // SearchImageWithSpeciesAsync(string? search)
     // ---------------------------------------------------------                 
-    public async Task<IEnumerable<Tbl81Image>> SearchImageWithSpeciesAsync(string? search)
+    public async Task<IEnumerable<Tbl81Image>> SearchImageWithSpeciesAndGenusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl81Image>();
@@ -7085,6 +7088,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl81Images
             .Include(x => x.Species)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -7121,8 +7125,17 @@ public partial class DataService : ObservableObject, IDataService
         target.SpeciesId = source.SpeciesId;
         target.Valid = source.Valid;
         target.ValidYear = source.ValidYear;
+        target.FilestreamId = Guid.NewGuid();
+
+  //      target.Filestream = LoadImageData(selectedpath);
+        target.Filestream = source.Filestream;
+        target.ShotDate = source.ShotDate;
+        target.ImageMimeType = source.ImageMimeType;
         target.Info = source.Info;
         target.Memo = source.Memo;
+        target.FoodId = source.FoodId;
+        target.DiseaseId = source.DiseaseId;
+        target.MiscellaneousId = source.MiscellaneousId;
     }
     // ---------------------------------------------------------                  
     // GetImageByIdAsync(int id)
@@ -7133,6 +7146,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl81Images
             .Include(x => x.Species)
+                .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ImageId == id);
     }
@@ -7161,8 +7175,15 @@ public partial class DataService : ObservableObject, IDataService
             x.SpeciesId == entity.SpeciesId &&
             x.Valid == entity.Valid &&
             x.ValidYear == entity.ValidYear &&
+            x.Filestream == entity.Filestream &&
+            x.FilestreamId == entity.FilestreamId &&
+            x.ShotDate == entity.ShotDate &&
+            x.ImageMimeType == entity.ImageMimeType &&
             x.Info == entity.Info &&
             x.Memo == entity.Memo &&
+            x.FoodId == entity.FoodId &&
+            x.DiseaseId == entity.DiseaseId &&
+            x.MiscellaneousId == entity.MiscellaneousId &&
             x.ImageId != entity.ImageId
         );
     }
@@ -7205,6 +7226,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl81Images
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
+                .ThenInclude(s => s.Genus)
             .OrderBy(e => e.Info)
             .AsNoTracking()
             .ToListAsync();
@@ -7329,7 +7351,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // SearchSynonymWithSpeciesAsync(string? search)
     // ---------------------------------------------------------                 
-    public async Task<IEnumerable<Tbl84Synonym>> SearchSynonymWithSpeciesAsync(string? search)
+    public async Task<IEnumerable<Tbl84Synonym>> SearchSynonymWithSpeciesAndGenusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl84Synonym>();
@@ -7340,6 +7362,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl84Synonyms
             .Include(x => x.Species)
+                .ThenInclude(s => s.Genus)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -7391,6 +7414,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl84Synonyms
             .Include(x => x.Species)
+                .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SynonymId == id);
     }
@@ -7442,6 +7466,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl84Synonyms
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
+                .ThenInclude(s => s.Genus)
             .OrderBy(e => e.SynonymName)
             .AsNoTracking()
             .ToListAsync();
@@ -7550,7 +7575,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // SearchGeographicWithSpeciesAsync(string? search)
     // ---------------------------------------------------------                 
-    public async Task<IEnumerable<Tbl87Geographic>> SearchGeographicWithSpeciesAsync(string? search)
+    public async Task<IEnumerable<Tbl87Geographic>> SearchGeographicWithSpeciesAndGenusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl87Geographic>();
@@ -7561,6 +7586,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl87Geographics
             .Include(x => x.Species)
+                .ThenInclude(s => s.Genus)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -7599,6 +7625,20 @@ public partial class DataService : ObservableObject, IDataService
         target.ValidYear = source.ValidYear;
         target.Author = source.Author;
         target.AuthorYear = source.AuthorYear;
+        target.Continent = source.Continent;
+        target.Country = source.Country;
+        target.Address = source.Address;
+        target.Jurisdiction = source.Jurisdiction;
+        target.Http = source.Http;
+        target.Latitude = source.Latitude;
+        target.Latitude1 = source.Latitude1;
+        target.Latitude2 = source.Latitude2;
+        target.Latitude3 = source.Latitude3;
+        target.Longitude = source.Longitude;
+        target.Longitude1 = source.Longitude1;
+        target.Longitude2 = source.Longitude2;
+        target.Longitude3 = source.Longitude3;
+        target.ZoomLevel = source.ZoomLevel;
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
@@ -7611,6 +7651,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl87Geographics
             .Include(x => x.Species)
+                .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.GeographicId == id);
     }
@@ -7641,8 +7682,21 @@ public partial class DataService : ObservableObject, IDataService
             x.ValidYear == entity.ValidYear &&
             x.Author == entity.Author &&
             x.AuthorYear == entity.AuthorYear &&
+            x.Continent == entity.Continent &&
+            x.Country == entity.Country &&
+            x.Address == entity.Address &&
+            x.Jurisdiction == entity.Jurisdiction &&
+            x.Http == entity.Http &&
+            x.Latitude == entity.Latitude &&
+            x.Latitude1 == entity.Latitude1 &&
+            x.Latitude2 == entity.Latitude2 &&
+            x.Latitude3 == entity.Latitude3 &&
+            x.Longitude == entity.Longitude &&
+            x.Longitude1 == entity.Longitude1 &&
+            x.Longitude2 == entity.Longitude2 &&
+            x.Longitude3 == entity.Longitude3 &&
+            x.ZoomLevel == entity.ZoomLevel &&
             x.Info == entity.Info &&
-            x.Memo == entity.Memo &&
             x.Memo == entity.Memo &&
             x.GeographicId != entity.GeographicId
         );
@@ -7686,6 +7740,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl87Geographics
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
+                .ThenInclude(s => s.Genus)
             .OrderBy(e => e.Info)
             .AsNoTracking()
             .ToListAsync();
@@ -7776,7 +7831,6 @@ public partial class DataService : ObservableObject, IDataService
     //}
 
     #endregion Image                  
-
 
     #region Reference
     //---------------------------------------------------------------
@@ -8109,7 +8163,6 @@ public partial class DataService : ObservableObject, IDataService
     //}
 
     #endregion Reference
-
 
     #region RefAuthor
     // ---------------------------------------------------------   
@@ -9094,6 +9147,18 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Comment
 
     #region Country
+    //--------------------------------------------------------
+    public async Task<IEnumerable<TblCountry>> GetAllCountryAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblCountries   
+            .AsNoTracking()
+            .OrderBy(e => e.Name)
+            .ToListAsync();
+    }
+
+    //alt
     public async Task<List<TblCountry>> GetAllCountriesAsync()
     {
         return await _context.TblCountries

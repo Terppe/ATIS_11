@@ -215,7 +215,7 @@ public class Tbl84SynonymViewModel : BaseBossListViewModel<Models.Tbl84Synonym>
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchSynonymWithSpeciesAsync(SearchText);
+            return await Data.SearchSynonymWithSpeciesAndGenusAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl84Synonym>();
     }

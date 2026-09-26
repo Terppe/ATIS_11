@@ -4452,6 +4452,9 @@
   <data name="TextBox_SpeciesName.Header" xml:space="preserve">
     <value>Species Name</value>
   </data>
+  <data name="TextBox_GenusSpeciesName.Header" xml:space="preserve">
+    <value>Genus Species</value>
+  </data>
   <data name="TextBox_SpeciesId.Header" xml:space="preserve">
     <value>Species ID</value>
   </data>

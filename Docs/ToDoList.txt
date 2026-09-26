@@ -1194,3 +1194,8 @@ CheckSql_DbAsync, CheckDatabaseExistAsync, CheckForServer und     <add name="MyD
 	<add key="ServerName" value="localhost"/> in AppConfig neu eingefügt, da sockketfehler für onnectionString="Data Source=.\MSSQLSERVER,1433; gekommen ist
 ----------------------------------------
 25.09.2026 18:30 Uhr NameEditcontrol komplett, ImageEditcontrol angefangen
+----------------------------------------
+26.09.2026 12:30 Uhr SynonymEditcontrol ok. Bei ImageEditcontrol bei DataService nicht klar mit Upsert   //      target.Filestream = LoadImageData(selectedpath);
+Genus-Geographic mit GenusFullname anzeige. Im dataservice  .Include(e => e.Species) .ThenInclude(s => s.Genus) eingefügt. Bis auf CountryList scon ganz gut.
+jetzt fehlt noch neu, save, delete
+

@@ -216,7 +216,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchGeographicWithSpeciesAsync(SearchText);
+            return await Data.SearchGeographicWithSpeciesAndGenusAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl87Geographic>();
     }

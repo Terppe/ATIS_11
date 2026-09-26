@@ -879,7 +879,7 @@ public interface IDataService
     #region Name
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl78Name>> GetAllNameAsync();
-    Task<IEnumerable<Tbl78Name>> SearchNameWithSpeciesAsync(string? search);
+    Task<IEnumerable<Tbl78Name>> SearchNameWithSpeciesAndGenusAsync(string? search);
     Task<Tbl78Name?> GetNameByIdAsync(int id);
     Task<Tbl78Name> UpsertNameAsync(Tbl78Name entity);
     Task DeleteNameAsync(int id);
@@ -904,12 +904,9 @@ public interface IDataService
     #endregion Name
 
     #region Image
-
-    // ---------------------------------------------------------                  
-    // Image 
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl81Image>> GetAllImageAsync();
-    Task<IEnumerable<Tbl81Image>> SearchImageWithSpeciesAsync(string? search);
+    Task<IEnumerable<Tbl81Image>> SearchImageWithSpeciesAndGenusAsync(string? search);
     Task<Tbl81Image?> GetImageByIdAsync(int id);
     Task<Tbl81Image> UpsertImageAsync(Tbl81Image entity);
     Task DeleteImageAsync(int id);
@@ -935,7 +932,7 @@ public interface IDataService
     #region Synonym
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl84Synonym>> GetAllSynonymAsync();
-    Task<IEnumerable<Tbl84Synonym>> SearchSynonymWithSpeciesAsync(string? search);
+    Task<IEnumerable<Tbl84Synonym>> SearchSynonymWithSpeciesAndGenusAsync(string? search);
     Task<Tbl84Synonym?> GetSynonymByIdAsync(int id);
     Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym entity);
     Task DeleteSynonymAsync(int id);
@@ -963,7 +960,7 @@ public interface IDataService
     // Geographic 
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl87Geographic>> GetAllGeographicAsync();
-    Task<IEnumerable<Tbl87Geographic>> SearchGeographicWithSpeciesAsync(string? search);
+    Task<IEnumerable<Tbl87Geographic>> SearchGeographicWithSpeciesAndGenusAsync(string? search);
     Task<Tbl87Geographic?> GetGeographicByIdAsync(int id);
     Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic entity);
     Task DeleteGeographicAsync(int id);
@@ -1145,6 +1142,9 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     #endregion Comment
 
     #region Country
+    //Neu
+    Task<IEnumerable<TblCountry>> GetAllCountryAsync();
+    //alt
     Task<List<TblCountry>> GetAllCountriesAsync();
     Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query);
     Task<List<TblCountry>> GetCountriesByNameAsync(string? query);

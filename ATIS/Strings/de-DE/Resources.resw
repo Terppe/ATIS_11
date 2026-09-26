@@ -2146,7 +2146,7 @@
     <value>Haltung</value>
   </data>
   <data name="TextBlock_Image.Text" xml:space="preserve">
-    <value>Bild/Video</value>
+    <value>Bild</value>
   </data>
   <data name="TextBlock_ImageId.Text" xml:space="preserve">
     <value>Bild/Video ID</value>
@@ -4451,6 +4451,9 @@
   </data>
   <data name="TextBox_SpeciesName.Header" xml:space="preserve">
     <value>Art Name</value>
+  </data>
+  <data name="TextBox_GenusSpeciesName.Header" xml:space="preserve">
+    <value>Gattung Art</value>
   </data>
   <data name="TextBox_SpeciesId.Header" xml:space="preserve">
     <value>Art ID</value>

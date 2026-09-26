@@ -1,6 +1,10 @@
 ﻿
 //    Tbl87GeographicEditControl Skriptdatum:  13.09.2026  10:32    
 
+using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
+
 namespace ATIS.Views.Modules.Tbl87Geographic;
 
 public sealed partial class Tbl87GeographicEditControl : UserControl
@@ -13,6 +17,13 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     public Tbl87GeographicEditControl()
     {
         InitializeComponent();
+        SelectedTabIndex = 0;
+        Loaded += Tbl66GenusEditControl_Loaded;
+    }
+    private void Tbl66GenusEditControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
     // ---------------------------------------------------------
@@ -76,19 +87,6 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
             VisualStateManager.GoToState(box, "Normal", true);
     }
 
-    // ---------------------------------------------------------                   
-    // Geographic NAME VALIDATION
-    // ---------------------------------------------------------                   
-
-    //private void GeographicNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
-    //{
-    //    UpdateValidationState(GeographicNameBox, Item?.HasGeographicNameError ?? false);
-    //}
-
-    //private void GeographicNameBox_OnLoaded(object sender, RoutedEventArgs e)
-    //{
-    //    UpdateValidationState(GeographicNameBox, Item?.HasGeographicNameError ?? false);
-    //}
 
     // ---------------------------------------------------------                   
     // VALID YEAR VALIDATION
@@ -104,7 +102,105 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
 
+    // ---------------------------------------------------------                   
+    // AUTHOR YEAR VALIDATION
+    // ---------------------------------------------------------                   
 
+    private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
+    }
 
+    private void AuthorYearBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
+    }
 
+    // ---------------------------------------------------------                   
+    // HTTP VALIDATION
+    // ---------------------------------------------------------                   
+
+    private void HttpBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(HttpBox, Item?.HasHttpError ?? false);
+    }
+
+    private void HttpBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(HttpBox, Item?.HasHttpError ?? false);
+    }
+
+    private void ComboContinent_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "Africa":
+                break;
+            case "Antarctica":
+                break;
+            case "Asia":
+                break;
+            case "Australia":
+                break;
+            case "Central/South America":
+                break;
+            case "Europe":
+                break;
+            case "North America/Caribbean":
+                break;
+        }
+
+        //var cmb = sender as ComboBox;
+        //if (cmb != null)
+        //{
+        //    handle = !cmb.IsDropDownOpen;
+        //}
+
+        //Handle();
+    }
+
+    // ---------------------------------------------------------                   
+    // DETAIL TAB VALIDATION
+    // ---------------------------------------------------------                   
+    private int SelectedTabIndex = 0;
+
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            SelectedTabIndex = index;
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(MapTab, MapTabUnderline, SelectedTabIndex == 0);
+        SetTabButtonStyle(DataTab, DataTabUnderline, SelectedTabIndex == 1);
+        SetTabButtonStyle(LatitudeTab, LatitudeTabUnderline, SelectedTabIndex == 2);
+    }
+    private void UpdateDetailContentVisibility()
+    {
+        MapGrid.Visibility = SelectedTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        DataGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        LatitudeGrid.Visibility = SelectedTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
+    }
 }

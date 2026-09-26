@@ -47,6 +47,8 @@ public class LookupService
     private Dictionary<int, string?>? _refExpertLookupCache;
     private Dictionary<int, string?>? _refSourceLookupCache;
 
+    private Dictionary<int, string?>? _countryLookupCache;
+
     //--------------------------------------------------------------------
     private ObservableCollection<Models.Tbl03Regnum>? _regnumListCache;
     private ObservableCollection<Models.Tbl06Phylum>? _phylumListCache;
@@ -74,6 +76,8 @@ public class LookupService
     private ObservableCollection<Models.Tbl90RefAuthor>? _refAuthorListCache;
     private ObservableCollection<Models.Tbl90RefExpert>? _refExpertListCache;
     private ObservableCollection<Models.Tbl90RefSource>? _refSourceListCache;
+
+    private ObservableCollection<Models.TblCountry>? _countryListCache;
 
     //--------------------------------------------------------------------
     public void InvalidateRegnumCache()
@@ -202,6 +206,13 @@ public class LookupService
         _refAuthorLookupCache = null;
         _refAuthorListCache = null;
     }
+    //--------------------------------------------------------------------
+
+    public void InvalidateCountryCache()
+    {
+        _countryLookupCache = null;
+        _countryListCache = null;
+    }
 
     //--------------------------------------------------------------------
     public void InvalidateAllCaches()
@@ -232,6 +243,8 @@ public class LookupService
         InvalidateRefExpertCache();
         InvalidateRefSourceCache();
         InvalidateRefAuthorCache();
+        //--------------------------------------------------------------------
+        InvalidateCountryCache();
     }
 
     //--------------------------------------------------------------------
@@ -487,6 +500,17 @@ public class LookupService
         }
         return _refSourceLookupCache;
     }
+    //--------------------------------------------------------------------
+    public async Task<Dictionary<int, string?>> GetCountryLookupAsync()
+    {
+        if (_countryLookupCache == null)
+        {
+            var data = CreateDataService();
+            var list = await data.GetAllCountryAsync();
+            _countryLookupCache = list.ToDictionary(x => x.CountryId, x => x.Name);
+        }
+        return _countryLookupCache;
+    }
 
     //--------------------------------------------------------------------
     public async Task<ObservableCollection<Models.Tbl03Regnum>> GetRegnumListAsync()
@@ -709,9 +733,7 @@ public class LookupService
         }
         return _speciesListCache;
     }
-
     //--------------------------------------------------------------------
-
     public async Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertListAsync()
     {
         try
@@ -766,6 +788,27 @@ public class LookupService
         {
             //         _logger.LogError(ex, "Failed loading RefAuthor lookup");
             return new ObservableCollection<Tbl90RefAuthor>();
+        }
+    }
+
+    //--------------------------------------------------------------------
+
+    public async Task<ObservableCollection<TblCountry>> GetCountryListAsync()
+    {
+        try
+        {
+            if (_countryListCache == null)
+            {
+                var data = CreateDataService();
+                var list = await data.GetAllCountryAsync() ?? Enumerable.Empty<TblCountry>();
+                _countryListCache = new ObservableCollection<TblCountry>(list);
+            }
+            return _countryListCache;
+        }
+        catch (Exception ex)
+        {
+            //         _logger.LogError(ex, "Failed loading Country lookup");
+            return new ObservableCollection<TblCountry>();
         }
     }
 

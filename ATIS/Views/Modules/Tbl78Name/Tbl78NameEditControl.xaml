@@ -104,22 +104,11 @@
                                Visibility="{Binding Item.HasNameNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  Species Combo  -->
-                <StackPanel MinWidth="150"
-                            VerticalAlignment="Top"
-                            Spacing="2">
-                    <TextBlock Visibility="Collapsed" />
-
-                    <ComboBox x:Name="SpeciesCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_SpeciesName"
-                              DisplayMemberPath="SpeciesName"
-                              ItemsSource="{Binding SpeciesList}"
-                              SelectedValue="{Binding Item.SpeciesId, ElementName=Root, Mode=TwoWay}"
-                              SelectedValuePath="SpeciesId"
-                              Style="{StaticResource AtisComboBox}" />
-                </StackPanel>
+                <!--  GenusSpeciesSubspeciesDiversName  -->
+                <TextBox loc:Uids.Uid="TextBox_GenusSpeciesName"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.GenusSpeciesFullName, ElementName=Root, Mode=OneWay}" />
 
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"

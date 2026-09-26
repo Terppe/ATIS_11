@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:winUi="using:Mapsui.UI.WinUI"
              x:Name="Root"
              mc:Ignorable="d">
 
@@ -87,37 +88,44 @@
                          Style="{StaticResource AtisTextBox}"
                          Text="{Binding Item.GeographicId, ElementName=Root}" />
 
-                <!--  GeographicName  -->
-                <!--<StackPanel MinWidth="150"
-                            VerticalAlignment="Top"
-                            Spacing="2">
-                    <TextBox x:Name="GeographicNameBox"
-                             loc:Uids.Uid="TextBox_GeographicName"
-                             Loaded="GeographicNameBox_OnLoaded"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.GeographicName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             TextChanged="GeographicNameBox_OnTextChanged" />
-                    <TextBlock Height="18"
-                               FontSize="10"
-                               Foreground="Red"
-                               Text="{Binding Item.GeographicNameError, ElementName=Root}"
-                               Visibility="{Binding Item.HasGeographicNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
-                </StackPanel>-->
+                <!--  GenusSpeciesSubspeciesDiversName  -->
+                <TextBox loc:Uids.Uid="TextBox_GenusSpeciesName"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.GenusSpeciesFullName, ElementName=Root, Mode=OneWay}" />
 
-                <!--  Species Combo  -->
+                <!--  Continent  -->
+                <ComboBox x:Name="ContinentCombo"
+                          MinWidth="150"
+                          VerticalAlignment="Center"
+                          loc:Uids.Uid="ComboBox_Continent"
+                          PlaceholderText="Select"
+                          SelectedValue="{Binding Item.Continent, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="ComboContinent_OnSelectionChanged"
+                          Style="{StaticResource AtisComboBox}">
+                    <x:String>Africa</x:String>
+                    <x:String>Antarctica</x:String>
+                    <x:String>Asia</x:String>
+                    <x:String>Australia</x:String>
+                    <x:String>Central/South America</x:String>
+                    <x:String>Europe</x:String>
+                    <x:String>North America/Caribbean</x:String>
+                </ComboBox>
+
+                <!--  Country Combo  -->
                 <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
                     <TextBlock Visibility="Collapsed" />
 
-                    <ComboBox x:Name="SpeciesCombo"
+                    <ComboBox x:Name="CountryCombo"
                               MinWidth="200"
                               VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_SpeciesName"
-                              DisplayMemberPath="SpeciesName"
-                              ItemsSource="{Binding SpeciesList}"
-                              SelectedValue="{Binding Item.SpeciesId, ElementName=Root, Mode=TwoWay}"
-                              SelectedValuePath="SpeciesId"
+                              loc:Uids.Uid="ComboBox_Country"
+                              DisplayMemberPath="Name"
+                              ItemsSource="{Binding CountryList}"
+                              SelectedValue="{Binding Item.Country, ElementName=Root, Mode=TwoWay}"
+                              SelectedValuePath="CountryId"
                               Style="{StaticResource AtisComboBox}" />
                 </StackPanel>
 
@@ -146,11 +154,185 @@
                 </StackPanel>
             </StackPanel>
 
+            <!--  Address  -->
+            <TextBox loc:Uids.Uid="TextBox_Address"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{Binding Item.Address, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <!--  Jurisdiction  -->
+            <TextBox loc:Uids.Uid="TextBox_Jurisdiction"
+                     Style="{StaticResource AtisTextBox}"
+                     Text="{Binding Item.Jurisdiction, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
             <!--  Info  -->
             <TextBox loc:Uids.Uid="TextBox_Info"
                      Style="{StaticResource AtisTextBox}"
                      Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+            <!--  Map-Latitude Tab  -->
+            <Grid RowDefinitions="Auto, Auto">
+                <StackPanel Margin="0,0,0,10"
+                            Orientation="Horizontal"
+                            Spacing="4">
+                    <Button x:Name="MapTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Map" />
+                            <Border x:Name="MapTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="DataTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Data" />
+                            <Border x:Name="DataTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="LatitudeTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="2">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Latitude" />
+                            <Border x:Name="LatitudeTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Grid x:Name="TabContentGrid"
+                      Grid.Row="1">
+                    <Grid x:Name="MapGrid">
+                        <Border Width="1100"
+                                Height="400">
+                            <Grid>
+                                <winUi:MapControl x:Name="MyMap"
+                                                  HorizontalAlignment="Stretch"
+                                                  VerticalAlignment="Stretch" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <Grid x:Name="DataGrid"
+                          Visibility="Collapsed">
+                        <StackPanel>
+                            <!--  Author + AuthorYear  -->
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="4">
+                                <TextBox MinWidth="150"
+                                         VerticalAlignment="Top"
+                                         loc:Uids.Uid="TextBox_Author"
+                                         CharacterCasing="Upper"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <StackPanel MinWidth="60"
+                                            VerticalAlignment="Top"
+                                            Spacing="4">
+                                    <TextBox x:Name="AuthorYearBox"
+                                             loc:Uids.Uid="TextBox_AuthorYear"
+                                             Loaded="AuthorYearBox_OnLoaded"
+                                             Style="{StaticResource AtisTextBox}"
+                                             Text="{Binding Item.AuthorYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                             TextChanged="AuthorYearBox_OnTextChanged" />
+                                    <TextBlock Height="16"
+                                               FontSize="10"
+                                               Foreground="Red"
+                                               Text="{Binding Item.AuthorYearError, ElementName=Root}"
+                                               Visibility="{Binding Item.HasAuthorYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!--  Http  -->
+                            <StackPanel MinWidth="150"
+                                        VerticalAlignment="Top"
+                                        Spacing="2">
+                                <TextBox x:Name="HttpBox"
+                                         loc:Uids.Uid="TextBox_Http"
+                                         Loaded="HttpBox_OnLoaded"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Http, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         TextChanged="HttpBox_OnTextChanged" />
+                                <TextBlock Height="18"
+                                           FontSize="10"
+                                           Foreground="Red"
+                                           Text="{Binding Item.HttpError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasHttpError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </StackPanel>
+
+                            <!--  Memo  -->
+                            <TextBox MinWidth="200"
+                                     MinHeight="75"
+                                     MaxHeight="150"
+                                     loc:Uids.Uid="TextBox_Memo"
+                                     Style="{StaticResource AtisTextBoxWrap}"
+                                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="LatitudeGrid"
+                          Visibility="Collapsed">
+                        <StackPanel>
+                            <!--  ZoomLevel  -->
+                            <TextBox loc:Uids.Uid="TextBox_ZoomLevel"
+                                     Style="{StaticResource AtisTextBox}"
+                                     Text="{Binding Item.ZoomLevel, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <StackPanel Orientation="Horizontal">
+                                <!--  Latitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Latitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--  Longitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Longitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <!--  Latitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Latitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--  Longitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Longitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <!--  Latitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Latitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--  Longitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Longitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <!--  Latitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Latitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <!--  Longitude  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                         Style="{StaticResource AtisTextBox}"
+                                         Text="{Binding Item.Longitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
 
             <!--  Memo  -->
             <TextBox MinWidth="200"

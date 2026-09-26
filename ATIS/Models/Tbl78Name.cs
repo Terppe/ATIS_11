@@ -30,6 +30,9 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         }
     }
 
+    // ---------------------------------------------------------
+    // SpeciesId (Pflicht)
+    // ---------------------------------------------------------
     private int? _speciesId;
     public int? SpeciesId
     {
@@ -37,6 +40,28 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         set => SetProperty(ref _speciesId, value);
     }
 
+    public Tbl75Species? Species { get; set; }
+
+    [NotMapped]
+    public string? GenusName => Species?.GenusName;
+
+    [NotMapped]
+    public string? SpeciesName => Species?.SpeciesName;
+
+    [NotMapped]
+    public string? Subspecies => Species?.Subspecies;
+
+    [NotMapped]
+    public string? Divers => Species?.Divers;
+
+    [NotMapped]
+    public string GenusSpeciesFullName => string.Join(" ",
+        new[] { GenusName, SpeciesName, Subspecies, Divers }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    // ---------------------------------------------------------                  
+    // CountId
+    // ---------------------------------------------------------                  
     [Required]
     public int CountId { get; set; }
 
@@ -106,14 +131,6 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
     public string Updater { get; set; }
     public DateTime UpdaterDate { get; set; }
 
-    // ---------------------------------------------------------
-    // NAVIGATION
-    // ---------------------------------------------------------
-    [ForeignKey("SpeciesId")]
-    public virtual Tbl75Species Species { get; set; }
-
-    [NotMapped]
-    public string SpeciesName => Species?.SpeciesName;
 
     // ---------------------------------------------------------
     // VALIDATION METHODS

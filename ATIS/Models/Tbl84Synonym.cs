@@ -9,10 +9,6 @@ namespace ATIS.Models;
 public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 {
     // ---------------------------------------------------------
-    // ERROR DICTIONARY (wie Subtribus)
-    // ---------------------------------------------------------
-
-    // ---------------------------------------------------------
     // PRIMARY KEY
     // ---------------------------------------------------------
     [Key]
@@ -34,7 +30,38 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
         }
     }
 
-    public int SpeciesId { get; set; }
+    // ---------------------------------------------------------
+    // SpeciesId (Pflicht)
+    // ---------------------------------------------------------
+    private int? _speciesId;
+    public int? SpeciesId
+    {
+        get => _speciesId;
+        set => SetProperty(ref _speciesId, value);
+    }
+
+    public Tbl75Species? Species { get; set; }
+
+    [NotMapped]
+    public string? GenusName => Species?.GenusName;
+
+    [NotMapped]
+    public string? SpeciesName => Species?.SpeciesName;
+
+    [NotMapped]
+    public string? Subspecies => Species?.Subspecies;
+
+    [NotMapped]
+    public string? Divers => Species?.Divers;
+
+    [NotMapped]
+    public string GenusSpeciesFullName => string.Join(" ",
+        new[] { GenusName, SpeciesName, Subspecies, Divers }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    // ---------------------------------------------------------
+    // CountId (Pflicht)
+    // ---------------------------------------------------------
 
     [Required]
     public int CountId { get; set; }
@@ -120,11 +147,6 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // NAVIGATION
     // ---------------------------------------------------------
-    [ForeignKey("SpeciesId")]
-    public virtual Tbl75Species Species { get; set; }
-
-    [NotMapped]
-    public string SpeciesName => Species?.SpeciesName;
 
     private readonly Dictionary<string, List<string>> _errors = new();
 

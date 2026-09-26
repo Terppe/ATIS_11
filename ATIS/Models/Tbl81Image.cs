@@ -16,13 +16,45 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     public int ImageId { get; set; }
 
     // ---------------------------------------------------------
+    // SpeciesId (Pflicht)
+    // ---------------------------------------------------------
+    private int? _speciesId;
+    public int? SpeciesId
+    {
+        get => _speciesId;
+        set => SetProperty(ref _speciesId, value);
+    }
+
+    public Tbl75Species? Species { get; set; }
+
+    [NotMapped]
+    public string? GenusName => Species?.GenusName;
+
+    [NotMapped]
+    public string? SpeciesName => Species?.SpeciesName;
+
+    [NotMapped]
+    public string? Subspecies => Species?.Subspecies;
+
+    [NotMapped]
+    public string? Divers => Species?.Divers;
+
+    [NotMapped]
+    public string GenusSpeciesFullName => string.Join(" ",
+        new[] { GenusName, SpeciesName, Subspecies, Divers }
+            .Where(x => !string.IsNullOrWhiteSpace(x)));
+
+    // ---------------------------------------------------------
     // FIELDS
     // ---------------------------------------------------------
-    public int SpeciesId { get; set; }
+
     public int? FoodId { get; set; }
     public int? DiseaseId { get; set; }
     public int? MiscellaneousId { get; set; }
 
+    // ---------------------------------------------------------                  
+    // CountId
+    // ---------------------------------------------------------                  
     [Required]
     public int CountId { get; set; }
 
@@ -93,10 +125,6 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     // ---------------------------------------------------------
     // NAVIGATION
     // ---------------------------------------------------------
-    [ForeignKey("SpeciesId")]
-    public virtual Tbl75Species Species { get; set; }
-
-    [NotMapped] public string? SpeciesName => Species?.SpeciesName;
 
     // (Food, Disease, Misc kommen später als Modelle)
     [NotMapped] public string? FoodName { get; set; }

@@ -211,7 +211,7 @@ public class Tbl78NameViewModel : BaseBossListViewModel<Models.Tbl78Name>
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchNameWithSpeciesAsync(SearchText);
+            return await Data.SearchNameWithSpeciesAndGenusAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.Tbl78Name>();
     }

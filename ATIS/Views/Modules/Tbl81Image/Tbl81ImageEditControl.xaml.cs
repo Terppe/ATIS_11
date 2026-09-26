@@ -1,6 +1,10 @@
 ﻿
 //    Tbl81ImageEditControl Skriptdatum:  13.09.2026  10:32    
 
+using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
+
 namespace ATIS.Views.Modules.Tbl81Image;
 
 public sealed partial class Tbl81ImageEditControl : UserControl
@@ -13,6 +17,13 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     public Tbl81ImageEditControl()
     {
         InitializeComponent();
+        SelectedTabIndex = 0;
+        Loaded += Tbl66GenusEditControl_Loaded;
+    }
+    private void Tbl66GenusEditControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
     // ---------------------------------------------------------
@@ -147,5 +158,39 @@ public sealed partial class Tbl81ImageEditControl : UserControl
         //}
 
         //Handle();
+    }
+
+    // ---------------------------------------------------------                   
+    // DETAIL TAB VALIDATION
+    // ---------------------------------------------------------                   
+    private int SelectedTabIndex = 0;
+
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
+        {
+            SelectedTabIndex = index;
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
+        }
+    }
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+
+    private void UpdateTabButtonStates()
+    {
+        SetTabButtonStyle(ImageTab, ImageTabUnderline, SelectedTabIndex == 0);
+        SetTabButtonStyle(VideoTab, VideoTabUnderline, SelectedTabIndex == 1);
+    }
+    private void UpdateDetailContentVisibility()
+    {
+        ImageGrid.Visibility = SelectedTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+        VideoGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
     }
 }
