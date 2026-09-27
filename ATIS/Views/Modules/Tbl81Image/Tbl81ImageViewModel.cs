@@ -1,16 +1,16 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Input;
-using Windows.Storage.Pickers;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 using WinRT.Interop;
 using WinUI3Localizer;
 
@@ -161,7 +161,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         // Lookup nur versuchen, Fehler darf UI nicht stoppen
         try
         {
-
             await LoadSpeciesLookupAsync();
         }
         catch (Exception ex)
@@ -303,30 +302,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
-    private Image? _image;
-
-    public Image? Image
-    {
-        get => _image;
-        set
-        {
-            if (SetProperty(ref _image, value))
-            {
-            }
-        }
-    }
-
-    private string _selectedPath;
-    public string SelectedPath
-    {
-        get => _selectedPath;
-        set
-        {
-            if (SetProperty(ref _selectedPath, value))
-            {
-            }
-        }
-    }
 
     protected override Task NewAsync()
     {
@@ -337,60 +312,98 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     {
         _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-        //New Image search
-        OpenFileDialog(null);
+        var currentSpecies = Item?.Species;
 
         return new Models.Tbl81Image
         {
-            SpeciesId = _currentParentId
+            SpeciesId = _currentParentId,
+            Species = currentSpecies,
+            FilestreamId = Guid.NewGuid(),
+            ShotDate = DateTime.Today
         };
-
     }
-    public async void OpenFileDialog(string s)
+
+    public async Task SelectFileForCurrentItemAsync()
     {
         try
         {
-            var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-            InitializeWithWindow.Initialize(_filePicker, hwnd);
-            _filePicker.FileTypeFilter.Add("*");
-            _filePicker.ViewMode = PickerViewMode.Thumbnail;
-            //_filePicker.FileTypeFilter.Add("*");
-            _filePicker.FileTypeFilter.Add(".jpg");
-            _filePicker.FileTypeFilter.Add(".jpeg");
-            _filePicker.FileTypeFilter.Add(".png");
-            _filePicker.FileTypeFilter.Add(".gif");
-            _filePicker.FileTypeFilter.Add(".jpe");
-            _filePicker.FileTypeFilter.Add(".bmp");
-            _filePicker.FileTypeFilter.Add(".ico");
-            _filePicker.FileTypeFilter.Add(".tif");
-            _filePicker.FileTypeFilter.Add(".tiff");
-            _filePicker.FileTypeFilter.Add(".hpd");
-            _filePicker.FileTypeFilter.Add(".jxr");
-            _filePicker.FileTypeFilter.Add(".wdp");
-            _filePicker.FileTypeFilter.Add(".hpd");
-            var file = await _filePicker.PickSingleFileAsync();
-            if (file != null && file.Path != null)
-            {
-                SelectedPath = file.Path;
-                Image = new Image
-                {
-                    Source = new BitmapImage(new Uri(file.Path))
-                };
-            }
+            if (Item == null)
+                Item = CreateNewItem();
+
+            var file = await PickFileAsync();
+            if (file == null || string.IsNullOrWhiteSpace(file.Path))
+                return;
+
+            Item.Filestream = await File.ReadAllBytesAsync(file.Path);
+//            Item.ImageMimeType = GetImageTypeFromExtension(file.FileType);
+
+            var fileType = GetImageTypeFromExtension(file.FileType);
+            if (!string.IsNullOrWhiteSpace(fileType))
+                Item.ImageMimeType = fileType;
+
+            if (Item.FilestreamId == Guid.Empty)
+                Item.FilestreamId = Guid.NewGuid();
+
+            Debug.WriteLine($"LOAD item hash: {Item.GetHashCode()}");
+            Debug.WriteLine($"LOAD bytes: {Item.Filestream?.Length ?? 0}");
+            Debug.WriteLine($"LOAD type: {Item.ImageMimeType}");
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
             SimpleLog.Log(xe);
         }
+    }
+    private async Task<StorageFile?> PickFileAsync()
+    {
+        var filePicker = new FileOpenPicker();
+        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(filePicker, hwnd);
+
+        filePicker.FileTypeFilter.Clear();
+        filePicker.FileTypeFilter.Add(".jpg");
+        filePicker.FileTypeFilter.Add(".jpeg");
+        filePicker.FileTypeFilter.Add(".png");
+        filePicker.FileTypeFilter.Add(".gif");
+        filePicker.FileTypeFilter.Add(".bmp");
+        filePicker.FileTypeFilter.Add(".tif");
+        filePicker.FileTypeFilter.Add(".tiff");
+        filePicker.FileTypeFilter.Add(".ico");
+        filePicker.FileTypeFilter.Add(".webp");
+        filePicker.FileTypeFilter.Add(".wmf");
+        filePicker.FileTypeFilter.Add(".wmv");
+        filePicker.FileTypeFilter.Add(".mpg");
+        filePicker.FileTypeFilter.Add(".mp4");
+        filePicker.FileTypeFilter.Add(".avi");
+        filePicker.FileTypeFilter.Add(".mov");
+        filePicker.FileTypeFilter.Add(".swf");
+        filePicker.FileTypeFilter.Add(".flv");
+
+        filePicker.ViewMode = PickerViewMode.Thumbnail;
+
+        return await filePicker.PickSingleFileAsync();
+    }
+    private static string? GetImageTypeFromExtension(string? extension)
+    {
+        return extension?.TrimStart('.').ToLowerInvariant();
     }
 
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
+
     protected override async Task<Models.Tbl81Image?> SaveItemAsync(Models.Tbl81Image item)
     {
-        if (string.IsNullOrWhiteSpace(item.Info))
+        Debug.WriteLine($"SAVE item hash: {item.GetHashCode()}");
+        Debug.WriteLine($"SAVE bytes: {item.Filestream?.Length ?? 0}");
+
+        if (item.Filestream == null || item.Filestream.Length == 0)
+        {
+            await Dialog.ShowErrorAsync("Error_NoFile_Title", "Error_NoFile_Message");
+            return null;
+        }
+
+        if (await Data.ImageExistsAsync(item))
         {
             await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
             return null;
@@ -405,7 +418,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 
         return saved;
     }
-
     protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl81Image item)
     {
         if (_wasEmptyBeforeSave && IsBossMode)
@@ -455,4 +467,84 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
+
+    //private static string? GetMimeTypeFromExtension(string? extension)
+    //{
+    //    return extension?.ToLowerInvariant() switch
+    //    {
+    //        ".jpg" or ".jpeg" => "image/jpeg",
+    //        ".png" => "image/png",
+    //        ".gif" => "image/gif",
+    //        ".bmp" => "image/bmp",
+    //        ".tif" or ".tiff" => "image/tiff",
+    //        ".mp4" => "video/mp4",
+    //        ".avi" => "video/x-msvideo",
+    //        ".mov" => "video/quicktime",
+    //        _ => null
+    //    };
+    //}
+
+    //private string _selectedPath;
+    //public string SelectedPath
+    //{
+    //    get => _selectedPath;
+    //    set => SetProperty(ref _selectedPath, value);
+    //}
+
+    //public async Task LoadFileIntoSelectedItemAsync()
+    //{
+    //    try
+    //    {
+    //        if (Item == null)
+    //            return;
+
+    //        var file = await PickFileAsync();
+    //        if (file == null || string.IsNullOrWhiteSpace(file.Path))
+    //            return;
+
+    //   //     SelectedPath = file.Path;
+
+    //        Item.Filestream = await File.ReadAllBytesAsync(file.Path);
+    //        Item.ImageMimeType = GetMimeTypeFromExtension(file.FileType);
+    //   //     Item.Info = file.Name;
+    ////        Item.GenusSpeciesFullName = Item.GenusSpeciesFullName;
+    //        Debug.WriteLine($"LOAD item hash: {Item.GetHashCode()}");
+    //        Debug.WriteLine($"LOAD bytes: {Item.Filestream?.Length ?? 0}");
+    //    }
+    //    catch (Exception xe)
+    //    {
+    //        await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
+    //        SimpleLog.Log(xe);
+    //    }
+    //}
+    //protected override async Task NewAsync()
+    //{
+    //    try
+    //    {
+    //        var file = await PickFileAsync();
+    //        if (file == null || string.IsNullOrWhiteSpace(file.Path))
+    //            return;
+
+    //        if (Item == null)
+    //        {
+    //            Item = CreateNewItem();
+    //        }
+
+    //        SelectedPath = file.Path;
+    //        Item.Filestream = await File.ReadAllBytesAsync(file.Path);
+    //        Item.ImageMimeType = GetMimeTypeFromExtension(file.FileType);
+    //    //    Item.Info = file.Name;
+    //        Item.GenusName = Item.GenusSpeciesFullName;
+    //        Item.FilestreamId = Guid.NewGuid();
+
+    //        Debug.WriteLine($"NEW item hash: {Item.GetHashCode()}");
+    //        Debug.WriteLine($"NEW bytes: {Item.Filestream?.Length ?? 0}");
+    //    }
+    //    catch (Exception xe)
+    //    {
+    //        await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
+    //        SimpleLog.Log(xe);
+    //    }
+    //}
+
 }

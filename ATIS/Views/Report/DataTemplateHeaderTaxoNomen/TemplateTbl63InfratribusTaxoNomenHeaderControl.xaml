@@ -111,4 +111,4 @@
                        TextWrapping="Wrap" />
         </StackPanel>
     </Grid>
-</UserControl>     
+</UserControl>

@@ -1,9 +1,16 @@
 ﻿
 //    Tbl81ImageEditControl Skriptdatum:  13.09.2026  10:32    
 
+using System.Diagnostics;
+using ATIS.Helpers;
+using ATIS.Models;
+using log4net;
 using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 namespace ATIS.Views.Modules.Tbl81Image;
 
@@ -192,5 +199,22 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     {
         ImageGrid.Visibility = SelectedTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
         VideoGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private async void SelectFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.SelectFileForCurrentItemAsync();
+    }
+
+    private void DpShotDate_OnGotFocus(object sender, RoutedEventArgs e)
+    {
+        ShotDateBorder.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 103, 192));
+        ShotDateBorder.BorderThickness = new Thickness(2);
+    }
+
+    private void DpShotDate_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        ShotDateBorder.BorderBrush = (Brush)Application.Current.Resources["AtisTextBoxBorderBrush"];
+        ShotDateBorder.BorderThickness = new Thickness(1);
     }
 }

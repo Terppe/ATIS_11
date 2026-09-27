@@ -7119,15 +7119,13 @@ public partial class DataService : ObservableObject, IDataService
     }
     // ---------------------------------------------------------                  
     // MapImageFields(Tbl81Image source, Tbl81Image target)
-    // ---------------------------------------------------------                 
+    // ---------------------------------------------------------
     private static void MapImageFields(Tbl81Image source, Tbl81Image target)
     {
         target.SpeciesId = source.SpeciesId;
         target.Valid = source.Valid;
         target.ValidYear = source.ValidYear;
-        target.FilestreamId = Guid.NewGuid();
-
-  //      target.Filestream = LoadImageData(selectedpath);
+        target.FilestreamId = source.FilestreamId == Guid.Empty ? Guid.NewGuid() : source.FilestreamId;
         target.Filestream = source.Filestream;
         target.ShotDate = source.ShotDate;
         target.ImageMimeType = source.ImageMimeType;
@@ -7137,9 +7135,11 @@ public partial class DataService : ObservableObject, IDataService
         target.DiseaseId = source.DiseaseId;
         target.MiscellaneousId = source.MiscellaneousId;
     }
+
     // ---------------------------------------------------------                  
     // GetImageByIdAsync(int id)
-    // ---------------------------------------------------------                 
+    // ---------------------------------------------------------
+
     public async Task<Tbl81Image?> GetImageByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -7166,27 +7166,54 @@ public partial class DataService : ObservableObject, IDataService
     }
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl81Image entity)
-    // ---------------------------------------------------------                 
+    // ---------------------------------------------------------
     public async Task<bool> ImageExistsAsync(Tbl81Image entity)
     {
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl81Images.AnyAsync(x =>
-            x.SpeciesId == entity.SpeciesId &&
+        var candidates = await context.Tbl81Images
+            .Where(x =>
+                x.SpeciesId == entity.SpeciesId &&
+                x.ImageMimeType == entity.ImageMimeType &&
+                x.ImageId != entity.ImageId)
+            .ToListAsync();
+
+        return candidates.Any(x =>
             x.Valid == entity.Valid &&
             x.ValidYear == entity.ValidYear &&
-            x.Filestream == entity.Filestream &&
-            x.FilestreamId == entity.FilestreamId &&
             x.ShotDate == entity.ShotDate &&
-            x.ImageMimeType == entity.ImageMimeType &&
             x.Info == entity.Info &&
             x.Memo == entity.Memo &&
             x.FoodId == entity.FoodId &&
             x.DiseaseId == entity.DiseaseId &&
             x.MiscellaneousId == entity.MiscellaneousId &&
-            x.ImageId != entity.ImageId
+            ((x.Filestream == null && entity.Filestream == null) ||
+             (x.Filestream != null && entity.Filestream != null &&
+              x.Filestream.SequenceEqual(entity.Filestream)))
         );
     }
+
+
+    //public async Task<bool> ImageExistsAsync(Tbl81Image entity)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl81Images.AnyAsync(x =>
+    //        x.SpeciesId == entity.SpeciesId &&
+    //        x.Valid == entity.Valid &&
+    //        x.ValidYear == entity.ValidYear &&
+    //        x.Filestream == entity.Filestream &&
+    //        x.FilestreamId == entity.FilestreamId &&
+    //        x.ShotDate == entity.ShotDate &&
+    //        x.ImageMimeType == entity.ImageMimeType &&
+    //        x.Info == entity.Info &&
+    //        x.Memo == entity.Memo &&
+    //        x.FoodId == entity.FoodId &&
+    //        x.DiseaseId == entity.DiseaseId &&
+    //        x.MiscellaneousId == entity.MiscellaneousId &&
+    //        x.ImageId != entity.ImageId
+    //    );
+    //}
 
     // ---------------------------------------------------------                  
     // HasNameAsync(int imageId)

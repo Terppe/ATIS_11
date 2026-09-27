@@ -19,7 +19,7 @@
         <StackPanel Spacing="4">
 
             <!--  HEADER  -->
-            <Grid Margin="0,0,0,4"
+            <Grid Margin="0,0,8,4"
                   ColumnDefinitions="*,Auto">
 
                 <TextBlock Grid.Column="0"
@@ -72,6 +72,15 @@
                         </StackPanel>
                     </Button>
 
+                    <Button Click="SelectFileButton_Click"
+                            IsEnabled="{Binding Item, ElementName=Root, Converter={StaticResource NullToBoolConverter}}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE8B7;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_SelectFile" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
 
@@ -116,13 +125,14 @@
                                Text="{Binding Item.ValidYearError, ElementName=Root}"
                                Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
+
                 <!--  ImageMimeType  -->
                 <ComboBox x:Name="ImageMimeTypeCombo"
                           MinWidth="90"
                           VerticalAlignment="Center"
                           loc:Uids.Uid="ComboBox_ImageMimeType"
                           PlaceholderText="Select"
-                          SelectedValue="{Binding Item.ImageMimeType, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedItem="{Binding Item.ImageMimeType, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           SelectionChanged="ComboImageMimeType_OnSelectionChanged"
                           Style="{StaticResource AtisComboBox}">
                     <x:String>jpg</x:String>
@@ -145,15 +155,41 @@
                 </ComboBox>
 
                 <!--  ShotDate  -->
-                <TextBox loc:Uids.Uid="TextBox_ShotDate"
-                         Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.ShotDate, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Spacing="4">
+                    <TextBlock loc:Uids.Uid="TextBlock_ShotDate" />
+
+                    <Border x:Name="ShotDateBorder"
+                            MinHeight="32"
+                            Padding="0,0"
+                            Background="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource AtisTextBoxBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6">
+
+                        <DatePicker x:Name="DpShotDate"
+                                    Width="300"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
+                                    GotFocus="DpShotDate_OnGotFocus"
+                                    LostFocus="DpShotDate_OnLostFocus"
+                                    SelectedDate="{Binding Item.ShotDateOffset, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Border>
+                </StackPanel>
             </StackPanel>
 
-            <!--  SelectedPath  -->
-            <TextBox loc:Uids.Uid="TextBox_SelectedPath"
+            <!--  Info  -->
+            <TextBox loc:Uids.Uid="TextBox_Info"
                      Style="{StaticResource AtisTextBox}"
-                     Text="{Binding SelectedPath}" />
+                     Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <!--  Memo  -->
+            <TextBox MinWidth="200"
+                     MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Memo"
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!--  Image/Video Tab  -->
             <Grid RowDefinitions="Auto, Auto">
@@ -191,42 +227,29 @@
                       Grid.Row="1">
 
                     <Grid x:Name="ImageGrid">
-                        <Image Name="Image1"
+                        <Image Name="Image"
                                Margin="5"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Opacity="1"
                                RenderTransformOrigin="0.5,0.5"
-                               Source="{Binding Item.Filestream, ElementName=Root, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Source="{Binding Item.Filestream, ElementName=Root, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=OneWay}"
                                Stretch="Uniform" />
                     </Grid>
 
                     <Grid x:Name="VideoGrid"
                           Visibility="Collapsed">
                         <!--<Image Name="Video"
-                               Margin="5"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Opacity="1"
-                               RenderTransformOrigin="0.5,0.5"
-                               Source="{Binding Item.Filestream, ElementName=Root, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               Stretch="Uniform" />-->
+                        Margin="5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Opacity="1"
+                        RenderTransformOrigin="0.5,0.5"
+                        Source="{Binding Item.Filestream, ElementName=Root, Converter={StaticResource ResourceKey=ImageSourceConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Stretch="Uniform" />-->
                     </Grid>
                 </Grid>
             </Grid>
-
-            <!--  Info  -->
-            <TextBox loc:Uids.Uid="TextBox_Info"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-            <!--  Memo  -->
-            <TextBox MinWidth="200"
-                     MinHeight="75"
-                     MaxHeight="150"
-                     loc:Uids.Uid="TextBox_Memo"
-                     Style="{StaticResource AtisTextBoxWrap}"
-                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 

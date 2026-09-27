@@ -44,7 +44,7 @@
                            TextWrapping="WrapWholeWords" />
             </Grid>
 
-            <!-- Plain-Text-Variante (überlagert, standardmäßig aus) -->
+            <!--  Plain-Text-Variante (überlagert, standardmäßig aus)  -->
             <TextBlock x:Name="TbSubfamilyLine"
                        Margin="0"
                        Padding="0"
@@ -54,4 +54,4 @@
         </Grid>
 
     </Grid>
-</UserControl>     
+</UserControl>

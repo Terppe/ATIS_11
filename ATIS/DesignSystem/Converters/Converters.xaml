@@ -43,5 +43,6 @@
     <converters:IndexToBooleanConverter x:Key="IndexToBooleanConverter" />
     <converters:DoubleToStringConverter x:Key="DoubleToStringConverter" />
     <converters:ImageSourceConverter x:Key="ImageSourceConverter" />
+    <converters:DateConverter x:Key="DateConverter" />
 </ResourceDictionary>
 

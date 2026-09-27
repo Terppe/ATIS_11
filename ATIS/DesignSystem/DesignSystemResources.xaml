@@ -64,6 +64,10 @@
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButtonBrushes.xaml" />
         <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/ToggleButton/ToggleButtonStyles.xaml" />
 
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DatePicker/DatePicker.xaml" />-->
+        <!--<ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DatePicker/DatePickerBrushes.xaml" />-->
+        <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/DatePicker/DatePickerStyles.xaml" />
+
         <!--  4) Components  -->
         <ResourceDictionary Source="ms-appx:///DesignSystem/Components/AtisCard.xaml" />
 

@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="using:ATIS.Models" x:Name="PhylumBossControl"
+             xmlns:models="using:ATIS.Models"
+             x:Name="PhylumBossControl"
              mc:Ignorable="d">
 
     <!--  Tbl06PhylumBossControl Skriptdatum:  15.06.2024  12:32  -->

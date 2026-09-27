@@ -80,8 +80,33 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
         }
     }
 
-    public DateTime? ShotDate { get; set; }
+    private DateTime? _shotDate;
+    public DateTime? ShotDate
+    {
+        get => _shotDate;
+        set
+        {
+            if (SetProperty(ref _shotDate, value))
+            {
+                OnPropertyChanged(nameof(ShotDateOffset));
+            }
+        }
+    }
 
+    [NotMapped]
+    public DateTimeOffset? ShotDateOffset
+    {
+        get => ShotDate.HasValue ? new DateTimeOffset(ShotDate.Value) : null;
+        set
+        {
+            var newValue = value?.DateTime;
+            if (ShotDate != newValue)
+            {
+                ShotDate = newValue;
+                OnPropertyChanged();
+            }
+        }
+    }
     private string? _info;
     [StringLength(100)]
     public string? Info
@@ -117,11 +142,25 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     public byte[]? ImageData { get; set; }
 
     [StringLength(50)]
-    public string? ImageMimeType { get; set; }
-
-    public byte[]? Filestream { get; set; }
-    public Guid FilestreamId { get; set; }
-
+    private string? _imageMimeType;
+    [StringLength(50)]
+    public string? ImageMimeType
+    {
+        get => _imageMimeType;
+        set => SetProperty(ref _imageMimeType, value);
+    }
+    private byte[]? _filestream;
+    public byte[]? Filestream
+    {
+        get => _filestream;
+        set => SetProperty(ref _filestream, value);
+    }
+    private Guid _filestreamId;
+    public Guid FilestreamId
+    {
+        get => _filestreamId;
+        set => SetProperty(ref _filestreamId, value);
+    }
     // ---------------------------------------------------------
     // NAVIGATION
     // ---------------------------------------------------------

@@ -1198,4 +1198,5 @@ CheckSql_DbAsync, CheckDatabaseExistAsync, CheckForServer und     <add name="MyD
 26.09.2026 12:30 Uhr SynonymEditcontrol ok. Bei ImageEditcontrol bei DataService nicht klar mit Upsert   //      target.Filestream = LoadImageData(selectedpath);
 Genus-Geographic mit GenusFullname anzeige. Im dataservice  .Include(e => e.Species) .ThenInclude(s => s.Genus) eingefügt. Bis auf CountryList scon ganz gut.
 jetzt fehlt noch neu, save, delete
-
+----------------------------------------
+26.09.2026 18:30 Uhr ImgaeEditcontrol weiter Bild Image ok. AtisDatepickerStyle fehlt noch.

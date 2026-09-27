@@ -140,6 +140,9 @@
 	<Page Update="DesignSystem\Controls\ContentDialog\ContentDialogBrushes.xaml">
 		<SubType>Designer</SubType>
 	</Page>
+	<Page Update="DesignSystem\Controls\DatePicker\DatePickerStyles.xaml">
+	  <SubType>Designer</SubType>
+	</Page>
 	<Page Update="DesignSystem\Controls\Flyout\MenuFlyoutStyles.xaml">
 		<SubType>Designer</SubType>
 	</Page>
