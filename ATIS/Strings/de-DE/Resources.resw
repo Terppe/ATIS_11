@@ -2016,6 +2016,12 @@
   <data name="TextBlock_Data.Text" xml:space="preserve">
     <value>Daten</value>
   </data>
+  <data name="TextBlock_Dataload.Text" xml:space="preserve">
+    <value>Daten werden geladen...</value>
+  </data>
+  <data name="TextBlock_Mediaload.Text" xml:space="preserve">
+    <value>Medien werden geladen...</value>
+  </data>
   <data name="TextBlock_DataSetCount.Text" xml:space="preserve">
     <value>Datensätze</value>
   </data>
@@ -2879,6 +2885,9 @@
   </data>
   <data name="TextBlock_Video.Text" xml:space="preserve">
     <value>Video</value>
+  </data>
+  <data name="TextBlock_Video_Audio.Text" xml:space="preserve">
+    <value>Video - Audio</value>
   </data>
   <data name="TextBlock_ZoomLevel.Text" xml:space="preserve">
     <value>ZoomLevel</value>
@@ -4732,13 +4741,13 @@
     <value>Löschen nicht möglich.</value>
   </data>
   <data name="Error_MissingInfo_Title" xml:space="preserve">
-    <value>Info fehlt eintrag</value>
+    <value>Info</value>
   </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
-    <value>Info fehlt eintrag</value>
+    <value>Info fehlt</value>
   </data>
   <data name="Error_NoFile_Title" xml:space="preserve">
-    <value>Kein Filestream vorhanden</value>
+    <value>Filestream</value>
   </data>
   <data name="Error_NoFile_Message" xml:space="preserve">
     <value>Kein Filestream vorhanden</value>

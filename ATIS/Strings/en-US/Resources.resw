@@ -2016,6 +2016,12 @@
   <data name="TextBlock_Data.Text" xml:space="preserve">
     <value>Data</value>
   </data>
+  <data name="TextBlock_Dataload.Text" xml:space="preserve">
+    <value>Data loading...</value>
+  </data>
+  <data name="TextBlock_Mediaload.Text" xml:space="preserve">
+    <value>Media loading...</value>
+  </data>
   <data name="TextBlock_DataSetCount.Text" xml:space="preserve">
     <value>DataSets</value>
   </data>
@@ -2879,6 +2885,9 @@
   </data>
   <data name="TextBlock_Video.Text" xml:space="preserve">
     <value>Video</value>
+  </data>
+  <data name="TextBlock_Video_Audio.Text" xml:space="preserve">
+    <value>Video - Audio</value>
   </data>
   <data name="TextBlock_ZoomLevel.Text" xml:space="preserve">
     <value>ZoomLevel</value>
@@ -4732,13 +4741,13 @@
     <value>Not possible to delete.</value>
   </data>
   <data name="Error_MissingInfo_Title" xml:space="preserve">
-    <value>info missing</value>
+    <value>info</value>
   </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>info missing</value>
   </data>
   <data name="Error_NoFile_Title" xml:space="preserve">
-    <value>No filestrem exist</value>
+    <value>filestrem</value>
   </data>
   <data name="Error_NoFile_Message" xml:space="preserve">
     <value>No filestrem exist</value>

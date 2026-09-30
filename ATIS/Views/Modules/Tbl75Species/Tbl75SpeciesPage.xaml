@@ -8,10 +8,10 @@
       xmlns:tbl75Species="using:ATIS.Views.Modules.Tbl75Species"
       xmlns:tbl78Name="using:ATIS.Views.Modules.Tbl78Name"
       xmlns:tbl81Image="using:ATIS.Views.Modules.Tbl81Image"
-      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
-      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       xmlns:tbl84Synonym="using:ATIS.Views.Modules.Tbl84Synonym"
       xmlns:tbl87Geographic="using:ATIS.Views.Modules.Tbl87Geographic"
+      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
+      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
       x:Name="RootPage">
 
     <!--  Tbl75SpeciesPage Skriptdatum:  18.08.2026  10:32  -->
@@ -116,9 +116,10 @@
                                         Spacing="4">
 
                                 <Button x:Name="EditSpeciesTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="0" x:FieldModifier="public">
+                                        Tag="0">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Edit_Species" />
@@ -130,9 +131,10 @@
                                 </Button>
 
                                 <Button x:Name="CommentsSpeciesTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="1" x:FieldModifier="public">
+                                        Tag="1">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Comments" />
@@ -144,9 +146,10 @@
                                 </Button>
 
                                 <Button x:Name="ReferencesSpeciesTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="2" x:FieldModifier="public">
+                                        Tag="2">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_References" />
@@ -158,9 +161,10 @@
                                 </Button>
 
                                 <Button x:Name="NameTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="3" x:FieldModifier="public">
+                                        Tag="3">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Name" />
@@ -172,9 +176,10 @@
                                 </Button>
 
                                 <Button x:Name="ImageTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="4" x:FieldModifier="public">
+                                        Tag="4">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Images" />
@@ -186,9 +191,10 @@
                                 </Button>
 
                                 <Button x:Name="SynonymTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="5" x:FieldModifier="public">
+                                        Tag="5">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Synonyms" />
@@ -200,9 +206,10 @@
                                 </Button>
 
                                 <Button x:Name="GeographicTab"
+                                        x:FieldModifier="public"
                                         Click="DetailTabButton_Click"
                                         Style="{StaticResource TabButtonStyle}"
-                                        Tag="6" x:FieldModifier="public">
+                                        Tag="6">
                                     <StackPanel Spacing="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    loc:Uids.Uid="TextBlock_Geographics" />
@@ -258,16 +265,35 @@
                                                                 Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
 
-                            <Grid x:Name="ImageContent"
-                                  x:FieldModifier="public"
-                                  DataContext="{Binding ImageViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl81Image:Tbl81ImageParentControl x:Name="ImageParentControl"
-                                                                    Grid.Row="0" />
-                                <tbl81Image:Tbl81ImageEditControl Grid.Row="1"
-                                                                  Item="{Binding Item}"
-                                                                  Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Grid>
+                                <Grid x:Name="ImageContent"
+                                      x:FieldModifier="public"
+                                      DataContext="{Binding ImageViewModel}"
+                                      RowDefinitions="Auto,*">
+                                    <tbl81Image:Tbl81ImageParentControl x:Name="ImageParentControl"
+                                                                        Grid.Row="0" />
+                                    <tbl81Image:Tbl81ImageEditControl Grid.Row="1"
+                                                                      Item="{Binding Item}"
+                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </Grid>
+
+                                <Grid x:Name="ImageContentLoadingOverlay"
+                                      Background="#66000000"
+                                      IsHitTestVisible="True"
+                                      Visibility="{x:Bind ViewModel.ShowImageTabLoadingOverlay, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Spacing="12">
+                                        <ProgressRing Width="48"
+                                                      Height="48"
+                                                      IsActive="True" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   loc:Uids.Uid="TextBlock_Mediaload"
+                                                   Foreground="White" />
+                                    </StackPanel>
+                                </Grid>
                             </Grid>
+
 
                             <Grid x:Name="SynonymContent"
                                   x:FieldModifier="public"

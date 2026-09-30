@@ -1,44 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+
 <UserControl x:Class="ATIS.DesignSystem.Components.LoadingOverlayControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="using:ATIS.DesignSystem.Converters"
+             xmlns:loc="using:WinUI3Localizer"
              x:Name="OverlayRoot">
-
-    <UserControl.Resources>
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
 
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch"
           Background="#80000000"
           Visibility="{Binding IsLoading, ElementName=OverlayRoot, Converter={StaticResource BooleanToVisibilityConverter}}">
-        <ProgressRing Width="60"
-                      Height="60"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      IsActive="{Binding IsLoading, ElementName=OverlayRoot}" />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="12">
+            <ProgressRing Width="60"
+                          Height="60"
+                          IsActive="{Binding IsLoading, ElementName=OverlayRoot}" />
+            <TextBlock HorizontalAlignment="Center"
+                       loc:Uids.Uid="TextBlock_Dataload"
+                       Foreground="White" />
+        </StackPanel>
     </Grid>
-    <!--<Grid HorizontalAlignment="Stretch"
-    VerticalAlignment="Stretch"
-    Background="#80000000"
-    Visibility="{Binding IsLoading, ElementName=OverlayRoot, Converter={StaticResource BooleanToVisibilityConverter}}">
-    <ProgressRing Width="60"
-    Height="60"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center"
-    IsActive="{Binding IsLoading, ElementName=OverlayRoot}" />
-    </Grid>-->
-    <!--<Grid
-    Background="#80000000"
-    HorizontalAlignment="Stretch"
-    VerticalAlignment="Stretch"
-    Visibility="{Binding IsLoading, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource BooleanToVisibilityConverter}}">
-    <ProgressRing Width="60"
-    Height="60"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center"
-    IsActive="{Binding IsLoading, RelativeSource={RelativeSource Mode=Self}}"/>
-    </Grid>-->
-    <!--  Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"  -->
 </UserControl>
+
+<!--<UserControl x:Class="ATIS.DesignSystem.Components.LoadingOverlayControl"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+x:Name="OverlayRoot">
+
+<Grid HorizontalAlignment="Stretch"
+VerticalAlignment="Stretch"
+Background="#80000000"
+Visibility="{x:Bind IsOverlayVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+<StackPanel HorizontalAlignment="Center"
+VerticalAlignment="Center"
+Spacing="12">
+
+<ProgressRing Width="60"
+Height="60"
+IsActive="{x:Bind IsOverlayVisible, Mode=OneWay}" />
+
+<TextBlock Text="Daten werden geladen..."
+HorizontalAlignment="Center"
+Foreground="White"
+FontSize="16"
+FontWeight="SemiBold" />
+</StackPanel>
+</Grid>
+</UserControl>-->
+
+<!--<UserControl x:Class="ATIS.DesignSystem.Components.LoadingOverlayControl"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+x:Name="OverlayRoot">
+
+<Grid HorizontalAlignment="Stretch"
+VerticalAlignment="Stretch"
+Background="#80000000"
+Visibility="{Binding IsLoading, ElementName=OverlayRoot, Converter={StaticResource BooleanToVisibilityConverter}}">
+<ProgressRing Width="60"
+Height="60"
+HorizontalAlignment="Center"
+VerticalAlignment="Center"
+IsActive="{Binding IsLoading, ElementName=OverlayRoot}" />
+</Grid>
+</UserControl>-->

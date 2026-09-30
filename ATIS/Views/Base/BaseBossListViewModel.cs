@@ -40,12 +40,16 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         // EINHEITLICHE COMMANDS
         NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(NewItem, () => IsBossMode);
         EditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(EditItem, () => SelectedItem != null);
-        SaveCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await SaveAsync(), () => SelectedItem != null);
-        DeleteCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await DeleteAsync(), () => SelectedItem != null);
+        SaveCommand =
+            new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await SaveAsync(), () => SelectedItem != null);
+        DeleteCommand =
+            new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await DeleteAsync(), () => SelectedItem != null);
         CancelCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(CancelEdit);
         CloseEditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() => SelectedItem = null);
 
-        RefreshCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync(), () => IsBossMode && IsRefreshEnabled);
+        RefreshCommand =
+            new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync(),
+                () => IsBossMode && IsRefreshEnabled);
     }
 
     // ---------------------------------------------------------
@@ -105,6 +109,10 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     }
 
     private void EditItem() { }
+    private void CancelEdit()
+    {
+        SelectedItem = null;
+    }
 
     // ---------------------------------------------------------
     // SCROLL REQUESTED EVENT
@@ -129,28 +137,21 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         if (!await ValidateBeforeSaveAsync(SelectedItem))
             return;
 
-        var saved = await SaveItemAsync(SelectedItem);
-        if (saved != null)
+        await RunWithLoadingAsync(async () =>
         {
-            await OnBeforeReloadAfterSaveAsync(saved);
+            var saved = await SaveItemAsync(SelectedItem);
+            if (saved != null)
+            {
+                await OnBeforeReloadAfterSaveAsync(saved);
 
-            // ID merken
-            var id = GetId(saved);
+                var id = GetId(saved);
 
-            // Liste neu laden
-            await ReloadAsync();
+                await ReloadCoreAsync();
 
-            // Fokus wiederherstellen (Boss + Parent)
-            SelectedItem = Items?.FirstOrDefault(i => GetId(i) == id);
-
-            // KEIN ScrollRequested hier!
-            // KEIN SelectedItem = null hier!
-            // KEIN SearchText setzen!
-        }
-
-        UpdateRefreshState();
+                SelectedItem = Items?.FirstOrDefault(i => GetId(i) == id);
+            }
+        });
     }
-
     protected virtual Task OnBeforeReloadAfterSaveAsync(TModel item)
         => Task.CompletedTask;
 
@@ -165,24 +166,27 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         if (!await ConfirmDeleteAsync(SelectedItem))
             return;
 
-        if (await DeleteItemAsync(SelectedItem))
+        await RunWithLoadingAsync(async () =>
         {
-            await ReloadAsync();
+            if (await DeleteItemAsync(SelectedItem))
+            {
+                await ReloadCoreAsync();
 
-            SelectedItem = null;
+                SelectedItem = null;
 
-            // WICHTIG: ListView optisch nach oben scrollen
-            if (this is BaseBossListViewModel<TModel> boss)
-                boss.OnScrollRequested();
-        }
-
-        UpdateRefreshState();
+                if (this is BaseBossListViewModel<TModel> boss)
+                    boss.OnScrollRequested();
+            }
+        });
     }
 
-
-    private void CancelEdit()
+    // ---------------------------------------------------------
+    // REFRESH STATE
+    // ---------------------------------------------------------
+    protected void UpdateRefreshState()
     {
-        SelectedItem = null;
+        IsRefreshEnabled = Items?.Any() == true;
+        RefreshCommand.NotifyCanExecuteChanged();
     }
 
     // ---------------------------------------------------------
@@ -190,6 +194,7 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     // ---------------------------------------------------------
 
     private string? _searchText;
+
     public string? SearchText
     {
         get => _searchText;
@@ -201,6 +206,7 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     // ---------------------------------------------------------
 
     private bool _isRefreshEnabled;
+
     public bool IsRefreshEnabled
     {
         get => _isRefreshEnabled;
@@ -208,6 +214,7 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     }
 
     private bool _isInParentMode;
+
     public bool IsInParentMode
     {
         get => _isInParentMode;
@@ -221,15 +228,6 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         }
     }
 
-    // ---------------------------------------------------------
-    // REFRESH STATE
-    // ---------------------------------------------------------
-
-    protected void UpdateRefreshState()
-    {
-        IsRefreshEnabled = Items?.Any() == true;
-        RefreshCommand.NotifyCanExecuteChanged();
-    }
 
     // ---------------------------------------------------------
     // RELOAD (Boss + Parent)
@@ -237,43 +235,171 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
 
     public override async Task ReloadAsync()
     {
-        IsLoading = true;
+        await RunWithLoadingAsync(ReloadCoreAsync);
+    }
 
-        try
+    protected virtual async Task ReloadCoreAsync()
+    {
+        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
+
+        var items = await LoadItemsAsync();
+
+        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
+            items = items.Where(FilterBySearchText);
+
+        Items = new ObservableCollection<TModel>(items);
+
+        UpdateRefreshState();
+
+        if (IsBossMode)
         {
-            var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
-
-            var items = await LoadItemsAsync();
-
-            // ⭐ Filter nur im Boss-Modus
-            if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
-                items = items.Where(FilterBySearchText);
-
-            Items = new ObservableCollection<TModel>(items);
-
-            UpdateRefreshState();
-
-            if (IsBossMode)
+            if (Items.Any())
             {
-                if (Items.Any())
-                {
-                    // ⭐ Immer alten Datensatz wiederherstellen
-                    SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
-                                   ?? (string.IsNullOrWhiteSpace(SearchText)
-                                       ? Items.FirstOrDefault()
-                                       : null);
-                }
-                else
-                {
-                    SelectedItem = null;
-                }
+                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
+                               ?? (string.IsNullOrWhiteSpace(SearchText)
+                                   ? Items.FirstOrDefault()
+                                   : null);
+            }
+            else
+            {
+                SelectedItem = null;
             }
         }
-        finally
-        {
-            IsLoading = false;
-        }
     }
+    //private static async Task EnsureMinimumLoadingTimeAsync(DateTime startedUtc, int minimumMilliseconds = 250)
+    //{
+    //    var elapsed = DateTime.UtcNow - startedUtc;
+    //    var minimum = TimeSpan.FromMilliseconds(minimumMilliseconds);
+
+    //    if (elapsed < minimum)
+    //        await Task.Delay(minimum - elapsed);
+    //}
+
+    //public override async Task ReloadAsync()
+    //{
+    //    var started = DateTime.UtcNow;
+    //    IsLoading = true;
+
+    //    try
+    //    {
+    //        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
+
+    //        var items = await LoadItemsAsync();
+
+    //        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
+    //            items = items.Where(FilterBySearchText);
+
+    //        Items = new ObservableCollection<TModel>(items);
+
+    //        UpdateRefreshState();
+
+    //        if (IsBossMode)
+    //        {
+    //            if (Items.Any())
+    //            {
+    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
+    //                               ?? (string.IsNullOrWhiteSpace(SearchText)
+    //                                   ? Items.FirstOrDefault()
+    //                                   : null);
+    //            }
+    //            else
+    //            {
+    //                SelectedItem = null;
+    //            }
+    //        }
+    //    }
+    //    finally
+    //    {
+    //        await EnsureMinimumLoadingTimeAsync(started);
+    //        IsLoading = false;
+    //    }
+    //}    //{
+    //    var started = DateTime.UtcNow;
+    //    IsLoading = true;
+
+    //    try
+    //    {
+    //        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
+
+    //        var items = await LoadItemsAsync();
+
+    //        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
+    //            items = items.Where(FilterBySearchText);
+
+    //        Items = new ObservableCollection<TModel>(items);
+
+    //        UpdateRefreshState();
+
+    //        if (IsBossMode)
+    //        {
+    //            if (Items.Any())
+    //            {
+    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
+    //                               ?? (string.IsNullOrWhiteSpace(SearchText)
+    //                                   ? Items.FirstOrDefault()
+    //                                   : null);
+    //            }
+    //            else
+    //            {
+    //                SelectedItem = null;
+    //            }
+    //        }
+    //    }
+    //    finally
+    //    {
+    //        var minDuration = TimeSpan.FromMilliseconds(250);
+    //        var elapsed = DateTime.UtcNow - started;
+
+    //        if (elapsed < minDuration)
+    //            await Task.Delay(minDuration - elapsed);
+
+    //        IsLoading = false;
+    //    }
+    //}
+
+    //public override async Task ReloadAsync()
+    //{
+    //    System.Diagnostics.Debug.WriteLine($"[VM] ReloadAsync START {GetType().Name} Hash={GetHashCode()}");
+    //    IsLoading = true;
+    //    System.Diagnostics.Debug.WriteLine($"[VM] PropertyChanged: IsLoading = {IsLoading}");
+
+    //    try
+    //    {
+    //        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
+
+    //        var items = await LoadItemsAsync();
+
+    //        // ⭐ Filter nur im Boss-Modus
+    //        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
+    //            items = items.Where(FilterBySearchText);
+
+    //        Items = new ObservableCollection<TModel>(items);
+
+    //        UpdateRefreshState();
+
+    //        if (IsBossMode)
+    //        {
+    //            if (Items.Any())
+    //            {
+    //                // ⭐ Immer alten Datensatz wiederherstellen
+    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
+    //                               ?? (string.IsNullOrWhiteSpace(SearchText)
+    //                                   ? Items.FirstOrDefault()
+    //                                   : null);
+    //            }
+    //            else
+    //            {
+    //                SelectedItem = null;
+    //            }
+    //        }
+    //    }
+    //    finally
+    //    {
+    //        IsLoading = false;
+    //        System.Diagnostics.Debug.WriteLine($"[VM] PropertyChanged: IsLoading = {IsLoading}");
+    //        System.Diagnostics.Debug.WriteLine($"[VM] ReloadAsync END {GetType().Name} Hash={GetHashCode()}");
+    //    }
+    //}
 
 
     // ---------------------------------------------------------
@@ -301,12 +427,13 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     protected void UpdateHeader(string key, string header)
     {
         var value = string.IsNullOrWhiteSpace(header) ? key : header;
-        _headerDefaults[key] = value;  // lokalisierter Basistext
-        _headerTexts[key] = value;     // aktueller sichtbarer Text
+        _headerDefaults[key] = value; // lokalisierter Basistext
+        _headerTexts[key] = value; // aktueller sichtbarer Text
         OnPropertyChanged($"{key}HeaderText");
     }
 
     protected abstract object? GetSortKey(TModel item, string column);
+
     protected void SortBy(string column)
     {
         if (Items is null || Items.Count == 0) return;
@@ -344,328 +471,4 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
 
 
 
-    //// ---------------------------------------------------------
-    //// Sorting
-    //// ---------------------------------------------------------
-    //private string _currentSortColumn = "";
-    //private bool _sortAscending = true;
-
-
-    //protected void SortBy(string column)
-    //{
-    //    if (Items == null || Items.Count == 0)
-    //        return;
-
-    //    if (_currentSortColumn == column)
-    //        _sortAscending = !_sortAscending;
-    //    else
-    //    {
-    //        _currentSortColumn = column;
-    //        _sortAscending = true;
-    //    }
-
-    //    var sorted = _sortAscending
-    //        ? Items.OrderBy(x => GetSortKey(x, column))
-    //        : Items.OrderByDescending(x => GetSortKey(x, column));
-
-    //    Items = new ObservableCollection<TModel>(sorted);
-
-    //    UpdateHeaderTexts();
-    //}
-    //protected void UpdateHeaderTexts()
-    //{
-    //    // Reset to defaults
-    //    foreach (var kvp in _headerDefaults)
-    //        _headerTexts[kvp.Key] = kvp.Value;
-
-    //    // Add arrow to sorted column
-    //    if (!string.IsNullOrEmpty(_currentSortColumn))
-    //    {
-    //        var arrow = _sortAscending ? " ▲" : " ▼";
-    //        _headerTexts[_currentSortColumn] = _headerDefaults[_currentSortColumn] + arrow;
-    //    }
-
-    //    // Notify UI
-    //    foreach (var key in _headerDefaults.Keys)
-    //        OnPropertyChanged($"{key}HeaderText");
-    //}
-
-    //protected abstract object GetSortKey(TModel item, string column);
-
-    //// ---------------------------------------------------------    
-    //// Header
-    //// ---------------------------------------------------------
-    //private readonly Dictionary<string, string> _headerDefaults = new();
-    //public readonly Dictionary<string, string> _headerTexts = new();
-
-    //protected void RegisterHeader(string key, string header)
-    //{
-    //    _headerDefaults[key] = header;  // <-- wichtig
-    //    _headerTexts[key] = header;
-    //    OnPropertyChanged($"{key}HeaderText");
-    //}
-    //protected void UpdateHeader(string key, string header)
-    //{
-    //    _headerTexts[key] = header;     // Basistext + Sortpfeil
-    //    _headerDefaults[key] = header;  // wichtig lokalisierter Basistext
-    //    OnPropertyChanged($"{key}HeaderText");
-    //}
-    //public string IdHeaderText =>
-    //    _headerTexts.TryGetValue("Id", out var v) ? v : "";
-
-    //public string NameHeaderText =>
-    //    _headerTexts.TryGetValue("Name", out var v) ? v : "";
-
-
 }
-
-
-
-//public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
-//    where TModel : class
-//{
-//    protected readonly HierarchyCoordinator Coordinator;
-//    protected readonly IDataService Data;
-//    protected readonly IDialogService Dialog;
-
-//    protected BaseBossListViewModel(
-//        IDataService data,
-//        IDialogService dialog,
-//        HierarchyCoordinator coordinator)
-//        : base(data, dialog)
-//    {
-//        Data = data;
-//        Dialog = dialog;
-//        Coordinator = coordinator;
-
-//        // EINHEITLICHE COMMANDS
-//        NewCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(NewItem, () => !IsInParentMode);
-//        EditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(EditItem, () => SelectedItem != null);
-//        SaveCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await SaveAsync(), () => SelectedItem != null);
-//        DeleteCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await DeleteAsync(), () => SelectedItem != null);
-//        CancelCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(CancelEdit);
-//        CloseEditCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(() =>  SelectedItem = null );
-//        //RefreshCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync(), () => !IsInParentMode && IsRefreshEnabled);
-//        RefreshCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(
-//            async () => await ReloadAsync()
-//        );
-//    }
-
-//    // ---------------------------------------------------------
-//    // Commands (NICHT in Child-VM überschreiben!)
-//    // ---------------------------------------------------------
-//    public IRelayCommand NewCommand { get; }
-//    public IRelayCommand EditCommand { get; }
-//    public IRelayCommand SaveCommand { get; }
-//    public IRelayCommand DeleteCommand { get; }
-//    public IRelayCommand CancelCommand { get; }
-//    public IRelayCommand RefreshCommand { get; }
-//    public IRelayCommand CloseEditCommand { get; }
-//    public IRelayCommand BackCommand { get; }
-
-//    protected virtual bool CanSave() => true;
-//    protected virtual bool CanDelete() => true;
-//    public bool IsBossMode { get; private set; }
-//    public bool IsParentMode => !IsBossMode;
-
-//    // ---------------------------------------------------------
-//    // CRUD Hooks (MÜSSEN in Child-VM überschrieben werden)
-//    // ---------------------------------------------------------
-//    protected abstract override Task NewAsync();
-//    protected abstract TModel CreateNewItem();
-//    protected abstract override Task<IEnumerable<TModel>> LoadItemsAsync();
-//    protected abstract Task<TModel?> SaveItemAsync(TModel item);
-//    protected abstract Task<bool> DeleteItemAsync(TModel item);
-//    protected abstract Task<bool> ConfirmSaveAsync(TModel item);
-//    protected abstract Task<bool> ConfirmDeleteAsync(TModel item);
-//    protected virtual Task<bool> ValidateBeforeSaveAsync(TModel item)
-//        => Task.FromResult(true);
-
-//    // ---------------------------------------------------------
-//    // Parent / Children
-//    // ---------------------------------------------------------
-//    public virtual Task LoadParentAsync(int parentId) => Task.CompletedTask;
-//    protected abstract Task LoadChildrenAsync(int entityId);
-//    protected virtual Task ClearChildCollectionsAsync() => Task.CompletedTask;
-
-//    // ---------------------------------------------------------
-//    // Pivots Parents
-//    // ---------------------------------------------------------
-
-//    public bool HasParentSelection => SelectedItem != null;
-
-//    // ---------------------------------------------------------
-//    // CRUD Pipeline (NICHT überschreiben!)
-//    // ---------------------------------------------------------
-//    public virtual Task OnSelectedItemChangedBossAsync()
-//    {
-//        SaveCommand.NotifyCanExecuteChanged();
-//        DeleteCommand.NotifyCanExecuteChanged();
-//        EditCommand.NotifyCanExecuteChanged();
-
-//        return Task.CompletedTask;
-//    }
-
-//    private void NewItem()
-//    {
-//        SelectedItem = CreateNewItem();
-//    }
-
-//    private void EditItem() { }
-
-//    private async Task SaveAsync()
-//    {
-//        if (SelectedItem == null)
-//            return;
-
-//        if (!await ConfirmSaveAsync(SelectedItem))
-//            return;
-
-//        if (!await ValidateBeforeSaveAsync(SelectedItem))
-//            return;
-
-//        var saved = await SaveItemAsync(SelectedItem);
-//        if (saved != null)
-//        {
-//            await OnBeforeReloadAfterSaveAsync(saved);
-
-//            var id = GetId(saved);
-//            await ReloadAndSelectAsync(id, GetId);
-//            await LoadChildrenAsync(id);
-//        }
-//        UpdateRefreshState();
-//    }
-
-//    protected virtual Task OnBeforeReloadAfterSaveAsync(TModel item)
-//        => Task.CompletedTask;
-
-//    private async Task DeleteAsync()
-//    {
-//        if (SelectedItem == null)
-//            return;
-
-//        if (!await ConfirmDeleteAsync(SelectedItem))
-//            return;
-
-//        if (await DeleteItemAsync(SelectedItem))
-//        {
-//            await ReloadAsync();
-//            await ClearChildCollectionsAsync();
-
-//            SelectedItem = Items?.FirstOrDefault();
-//        }
-//        UpdateRefreshState();
-//    }
-
-//    private void CancelEdit()
-//    {
-//        SelectedItem = null;
-//    }
-
-
-//    // ---------------------------------------------------------
-//    // SEARCH
-//    // ---------------------------------------------------------
-//    private string? _searchText;
-//    public string? SearchText
-//    {
-//        get => _searchText;
-//        set => SetProperty(ref _searchText, value);
-//    }
-
-//    // ---------------------------------------------------------
-//    // UI STATE
-//    // ---------------------------------------------------------
-
-//    private bool _isRefreshEnabled;
-//    public bool IsRefreshEnabled
-//    {
-//        get => _isRefreshEnabled;
-//        set => SetProperty(ref _isRefreshEnabled, value);
-//    }
-
-//    private bool _isInParentMode;
-//    public bool IsInParentMode
-//    {
-//        get => _isInParentMode;
-//        set
-//        {
-//            if (SetProperty(ref _isInParentMode, value))
-//            {
-//                // Buttons aktualisieren
-//                NewCommand.NotifyCanExecuteChanged();
-//                RefreshCommand.NotifyCanExecuteChanged();
-//            }
-//        }
-//    }
-
-//    // ---------------------------------------------------------
-//    // REFRESH STATE
-//    // ---------------------------------------------------------
-
-//    protected void UpdateRefreshState()
-//    {
-//        IsRefreshEnabled = Items?.Any() == true;
-//        RefreshCommand.NotifyCanExecuteChanged();
-//    }
-
-//    // ---------------------------------------------------------
-//    // RELOAD
-//    // ---------------------------------------------------------
-//    public virtual  async Task ReloadAsync()
-//    {
-//        IsLoading = true;
-//        try
-//        {
-//            var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
-
-//            var items = await LoadItemsAsync();
-
-//            // ⭐ Nur im Boss-Modus filtern
-//            if (!IsInParentMode && !string.IsNullOrWhiteSpace(SearchText))
-//                items = items.Where(FilterBySearchText);
-
-//            Items = new ObservableCollection<TModel>(items);
-
-//            UpdateRefreshState();
-
-//            if (Items.Any())
-//            {
-//                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
-//                             ?? Items.First();
-//            }
-//            else
-//            {
-//                SelectedItem = null;
-//            }
-//        }
-//        finally
-//        {
-//            IsLoading = false;
-//        }
-//    }
-
-//    // ---------------------------------------------------------
-//    // Reload + Select
-//    // ---------------------------------------------------------
-//    public async Task ReloadAndSelectAsync(int id, Func<TModel, int> idSelector)
-//    {
-//        var list = (await LoadItemsAsync()).ToList();
-//        Items = new ObservableCollection<TModel>(list);
-
-//        SelectedItem = default;
-
-//        if (id > 0)
-//            SelectedItem = Items.FirstOrDefault(x => idSelector(x) == id);
-//        else
-//            SelectedItem = Items.FirstOrDefault();
-
-//        OnPropertyChanged(nameof(SelectedItem));
-//        UpdateRefreshState(); // ⭐ hier ergänzen
-//    }
-
-//    // ---------------------------------------------------------
-//    // ID
-//    // ---------------------------------------------------------
-//    protected abstract int GetId(TModel item);
-//}

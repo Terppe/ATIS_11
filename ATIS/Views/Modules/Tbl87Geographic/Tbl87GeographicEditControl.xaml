@@ -113,7 +113,7 @@
                 </ComboBox>
 
                 <!--  Country Combo  -->
-                <StackPanel MinWidth="150"
+                <!--<StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
                     <TextBlock Visibility="Collapsed" />
@@ -127,7 +127,7 @@
                               SelectedValue="{Binding Item.Country, ElementName=Root, Mode=TwoWay}"
                               SelectedValuePath="CountryId"
                               Style="{StaticResource AtisComboBox}" />
-                </StackPanel>
+                </StackPanel>-->
 
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"

@@ -18,6 +18,8 @@
     <!--  Tbl66GenusPage Skriptdatum:  18.08.2026  10:32  -->
 
     <Grid x:Name="RootGrid">
+
+        <TextBlock Text="{Binding IsLoading}" />
         <ScrollViewer VerticalScrollBarVisibility="Visible">
 
             <layout:BaseBossPageLayout>

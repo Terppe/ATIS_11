@@ -37,21 +37,27 @@
                                     </VisualState.Setters>
                                 </VisualState>
 
-                                --><!--<VisualState x:Name="Invalid">
+        -->
+        <!--<VisualState x:Name="Invalid">
                                 <VisualState.Setters>
                                 <Setter Target="BorderElement.BorderBrush" Value="Red" />
                                 <Setter Target="BorderElement.BorderThickness" Value="2" />
                                 </VisualState.Setters>
-                                </VisualState>--><!--
+                                </VisualState>-->
+        <!--
 
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        --><!--  HEADER  --><!--
+        -->
+        <!--  HEADER  -->
+        <!--
                         <TextBlock x:Name="HeaderElement"
                                    Grid.Row="0"
                                    Margin="0,0,0,4"
                                    Text="{TemplateBinding Header}" />
-                        --><!--  TEXTBOX  --><!--
+        -->
+        <!--  TEXTBOX  -->
+        <!--
                         <Border x:Name="BorderElement"
                                 Grid.Row="1"
                                 MinHeight="30"

@@ -11,18 +11,6 @@ public sealed partial class Tbl93CommentParentControl : UserControl
     public Tbl93CommentParentControl()
     {
         InitializeComponent();
-        Loaded += (_, __) =>
-        {
-            Debug.WriteLine("ParentControl DC = " + DataContext);
-        };
-    }
-
-    private void CommentListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        if (ViewModel == null)
-            return;
-
-        ViewModel.SelectedItem = (Models.Tbl93Comment)e.ClickedItem;
     }
 
     private void CommentListView_RightTapped(object sender, RightTappedRoutedEventArgs e)

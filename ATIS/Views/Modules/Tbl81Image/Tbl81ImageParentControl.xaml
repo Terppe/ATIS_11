@@ -94,6 +94,8 @@
             <TextBlock Grid.Column="6"
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
+            <!--  Hier noch ImageMimeType einfügen  -->
+
         </Grid>
 
         <!--  LIST  -->
@@ -176,6 +178,8 @@
                         <!--<TextBlock Grid.Column="6"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind AuthorYear}" />-->
+
+                        <!--  Hier noch ImageMimeType einfügen  -->
 
                     </Grid>
                 </DataTemplate>

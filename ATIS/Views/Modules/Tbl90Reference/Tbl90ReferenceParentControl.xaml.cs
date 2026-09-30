@@ -11,17 +11,6 @@ public sealed partial class Tbl90ReferenceParentControl : UserControl
     public Tbl90ReferenceParentControl()
     {
         InitializeComponent();
-        Debug.WriteLine("ParentControl DC = " + DataContext);
-    }
-
-    private void ReferenceListView_ItemClick(object sender, ItemClickEventArgs e)
-    {
-        if (ViewModel == null)
-            return;
-
-        // SelectedItem ist durch TwoWay Binding meist schon gesetzt
-        ViewModel.SelectedItem = (Models.Tbl90Reference)e.ClickedItem;
-       // ViewModel.OpenEditCommand.Execute(null);
     }
 
     private void ReferenceListView_RightTapped(object sender, RightTappedRoutedEventArgs e)

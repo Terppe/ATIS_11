@@ -18,6 +18,8 @@ public sealed partial class Tbl81ImageParentControl : UserControl
 
         Loaded += (_, __) =>
         {
+            System.Diagnostics.Debug.WriteLine($"[ImageParent] Loaded DC type = {DataContext?.GetType().FullName}");
+
             if (DataContext is Tbl81ImageViewModel vm)
             {
                 System.Diagnostics.Debug.WriteLine(
@@ -97,7 +99,6 @@ public sealed partial class Tbl81ImageParentControl : UserControl
             vm.SelectedItem = (Models.Tbl81Image)e.ClickedItem;
         }
     }
-
 
 
 }

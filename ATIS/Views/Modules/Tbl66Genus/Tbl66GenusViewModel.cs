@@ -84,7 +84,6 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         App.LanguageChanged += _langHandler;
 
         ApplyHeaders();
-
     }
 
     // ---------------------------------------------------------                  

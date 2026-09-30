@@ -34,7 +34,10 @@ public sealed partial class Tbl75SpeciesPage : Page
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
 
-        Vm.NameViewModel.PropertyChanged += NameViewModel_PropertyChanged;
+        Vm.NameViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        Vm.ImageViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        Vm.SynonymViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        Vm.GeographicViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         _tabs.UpdateNameTabs(Vm.NameViewModel.SelectedItem != null);
         _tabs.PrepareCurrentTabState();
@@ -52,12 +55,13 @@ public sealed partial class Tbl75SpeciesPage : Page
     // ---------------------------------------------------------
     private void DetailTabButton_Click(object sender, RoutedEventArgs e)
     {
+        System.Diagnostics.Debug.WriteLine($"[UI] Vm.ImageViewModel Hash = {Vm.ImageViewModel?.GetHashCode()}");
+        System.Diagnostics.Debug.WriteLine($"[UI] ImageContent.DataContext Hash = {ImageContent.DataContext?.GetHashCode()}");
         if (sender is Button button &&
             button.Tag is string tagText &&
             int.TryParse(tagText, out int index))
         {
             Vm.SelectedDetailTabIndex = index;
-
             _tabs.HandleTabClick(sender);
         }
     }
@@ -75,8 +79,7 @@ public sealed partial class Tbl75SpeciesPage : Page
     // ---------------------------------------------------------
 
 
-
-    private void NameViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Tbl78NameViewModel.SelectedItem))
         {
@@ -114,8 +117,12 @@ public sealed partial class Tbl75SpeciesPage : Page
     {
         if (DataContext is Tbl75SpeciesViewModel vm)
         {
-            vm.NameViewModel.PropertyChanged -= NameViewModel_PropertyChanged;
-        }   
+            vm.NameViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            vm.ImageViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            vm.SynonymViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+            vm.GeographicViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+        }
+
         base.OnNavigatedFrom(e);
     }
 }

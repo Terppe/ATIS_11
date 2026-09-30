@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -13,7 +14,6 @@ using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
-
 
 //    Tbl75SpeciesViewModel Skriptdatum:  18.08.2026  10:32    
 
@@ -112,6 +112,19 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         App.LanguageChanged += _langHandler;
 
         ApplyHeaders();
+
+        ImageViewModel.PropertyChanged += ImageViewModel_PropertyChanged;
+    }
+
+    // ---------------------------------------------------------                  
+    // ImageViewModel_PropertyChanged
+    // ---------------------------------------------------------    
+    private void ImageViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Tbl81ImageViewModel.ShowBusyOverlay))
+        {
+            OnPropertyChanged(nameof(ShowImageTabLoadingOverlay));
+        }
     }
 
     // ---------------------------------------------------------                  
@@ -146,10 +159,32 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
             if (SetProperty(ref _selectedDetailTabIndex, value))
             {
                 UpdateButtonStates();
+                OnPropertyChanged(nameof(ShowImageTabLoadingOverlay));
+                _ = HandleSelectedTabChangedAsync(value);
             }
         }
     }
 
+    private int _loadedImageSpeciesId;
+    private async Task HandleSelectedTabChangedAsync(int tabIndex)
+    {
+        if (SelectedItem == null)
+            return;
+
+        if (tabIndex == 4)
+        {
+            var speciesId = GetId(SelectedItem);
+
+            if (_loadedImageSpeciesId != speciesId)
+            {
+                await ImageViewModel.LoadSpeciesLookupAsync();
+                await ImageViewModel.LoadForSpeciesAsync(speciesId);
+                ImageViewModel.IsInParentMode = true;
+
+                _loadedImageSpeciesId = speciesId;
+            }
+        }
+    }
     private void UpdateButtonStates()
     {
         // Tab 0 = Boss-Modus
@@ -157,11 +192,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         if (SelectedDetailTabIndex == 2)
             _ = SpeciesReferenceViewModel.LoadReferenceLookupsAsync();
-        if (SelectedDetailTabIndex == 3)
-            //           _ = NameViewModel.LoadNameLookupsAsync();
-
-            if (SelectedDetailTabIndex == 5)
- //           _ = NameViewModel.NameReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
         NewCommand.NotifyCanExecuteChanged();
@@ -242,6 +272,13 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
     }
 
     // ---------------------------------------------------------
+    // Image_Video Loading Overlay
+    // ---------------------------------------------------------
+
+    public bool ShowImageTabLoadingOverlay =>
+        SelectedDetailTabIndex == 4 && ImageViewModel?.ShowBusyOverlay == true;
+
+    // ---------------------------------------------------------
     // SELECTED ITEM
     // ---------------------------------------------------------
     protected override async Task OnSelectedItemChangedAsync()
@@ -252,8 +289,11 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
             OnPropertyChanged(nameof(IsDetailVisible));
             await ClearChildCollectionsAsync();
             SelectedDetailTabIndex = 0;
+            _loadedImageSpeciesId = 0;
             return;
         }
+
+        _loadedImageSpeciesId = 0;
 
         // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
         if (IsInParentMode)
@@ -279,9 +319,10 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         await NameViewModel.LoadForSpeciesAsync(entityId);
         NameViewModel.IsInParentMode = true;
 
-        await ImageViewModel.LoadSpeciesLookupAsync();
-        await ImageViewModel.LoadForSpeciesAsync(entityId);
-        ImageViewModel.IsInParentMode = true;
+        //seperate loading 
+        //await ImageViewModel.LoadSpeciesLookupAsync();
+        //await ImageViewModel.LoadForSpeciesAsync(entityId);
+        //ImageViewModel.IsInParentMode = true;
 
         await SynonymViewModel.LoadSpeciesLookupAsync();
         await SynonymViewModel.LoadForSpeciesAsync(entityId);
@@ -302,6 +343,9 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         ImageViewModel.Items?.Clear();
         SynonymViewModel.Items?.Clear();
         GeographicViewModel.Items?.Clear();
+
+        _loadedImageSpeciesId = 0;
+
         if (IsBossMode)
         {
             SpeciesCommentViewModel.SelectedItem = null;

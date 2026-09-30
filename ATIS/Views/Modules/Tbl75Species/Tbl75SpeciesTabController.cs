@@ -112,9 +112,8 @@ public sealed class Tbl75SpeciesTabController
         _page.EditSpeciesContent.Visibility = _vm.SelectedDetailTabIndex == TabEdit ? Visibility.Visible : Visibility.Collapsed;
         _page.CommentsSpeciesContent.Visibility = _vm.SelectedDetailTabIndex == TabComments ? Visibility.Visible : Visibility.Collapsed;
         _page.ReferencesSpeciesContent.Visibility = _vm.SelectedDetailTabIndex == TabReferences ? Visibility.Visible : Visibility.Collapsed;
-        _page.NameContent.Visibility = _vm.SelectedDetailTabIndex == TabName ? Visibility.Visible : Visibility.Collapsed;
 
-        // falls später aktiv:
+        _page.NameContent.Visibility = _vm.SelectedDetailTabIndex == TabName ? Visibility.Visible : Visibility.Collapsed;
         _page.ImageContent.Visibility = _vm.SelectedDetailTabIndex == TabImage ? Visibility.Visible : Visibility.Collapsed;
         _page.SynonymContent.Visibility = _vm.SelectedDetailTabIndex == TabSynonym ? Visibility.Visible : Visibility.Collapsed;
         _page.GeographicContent.Visibility = _vm.SelectedDetailTabIndex == TabGeographic ? Visibility.Visible : Visibility.Collapsed;

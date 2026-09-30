@@ -8,7 +8,6 @@ using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
@@ -144,50 +143,67 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     public bool IsDetailVisible => SelectedItem != null;
     public bool IsEditMode => SelectedItem != null;
     public bool HasItems => Items != null && Items.Count > 0;
-
-    // ---------------------------------------------------------                  
-    // LOAD ASYNC (Boss)
-    // ---------------------------------------------------------                  
-    public async Task LoadAsync()
+    private bool _showBusyOverlay;
+    public bool ShowBusyOverlay
     {
-
-        // Boss-Start: Parent-Kontext löschen
-        _activeLoader = null;
-        _currentParentId = 0;
-
-        // Für Simple-Page sinnvoll: Boss-Modus aktiv
-        IsInParentMode = false;
-
-        // Lookup nur versuchen, Fehler darf UI nicht stoppen
-        try
-        {
-            await LoadSpeciesLookupAsync();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadSpeciesLookupAsync] {ex}");
-            // absichtlich weiterlaufen
-        }
-
-        Items = new ObservableCollection<Models.Tbl81Image>();
-        OnPropertyChanged(nameof(HasItems));
-
-        // Hauptdaten trotzdem laden
-        try
-        {
-            await ReloadAsync();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
-            // optional: Dialog zeigen
-            await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
-        }
+        get => _showBusyOverlay;
+        set => SetProperty(ref _showBusyOverlay, value);
     }
 
+    protected override void OnLoadingStarted()
+    {
+        ShowBusyOverlay = true;
+    }
+
+    protected override void OnLoadingFinished()
+    {
+        ShowBusyOverlay = false;
+    }
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
     // ---------------------------------------------------------
-    // LOAD FOR VK 
-    // ---------------------------------------------------------
+
+    public async Task LoadAsync()
+    {
+        System.Diagnostics.Debug.WriteLine("[VM] LoadAsync START");
+        IsLoading = true;
+        System.Diagnostics.Debug.WriteLine($"[VM] IsLoading after set true = {IsLoading}");
+        try
+        {
+            _activeLoader = null;
+            _currentParentId = 0;
+
+            IsInParentMode = false;
+
+            try
+            {
+                await LoadSpeciesLookupAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadSpeciesLookupAsync] {ex}");
+            }
+
+            Items = new ObservableCollection<Models.Tbl81Image>();
+            OnPropertyChanged(nameof(HasItems));
+
+            try
+            {
+                await ReloadAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
+                await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
+            }
+        }
+        finally
+        {
+            IsLoading = false;
+            System.Diagnostics.Debug.WriteLine($"[VM] IsLoading after set false = {IsLoading}");
+            System.Diagnostics.Debug.WriteLine("[VM] LoadAsync END");
+        }
+    }
     public async Task LoadForSpeciesAsync(int speciesId)
         => await LoadInternalAsync(speciesId, Data.GetImageForSpeciesAsync);
 
@@ -198,20 +214,51 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         int parentId,
         Func<int, Task<IEnumerable<Models.Tbl81Image>>> loader)
     {
-        _currentParentId = parentId;
-        _activeLoader = loader;
+        System.Diagnostics.Debug.WriteLine($"[ImageVM] LoadInternalAsync START parentId={parentId}");
+        IsLoading = true;
+        ShowBusyOverlay = true;
 
-        var items = await loader(parentId);
-        Items = new ObservableCollection<Models.Tbl81Image>(items);
-        OnPropertyChanged(nameof(HasItems));
+        try
+        {
+            _currentParentId = parentId;
+            _activeLoader = loader;
 
-        DataSetCount = Items.Count;
+            var items = await loader(parentId);
+            Items = new ObservableCollection<Models.Tbl81Image>(items);
+            OnPropertyChanged(nameof(HasItems));
 
-        // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
-        SelectedItem = null;
-        Item = null;
+            DataSetCount = Items.Count;
 
+            // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
+            SelectedItem = null;
+            Item = null;
+        }
+        finally
+        {
+            ShowBusyOverlay = false;
+            IsLoading = false;
+            System.Diagnostics.Debug.WriteLine($"[ImageVM] LoadInternalAsync END parentId={parentId}");
+        }
     }
+
+    //private async Task LoadInternalAsync(
+    //    int parentId,
+    //    Func<int, Task<IEnumerable<Models.Tbl81Image>>> loader)
+    //{
+    //    _currentParentId = parentId;
+    //    _activeLoader = loader;
+
+    //    var items = await loader(parentId);
+    //    Items = new ObservableCollection<Models.Tbl81Image>(items);
+    //    OnPropertyChanged(nameof(HasItems));
+
+    //    DataSetCount = Items.Count;
+
+    //    // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
+    //    SelectedItem = null;
+    //    Item = null;
+
+    //}
 
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
@@ -298,6 +345,24 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             _ => ""
         };
 
+    // ---------------------------------------------------------
+    // Image/Video
+    // ---------------------------------------------------------
+
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set
+        {
+            if (_isLoading != value)
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+                System.Diagnostics.Debug.WriteLine($"[VM] PropertyChanged: {nameof(IsLoading)} = {_isLoading}");
+            }
+        }
+    }
 
     // ---------------------------------------------------------
     // NEW
@@ -323,6 +388,10 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         };
     }
 
+    // ---------------------------------------------------------
+    // Image/Video
+    // ---------------------------------------------------------
+
     public async Task SelectFileForCurrentItemAsync()
     {
         try
@@ -335,9 +404,11 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
                 return;
 
             Item.Filestream = await File.ReadAllBytesAsync(file.Path);
-//            Item.ImageMimeType = GetImageTypeFromExtension(file.FileType);
+      //      Item.ImageMimeType = GetImageTypeFromExtension(file.FileType);
 
             var fileType = GetImageTypeFromExtension(file.FileType);
+
+
             if (!string.IsNullOrWhiteSpace(fileType))
                 Item.ImageMimeType = fileType;
 
@@ -373,6 +444,9 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         filePicker.FileTypeFilter.Add(".wmf");
         filePicker.FileTypeFilter.Add(".wmv");
         filePicker.FileTypeFilter.Add(".mpg");
+        filePicker.FileTypeFilter.Add(".mp3");
+        filePicker.FileTypeFilter.Add(".wav");
+        filePicker.FileTypeFilter.Add(".m4a");
         filePicker.FileTypeFilter.Add(".mp4");
         filePicker.FileTypeFilter.Add(".avi");
         filePicker.FileTypeFilter.Add(".mov");
@@ -391,15 +465,17 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
-
     protected override async Task<Models.Tbl81Image?> SaveItemAsync(Models.Tbl81Image item)
     {
-        Debug.WriteLine($"SAVE item hash: {item.GetHashCode()}");
-        Debug.WriteLine($"SAVE bytes: {item.Filestream?.Length ?? 0}");
-
         if (item.Filestream == null || item.Filestream.Length == 0)
         {
             await Dialog.ShowErrorAsync("Error_NoFile_Title", "Error_NoFile_Message");
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(item.Info))
+        {
+            await Dialog.ShowErrorAsync("Error_MissingInfo_Title", "Error_MissingInfo_Message");
             return null;
         }
 
@@ -467,84 +543,4 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         NewCommand.NotifyCanExecuteChanged();
         RefreshCommand.NotifyCanExecuteChanged();
     }
-
-    //private static string? GetMimeTypeFromExtension(string? extension)
-    //{
-    //    return extension?.ToLowerInvariant() switch
-    //    {
-    //        ".jpg" or ".jpeg" => "image/jpeg",
-    //        ".png" => "image/png",
-    //        ".gif" => "image/gif",
-    //        ".bmp" => "image/bmp",
-    //        ".tif" or ".tiff" => "image/tiff",
-    //        ".mp4" => "video/mp4",
-    //        ".avi" => "video/x-msvideo",
-    //        ".mov" => "video/quicktime",
-    //        _ => null
-    //    };
-    //}
-
-    //private string _selectedPath;
-    //public string SelectedPath
-    //{
-    //    get => _selectedPath;
-    //    set => SetProperty(ref _selectedPath, value);
-    //}
-
-    //public async Task LoadFileIntoSelectedItemAsync()
-    //{
-    //    try
-    //    {
-    //        if (Item == null)
-    //            return;
-
-    //        var file = await PickFileAsync();
-    //        if (file == null || string.IsNullOrWhiteSpace(file.Path))
-    //            return;
-
-    //   //     SelectedPath = file.Path;
-
-    //        Item.Filestream = await File.ReadAllBytesAsync(file.Path);
-    //        Item.ImageMimeType = GetMimeTypeFromExtension(file.FileType);
-    //   //     Item.Info = file.Name;
-    ////        Item.GenusSpeciesFullName = Item.GenusSpeciesFullName;
-    //        Debug.WriteLine($"LOAD item hash: {Item.GetHashCode()}");
-    //        Debug.WriteLine($"LOAD bytes: {Item.Filestream?.Length ?? 0}");
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-    //protected override async Task NewAsync()
-    //{
-    //    try
-    //    {
-    //        var file = await PickFileAsync();
-    //        if (file == null || string.IsNullOrWhiteSpace(file.Path))
-    //            return;
-
-    //        if (Item == null)
-    //        {
-    //            Item = CreateNewItem();
-    //        }
-
-    //        SelectedPath = file.Path;
-    //        Item.Filestream = await File.ReadAllBytesAsync(file.Path);
-    //        Item.ImageMimeType = GetMimeTypeFromExtension(file.FileType);
-    //    //    Item.Info = file.Name;
-    //        Item.GenusName = Item.GenusSpeciesFullName;
-    //        Item.FilestreamId = Guid.NewGuid();
-
-    //        Debug.WriteLine($"NEW item hash: {Item.GetHashCode()}");
-    //        Debug.WriteLine($"NEW bytes: {Item.Filestream?.Length ?? 0}");
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
 }
