@@ -23,6 +23,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
+ //   public IRelayCommand LoadFromUrlCommand { get; }
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl81Image>>>? _activeLoader;
@@ -52,6 +53,9 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         App.LanguageChanged += _langHandler;
 
         ApplyHeaders();
+
+     //   LoadFromUrlCommand = new AsyncRelayCommand(() => LoadFromUrlAsync(MediaUrl));
+
     }
 
     // ---------------------------------------------------------
@@ -102,6 +106,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------                   
+
 
     public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
@@ -348,7 +353,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // Image/Video
     // ---------------------------------------------------------
-
     private bool _isLoading;
     public bool IsLoading
     {
@@ -364,6 +368,151 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         }
     }
 
+    // ---------------------------------------------------------
+    // Load from Media from URL
+    // ---------------------------------------------------------
+    //private string? _mediaUrl;
+    //public string? MediaUrl
+    //{
+    //    get => _mediaUrl;
+    //    set
+    //    {
+    //        if (SetProperty(ref _mediaUrl, value))
+    //            Debug.WriteLine($"MediaUrl changed: {value}");
+    //    }
+    //}
+
+    public async Task LoadFromUrlAsync(string url)
+    {
+        try
+        {
+            if (Item == null)
+                Item = CreateNewItem();
+
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                await Dialog.ShowErrorAsync("Error_InvalidUrl_Title", "Error_InvalidUrl_Message");
+                return;
+            }
+
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                await Dialog.ShowErrorAsync("Error_InvalidUrl_Title", "Error_InvalidUrl_Message");
+                return;
+            }
+
+            if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
+            {
+                await Dialog.ShowErrorAsync("Error_InvalidUrl_Title", "Error_InvalidUrl_Message");
+                return;
+            }
+
+            using var http = new HttpClient();
+            using var response = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
+
+            response.EnsureSuccessStatusCode();
+
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            if (bytes == null || bytes.Length == 0)
+            {
+                await Dialog.ShowErrorAsync("Error_LoadMediaFromUrl_Title", "Error_LoadMediaFromUrl_Message");
+                return;
+            }
+
+            var contentType = response.Content.Headers.ContentType?.MediaType;
+            var extension = Path.GetExtension(uri.AbsolutePath);
+            var mediaType = NormalizeMediaType(contentType, extension);
+
+            if (string.Equals(mediaType, "html", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(contentType, "text/html", StringComparison.OrdinalIgnoreCase))
+            {
+                await Dialog.ShowErrorAsync("Error_InvalidMediaUrl_Title", "Error_InvalidMediaUrl_Message");
+                return;
+            }
+
+            if (!IsSupportedMediaType(mediaType))
+            {
+                await Dialog.ShowErrorAsync("Error_UnsupportedMediaType_Title", "Error_UnsupportedMediaType_Message");
+                return;
+            }
+
+            Item.Filestream = bytes;
+            Item.ImageMimeType = mediaType;
+
+            if (Item.FilestreamId == Guid.Empty)
+                Item.FilestreamId = Guid.NewGuid();
+
+            Debug.WriteLine($"[URL LOAD] item hash: {Item.GetHashCode()}");
+            Debug.WriteLine($"[URL LOAD] bytes: {Item.Filestream?.Length ?? 0}");
+            Debug.WriteLine($"[URL LOAD] type: {Item.ImageMimeType}");
+
+            OnPropertyChanged(nameof(Item));
+        }
+        catch (Exception xe)
+        {
+            SimpleLog.Log(xe);
+            await Dialog.ShowErrorAsync("Error_LoadMediaFromUrl_Title", "Error_LoadMediaFromUrl_Message");
+        }
+    }
+
+    private static bool IsSupportedMediaType(string? type)
+    {
+        if (string.IsNullOrWhiteSpace(type))
+            return false;
+
+        switch (type.Trim().ToLowerInvariant())
+        {
+            // Bilder
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "gif":
+            case "bmp":
+            case "tif":
+            case "tiff":
+            case "ico":
+            case "webp":
+            case "wmf":
+
+            // Video
+            case "mp4":
+            case "avi":
+            case "mov":
+            case "mpg":
+            case "wmv":
+            case "flv":
+            case "swf":
+
+            // Audio
+            case "mp3":
+            case "wav":
+            case "m4a":
+                return true;
+
+            default:
+                return false;
+        }
+    }
+    private string? _statusMessage;
+    public string? StatusMessage
+    {
+        get => _statusMessage;
+        set => SetProperty(ref _statusMessage, value);
+    }
+    private static string? NormalizeMediaType(string? contentType, string? extension)
+    {
+        if (!string.IsNullOrWhiteSpace(extension))
+            return GetImageTypeFromExtension(extension);
+
+        if (string.IsNullOrWhiteSpace(contentType))
+            return null;
+
+        var slashIndex = contentType.LastIndexOf('/');
+        if (slashIndex >= 0 && slashIndex < contentType.Length - 1)
+            return contentType[(slashIndex + 1)..].ToLowerInvariant();
+
+        return contentType.ToLowerInvariant();
+    }
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------

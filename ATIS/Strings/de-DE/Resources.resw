@@ -2304,6 +2304,12 @@
   <data name="TextBlock_Longitude.Text" xml:space="preserve">
     <value>Längengrad</value>
   </data>
+  <data name="TextBlock_LoadFromClipboard.Text" xml:space="preserve">
+    <value>Aus Zwischenablage laden</value>
+  </data>
+  <data name="TextBlock_LoadFromUrl.Text" xml:space="preserve">
+    <value>Laden aus URL</value>
+  </data>
   <data name="TextBlock_Map.Text" xml:space="preserve">
     <value>Map</value>
   </data>
@@ -2837,6 +2843,9 @@
   </data>
   <data name="TradeName" xml:space="preserve">
     <value>Handelsname</value>
+  </data>
+  <data name="Tooltip_LoadFromClipboard.Content" xml:space="preserve">
+    <value>Lädt eine direkte Bild-, Audio- oder Video-URL aus der Zwischenablage.</value>
   </data>
   <data name="TextBlock_TribusId.Text" xml:space="preserve">
     <value>Tribus ID</value>
@@ -4743,6 +4752,12 @@
   <data name="Error_MissingInfo_Title" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
+    <value>Medium konnte nicht geladen werden</value>
+  </data>
+  <data name="Error_LoadMediaFromUrl_Message" xml:space="preserve">
+    <value>Das Medium konnte von der angegebenen URL nicht geladen oder gespeichert werden.</value>
+  </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>Info fehlt</value>
   </data>
@@ -4913,6 +4928,24 @@
   </data>
   <data name="Error_Info_TooLong" xml:space="preserve">
     <value>Die Info darf nicht länger als 100 Zeichen sein.</value>
+  </data>
+  <data name="Error_InvalidMediaUrl_Title" xml:space="preserve">
+    <value>Keine direkte Mediendatei</value>
+  </data>
+  <data name="Error_UnsupportedMediaType_Title" xml:space="preserve">
+    <value>Nicht unterstützter Medientyp</value>
+  </data>
+  <data name="Error_UnsupportedMediaType_Message" xml:space="preserve">
+    <value>Die URL verweist auf einen nicht unterstützten Bild-, Audio- oder Videotyp.</value>
+  </data>
+  <data name="Error_InvalidUrl_Title" xml:space="preserve">
+    <value>Ungültige URL</value>
+  </data>
+  <data name="Error_InvalidMediaUrl_Message" xml:space="preserve">
+    <value>Die URL verweist auf eine Webseite und nicht auf eine direkte Bild-, Audio- oder Videodatei.</value>
+  </data>
+  <data name="Error_InvalidUrl_Message" xml:space="preserve">
+    <value>Die angegebene URL ist ungültig oder unvollständig.</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Der Autorenname darf nicht leer sein</value>

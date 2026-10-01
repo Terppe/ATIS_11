@@ -1210,3 +1210,7 @@ jetzt fehlt noch neu, save, delete
 30.09.2026 10:30 Uhr Nuget SDK 2.5.1 wieder rein. overlay nur am strat der page, alles geladen. Cache?
 ----------------------------------------
 30.09.2026 13:30 Uhr Image mit overlays komplett.
+----------------------------------------
+30.09.2026 15:30 Uhr Medien laden aus dem internet button klappt noch icht
+----------------------------------------
+01.10.2026 15:30 Uhr Medien laden aus dem internet weiter. fertig soweit gelöst.

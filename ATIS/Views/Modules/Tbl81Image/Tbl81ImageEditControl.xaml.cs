@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Input;
 using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -52,7 +54,35 @@ public sealed partial class Tbl81ImageEditControl : UserControl
 
         control.ApplyItem(item);
     }
+    // ---------------------------------------------------------                    
+    // MediaUrl
+    // ---------------------------------------------------------                   
 
+    public string? MediaUrl
+    {
+        get => (string?)GetValue(MediaUrlProperty);
+        set => SetValue(MediaUrlProperty, value);
+    }
+
+    public static readonly DependencyProperty MediaUrlProperty =
+        DependencyProperty.Register(
+            nameof(MediaUrl),
+            typeof(string),
+            typeof(Tbl81ImageEditControl),
+            new PropertyMetadata(null));
+
+    public ICommand? LoadFromUrlCommand
+    {
+        get => (ICommand?)GetValue(LoadFromUrlCommandProperty);
+        set => SetValue(LoadFromUrlCommandProperty, value);
+    }
+
+    public static readonly DependencyProperty LoadFromUrlCommandProperty =
+        DependencyProperty.Register(
+            nameof(LoadFromUrlCommand),
+            typeof(ICommand),
+            typeof(Tbl81ImageEditControl),
+            new PropertyMetadata(null));
     // ---------------------------------------------------------                    
     // APPLY ITEM
     // ---------------------------------------------------------                   
@@ -167,24 +197,36 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     // ---------------------------------------------------------                   
     private int SelectedTabIndex = 0;
 
-    //private void DetailTabButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    if (sender is Button button &&
-    //        button.Tag is string tagText &&
-    //        int.TryParse(tagText, out int index))
-    //    {
-    //        SelectedTabIndex = index;
-    //        UpdateTabButtonStates();
-    //        UpdateDetailContentVisibility();
-    //    }
-    //}
-    //private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
-    //{
-    //    button.Background = new SolidColorBrush(Colors.Transparent);
-    //    button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
-    //    underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
-    //}
+    private async void LoadFromClipboardButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (ViewModel == null)
+                return;
 
+            var dataPackageView = Clipboard.GetContent();
+            if (dataPackageView == null)
+                return;
+
+            if (!dataPackageView.Contains(StandardDataFormats.Text))
+                return;
+
+            var url = await dataPackageView.GetTextAsync();
+
+            Debug.WriteLine($"[CLIPBOARD] Text = '{url}'");
+
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            await ViewModel.LoadFromUrlAsync(url);
+
+            await RefreshMediaAsync();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[CLIPBOARD] Fehler: {ex}");
+        }
+    }
     private void DpShotDate_OnGotFocus(object sender, RoutedEventArgs e)
     {
         ShotDateBorder.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 103, 192));
@@ -202,6 +244,10 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     // ---------------------------------------------------------
     private async void Tbl81ImageEditControl_Loaded(object sender, RoutedEventArgs e)
     {
+        Debug.WriteLine($"[EditControl] DataContext type = {DataContext?.GetType().FullName ?? "null"}");
+        Debug.WriteLine($"[EditControl] Root.MediaUrl = '{MediaUrl ?? "null"}'");
+        Debug.WriteLine($"[EditControl] Root.LoadFromUrlCommand null = {LoadFromUrlCommand == null}");
+
         if (VideoPlayer.MediaPlayer == null)
             VideoPlayer.SetMediaPlayer(new MediaPlayer());
 

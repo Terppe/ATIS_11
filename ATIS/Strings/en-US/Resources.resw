@@ -2304,6 +2304,12 @@
   <data name="TextBlock_Longitude.Text" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="TextBlock_LoadFromClipboard.Text" xml:space="preserve">
+    <value>Load from Clipboard</value>
+  </data>
+  <data name="TextBlock_LoadFromUrl.Text" xml:space="preserve">
+    <value>Load from Url</value>
+  </data>
   <data name="TextBlock_Map.Text" xml:space="preserve">
     <value>Map</value>
   </data>
@@ -2837,6 +2843,9 @@
   </data>
   <data name="TradeName" xml:space="preserve">
     <value>Tradename</value>
+  </data>
+  <data name="Tooltip_LoadFromClipboard.Content" xml:space="preserve">
+    <value>Image, Video or Audio-Data from Clipboard</value>
   </data>
   <data name="TextBlock_TribusId.Text" xml:space="preserve">
     <value>Tribus ID</value>
@@ -4743,6 +4752,12 @@
   <data name="Error_MissingInfo_Title" xml:space="preserve">
     <value>info</value>
   </data>
+  <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
+    <value>Media not loaded</value>
+  </data>
+  <data name="Error_LoadMediaFromUrl_Message" xml:space="preserve">
+    <value>Media not saved or loaded</value>
+  </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>info missing</value>
   </data>
@@ -4913,6 +4928,24 @@
   </data>
   <data name="Error_Info_TooLong" xml:space="preserve">
     <value>Info must not exceed 100 characters</value>
+  </data>
+  <data name="Error_InvalidMediaUrl_Title" xml:space="preserve">
+    <value>Invalid MediaUrl</value>
+  </data>
+  <data name="Error_UnsupportedMediaType_Title" xml:space="preserve">
+    <value>Not supported MediaTypeMediaUrl</value>
+  </data>
+  <data name="Error_UnsupportedMediaType_Message" xml:space="preserve">
+    <value>the URL relegate to a not supprted Image, Video or Audiotype</value>
+  </data>
+  <data name="Error_InvalidUrl_Title" xml:space="preserve">
+    <value>Invalid Url</value>
+  </data>
+  <data name="Error_InvalidMediaUrl_Message" xml:space="preserve">
+    <value>The URL relegate to a website, no Image, Video or Audiodata</value>
+  </data>
+  <data name="Error_InvalidUrl_Message" xml:space="preserve">
+    <value>URL is invalid or incomplete</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Author name must not be empty.</value>
