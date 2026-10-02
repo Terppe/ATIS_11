@@ -53,6 +53,15 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
+    [NotMapped]
+    private int? _countryId;
+    [NotMapped]
+    public int? CountryId
+    {
+        get => _countryId;
+        set => SetProperty(ref _countryId, value);
+    }
+
     // ---------------------------------------------------------
     // SpeciesId (Pflicht)
     // ---------------------------------------------------------

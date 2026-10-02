@@ -1214,3 +1214,5 @@ jetzt fehlt noch neu, save, delete
 30.09.2026 15:30 Uhr Medien laden aus dem internet button klappt noch icht
 ----------------------------------------
 01.10.2026 15:30 Uhr Medien laden aus dem internet weiter. fertig soweit gelöst.
+----------------------------------------
+02.10.2026 17:30 Uhr CountryPage fehler bei search. gelöst. und CountryList in CountryEditcontrol eingefügt. Jetzt kommt Map und wird angezeigt

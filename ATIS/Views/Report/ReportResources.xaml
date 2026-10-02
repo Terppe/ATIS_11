@@ -84,8 +84,8 @@
 
 
     <!--
-    Report.Listviews
-    Header
+        Report.Listviews
+        Header
     -->
 
     <DataTemplate x:Key="ReportItemTemplateHeaderRegnum">
@@ -230,18 +230,16 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ReportItemTemplateTbl75SpeciesSynonyms">
-        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesSynonymsControl
-            Species="{Binding Item}" />
+        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesSynonymsControl Species="{Binding Item}" />
     </DataTemplate>
 
     <DataTemplate x:Key="ReportItemTemplateTbl75SpeciesNames">
-        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesNamesControl
-            Species="{Binding Item}" />
+        <dataTemplateHeaderTaxoNomen:TemplateTbl75SpeciesNamesControl Species="{Binding Item}" />
     </DataTemplate>
 
     <!--  Hyperlink-ListViews  -->
     <DataTemplate x:Key="ReportItemTemplateHyperlinkRegnum">
-        <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl  />
+        <dataTemplateHyperlink:TemplateTbl03RegnumWithOptionalHyperlinkControl />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkPhylum">
         <dataTemplateHyperlink:TemplateTbl06PhylumWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
@@ -271,7 +269,7 @@
         <dataTemplateHyperlink:TemplateTbl36SubordoWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkInfraordo">
-        <dataTemplateHyperlink:TemplateTbl39InfraordoWithOptionalHyperlinkControl  ShowAsHyperlink="{Binding ShowAsHyperlink}" />
+        <dataTemplateHyperlink:TemplateTbl39InfraordoWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateHyperlinkSuperfamily">
         <dataTemplateHyperlink:TemplateTbl42SuperfamilyWithOptionalHyperlinkControl ShowAsHyperlink="{Binding ShowAsHyperlink}" />

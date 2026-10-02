@@ -4,8 +4,7 @@ using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-
-
+using ATIS.Views.Modules.TblCountry;
 using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
@@ -53,7 +52,10 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
+    public ObservableCollection<string> CountryNameList { get; private set; } = new();
+    public ObservableCollection<Models.TblCountry> CountryList { get; private set; } = new();
     public ObservableCollection<Models.Tbl75Species> SpeciesList { get; private set; } = new();
+    public Dictionary<int, string?> CountryLookup { get; private set; } = new();
     public Dictionary<int, string?> SpeciesLookup { get; private set; } = new();
 
     public async Task LoadSpeciesLookupAsync()
@@ -79,6 +81,61 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             OnPropertyChanged(nameof(SpeciesLookup));
         }
     }
+    public async Task LoadCountryLookupAsync()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("[VM] LoadCountryLookupAsync START");
+
+            var list = await _lookupService.GetCountryListAsync();
+            var lookup = await _lookupService.GetCountryLookupAsync();
+
+            System.Diagnostics.Debug.WriteLine($"[VM] list count = {list?.Count ?? 0}");
+            System.Diagnostics.Debug.WriteLine($"[VM] lookup count = {lookup?.Count ?? 0}");
+
+            CountryList.Clear();
+            foreach (var item in list)
+                CountryList.Add(item);
+
+            CountryLookup = lookup;
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+
+            System.Diagnostics.Debug.WriteLine($"[VM] CountryList final = {CountryList.Count}");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LoadCountryLookupAsync] {ex}");
+
+            CountryList.Clear();
+            CountryLookup = new Dictionary<int, string?>();
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
+    }
+    //public async Task LoadCountryLookupAsync()
+    //{
+    //    try
+    //    {
+    //        var list = await _lookupService.GetCountryListAsync();
+    //        var lookup = await _lookupService.GetCountryLookupAsync();
+
+    //        CountryList.Clear();
+    //        foreach (var item in list)
+    //            CountryList.Add(item);
+
+    //        CountryLookup = lookup;
+    //        OnPropertyChanged(nameof(CountryLookup));
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine($"[LoadCountryLookupAsync] {ex}");
+
+    //        CountryList.Clear();
+    //        CountryLookup = new Dictionary<int, string?>();
+    //        OnPropertyChanged(nameof(CountryLookup));
+    //    }
+    //}
 
     // ---------------------------------------------------------                  
     // SORTING HEADERS
@@ -145,30 +202,28 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
-
-        // Boss-Start: Parent-Kontext löschen
         _activeLoader = null;
         _currentParentId = 0;
-
-        // Für Simple-Page sinnvoll: Boss-Modus aktiv
         IsInParentMode = false;
 
-        // Lookup nur versuchen, Fehler darf UI nicht stoppen
         try
         {
-
+            System.Diagnostics.Debug.WriteLine("[LoadAsync] before species");
             await LoadSpeciesLookupAsync();
+            System.Diagnostics.Debug.WriteLine("[LoadAsync] after species");
+
+            System.Diagnostics.Debug.WriteLine("[LoadAsync] before country");
+            await LoadCountryLookupAsync();
+            System.Diagnostics.Debug.WriteLine("[LoadAsync] after country");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadSpeciesLookupAsync] {ex}");
-            // absichtlich weiterlaufen
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> Lookup] {ex}");
         }
 
         Items = new ObservableCollection<Models.Tbl87Geographic>();
         OnPropertyChanged(nameof(HasItems));
 
-        // Hauptdaten trotzdem laden
         try
         {
             await ReloadAsync();
@@ -176,11 +231,9 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
-            // optional: Dialog zeigen
             await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
         }
     }
-
     // ---------------------------------------------------------
     // LOAD FOR VK 
     // ---------------------------------------------------------
@@ -224,14 +277,29 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     // ---------------------------------------------------------
     // SELECTED ITEM
     // ---------------------------------------------------------
-    protected override Task OnSelectedItemChangedAsync()
-    {
-        // Das EditControl arbeitet mit Item,
-        // die Liste mit SelectedItem.
-        Item = SelectedItem;
-        // Tbl87Geographic hat keine eigenen Children.
 
-        return Task.CompletedTask;
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        var selected = SelectedItem;
+        Item = null;
+
+        if (selected != null)
+        {
+            await EnsureCountryLookupLoadedAsync();
+        }
+
+        Item = selected;
+    }
+
+    private bool _countryLookupLoaded;
+
+    public async Task EnsureCountryLookupLoadedAsync()
+    {
+        if (_countryLookupLoaded && CountryList.Count > 0)
+            return;
+
+        await LoadCountryLookupAsync();
+        _countryLookupLoaded = CountryList.Count > 0;
     }
 
     // ---------------------------------------------------------

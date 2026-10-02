@@ -41,6 +41,7 @@ using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
 using ATIS.Views.Modules.Tbl90RefExpert;
 using ATIS.Views.Modules.Tbl90RefSource;
+using ATIS.Views.Modules.TblCountry;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
@@ -57,7 +58,6 @@ using Tbl63InfratribusViewModel = ATIS.Views.Modules.Tbl63Infratribus.Tbl63Infra
 using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorViewModel;
 using Tbl90ReferenceViewModel = ATIS.Views.Modules.Tbl90Reference.Tbl90ReferenceViewModel;
 using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
-using TblCountryAltViewModel = ATIS.ViewModels.TblCountryAltViewModel;
 
 namespace ATIS;
 
@@ -317,7 +317,6 @@ public partial class App : Application
         services.AddScoped<IUserService, UserService>();
 
         // VIEWMODELS
-        services.AddTransient<TblCountryListTestPage>();
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();
         services.AddTransient<AuthenticationViewModel>();
@@ -365,7 +364,8 @@ public partial class App : Application
         services.AddTransient<Tbl90RefSourceViewModel>();
         services.AddTransient<Tbl93CommentViewModel>();
 
-        services.AddTransient<TblCountryAltViewModel>();
+        services.AddTransient<TblCountryViewModel>();
+
         services.AddTransient<TblUserProfileAltViewModel>();
         services.AddTransient<FoodViewModel>();
         services.AddTransient<TblFoodViewModel>();

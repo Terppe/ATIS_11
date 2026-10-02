@@ -1142,17 +1142,26 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     #endregion Comment
 
     #region Country
-    //Neu
+    // ---------------------------------------------------------                  
+    // Country 
+    // ---------------------------------------------------------   
     Task<IEnumerable<TblCountry>> GetAllCountryAsync();
+    Task<IEnumerable<TblCountry>> SearchCountryAsync(string? search);
+    Task<TblCountry?> GetCountryByIdAsync(int id);
+    Task<TblCountry> UpsertCountryAsync(TblCountry entity);
+    Task DeleteCountryAsync(int id);
+    Task<bool> CountryExistsAsync(TblCountry entity);
+
+
     //alt
     Task<List<TblCountry>> GetAllCountriesAsync();
     Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query);
     Task<List<TblCountry>> GetCountriesByNameAsync(string? query);
-    Task<bool> CountryExistsAsync(TblCountry model);
+ //   Task<bool> CountryExistsAsync(TblCountry model);
     Task<List<TblCountry>> GetCountryAsync();
     Task<List<TblCountry>> GetCountryAsync(int countryid);
     Task<TblCountry?> GetCountryByIdAsync(int? countryid);
-    Task<TblCountry> UpsertCountryAsync(TblCountry country);
+ //   Task<TblCountry> UpsertCountryAsync(TblCountry country);
     Task DeleteCountryAsync(int? countryId);
 
     #endregion Country

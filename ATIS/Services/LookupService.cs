@@ -503,15 +503,25 @@ public class LookupService
     //--------------------------------------------------------------------
     public async Task<Dictionary<int, string?>> GetCountryLookupAsync()
     {
-        if (_countryLookupCache == null)
+        try
         {
-            var data = CreateDataService();
-            var list = await data.GetAllCountryAsync();
-            _countryLookupCache = list.ToDictionary(x => x.CountryId, x => x.Name);
-        }
-        return _countryLookupCache;
-    }
+            if (_countryLookupCache == null)
+            {
+                var data = CreateDataService();
+                var list = await data.GetAllCountryAsync();
+                _countryLookupCache = list.ToDictionary(x => x.CountryId, x => x.Name);
 
+                System.Diagnostics.Debug.WriteLine($"[LookupService] CountryLookup loaded: {_countryLookupCache.Count}");
+            }
+
+            return _countryLookupCache;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LookupService.GetCountryLookupAsync] ERROR: {ex}");
+            return new Dictionary<int, string?>();
+        }
+    }
     //--------------------------------------------------------------------
     public async Task<ObservableCollection<Models.Tbl03Regnum>> GetRegnumListAsync()
     {
@@ -802,16 +812,18 @@ public class LookupService
                 var data = CreateDataService();
                 var list = await data.GetAllCountryAsync() ?? Enumerable.Empty<TblCountry>();
                 _countryListCache = new ObservableCollection<TblCountry>(list);
+
+                System.Diagnostics.Debug.WriteLine($"[LookupService] CountryList loaded: {_countryListCache.Count}");
             }
+
             return _countryListCache;
         }
         catch (Exception ex)
         {
-            //         _logger.LogError(ex, "Failed loading Country lookup");
+            System.Diagnostics.Debug.WriteLine($"[LookupService.GetCountryListAsync] ERROR: {ex}");
             return new ObservableCollection<TblCountry>();
         }
     }
-
 
     //public async Task<ObservableCollection<Models.Tbl90RefSource>> GetRefSourceListAsync()
     //{

@@ -45,6 +45,7 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
+using ATIS.Views.Modules.TblCountry;
 using WinRT.Interop;
 using WinUI3Localizer;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
@@ -408,11 +409,6 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavHome.Content)
         {
-            NavFrame.Navigate(typeof(TblCountryListTestPage));
-            return;
-        }
-        if ((string)args.ChosenSuggestion == (string)NavHome.Content)
-        {
             NavFrame.Navigate(typeof(HomePage));
             return;
         }
@@ -613,7 +609,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavCountries.Content)
         {
-            NavFrame.Navigate(typeof(TblCountryListPage));
+            NavFrame.Navigate(typeof(TblCountryPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavUserProfiles.Content)
@@ -652,12 +648,6 @@ public sealed partial class MainPage : Page
     private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
 
-        if (args.InvokedItemContainer != null &&
-            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Database.TblCountryListTestPage")
-        {
-            NavFrame.Navigate(typeof(TblCountryListTestPage), null, args.RecommendedNavigationTransitionInfo);
-            return;
-        }
         if (args.InvokedItemContainer != null &&
             (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Disease.DiseasePage")
         {

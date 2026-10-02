@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using ATIS.Core.Taxonomy;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -8,8 +9,8 @@ using ATIS.Views.Search.DirectChildren;
 using Microsoft.EntityFrameworkCore;
 using static ATIS.Interfaces.IDataService;
 using static ATIS.Views.Report.PdfModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static SkiaSharp.HarfBuzz.SKShaper;
-using ATIS.Core.Taxonomy;
 //https://www.reddit.com/r/reactjs/comments/m4mhp7/how_to_update_state_in_useeffect_when_getting/
 
 namespace ATIS.Services;
@@ -7061,7 +7062,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Name
 
     #region Image
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllImageAsync()
     // ---------------------------------------------------------                           
@@ -7586,7 +7586,6 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Name                  
 
     #region Geographic
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllGeographicAsync()
     // ---------------------------------------------------------                           
@@ -9174,16 +9173,200 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Comment
 
     #region Country
-    //--------------------------------------------------------
+    // ---------------------------------------------------------                  
+    // GetAllCountryAsync()
+    // ---------------------------------------------------------
+
     public async Task<IEnumerable<TblCountry>> GetAllCountryAsync()
     {
         await using var context = _factory.CreateDbContext();
 
-        return await context.TblCountries   
+        var list = await context.TblCountries
             .AsNoTracking()
             .OrderBy(e => e.Name)
             .ToListAsync();
+
+        System.Diagnostics.Debug.WriteLine($"[DataService.GetAllCountryAsync] count = {list.Count}");
+        foreach (var item in list)
+            System.Diagnostics.Debug.WriteLine($"[Country] {item.CountryId} | {item.Name}");
+
+        return list;
     }
+    //public async Task<IEnumerable<TblCountry>> GetAllCountryAsync()
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.TblCountries
+    //        .AsNoTracking()
+    //        .OrderBy(e => e.Name)
+    //        .ToListAsync();
+    //}
+    // ---------------------------------------------------------                  
+    // SearchCountryAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<TblCountry>> SearchCountryAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<TblCountry>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.TblCountries
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.CountryId == id || e.Name.StartsWith(search))
+                .OrderBy(e => e.Name)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.Name.StartsWith(search))
+            .OrderBy(e => e.Name)
+            .ToListAsync();
+
+        //if (string.IsNullOrWhiteSpace(search))
+        //    return Enumerable.Empty<TblCountry>();
+
+        //search = search.Trim();
+
+        //await using var context = _factory.CreateDbContext();
+
+        //var query = context.TblCountries
+        //    .AsNoTracking();
+
+        //if (int.TryParse(search, out var id))
+        //{
+        //    return await query
+        //        .Where(e => e.CountryId == id || e.Name.StartsWith(search))
+        //        .OrderBy(e => e.Name)
+        //        .ToListAsync();
+        //}
+
+        //return await query
+        //    .Where(e => e.Name.StartsWith(search))
+        //    .OrderBy(e => e.Name)
+        //    .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertCountryAsync(TblCountry uiEntity)
+    // ---------------------------------------------------------
+    public async Task<TblCountry> UpsertCountryAsync(TblCountry uiEntity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        TblCountry dbEntity;
+
+        if (uiEntity.CountryId == 0)
+        {
+            dbEntity = new TblCountry();
+            context.TblCountries.Add(dbEntity);
+        }
+        else
+        {
+            dbEntity = await context.TblCountries
+                           .FirstOrDefaultAsync(x => x.CountryId == uiEntity.CountryId)
+                       ?? throw new InvalidOperationException("Entity not found.");
+        }
+
+        CopyProperties(uiEntity, dbEntity,
+            nameof(TblCountry.CountryId)
+            //nameof(TblCountry.Writer),
+            //nameof(TblCountry.WriterDate),
+            //nameof(TblCountry.Updater),
+            //nameof(TblCountry.UpdaterDate)
+        );
+
+        var isNew = dbEntity.CountryId == 0;
+   //     ApplyAuditInfo(dbEntity, isNew);
+
+        await context.SaveChangesAsync();
+
+        return dbEntity;
+    }
+
+    //public Task<TblCountry> UpsertCountryAsync(TblCountry uiEntity)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    if (uiEntity.CountryId == 0)
+    //    {
+    //        await context.TblCountries.AddAsync(uiEntity);
+    //    }
+    //    else
+    //    {
+    //        context.TblCountries.Update(uiEntity);
+    //    }
+
+    //    await context.SaveChangesAsync();
+
+    //    return uiEntity;
+
+    //    //return UpsertAsync<TblCountry, int>(
+    //    //    uiEntity,
+    //    //    ctx => ctx.Set<TblCountry>(),
+    //    //    x => x.CountryId,
+    //    //    (set, id) => set.FirstOrDefaultAsync(x => x.CountryId == id),
+    //    //    MapCountryFields
+    //    //);
+    //}
+    // ---------------------------------------------------------                  
+    // MapCountryFields(TblCountry source, TblCountry target)
+    // ---------------------------------------------------------                 
+    private static void MapCountryFields(TblCountry source, TblCountry target)
+    {
+        target.Name = source.Name;
+        target.Regex = source.Regex;
+        target.ZoomLevel = source.ZoomLevel;
+        target.Latitude = source.Latitude;
+        target.Longitude = source.Longitude;
+    }
+    // ---------------------------------------------------------                  
+    // GetCountryByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<TblCountry?> GetCountryByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblCountries
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.CountryId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteCountryAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteCountryAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.TblCountries.FindAsync(id);
+        if (entity != null)
+        {
+            context.TblCountries.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(TblCountry entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> CountryExistsAsync(TblCountry entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblCountries.AnyAsync(x =>
+            x.Name == entity.Name &&
+            x.Regex == entity.Regex &&
+            x.ZoomLevel == entity.ZoomLevel &&
+            x.Latitude == entity.Latitude &&
+            x.Longitude == entity.Longitude &&
+            x.CountryId != entity.CountryId
+        );
+    }
+    
 
     //alt
     public async Task<List<TblCountry>> GetAllCountriesAsync()
@@ -9231,17 +9414,6 @@ public partial class DataService : ObservableObject, IDataService
                 .ToListAsync();
         }
     }
-    public async Task<bool> CountryExistsAsync(TblCountry model)
-    {
-        return await _context.TblCountries.AnyAsync(c =>
-            c.CountryId != model.CountryId &&
-            c.Name == model.Name &&
-            c.Regex == model.Regex &&
-            c.ZoomLevel == model.ZoomLevel &&
-            c.Latitude == model.Latitude &&
-            c.Longitude == model.Longitude
-        );
-    }
 
     public async Task<List<TblCountry>> GetCountryAsync()
     {
@@ -9266,20 +9438,20 @@ public partial class DataService : ObservableObject, IDataService
             .FirstOrDefaultAsync(e => e.CountryId == countryid);
     }
 
-    public async Task<TblCountry> UpsertCountryAsync(TblCountry country)
-    {
-        if (country.CountryId == 0)
-        {
-            await _context.TblCountries.AddAsync(country);
-        }
-        else
-        {
-            _context.TblCountries.Update(country);
-        }
+    //public async Task<TblCountry> UpsertCountryAsync(TblCountry country)
+    //{
+    //    if (country.CountryId == 0)
+    //    {
+    //        await _context.TblCountries.AddAsync(country);
+    //    }
+    //    else
+    //    {
+    //        _context.TblCountries.Update(country);
+    //    }
 
-        await _context.SaveChangesAsync();
-        return country;
-    }
+    //    await _context.SaveChangesAsync();
+    //    return country;
+    //}
 
     public async Task DeleteCountryAsync(int? countryid)
     {

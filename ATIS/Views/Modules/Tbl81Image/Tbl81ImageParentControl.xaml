@@ -16,8 +16,7 @@
         <GridLength x:Key="Extra2WidthResource">200</GridLength>
         <GridLength x:Key="Extra3WidthResource">80</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
-        <GridLength x:Key="Extra5WidthResource">250</GridLength>
-        <GridLength x:Key="Extra6WidthResource">80</GridLength>
+        <GridLength x:Key="Extra5WidthResource">100</GridLength>
     </UserControl.Resources>
 
     <Grid Padding="2"
@@ -68,7 +67,6 @@
                 <ColumnDefinition Width="{StaticResource Extra3WidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra4WidthResource}" />
                 <ColumnDefinition Width="{StaticResource Extra5WidthResource}" />
-                <ColumnDefinition Width="{StaticResource Extra6WidthResource}" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
@@ -89,12 +87,15 @@
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="5"
+                       loc:Uids.Uid="TextBlock_ImageMimeType"
+                       FontWeight="Bold" />
+            
+            <!--<TextBlock Grid.Column="6"
                        loc:Uids.Uid="TextBlock_Author"
                        FontWeight="Bold" />
-            <TextBlock Grid.Column="6"
+            <TextBlock Grid.Column="7"
                        loc:Uids.Uid="TextBlock_Year"
-                       FontWeight="Bold" />
-            <!--  Hier noch ImageMimeType einfügen  -->
+                       FontWeight="Bold" />-->
 
         </Grid>
 
@@ -150,7 +151,6 @@
                             <ColumnDefinition Width="{StaticResource Extra3WidthResource}" />
                             <ColumnDefinition Width="{StaticResource Extra4WidthResource}" />
                             <ColumnDefinition Width="{StaticResource Extra5WidthResource}" />
-                            <ColumnDefinition Width="{StaticResource Extra6WidthResource}" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0"
@@ -172,9 +172,9 @@
                         <TextBlock Grid.Column="4"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind ValidYear}" />
-                        <!--<TextBlock Grid.Column="5"
+                        <TextBlock Grid.Column="5"
                                    VerticalAlignment="Center"
-                                   Text="{x:Bind Author}" />-->
+                                   Text="{x:Bind ImageMimeType}" />
                         <!--<TextBlock Grid.Column="6"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind AuthorYear}" />-->

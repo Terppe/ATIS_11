@@ -596,7 +596,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavCountries"
                                             loc:Uids.Uid="Nav_Countries"
-                                            Tag="ATIS.Views.Database.TblCountryListPage">
+                                            Tag="ATIS.Views.Modules.TblCountry.TblCountryPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />

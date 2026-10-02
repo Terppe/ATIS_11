@@ -52,10 +52,10 @@
                 IsClosable="False">
                 <tbl93Comment:Tbl93CommentPage />
                 </TabViewItem>-->
-                <TabViewItem x:Uid="TabViewItem_Countries"
+                <!--<TabViewItem x:Uid="TabViewItem_Countries"
                              IsClosable="False">
                     <database:TblCountryListPage />
-                </TabViewItem>
+                </TabViewItem>-->
                 <TabViewItem x:Uid="TabViewItem_UserProfiles"
                              IsClosable="False">
                     <database:TblUserProfileListPage />

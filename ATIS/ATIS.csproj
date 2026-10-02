@@ -322,9 +322,6 @@
 	<Page Update="Views\Database\TblUserProfileListPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Database\TblCountryListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl63InfratribusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -598,8 +595,6 @@
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
-		<None Remove="Views\Database\TblCountryListPage.xaml" />
-		<None Remove="Views\Database\TblCountryListTestPage.xaml" />
 		<None Remove="Views\Database\TblUserProfileListPage.xaml" />
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
@@ -728,6 +723,10 @@
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
+		<None Remove="Views\Modules\TblCountry\TblCountryBossControl.xaml" />
+		<None Remove="Views\Modules\TblCountry\TblCountryEditControl.xaml" />
+		<None Remove="Views\Modules\TblCountry\TblCountryPage.xaml" />
+		<None Remove="Views\Modules\TblCountry\TblCountryParentControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSubTaxoNomenHeaderControl.xaml" />
@@ -812,7 +811,7 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
-	<Folder Include="Views\Modules\TblCountry\" />
+	<Folder Include="ViewModels\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
 
@@ -849,6 +848,30 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblCountry\TblCountryEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblCountry\TblCountryParentControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblCountry\TblCountryBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblCountry\TblCountryPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>
@@ -1783,12 +1806,6 @@
 
 <ItemGroup>
 	<Page Update="Views\Base\Base1List1DetailPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-</ItemGroup>
-
-<ItemGroup>
-	<Page Update="Views\Database\TblCountryListTestPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 </ItemGroup>
