@@ -48,7 +48,6 @@ using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;

@@ -11,6 +11,19 @@
 
     <!--  Tbl87GeographicEditControl Skriptdatum:  13.09.2026  10:32  -->
 
+    <UserControl.Resources>
+        <MenuFlyout x:Key="PointContextFlyout">
+            <MenuFlyoutItem x:Name="MenuAddPoint"
+                            Click="MenuAddPoint_Click"
+                            Text="Punkt hinzufügen" />
+            <MenuFlyoutItem x:Name="MenuChangePoint"
+                            Click="MenuChangePoint_Click"
+                            Text="Punkt ändern" />
+            <MenuFlyoutItem x:Name="MenuDeletePoint"
+                            Click="MenuDeletePoint_Click"
+                            Text="Punkt löschen" />
+        </MenuFlyout>
+    </UserControl.Resources>
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
@@ -54,7 +67,8 @@
                     </Button>
 
                     <!--  SAVE  -->
-                    <Button Command="{Binding SaveCommand}"
+                    <Button Click="SaveButton_Click"
+                            Command="{Binding SaveCommand}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
@@ -72,7 +86,17 @@
                             <TextBlock loc:Uids.Uid="TextBlock_Delete" />
                         </StackPanel>
                     </Button>
-
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8">
+                        <Button Click="ReplacePointButton_Click"
+                                Content="Punkt ändern" />
+                        <Button Click="DeletePointButton_Click"
+                                Content="Punkt löschen" />
+                        <Button Click="SaveButton_Click"
+                                Content="Speichern" />
+                        <Button Click="AddPointButton_Click"
+                                Content="Punkt hinzufügen" />
+                    </StackPanel>
                 </StackPanel>
             </Grid>
 
@@ -154,6 +178,10 @@
                                Text="{Binding Item.ValidYearError, ElementName=Root}"
                                Visibility="{Binding Item.HasValidYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
+                <!--  ZoomLevel  -->
+                <TextBox loc:Uids.Uid="TextBox_ZoomLevel"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.ZoomLevel, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
             <!--  Address  -->
@@ -223,7 +251,10 @@
                             <Grid>
                                 <winUi:MapControl x:Name="MyMap"
                                                   HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Stretch" />
+                                                  VerticalAlignment="Stretch"
+                                                  MapPointerReleased="MyMap_OnMapPointerReleased"
+                                                  RightTapped="MyMap_OnRightTapped"
+                                                  Tapped="MyMap_OnTapped" />
                             </Grid>
                         </Border>
                     </Grid>
@@ -287,10 +318,6 @@
                     <Grid x:Name="LatitudeGrid"
                           Visibility="Collapsed">
                         <StackPanel>
-                            <!--  ZoomLevel  -->
-                            <TextBox loc:Uids.Uid="TextBox_ZoomLevel"
-                                     Style="{StaticResource AtisTextBox}"
-                                     Text="{Binding Item.ZoomLevel, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Orientation="Horizontal">
                                 <!--  Latitude  -->
                                 <TextBox loc:Uids.Uid="TextBox_Latitude"

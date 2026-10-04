@@ -126,6 +126,11 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
+
+    protected virtual Task OnBeforeSaveAsync(TModel item)
+    {
+        return Task.CompletedTask;
+    }
     private async Task SaveAsync()
     {
         if (SelectedItem == null)
@@ -139,6 +144,8 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
 
         await RunWithLoadingAsync(async () =>
         {
+            await OnBeforeSaveAsync(SelectedItem);
+
             var saved = await SaveItemAsync(SelectedItem);
             if (saved != null)
             {
@@ -266,145 +273,6 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
             }
         }
     }
-    //private static async Task EnsureMinimumLoadingTimeAsync(DateTime startedUtc, int minimumMilliseconds = 250)
-    //{
-    //    var elapsed = DateTime.UtcNow - startedUtc;
-    //    var minimum = TimeSpan.FromMilliseconds(minimumMilliseconds);
-
-    //    if (elapsed < minimum)
-    //        await Task.Delay(minimum - elapsed);
-    //}
-
-    //public override async Task ReloadAsync()
-    //{
-    //    var started = DateTime.UtcNow;
-    //    IsLoading = true;
-
-    //    try
-    //    {
-    //        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
-
-    //        var items = await LoadItemsAsync();
-
-    //        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
-    //            items = items.Where(FilterBySearchText);
-
-    //        Items = new ObservableCollection<TModel>(items);
-
-    //        UpdateRefreshState();
-
-    //        if (IsBossMode)
-    //        {
-    //            if (Items.Any())
-    //            {
-    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
-    //                               ?? (string.IsNullOrWhiteSpace(SearchText)
-    //                                   ? Items.FirstOrDefault()
-    //                                   : null);
-    //            }
-    //            else
-    //            {
-    //                SelectedItem = null;
-    //            }
-    //        }
-    //    }
-    //    finally
-    //    {
-    //        await EnsureMinimumLoadingTimeAsync(started);
-    //        IsLoading = false;
-    //    }
-    //}    //{
-    //    var started = DateTime.UtcNow;
-    //    IsLoading = true;
-
-    //    try
-    //    {
-    //        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
-
-    //        var items = await LoadItemsAsync();
-
-    //        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
-    //            items = items.Where(FilterBySearchText);
-
-    //        Items = new ObservableCollection<TModel>(items);
-
-    //        UpdateRefreshState();
-
-    //        if (IsBossMode)
-    //        {
-    //            if (Items.Any())
-    //            {
-    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
-    //                               ?? (string.IsNullOrWhiteSpace(SearchText)
-    //                                   ? Items.FirstOrDefault()
-    //                                   : null);
-    //            }
-    //            else
-    //            {
-    //                SelectedItem = null;
-    //            }
-    //        }
-    //    }
-    //    finally
-    //    {
-    //        var minDuration = TimeSpan.FromMilliseconds(250);
-    //        var elapsed = DateTime.UtcNow - started;
-
-    //        if (elapsed < minDuration)
-    //            await Task.Delay(minDuration - elapsed);
-
-    //        IsLoading = false;
-    //    }
-    //}
-
-    //public override async Task ReloadAsync()
-    //{
-    //    System.Diagnostics.Debug.WriteLine($"[VM] ReloadAsync START {GetType().Name} Hash={GetHashCode()}");
-    //    IsLoading = true;
-    //    System.Diagnostics.Debug.WriteLine($"[VM] PropertyChanged: IsLoading = {IsLoading}");
-
-    //    try
-    //    {
-    //        var oldId = SelectedItem != null ? GetId(SelectedItem) : 0;
-
-    //        var items = await LoadItemsAsync();
-
-    //        // ⭐ Filter nur im Boss-Modus
-    //        if (IsBossMode && !string.IsNullOrWhiteSpace(SearchText))
-    //            items = items.Where(FilterBySearchText);
-
-    //        Items = new ObservableCollection<TModel>(items);
-
-    //        UpdateRefreshState();
-
-    //        if (IsBossMode)
-    //        {
-    //            if (Items.Any())
-    //            {
-    //                // ⭐ Immer alten Datensatz wiederherstellen
-    //                SelectedItem = Items.FirstOrDefault(x => GetId(x) == oldId)
-    //                               ?? (string.IsNullOrWhiteSpace(SearchText)
-    //                                   ? Items.FirstOrDefault()
-    //                                   : null);
-    //            }
-    //            else
-    //            {
-    //                SelectedItem = null;
-    //            }
-    //        }
-    //    }
-    //    finally
-    //    {
-    //        IsLoading = false;
-    //        System.Diagnostics.Debug.WriteLine($"[VM] PropertyChanged: IsLoading = {IsLoading}");
-    //        System.Diagnostics.Debug.WriteLine($"[VM] ReloadAsync END {GetType().Name} Hash={GetHashCode()}");
-    //    }
-    //}
-
-
-    // ---------------------------------------------------------
-    // ID
-    // ---------------------------------------------------------
 
     protected abstract int GetId(TModel item);
 
