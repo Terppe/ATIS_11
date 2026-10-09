@@ -1217,3 +1217,15 @@ jetzt fehlt noch neu, save, delete
 ----------------------------------------
 02.10.2026 17:30 Uhr CountryPage fehler bei search. gelöst. und CountryList in CountryEditcontrol eingefügt. Jetzt kommt Map und wird angezeigt.
 Zoom ist nicht korrect, muss umgerechnet werden. Viele Methoden. Punkte werden angezeigt. Feintuning fehlt noch
+----------------------------------------
+06.10.2026 15:30 Uhr Von hier weiter. #region eingefügt. Continent, Rest leer funktioniert.
+----------------------------------------
+07.10.2026 13:30 Uhr Continent+Country gefüllt.Wenn ComboCountry ausgewählt wird dann Daten aus TblCountry einfügen und speichern klappt.
+----------------------------------------
+07.10.2026 17:30 Uhr 4 Points-version refresh haut nicht hin.
+----------------------------------------
+08.10.2026 13:30 Uhr 4 Points-version weiter. Anzeige von gespeicherten Points ok.
+----------------------------------------
+08.10.2026 16:30 Uhr CRUD der Points funktioniert, aber feintuning fehlt noch
+----------------------------------------
+09.10.2026 11:30 Uhr GeographicPage als Boss und als Parent in SpeciesPage läuft.

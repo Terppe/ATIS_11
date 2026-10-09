@@ -7697,36 +7697,105 @@ public partial class DataService : ObservableObject, IDataService
     }
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl87Geographic entity)
-    // ---------------------------------------------------------                 
+    // ---------------------------------------------------------
+    //
     public async Task<bool> GeographicExistsAsync(Tbl87Geographic entity)
     {
+        System.Diagnostics.Debug.WriteLine(
+            $"GeographicExistsAsync START: HasLocalGeometry={HasLocalGeometry(entity)}, " +
+            $"GeoId={entity.GeographicId}, Continent='{entity.Continent}', Country='{entity.Country}', " +
+            $"Lat1={entity.Latitude1}, Lon1={entity.Longitude1}, Lat2={entity.Latitude2}, Lon2={entity.Longitude2}, Lat3={entity.Latitude3}, Lon3={entity.Longitude3}");
+
+        if (!HasLocalGeometry(entity))
+        {
+            System.Diagnostics.Debug.WriteLine("GeographicExistsAsync RETURN FALSE: no local geometry");
+            return false;
+        }
+
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl87Geographics.AnyAsync(x =>
-            x.SpeciesId == entity.SpeciesId &&
-            x.Valid == entity.Valid &&
-            x.ValidYear == entity.ValidYear &&
-            x.Author == entity.Author &&
-            x.AuthorYear == entity.AuthorYear &&
-            x.Continent == entity.Continent &&
-            x.Country == entity.Country &&
-            x.Address == entity.Address &&
-            x.Jurisdiction == entity.Jurisdiction &&
-            x.Http == entity.Http &&
-            x.Latitude == entity.Latitude &&
-            x.Latitude1 == entity.Latitude1 &&
-            x.Latitude2 == entity.Latitude2 &&
-            x.Latitude3 == entity.Latitude3 &&
-            x.Longitude == entity.Longitude &&
-            x.Longitude1 == entity.Longitude1 &&
-            x.Longitude2 == entity.Longitude2 &&
-            x.Longitude3 == entity.Longitude3 &&
-            x.ZoomLevel == entity.ZoomLevel &&
-            x.Info == entity.Info &&
-            x.Memo == entity.Memo &&
-            x.GeographicId != entity.GeographicId
-        );
+        var candidates = await context.Tbl87Geographics
+            .Where(x =>
+                x.SpeciesId == entity.SpeciesId &&
+                x.Valid == entity.Valid &&
+                x.ValidYear == entity.ValidYear &&
+                x.Author == entity.Author &&
+                x.AuthorYear == entity.AuthorYear &&
+                x.Continent == entity.Continent &&
+                x.Country == entity.Country &&
+                x.Address == entity.Address &&
+                x.Jurisdiction == entity.Jurisdiction &&
+                x.GeographicId != entity.GeographicId)
+            .ToListAsync();
+
+        var result = candidates
+            .Where(HasLocalGeometry)
+            .Any(x => HaveSameLocalGeometry(x, entity));
+
+        System.Diagnostics.Debug.WriteLine(
+            $"GeographicExistsAsync END: candidates={candidates.Count}, result={result}");
+
+        return result;
     }
+    private static bool HaveSameLocalGeometry(Tbl87Geographic a, Tbl87Geographic b)
+    {
+        return
+            NearlyEqual(a.Latitude1, b.Latitude1) &&
+            NearlyEqual(a.Longitude1, b.Longitude1) &&
+            NearlyEqual(a.Latitude2, b.Latitude2) &&
+            NearlyEqual(a.Longitude2, b.Longitude2) &&
+            NearlyEqual(a.Latitude3, b.Latitude3) &&
+            NearlyEqual(a.Longitude3, b.Longitude3);
+    }
+
+    private static bool HasLocalGeometry(Tbl87Geographic x)
+    {
+        return
+            !IsZeroCoordinatePair(x.Latitude1, x.Longitude1) &&
+            !IsZeroCoordinatePair(x.Latitude2, x.Longitude2) &&
+            !IsZeroCoordinatePair(x.Latitude3, x.Longitude3);
+    }
+
+    private static bool IsZeroCoordinatePair(double latitude, double longitude)
+    {
+        return NearlyEqual(latitude, 0d) && NearlyEqual(longitude, 0d);
+    }
+
+    private static bool NearlyEqual(double a, double b, double epsilon = 0.000001d)
+    {
+        return Math.Abs(a - b) < epsilon;
+    }
+
+
+    //public async Task<bool> GeographicExistsAsync(Tbl87Geographic entity)
+    //{
+    //    await using var context = _factory.CreateDbContext();
+
+    //    return await context.Tbl87Geographics.AnyAsync(x =>
+    //        x.SpeciesId == entity.SpeciesId &&
+    //        x.Valid == entity.Valid &&
+    //        x.ValidYear == entity.ValidYear &&
+    //        x.Author == entity.Author &&
+    //        x.AuthorYear == entity.AuthorYear &&
+    //        x.Continent == entity.Continent &&
+    //        x.Country == entity.Country &&
+    //        x.Address == entity.Address &&
+    //        x.Jurisdiction == entity.Jurisdiction &&
+    //        x.Http == entity.Http &&
+    //        x.Latitude == entity.Latitude &&
+    //        x.Latitude1 == entity.Latitude1 &&
+    //        x.Latitude2 == entity.Latitude2 &&
+    //        x.Latitude3 == entity.Latitude3 &&
+    //        x.Longitude == entity.Longitude &&
+    //        x.Longitude1 == entity.Longitude1 &&
+    //        x.Longitude2 == entity.Longitude2 &&
+    //        x.Longitude3 == entity.Longitude3 &&
+    //        x.ZoomLevel == entity.ZoomLevel &&
+    //        x.Info == entity.Info &&
+    //        x.Memo == entity.Memo &&
+    //        x.GeographicId != entity.GeographicId
+    //    );
+    //}
 
     // ---------------------------------------------------------                  
     // HasNameAsync(int geographicId)

@@ -110,15 +110,68 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
         }
     }
 
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
-    public double Latitude1 { get; set; }
-    public double Longitude1 { get; set; }
-    public double Latitude2 { get; set; }
-    public double Longitude2 { get; set; }
-    public double Latitude3 { get; set; }
-    public double Longitude3 { get; set; }
-    public double ZoomLevel { get; set; }
+    private double _zoomLevel;
+    public double ZoomLevel
+    {
+        get => _zoomLevel;
+        set => SetProperty(ref _zoomLevel, value);
+    }
+
+    private double _latitude;
+    public double Latitude
+    {
+        get => _latitude;
+        set => SetProperty(ref _latitude, value);
+    }
+
+    private double _longitude;
+    public double Longitude
+    {
+        get => _longitude;
+        set => SetProperty(ref _longitude, value);
+    }
+
+    private double _latitude1;
+    public double Latitude1
+    {
+        get => _latitude1;
+        set => SetProperty(ref _latitude1, value);
+    }
+
+    private double _longitude1;
+    public double Longitude1
+    {
+        get => _longitude1;
+        set => SetProperty(ref _longitude1, value);
+    }
+
+    private double _latitude2;
+    public double Latitude2
+    {
+        get => _latitude2;
+        set => SetProperty(ref _latitude2, value);
+    }
+
+    private double _longitude2;
+    public double Longitude2
+    {
+        get => _longitude2;
+        set => SetProperty(ref _longitude2, value);
+    }
+
+    private double _latitude3;
+    public double Latitude3
+    {
+        get => _latitude3;
+        set => SetProperty(ref _latitude3, value);
+    }
+
+    private double _longitude3;
+    public double Longitude3
+    {
+        get => _longitude3;
+        set => SetProperty(ref _longitude3, value);
+    }
 
     // ---------------------------------------------------------                  
     // Valid

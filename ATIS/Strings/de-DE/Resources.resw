@@ -1896,6 +1896,9 @@
   <data name="TextBlock_Delete.Text" xml:space="preserve">
     <value>Löschen</value>
   </data>
+  <data name="TextBlock_DeletePoint.Text" xml:space="preserve">
+    <value>Punkt löschen</value>
+  </data>
   <data name="TextBlock_Save.Text" xml:space="preserve">
     <value>Speichern</value>
   </data>
@@ -2630,6 +2633,9 @@
   </data>
   <data name="TextBlock_Reproduction.Text" xml:space="preserve">
     <value>Vermehrung</value>
+  </data>
+  <data name="TextBlock_ReplacePoint.Text" xml:space="preserve">
+    <value>Neue Position wählen…</value>
   </data>
   <data name="TextBlock_Role_Flag.Text" xml:space="preserve">
     <value>Rolle/Flag</value>
@@ -3954,6 +3960,15 @@
   <data name="MenuFlyout_Add_Phylum.Text" xml:space="preserve">
     <value>Hinzufügen Stamm/Abteilung</value>
   </data>
+  <data name="MenuFlyout_Add_Point.Text" xml:space="preserve">
+    <value>Punkt hinzufügen</value>
+  </data>
+  <data name="MenuFlyout_Move_Point.Text" xml:space="preserve">
+    <value>Punkt verschieben</value>
+  </data>
+  <data name="MenuFlyout_Delete_Point.Text" xml:space="preserve">
+    <value>Punkt löschen</value>
+  </data>
   <data name="MenuFlyout_View_Details_Comment.Text" xml:space="preserve">
     <value>Detailansicht Kommentar</value>
   </data>
@@ -4941,11 +4956,17 @@
   <data name="Error_InvalidUrl_Title" xml:space="preserve">
     <value>Ungültige URL</value>
   </data>
+  <data name="Error_MissInfo_Title" xml:space="preserve">
+    <value>Info-Feld</value>
+  </data>
   <data name="Error_InvalidMediaUrl_Message" xml:space="preserve">
     <value>Die URL verweist auf eine Webseite und nicht auf eine direkte Bild-, Audio- oder Videodatei.</value>
   </data>
   <data name="Error_InvalidUrl_Message" xml:space="preserve">
     <value>Die angegebene URL ist ungültig oder unvollständig.</value>
+  </data>
+  <data name="Error_MissInfo_Message" xml:space="preserve">
+    <value>Eingabe fehlt</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Der Autorenname darf nicht leer sein</value>

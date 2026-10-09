@@ -1896,6 +1896,9 @@
   <data name="TextBlock_Delete.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="TextBlock_DeletePoint.Text" xml:space="preserve">
+    <value>Delete point</value>
+  </data>
   <data name="TextBlock_Save.Text" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -2630,6 +2633,9 @@
   </data>
   <data name="TextBlock_Reproduction.Text" xml:space="preserve">
     <value>Reproduction</value>
+  </data>
+  <data name="TextBlock_ReplacePoint.Text" xml:space="preserve">
+    <value>choose new position...</value>
   </data>
   <data name="TextBlock_Role_Flag.Text" xml:space="preserve">
     <value>Role/Flag</value>
@@ -3954,6 +3960,15 @@
   <data name="MenuFlyout_Add_Phylum.Text" xml:space="preserve">
     <value>Add Phylum/Division</value>
   </data>
+  <data name="MenuFlyout_Add_Point.Text" xml:space="preserve">
+    <value>Add Point</value>
+  </data>
+  <data name="MenuFlyout_Move_Point.Text" xml:space="preserve">
+    <value>Move Point</value>
+  </data>
+  <data name="MenuFlyout_Delete_Point.Text" xml:space="preserve">
+    <value>Delete Point</value>
+  </data>
   <data name="MenuFlyout_View_Details_Comment.Text" xml:space="preserve">
     <value>View Details Comment</value>
   </data>
@@ -4941,11 +4956,17 @@
   <data name="Error_InvalidUrl_Title" xml:space="preserve">
     <value>Invalid Url</value>
   </data>
+  <data name="Error_MissInfo_Title" xml:space="preserve">
+    <value>Field Info</value>
+  </data>
   <data name="Error_InvalidMediaUrl_Message" xml:space="preserve">
     <value>The URL relegate to a website, no Image, Video or Audiodata</value>
   </data>
   <data name="Error_InvalidUrl_Message" xml:space="preserve">
     <value>URL is invalid or incomplete</value>
+  </data>
+  <data name="Error_MissInfo_Message" xml:space="preserve">
+    <value>Miss Info</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Author name must not be empty.</value>

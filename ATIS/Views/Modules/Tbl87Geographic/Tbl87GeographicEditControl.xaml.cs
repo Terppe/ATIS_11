@@ -1,4 +1,4 @@
-﻿using Azure.Core.GeoJson;
+﻿using System.Diagnostics;
 using Mapsui;
 using Mapsui.Extensions;
 using Mapsui.Layers;
@@ -6,6 +6,8 @@ using Mapsui.Nts;
 using Mapsui.Projections;
 using Mapsui.Styles;
 using Mapsui.Tiling;
+using Mapsui.Widgets;
+using Mapsui.Widgets.InfoWidgets;
 using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -21,78 +23,71 @@ namespace ATIS.Views.Modules.Tbl87Geographic;
 
 public sealed partial class Tbl87GeographicEditControl : UserControl
 {
-    public Tbl87GeographicViewModel? ViewModel => DataContext as Tbl87GeographicViewModel;
+    #region Nested types / constants
     // ---------------------------------------------------------
-    // CONSTRUCTOR
-    // ---------------------------------------------------------
-
-    public Tbl87GeographicEditControl()
+    private void CenterMap(double latitude, double longitude, double zoomLevel)
     {
-        InitializeComponent();
-        SelectedTabIndex = 0;
-        Loaded += Tbl87GeographicEditControl_Loaded;
+        System.Diagnostics.Debug.WriteLine(
+            $"CenterMap: lat={latitude}, lon={longitude}, zoomLevel={zoomLevel}");
+
+        var sphericalMercator = SphericalMercator.FromLonLat(longitude, latitude);
+        var center = new MPoint(sphericalMercator.x, sphericalMercator.y);
+
+        var resolution = ConvertLegacyZoomToResolution(zoomLevel);
+
+        System.Diagnostics.Debug.WriteLine(
+            $"CenterMap: centerX={center.X}, centerY={center.Y}, resolution={resolution}");
+
+        MyMap.Map?.Navigator.CenterOnAndZoomTo(center, resolution);
+        MyMap.Refresh();
     }
-    private async void Tbl87GeographicEditControl_Loaded(object sender, RoutedEventArgs e)
+    private static readonly Dictionary<string, (double Latitude, double Longitude, double ZoomLevel)> _continentDefaults
+        = new()
+        {
+            ["Africa"] = (1, 20, 3),
+            ["Antarctica"] = (-82, 0, 2),
+            ["Asia"] = (34, 100, 3),
+            ["Australia"] = (-25, 133, 4),
+            ["Central/South America"] = (-15, -60, 4.6),
+            ["Europe"] = (54, 15, 4),
+            ["North America/Caribbean"] = (40, -100, 4.4)
+        };
+
+    private void GetContinentDefaults(string? continent, out double latitude, out double longitude, out double zoomLevel)
     {
-        UpdateTabButtonStates();
-        UpdateDetailContentVisibility();
-
-        InitializeMap();
-        await ApplyStartViewAsync();
-        UpdateMapGeometry();
-    }
-
-    // ---------------------------------------------------------
-    //      DEPENDENCY PROPERTY: ITEM
-    // ---------------------------------------------------------
-
-    public Models.Tbl87Geographic? Item
-    {
-        get => (Models.Tbl87Geographic?)GetValue(ItemProperty);
-        set => SetValue(ItemProperty, value);
-    }
-
-    public static readonly DependencyProperty ItemProperty =
-        DependencyProperty.Register(
-            nameof(Item),
-            typeof(Models.Tbl87Geographic),
-            typeof(Tbl87GeographicEditControl),
-            new PropertyMetadata(null, OnItemChanged));
-
-    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        var control = (Tbl87GeographicEditControl)d;
-        var item = e.NewValue as Models.Tbl87Geographic;
-
-        control.ApplyItem(item);
-    }
-
-    // ---------------------------------------------------------                    
-    // APPLY ITEM
-    // ---------------------------------------------------------                   
-
-    private async void ApplyItem(Models.Tbl87Geographic? newItem)
-    {
-        // ⭐ WICHTIG:
-        // KEIN DataContext-Wechsel!
-        // KEIN Boss-Workflow!
-        // KEIN Parent-Workflow!
-        //
-        // Bindings im XAML zeigen direkt auf Item.XXX
-        // Deshalb bleibt diese Methode LEER.
-
-        if (!_mapInitialized || newItem == null)
+        if (!string.IsNullOrWhiteSpace(continent) &&
+            _continentDefaults.TryGetValue(continent, out var value))
+        {
+            latitude = value.Latitude;
+            longitude = value.Longitude;
+            zoomLevel = value.ZoomLevel;
             return;
+        }
 
-        LoadPointsFromItem();
-        UpdateMapGeometry();
-        await ApplyStartViewAsync();
+        latitude = 20;
+        longitude = 0;
+        zoomLevel = 3;
     }
 
-    // ---------------------------------------------------------
-    // MAP Mapsui
-    // ---------------------------------------------------------
+    public void ResetMapToWorld()
+    {
+        const double latitude = 20;
+        const double longitude = 0;
+        const double zoomLevel = 3;
 
+        if (Item != null)
+        {
+            Item.Latitude = latitude;
+            Item.Longitude = longitude;
+            Item.ZoomLevel = zoomLevel;
+        }
+
+        CenterMap(latitude, longitude, zoomLevel);
+    }
+    #endregion
+
+    #region Fields / state
+    // ---------------------------------------------------------
     private bool _mapInitialized;
     private ILayer? _markerLayer;
     private ILayer? _lineLayer;
@@ -103,9 +98,72 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     // Für Rechtsklick / Kontextmenü
     private int _contextPointIndex = -1;
     private (double lat, double lon)? _contextWorldPosition = null;
+    private readonly List<(double lat, double lon)> _editPoints = new();
+    private bool _isRefreshingView;
+    private bool _hasFallbackPoint;
+    private double? _lastMarkerResolution;
+    private bool _viewportChangedHooked;
+    private bool _mapEventsHooked;
+    private MPoint? _pointerPressedScreenPosition;
+    private double? _pointerPressedX;
+    private double? _pointerPressedY;
+    private const double ClickTolerance = 6d;
+    private Models.Tbl87Geographic? _pendingItem;
+    private bool _isApplyingItem;
+    private bool _isInitializingCombos;
+    #endregion
 
+    #region ctor / loaded
+    // ---------------------------------------------------------
+    public Tbl87GeographicViewModel? ViewModel => DataContext as Tbl87GeographicViewModel;
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
+    public Tbl87GeographicEditControl()
+    {
+        InitializeComponent();
+        SelectedTabIndex = 0;
+        Loaded += Tbl87GeographicEditControl_Loaded;
+        Unloaded += Tbl87GeographicEditControl_Unloaded;
+    }
+    private async void Tbl87GeographicEditControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
+
+        if (DataContext is Tbl87GeographicViewModel vm)
+        {
+            vm.RequestMapReset -= ResetMapToWorld;
+            vm.RequestMapReset += ResetMapToWorld;
+        }
+
+        InitializeMap();
+        HookMapEvents();
+
+        await ApplyStartViewAsync();
+        UpdateMapGeometry();
+        UpdatePointActionButtons();
+
+    }
+    private void Tbl87GeographicEditControl_Unloaded(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is Tbl87GeographicViewModel vm)
+            vm.RequestMapReset -= ResetMapToWorld;
+
+        UnhookMapEvents();
+    }
+
+    #endregion
+
+    // ---------------------------------------------------------
+    // MAP Mapsui
+    // ---------------------------------------------------------
+    #region Initialization / loading
+    // ---------------------------------------------------------
     private async void InitializeMap()
     {
+        LoggingWidget.ShowLoggingInMap = ActiveMode.No;
+
         if (_mapInitialized)
             return;
 
@@ -115,29 +173,46 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         MyMap.Map = map;
         _mapInitialized = true;
 
+        if (_pendingItem != null)
+        {
+            var pending = _pendingItem;
+            _pendingItem = null;
+
+            System.Diagnostics.Debug.WriteLine(
+                $"Map initialized -> applying pending itemId={pending.GeographicId}");
+
+            ApplyItem(pending);
+            return;
+        }
+
         await ApplyStartViewAsync();
     }
     private async Task ApplyStartViewAsync()
     {
-        if (!_mapInitialized || MyMap.Map == null)
+        if (!_mapInitialized || MyMap?.Map == null || Item == null)
             return;
 
-        var points = GetStoredPoints();
-
         await Task.Delay(1000);
+
+        var points = HasRealEditPoints()
+            ? _editPoints.Select(p => (Latitude: p.lat, Longitude: p.lon)).ToList()
+            : GetStoredPoints();
+
+        System.Diagnostics.Debug.WriteLine($"ApplyStartViewAsync: points.Count={points.Count}, zoom={Item.ZoomLevel}");
 
         if (points.Count == 0)
             return;
 
-        double centerLat;
-        double centerLon;
-
-        var zoomResolution = ConvertLegacyZoomToResolution(Item?.ZoomLevel ?? 0);
+        var zoomLevel = Item.ZoomLevel > 0 ? Item.ZoomLevel : 6;
+        var zoomResolution = ConvertLegacyZoomToResolution(zoomLevel);
 
         if (points.Count == 1)
         {
-            centerLat = points[0].Latitude;
-            centerLon = points[0].Longitude;
+            var centerLat = points[0].Latitude;
+            var centerLon = points[0].Longitude;
+
+            System.Diagnostics.Debug.WriteLine(
+                $"ApplyStartViewAsync: single point -> lat={centerLat}, lon={centerLon}, zoom={zoomLevel}");
 
             var worldCenter = SphericalMercator.FromLonLat(centerLon, centerLat);
             MyMap.Map.Navigator.CenterOn(new MPoint(worldCenter.x, worldCenter.y));
@@ -152,103 +227,145 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         var minLon = points.Min(p => p.Longitude);
         var maxLon = points.Max(p => p.Longitude);
 
-        centerLat = (minLat + maxLat) / 2.0;
-        centerLon = (minLon + maxLon) / 2.0;
+        var centerLatMulti = (minLat + maxLat) / 2.0;
+        var centerLonMulti = (minLon + maxLon) / 2.0;
 
-        var worldCenterMulti = SphericalMercator.FromLonLat(centerLon, centerLat);
+        System.Diagnostics.Debug.WriteLine(
+            $"ApplyStartViewAsync: multi point -> minLat={minLat}, maxLat={maxLat}, minLon={minLon}, maxLon={maxLon}, centerLat={centerLatMulti}, centerLon={centerLonMulti}, zoom={zoomLevel}");
+
+        var worldCenterMulti = SphericalMercator.FromLonLat(centerLonMulti, centerLatMulti);
         MyMap.Map.Navigator.CenterOn(new MPoint(worldCenterMulti.x, worldCenterMulti.y));
         MyMap.Map.Navigator.ZoomTo(zoomResolution);
 
         MyMap.Refresh();
     }
-    private double ConvertLegacyZoomToResolution(double zoomLevel)
+    private async Task RefreshViewFromCurrentItemAsync()
     {
-        if (zoomLevel <= 0 || double.IsNaN(zoomLevel) || double.IsInfinity(zoomLevel))
-            return 8000;
+        if (_isRefreshingView)
+            return;
 
-        const double baseResolution = 192000d;
-
-        var resolution = baseResolution / Math.Pow(2d, zoomLevel - 1d);
-
-        if (resolution <= 0 || double.IsNaN(resolution) || double.IsInfinity(resolution))
-            return 8000;
-
-        return resolution;
-    }
-    private double ConvertResolutionToLegacyZoom(double resolution)
-    {
-        if (resolution <= 0 || double.IsNaN(resolution) || double.IsInfinity(resolution))
-            return 5.0;
-
-        const double baseResolution = 192000d;
-
-        var zoomLevel = 1d + Math.Log(baseResolution / resolution, 2d);
-
-        if (double.IsNaN(zoomLevel) || double.IsInfinity(zoomLevel))
-            return 5.0;
-
-        return Math.Round(zoomLevel, 2);
-    }
-    private (double lat, double lon, double resolution) GetBestStartView()
-    {
-        if (Item != null && !(Item.Latitude == 0 && Item.Longitude == 0))
+        if (!_mapInitialized || MyMap?.Map == null || Item == null)
         {
-            var resolution = SavedMapResolution > 0 ? SavedMapResolution : 5;
-            return (Item.Latitude, Item.Longitude, resolution);
+            System.Diagnostics.Debug.WriteLine("RefreshView: aborted");
+            return;
         }
 
-        if (Item != null && ViewModel != null && !string.IsNullOrWhiteSpace(Item.Country))
+        try
         {
-            var country = ViewModel.CountryList
-                .FirstOrDefault(c => string.Equals(c.Name, Item.Country, StringComparison.OrdinalIgnoreCase));
+            _isRefreshingView = true;
 
-            if (country != null)
+            System.Diagnostics.Debug.WriteLine($"RefreshView: itemId={Item.GeographicId}");
+
+            _selectedPointIndex = -1;
+
+            System.Diagnostics.Debug.WriteLine(
+                $"Item coords before LoadPoints: " +
+                $"Lat={Item.Latitude}, Lon={Item.Longitude}, " +
+                $"Lat1={Item.Latitude1}, Lon1={Item.Longitude1}, " +
+                $"Lat2={Item.Latitude2}, Lon2={Item.Longitude2}, " +
+                $"Lat3={Item.Latitude3}, Lon3={Item.Longitude3}, " +
+                $"Zoom={Item.ZoomLevel}");
+
+
+            LoadPointsFromItem();
+
+            System.Diagnostics.Debug.WriteLine($"RefreshView after LoadPoints: _editPoints.Count={_editPoints.Count}");
+
+            var points = GetStoredPoints();
+
+            System.Diagnostics.Debug.WriteLine($"RefreshView GetStoredPoints: Count={points.Count}");
+
+            if (points.Count == 0)
             {
-                var resolution = country.ZoomLevel.HasValue && country.ZoomLevel.Value > 0
-                    ? country.ZoomLevel.Value
-                    : 5;
-
-                return (country.Latitude, country.Longitude, resolution);
+                System.Diagnostics.Debug.WriteLine("RefreshView: fallback -> CenterMapToBestLocation");
+                CenterMapToBestLocation();
+                UpdateMapGeometry();
+                return;
             }
+
+            System.Diagnostics.Debug.WriteLine("RefreshView: points found -> ApplyStartViewAsync");
+            await ApplyStartViewAsync();
+
+            UpdateMapGeometry();
+
+            await Task.Delay(200);
+            MyMap.Refresh();
         }
-
-        if (Item != null && !string.IsNullOrWhiteSpace(Item.Continent))
-            return GetContinentView(Item.Continent);
-
-        return (20, 0, 2);
-    }
-    private (double lat, double lon, double resolution) GetContinentView(string? continent)
-    {
-        return continent switch
+        finally
         {
-            "Africa" => (1, 20, 4),
-            "Antarctica" => (-82, 0, 2),
-            "Asia" => (34, 100, 3),
-            "Australia" => (-25, 133, 4),
-            "Central/South America" => (-15, -60, 3),
-            "Europe" => (54, 15, 4),
-            "North America/Caribbean" => (40, -100, 3),
-            _ => (20, 0, 2)
-        };
+            _isRefreshingView = false;
+        }
     }
+    private void MyMapNavigator_ViewportChanged(object? sender, EventArgs e)
+    {
+        if (MyMap?.Map?.Navigator?.Viewport == null)
+            return;
+
+        var resolution = MyMap.Map.Navigator.Viewport.Resolution;
+
+        if (_lastMarkerResolution.HasValue &&
+            Math.Abs(_lastMarkerResolution.Value - resolution) < 0.0001)
+            return;
+
+        _lastMarkerResolution = resolution;
+        UpdateMapGeometry();
+    }
+    private void HookMapEvents()
+    {
+        if (_mapEventsHooked)
+            return;
+
+        if (MyMap?.Map?.Navigator == null)
+            return;
+
+        MyMap.Map.Navigator.ViewportChanged += MyMapNavigator_ViewportChanged;
+        _mapEventsHooked = true;
+    }
+    private void UnhookMapEvents()
+    {
+        if (!_mapEventsHooked)
+            return;
+
+        if (MyMap?.Map?.Navigator == null)
+            return;
+
+        MyMap.Map.Navigator.ViewportChanged -= MyMapNavigator_ViewportChanged;
+        _mapEventsHooked = false;
+    }
+
+    #endregion
+
+    #region Map positioning / navigation
+    // ---------------------------------------------------------
     private void CenterMapToBestLocation()
     {
-        if (!_mapInitialized || MyMap.Map == null || Item == null)
+        if (!_mapInitialized || MyMap?.Map == null || Item == null)
             return;
+
+        var points = GetStoredPoints();
+        if (points.Count > 0)
+        {
+            System.Diagnostics.Debug.WriteLine("CenterMapToBestLocation: points exist -> ApplyStartViewAsync");
+            _ = ApplyStartViewAsync();
+            return;
+        }
 
         double latitude;
         double longitude;
         double zoom;
 
-        // 1) Bereits gespeicherte Koordinaten
         if (!(Item.Latitude == 0 && Item.Longitude == 0))
         {
             latitude = Item.Latitude;
             longitude = Item.Longitude;
             zoom = Item.ZoomLevel > 0 ? Item.ZoomLevel : 6;
+
+            System.Diagnostics.Debug.WriteLine($"CenterMapToBestLocation: stored coords -> lat={latitude}, lon={longitude}, zoom={zoom}");
+            CenterMap(latitude, longitude, zoom);
+            return;
         }
-        // 2) Country aus Lookup
-        else if (ViewModel != null && !string.IsNullOrWhiteSpace(Item.Country))
+
+        if (ViewModel != null && !string.IsNullOrWhiteSpace(Item.Country))
         {
             var country = ViewModel.CountryList
                 .FirstOrDefault(c => string.Equals(c.Name, Item.Country, StringComparison.OrdinalIgnoreCase));
@@ -261,87 +378,305 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
                     ? country.ZoomLevel.Value
                     : 5;
 
+                SetSingleFallbackPoint(latitude, longitude);
+
+                System.Diagnostics.Debug.WriteLine($"CenterMapToBestLocation: country fallback -> lat={latitude}, lon={longitude}, zoom={zoom}");
                 CenterMap(latitude, longitude, zoom);
                 return;
             }
-
-            // Fallback auf Kontinent
-            GetContinentDefaults(Item.Continent, out latitude, out longitude, out zoom);
         }
-        // 3) Kontinent
-        else if (!string.IsNullOrWhiteSpace(Item.Continent))
+
+        if (!string.IsNullOrWhiteSpace(Item.Continent))
         {
             GetContinentDefaults(Item.Continent, out latitude, out longitude, out zoom);
-        }
-        // 4) Welt
-        else
-        {
-            latitude = 20;
-            longitude = 0;
-            zoom = 2;
+
+            SetSingleFallbackPoint(latitude, longitude);
+
+            System.Diagnostics.Debug.WriteLine($"CenterMapToBestLocation: continent fallback -> lat={latitude}, lon={longitude}, zoom={zoom}");
+            CenterMap(latitude, longitude, zoom);
+            return;
         }
 
-        CenterMap(latitude, longitude, zoom);
+        SetSingleFallbackPoint(20, 0);
+
+        System.Diagnostics.Debug.WriteLine("CenterMapToBestLocation: world fallback -> lat=20, lon=0, zoom=3");
+        CenterMap(20, 0, 3);
     }
-    private void CenterMap(double latitude, double longitude, double zoom)
-    {
-        var sphericalMercator = SphericalMercator.FromLonLat(longitude, latitude);
-        var center = new MPoint(sphericalMercator.x, sphericalMercator.y);
 
-        MyMap.Map?.Navigator.CenterOnAndZoomTo(center, zoom);
+    //private void CenterMapToBestLocation()
+    //{
+    //    if (!_mapInitialized || MyMap?.Map == null || Item == null)
+    //        return;
+
+    //    var points = GetStoredPoints();
+    //    if (points.Count > 0)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine("CenterMapToBestLocation: points exist -> ApplyStartViewAsync");
+    //        _ = ApplyStartViewAsync();
+    //        return;
+    //    }
+
+    //    double latitude;
+    //    double longitude;
+    //    double zoom;
+
+    //    if (!(Item.Latitude == 0 && Item.Longitude == 0))
+    //    {
+    //        latitude = Item.Latitude;
+    //        longitude = Item.Longitude;
+    //        zoom = Item.ZoomLevel > 0 ? Item.ZoomLevel : 6;
+
+    //        System.Diagnostics.Debug.WriteLine($"CenterMapToBestLocation: stored coords -> lat={latitude}, lon={longitude}, zoom={zoom}");
+    //        CenterMap(latitude, longitude, zoom);
+    //        return;
+    //    }
+
+    //    if (ViewModel != null && !string.IsNullOrWhiteSpace(Item.Country))
+    //    {
+    //        var country = ViewModel.CountryList
+    //            .FirstOrDefault(c => string.Equals(c.Name, Item.Country, StringComparison.OrdinalIgnoreCase));
+
+    //        if (country != null)
+    //        {
+    //            latitude = country.Latitude;
+    //            longitude = country.Longitude;
+    //            zoom = country.ZoomLevel.HasValue && country.ZoomLevel.Value > 0
+    //                ? country.ZoomLevel.Value
+    //                : 5;
+
+    //            Item.Latitude = latitude;
+    //            Item.Longitude = longitude;
+    //            Item.ZoomLevel = zoom;
+
+    //            SetSingleFallbackPoint(latitude, longitude);
+
+    //            System.Diagnostics.Debug.WriteLine($"CenterMapToBestLocation: country -> lat={latitude}, lon={longitude}, zoom={zoom}");
+    //            CenterMap(latitude, longitude, zoom);
+    //            return;
+    //        }
+    //    }
+
+    //    if (!string.IsNullOrWhiteSpace(Item.Continent))
+    //    {
+    //        GetContinentDefaults(Item.Continent, out latitude, out longitude, out zoom);
+
+    //        Item.Latitude = latitude;
+    //        Item.Longitude = longitude;
+    //        Item.ZoomLevel = zoom;
+
+    //        SetSingleFallbackPoint(latitude, longitude);
+
+    //        System.Diagnostics.Debug.WriteLine($"CenterMapToBestLocation: continent -> lat={latitude}, lon={longitude}, zoom={zoom}");
+    //        CenterMap(latitude, longitude, zoom);
+    //        return;
+    //    }
+
+    //    Item.Latitude = 20;
+    //    Item.Longitude = 0;
+    //    Item.ZoomLevel = 3;
+
+    //    SetSingleFallbackPoint(20, 0);
+
+    //    System.Diagnostics.Debug.WriteLine("CenterMapToBestLocation: world fallback -> lat=20, lon=0, zoom=3");
+    //    CenterMap(20, 0, 3);
+    //}
+    #endregion
+
+    #region Rendering
+    // ---------------------------------------------------------
+    private List<Coordinate> OrderCoordinatesForPolygon(List<Coordinate> coordinates)
+    {
+        if (coordinates == null || coordinates.Count < 3)
+            return coordinates ?? new List<Coordinate>();
+
+        var centerX = coordinates.Average(c => c.X);
+        var centerY = coordinates.Average(c => c.Y);
+
+        return coordinates
+            .OrderBy(c => Math.Atan2(c.Y - centerY, c.X - centerX))
+            .ToList();
     }
-    private void GetContinentDefaults(string? continent, out double latitude, out double longitude, out double zoom)
+
+    private void UpdateLines()
     {
-        switch (continent)
+        System.Diagnostics.Debug.WriteLine($"UpdateLines START: count={_editPoints?.Count ?? -1}, fallback={_hasFallbackPoint}");
+
+        if (!_mapInitialized || MyMap?.Map == null)
         {
-            case "Africa":
-                latitude = 1;
-                longitude = 20;
-                zoom = 3;
-                break;
-
-            case "Antarctica":
-                latitude = -82;
-                longitude = 0;
-                zoom = 2;
-                break;
-
-            case "Asia":
-                latitude = 34;
-                longitude = 100;
-                zoom = 3;
-                break;
-
-            case "Australia":
-                latitude = -25;
-                longitude = 133;
-                zoom = 4;
-                break;
-
-            case "Central/South America":
-                latitude = -15;
-                longitude = -60;
-                zoom = 3;
-                break;
-
-            case "Europe":
-                latitude = 54;
-                longitude = 15;
-                zoom = 4;
-                break;
-
-            case "North America/Caribbean":
-                latitude = 40;
-                longitude = -100;
-                zoom = 3;
-                break;
-
-            default:
-                latitude = 20;
-                longitude = 0;
-                zoom = 2;
-                break;
+            System.Diagnostics.Debug.WriteLine("UpdateLines RETURN: map not ready");
+            return;
         }
+
+        if (_lineLayer != null)
+        {
+            MyMap.Map.Layers.Remove(_lineLayer);
+            _lineLayer = null;
+        }
+
+        if (_editPoints == null || _editPoints.Count < 2)
+        {
+            System.Diagnostics.Debug.WriteLine("UpdateLines RETURN: less than 2 points");
+            MyMap.Refresh();
+            return;
+        }
+
+        var features = new List<IFeature>();
+
+        var coordinates = _editPoints
+            .Select(p =>
+            {
+                var xy = SphericalMercator.FromLonLat(p.lon, p.lat);
+                return new Coordinate(xy.x, xy.y);
+            })
+            .ToList();
+
+        System.Diagnostics.Debug.WriteLine($"UpdateLines DRAW: coordinates.Count={coordinates.Count}");
+
+        if (coordinates.Count == 2)
+        {
+            var lineFeature = new GeometryFeature
+            {
+                Geometry = new LineString(coordinates.ToArray())
+            };
+
+            lineFeature.Styles.Add(new VectorStyle
+            {
+                Line = new Pen(Color.Red, 2)
+            });
+
+            features.Add(lineFeature);
+        }
+        else if (coordinates.Count >= 3)
+        {
+            var orderedCoordinates = OrderCoordinatesForPolygon(coordinates);
+            var ringCoordinates = new List<Coordinate>(orderedCoordinates);
+
+            var first = ringCoordinates[0];
+            var last = ringCoordinates[^1];
+
+            if (first.X != last.X || first.Y != last.Y)
+                ringCoordinates.Add(new Coordinate(first.X, first.Y));
+
+            var closedLineFeature = new GeometryFeature
+            {
+                Geometry = new LineString(ringCoordinates.ToArray())
+            };
+
+            closedLineFeature.Styles.Add(new VectorStyle
+            {
+                Line = new Pen(Color.Red, 2)
+            });
+
+            features.Add(closedLineFeature);
+        }
+
+        _lineLayer = new MemoryLayer
+        {
+            Name = "EditLinesLayer",
+            Features = features
+        };
+
+        MyMap.Map.Layers.Add(_lineLayer);
+        MyMap.Refresh();
+
+        System.Diagnostics.Debug.WriteLine("UpdateLines END");
+    }
+    private void SetSingleFallbackPoint(double latitude, double longitude)
+    {
+        _editPoints.Clear();
+        _editPoints.Add((latitude, longitude));
+        _hasFallbackPoint = true;
+        _selectedPointIndex = -1;
+        UpdateMapGeometry();
+    }
+    private void UpdatePoints()
+    {
+        if (!_mapInitialized || MyMap?.Map == null || MyMap.Map.Navigator?.Viewport == null)
+            return;
+
+        if (_markerLayer != null)
+        {
+            MyMap.Map.Layers.Remove(_markerLayer);
+            _markerLayer = null;
+        }
+
+        if (_editPoints.Count == 0)
+            return;
+
+        var features = new List<IFeature>();
+        var resolution = MyMap.Map.Navigator.Viewport.Resolution;
+
+        for (int i = 0; i < _editPoints.Count; i++)
+        {
+            var point = _editPoints[i];
+            var isFallbackPoint = _hasFallbackPoint && _editPoints.Count == 1 && i == 0;
+            var isSelectedPoint = i == _selectedPointIndex;
+
+            double pixelRadius;
+            Color outlineColor;
+            Color fillColor;
+            double lineWidth;
+
+            if (isFallbackPoint)
+            {
+                pixelRadius = 8.0d; // größer
+                outlineColor = Color.Orange;
+                fillColor = new Color(255, 200, 0, 80); // leicht transparent
+                lineWidth = 2.5d;
+            }
+            else if (isSelectedPoint)
+            {
+                pixelRadius = 7.0d;
+                outlineColor = Color.LimeGreen;
+                fillColor = new Color(0, 255, 0, 60);
+                lineWidth = 2.5d;
+            }
+            else
+            {
+                pixelRadius = 5.5d;
+                outlineColor = Color.Red;
+                fillColor = new Color(255, 0, 0, 40);
+                lineWidth = 2d;
+            }
+
+            var worldRadius = resolution * pixelRadius;
+
+            var sphericalMercator = SphericalMercator.FromLonLat(point.lon, point.lat);
+            var circleGeometry = CreateCircle(sphericalMercator.x, sphericalMercator.y, worldRadius);
+
+            var feature = new GeometryFeature
+            {
+                Geometry = circleGeometry
+            };
+
+            feature.Styles.Add(new VectorStyle
+            {
+                Fill = new Brush(fillColor),
+                Outline = new Pen(outlineColor, lineWidth)
+            });
+
+            features.Add(feature);
+        }
+
+        _markerLayer = new MemoryLayer
+        {
+            Name = "SelectedLocationMarkers",
+            Features = features,
+            MinVisible = 0,
+            MaxVisible = double.MaxValue
+        };
+
+        MyMap.Map.Layers.Add(_markerLayer);
+        MyMap.Refresh();
+
+        Debug.WriteLine($"UpdatePoints END: count={_editPoints.Count}, fallback={_hasFallbackPoint}, selected={_selectedPointIndex}");
+    }
+    private void UpdateMapGeometry()
+    {
+        UpdateLines();
+        UpdatePoints();
+        MyMap.Refresh();
+        UpdatePointActionButtons();
     }
     private Polygon CreateCircle(double centerX, double centerY, double radius, int segments = 40)
     {
@@ -360,293 +695,19 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         var linearRing = new LinearRing(coordinates);
         return new Polygon(linearRing);
     }
+    #endregion
+
+    #region Point editing / interaction logic
+    // ---------------------------------------------------------
     private void LoadPointsFromItem()
     {
         _editPoints.Clear();
 
-        if (Item == null)
-            return;
+        foreach (var p in GetStoredPoints())
+            _editPoints.Add((p.Latitude, p.Longitude));
 
-        if (!(Item.Latitude == 0 && Item.Longitude == 0))
-            _editPoints.Add((Item.Latitude, Item.Longitude));
-
-        if (!(Item.Latitude1 == 0 && Item.Longitude1 == 0))
-            _editPoints.Add((Item.Latitude1, Item.Longitude1));
-
-        if (!(Item.Latitude2 == 0 && Item.Longitude2 == 0))
-            _editPoints.Add((Item.Latitude2, Item.Longitude2));
-
-        if (!(Item.Latitude3 == 0 && Item.Longitude3 == 0))
-            _editPoints.Add((Item.Latitude3, Item.Longitude3));
-    }
-    private List<(double Latitude, double Longitude)> GetStoredPoints()
-    {
-        var points = new List<(double Latitude, double Longitude)>();
-
-        foreach (var p in _editPoints)
-            points.Add((p.lat, p.lon));
-
-        return points;
-    }
-    private readonly List<(double lat, double lon)> _editPoints = new();
-    private void UpdateLines()
-    {
-        if (!_mapInitialized || MyMap.Map == null)
-            return;
-
-        if (_lineLayer != null)
-        {
-            MyMap.Map.Layers.Remove(_lineLayer);
-            _lineLayer = null;
-        }
-
-        // Beim Editieren vorerst keine Linien zeichnen
-    }
-    //private void UpdateLines()
-    //{
-    //    if (!_mapInitialized || MyMap.Map == null || Item == null)
-    //        return;
-
-    //    if (_lineLayer != null)
-    //    {
-    //        MyMap.Map.Layers.Remove(_lineLayer);
-    //        _lineLayer = null;
-    //    }
-
-    //    var storedPoints = GetStoredPoints();
-    //    if (storedPoints.Count < 2)
-    //        return;
-
-    //    var coordinates = new List<Coordinate>();
-
-    //    foreach (var storedPoint in storedPoints)
-    //    {
-    //        var sphericalMercator = SphericalMercator.FromLonLat(storedPoint.Longitude, storedPoint.Latitude);
-    //        coordinates.Add(new Coordinate(sphericalMercator.x, sphericalMercator.y));
-    //    }
-
-    //    // Bei genau 4 Punkten Polygon schließen
-    //    if (coordinates.Count == 4)
-    //    {
-    //        coordinates.Add(new Coordinate(coordinates[0].X, coordinates[0].Y));
-    //    }
-
-    //    var lineGeometry = new LineString(coordinates.ToArray());
-
-    //    var feature = new GeometryFeature
-    //    {
-    //        Geometry = lineGeometry
-    //    };
-
-    //    feature.Styles.Add(new VectorStyle
-    //    {
-    //        Line = new Pen(Color.Red, 2)
-    //    });
-
-    //    _lineLayer = new MemoryLayer
-    //    {
-    //        Name = "SelectedLocationLine",
-    //        Features = new[] { feature }
-    //    };
-
-    //    MyMap.Map.Layers.Add(_lineLayer);
-    //}
-    private void UpdateMarkers()
-    {
-        if (!_mapInitialized || MyMap.Map == null)
-            return;
-
-        if (_markerLayer != null)
-        {
-            MyMap.Map.Layers.Remove(_markerLayer);
-            _markerLayer = null;
-        }
-
-        if (_editPoints.Count == 0)
-            return;
-
-        var features = new List<IFeature>();
-        var resolution = MyMap.Map.Navigator.Viewport.Resolution;
-        var radius = resolution * 10d;
-
-        for (int i = 0; i < _editPoints.Count; i++)
-        {
-            var point = _editPoints[i];
-            var sphericalMercator = SphericalMercator.FromLonLat(point.lon, point.lat);
-            var circleGeometry = CreateCircle(sphericalMercator.x, sphericalMercator.y, radius);
-
-            var feature = new GeometryFeature
-            {
-                Geometry = circleGeometry
-            };
-
-            var isSelected = i == _selectedPointIndex;
-
-            feature.Styles.Add(new VectorStyle
-            {
-                Fill = isSelected
-                    ? new Brush(new Color(120, 0, 120, 255))
-                    : new Brush(new Color(0, 0, 0, 0)),
-                Outline = new Pen(isSelected ? Color.Blue : Color.Red, isSelected ? 3 : 2)
-            });
-
-            features.Add(feature);
-        }
-
-        _markerLayer = new MemoryLayer
-        {
-            Name = "SelectedLocationMarkers",
-            Features = features
-        };
-
-        MyMap.Map.Layers.Add(_markerLayer);
-        MyMap.Refresh();
-    }
-    private void UpdateMapGeometry()
-    {
-        UpdateLines();
-        UpdateMarkers();
-        MyMap.Refresh();
-    }
-    private void SavePointsToItem(List<(double lat, double lon)> points)
-    {
-        if (Item == null)
-            return;
-
-        Item.Latitude = points.Count > 0 ? points[0].lat : 0;
-        Item.Longitude = points.Count > 0 ? points[0].lon : 0;
-
-        Item.Latitude1 = points.Count > 1 ? points[1].lat : 0;
-        Item.Longitude1 = points.Count > 1 ? points[1].lon : 0;
-
-        Item.Latitude2 = points.Count > 2 ? points[2].lat : 0;
-        Item.Longitude2 = points.Count > 2 ? points[2].lon : 0;
-
-        Item.Latitude3 = points.Count > 3 ? points[3].lat : 0;
-        Item.Longitude3 = points.Count > 3 ? points[3].lon : 0;
-    }
-    private double SavedMapResolution
-    {
-        get => Item?.ZoomLevel ?? 0;
-        set
-        {
-            if (Item != null)
-                Item.ZoomLevel = value;
-        }
-    }
-    private void SaveLegacyZoomToItem()
-    {
-        if (Item == null || MyMap?.Map?.Navigator?.Viewport == null)
-            return;
-
-        var resolution = MyMap.Map.Navigator.Viewport.Resolution;
-        Item.ZoomLevel = ConvertResolutionToLegacyZoom(resolution);
-    }
-    private void MyMap_OnTapped(object sender, TappedRoutedEventArgs e)
-    {
-        if (!_mapInitialized || MyMap?.Map?.Navigator == null)
-            return;
-
-        if (!_addPointMode)
-            return;
-
-        if (_editPoints.Count >= 4)
-        {
-            _addPointMode = false;
-            return;
-        }
-
-        var position = e.GetPosition(MyMap);
-
-        var viewport = MyMap.Map.Navigator.Viewport;
-        var worldPosition = viewport.ScreenToWorld(position.X, position.Y);
-
-        var lonLat = SphericalMercator.ToLonLat(worldPosition.X, worldPosition.Y);
-
-        _editPoints.Add((lonLat.lat, lonLat.lon));
-
-        _addPointMode = false;
+        _hasFallbackPoint = false;
         _selectedPointIndex = -1;
-
-        SavePointsToItem(_editPoints);
-        UpdateMapGeometry();
-    }
-    public void FlushMapStateToItem()
-    {
-        SavePointsToItem(_editPoints);
-        SaveLegacyZoomToItem();
-    }
-
-    private void AddPointButton_Click(object sender, RoutedEventArgs e)
-    {
-        _addPointMode = true;
-        _replacePointMode = false;
-        _selectedPointIndex = -1;
-    }
-    private void SaveButton_Click(object sender, RoutedEventArgs e)
-    {
-        SavePointsToItem(_editPoints);
-        SaveLegacyZoomToItem();
-    }
-    private void MenuAddPoint_Click(object sender, RoutedEventArgs e)
-    {
-        if (_contextWorldPosition == null)
-            return;
-
-        if (_editPoints.Count >= 4)
-            return;
-
-        var p = _contextWorldPosition.Value;
-        _editPoints.Add((p.lat, p.lon));
-
-        _addPointMode = false;
-        _replacePointMode = false;
-        _selectedPointIndex = -1;
-
-        SavePointsToItem(_editPoints);
-        UpdateMapGeometry();
-
-        _contextPointIndex = -1;
-        _contextWorldPosition = null;
-    }
-    private void DeletePointButton_Click(object sender, RoutedEventArgs e)
-    {
-        DeleteSelectedPoint();
-    }
-    private void MyMap_OnMapPointerReleased(object? sender, MapEventArgs e)
-    {
-        if (MyMap?.Map?.Navigator?.Viewport == null)
-            return;
-
-        var worldPosition = e.WorldPosition;
-        var screenPosition = e.ScreenPosition;
-        var lonLat = SphericalMercator.ToLonLat(worldPosition.X, worldPosition.Y);
-
-        // Replace-Modus: selektierten Punkt an neue Stelle setzen
-        if (_replacePointMode && _selectedPointIndex >= 0 && _selectedPointIndex < _editPoints.Count)
-        {
-            _editPoints[_selectedPointIndex] = (lonLat.lat, lonLat.lon);
-
-            _replacePointMode = false;
-            SavePointsToItem(_editPoints);
-            UpdateMapGeometry();
-            return;
-        }
-
-        // Normalmodus: Punkt selektieren
-        var hitIndex = FindPointAtScreenPosition(screenPosition.X, screenPosition.Y);
-        if (hitIndex >= 0)
-        {
-            _selectedPointIndex = hitIndex;
-            UpdateMarkers();
-            MyMap.Refresh();
-            return;
-        }
-
-        // Klick ins Leere: Auswahl optional aufheben
-        _selectedPointIndex = -1;
-        UpdateMarkers();
-        MyMap.Refresh();
     }
     private int FindPointAtScreenPosition(double screenX, double screenY)
     {
@@ -678,10 +739,6 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
         _replacePointMode = true;
     }
-    private void ReplacePointButton_Click(object sender, RoutedEventArgs e)
-    {
-        BeginReplaceSelectedPoint();
-    }
     private void DeleteSelectedPoint()
     {
         if (_selectedPointIndex < 0 || _selectedPointIndex >= _editPoints.Count)
@@ -693,11 +750,137 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         _replacePointMode = false;
         _addPointMode = false;
 
-        SavePointsToItem(_editPoints);
+        SyncItemBeforeSave();
         UpdateMapGeometry();
         MyMap.Refresh();
+        UpdatePointActionButtons();
     }
+    private void UpdatePointActionButtons()
+    {
+        var hasSelectedPoint = _selectedPointIndex >= 0 && _selectedPointIndex < _editPoints.Count;
+        var canAddPoint = _editPoints.Count < 4;
 
+        DeletePointButton.IsEnabled = hasSelectedPoint;
+        ReplacePointButton.IsEnabled = hasSelectedPoint && !_replacePointMode;
+     //   AddPointButton.IsEnabled = canAddPoint;
+    }
+    #endregion
+
+    #region Map/UI event handlers
+    // ---------------------------------------------------------
+    private void MyMap_OnTapped(object sender, TappedRoutedEventArgs e)
+    {
+        if (!_mapInitialized || MyMap?.Map?.Navigator?.Viewport == null)
+            return;
+
+        var position = e.GetPosition(MyMap);
+        var hitIndex = FindPointAtScreenPosition(position.X, position.Y);
+
+        // 1. Replace / Move mode
+        if (_replacePointMode)
+        {
+            if (_selectedPointIndex < 0 || _selectedPointIndex >= _editPoints.Count)
+                return;
+
+            var worldPosition = MyMap.Map.Navigator.Viewport.ScreenToWorld(position.X, position.Y);
+            var lonLat = SphericalMercator.ToLonLat(worldPosition.X, worldPosition.Y);
+
+            _editPoints[_selectedPointIndex] = (lonLat.lat, lonLat.lon);
+
+            _hasFallbackPoint = false;
+            _replacePointMode = false;
+            _addPointMode = false;
+
+            SyncItemBeforeSave();
+            UpdateMapGeometry();
+            UpdatePointActionButtons();
+            return;
+        }
+
+        // 2. Tap on existing point => select it
+        if (hitIndex >= 0)
+        {
+            _selectedPointIndex = hitIndex;
+            UpdateMapGeometry();
+            return;
+        }
+
+        // 3. Tap on empty map => add new point
+        if (_editPoints.Count >= 4)
+            return;
+
+        var world = MyMap.Map.Navigator.Viewport.ScreenToWorld(position.X, position.Y);
+        var p = SphericalMercator.ToLonLat(world.X, world.Y);
+
+        AddPointAt(p.lat, p.lon);
+
+        _selectedPointIndex = -1;
+        _contextPointIndex = -1;
+        _contextWorldPosition = null;
+    }
+    private void MyMap_OnMapPointerPressed(object? sender, MapEventArgs e)
+    {
+        _pointerPressedX = e.ScreenPosition.X;
+        _pointerPressedY = e.ScreenPosition.Y;
+    }
+    private void MyMap_OnMapPointerReleased(object? sender, MapEventArgs e)
+    {
+        if (MyMap?.Map?.Navigator?.Viewport == null)
+            return;
+
+        var screenX = e.ScreenPosition.X;
+        var screenY = e.ScreenPosition.Y;
+
+        bool isClick = false;
+
+        if (_pointerPressedX.HasValue && _pointerPressedY.HasValue)
+        {
+            var dx = screenX - _pointerPressedX.Value;
+            var dy = screenY - _pointerPressedY.Value;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+            isClick = distance <= ClickTolerance;
+        }
+
+        _pointerPressedX = null;
+        _pointerPressedY = null;
+
+        if (!isClick)
+            return;
+
+        var worldPosition = e.WorldPosition;
+        var lonLat = SphericalMercator.ToLonLat(worldPosition.X, worldPosition.Y);
+
+        // Replace-Modus
+        if (_replacePointMode && _selectedPointIndex >= 0 && _selectedPointIndex < _editPoints.Count)
+        {
+            _editPoints[_selectedPointIndex] = (lonLat.lat, lonLat.lon);
+
+            _hasFallbackPoint = false;
+            _replacePointMode = false;
+            _addPointMode = false;
+
+            SyncItemBeforeSave();
+            UpdateMapGeometry();
+            UpdatePointActionButtons();
+            return;
+        }
+
+        // Normalmodus: Punkt selektieren
+        var hitIndex = FindPointAtScreenPosition(screenX, screenY);
+        if (hitIndex >= 0)
+        {
+            _selectedPointIndex = hitIndex;
+            UpdateMapGeometry();
+            MyMap.Refresh();
+            UpdatePointActionButtons();
+            return;
+        }
+
+        _selectedPointIndex = -1;
+        UpdateMapGeometry();
+        MyMap.Refresh();
+        UpdatePointActionButtons();
+    }
     private void MyMap_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
     {
         if (!_mapInitialized || MyMap?.Map?.Navigator?.Viewport == null)
@@ -720,7 +903,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
             _selectedPointIndex = -1;
         }
 
-        UpdateMarkers();
+        UpdateMapGeometry();
         MyMap.Refresh();
 
         if (Resources["PointContextFlyout"] is MenuFlyout flyout)
@@ -745,6 +928,56 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
         e.Handled = true;
     }
+    private void AddPointAt(double lat, double lon)
+    {
+        System.Diagnostics.Debug.WriteLine(
+            $"AddPointAt START: _hasFallbackPoint={_hasFallbackPoint}, _editPoints.Count={_editPoints.Count}, new=({lat},{lon})");
+
+        if (_hasFallbackPoint)
+        {
+            System.Diagnostics.Debug.WriteLine("AddPointAt: clearing fallback");
+            _editPoints.Clear();
+            _hasFallbackPoint = false;
+        }
+
+        if (_editPoints.Count >= 4)
+        {
+            System.Diagnostics.Debug.WriteLine("AddPointAt RETURN: already 4 points");
+            return;
+        }
+
+        _editPoints.Add((lat, lon));
+        _selectedPointIndex = -1;
+
+        System.Diagnostics.Debug.WriteLine($"AddPointAt END: _editPoints.Count={_editPoints.Count}");
+
+        SyncItemBeforeSave();
+        UpdateMapGeometry();
+        UpdatePointActionButtons();
+    }
+    private void DeletePointButton_Click(object sender, RoutedEventArgs e)
+    {
+        DeleteSelectedPoint();
+    }
+    private void ReplacePointButton_Click(object sender, RoutedEventArgs e)
+    {
+        BeginReplaceSelectedPoint();
+    }
+    private void MenuAddPoint_Click(object sender, RoutedEventArgs e)
+    {
+        if (_contextWorldPosition == null)
+            return;
+
+        var p = _contextWorldPosition.Value;
+        AddPointAt(p.lat, p.lon);
+
+        _addPointMode = false;
+        _replacePointMode = false;
+        _selectedPointIndex = -1;
+
+        _contextPointIndex = -1;
+        _contextWorldPosition = null;
+    }
     private void MenuDeletePoint_Click(object sender, RoutedEventArgs e)
     {
         if (_contextPointIndex < 0)
@@ -756,8 +989,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         _contextPointIndex = -1;
         _contextWorldPosition = null;
     }
-
-    private void MenuChangePoint_Click(object sender, RoutedEventArgs e)
+    private void MenuMovePoint_Click(object sender, RoutedEventArgs e)
     {
         if (_contextPointIndex < 0)
             return;
@@ -765,43 +997,408 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         _selectedPointIndex = _contextPointIndex;
         _addPointMode = false;
         _replacePointMode = true;
-    }
-    private void ChangePointButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (_selectedPointIndex < 0 || _selectedPointIndex >= _editPoints.Count)
-            return;
 
-        _addPointMode = false;
-        _replacePointMode = true;
-    }
-    private void ResetModes()
-    {
-        _addPointMode = false;
-        _replacePointMode = false;
-    }
-
-    private void ClearSelection()
-    {
-        _selectedPointIndex = -1;
-        UpdateMarkers();
-        MyMap.Refresh();
-    }
-
-    private void ResetInteractionState()
-    {
-        _addPointMode = false;
-        _replacePointMode = false;
-        _selectedPointIndex = -1;
         _contextPointIndex = -1;
         _contextWorldPosition = null;
 
-        UpdateMarkers();
-        MyMap.Refresh();
+        UpdateMapGeometry();
     }
-    // ---------------------------------------------------------
-    // VALIDATION HELPER
+    public void FlushMapStateToItem()
+    {
+        SavePointsToItem();
+        SaveLegacyZoomToItem();
+    }
+    private bool HasRealEditPoints()
+    {
+        if (_editPoints.Count == 0)
+            return false;
+
+        if (_editPoints.Count > 1)
+            return true;
+
+        if (_hasFallbackPoint && _editPoints.Count == 1)
+            return false;
+
+        return true;
+    }
+    private bool HasOnlyWorldFallbackPoint()
+    {
+        if (Item == null)
+            return false;
+
+        var onlyFirstPoint =
+            !(Item.Latitude == 0 && Item.Longitude == 0) &&
+            (Item.Latitude1 == 0 && Item.Longitude1 == 0) &&
+            (Item.Latitude2 == 0 && Item.Longitude2 == 0) &&
+            (Item.Latitude3 == 0 && Item.Longitude3 == 0);
+
+        if (!onlyFirstPoint)
+            return false;
+
+        return Item.Latitude == 20 &&
+               Item.Longitude == 0 &&
+               Math.Abs(Item.ZoomLevel - 3) < 0.01;
+    }
+    private List<(double Latitude, double Longitude)> GetStoredPoints()
+    {
+        var points = new List<(double Latitude, double Longitude)>();
+
+        if (Item == null)
+            return points;
+
+        if (HasOnlyWorldFallbackPoint())
+            return points;
+
+        if (!(Item.Latitude == 0 && Item.Longitude == 0))
+            points.Add((Item.Latitude, Item.Longitude));
+
+        if (!(Item.Latitude1 == 0 && Item.Longitude1 == 0))
+            points.Add((Item.Latitude1, Item.Longitude1));
+
+        if (!(Item.Latitude2 == 0 && Item.Longitude2 == 0))
+            points.Add((Item.Latitude2, Item.Longitude2));
+
+        if (!(Item.Latitude3 == 0 && Item.Longitude3 == 0))
+            points.Add((Item.Latitude3, Item.Longitude3));
+
+        return points;
+    }
+    private void ContinentCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        System.Diagnostics.Debug.WriteLine("ContinentCombo_OnSelectionChanged START");
+
+        if (_isInitializingCombos)
+        {
+            System.Diagnostics.Debug.WriteLine("ContinentCombo_OnSelectionChanged RETURN: _isInitializingCombos == true");
+            return;
+        }
+
+        if (_isApplyingItem)
+        {
+            System.Diagnostics.Debug.WriteLine("ContinentCombo_OnSelectionChanged RETURN: _isApplyingItem == true");
+            return;
+        }
+
+        if (!_mapInitialized)
+        {
+            System.Diagnostics.Debug.WriteLine("ContinentCombo_OnSelectionChanged RETURN: map not initialized");
+            return;
+        }
+
+        if (_pendingItem != null)
+        {
+            System.Diagnostics.Debug.WriteLine("ContinentCombo_OnSelectionChanged RETURN: pending item exists");
+            return;
+        }
+
+        if (ViewModel == null || Item == null)
+        {
+            System.Diagnostics.Debug.WriteLine("ContinentCombo_OnSelectionChanged RETURN: ViewModel or Item is null");
+            return;
+        }
+
+        // Wenn bereits echte Punkte bearbeitet wurden, nichts mehr automatisch verschieben
+        if (HasRealEditPoints())
+            return;
+
+        var continent = (sender as ComboBox)?.SelectedItem as string;
+
+        if (string.IsNullOrWhiteSpace(continent))
+        {
+            CenterMapToBestLocation();
+            return;
+        }
+
+        GetContinentDefaults(continent, out var latitude, out var longitude, out var zoomLevel);
+
+        Item.Continent = continent;
+        Item.Latitude = latitude;
+        Item.Longitude = longitude;
+        Item.ZoomLevel = zoomLevel;
+
+        SetSingleFallbackPoint(latitude, longitude);
+        CenterMap(latitude, longitude, zoomLevel);
+    }
+    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        System.Diagnostics.Debug.WriteLine(
+            $"CountryCombo: _editPoints.Count={_editPoints.Count}, _hasFallbackPoint={_hasFallbackPoint}, HasRealEditPoints={HasRealEditPoints()}");
+
+        System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged START");
+
+        if (_isInitializingCombos)
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: _isInitializingCombos == true");
+            return;
+        }
+
+        if (_isApplyingItem)
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: _isApplyingItem == true");
+            return;
+        }
+
+        if (!_mapInitialized)
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: map not initialized");
+            return;
+        }
+
+        if (_pendingItem != null)
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: pending item exists");
+            return;
+        }
+
+        if (ViewModel == null || Item == null)
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: ViewModel or Item is null");
+            return;
+        }
+
+        if (HasRealEditPoints())
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: HasRealEditPoints == true");
+            return;
+        }
+
+        var selectedCountry = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
+
+        System.Diagnostics.Debug.WriteLine($"CountryCombo SelectedItem type: {(sender as ComboBox)?.SelectedItem?.GetType().FullName}");
+        System.Diagnostics.Debug.WriteLine($"CountryCombo SelectedItem value: {(sender as ComboBox)?.SelectedItem}");
+
+        if (selectedCountry == null)
+        {
+            System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged RETURN: selectedCountry is null");
+            return;
+        }
+
+        System.Diagnostics.Debug.WriteLine(
+            $"Country found: Name={selectedCountry.Name}, Lat={selectedCountry.Latitude}, Lon={selectedCountry.Longitude}, Zoom={selectedCountry.ZoomLevel}");
+
+        Item.Country = selectedCountry.Name;
+        Item.Latitude = selectedCountry.Latitude;
+        Item.Longitude = selectedCountry.Longitude;
+        Item.ZoomLevel = selectedCountry.ZoomLevel.HasValue && selectedCountry.ZoomLevel.Value > 0
+            ? selectedCountry.ZoomLevel.Value
+            : 5;
+
+        SetSingleFallbackPoint(Item.Latitude, Item.Longitude);
+        CenterMap(Item.Latitude, Item.Longitude, Item.ZoomLevel);
+
+        System.Diagnostics.Debug.WriteLine("CountryCombo_OnSelectionChanged END");
+    }
+    #endregion
+
+    #region Persistence / save
     // ---------------------------------------------------------
 
+    private void SavePointsToItem()
+    {
+        if (Item == null)
+            return;
+
+        Item.Latitude = 0;
+        Item.Longitude = 0;
+        Item.Latitude1 = 0;
+        Item.Longitude1 = 0;
+        Item.Latitude2 = 0;
+        Item.Longitude2 = 0;
+        Item.Latitude3 = 0;
+        Item.Longitude3 = 0;
+
+        if (_editPoints.Count > 0)
+        {
+            Item.Latitude = _editPoints[0].lat;
+            Item.Longitude = _editPoints[0].lon;
+        }
+
+        if (_editPoints.Count > 1)
+        {
+            Item.Latitude1 = _editPoints[1].lat;
+            Item.Longitude1 = _editPoints[1].lon;
+        }
+
+        if (_editPoints.Count > 2)
+        {
+            Item.Latitude2 = _editPoints[2].lat;
+            Item.Longitude2 = _editPoints[2].lon;
+        }
+
+        if (_editPoints.Count > 3)
+        {
+            Item.Latitude3 = _editPoints[3].lat;
+            Item.Longitude3 = _editPoints[3].lon;
+        }
+    }
+    private void SaveLegacyZoomToItem()
+    {
+        if (Item == null || MyMap?.Map?.Navigator?.Viewport == null)
+            return;
+
+        var resolution = MyMap.Map.Navigator.Viewport.Resolution;
+        Item.ZoomLevel = ConvertResolutionToLegacyZoom(resolution);
+    }
+    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    {
+        SavePointsToItem();
+        EnsureLocationDefaultsInItem();
+        SaveLegacyZoomToItem();
+
+
+        System.Diagnostics.Debug.WriteLine(
+            $"CONTROL SAVE: Zoom={Item?.ZoomLevel}, " +
+            $"P0=({Item?.Latitude}, {Item?.Longitude}), " +
+            $"P1=({Item?.Latitude1}, {Item?.Longitude1}), " +
+            $"P2=({Item?.Latitude2}, {Item?.Longitude2}), " +
+            $"P3=({Item?.Latitude3}, {Item?.Longitude3})");
+
+    }
+    private void EnsureLocationDefaultsInItem()
+    {
+        if (Item == null)
+            return;
+
+        var hasPoints =
+            !(Item.Latitude == 0 && Item.Longitude == 0) ||
+            !(Item.Latitude1 == 0 && Item.Longitude1 == 0) ||
+            !(Item.Latitude2 == 0 && Item.Longitude2 == 0) ||
+            !(Item.Latitude3 == 0 && Item.Longitude3 == 0);
+
+        if (hasPoints)
+            return;
+
+        if (ViewModel != null && !string.IsNullOrWhiteSpace(Item.Country))
+        {
+            var country = ViewModel.CountryList?
+                .FirstOrDefault(c => string.Equals(c.Name, Item.Country, StringComparison.OrdinalIgnoreCase));
+
+            if (country != null)
+            {
+                Item.Latitude = country.Latitude;
+                Item.Longitude = country.Longitude;
+                Item.ZoomLevel = country.ZoomLevel.HasValue && country.ZoomLevel.Value > 0
+                    ? country.ZoomLevel.Value
+                    : 5;
+                return;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(Item.Continent))
+        {
+            GetContinentDefaults(Item.Continent, out var latitude, out var longitude, out var zoomLevel);
+            Item.Latitude = latitude;
+            Item.Longitude = longitude;
+            Item.ZoomLevel = zoomLevel;
+            return;
+        }
+
+        Item.Latitude = 20;
+        Item.Longitude = 0;
+        Item.ZoomLevel = 3;
+    }
+    private void SyncItemBeforeSave()
+    {
+        SavePointsToItem();
+        EnsureLocationDefaultsInItem();
+        SaveLegacyZoomToItem();
+    }
+    #endregion
+
+    #region Legacy/compat helpers (nur wenn wirklich noch benutzt)
+    // ---------------------------------------------------------
+    private double ConvertLegacyZoomToResolution(double zoomLevel)
+    {
+        if (zoomLevel <= 0 || double.IsNaN(zoomLevel) || double.IsInfinity(zoomLevel))
+            return 8000;
+
+        const double baseResolution = 192000d;
+        var resolution = baseResolution / Math.Pow(2d, zoomLevel - 1d);
+
+        if (resolution <= 0 || double.IsNaN(resolution) || double.IsInfinity(resolution))
+            return 8000;
+
+        return resolution;
+    }
+    private double ConvertResolutionToLegacyZoom(double resolution)
+    {
+        if (resolution <= 0 || double.IsNaN(resolution) || double.IsInfinity(resolution))
+            return 5.0;
+
+        const double baseResolution = 192000d;
+
+        var zoomLevel = 1d + Math.Log(baseResolution / resolution, 2d);
+
+        if (double.IsNaN(zoomLevel) || double.IsInfinity(zoomLevel))
+            return 5.0;
+
+        return Math.Round(zoomLevel, 2);
+    }
+    #endregion
+
+    #region DEPENDENCY PROPERTY: ITEM
+    // ---------------------------------------------------------
+    public Models.Tbl87Geographic? Item
+    {
+        get => (Models.Tbl87Geographic?)GetValue(ItemProperty);
+        set => SetValue(ItemProperty, value);
+    }
+
+    public static readonly DependencyProperty ItemProperty =
+        DependencyProperty.Register(
+            nameof(Item),
+            typeof(Models.Tbl87Geographic),
+            typeof(Tbl87GeographicEditControl),
+            new PropertyMetadata(null, OnItemChanged));
+
+    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        var control = (Tbl87GeographicEditControl)d;
+        var item = e.NewValue as Models.Tbl87Geographic;
+
+        System.Diagnostics.Debug.WriteLine(
+            $"OnItemChanged: oldId={(e.OldValue as Models.Tbl87Geographic)?.GeographicId}, newId={item?.GeographicId}");
+
+        control.ApplyItem(item);
+    }
+    #endregion
+
+    #region APPLY ITEM
+    // ---------------------------------------------------------                   
+    private async void ApplyItem(Models.Tbl87Geographic? newItem)
+    {
+        System.Diagnostics.Debug.WriteLine(
+            $"ApplyItem: mapInitialized={_mapInitialized}, itemId={newItem?.GeographicId}");
+
+        if (newItem == null)
+            return;
+
+        if (!_mapInitialized)
+        {
+            _pendingItem = newItem;
+            System.Diagnostics.Debug.WriteLine(
+                $"ApplyItem deferred: itemId={newItem.GeographicId}");
+            return;
+        }
+
+        _isApplyingItem = true;
+        _isInitializingCombos = true;
+
+        try
+        {
+            _pendingItem = null;
+            await RefreshViewFromCurrentItemAsync();
+        }
+        finally
+        {
+            _isInitializingCombos = false;
+            _isApplyingItem = false;
+        }
+    }
+    #endregion
+
+    #region VALIDATION HELPER
+    // ---------------------------------------------------------
     private void UpdateValidationState(TextBox box, bool hasError)
     {
         if (box == null)
@@ -818,12 +1415,10 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         else
             VisualStateManager.GoToState(box, "Normal", true);
     }
+    #endregion
 
-
+    #region VALID YEAR VALIDATION
     // ---------------------------------------------------------                   
-    // VALID YEAR VALIDATION
-    // ---------------------------------------------------------                   
-
     private void ValidYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
@@ -833,9 +1428,9 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     {
         UpdateValidationState(ValidYearBox, Item?.HasValidYearError ?? false);
     }
+    #endregion
 
-    // ---------------------------------------------------------                   
-    // AUTHOR YEAR VALIDATION
+    #region AUTHOR YEAR VALIDATION
     // ---------------------------------------------------------                   
 
     private void AuthorYearBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -847,9 +1442,9 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     {
         UpdateValidationState(AuthorYearBox, Item?.HasAuthorYearError ?? false);
     }
+    #endregion
 
-    // ---------------------------------------------------------                   
-    // HTTP VALIDATION
+    #region HTTP VALIDATION
     // ---------------------------------------------------------                   
 
     private void HttpBox_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -861,41 +1456,9 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     {
         UpdateValidationState(HttpBox, Item?.HasHttpError ?? false);
     }
+    #endregion
 
-    private void ComboContinent_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var cmb = sender as ComboBox;
-        if (cmb == null)
-        {
-            return;
-        }
-
-        var text = ((ComboBox)sender).SelectedItem as string;
-        switch (text)
-        {
-            case "":    //neu
-                break;
-            case "Africa":
-                break;
-            case "Antarctica":
-                break;
-            case "Asia":
-                break;
-            case "Australia":
-                break;
-            case "Central/South America":
-                break;
-            case "Europe":
-                break;
-            case "North America/Caribbean":
-                break;
-        }
-
-        CenterMapToBestLocation();
-    }
-
-    // ---------------------------------------------------------                   
-    // DETAIL TAB VALIDATION
+    #region DETAIL TAB VALIDATION
     // ---------------------------------------------------------                   
     private int SelectedTabIndex = 0;
 
@@ -929,10 +1492,6 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         DataGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
         LatitudeGrid.Visibility = SelectedTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
     }
-
-    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        CenterMapToBestLocation();
-    }
+    #endregion
 
 }
