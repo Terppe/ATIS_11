@@ -94,8 +94,6 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     private bool _addPointMode = false;
     private bool _replacePointMode = false;
     private int _selectedPointIndex = -1;
-
-    // Für Rechtsklick / Kontextmenü
     private int _contextPointIndex = -1;
     private (double lat, double lon)? _contextWorldPosition = null;
     private readonly List<(double lat, double lon)> _editPoints = new();
@@ -142,7 +140,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
         await ApplyStartViewAsync();
         UpdateMapGeometry();
-        UpdatePointActionButtons();
+        //UpdatePointActionButtons();
 
     }
     private void Tbl87GeographicEditControl_Unloaded(object sender, RoutedEventArgs e)
@@ -676,7 +674,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         UpdateLines();
         UpdatePoints();
         MyMap.Refresh();
-        UpdatePointActionButtons();
+        //UpdatePointActionButtons();
     }
     private Polygon CreateCircle(double centerX, double centerY, double radius, int segments = 40)
     {
@@ -753,17 +751,17 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         SyncItemBeforeSave();
         UpdateMapGeometry();
         MyMap.Refresh();
-        UpdatePointActionButtons();
+        //UpdatePointActionButtons();
     }
-    private void UpdatePointActionButtons()
-    {
-        var hasSelectedPoint = _selectedPointIndex >= 0 && _selectedPointIndex < _editPoints.Count;
-        var canAddPoint = _editPoints.Count < 4;
+    //private void UpdatePointActionButtons()
+    //{
+    //    var hasSelectedPoint = _selectedPointIndex >= 0 && _selectedPointIndex < _editPoints.Count;
+    //    var canAddPoint = _editPoints.Count < 4;
 
-        DeletePointButton.IsEnabled = hasSelectedPoint;
-        ReplacePointButton.IsEnabled = hasSelectedPoint && !_replacePointMode;
-     //   AddPointButton.IsEnabled = canAddPoint;
-    }
+    //    //DeletePointButton.IsEnabled = hasSelectedPoint;
+    ////    ReplacePointButton.IsEnabled = hasSelectedPoint && !_replacePointMode;
+    // //   AddPointButton.IsEnabled = canAddPoint;
+    //}
     #endregion
 
     #region Map/UI event handlers
@@ -793,7 +791,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
             SyncItemBeforeSave();
             UpdateMapGeometry();
-            UpdatePointActionButtons();
+            //UpdatePointActionButtons();
             return;
         }
 
@@ -861,7 +859,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
             SyncItemBeforeSave();
             UpdateMapGeometry();
-            UpdatePointActionButtons();
+            //UpdatePointActionButtons();
             return;
         }
 
@@ -872,14 +870,14 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
             _selectedPointIndex = hitIndex;
             UpdateMapGeometry();
             MyMap.Refresh();
-            UpdatePointActionButtons();
+                //UpdatePointActionButtons();
             return;
         }
 
         _selectedPointIndex = -1;
         UpdateMapGeometry();
         MyMap.Refresh();
-        UpdatePointActionButtons();
+        //UpdatePointActionButtons();
     }
     private void MyMap_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
     {
@@ -953,7 +951,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
         SyncItemBeforeSave();
         UpdateMapGeometry();
-        UpdatePointActionButtons();
+            //UpdatePointActionButtons();
     }
     private void DeletePointButton_Click(object sender, RoutedEventArgs e)
     {

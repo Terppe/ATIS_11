@@ -32,6 +32,8 @@ using ATIS.Views.Modules.Tbl48Subfamily;
 using ATIS.Views.Modules.Tbl51Infrafamily;
 using ATIS.Views.Modules.Tbl54Supertribus;
 using ATIS.Views.Modules.Tbl57Tribus;
+using ATIS.Views.Modules.Tbl60Subtribus;
+using ATIS.Views.Modules.Tbl63Infratribus;
 using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl68Speciesgroup;
 using ATIS.Views.Modules.Tbl75Species;
@@ -39,9 +41,13 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
+using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl90RefExpert;
+using ATIS.Views.Modules.Tbl90RefAuthor;
 using ATIS.Views.Modules.Tbl90RefSource;
+using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Modules.TblCountry;
+using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
@@ -52,11 +58,6 @@ using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
-using Tbl60SubtribusViewModel = ATIS.Views.Modules.Tbl60Subtribus.Tbl60SubtribusViewModel;
-using Tbl63InfratribusViewModel = ATIS.Views.Modules.Tbl63Infratribus.Tbl63InfratribusViewModel;
-using Tbl90RefAuthorViewModel = ATIS.Views.Modules.Tbl90RefAuthor.Tbl90RefAuthorViewModel;
-using Tbl90ReferenceViewModel = ATIS.Views.Modules.Tbl90Reference.Tbl90ReferenceViewModel;
-using Tbl93CommentViewModel = ATIS.Views.Modules.Tbl93Comment.Tbl93CommentViewModel;
 
 namespace ATIS;
 
@@ -97,7 +98,7 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
 
-#if DEBUG
+    #if DEBUG
         AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
         {
             if (e.Exception is System.Net.Sockets.SocketException)
@@ -106,7 +107,7 @@ public partial class App : Application
                     $"[FirstChance] {e.Exception.GetType().Name}: {e.Exception.Message}");
             }
         };
-#endif
+    #endif
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
             System.Diagnostics.Debug.WriteLine($"[Unhandled] {e.ExceptionObject}");
@@ -364,8 +365,8 @@ public partial class App : Application
         services.AddTransient<Tbl93CommentViewModel>();
 
         services.AddTransient<TblCountryViewModel>();
+        services.AddTransient<TblUserProfileViewModel>();
 
-        services.AddTransient<TblUserProfileAltViewModel>();
         services.AddTransient<FoodViewModel>();
         services.AddTransient<TblFoodViewModel>();
         services.AddTransient<TblDiseaseViewModel>();

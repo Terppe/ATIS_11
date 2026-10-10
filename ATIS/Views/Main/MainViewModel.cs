@@ -28,6 +28,9 @@ using ATIS.Views.Modules.Tbl63Infratribus;
 using ATIS.Views.Modules.Tbl66Genus;
 using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl78Name;
+using ATIS.Views.Modules.Tbl81Image;
+using ATIS.Views.Modules.Tbl84Synonym;
+using ATIS.Views.Modules.Tbl87Geographic;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.Data.SqlClient;
@@ -63,17 +66,19 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
     public Tbl45FamilyViewModel FamilyVM { get; }
     public Tbl48SubfamilyViewModel SubfamilyVM { get; }
     public Tbl51InfrafamilyViewModel InfrafamilyVM { get; }
-
-    public Tbl90ReferenceViewModel ReferenceVM { get; }
-    public Tbl93CommentViewModel CommentVM { get; }
+    public Tbl54SupertribusViewModel SupertribusVM { get; }
+    public Tbl57TribusViewModel TribusVM { get; }
+    public Tbl60SubtribusViewModel SubtribusVM { get; }
+    public Tbl63InfratribusViewModel InfratribusVM { get; }
+    public Tbl66GenusViewModel GenusVM { get; }
+    public Tbl75SpeciesViewModel SpeciesVM { get; }
 
     public Tbl78NameViewModel NameVM { get; }
-    public Tbl75SpeciesViewModel SpeciesVM { get; }
-    public Tbl66GenusViewModel GenusVM { get; }
-    public Tbl63InfratribusViewModel InfratribusVM { get; }
-    public Tbl60SubtribusViewModel SubtribusVM { get; }
-    public Tbl57TribusViewModel TribusVM { get; }
-    public Tbl54SupertribusViewModel SupertribusVM { get; }
+    public Tbl81ImageViewModel ImageVM { get; }
+    public Tbl84SynonymViewModel SynonymVM { get; }
+    public Tbl87GeographicViewModel GeographicVM { get; }
+    public Tbl90ReferenceViewModel ReferenceVM { get; }
+    public Tbl93CommentViewModel CommentVM { get; }
 
     public MainViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -113,6 +118,9 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         CommentVM = new Tbl93CommentViewModel(factory, dialogService, coordinator, lookupService, user);
 
         NameVM = new Tbl78NameViewModel(factory, dialogService, coordinator, lookupService, user);
+        ImageVM = new Tbl81ImageViewModel(factory, dialogService, coordinator, lookupService, user);
+        SynonymVM = new Tbl84SynonymViewModel(factory, dialogService, coordinator, lookupService, user);
+        GeographicVM = new Tbl87GeographicViewModel(factory, dialogService, coordinator, lookupService, user);
     }
 
     private bool _isLoading;

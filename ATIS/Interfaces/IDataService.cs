@@ -1167,14 +1167,22 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     #endregion Country
 
     #region UserProfile
+    // ---------------------------------------------------------   
+    Task<IEnumerable<TblUserProfile>> GetAllUserProfileAsync();
+    Task<IEnumerable<TblUserProfile>> SearchUserProfileWithNULLAsync(string? search);
+    Task<TblUserProfile?> GetUserProfileByIdAsync(int id);
+    Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile entity);
+    Task DeleteUserProfileAsync(int id);
+    Task<bool> UserProfileExistsAsync(TblUserProfile entity);
 
+    //alt
     ObservableCollection<TblUserProfile> GetUserProfileAsync();
     ObservableCollection<TblUserProfile> GetUserProfileAsync(int userprofileid);
     ObservableCollection<TblUserProfile> GetEmailFromUserProfileAsync(string email);
     Task<ObservableCollection<TblUserProfile>> GetUserProfileAsync(string search);
-    Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile userprofile);
+    //Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile userprofile);
     Task<TblUserProfile> UpsertEmailFromUserProfileAsync(TblUserProfile userprofile);
-    Task DeleteUserProfileAsync(int userprofileid);
+    //Task DeleteUserProfileAsync(int userprofileid);
 
     #endregion UserProfile
 

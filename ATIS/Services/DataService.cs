@@ -9540,6 +9540,134 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Country
 
     #region UserProfile
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllUserProfileAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<TblUserProfile>> GetAllUserProfileAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblUserProfiles
+            .AsNoTracking()
+            .OrderBy(e => e.Email)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchUserProfileWithNULLAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<TblUserProfile>> SearchUserProfileWithNULLAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<TblUserProfile>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.TblUserProfiles
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.UserProfileId == id || e.Email.StartsWith(search))
+                .OrderBy(e => e.Email)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.Email.StartsWith(search))
+            .OrderBy(e => e.Email)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertUserProfileAsync(TblUserProfile uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile uiEntity)
+    {
+        return UpsertAsync<TblUserProfile, int>(
+            uiEntity,
+            ctx => ctx.Set<TblUserProfile>(),
+            x => x.UserProfileId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.UserProfileId == id),
+            MapUserProfileFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapUserProfileFields(TblUserProfile source, TblUserProfile target)
+    // ---------------------------------------------------------                 
+    private static void MapUserProfileFields(TblUserProfile source, TblUserProfile target)
+    {
+        target.Email = source.Email;
+        target.FirstName = source.FirstName;
+        target.LastName = source.LastName;
+        target.Filestream = source.Filestream;
+        target.FilestreamId = source.FilestreamId;
+        //target.Author = source.Author;
+        //target.AuthorYear = source.AuthorYear;
+        //target.Info = source.Info;
+        //target.EngName = source.EngName;
+        //target.GerName = source.GerName;
+        //target.FraName = source.FraName;
+        //target.PorName = source.PorName;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetUserProfileByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<TblUserProfile?> GetUserProfileByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblUserProfiles
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.UserProfileId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteUserProfileAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteUserProfileAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.TblUserProfiles.FindAsync(id);
+        if (entity != null)
+        {
+            context.TblUserProfiles.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(TblUserProfile entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> UserProfileExistsAsync(TblUserProfile entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblUserProfiles.AnyAsync(x =>
+            x.Email == entity.Email &&          
+            x.FirstName == entity.FirstName &&
+            x.LastName == entity.LastName &&
+            x.Filestream == entity.Filestream &&
+            x.FilestreamId == entity.FilestreamId &&
+            //x.NULLId == entity.NULLId &&
+            //x.Valid == entity.Valid &&
+            //x.ValidYear == entity.ValidYear &&
+            //x.Synonym == entity.Synonym &&
+            //x.Author == entity.Author &&
+            //x.AuthorYear == entity.AuthorYear &&
+            //x.Info == entity.Info &&
+            //x.EngName == entity.EngName &&
+            ////x.GerName == entity.GerName &&
+            //  x.FraName == entity.FraName &&
+            //x.PorName == entity.PorName &&
+            x.Memo == entity.Memo &&
+            x.UserProfileId != entity.UserProfileId
+        );
+    }
+
+    //alt
     public ObservableCollection<TblUserProfile> GetUserProfileAsync()
     {
         var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
@@ -9583,30 +9711,30 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile userprofile)
-    {
-        var current = await _context.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofile.UserProfileId);
-        if (null == current)
-        {
-            userprofile.CountId = RandomHelper.Randomnumber();
-            //  userprofile.Role = "User";
-            ////  userprofile.Password = Crypt.CalculateHash(Password, Email);
-            //  userprofile.Password = "Test";
-            userprofile.Writer = Environment.UserName;
-            userprofile.WriterDate = DateTime.Now;
-            userprofile.Updater = Environment.UserName;
-            userprofile.UpdaterDate = DateTime.Now;
-            _context.TblUserProfiles.Add(userprofile);
-        }
-        else
-        {
-            userprofile.Updater = Environment.UserName;
-            userprofile.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(userprofile);
-        }
-        await _context.SaveChangesAsync();
-        return userprofile;
-    }
+    //public async Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile userprofile)
+    //{
+    //    var current = await _context.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofile.UserProfileId);
+    //    if (null == current)
+    //    {
+    //        userprofile.CountId = RandomHelper.Randomnumber();
+    //        //  userprofile.Role = "User";
+    //        ////  userprofile.Password = Crypt.CalculateHash(Password, Email);
+    //        //  userprofile.Password = "Test";
+    //        userprofile.Writer = Environment.UserName;
+    //        userprofile.WriterDate = DateTime.Now;
+    //        userprofile.Updater = Environment.UserName;
+    //        userprofile.UpdaterDate = DateTime.Now;
+    //        _context.TblUserProfiles.Add(userprofile);
+    //    }
+    //    else
+    //    {
+    //        userprofile.Updater = Environment.UserName;
+    //        userprofile.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(userprofile);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return userprofile;
+    //}
 
     public async Task<TblUserProfile> UpsertEmailFromUserProfileAsync(TblUserProfile userprofile)
     {
@@ -9634,15 +9762,15 @@ public partial class DataService : ObservableObject, IDataService
         return userprofile;
     }
 
-    public async Task DeleteUserProfileAsync(int userprofileid)
-    {
-        var userprofile = await _context.TblUserProfiles.FirstOrDefaultAsync(c => c.UserProfileId == userprofileid);
-        if (null != userprofile)
-        {
-            _context.TblUserProfiles.Remove(userprofile);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteUserProfileAsync(int userprofileid)
+    //{
+    //    var userprofile = await _context.TblUserProfiles.FirstOrDefaultAsync(c => c.UserProfileId == userprofileid);
+    //    if (null != userprofile)
+    //    {
+    //        _context.TblUserProfiles.Remove(userprofile);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
 
     #endregion UserProfile

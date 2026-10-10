@@ -1229,3 +1229,6 @@ Zoom ist nicht korrect, muss umgerechnet werden. Viele Methoden. Punkte werden a
 08.10.2026 16:30 Uhr CRUD der Points funktioniert, aber feintuning fehlt noch
 ----------------------------------------
 09.10.2026 11:30 Uhr GeographicPage als Boss und als Parent in SpeciesPage läuft.
+----------------------------------------
+10.10.2026 09:30 Uhr  TblUserControlPage grob eingerichtet damit neues login möglich.
+GeographicPage + ImagePage als Boss und als Parent in SpeciesPage überprüfen

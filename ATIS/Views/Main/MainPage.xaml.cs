@@ -46,6 +46,7 @@ using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
 using ATIS.Views.Modules.TblCountry;
+using ATIS.Views.Modules.TblUserProfile;
 using WinRT.Interop;
 using WinUI3Localizer;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
@@ -614,7 +615,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavUserProfiles.Content)
         {
-            NavFrame.Navigate(typeof(TblUserProfileListPage));
+            NavFrame.Navigate(typeof(TblUserProfilePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavDiseases1.Content)

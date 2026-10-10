@@ -47,7 +47,6 @@
                             Spacing="8">
 
                     <!--  BACK  -->
-
                     <Button Command="{Binding BackCommand}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
@@ -88,26 +87,26 @@
                     </Button>
 
                     <!--  Replace Point  -->
-                    <Button x:Name="ReplacePointButton"
-                            Click="ReplacePointButton_Click"
-                            Style="{StaticResource AtisSecondaryButton}">
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="6">
-                            <FontIcon Glyph="&#xE7C2;" />
-                            <TextBlock loc:Uids.Uid="TextBlock_ReplacePoint" />
-                        </StackPanel>
-                    </Button>
+                    <!--<Button x:Name="ReplacePointButton"
+                    Click="ReplacePointButton_Click"
+                    Style="{StaticResource AtisSecondaryButton}">
+                    <StackPanel Orientation="Horizontal"
+                    Spacing="6">
+                    <FontIcon Glyph="&#xE7C2;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_ReplacePoint" />
+                    </StackPanel>
+                    </Button>-->
 
                     <!--  Delete Point  -->
-                    <Button x:Name="DeletePointButton"
-                            Click="DeletePointButton_Click"
-                            Style="{StaticResource AtisSecondaryButton}">
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="6">
-                            <FontIcon Glyph="&#xE74D;" />
-                            <TextBlock loc:Uids.Uid="TextBlock_DeletePoint" />
-                        </StackPanel>
-                    </Button>
+                    <!--<Button x:Name="DeletePointButton"
+                    Click="DeletePointButton_Click"
+                    Style="{StaticResource AtisSecondaryButton}">
+                    <StackPanel Orientation="Horizontal"
+                    Spacing="6">
+                    <FontIcon Glyph="&#xE74D;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_DeletePoint" />
+                    </StackPanel>
+                    </Button>-->
                 </StackPanel>
             </Grid>
 
@@ -167,11 +166,6 @@
 
                     </StackPanel>
 
-                    <!--  Address  -->
-                    <TextBox loc:Uids.Uid="TextBox_Address"
-                             Style="{StaticResource AtisTextBox}"
-                             Text="{Binding Item.Address, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
                     <!--  Valid  -->
                     <CheckBox MinWidth="60"
                               VerticalAlignment="Bottom"
@@ -201,8 +195,13 @@
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.ZoomLevel, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
+
                 <StackPanel Orientation="Horizontal"
                             Spacing="4">
+                    <!--  Address  -->
+                    <TextBox loc:Uids.Uid="TextBox_Address"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Address, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <!--  Info  -->
                     <TextBox loc:Uids.Uid="TextBox_Info"
                              Style="{StaticResource AtisTextBox}"
@@ -213,11 +212,13 @@
                              Text="{Binding Item.Jurisdiction, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </StackPanel>
+
             <!--  Map-Latitude Tab  -->
             <Grid RowDefinitions="Auto, Auto">
                 <StackPanel Margin="0,0,0,10"
                             Orientation="Horizontal"
                             Spacing="4">
+
                     <Button x:Name="MapTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
@@ -243,6 +244,7 @@
                                     Background="Transparent" />
                         </StackPanel>
                     </Button>
+
                     <Button x:Name="LatitudeTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
@@ -328,11 +330,13 @@
                                      Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </Grid>
+
                     <Grid x:Name="LatitudeGrid"
                           Visibility="Collapsed">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal"
-                                        Spacing="8">
+                                        Spacing="4">
+
                                 <!--  Latitude  -->
                                 <TextBox loc:Uids.Uid="TextBox_Latitude"
                                          Style="{StaticResource AtisTextBox}"
@@ -341,37 +345,31 @@
                                 <TextBox loc:Uids.Uid="TextBox_Longitude"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Longitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="8">
-                                <!--  Latitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+
+                                <!--  Latitude1  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude1"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Latitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                <!--  Longitude1  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude1"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Longitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="8">
-                                <!--  Latitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+
+                                <!--  Latitude2  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude2"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Latitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                <!--  Longitude2  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude2"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Longitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="8">
-                                <!--  Latitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude"
+
+                                <!--  Latitude3  -->
+                                <TextBox loc:Uids.Uid="TextBox_Latitude3"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Latitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                                <!--  Longitude3  -->
+                                <TextBox loc:Uids.Uid="TextBox_Longitude3"
                                          Style="{StaticResource AtisTextBox}"
                                          Text="{Binding Item.Longitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>

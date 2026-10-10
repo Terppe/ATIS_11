@@ -319,9 +319,6 @@
 	<Page Update="Views\Admin\AdminAreaPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\Database\TblUserProfileListPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl63InfratribusHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -595,7 +592,6 @@
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
-		<None Remove="Views\Database\TblUserProfileListPage.xaml" />
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
 		<None Remove="Views\Main\Disease\DiseasePdf\ReportDiseasesWindow.xaml" />
@@ -727,6 +723,9 @@
 		<None Remove="Views\Modules\TblCountry\TblCountryEditControl.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryPage.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryParentControl.xaml" />
+		<None Remove="Views\Modules\TblUserProfile\TblUserProfileBossControl.xaml" />
+		<None Remove="Views\Modules\TblUserProfile\TblUserProfileEditControl.xaml" />
+		<None Remove="Views\Modules\TblUserProfile\TblUserProfilePage.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\ReportItemTemplateHeaderTaxoNomenHeaderControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSubTaxoNomenHeaderControl.xaml" />
@@ -811,7 +810,6 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
-	<Folder Include="ViewModels\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
 
@@ -848,6 +846,24 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblUserProfile\TblUserProfileBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblUserProfile\TblUserProfileEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblUserProfile\TblUserProfilePage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

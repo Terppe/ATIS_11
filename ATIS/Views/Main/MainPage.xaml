@@ -628,7 +628,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavUserProfiles"
                                             loc:Uids.Uid="Nav_UserProfiles"
-                                            Tag="ATIS.Views.Database.TblUserProfileListPage">
+                                            Tag="ATIS.Views.Modules.TblUserProfile.TblUserProfilePage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />

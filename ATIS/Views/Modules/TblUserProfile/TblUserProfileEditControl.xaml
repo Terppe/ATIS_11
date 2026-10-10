@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UserControl x:Class="ATIS.Views.Modules.TblUserProfile.TblUserProfileEditControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="using:WinUI3Localizer"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Name="Root"
+             mc:Ignorable="d">
+
+    <!--  TblUserProfileEditControl Skriptdatum:   10.10.2026  10:32  -->
+
+    <Border Padding="4"
+            Background="{ThemeResource ControlFillColorSecondaryBrush}"
+            BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="6">
+
+        <StackPanel Spacing="4">
+
+            <!--  HEADER  -->
+            <Grid Margin="0,0,0,4"
+                  ColumnDefinitions="*,Auto">
+
+                <TextBlock Grid.Column="0"
+                           Margin="8,0,0,0"
+                           loc:Uids.Uid="TextBlock_UserProfile"
+                           Style="{StaticResource AtisSectionTitleTextStyle}" />
+
+                <StackPanel Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal"
+                            Spacing="8">
+
+                    <!--  BACK  -->
+
+                    <Button Command="{Binding BackCommand}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE72B;" />
+                            <TextBlock Text="Back" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  NEW  -->
+                    <Button Command="{Binding NewCommand}"
+                            Style="{StaticResource AtisPrimaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE710;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Add" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  SAVE  -->
+                    <Button Command="{Binding SaveCommand}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74E;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Save" />
+                        </StackPanel>
+                    </Button>
+
+                    <!--  DELETE  -->
+                    <Button Command="{Binding DeleteCommand}"
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE74D;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_Delete" />
+                        </StackPanel>
+                    </Button>
+
+                </StackPanel>
+            </Grid>
+
+            <!--  ID + Name  -->
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
+
+                <!--  ID  -->
+                <TextBox MinWidth="110"
+                         VerticalAlignment="Top"
+                         loc:Uids.Uid="TextBox_UserProfileId"
+                         IsReadOnly="True"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.UserProfileId, ElementName=Root}" />
+
+                <!--  EMAIL  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="EmailBox"
+                             loc:Uids.Uid="TextBox_Email"
+                             Loaded="EmailBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Email, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="EmailBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.EmailError, ElementName=Root}"
+                               Visibility="{Binding Item.EmailError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+
+                <!--  NULL Combo  --><!--
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBlock Visibility="Collapsed" />
+
+                    <ComboBox x:Name="NULLCombo"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_NULLName"
+                              DisplayMemberPath="NULLName"
+                              ItemsSource="{Binding NULLList}"
+                              SelectedValue="{Binding Item.NULLId, ElementName=Root, Mode=TwoWay}"
+                              SelectedValuePath="NULLId"
+                              Style="{StaticResource AtisComboBox}" />
+                </StackPanel>-->
+
+                <!--  FirstName  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="FirstNameBox"
+                             loc:Uids.Uid="TextBox_FirstName"
+                             Loaded="FirstNameBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.FirstName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="FirstNameBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.FirstNameError, ElementName=Root}"
+                               Visibility="{Binding Item.FirstNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+
+                <!--  Lastname  -->
+                <StackPanel MinWidth="150"
+                            VerticalAlignment="Top"
+                            Spacing="2">
+                    <TextBox x:Name="LastNameBox"
+                             loc:Uids.Uid="TextBox_LastName"
+                             Loaded="LastNameBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.LastName, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="LastNameBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.LastNameError, ElementName=Root}"
+                               Visibility="{Binding Item.LastNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
+            <!--  Synonym  -->
+            <!--<TextBox MinWidth="200"
+                     MinHeight="75"
+                     MaxHeight="150"
+                     loc:Uids.Uid="TextBox_Synonym"
+                     Style="{StaticResource AtisTextBoxWrap}"
+                     Text="{Binding Item.Synonym, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+
+        </StackPanel>
+        </StackPanel>
+    </Border>
+
+</UserControl>
