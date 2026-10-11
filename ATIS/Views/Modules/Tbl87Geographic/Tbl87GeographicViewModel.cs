@@ -149,8 +149,6 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
 
     private async Task UpdateButtonStatesAsync()
     {
-
-
         UpdateRefreshState();
 
         NewCommand.NotifyCanExecuteChanged();
@@ -334,7 +332,6 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             _ => ""
         };
 
-
     // ---------------------------------------------------------
     // NEW
     // ---------------------------------------------------------
@@ -452,7 +449,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     protected override async Task<Models.Tbl87Geographic?> SaveItemAsync(Models.Tbl87Geographic item)
     {
         System.Diagnostics.Debug.WriteLine(
-            $"VM SAVE: Id={item?.GeographicId}, Zoom={item?.ZoomLevel}");
+            $"[Tbl87GeographicVM] SaveItemAsync: id={item?.GeographicId}, zoom={item?.ZoomLevel}");
 
         if (string.IsNullOrWhiteSpace(item.Info))
         {
