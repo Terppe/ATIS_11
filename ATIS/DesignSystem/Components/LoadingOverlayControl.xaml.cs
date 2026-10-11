@@ -38,8 +38,5 @@ public sealed partial class LoadingOverlayControl : UserControl
     {
         InitializeComponent();
         // KEIN this.DataContext = this; hier!
-        Debug.WriteLine($"Overlay instanziiert, DataContext: {this.DataContext?.GetType().Name}");
     }
-
-
 }

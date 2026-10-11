@@ -90,8 +90,6 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             var list = await _lookupService.GetCountryListAsync();
             var lookup = await _lookupService.GetCountryLookupAsync();
 
-            System.Diagnostics.Debug.WriteLine($"[VM] list count = {list?.Count ?? 0}");
-            System.Diagnostics.Debug.WriteLine($"[VM] lookup count = {lookup?.Count ?? 0}");
 
             CountryList.Clear();
             foreach (var item in list)
@@ -100,13 +98,9 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             CountryLookup = lookup;
             OnPropertyChanged(nameof(CountryLookup));
             OnPropertyChanged(nameof(CountryList));
-
-            System.Diagnostics.Debug.WriteLine($"[VM] CountryList final = {CountryList.Count}");
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[LoadCountryLookupAsync] {ex}");
-
             CountryList.Clear();
             CountryLookup = new Dictionary<int, string?>();
             OnPropertyChanged(nameof(CountryLookup));

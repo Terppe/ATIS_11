@@ -95,6 +95,9 @@
                             <TextBlock loc:Uids.Uid="TextBlock_LoadFromClipboard" />
                         </StackPanel>
                     </Button>
+                    <Button Content="Groß anzeigen"
+                            Click="OpenPreviewButton_Click" />
+
                 </StackPanel>
             </Grid>
 
@@ -194,14 +197,6 @@
                     </Border>
                 </StackPanel>
             </StackPanel>
-
-            <!--  MediaUrl  -->
-            <!--<TextBox x:Name="MediaUrlTextBox"
-            Header="MediaUrl"
-            Style="{StaticResource AtisTextBox}" />-->
-            <!--<TextBox Text="{Binding MediaUrl, ElementName=Root, Mode=TwoWay}"
-            Header="MediaUrl"
-            Style="{StaticResource AtisTextBox}" />-->
 
             <!--  Info  -->
             <TextBox loc:Uids.Uid="TextBox_Info"

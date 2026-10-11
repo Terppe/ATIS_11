@@ -276,10 +276,8 @@
                                                                         Grid.Row="0" />
                                     <tbl81Image:Tbl81ImageEditControl Grid.Row="1"
                                                                       Item="{Binding Item}"
-                                                                      MediaUrl="{Binding MediaUrl, Mode=TwoWay}"
-                                                                      LoadFromUrlCommand="{Binding LoadFromUrlCommand}"
                                                                       Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                    <!--<tbl81Image:Tbl81ImageEditControl Grid.Row="1"  
+                                    <!--<tbl81Image:Tbl81ImageEditControl Grid.Row="1"
                                     Item="{Binding Item}"
                                     Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />-->
                                 </Grid>

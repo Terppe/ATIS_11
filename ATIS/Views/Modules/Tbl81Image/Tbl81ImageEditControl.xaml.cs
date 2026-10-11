@@ -1,11 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Windows.Input;
 using Microsoft.UI;
-using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.UI;
@@ -40,6 +37,7 @@ public sealed partial class Tbl81ImageEditControl : UserControl
         set => SetValue(ItemProperty, value);
     }
 
+
     public static readonly DependencyProperty ItemProperty =
         DependencyProperty.Register(
             nameof(Item),
@@ -54,35 +52,7 @@ public sealed partial class Tbl81ImageEditControl : UserControl
 
         control.ApplyItem(item);
     }
-    // ---------------------------------------------------------                    
-    // MediaUrl
-    // ---------------------------------------------------------                   
 
-    public string? MediaUrl
-    {
-        get => (string?)GetValue(MediaUrlProperty);
-        set => SetValue(MediaUrlProperty, value);
-    }
-
-    public static readonly DependencyProperty MediaUrlProperty =
-        DependencyProperty.Register(
-            nameof(MediaUrl),
-            typeof(string),
-            typeof(Tbl81ImageEditControl),
-            new PropertyMetadata(null));
-
-    public ICommand? LoadFromUrlCommand
-    {
-        get => (ICommand?)GetValue(LoadFromUrlCommandProperty);
-        set => SetValue(LoadFromUrlCommandProperty, value);
-    }
-
-    public static readonly DependencyProperty LoadFromUrlCommandProperty =
-        DependencyProperty.Register(
-            nameof(LoadFromUrlCommand),
-            typeof(ICommand),
-            typeof(Tbl81ImageEditControl),
-            new PropertyMetadata(null));
     // ---------------------------------------------------------                    
     // APPLY ITEM
     // ---------------------------------------------------------                   
@@ -96,6 +66,20 @@ public sealed partial class Tbl81ImageEditControl : UserControl
         //
         // Bindings im XAML zeigen direkt auf Item.XXX
         // Deshalb bleibt diese Methode LEER.
+    }
+    // ---------------------------------------------------------
+    // PREVIEW BUTTON CLICK
+    // ---------------------------------------------------------
+
+    private Tbl81ImagePreviewWindow? _previewWindow;
+
+    private void OpenPreviewButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (Item == null)
+            return;
+
+        _previewWindow = new Tbl81ImagePreviewWindow(Item);
+        _previewWindow.Activate();
     }
 
     // ---------------------------------------------------------
@@ -244,10 +228,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     // ---------------------------------------------------------
     private async void Tbl81ImageEditControl_Loaded(object sender, RoutedEventArgs e)
     {
-        Debug.WriteLine($"[EditControl] DataContext type = {DataContext?.GetType().FullName ?? "null"}");
-        Debug.WriteLine($"[EditControl] Root.MediaUrl = '{MediaUrl ?? "null"}'");
-        Debug.WriteLine($"[EditControl] Root.LoadFromUrlCommand null = {LoadFromUrlCommand == null}");
-
         if (VideoPlayer.MediaPlayer == null)
             VideoPlayer.SetMediaPlayer(new MediaPlayer());
 
@@ -276,6 +256,45 @@ public sealed partial class Tbl81ImageEditControl : UserControl
 
         ClearVideoPlayer();
     }
+    private async void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(ViewModel.Item))
+            return;
+
+        await RefreshMediaAsync();
+    }
+    private async Task LoadMediaAsync()
+    {
+        try
+        {
+            ClearVideoPlayer();
+
+            var bytes = ViewModel.Item?.Filestream;
+            var type = ViewModel.Item?.ImageMimeType;
+
+            if (bytes == null || bytes.Length == 0)
+                return;
+
+            if (!IsPlayableMediaType(type))
+                return;
+
+            var extension = string.IsNullOrWhiteSpace(type) ? "bin" : type.Trim().ToLowerInvariant();
+            var fileName = $"media_{Guid.NewGuid():N}.{extension}";
+            var tempPath = Path.Combine(Path.GetTempPath(), fileName);
+
+            await File.WriteAllBytesAsync(tempPath, bytes);
+
+            var storageFile = await StorageFile.GetFileFromPathAsync(tempPath);
+            var mediaSource = Windows.Media.Core.MediaSource.CreateFromStorageFile(storageFile);
+            VideoPlayer.Source = mediaSource;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[ImageEdit] LoadMediaAsync error: {ex}");
+            ClearVideoPlayer();
+        }
+    }
+
     private async Task RefreshMediaAsync()
     {
         ClearVideoPlayer();
@@ -286,16 +305,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
 
         if (IsPlayableMediaType(type))
             await LoadMediaAsync();
-    }
-    private async void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        Debug.WriteLine($"[VM] PropertyChanged: {e.PropertyName}");
-
-        if (e.PropertyName == nameof(ViewModel.Item))
-        {
-            Debug.WriteLine("[VM] Item changed -> RefreshMediaAsync");
-            await RefreshMediaAsync();
-        }
     }
     private void MediaPlayer_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
     {
@@ -379,7 +388,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
                 return false;
         }
     }
-
     private static bool IsImageType(string? type)
     {
         if (string.IsNullOrWhiteSpace(type))
@@ -403,7 +411,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
                 return false;
         }
     }
-
     private static bool IsAudioType(string? type)
     {
         if (string.IsNullOrWhiteSpace(type))
@@ -419,7 +426,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
                 return false;
         }
     }
-
     private static bool IsPlayableMediaType(string? type)
     {
         return IsVideoType(type) || IsAudioType(type);
@@ -436,106 +442,5 @@ public sealed partial class Tbl81ImageEditControl : UserControl
 
         VideoPlayer.Source = null;
     }
-    private async Task LoadMediaAsync()
-    {
-        try
-        {
-            Debug.WriteLine("[MEDIA] Overlay ON");
-
-            await Task.Delay(500); // nur Testweise
-
-            Debug.WriteLine("[MEDIA] LoadMediaAsync gestartet");
-
-            ClearVideoPlayer();
-
-            var bytes = ViewModel.Item?.Filestream;
-            var type = ViewModel.Item?.ImageMimeType;
-
-            Debug.WriteLine($"[MEDIA] MimeType = {type}");
-            Debug.WriteLine($"[MEDIA] Bytes = {bytes?.Length ?? 0}");
-
-            if (bytes == null || bytes.Length == 0)
-            {
-                Debug.WriteLine("[MEDIA] Keine Bytes vorhanden.");
-                return;
-            }
-
-            if (!IsPlayableMediaType(type))
-            {
-                Debug.WriteLine("[MEDIA] Dateityp ist kein abspielbares Medium.");
-                return;
-            }
-
-            var extension = string.IsNullOrWhiteSpace(type) ? "bin" : type.Trim().ToLowerInvariant();
-            var fileName = $"media_{Guid.NewGuid():N}.{extension}";
-            var tempPath = Path.Combine(Path.GetTempPath(), fileName);
-
-            await File.WriteAllBytesAsync(tempPath, bytes);
-
-            Debug.WriteLine($"[MEDIA] Temp-Datei: {tempPath}");
-
-            var storageFile = await StorageFile.GetFileFromPathAsync(tempPath);
-            var mediaSource = Windows.Media.Core.MediaSource.CreateFromStorageFile(storageFile);
-            VideoPlayer.Source = mediaSource;
-
-            Debug.WriteLine($"[MEDIA] Source gesetzt: {VideoPlayer.Source != null}");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"[MEDIA] Fehler: {ex}");
-            ClearVideoPlayer();
-        }
-        finally
-        {
-            Debug.WriteLine("[MEDIA] Overlay OFF");
-        }
-    }
-
-    //private async Task LoadVideoAsync()
-    //{
-    //    try
-    //    {
-    //        Debug.WriteLine("[VIDEO] LoadVideoAsync gestartet");
-
-    //        ClearVideoPlayer();
-
-    //        var bytes = ViewModel.Item?.Filestream;
-    //        var type = ViewModel.Item?.ImageMimeType;
-
-    //        Debug.WriteLine($"[VIDEO] MimeType = {type}");
-    //        Debug.WriteLine($"[VIDEO] Bytes = {bytes?.Length ?? 0}");
-
-    //        if (bytes == null || bytes.Length == 0)
-    //        {
-    //            Debug.WriteLine("[VIDEO] Keine Bytes vorhanden.");
-    //            return;
-    //        }
-
-    //        if (!IsVideoType(type))
-    //        {
-    //            Debug.WriteLine("[VIDEO] Dateityp ist kein Video.");
-    //            return;
-    //        }
-
-    //        var extension = string.IsNullOrWhiteSpace(type) ? "mp4" : type.Trim().ToLowerInvariant();
-    //        var fileName = $"video_{Guid.NewGuid():N}.{extension}";
-    //        var tempPath = Path.Combine(Path.GetTempPath(), fileName);
-
-    //        await File.WriteAllBytesAsync(tempPath, bytes);
-
-    //        Debug.WriteLine($"[VIDEO] Temp-Datei: {tempPath}");
-
-    //        var storageFile = await StorageFile.GetFileFromPathAsync(tempPath);
-    //        var mediaSource = Windows.Media.Core.MediaSource.CreateFromStorageFile(storageFile);
-    //        VideoPlayer.Source = mediaSource;
-
-    //        Debug.WriteLine($"[VIDEO] Source gesetzt: {VideoPlayer.Source != null}");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        Debug.WriteLine($"[VIDEO] Fehler: {ex}");
-    //        ClearVideoPlayer();
-    //    }
-    //}
 
 }

@@ -55,8 +55,6 @@ public sealed partial class Tbl75SpeciesPage : Page
     // ---------------------------------------------------------
     private void DetailTabButton_Click(object sender, RoutedEventArgs e)
     {
-        System.Diagnostics.Debug.WriteLine($"[UI] Vm.ImageViewModel Hash = {Vm.ImageViewModel?.GetHashCode()}");
-        System.Diagnostics.Debug.WriteLine($"[UI] ImageContent.DataContext Hash = {ImageContent.DataContext?.GetHashCode()}");
         if (sender is Button button &&
             button.Tag is string tagText &&
             int.TryParse(tagText, out int index))

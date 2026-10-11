@@ -696,6 +696,8 @@
 		<None Remove="Views\Modules\Tbl81Image\Tbl81ImageEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl81Image\Tbl81ImagePage.xaml" />
 		<None Remove="Views\Modules\Tbl81Image\Tbl81ImageParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl81Image\Tbl81ImagePreviewControl.xaml" />
+		<None Remove="Views\Modules\Tbl81Image\Tbl81ImagePreviewWindow.xaml" />
 		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymPage.xaml" />
@@ -846,6 +848,18 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl81Image\Tbl81ImagePreviewControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl81Image\Tbl81ImagePreviewWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

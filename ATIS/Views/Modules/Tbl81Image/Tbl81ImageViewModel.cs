@@ -170,9 +170,8 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 
     public async Task LoadAsync()
     {
-        System.Diagnostics.Debug.WriteLine("[VM] LoadAsync START");
+        System.Diagnostics.Debug.WriteLine("[ImageVM] LoadAsync START");
         IsLoading = true;
-        System.Diagnostics.Debug.WriteLine($"[VM] IsLoading after set true = {IsLoading}");
         try
         {
             _activeLoader = null;
@@ -198,15 +197,13 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
                 await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
             }
         }
         finally
         {
             IsLoading = false;
-            System.Diagnostics.Debug.WriteLine($"[VM] IsLoading after set false = {IsLoading}");
-            System.Diagnostics.Debug.WriteLine("[VM] LoadAsync END");
+            System.Diagnostics.Debug.WriteLine("[ImageVM] LoadAsync END");
         }
     }
     public async Task LoadForSpeciesAsync(int speciesId)
@@ -363,24 +360,10 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             {
                 _isLoading = value;
                 OnPropertyChanged(nameof(IsLoading));
-                System.Diagnostics.Debug.WriteLine($"[VM] PropertyChanged: {nameof(IsLoading)} = {_isLoading}");
             }
         }
     }
 
-    // ---------------------------------------------------------
-    // Load from Media from URL
-    // ---------------------------------------------------------
-    //private string? _mediaUrl;
-    //public string? MediaUrl
-    //{
-    //    get => _mediaUrl;
-    //    set
-    //    {
-    //        if (SetProperty(ref _mediaUrl, value))
-    //            Debug.WriteLine($"MediaUrl changed: {value}");
-    //    }
-    //}
 
     public async Task LoadFromUrlAsync(string url)
     {
