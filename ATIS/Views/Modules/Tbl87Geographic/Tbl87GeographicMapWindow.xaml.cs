@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
 using Windows.Graphics;
 using Microsoft.UI;
 using WinRT.Interop;
@@ -28,17 +27,6 @@ namespace ATIS.Views.Modules.Tbl87Geographic
             appWindow.Title = loc.GetLocalizedString("MapPreviewTitle");
             appWindow.Resize(new SizeInt32(1400, 900));
             appWindow.Move(new PointInt32(120, 100));
-        }
-
-        //private void MapControl_CloseRequested(object? sender, EventArgs e)
-        //{
-        //    MapControl.FlushMapStateToItem();
-        //    //      MapControl.CloseRequested -= MapControl_CloseRequested;
-        //    this.Close();
-        //}
-        private void MapControl_MapChanged(object? sender, EventArgs e)
-        {
-            _hasMapChanges = true;
         }
 
         private void MapControl_CloseRequested(object? sender, EventArgs e)

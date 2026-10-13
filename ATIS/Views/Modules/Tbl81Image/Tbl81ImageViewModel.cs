@@ -575,6 +575,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         filePicker.FileTypeFilter.Add(".wmf");
         filePicker.FileTypeFilter.Add(".wmv");
         filePicker.FileTypeFilter.Add(".mpg");
+        filePicker.FileTypeFilter.Add(".mpeg");
         filePicker.FileTypeFilter.Add(".mp3");
         filePicker.FileTypeFilter.Add(".wav");
         filePicker.FileTypeFilter.Add(".m4a");
@@ -583,6 +584,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         filePicker.FileTypeFilter.Add(".mov");
         filePicker.FileTypeFilter.Add(".swf");
         filePicker.FileTypeFilter.Add(".flv");
+        filePicker.FileTypeFilter.Add(".x-shockwave-flash");
 
         filePicker.ViewMode = PickerViewMode.Thumbnail;
 

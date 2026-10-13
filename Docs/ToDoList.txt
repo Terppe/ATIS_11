@@ -1245,4 +1245,7 @@ Anzeige da aber bearbeitung und speichern klappt nicht
 13.10.2026 13:30 Uhr Tbl87GeographicEditControl + Tbl87GeographicMapEditControl umgebaut. anzeigen aller Datensätze ok.
 Neuer datensatz bei Combo-Auswahl nur Continent ok
 ----------------------------------------
-13.10.2026 14:30 Uhr Neuer datensatz bei Combo-Auswahl Continent + Country
+13.10.2026 14:30 Uhr Neuer datensatz bei Combo-Auswahl Continent + Country + 4 Points ok.
+TblImageEditControl öffnen des Windows automatisch nach auswahl im Explorer.
+----------------------------------------
+13.10.2026 16:30 Uhr Image nur noch im window anzeigen. tab raus.ok evtl noch Map und Image vergrößern.

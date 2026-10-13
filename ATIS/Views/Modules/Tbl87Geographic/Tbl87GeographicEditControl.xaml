@@ -5,26 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:tbl87Geographic="using:ATIS.Views.Modules.Tbl87Geographic"
-             xmlns:winUi="using:Mapsui.UI.WinUI"
              x:Name="Root"
              mc:Ignorable="d">
 
     <!--  Tbl87GeographicEditControl Skriptdatum:  13.09.2026  10:32  -->
 
-    <!--<UserControl.Resources>
-        <MenuFlyout x:Key="PointContextFlyout">
-            <MenuFlyoutItem x:Name="MenuAddPoint"
-                            loc:Uids.Uid="MenuFlyout_Add_Point"
-                            Click="MenuAddPoint_Click" />
-            <MenuFlyoutItem x:Name="MenuMovePoint"
-                            loc:Uids.Uid="MenuFlyout_Move_Point"
-                            Click="MenuMovePoint_Click" />
-            <MenuFlyoutItem x:Name="MenuDeletePoint"
-                            loc:Uids.Uid="MenuFlyout_Delete_Point"
-                            Click="MenuDeletePoint_Click" />
-        </MenuFlyout>
-    </UserControl.Resources>-->
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
@@ -34,7 +19,7 @@
         <StackPanel Spacing="4">
 
             <!--  HEADER  -->
-            <Grid Margin="0,0,0,4"
+            <Grid Margin="0,0,8,4"
                   ColumnDefinitions="*,Auto">
 
                 <TextBlock Grid.Column="0"
@@ -88,28 +73,13 @@
                     </Button>
 
                     <Button Click="OpenMapButton_Click"
-                            Content="Karte groß anzeigen" />
-                    <!--  Replace Point  -->
-                    <!--<Button x:Name="ReplacePointButton"
-                    Click="ReplacePointButton_Click"
-                    Style="{StaticResource AtisSecondaryButton}">
-                    <StackPanel Orientation="Horizontal"
-                    Spacing="6">
-                    <FontIcon Glyph="&#xE7C2;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_ReplacePoint" />
-                    </StackPanel>
-                    </Button>-->
-
-                    <!--  Delete Point  -->
-                    <!--<Button x:Name="DeletePointButton"
-                    Click="DeletePointButton_Click"
-                    Style="{StaticResource AtisSecondaryButton}">
-                    <StackPanel Orientation="Horizontal"
-                    Spacing="6">
-                    <FontIcon Glyph="&#xE74D;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_DeletePoint" />
-                    </StackPanel>
-                    </Button>-->
+                            Style="{StaticResource AtisSecondaryButton}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="6">
+                            <FontIcon Glyph="&#xE707;" />
+                            <TextBlock loc:Uids.Uid="TextBlock_ShowMap" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
 
@@ -213,162 +183,98 @@
                     <TextBox loc:Uids.Uid="TextBox_Jurisdiction"
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.Jurisdiction, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!--  Author + AuthorYear  -->
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="4">
+                        <TextBox MinWidth="150"
+                                 VerticalAlignment="Top"
+                                 loc:Uids.Uid="TextBox_Author"
+                                 CharacterCasing="Upper"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <StackPanel MinWidth="60"
+                                    VerticalAlignment="Top"
+                                    Spacing="4">
+                            <TextBox x:Name="AuthorYearBox"
+                                     loc:Uids.Uid="TextBox_AuthorYear"
+                                     Loaded="AuthorYearBox_OnLoaded"
+                                     Style="{StaticResource AtisTextBox}"
+                                     Text="{Binding Item.AuthorYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     TextChanged="AuthorYearBox_OnTextChanged" />
+                            <TextBlock Height="16"
+                                       FontSize="10"
+                                       Foreground="Red"
+                                       Text="{Binding Item.AuthorYearError, ElementName=Root}"
+                                       Visibility="{Binding Item.HasAuthorYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <!--  Http  -->
+                    <StackPanel MinWidth="150"
+                                VerticalAlignment="Top"
+                                Spacing="2">
+                        <TextBox x:Name="HttpBox"
+                                 loc:Uids.Uid="TextBox_Http"
+                                 Loaded="HttpBox_OnLoaded"
+                                 Style="{StaticResource AtisTextBox}"
+                                 Text="{Binding Item.Http, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="HttpBox_OnTextChanged" />
+                        <TextBlock Height="18"
+                                   FontSize="10"
+                                   Foreground="Red"
+                                   Text="{Binding Item.HttpError, ElementName=Root}"
+                                   Visibility="{Binding Item.HasHttpError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
                 </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Spacing="4">
+                    <!--  Latitude  -->
+                    <TextBox loc:Uids.Uid="TextBox_Latitude"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Latitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--  Longitude  -->
+                    <TextBox loc:Uids.Uid="TextBox_Longitude"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Longitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!--  Latitude1  -->
+                    <TextBox loc:Uids.Uid="TextBox_Latitude1"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Latitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--  Longitude1  -->
+                    <TextBox loc:Uids.Uid="TextBox_Longitude1"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Longitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!--  Latitude2  -->
+                    <TextBox loc:Uids.Uid="TextBox_Latitude2"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Latitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--  Longitude2  -->
+                    <TextBox loc:Uids.Uid="TextBox_Longitude2"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Longitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!--  Latitude3  -->
+                    <TextBox loc:Uids.Uid="TextBox_Latitude3"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Latitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--  Longitude3  -->
+                    <TextBox loc:Uids.Uid="TextBox_Longitude3"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Longitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <!--  Memo  -->
+                <TextBox MinWidth="200"
+                         MinHeight="75"
+                         MaxHeight="150"
+                         loc:Uids.Uid="TextBox_Memo"
+                         Style="{StaticResource AtisTextBoxWrap}"
+                         Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
 
-            <!--  Map-Latitude Tab  -->
-            <Grid RowDefinitions="Auto, Auto">
-                <StackPanel Margin="0,0,0,10"
-                            Orientation="Horizontal"
-                            Spacing="4">
-
-                    <!--<Button x:Name="MapTab"
-                            Click="DetailTabButton_Click"
-                            Style="{StaticResource TabButtonStyle}"
-                            Tag="0">
-                        <StackPanel Spacing="4">
-                            <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_Map" />
-                            <Border x:Name="MapTabUnderline"
-                                    Height="2"
-                                    Background="Transparent" />
-                        </StackPanel>
-                    </Button>-->
-
-                    <Button x:Name="DataTab"
-                            Click="DetailTabButton_Click"
-                            Style="{StaticResource TabButtonStyle}"
-                            Tag="1">
-                        <StackPanel Spacing="4">
-                            <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_Data" />
-                            <Border x:Name="DataTabUnderline"
-                                    Height="2"
-                                    Background="Transparent" />
-                        </StackPanel>
-                    </Button>
-
-                    <Button x:Name="LatitudeTab"
-                            Click="DetailTabButton_Click"
-                            Style="{StaticResource TabButtonStyle}"
-                            Tag="2">
-                        <StackPanel Spacing="4">
-                            <TextBlock HorizontalAlignment="Center"
-                                       loc:Uids.Uid="TextBlock_Latitude" />
-                            <Border x:Name="LatitudeTabUnderline"
-                                    Height="2"
-                                    Background="Transparent" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-
-                <Grid x:Name="TabContentGrid"
-                      Grid.Row="1">
-                    <!--<Grid>
-                        <tbl87Geographic:Tbl87GeographicMapControl x:Name="GeographicMapControl" />
-                    </Grid>-->
-                    <Grid x:Name="DataGrid"
-                          Visibility="Collapsed">
-                        <StackPanel>
-
-                            <!--  Author + AuthorYear  -->
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="4">
-                                <TextBox MinWidth="150"
-                                         VerticalAlignment="Top"
-                                         loc:Uids.Uid="TextBox_Author"
-                                         CharacterCasing="Upper"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Author, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                <StackPanel MinWidth="60"
-                                            VerticalAlignment="Top"
-                                            Spacing="4">
-                                    <TextBox x:Name="AuthorYearBox"
-                                             loc:Uids.Uid="TextBox_AuthorYear"
-                                             Loaded="AuthorYearBox_OnLoaded"
-                                             Style="{StaticResource AtisTextBox}"
-                                             Text="{Binding Item.AuthorYear, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                             TextChanged="AuthorYearBox_OnTextChanged" />
-                                    <TextBlock Height="16"
-                                               FontSize="10"
-                                               Foreground="Red"
-                                               Text="{Binding Item.AuthorYearError, ElementName=Root}"
-                                               Visibility="{Binding Item.HasAuthorYearError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                </StackPanel>
-                            </StackPanel>
-                            <!--  Http  -->
-                            <StackPanel MinWidth="150"
-                                        VerticalAlignment="Top"
-                                        Spacing="2">
-                                <TextBox x:Name="HttpBox"
-                                         loc:Uids.Uid="TextBox_Http"
-                                         Loaded="HttpBox_OnLoaded"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Http, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         TextChanged="HttpBox_OnTextChanged" />
-                                <TextBlock Height="18"
-                                           FontSize="10"
-                                           Foreground="Red"
-                                           Text="{Binding Item.HttpError, ElementName=Root}"
-                                           Visibility="{Binding Item.HasHttpError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </StackPanel>
-                            <!--  Memo  -->
-                            <TextBox MinWidth="200"
-                                     MinHeight="75"
-                                     MaxHeight="150"
-                                     loc:Uids.Uid="TextBox_Memo"
-                                     Style="{StaticResource AtisTextBoxWrap}"
-                                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </StackPanel>
-                    </Grid>
-
-                    <Grid x:Name="LatitudeGrid"
-                          Visibility="Collapsed">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="4">
-
-                                <!--  Latitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Latitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Longitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                <!--  Latitude1  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude1"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Latitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude1  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude1"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Longitude1, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                <!--  Latitude2  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude2"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Latitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude2  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude2"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Longitude2, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                <!--  Latitude3  -->
-                                <TextBox loc:Uids.Uid="TextBox_Latitude3"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Latitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!--  Longitude3  -->
-                                <TextBox loc:Uids.Uid="TextBox_Longitude3"
-                                         Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.Longitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-            </Grid>
         </StackPanel>
 
     </Border>

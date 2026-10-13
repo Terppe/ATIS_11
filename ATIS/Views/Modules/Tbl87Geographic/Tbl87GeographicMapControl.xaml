@@ -28,12 +28,33 @@
                     Padding="8"
                     Orientation="Horizontal"
                     Spacing="8">
+
             <Button Click="ResetMapViewButton_Click"
-                    Content="Ansicht zurücksetzen" />
+                    Style="{StaticResource AtisSecondaryButton}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE777;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_ResetMapView" />
+                </StackPanel>
+            </Button>
+
             <Button Click="ClearSelectionButton_Click"
-                    Content="Bearbeitung abbrechen" />
+                    Style="{StaticResource AtisSecondaryButton}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE711;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_ClearSelection" />
+                </StackPanel>
+            </Button>
+
             <Button Click="CloseWindowButton_Click"
-                    Content="Schließen" />
+                    Style="{StaticResource AtisSecondaryButton}">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="6">
+                    <FontIcon Glyph="&#xE8BB;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_Close" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
         <Grid Grid.Row="1">

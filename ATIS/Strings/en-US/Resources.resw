@@ -1905,6 +1905,9 @@
   <data name="TextBlock_SelectFile.Text" xml:space="preserve">
     <value>Select File</value>
   </data>
+  <data name="TextBlock_ClearSelection.Text" xml:space="preserve">
+    <value>Clear handling</value>
+  </data>
   <data name="TextBlock_Sync.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
@@ -1967,6 +1970,9 @@
   </data>
   <data name="TextBlock_Colour.Text" xml:space="preserve">
     <value>Colour</value>
+  </data>
+  <data name="TextBlock_Close.Text" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="TextBlock_CountId.Text" xml:space="preserve">
     <value>Count ID</value>
@@ -2091,6 +2097,9 @@
   <data name="TextBlock_FiSpecies_PlSpecies.Text" xml:space="preserve">
     <value>Species</value>
   </data>
+  <data name="TextBlock_Fit.Text" xml:space="preserve">
+    <value>Fitting</value>
+  </data>
   <data name="TextBlock_Fon.Text" xml:space="preserve">
     <value>Telefon</value>
   </data>
@@ -2159,6 +2168,9 @@
   </data>
   <data name="TextBlock_Husbandry.Text" xml:space="preserve">
     <value>Husbandry</value>
+  </data>
+  <data name="TextBlock_HundredPercent.Text" xml:space="preserve">
+    <value>100 %</value>
   </data>
   <data name="TextBlock_Image.Text" xml:space="preserve">
     <value>Image</value>
@@ -2652,6 +2664,9 @@
   <data name="TextBlock_Role_Flag.Text" xml:space="preserve">
     <value>Role/Flag</value>
   </data>
+  <data name="TextBlock_ResetMapView.Text" xml:space="preserve">
+    <value>Reset View</value>
+  </data>
   <data name="TextBlock_Source_Year.Text" xml:space="preserve">
     <value>Year</value>
   </data>
@@ -2918,6 +2933,12 @@
   </data>
   <data name="TextBlock_ZoomLevel.Text" xml:space="preserve">
     <value>ZoomLevel</value>
+  </data>
+  <data name="TextBlock_ZoomIn.Text" xml:space="preserve">
+    <value> + </value>
+  </data>
+  <data name="TextBlock_ZoomOut.Text" xml:space="preserve">
+    <value> - </value>
   </data>
   <data name="TextBox_Address.Header" xml:space="preserve">
     <value>Address</value>
@@ -4661,6 +4682,12 @@
   </data>
   <data name="TextBlock_Size.Text" xml:space="preserve">
     <value>Sizes</value>
+  </data>
+  <data name="TextBlock_ShowMedia.Text" xml:space="preserve">
+    <value>Show Image/Media</value>
+  </data>
+  <data name="TextBlock_ShowMap.Text" xml:space="preserve">
+    <value>Show Map</value>
   </data>
   <data name="TextBlock_AuthorEditor.Text" xml:space="preserve">
     <value>Author(s)/Editor(s):</value>

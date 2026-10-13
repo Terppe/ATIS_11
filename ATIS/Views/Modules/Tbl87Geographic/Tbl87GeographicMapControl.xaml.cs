@@ -97,14 +97,14 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     private readonly List<(double lat, double lon)> _editPoints = new();
     private bool _hasFallbackPoint;
     private double? _lastMarkerResolution;
-    private bool _viewportChangedHooked;
+    //private bool _viewportChangedHooked;
     private bool _mapEventsHooked;
-    private MPoint? _pointerPressedScreenPosition;
+    //private MPoint? _pointerPressedScreenPosition;
     private double? _pointerPressedX;
     private double? _pointerPressedY;
     private const double ClickTolerance = 6d;
     private Models.Tbl87Geographic? _pendingItem;
-    public event EventHandler? MapChanged;
+    //public event EventHandler? MapChanged;
     #endregion
 
     #region small Helpers
@@ -122,8 +122,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     }
 
     #endregion
-
-
 
     public Tbl87GeographicViewModel? ViewModel => DataContext as Tbl87GeographicViewModel;
 
@@ -290,16 +288,20 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         MyMap.Map.Navigator.ViewportChanged += MyMapNavigator_ViewportChanged;
         _mapEventsHooked = true;
     }
-    private void UnhookMapEvents()
+    public void ApplyFallbackLocation(double latitude, double longitude, double zoomLevel)
     {
-        if (!_mapEventsHooked)
+        if (!_mapInitialized || Item == null)
             return;
 
-        if (MyMap?.Map?.Navigator == null)
+        if (HasRealEditPoints())
             return;
 
-        MyMap.Map.Navigator.ViewportChanged -= MyMapNavigator_ViewportChanged;
-        _mapEventsHooked = false;
+        Item.Latitude = latitude;
+        Item.Longitude = longitude;
+        Item.ZoomLevel = zoomLevel;
+
+        SetSingleFallbackPoint(latitude, longitude);
+        CenterMap(latitude, longitude, zoomLevel);
     }
 
     #endregion
@@ -1156,21 +1158,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         return Math.Round(zoomLevel, 2);
     }
     #endregion
-    public void ApplyFallbackLocation(double latitude, double longitude, double zoomLevel)
-    {
-        if (!_mapInitialized || Item == null)
-            return;
-
-        if (HasRealEditPoints())
-            return;
-
-        Item.Latitude = latitude;
-        Item.Longitude = longitude;
-        Item.ZoomLevel = zoomLevel;
-
-        SetSingleFallbackPoint(latitude, longitude);
-        CenterMap(latitude, longitude, zoomLevel);
-    }
 
     #region DEPENDENCY PROPERTY: ITEM
     // ---------------------------------------------------------

@@ -13,12 +13,12 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     private static readonly Dictionary<string, (double Latitude, double Longitude, double ZoomLevel)> _continentDefaults
         = new()
         {
-            ["Africa"] = (1, 20, 3),
-            ["Antarctica"] = (-82, 0, 2),
-            ["Asia"] = (34, 100, 3),
+            ["Africa"] = (1, 20, 3.5),
+            ["Antarctica"] = (-82, 0, 3),
+            ["Asia"] = (34, 100, 3.5),
             ["Australia"] = (-25, 133, 4),
             ["Central/South America"] = (-15, -60, 4.6),
-            ["Europe"] = (54, 15, 4),
+            ["Europe"] = (54, 15, 4.5),
             ["North America/Caribbean"] = (40, -100, 4.4)
         };
 
@@ -74,14 +74,6 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
     public Tbl87GeographicEditControl()
     {
         InitializeComponent();
-        SelectedTabIndex = 0;
-        Loaded += Tbl87GeographicEditControl_Loaded;
-      //  Unloaded += Tbl87GeographicEditControl_Unloaded;
-    }
-    private async void Tbl87GeographicEditControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        UpdateTabButtonStates();
-        UpdateDetailContentVisibility();
     }
 
     #endregion
@@ -368,41 +360,4 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         UpdateValidationState(HttpBox, Item?.HasHttpError ?? false);
     }
     #endregion
-
-    #region DETAIL TAB VALIDATION
-    // ---------------------------------------------------------                   
-    private int SelectedTabIndex = 0;
-
-    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is Button button &&
-            button.Tag is string tagText &&
-            int.TryParse(tagText, out int index))
-        {
-            SelectedTabIndex = index;
-            UpdateTabButtonStates();
-            UpdateDetailContentVisibility();
-        }
-    }
-    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
-    {
-        button.Background = new SolidColorBrush(Colors.Transparent);
-        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
-        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
-    }
-
-    private void UpdateTabButtonStates()
-    {
- //       SetTabButtonStyle(MapTab, MapTabUnderline, SelectedTabIndex == 0);
-        SetTabButtonStyle(DataTab, DataTabUnderline, SelectedTabIndex == 1);
-        SetTabButtonStyle(LatitudeTab, LatitudeTabUnderline, SelectedTabIndex == 2);
-    }
-    private void UpdateDetailContentVisibility()
-    {
-  //      MapGrid.Visibility = SelectedTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
-        DataGrid.Visibility = SelectedTabIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
-        LatitudeGrid.Visibility = SelectedTabIndex == 2 ? Visibility.Visible : Visibility.Collapsed;
-    }
-    #endregion
-
 }

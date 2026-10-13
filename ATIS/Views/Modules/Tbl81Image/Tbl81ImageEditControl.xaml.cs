@@ -1,11 +1,6 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using Microsoft.UI;
+﻿using System.Diagnostics;
 using Microsoft.UI.Xaml.Media;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Media.Playback;
-using Windows.Storage;
-using Windows.UI;
 
 //    Tbl81ImageEditControl Skriptdatum:  13.09.2026  10:32    
 
@@ -22,9 +17,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     public Tbl81ImageEditControl()
     {
         InitializeComponent();
-        SelectedTabIndex = 0;
-        Loaded += Tbl81ImageEditControl_Loaded;
-        Unloaded += Tbl81ImageEditControl_Unloaded;
     }
 
     // ---------------------------------------------------------
@@ -72,14 +64,63 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     // ---------------------------------------------------------
 
     private Tbl81ImagePreviewWindow? _previewWindow;
-
-    private void OpenPreviewButton_Click(object sender, RoutedEventArgs e)
+    private void OpenPreviewWindow()
     {
-        if (Item == null)
+        if (Item?.Filestream == null || Item.Filestream.Length == 0)
             return;
 
         _previewWindow = new Tbl81ImagePreviewWindow(Item);
         _previewWindow.Activate();
+    }
+    private void OpenPreviewButton_Click(object sender, RoutedEventArgs e)
+    {
+        OpenPreviewWindow();
+    }
+    private async void LoadFromClipboardButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (ViewModel == null)
+                return;
+
+            var dataPackageView = Clipboard.GetContent();
+            if (dataPackageView == null)
+                return;
+
+            if (!dataPackageView.Contains(StandardDataFormats.Text))
+                return;
+
+            var url = await dataPackageView.GetTextAsync();
+
+            Debug.WriteLine($"[CLIPBOARD] Text = '{url}'");
+
+            if (string.IsNullOrWhiteSpace(url))
+                return;
+
+            await ViewModel.LoadFromUrlAsync(url);
+            OpenPreviewWindow();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[CLIPBOARD] Fehler: {ex}");
+        }
+    }
+    private void DpShotDate_OnGotFocus(object sender, RoutedEventArgs e)
+    {
+        ShotDateBorder.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 103, 192));
+        ShotDateBorder.BorderThickness = new Thickness(2);
+    }
+
+    private void DpShotDate_OnLostFocus(object sender, RoutedEventArgs e)
+    {
+        ShotDateBorder.BorderBrush = (Brush)Application.Current.Resources["AtisTextBoxBorderBrush"];
+        ShotDateBorder.BorderThickness = new Thickness(1);
+    }
+
+    private async void SelectFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.SelectFileForCurrentItemAsync();
+        OpenPreviewWindow();
     }
 
     // ---------------------------------------------------------
@@ -179,268 +220,6 @@ public sealed partial class Tbl81ImageEditControl : UserControl
     // ---------------------------------------------------------                   
     // DETAIL TAB VALIDATION
     // ---------------------------------------------------------                   
-    private int SelectedTabIndex = 0;
 
-    private async void LoadFromClipboardButton_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            if (ViewModel == null)
-                return;
-
-            var dataPackageView = Clipboard.GetContent();
-            if (dataPackageView == null)
-                return;
-
-            if (!dataPackageView.Contains(StandardDataFormats.Text))
-                return;
-
-            var url = await dataPackageView.GetTextAsync();
-
-            Debug.WriteLine($"[CLIPBOARD] Text = '{url}'");
-
-            if (string.IsNullOrWhiteSpace(url))
-                return;
-
-            await ViewModel.LoadFromUrlAsync(url);
-
-            await RefreshMediaAsync();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"[CLIPBOARD] Fehler: {ex}");
-        }
-    }
-    private void DpShotDate_OnGotFocus(object sender, RoutedEventArgs e)
-    {
-        ShotDateBorder.BorderBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 103, 192));
-        ShotDateBorder.BorderThickness = new Thickness(2);
-    }
-
-    private void DpShotDate_OnLostFocus(object sender, RoutedEventArgs e)
-    {
-        ShotDateBorder.BorderBrush = (Brush)Application.Current.Resources["AtisTextBoxBorderBrush"];
-        ShotDateBorder.BorderThickness = new Thickness(1);
-    }
-
-    // ---------------------------------------------------------
-    // Image/Video/Audio
-    // ---------------------------------------------------------
-    private async void Tbl81ImageEditControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        if (VideoPlayer.MediaPlayer == null)
-            VideoPlayer.SetMediaPlayer(new MediaPlayer());
-
-        VideoPlayer.MediaPlayer.MediaFailed -= MediaPlayer_MediaFailed;
-        VideoPlayer.MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
-
-        if (ViewModel is INotifyPropertyChanged npc)
-        {
-            npc.PropertyChanged -= ViewModel_PropertyChanged;
-            npc.PropertyChanged += ViewModel_PropertyChanged;
-        }
-
-        await RefreshMediaAsync();
-    }
-    private void Tbl81ImageEditControl_Unloaded(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel is INotifyPropertyChanged npc)
-        {
-            npc.PropertyChanged -= ViewModel_PropertyChanged;
-        }
-
-        if (VideoPlayer.MediaPlayer != null)
-        {
-            VideoPlayer.MediaPlayer.MediaFailed -= MediaPlayer_MediaFailed;
-        }
-
-        ClearVideoPlayer();
-    }
-    private async void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName != nameof(ViewModel.Item))
-            return;
-
-        await RefreshMediaAsync();
-    }
-    private async Task LoadMediaAsync()
-    {
-        try
-        {
-            ClearVideoPlayer();
-
-            var bytes = ViewModel.Item?.Filestream;
-            var type = ViewModel.Item?.ImageMimeType;
-
-            if (bytes == null || bytes.Length == 0)
-                return;
-
-            if (!IsPlayableMediaType(type))
-                return;
-
-            var extension = string.IsNullOrWhiteSpace(type) ? "bin" : type.Trim().ToLowerInvariant();
-            var fileName = $"media_{Guid.NewGuid():N}.{extension}";
-            var tempPath = Path.Combine(Path.GetTempPath(), fileName);
-
-            await File.WriteAllBytesAsync(tempPath, bytes);
-
-            var storageFile = await StorageFile.GetFileFromPathAsync(tempPath);
-            var mediaSource = Windows.Media.Core.MediaSource.CreateFromStorageFile(storageFile);
-            VideoPlayer.Source = mediaSource;
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"[ImageEdit] LoadMediaAsync error: {ex}");
-            ClearVideoPlayer();
-        }
-    }
-
-    private async Task RefreshMediaAsync()
-    {
-        ClearVideoPlayer();
-
-        var type = ViewModel.Item?.ImageMimeType;
-
-        UpdateMediaTabByType(type);
-
-        if (IsPlayableMediaType(type))
-            await LoadMediaAsync();
-    }
-    private void MediaPlayer_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)
-    {
-        Debug.WriteLine($"[VIDEO] MediaFailed: {args.Error}");
-        Debug.WriteLine($"[VIDEO] MediaFailed message: {args.ErrorMessage}");
-    }
-    private async void SelectFileButton_Click(object sender, RoutedEventArgs e)
-    {
-        await ViewModel.SelectFileForCurrentItemAsync();
-        await RefreshMediaAsync();
-    }
-    private async void DetailTabButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is Button button &&
-            int.TryParse(button.Tag?.ToString(), out int tabIndex))
-        {
-            SelectedTabIndex = tabIndex;
-            UpdateTabButtonStates();
-            UpdateDetailContentVisibility();
-
-            if (SelectedTabIndex == 1 && IsPlayableMediaType(ViewModel.Item?.ImageMimeType))
-            {
-                if (VideoPlayer.Source == null)
-                    await LoadMediaAsync();
-            }
-        }
-    }
-    private void UpdateTabButtonStates()
-    {
-        var activeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 103, 192));
-        var inactiveBrush = new SolidColorBrush(Colors.Transparent);
-
-        ImageTabUnderline.Background = SelectedTabIndex == 0 ? activeBrush : inactiveBrush;
-        VideoTabUnderline.Background = SelectedTabIndex == 1 ? activeBrush : inactiveBrush;
-    }
-    private void UpdateDetailContentVisibility()
-    {
-        ImageGrid.Visibility = SelectedTabIndex == 0
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-
-        MediaGrid.Visibility = SelectedTabIndex == 1
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-    }
-    private void UpdateMediaTabByType(string? type)
-    {
-        if (IsPlayableMediaType(type))
-        {
-            SelectedTabIndex = 1;
-        }
-        else if (IsImageType(type))
-        {
-            SelectedTabIndex = 0;
-        }
-        else
-        {
-            SelectedTabIndex = 0;
-        }
-
-        UpdateTabButtonStates();
-        UpdateDetailContentVisibility();
-    }
-    private static bool IsVideoType(string? type)
-    {
-        if (string.IsNullOrWhiteSpace(type))
-            return false;
-
-        switch (type.Trim().ToLowerInvariant())
-        {
-            case "mp4":
-            case "avi":
-            case "mov":
-            case "mpg":
-            case "wmv":
-            case "flv":
-            case "swf":
-                return true;
-
-            default:
-                return false;
-        }
-    }
-    private static bool IsImageType(string? type)
-    {
-        if (string.IsNullOrWhiteSpace(type))
-            return false;
-
-        switch (type.Trim().ToLowerInvariant())
-        {
-            case "jpg":
-            case "jpeg":
-            case "png":
-            case "gif":
-            case "bmp":
-            case "tif":
-            case "tiff":
-            case "ico":
-            case "webp":
-            case "wmf":
-                return true;
-
-            default:
-                return false;
-        }
-    }
-    private static bool IsAudioType(string? type)
-    {
-        if (string.IsNullOrWhiteSpace(type))
-            return false;
-
-        switch (type.Trim().ToLowerInvariant())
-        {
-            case "mp3":
-            case "wav":
-            case "m4a":
-                return true;
-            default:
-                return false;
-        }
-    }
-    private static bool IsPlayableMediaType(string? type)
-    {
-        return IsVideoType(type) || IsAudioType(type);
-    }
-    private void ClearVideoPlayer()
-    {
-        try
-        {
-            VideoPlayer.MediaPlayer?.Pause();
-        }
-        catch
-        {
-        }
-
-        VideoPlayer.Source = null;
-    }
 
 }
