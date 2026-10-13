@@ -2175,6 +2175,18 @@
   <data name="Images" xml:space="preserve">
     <value>Bilder/Videos</value>
   </data>
+  <data name="ImagePreviewTitle" xml:space="preserve">
+    <value>Bildvorschau</value>
+  </data>
+  <data name="VideoPreviewTitle" xml:space="preserve">
+    <value>Videovorschau</value>
+  </data>
+  <data name="AudioPreviewTitle" xml:space="preserve">
+    <value>Audiovorschau</value>
+  </data>
+  <data name="PreviewTitle" xml:space="preserve">
+    <value>Vorschau</value>
+  </data>
   <data name="ImageMimeType" xml:space="preserve">
     <value>Bild Mime Type</value>
   </data>

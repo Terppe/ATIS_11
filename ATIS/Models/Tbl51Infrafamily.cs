@@ -63,8 +63,8 @@ public class Tbl51Infrafamily : ObservableObject, IDataService.IAuditable, IHier
     // SubfamilyId (FK)
     // ---------------------------------------------------------                   
 
-    private int _subfamilyId;
-    public int SubfamilyId
+    private int? _subfamilyId;
+    public int? SubfamilyId
     {
         get => _subfamilyId;
         set => SetProperty(ref _subfamilyId, value);

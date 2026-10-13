@@ -229,7 +229,7 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
             return await _activeLoader(_currentParentId);
 
         if (!string.IsNullOrWhiteSpace(SearchText))
-            return await Data.SearchUserProfileWithNULLAsync(SearchText);
+            return await Data.SearchUserProfileAsync(SearchText);
 
         return Items ?? Enumerable.Empty<Models.TblUserProfile>();
     }

@@ -1237,4 +1237,12 @@ GeographicPage + ImagePage als Boss und als Parent in SpeciesPage überprüfen
 ----------------------------------------
 11.10.2026 11:30 Uhr TblImageEditControl stabilisiert und Debug-Logging bereinigt.
 ----------------------------------------
-11.10.2026 16:30 Uhr Image und media im extra Window angezeigt. Aus TblImageEditControl im Tab rausnehmen
+11.10.2026 16:30 Uhr Image und media im extra Window angezeigt. Aus TblImageEditControl im Tab rausnehmen. Das gleiche bei GeographicEditControl angefangen in extra window .
+Anzeige da aber bearbeitung und speichern klappt nicht
+----------------------------------------
+12.10.2026 14:30 Uhr Tbl87GeographicEditControl weiter Map in extra window. läuft nicht so wie im editcontrol
+----------------------------------------
+13.10.2026 13:30 Uhr Tbl87GeographicEditControl + Tbl87GeographicMapEditControl umgebaut. anzeigen aller Datensätze ok.
+Neuer datensatz bei Combo-Auswahl nur Continent ok
+----------------------------------------
+13.10.2026 14:30 Uhr Neuer datensatz bei Combo-Auswahl Continent + Country

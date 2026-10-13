@@ -534,7 +534,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl42Superfamily>> GetAllSuperfamilyAsync();
     Task<IEnumerable<Tbl42Superfamily>> SearchSuperfamilyWithInfraordoAsync(string? search);
-    Task<Tbl42Superfamily> GetSuperfamilyByIdAsync(int id);
+    Task<Tbl42Superfamily> GetSuperfamilyByIdAsync(int? id);
     Task<Tbl42Superfamily> UpsertSuperfamilyAsync(Tbl42Superfamily entity);
     Task DeleteSuperfamilyAsync(int id);
     Task<bool> SuperfamilyExistsAsync(Tbl42Superfamily entity);
@@ -584,7 +584,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl48Subfamily>> GetAllSubfamilyAsync();
     Task<IEnumerable<Tbl48Subfamily>> SearchSubfamilyWithFamilyAsync(string? search);
-    Task<Tbl48Subfamily> GetSubfamilyByIdAsync(int id);
+    Task<Tbl48Subfamily> GetSubfamilyByIdAsync(int? id);
     Task<Tbl48Subfamily> UpsertSubfamilyAsync(Tbl48Subfamily entity);
     Task DeleteSubfamilyAsync(int id);
     Task<bool> SubfamilyExistsAsync(Tbl48Subfamily entity);
@@ -1169,7 +1169,7 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     #region UserProfile
     // ---------------------------------------------------------   
     Task<IEnumerable<TblUserProfile>> GetAllUserProfileAsync();
-    Task<IEnumerable<TblUserProfile>> SearchUserProfileWithNULLAsync(string? search);
+    Task<IEnumerable<TblUserProfile>> SearchUserProfileAsync(string? search);
     Task<TblUserProfile?> GetUserProfileByIdAsync(int id);
     Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile entity);
     Task DeleteUserProfileAsync(int id);

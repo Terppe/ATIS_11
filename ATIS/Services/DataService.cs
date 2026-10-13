@@ -33,6 +33,7 @@ public partial class DataService : ObservableObject, IDataService
         _factory = factory;
         _user = user;
     }
+
     private void ApplyAuditInfo(IAuditable entity, bool isNew)
     {
         var user = _user.CurrentUser;
@@ -61,6 +62,7 @@ public partial class DataService : ObservableObject, IDataService
             prop.SetValue(target, value);
         }
     }
+
     //Base-Logik für Upsert-Operationen, die in allen Entitäten verwendet werden kann
     protected async Task<TEntity> UpsertAsync<TEntity, TKey>(
         TEntity uiEntity,
@@ -140,145 +142,335 @@ public partial class DataService : ObservableObject, IDataService
 
     public TblFood? SingleFood(int id) => _context.TblFoods.SingleOrDefault(a => a.FoodId == id);
     public TblDisease? SingleDisease(int id) => _context.TblDiseases.SingleOrDefault(a => a.DiseaseId == id);
-    public TblMiscellaneous? SingleMiscellaneous(int id) => _context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == id);
+
+    public TblMiscellaneous? SingleMiscellaneous(int id) =>
+        _context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == id);
+
     //-------------------------------------------
     public Tbl78Name? SingleName(int id) => _context.Tbl78Names.SingleOrDefault(a => a.NameId == id);
     public Tbl81Image? SingleImage(int id) => _context.Tbl81Images.SingleOrDefault(a => a.ImageId == id);
     public Tbl84Synonym? SingleSynonym(int id) => _context.Tbl84Synonyms.SingleOrDefault(a => a.SynonymId == id);
-    public Tbl87Geographic? SingleGeographic(int id) => _context.Tbl87Geographics.SingleOrDefault(a => a.GeographicId == id);
+
+    public Tbl87Geographic? SingleGeographic(int id) =>
+        _context.Tbl87Geographics.SingleOrDefault(a => a.GeographicId == id);
+
     //-------------------------------------------------------------------------------
     public TblCountry? SingleCountry(int id) => _context.TblCountries.SingleOrDefault(a => a.CountryId == id);
-    public TblUserProfile? SingleUserProfile(int id) => _context.TblUserProfiles.SingleOrDefault(a => a.UserProfileId == id);
+
+    public TblUserProfile? SingleUserProfile(int id) =>
+        _context.TblUserProfiles.SingleOrDefault(a => a.UserProfileId == id);
+
     //--------------------------------------------------------------------
-    public Tbl90RefAuthor? SingleRefAuthor(int id) => _context.Tbl90RefAuthors.SingleOrDefault(a => a.RefAuthorId == id);
-    public Tbl90RefExpert? SingleRefExpert(int id) => _context.Tbl90RefExperts.SingleOrDefault(a => a.RefExpertId == id);
-    public Tbl90RefSource? SingleRefSource(int id) => _context.Tbl90RefSources.SingleOrDefault(a => a.RefSourceId == id);
-    public Tbl90Reference? SingleReference(int id) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == id);
+    public Tbl90RefAuthor? SingleRefAuthor(int id) =>
+        _context.Tbl90RefAuthors.SingleOrDefault(a => a.RefAuthorId == id);
+
+    public Tbl90RefExpert? SingleRefExpert(int id) =>
+        _context.Tbl90RefExperts.SingleOrDefault(a => a.RefExpertId == id);
+
+    public Tbl90RefSource? SingleRefSource(int id) =>
+        _context.Tbl90RefSources.SingleOrDefault(a => a.RefSourceId == id);
+
+    public Tbl90Reference? SingleReference(int id) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == id);
 
     public Tbl93Comment? SingleComment(int id) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == id);
 
     //--------------------------------------------------------------------
-    public Tbl81Image? SingleImageFood(int imageId, int? foodId) => _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.FoodId == foodId);
-    public Tbl81Image? SingleImageDisease(int imageId, int? diseaseId) => _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.DiseaseId == diseaseId);
-    public Tbl81Image? SingleImageMiscellaneous(int imageId, int? miscellaneousId) => _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.MiscellaneousId == miscellaneousId);
-    //------------------------------------------------------------------
-    public Tbl75Species? SingleSpecies(int id) => _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id);
-    public  Tbl90Reference? SingleReferenceSpecies(int referenceid, int? speciesId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SpeciesId == speciesId);
-    public Tbl93Comment? SingleCommentSpecies(int commentid, int? speciesid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SpeciesId == speciesid);
-    public Tbl78Name? SingleNameSpecies(int nameId, int? speciesId) => _context.Tbl78Names.SingleOrDefault(a => a.NameId == nameId & a.SpeciesId == speciesId);
-    public Tbl81Image? SingleImageSpecies(int imageId, int? speciesId) => _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.SpeciesId == speciesId);
-    public Tbl84Synonym? SingleSynonymSpecies(int synonymId, int? speciesId) => _context.Tbl84Synonyms.SingleOrDefault(a => a.SynonymId == synonymId & a.SpeciesId == speciesId);
-    public Tbl87Geographic? SingleGeographicSpecies(int geographicId, int? speciesId) => _context.Tbl87Geographics.SingleOrDefault(a => a.GeographicId == geographicId & a.SpeciesId == speciesId);
-    public Tbl75Species? SingleSpeciesGenus(int speciesid, int? genusid) => _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesid & a.GenusId == genusid);
-    public Tbl78Name? SingleNameSpecies(int nameid, int speciesid) => _context.Tbl78Names.SingleOrDefault(a => a.SpeciesId == speciesid & a.NameId == nameid);
+    public Tbl81Image? SingleImageFood(int imageId, int? foodId) =>
+        _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.FoodId == foodId);
+
+    public Tbl81Image? SingleImageDisease(int imageId, int? diseaseId) =>
+        _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.DiseaseId == diseaseId);
+
+    public Tbl81Image? SingleImageMiscellaneous(int imageId, int? miscellaneousId) =>
+        _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.MiscellaneousId == miscellaneousId);
 
     //------------------------------------------------------------------
-    public Tbl68Speciesgroup? SingleSpeciesgroup(int id) => _context.Tbl68Speciesgroups.SingleOrDefault(a => a.SpeciesgroupId == id);
-    public Tbl75Species? SingleSpeciesSpeciesgroup(int speciesId, int? speciesgroupId) => _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesId & a.SpeciesgroupId == speciesgroupId);
+    public Tbl75Species? SingleSpecies(int id) => _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id);
+
+    public Tbl90Reference? SingleReferenceSpecies(int referenceid, int? speciesId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SpeciesId == speciesId);
+
+    public Tbl93Comment? SingleCommentSpecies(int commentid, int? speciesid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SpeciesId == speciesid);
+
+    public Tbl78Name? SingleNameSpecies(int nameId, int? speciesId) =>
+        _context.Tbl78Names.SingleOrDefault(a => a.NameId == nameId & a.SpeciesId == speciesId);
+
+    public Tbl81Image? SingleImageSpecies(int imageId, int? speciesId) =>
+        _context.Tbl81Images.SingleOrDefault(a => a.ImageId == imageId & a.SpeciesId == speciesId);
+
+    public Tbl84Synonym? SingleSynonymSpecies(int synonymId, int? speciesId) =>
+        _context.Tbl84Synonyms.SingleOrDefault(a => a.SynonymId == synonymId & a.SpeciesId == speciesId);
+
+    public Tbl87Geographic? SingleGeographicSpecies(int geographicId, int? speciesId) =>
+        _context.Tbl87Geographics.SingleOrDefault(a => a.GeographicId == geographicId & a.SpeciesId == speciesId);
+
+    public Tbl75Species? SingleSpeciesGenus(int speciesid, int? genusid) =>
+        _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesid & a.GenusId == genusid);
+
+    public Tbl78Name? SingleNameSpecies(int nameid, int speciesid) =>
+        _context.Tbl78Names.SingleOrDefault(a => a.SpeciesId == speciesid & a.NameId == nameid);
+
+    //------------------------------------------------------------------
+    public Tbl68Speciesgroup? SingleSpeciesgroup(int id) =>
+        _context.Tbl68Speciesgroups.SingleOrDefault(a => a.SpeciesgroupId == id);
+
+    public Tbl75Species? SingleSpeciesSpeciesgroup(int speciesId, int? speciesgroupId) =>
+        _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == speciesId & a.SpeciesgroupId == speciesgroupId);
 
     //------------------------------------------------------------------
 
     public Tbl66Genus? SingleGenus(int id) => _context.Tbl66Genusses.SingleOrDefault(a => a.GenusId == id);
-    public Tbl90Reference? SingleReferenceGenus(int referenceid, int? genusId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.GenusId == genusId);
-    public Tbl93Comment? SingleCommentGenus(int commentid, int? genusid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.GenusId == genusid);
+
+    public Tbl90Reference? SingleReferenceGenus(int referenceid, int? genusId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.GenusId == genusId);
+
+    public Tbl93Comment? SingleCommentGenus(int commentid, int? genusid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.GenusId == genusid);
+
     //---------------------------------------------------
-    public Tbl63Infratribus? SingleInfratribus(int id) => _context.Tbl63Infratribusses.SingleOrDefault(a => a.InfratribusId == id);
-    public Tbl90Reference? SingleReferenceInfratribus(int referenceid, int? infratribusId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfratribusId == infratribusId);
-    public Tbl93Comment? SingleCommentInfratribus(int commentid, int? infratribusid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfratribusId == infratribusid);
-    public Tbl66Genus? SingleGenusInfratribus(int genusId, int? infratribusId) => _context.Tbl66Genusses.SingleOrDefault(a => a.GenusId == genusId & a.InfratribusId == infratribusId);
+    public Tbl63Infratribus? SingleInfratribus(int id) =>
+        _context.Tbl63Infratribusses.SingleOrDefault(a => a.InfratribusId == id);
+
+    public Tbl90Reference? SingleReferenceInfratribus(int referenceid, int? infratribusId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfratribusId == infratribusId);
+
+    public Tbl93Comment? SingleCommentInfratribus(int commentid, int? infratribusid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfratribusId == infratribusid);
+
+    public Tbl66Genus? SingleGenusInfratribus(int genusId, int? infratribusId) =>
+        _context.Tbl66Genusses.SingleOrDefault(a => a.GenusId == genusId & a.InfratribusId == infratribusId);
     //------------------------------------------------------------------
 
-    public Tbl60Subtribus? SingleSubtribus(int id) => _context.Tbl60Subtribusses.SingleOrDefault(a => a.SubtribusId == id);
-    public Tbl90Reference? SingleReferenceSubtribus(int referenceid, int? subtribusId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubtribusId == subtribusId);
-    public Tbl93Comment? SingleCommentSubtribus(int commentid, int? subtribusid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubtribusId == subtribusid);
+    public Tbl60Subtribus? SingleSubtribus(int id) =>
+        _context.Tbl60Subtribusses.SingleOrDefault(a => a.SubtribusId == id);
 
-    public Tbl63Infratribus? SingleInfratribusSubtribus(int infratribusId, int? subtribusId) => _context.Tbl63Infratribusses.SingleOrDefault(a => a.InfratribusId == infratribusId & a.SubtribusId == subtribusId);
+    public Tbl90Reference? SingleReferenceSubtribus(int referenceid, int? subtribusId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubtribusId == subtribusId);
+
+    public Tbl93Comment? SingleCommentSubtribus(int commentid, int? subtribusid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubtribusId == subtribusid);
+
+    public Tbl63Infratribus? SingleInfratribusSubtribus(int infratribusId, int? subtribusId) =>
+        _context.Tbl63Infratribusses.SingleOrDefault(a =>
+            a.InfratribusId == infratribusId & a.SubtribusId == subtribusId);
+
     //---------------------------------------------------
     public Tbl57Tribus? SingleTribus(int id) => _context.Tbl57Tribusses.SingleOrDefault(a => a.TribusId == id);
-    public Tbl90Reference? SingleReferenceTribus(int referenceid, int? tribusId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.TribusId == tribusId);
-    public Tbl93Comment? SingleCommentTribus(int commentid, int? tribusid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.TribusId == tribusid);
-    public Tbl60Subtribus? SingleSubtribusTribus(int subtribusId, int? tribusId) => _context.Tbl60Subtribusses.SingleOrDefault(a => a.SubtribusId == subtribusId & a.TribusId == tribusId);
+
+    public Tbl90Reference? SingleReferenceTribus(int referenceid, int? tribusId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.TribusId == tribusId);
+
+    public Tbl93Comment? SingleCommentTribus(int commentid, int? tribusid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.TribusId == tribusid);
+
+    public Tbl60Subtribus? SingleSubtribusTribus(int subtribusId, int? tribusId) =>
+        _context.Tbl60Subtribusses.SingleOrDefault(a => a.SubtribusId == subtribusId & a.TribusId == tribusId);
+
     //------------------------------------------------------------------
-    public Tbl54Supertribus? SingleSupertribus(int id) => _context.Tbl54Supertribusses.SingleOrDefault(a => a.SupertribusId == id);
-    public Tbl90Reference? SingleReferenceSupertribus(int referenceid, int? supertribusId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SupertribusId == supertribusId);
-    public Tbl93Comment? SingleCommentSupertribus(int commentid, int? supertribusid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SupertribusId == supertribusid);
-    public Tbl57Tribus? SingleTribusSupertribus(int tribusId, int? supertribusId) => _context.Tbl57Tribusses.SingleOrDefault(a => a.TribusId == tribusId & a.SupertribusId == supertribusId);
+    public Tbl54Supertribus? SingleSupertribus(int id) =>
+        _context.Tbl54Supertribusses.SingleOrDefault(a => a.SupertribusId == id);
+
+    public Tbl90Reference? SingleReferenceSupertribus(int referenceid, int? supertribusId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SupertribusId == supertribusId);
+
+    public Tbl93Comment? SingleCommentSupertribus(int commentid, int? supertribusid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SupertribusId == supertribusid);
+
+    public Tbl57Tribus? SingleTribusSupertribus(int tribusId, int? supertribusId) =>
+        _context.Tbl57Tribusses.SingleOrDefault(a => a.TribusId == tribusId & a.SupertribusId == supertribusId);
+
     //------------------------------------------------------------------
-    public Tbl51Infrafamily? SingleInfrafamily(int id) => _context.Tbl51Infrafamilies.SingleOrDefault(a => a.InfrafamilyId == id);
-    public Tbl90Reference? SingleReferenceInfrafamily(int referenceid, int? infrafamilyId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfrafamilyId == infrafamilyId);
-    public Tbl93Comment? SingleCommentInfrafamily(int commentid, int? infrafamilyid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfrafamilyId == infrafamilyid);
-    public Tbl54Supertribus? SingleSupertribusInfrafamily(int supertribusId, int? infrafamilyId) => _context.Tbl54Supertribusses.SingleOrDefault(a => a.SupertribusId == supertribusId & a.InfrafamilyId == infrafamilyId);
+    public Tbl51Infrafamily? SingleInfrafamily(int id) =>
+        _context.Tbl51Infrafamilies.SingleOrDefault(a => a.InfrafamilyId == id);
+
+    public Tbl90Reference? SingleReferenceInfrafamily(int referenceid, int? infrafamilyId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfrafamilyId == infrafamilyId);
+
+    public Tbl93Comment? SingleCommentInfrafamily(int commentid, int? infrafamilyid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfrafamilyId == infrafamilyid);
+
+    public Tbl54Supertribus? SingleSupertribusInfrafamily(int supertribusId, int? infrafamilyId) =>
+        _context.Tbl54Supertribusses.SingleOrDefault(a =>
+            a.SupertribusId == supertribusId & a.InfrafamilyId == infrafamilyId);
+
     //------------------------------------------------------------------
-    public Tbl48Subfamily? SingleSubfamily(int id) => _context.Tbl48Subfamilies.SingleOrDefault(a => a.SubfamilyId == id);
-    public Tbl90Reference? SingleReferenceSubfamily(int referenceid, int? subfamilyId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubfamilyId == subfamilyId);
-    public Tbl93Comment? SingleCommentSubfamily(int commentid, int? subfamilyid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubfamilyId == subfamilyid);
-    public Tbl51Infrafamily? SingleInfrafamilySubfamily(int infrafamilyId, int? subfamilyId) => _context.Tbl51Infrafamilies.SingleOrDefault(a => a.InfrafamilyId == infrafamilyId & a.SubfamilyId == subfamilyId);
+    public Tbl48Subfamily? SingleSubfamily(int id) =>
+        _context.Tbl48Subfamilies.SingleOrDefault(a => a.SubfamilyId == id);
+
+    public Tbl90Reference? SingleReferenceSubfamily(int referenceid, int? subfamilyId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubfamilyId == subfamilyId);
+
+    public Tbl93Comment? SingleCommentSubfamily(int commentid, int? subfamilyid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubfamilyId == subfamilyid);
+
+    public Tbl51Infrafamily? SingleInfrafamilySubfamily(int infrafamilyId, int? subfamilyId) =>
+        _context.Tbl51Infrafamilies.SingleOrDefault(a =>
+            a.InfrafamilyId == infrafamilyId & a.SubfamilyId == subfamilyId);
+
     //------------------------------------------------------------------
     public Tbl45Family? SingleFamily(int id) => _context.Tbl45Families.SingleOrDefault(a => a.FamilyId == id);
-    public Tbl90Reference? SingleReferenceFamily(int referenceid, int? familyId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.FamilyId == familyId);
-    public Tbl93Comment? SingleCommentFamily(int commentid, int? familyid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.FamilyId == familyid);
-    public Tbl48Subfamily? SingleSubfamilyFamily(int subfamilyId, int? familyId) => _context.Tbl48Subfamilies.SingleOrDefault(a => a.SubfamilyId == subfamilyId & a.FamilyId == familyId);
+
+    public Tbl90Reference? SingleReferenceFamily(int referenceid, int? familyId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.FamilyId == familyId);
+
+    public Tbl93Comment? SingleCommentFamily(int commentid, int? familyid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.FamilyId == familyid);
+
+    public Tbl48Subfamily? SingleSubfamilyFamily(int subfamilyId, int? familyId) =>
+        _context.Tbl48Subfamilies.SingleOrDefault(a => a.SubfamilyId == subfamilyId & a.FamilyId == familyId);
+
     ////------------------------------------------------------------------
-    public Tbl42Superfamily? SingleSuperfamily(int id) => _context.Tbl42Superfamilies.SingleOrDefault(a => a.SuperfamilyId == id);
-    public Tbl90Reference? SingleReferenceSuperfamily(int referenceid, int? superfamilyId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SuperfamilyId == superfamilyId);
-    public Tbl93Comment? SingleCommentSuperfamily(int commentid, int? superfamilyid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SuperfamilyId == superfamilyid);
-    public Tbl45Family? SingleFamilySuperfamily(int familyId, int? superfamilyId) => _context.Tbl45Families.SingleOrDefault(a => a.FamilyId == familyId & a.SuperfamilyId == superfamilyId);
+    public Tbl42Superfamily? SingleSuperfamily(int id) =>
+        _context.Tbl42Superfamilies.SingleOrDefault(a => a.SuperfamilyId == id);
+
+    public Tbl90Reference? SingleReferenceSuperfamily(int referenceid, int? superfamilyId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SuperfamilyId == superfamilyId);
+
+    public Tbl93Comment? SingleCommentSuperfamily(int commentid, int? superfamilyid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SuperfamilyId == superfamilyid);
+
+    public Tbl45Family? SingleFamilySuperfamily(int familyId, int? superfamilyId) =>
+        _context.Tbl45Families.SingleOrDefault(a => a.FamilyId == familyId & a.SuperfamilyId == superfamilyId);
+
     //------------------------------------------------------------------
-    public Tbl39Infraordo? SingleInfraordo(int id) => _context.Tbl39Infraordos.SingleOrDefault(a => a.InfraordoId == id);
-    public Tbl90Reference? SingleReferenceInfraordo(int referenceid, int? infraordoId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfraordoId == infraordoId);
-    public Tbl93Comment? SingleCommentInfraordo(int commentid, int? infraordoid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfraordoId == infraordoid);
-    public Tbl42Superfamily? SingleSuperfamilyInfraordo(int superfamilyId, int? infraordoId) => _context.Tbl42Superfamilies.SingleOrDefault(a => a.SuperfamilyId == superfamilyId & a.InfraordoId == infraordoId);
+    public Tbl39Infraordo? SingleInfraordo(int id) =>
+        _context.Tbl39Infraordos.SingleOrDefault(a => a.InfraordoId == id);
+
+    public Tbl90Reference? SingleReferenceInfraordo(int referenceid, int? infraordoId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfraordoId == infraordoId);
+
+    public Tbl93Comment? SingleCommentInfraordo(int commentid, int? infraordoid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfraordoId == infraordoid);
+
+    public Tbl42Superfamily? SingleSuperfamilyInfraordo(int superfamilyId, int? infraordoId) =>
+        _context.Tbl42Superfamilies.SingleOrDefault(a =>
+            a.SuperfamilyId == superfamilyId & a.InfraordoId == infraordoId);
+
     //------------------------------------------------------------------
     public Tbl36Subordo? SingleSubordo(int id) => _context.Tbl36Subordos.SingleOrDefault(a => a.SubordoId == id);
-    public Tbl90Reference? SingleReferenceSubordo(int referenceid, int? subordoId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubordoId == subordoId);
-    public Tbl93Comment? SingleCommentSubordo(int commentid, int? subordoid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubordoId == subordoid);
-    public Tbl39Infraordo? SingleInfraordoSubordo(int infraordoId, int? subordoId) => _context.Tbl39Infraordos.SingleOrDefault(a => a.InfraordoId == infraordoId & a.SubordoId == subordoId);
+
+    public Tbl90Reference? SingleReferenceSubordo(int referenceid, int? subordoId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubordoId == subordoId);
+
+    public Tbl93Comment? SingleCommentSubordo(int commentid, int? subordoid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubordoId == subordoid);
+
+    public Tbl39Infraordo? SingleInfraordoSubordo(int infraordoId, int? subordoId) =>
+        _context.Tbl39Infraordos.SingleOrDefault(a => a.InfraordoId == infraordoId & a.SubordoId == subordoId);
+
     //}
     //------------------------------------------------------------------
     public Tbl33Ordo? SingleOrdo(int id) => _context.Tbl33Ordos.SingleOrDefault(a => a.OrdoId == id);
-    public Tbl90Reference? SingleReferenceOrdo(int referenceid, int? ordoId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.OrdoId == ordoId);
-    public Tbl93Comment? SingleCommentOrdo(int commentid, int? ordoid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.OrdoId == ordoid);
-    public Tbl36Subordo? SingleSubordoOrdo(int subordoId, int? ordoId) => _context.Tbl36Subordos.SingleOrDefault(a => a.SubordoId == subordoId & a.OrdoId == ordoId);
+
+    public Tbl90Reference? SingleReferenceOrdo(int referenceid, int? ordoId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.OrdoId == ordoId);
+
+    public Tbl93Comment? SingleCommentOrdo(int commentid, int? ordoid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.OrdoId == ordoid);
+
+    public Tbl36Subordo? SingleSubordoOrdo(int subordoId, int? ordoId) =>
+        _context.Tbl36Subordos.SingleOrDefault(a => a.SubordoId == subordoId & a.OrdoId == ordoId);
+
     //------------------------------------------------------------------
     public Tbl30Legio? SingleLegio(int id) => _context.Tbl30Legios.SingleOrDefault(a => a.LegioId == id);
-    public Tbl90Reference? SingleReferenceLegio(int referenceid, int? legioId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.LegioId == legioId);
-    public Tbl93Comment? SingleCommentLegio(int commentid, int? legioid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.LegioId == legioid);
-    public Tbl33Ordo? SingleOrdoLegio(int ordoId, int? legioId) => _context.Tbl33Ordos.SingleOrDefault(a => a.OrdoId == ordoId & a.LegioId == legioId);
+
+    public Tbl90Reference? SingleReferenceLegio(int referenceid, int? legioId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.LegioId == legioId);
+
+    public Tbl93Comment? SingleCommentLegio(int commentid, int? legioid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.LegioId == legioid);
+
+    public Tbl33Ordo? SingleOrdoLegio(int ordoId, int? legioId) =>
+        _context.Tbl33Ordos.SingleOrDefault(a => a.OrdoId == ordoId & a.LegioId == legioId);
+
     //------------------------------------------------------------------
-    public Tbl27Infraclass? SingleInfraclass(int id) => _context.Tbl27Infraclasses.SingleOrDefault(a => a.InfraclassId == id);
-    public Tbl90Reference? SingleReferenceInfraclass(int referenceid, int? infraclassId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfraclassId == infraclassId);
-    public Tbl93Comment? SingleCommentInfraclass(int commentid, int? infraclassid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfraclassId == infraclassid);
-    public Tbl30Legio? SingleLegioInfraclass(int legioId, int? infraclassId) => _context.Tbl30Legios.SingleOrDefault(a => a.LegioId == legioId & a.InfraclassId == infraclassId);
+    public Tbl27Infraclass? SingleInfraclass(int id) =>
+        _context.Tbl27Infraclasses.SingleOrDefault(a => a.InfraclassId == id);
+
+    public Tbl90Reference? SingleReferenceInfraclass(int referenceid, int? infraclassId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.InfraclassId == infraclassId);
+
+    public Tbl93Comment? SingleCommentInfraclass(int commentid, int? infraclassid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.InfraclassId == infraclassid);
+
+    public Tbl30Legio? SingleLegioInfraclass(int legioId, int? infraclassId) =>
+        _context.Tbl30Legios.SingleOrDefault(a => a.LegioId == legioId & a.InfraclassId == infraclassId);
+
     //------------------------------------------------------------------
     public Tbl24Subclass? SingleSubclass(int id) => _context.Tbl24Subclasses.SingleOrDefault(a => a.SubclassId == id);
-    public Tbl90Reference? SingleReferenceSubclass(int referenceid, int? subclassId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubclassId == subclassId);
-    public Tbl93Comment? SingleCommentSubclass(int commentid, int? subclassid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubclassId == subclassid);
-    public Tbl27Infraclass? SingleInfraclassSubclass(int infraclassId, int? subclassId) => _context.Tbl27Infraclasses.SingleOrDefault(a => a.InfraclassId == infraclassId & a.SubclassId == subclassId);
+
+    public Tbl90Reference? SingleReferenceSubclass(int referenceid, int? subclassId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubclassId == subclassId);
+
+    public Tbl93Comment? SingleCommentSubclass(int commentid, int? subclassid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubclassId == subclassid);
+
+    public Tbl27Infraclass? SingleInfraclassSubclass(int infraclassId, int? subclassId) =>
+        _context.Tbl27Infraclasses.SingleOrDefault(a => a.InfraclassId == infraclassId & a.SubclassId == subclassId);
+
     //------------------------------------------------------------------
     public Tbl21Class? SingleClass(int id) => _context.Tbl21Classes.SingleOrDefault(a => a.ClassId == id);
-    public Tbl90Reference? SingleReferenceClass(int referenceid, int? classId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.ClassId == classId);
-    public Tbl93Comment? SingleCommentClass(int commentid, int? classid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.ClassId == classid);
-    public Tbl24Subclass? SingleSubclassClass(int subclassId, int? classId) => _context.Tbl24Subclasses.SingleOrDefault(a => a.SubclassId == subclassId & a.ClassId == classId);
+
+    public Tbl90Reference? SingleReferenceClass(int referenceid, int? classId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.ClassId == classId);
+
+    public Tbl93Comment? SingleCommentClass(int commentid, int? classid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.ClassId == classid);
+
+    public Tbl24Subclass? SingleSubclassClass(int subclassId, int? classId) =>
+        _context.Tbl24Subclasses.SingleOrDefault(a => a.SubclassId == subclassId & a.ClassId == classId);
+
     //------------------------------------------------------------------
-    public Tbl18Superclass? SingleSuperclass(int id) => _context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == id);
-    public Tbl90Reference? SingleReferenceSuperclass(int referenceid, int? superclassId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SuperclassId == superclassId);
-    public Tbl93Comment? SingleCommentSuperclass(int commentid, int? superclassid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SuperclassId == superclassid);
-    public Tbl21Class? SingleClassSuperclass(int classeId, int? superclassId) => _context.Tbl21Classes.SingleOrDefault(a => a.ClassId == classeId & a.SuperclassId == superclassId);
+    public Tbl18Superclass? SingleSuperclass(int id) =>
+        _context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == id);
+
+    public Tbl90Reference? SingleReferenceSuperclass(int referenceid, int? superclassId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SuperclassId == superclassId);
+
+    public Tbl93Comment? SingleCommentSuperclass(int commentid, int? superclassid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SuperclassId == superclassid);
+
+    public Tbl21Class? SingleClassSuperclass(int classeId, int? superclassId) =>
+        _context.Tbl21Classes.SingleOrDefault(a => a.ClassId == classeId & a.SuperclassId == superclassId);
+
     //------------------------------------------------------------------
-    public Tbl12Subphylum? SingleSubphylum(int id) => _context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id);
-    public Tbl90Reference? SingleReferenceSubphylum(int referenceid, int? subphylumId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubphylumId == subphylumId);
-    public Tbl93Comment? SingleCommentSubphylum(int commentid, int? subphylumid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubphylumId == subphylumid);
-    public Tbl18Superclass? SingleSuperclassSubphylum(int superclassId, int? subphylumId) => _context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == superclassId & a.SubphylumId == subphylumId);
+    public Tbl12Subphylum? SingleSubphylum(int id) =>
+        _context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id);
+
+    public Tbl90Reference? SingleReferenceSubphylum(int referenceid, int? subphylumId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.SubphylumId == subphylumId);
+
+    public Tbl93Comment? SingleCommentSubphylum(int commentid, int? subphylumid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.SubphylumId == subphylumid);
+
+    public Tbl18Superclass? SingleSuperclassSubphylum(int superclassId, int? subphylumId) =>
+        _context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == superclassId & a.SubphylumId == subphylumId);
+
     //------------------------------------------------------------------
     public Tbl06Phylum? SinglePhylum(int id) => _context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id);
-    public Tbl90Reference? SingleReferencePhylum(int referenceid, int? phylumId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.PhylumId == phylumId);
-    public Tbl93Comment? SingleCommentPhylum(int commentid, int? phylumid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.PhylumId == phylumid);
-    public Tbl12Subphylum? SingleSubphylumPhylum(int subphylumId, int? phylumId) => _context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == subphylumId & a.PhylumId == phylumId);
+
+    public Tbl90Reference? SingleReferencePhylum(int referenceid, int? phylumId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.PhylumId == phylumId);
+
+    public Tbl93Comment? SingleCommentPhylum(int commentid, int? phylumid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.PhylumId == phylumid);
+
+    public Tbl12Subphylum? SingleSubphylumPhylum(int subphylumId, int? phylumId) =>
+        _context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == subphylumId & a.PhylumId == phylumId);
+
     //------------------------------------------------------------------
     public Tbl03Regnum? SingleRegnum(int id) => _context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id);
-    public Tbl90Reference? SingleReferenceRegnum(int referenceid, int? regnumId) => _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.RegnumId == regnumId);
-    public Tbl93Comment? SingleCommentRegnum(int commentid, int? regnumid) => _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.RegnumId == regnumid);
-    public Tbl06Phylum? SinglePhylumRegnum(int phylumId, int? regnumId) => _context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == phylumId & a.RegnumId == regnumId);
+
+    public Tbl90Reference? SingleReferenceRegnum(int referenceid, int? regnumId) =>
+        _context.Tbl90References.SingleOrDefault(a => a.ReferenceId == referenceid & a.RegnumId == regnumId);
+
+    public Tbl93Comment? SingleCommentRegnum(int commentid, int? regnumid) =>
+        _context.Tbl93Comments.SingleOrDefault(a => a.CommentId == commentid & a.RegnumId == regnumid);
+
+    public Tbl06Phylum? SinglePhylumRegnum(int phylumId, int? regnumId) =>
+        _context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == phylumId & a.RegnumId == regnumId);
 
     #endregion Von App.cs verschoben
 
@@ -288,6 +480,7 @@ public partial class DataService : ObservableObject, IDataService
 
 
     #region Regnum
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRegnumAsync()
@@ -302,6 +495,7 @@ public partial class DataService : ObservableObject, IDataService
             .ThenBy(a => a.Subregnum)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchRegnumAsync(string? search)
     // ---------------------------------------------------------                 
@@ -330,6 +524,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RegnumName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertRegnumAsync(Tbl03Regnum uiEntity)
     // ---------------------------------------------------------                 
@@ -343,6 +538,7 @@ public partial class DataService : ObservableObject, IDataService
             MapRegnumFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapRegnumFields(Tbl03Regnum source, Tbl03Regnum target)
     // ---------------------------------------------------------                 
@@ -361,6 +557,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetRegnumByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -372,6 +569,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.RegnumId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteRegnumAsync(int id)
     // ---------------------------------------------------------                 
@@ -386,6 +584,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl03Regnum entity)
     // ---------------------------------------------------------                 
@@ -419,6 +618,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl06Phylums
             .AnyAsync(x => x.RegnumId == regnumId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int regnumId)
     // ---------------------------------------------------------                 
@@ -428,6 +628,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.RegnumId == regnumId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int regnumId)
     // ---------------------------------------------------------                 
@@ -534,6 +735,7 @@ public partial class DataService : ObservableObject, IDataService
             .ThenBy(a => a.Subregnum));
         return collection;
     }
+
     public ObservableCollection<Tbl03Regnum> GetRegnumAsync(int regnumid)
     {
         var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
@@ -544,6 +746,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return collection;
     }
+
     public ObservableCollection<Tbl03Regnum> GetRegnumAsync(string search)
     {
         var collection = int.TryParse(search, out var id)
@@ -559,6 +762,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Regnum
 
     #region Phylum
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllPhylumAsync()
@@ -572,6 +776,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.PhylumName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchPhylumWithRegnumAsync(string? search)
     // ---------------------------------------------------------                 
@@ -601,6 +806,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.PhylumName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertPhylumAsync(Tbl06Phylum uiEntity)
     // ---------------------------------------------------------                 
@@ -614,6 +820,7 @@ public partial class DataService : ObservableObject, IDataService
             MapPhylumFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapPhylumFields(Tbl06Phylum source, Tbl06Phylum target)
     // ---------------------------------------------------------                 
@@ -633,6 +840,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetPhylumByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -644,6 +852,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.PhylumId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeletePhylumAsync(int id)
     // ---------------------------------------------------------                 
@@ -658,6 +867,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl06Phylum entity)
     // ---------------------------------------------------------                 
@@ -692,6 +902,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl12Subphylums
             .AnyAsync(x => x.PhylumId == phylumId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int phylumId)
     // ---------------------------------------------------------                 
@@ -701,6 +912,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.PhylumId == phylumId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int phylumId)
     // ---------------------------------------------------------                 
@@ -822,6 +1034,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.PhylumName));
         return collection;
     }
+
     public ObservableCollection<Tbl06Phylum> GetPhylumAsync(int phylumid)
     {
         var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
@@ -832,6 +1045,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return collection;
     }
+
     public ObservableCollection<Tbl06Phylum> GetPhylumAsync(string search)
     {
         var collection = int.TryParse(search, out var id)
@@ -842,6 +1056,7 @@ public partial class DataService : ObservableObject, IDataService
                 .OrderBy(a => a.PhylumName));
         return collection;
     }
+
     public ObservableCollection<Tbl06Phylum> GetPhylumFromRegnumIdAsync(int regnumid)
     {
         var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
@@ -855,6 +1070,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Phylum
 
     #region Subphylum
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubphylumAsync()
@@ -868,6 +1084,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubphylumName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSubphylumWithPhylumAsync(string? search)
     // ---------------------------------------------------------                 
@@ -897,6 +1114,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubphylumName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSubphylumAsync(Tbl12Subphylum uiEntity)
     // ---------------------------------------------------------                 
@@ -910,6 +1128,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSubphylumFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSubphylumFields(Tbl12Subphylum source, Tbl12Subphylum target)
     // ---------------------------------------------------------                 
@@ -929,6 +1148,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSubphylumByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -940,6 +1160,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubphylumId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSubphylumAsync(int id)
     // ---------------------------------------------------------                 
@@ -954,6 +1175,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl12Subphylum entity)
     // ---------------------------------------------------------                 
@@ -988,6 +1210,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl18Superclasses
             .AnyAsync(x => x.SubphylumId == subphylumId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int subphylumId)
     // ---------------------------------------------------------                 
@@ -997,6 +1220,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SubphylumId == subphylumId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int subphylumId)
     // ---------------------------------------------------------                 
@@ -1116,16 +1340,18 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.SubphylumName));
         return collection;
     }
+
     public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync(int subphylumid)
     {
         var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-        .AsNoTracking()
+            .AsNoTracking()
             .Where(e => e.SubphylumId == subphylumid)
             .OrderBy(k => k.SubphylumName)
         );
 
         return collection;
     }
+
     public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync(string search)
     {
         var collection = int.TryParse(search, out var id)
@@ -1136,6 +1362,7 @@ public partial class DataService : ObservableObject, IDataService
                 .OrderBy(a => a.SubphylumName));
         return collection;
     }
+
     public ObservableCollection<Tbl12Subphylum> GetSubphylumFromPhylumIdAsync(int phylumid)
     {
         var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
@@ -1149,6 +1376,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Subphylum
 
     #region Superclass
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSuperclassAsync()
@@ -1162,6 +1390,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SuperclassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSuperclassWithSubphylumAsync(string? search)
     // ---------------------------------------------------------                 
@@ -1191,6 +1420,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SuperclassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSuperclassAsync(Tbl18Superclass uiEntity)
     // ---------------------------------------------------------                 
@@ -1204,6 +1434,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSuperclassFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSuperclassFields(Tbl18Superclass source, Tbl18Superclass target)
     // ---------------------------------------------------------                 
@@ -1223,6 +1454,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSuperclassByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -1234,6 +1466,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SuperclassId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSuperclassAsync(int id)
     // ---------------------------------------------------------                 
@@ -1248,6 +1481,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl18Superclass entity)
     // ---------------------------------------------------------                 
@@ -1282,6 +1516,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl21Classes
             .AnyAsync(x => x.SuperclassId == superclassId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int superclassId)
     // ---------------------------------------------------------                 
@@ -1291,6 +1526,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SuperclassId == superclassId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int superclassId)
     // ---------------------------------------------------------                 
@@ -1449,6 +1685,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Superclass
 
     #region Class
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllClassAsync()
@@ -1462,6 +1699,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.ClassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchClassWithSuperclassAsync(string? search)
     // ---------------------------------------------------------                 
@@ -1491,6 +1729,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.ClassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertClassAsync(Tbl21Class uiEntity)
     // ---------------------------------------------------------                 
@@ -1504,6 +1743,7 @@ public partial class DataService : ObservableObject, IDataService
             MapClassFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapClassFields(Tbl21Class source, Tbl21Class target)
     // ---------------------------------------------------------                 
@@ -1523,6 +1763,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetClassByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -1534,6 +1775,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ClassId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteClassAsync(int id)
     // ---------------------------------------------------------                 
@@ -1548,6 +1790,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl21Class entity)
     // ---------------------------------------------------------                 
@@ -1582,6 +1825,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl24Subclasses
             .AnyAsync(x => x.ClassId == classId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int classId)
     // ---------------------------------------------------------                 
@@ -1591,6 +1835,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.ClassId == classId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int classId)
     // ---------------------------------------------------------                 
@@ -1745,9 +1990,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Class                       
+    #endregion Class
 
     #region Subclass
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubclassAsync()
@@ -1761,6 +2007,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubclassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSubclassWithClassAsync(string? search)
     // ---------------------------------------------------------                 
@@ -1790,6 +2037,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubclassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSubclassAsync(Tbl24Subclass uiEntity)
     // ---------------------------------------------------------                 
@@ -1803,6 +2051,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSubclassFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSubclassFields(Tbl24Subclass source, Tbl24Subclass target)
     // ---------------------------------------------------------                 
@@ -1822,6 +2071,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSubclassByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -1833,6 +2083,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubclassId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSubclassAsync(int id)
     // ---------------------------------------------------------                 
@@ -1847,6 +2098,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl24Subclass entity)
     // ---------------------------------------------------------                 
@@ -1881,6 +2133,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl27Infraclasses
             .AnyAsync(x => x.SubclassId == subclassId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int subclassId)
     // ---------------------------------------------------------                 
@@ -1890,6 +2143,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SubclassId == subclassId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int subclassId)
     // ---------------------------------------------------------                 
@@ -2044,9 +2298,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Subclass                       
+    #endregion Subclass
 
-    #region Infraclass                
+    #region Infraclass
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfraclassAsync()
@@ -2060,6 +2315,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfraclassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchInfraclassWithSubclassAsync(string? search)
     // ---------------------------------------------------------                 
@@ -2089,6 +2345,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfraclassName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertInfraclassAsync(Tbl27Infraclass uiEntity)
     // ---------------------------------------------------------                 
@@ -2102,6 +2359,7 @@ public partial class DataService : ObservableObject, IDataService
             MapInfraclassFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapInfraclassFields(Tbl27Infraclass source, Tbl27Infraclass target)
     // ---------------------------------------------------------                 
@@ -2121,6 +2379,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetInfraclassByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -2132,6 +2391,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.InfraclassId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteInfraclassAsync(int id)
     // ---------------------------------------------------------                 
@@ -2146,6 +2406,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl27Infraclass entity)
     // ---------------------------------------------------------                 
@@ -2180,6 +2441,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl30Legios
             .AnyAsync(x => x.InfraclassId == infraclassId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int infraclassId)
     // ---------------------------------------------------------                 
@@ -2189,6 +2451,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.InfraclassId == infraclassId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int infraclassId)
     // ---------------------------------------------------------                 
@@ -2352,9 +2615,11 @@ public partial class DataService : ObservableObject, IDataService
 
         return null;
     }
-    #endregion Infraclass                       
 
-    #region Legio                
+    #endregion Infraclass
+
+    #region Legio
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllLegioAsync()
@@ -2368,6 +2633,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.LegioName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchLegioWithInfraclassAsync(string? search)
     // ---------------------------------------------------------                 
@@ -2397,6 +2663,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.LegioName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertLegioAsync(Tbl30Legio uiEntity)
     // ---------------------------------------------------------                 
@@ -2410,6 +2677,7 @@ public partial class DataService : ObservableObject, IDataService
             MapLegioFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapLegioFields(Tbl30Legio source, Tbl30Legio target)
     // ---------------------------------------------------------                 
@@ -2429,6 +2697,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetLegioByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -2440,6 +2709,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.LegioId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteLegioAsync(int id)
     // ---------------------------------------------------------                 
@@ -2454,6 +2724,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl30Legio entity)
     // ---------------------------------------------------------                 
@@ -2488,6 +2759,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl33Ordos
             .AnyAsync(x => x.LegioId == legioId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int legioId)
     // ---------------------------------------------------------                 
@@ -2497,6 +2769,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.LegioId == legioId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int legioId)
     // ---------------------------------------------------------                 
@@ -2609,9 +2882,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Legio                       
+    #endregion Legio
 
-    #region Ordo                
+    #region Ordo
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllOrdoAsync()
@@ -2625,6 +2899,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.OrdoName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchOrdoWithLegioAsync(string? search)
     // ---------------------------------------------------------                 
@@ -2654,6 +2929,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.OrdoName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertOrdoAsync(Tbl33Ordo uiEntity)
     // ---------------------------------------------------------                 
@@ -2667,6 +2943,7 @@ public partial class DataService : ObservableObject, IDataService
             MapOrdoFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapOrdoFields(Tbl33Ordo source, Tbl33Ordo target)
     // ---------------------------------------------------------                 
@@ -2686,6 +2963,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetOrdoByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -2697,6 +2975,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.OrdoId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteOrdoAsync(int id)
     // ---------------------------------------------------------                 
@@ -2711,6 +2990,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl33Ordo entity)
     // ---------------------------------------------------------                 
@@ -2745,6 +3025,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl36Subordos
             .AnyAsync(x => x.OrdoId == ordoId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int ordoId)
     // ---------------------------------------------------------                 
@@ -2754,6 +3035,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.OrdoId == ordoId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int ordoId)
     // ---------------------------------------------------------                 
@@ -2865,9 +3147,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-    #endregion Ordo                       
+    #endregion Ordo
 
-    #region Subordo                
+    #region Subordo
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubordoAsync()
@@ -2881,6 +3164,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubordoName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSubordoWithOrdoAsync(string? search)
     // ---------------------------------------------------------                 
@@ -2910,6 +3194,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubordoName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSubordoAsync(Tbl36Subordo uiEntity)
     // ---------------------------------------------------------                 
@@ -2923,6 +3208,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSubordoFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSubordoFields(Tbl36Subordo source, Tbl36Subordo target)
     // ---------------------------------------------------------                 
@@ -2942,6 +3228,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSubordoByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -2953,6 +3240,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubordoId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSubordoAsync(int id)
     // ---------------------------------------------------------                 
@@ -2967,6 +3255,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl36Subordo entity)
     // ---------------------------------------------------------                 
@@ -3001,6 +3290,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl39Infraordos
             .AnyAsync(x => x.SubordoId == subordoId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int subordoId)
     // ---------------------------------------------------------                 
@@ -3010,6 +3300,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SubordoId == subordoId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int subordoId)
     // ---------------------------------------------------------                 
@@ -3122,9 +3413,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Subordo                       
+    #endregion Subordo
 
-    #region Infraordo                
+    #region Infraordo
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfraordoAsync()
@@ -3138,6 +3430,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfraordoName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchInfraordoWithSubordoAsync(string? search)
     // ---------------------------------------------------------                 
@@ -3167,6 +3460,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfraordoName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertInfraordoAsync(Tbl39Infraordo uiEntity)
     // ---------------------------------------------------------                 
@@ -3180,6 +3474,7 @@ public partial class DataService : ObservableObject, IDataService
             MapInfraordoFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapInfraordoFields(Tbl39Infraordo source, Tbl39Infraordo target)
     // ---------------------------------------------------------                 
@@ -3199,6 +3494,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetInfraordoByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -3210,6 +3506,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.InfraordoId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteInfraordoAsync(int id)
     // ---------------------------------------------------------                 
@@ -3224,6 +3521,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl39Infraordo entity)
     // ---------------------------------------------------------                 
@@ -3258,6 +3556,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl42Superfamilies
             .AnyAsync(x => x.InfraordoId == infraordoId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int infraordoId)
     // ---------------------------------------------------------                 
@@ -3267,6 +3566,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.InfraordoId == infraordoId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int infraordoId)
     // ---------------------------------------------------------                 
@@ -3380,9 +3680,10 @@ public partial class DataService : ObservableObject, IDataService
 
 
 
-    #endregion Infraordo                       
+    #endregion Infraordo
 
-    #region Superfamily                
+    #region Superfamily
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSuperfamilyAsync()
@@ -3396,6 +3697,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SuperfamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSuperfamilyWithInfraordoAsync(string? search)
     // ---------------------------------------------------------                 
@@ -3425,6 +3727,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SuperfamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSuperfamilyAsync(Tbl42Superfamily uiEntity)
     // ---------------------------------------------------------                 
@@ -3438,6 +3741,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSuperfamilyFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSuperfamilyFields(Tbl42Superfamily source, Tbl42Superfamily target)
     // ---------------------------------------------------------                 
@@ -3457,10 +3761,11 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSuperfamilyByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl42Superfamily?> GetSuperfamilyByIdAsync(int id)
+    public async Task<Tbl42Superfamily> GetSuperfamilyByIdAsync(int? id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -3468,6 +3773,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SuperfamilyId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSuperfamilyAsync(int id)
     // ---------------------------------------------------------                 
@@ -3482,6 +3788,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl42Superfamily entity)
     // ---------------------------------------------------------                 
@@ -3516,6 +3823,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl45Families
             .AnyAsync(x => x.SuperfamilyId == superfamilyId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int superfamilyId)
     // ---------------------------------------------------------                 
@@ -3525,6 +3833,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SuperfamilyId == superfamilyId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int superfamilyId)
     // ---------------------------------------------------------                 
@@ -3637,9 +3946,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Superfamily                       
+    #endregion Superfamily
 
-    #region Family                
+    #region Family
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllFamilyAsync()
@@ -3653,6 +3963,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.FamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchFamilyWithSuperfamilyAsync(string? search)
     // ---------------------------------------------------------                 
@@ -3682,6 +3993,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.FamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertFamilyAsync(Tbl45Family uiEntity)
     // ---------------------------------------------------------                 
@@ -3695,6 +4007,7 @@ public partial class DataService : ObservableObject, IDataService
             MapFamilyFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapFamilyFields(Tbl45Family source, Tbl45Family target)
     // ---------------------------------------------------------                 
@@ -3714,6 +4027,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetFamilyByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -3725,6 +4039,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.FamilyId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteFamilyAsync(int id)
     // ---------------------------------------------------------                 
@@ -3739,6 +4054,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl45Family entity)
     // ---------------------------------------------------------                 
@@ -3773,6 +4089,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl48Subfamilies
             .AnyAsync(x => x.FamilyId == familyId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int familyId)
     // ---------------------------------------------------------                 
@@ -3782,6 +4099,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.FamilyId == familyId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int familyId)
     // ---------------------------------------------------------                 
@@ -3895,9 +4213,10 @@ public partial class DataService : ObservableObject, IDataService
 
 
 
-    #endregion Family                       
+    #endregion Family
 
-    #region Subfamily                
+    #region Subfamily
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubfamilyAsync()
@@ -3911,6 +4230,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubfamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSubfamilyWithFamilyAsync(string? search)
     // ---------------------------------------------------------                 
@@ -3940,6 +4260,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubfamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSubfamilyAsync(Tbl48Subfamily uiEntity)
     // ---------------------------------------------------------                 
@@ -3953,6 +4274,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSubfamilyFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSubfamilyFields(Tbl48Subfamily source, Tbl48Subfamily target)
     // ---------------------------------------------------------                 
@@ -3972,10 +4294,11 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSubfamilyByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl48Subfamily?> GetSubfamilyByIdAsync(int id)
+    public async Task<Tbl48Subfamily> GetSubfamilyByIdAsync(int? id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -3983,6 +4306,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubfamilyId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSubfamilyAsync(int id)
     // ---------------------------------------------------------                 
@@ -3997,6 +4321,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl48Subfamily entity)
     // ---------------------------------------------------------                 
@@ -4031,6 +4356,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl51Infrafamilies
             .AnyAsync(x => x.SubfamilyId == subfamilyId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int subfamilyId)
     // ---------------------------------------------------------                 
@@ -4040,6 +4366,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SubfamilyId == subfamilyId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int subfamilyId)
     // ---------------------------------------------------------                 
@@ -4152,9 +4479,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Subfamily                       
+    #endregion Subfamily
 
-    #region Infrafamily                
+    #region Infrafamily
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfrafamilyAsync()
@@ -4168,6 +4496,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfrafamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchInfrafamilyWithSubfamilyAsync(string? search)
     // ---------------------------------------------------------                 
@@ -4197,6 +4526,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfrafamilyName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertInfrafamilyAsync(Tbl51Infrafamily uiEntity)
     // ---------------------------------------------------------                 
@@ -4210,6 +4540,7 @@ public partial class DataService : ObservableObject, IDataService
             MapInfrafamilyFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapInfrafamilyFields(Tbl51Infrafamily source, Tbl51Infrafamily target)
     // ---------------------------------------------------------                 
@@ -4229,6 +4560,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetInfrafamilyByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -4240,6 +4572,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.InfrafamilyId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteInfrafamilyAsync(int id)
     // ---------------------------------------------------------                 
@@ -4254,6 +4587,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl51Infrafamily entity)
     // ---------------------------------------------------------                 
@@ -4288,6 +4622,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl54Supertribusses
             .AnyAsync(x => x.InfrafamilyId == infrafamilyId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int infrafamilyId)
     // ---------------------------------------------------------                 
@@ -4297,6 +4632,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.InfrafamilyId == infrafamilyId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int infrafamilyId)
     // ---------------------------------------------------------                 
@@ -4410,9 +4746,10 @@ public partial class DataService : ObservableObject, IDataService
 
 
 
-    #endregion Infrafamily                       
+    #endregion Infrafamily
 
-    #region Supertribus                
+    #region Supertribus
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSupertribusAsync()
@@ -4426,6 +4763,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SupertribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSupertribusWithInfrafamilyAsync(string? search)
     // ---------------------------------------------------------                 
@@ -4455,6 +4793,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SupertribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSupertribusAsync(Tbl54Supertribus uiEntity)
     // ---------------------------------------------------------                 
@@ -4468,6 +4807,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSupertribusFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSupertribusFields(Tbl54Supertribus source, Tbl54Supertribus target)
     // ---------------------------------------------------------                 
@@ -4487,6 +4827,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSupertribusByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -4498,6 +4839,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SupertribusId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSupertribusAsync(int id)
     // ---------------------------------------------------------                 
@@ -4512,6 +4854,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl54Supertribus entity)
     // ---------------------------------------------------------                 
@@ -4546,6 +4889,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl57Tribusses
             .AnyAsync(x => x.SupertribusId == supertribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int supertribusId)
     // ---------------------------------------------------------                 
@@ -4555,6 +4899,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SupertribusId == supertribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int supertribusId)
     // ---------------------------------------------------------                 
@@ -4675,6 +5020,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(x => x.SupertribusName)
             .ToListAsync();
     }
+
     public ObservableCollection<Tbl54Supertribus> GetSupertribusAsync()
     {
         var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
@@ -4704,9 +5050,10 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    #endregion Supertribus                       
+    #endregion Supertribus
 
-    #region Tribus                
+    #region Tribus
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllTribusAsync()
@@ -4720,6 +5067,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.TribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchTribusWithSupertribusAsync(string? search)
     // ---------------------------------------------------------                 
@@ -4749,6 +5097,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.TribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertTribusAsync(Tbl57Tribus uiEntity)
     // ---------------------------------------------------------                 
@@ -4762,6 +5111,7 @@ public partial class DataService : ObservableObject, IDataService
             MapTribusFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapTribusFields(Tbl57Tribus source, Tbl57Tribus target)
     // ---------------------------------------------------------                 
@@ -4781,6 +5131,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetTribusByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -4792,6 +5143,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.TribusId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteTribusAsync(int id)
     // ---------------------------------------------------------                 
@@ -4806,6 +5158,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl57Tribus entity)
     // ---------------------------------------------------------                 
@@ -4840,6 +5193,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl60Subtribusses
             .AnyAsync(x => x.TribusId == tribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int tribusId)
     // ---------------------------------------------------------                 
@@ -4849,6 +5203,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.TribusId == tribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int tribusId)
     // ---------------------------------------------------------                 
@@ -4979,15 +5334,17 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<Tbl57Tribus> GetTribusByTribusIdAsync(int tribusId)
     {
         return await _context.Tbl57Tribusses
             .FirstOrDefaultAsync(x => x.TribusId == tribusId);
     }
+
     public async Task<string> GetTribusNameByTribusId(int tribusId)
     {
         var tribus = await GetTribusByTribusIdAsync(tribusId);
-        return tribus?.TribusName ?? "Unknown";  // ✓ Null-safe
+        return tribus?.TribusName ?? "Unknown"; // ✓ Null-safe
     }
 
 
@@ -5001,6 +5358,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public ObservableCollection<Tbl57Tribus> GetTribusAsync()
     {
         var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
@@ -5032,9 +5390,10 @@ public partial class DataService : ObservableObject, IDataService
 
 
 
-    #endregion Tribus                       
+    #endregion Tribus
 
-    #region Subtribus                
+    #region Subtribus
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubtribusAsync()
@@ -5048,6 +5407,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSubtribusWithTribusAsync(string? search)
     // ---------------------------------------------------------                 
@@ -5077,6 +5437,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSubtribusAsync(Tbl60Subtribus uiEntity)
     // ---------------------------------------------------------                 
@@ -5090,6 +5451,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSubtribusFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSubtribusFields(Tbl60Subtribus source, Tbl60Subtribus target)
     // ---------------------------------------------------------                 
@@ -5109,6 +5471,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSubtribusByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -5120,6 +5483,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubtribusId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSubtribusAsync(int id)
     // ---------------------------------------------------------                 
@@ -5134,6 +5498,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl60Subtribus entity)
     // ---------------------------------------------------------                 
@@ -5168,6 +5533,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl63Infratribusses
             .AnyAsync(x => x.SubtribusId == subtribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int subtribusId)
     // ---------------------------------------------------------                 
@@ -5177,6 +5543,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SubtribusId == subtribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int subtribusId)
     // ---------------------------------------------------------                 
@@ -5305,7 +5672,7 @@ public partial class DataService : ObservableObject, IDataService
 
     public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
 
-    //-------------------------------------------
+        //-------------------------------------------
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<Tbl60Subtribus>();
@@ -5352,9 +5719,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Subtribus                       
+    #endregion Subtribus
 
     #region Infratribus
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfratribusAsync()
@@ -5368,6 +5736,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfratribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchInfratribusWithSubtribusAsync(string? search)
     // ---------------------------------------------------------                 
@@ -5397,6 +5766,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.InfratribusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertInfratribusAsync(Tbl63Infratribus uiEntity)
     // ---------------------------------------------------------                 
@@ -5410,6 +5780,7 @@ public partial class DataService : ObservableObject, IDataService
             MapInfratribusFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapInfratribusFields(Tbl63Infratribus source, Tbl63Infratribus target)
     // ---------------------------------------------------------                 
@@ -5429,6 +5800,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetInfratribusByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -5440,6 +5812,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.InfratribusId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteInfratribusAsync(int id)
     // ---------------------------------------------------------                 
@@ -5454,6 +5827,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl63Infratribus entity)
     // ---------------------------------------------------------                 
@@ -5488,6 +5862,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl66Genusses
             .AnyAsync(x => x.InfratribusId == infratribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int infratribusId)
     // ---------------------------------------------------------                 
@@ -5497,6 +5872,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.InfratribusId == infratribusId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int infratribusId)
     // ---------------------------------------------------------                 
@@ -5630,6 +6006,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusAsync(int dummy)
     {
         await using var context = _factory.CreateDbContext();
@@ -5639,6 +6016,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<bool> HasGenusAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -5669,9 +6047,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    #endregion Infratribus                       
+    #endregion Infratribus
 
-    #region Genus                
+    #region Genus
+
     // ---------------------------------------------------------                  
     // GetAllGenusAsync()
     // ---------------------------------------------------------                           
@@ -5684,6 +6063,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.GenusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchGenusWithInfratribusAsync(string? search)
     // ---------------------------------------------------------                 
@@ -5713,6 +6093,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.GenusName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertGenusAsync(Tbl66Genus uiEntity)
     // ---------------------------------------------------------                 
@@ -5726,6 +6107,7 @@ public partial class DataService : ObservableObject, IDataService
             MapGenusFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapGenusFields(Tbl66Genus source, Tbl66Genus target)
     // ---------------------------------------------------------                 
@@ -5745,6 +6127,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetGenusByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -5756,6 +6139,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.GenusId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteGenusAsync(int id)
     // ---------------------------------------------------------                 
@@ -5770,6 +6154,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl66Genus entity)
     // ---------------------------------------------------------                 
@@ -5804,6 +6189,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl75Speciesses
             .AnyAsync(x => x.GenusId == genusId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int genusId)
     // ---------------------------------------------------------                 
@@ -5813,6 +6199,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.GenusId == genusId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int genusId)
     // ---------------------------------------------------------                 
@@ -5934,6 +6321,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(x => x.GenusName)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -5950,6 +6338,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public ObservableCollection<Tbl66Genus> GetGenusAsync()
     {
         var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
@@ -6057,7 +6446,8 @@ public partial class DataService : ObservableObject, IDataService
 
     #endregion Genus
 
-    #region Speciesgroup                
+    #region Speciesgroup
+
     // ---------------------------------------------------------                  
     // GetAllSpeciesgroupAsync()
     // ---------------------------------------------------------                           
@@ -6070,6 +6460,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SpeciesgroupName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSpeciesgroupWithGenusAsync(string? search)
     // ---------------------------------------------------------                 
@@ -6098,6 +6489,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SpeciesgroupName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSpeciesgroupAsync(Tbl68Speciesgroup uiEntity)
     // ---------------------------------------------------------                 
@@ -6111,6 +6503,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSpeciesgroupFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSpeciesgroupFields(Tbl68Speciesgroup source, Tbl68Speciesgroup target)
     // ---------------------------------------------------------                 
@@ -6130,6 +6523,7 @@ public partial class DataService : ObservableObject, IDataService
         target.PorName = source.PorName;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSpeciesgroupByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -6141,6 +6535,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SpeciesgroupId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSpeciesgroupAsync(int id)
     // ---------------------------------------------------------                 
@@ -6155,6 +6550,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl68Speciesgroup entity)
     // ---------------------------------------------------------                 
@@ -6283,6 +6679,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Speciesgroup
 
     #region Species
+
     // ---------------------------------------------------------                  
     // GetAllSpeciesAsync()
     // ---------------------------------------------------------                           
@@ -6295,6 +6692,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SpeciesName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // GetSpeciesWithGenusAndSpeciesgroupByIdAsync(string? search)
     // ---------------------------------------------------------                 
@@ -6325,6 +6723,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SpeciesName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSpeciesAsync(Tbl75Species uiEntity)
     // ---------------------------------------------------------                 
@@ -6338,6 +6737,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSpeciesFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSpeciesFields(Tbl75Species source, Tbl75Species target)
     // ---------------------------------------------------------                 
@@ -6399,6 +6799,7 @@ public partial class DataService : ObservableObject, IDataService
         target.MemoGlobal = source.MemoGlobal;
         target.Creature = source.Creature;
     }
+
     // ---------------------------------------------------------                  
     // GetSpeciesByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -6424,6 +6825,7 @@ public partial class DataService : ObservableObject, IDataService
             .Include(x => x.Speciesgroup)
             .FirstOrDefaultAsync(x => x.SpeciesId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSpeciesAsync(int id)
     // ---------------------------------------------------------                 
@@ -6438,6 +6840,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl75Species entity)
     // ---------------------------------------------------------                 
@@ -6466,6 +6869,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl78Names
             .AnyAsync(x => x.SpeciesId == speciesId);
     }
+
     // ---------------------------------------------------------                  
     // HasImageAsync(int speciesId)
     // ---------------------------------------------------------                 
@@ -6475,6 +6879,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl81Images
             .AnyAsync(x => x.SpeciesId == speciesId);
     }
+
     // ---------------------------------------------------------                  
     // HasSynonymAsync(int speciesId)
     // ---------------------------------------------------------                 
@@ -6484,6 +6889,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl84Synonyms
             .AnyAsync(x => x.SpeciesId == speciesId);
     }
+
     // ---------------------------------------------------------                  
     // HasGeographicAsync(int speciesId)
     // ---------------------------------------------------------                 
@@ -6493,6 +6899,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl87Geographics
             .AnyAsync(x => x.SpeciesId == speciesId);
     }
+
     // ---------------------------------------------------------                  
     // HasReferenceAsync(int speciesId)
     // ---------------------------------------------------------                 
@@ -6502,6 +6909,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .AnyAsync(x => x.SpeciesId == speciesId);
     }
+
     // ---------------------------------------------------------                  
     // HasCommentAsync(int speciesId)
     // ---------------------------------------------------------                 
@@ -6568,6 +6976,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl84Synonym>> GetSynonymsBySpeciesIdAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
@@ -6760,6 +7169,7 @@ public partial class DataService : ObservableObject, IDataService
             .ThenBy(a => a.Divers));
         return collection;
     }
+
     public ObservableCollection<Tbl75Species> GetSpeciesAsync(string search)
     {
         var collection = int.TryParse(search, out var id)
@@ -6838,9 +7248,10 @@ public partial class DataService : ObservableObject, IDataService
     //    }
     //}
 
-    #endregion Species                       
+    #endregion Species
 
-    #region Name                  
+    #region Name
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllNameAsync()
@@ -6854,6 +7265,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.NameName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchNameWithSpeciesAndGenusAsync(string? search)
     // ---------------------------------------------------------                 
@@ -6886,6 +7298,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return result;
     }
+
     // ---------------------------------------------------------                  
     // UpsertNameAsync(Tbl78Name uiEntity)
     // ---------------------------------------------------------                 
@@ -6899,6 +7312,7 @@ public partial class DataService : ObservableObject, IDataService
             MapNameFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapNameFields(Tbl78Name source, Tbl78Name target)
     // ---------------------------------------------------------                 
@@ -6912,6 +7326,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetNameByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -6925,6 +7340,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.NameId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteNameAsync(int id)
     // ---------------------------------------------------------                 
@@ -6939,6 +7355,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl78Name entity)
     // ---------------------------------------------------------                 
@@ -7062,6 +7479,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Name
 
     #region Image
+
     // ---------------------------------------------------------                  
     // GetAllImageAsync()
     // ---------------------------------------------------------                           
@@ -7074,6 +7492,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchImageWithSpeciesAsync(string? search)
     // ---------------------------------------------------------                 
@@ -7104,6 +7523,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertImageAsync(Tbl81Image uiEntity)
     // ---------------------------------------------------------                 
@@ -7117,6 +7537,7 @@ public partial class DataService : ObservableObject, IDataService
             MapImageFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapImageFields(Tbl81Image source, Tbl81Image target)
     // ---------------------------------------------------------
@@ -7146,10 +7567,11 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl81Images
             .Include(x => x.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.ImageId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteImageAsync(int id)
     // ---------------------------------------------------------                 
@@ -7164,6 +7586,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl81Image entity)
     // ---------------------------------------------------------
@@ -7253,7 +7676,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl81Images
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .OrderBy(e => e.Info)
             .AsNoTracking()
             .ToListAsync();
@@ -7333,9 +7756,11 @@ public partial class DataService : ObservableObject, IDataService
             image.Filestream = LoadImageData(selectedpath);
             _context.Entry(current).CurrentValues.SetValues(image);
         }
+
         await _context.SaveChangesAsync();
         return image;
     }
+
     private static byte[] LoadImageData(string filePath)
     {
         var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -7357,9 +7782,10 @@ public partial class DataService : ObservableObject, IDataService
     //    }
     //}
 
-    #endregion Image                  
+    #endregion Image
 
     #region Synonym
+
     // ---------------------------------------------------------                  
     // Synonym 
     // ---------------------------------------------------------   
@@ -7375,6 +7801,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SynonymName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchSynonymWithSpeciesAsync(string? search)
     // ---------------------------------------------------------                 
@@ -7389,7 +7816,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl84Synonyms
             .Include(x => x.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -7405,6 +7832,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SynonymName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertSynonymAsync(Tbl84Synonym uiEntity)
     // ---------------------------------------------------------                 
@@ -7418,6 +7846,7 @@ public partial class DataService : ObservableObject, IDataService
             MapSynonymFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapSynonymFields(Tbl84Synonym source, Tbl84Synonym target)
     // ---------------------------------------------------------                 
@@ -7432,6 +7861,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetSynonymByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -7441,10 +7871,11 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl84Synonyms
             .Include(x => x.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SynonymId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteSynonymAsync(int id)
     // ---------------------------------------------------------                 
@@ -7459,6 +7890,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl84Synonym entity)
     // ---------------------------------------------------------                 
@@ -7493,7 +7925,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl84Synonyms
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .OrderBy(e => e.SynonymName)
             .AsNoTracking()
             .ToListAsync();
@@ -7583,9 +8015,10 @@ public partial class DataService : ObservableObject, IDataService
     //    }
     //}
 
-    #endregion Name                  
+    #endregion Name
 
     #region Geographic
+
     // ---------------------------------------------------------                  
     // GetAllGeographicAsync()
     // ---------------------------------------------------------                           
@@ -7598,6 +8031,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchGeographicWithSpeciesAsync(string? search)
     // ---------------------------------------------------------                 
@@ -7612,7 +8046,7 @@ public partial class DataService : ObservableObject, IDataService
 
         var query = context.Tbl87Geographics
             .Include(x => x.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking();
 
         if (int.TryParse(search, out var id))
@@ -7628,6 +8062,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertGeographicAsync(Tbl87Geographic uiEntity)
     // ---------------------------------------------------------                 
@@ -7641,6 +8076,7 @@ public partial class DataService : ObservableObject, IDataService
             MapGeographicFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapGeographicFields(Tbl87Geographic source, Tbl87Geographic target)
     // ---------------------------------------------------------                 
@@ -7668,6 +8104,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetGeographicByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -7677,10 +8114,11 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl87Geographics
             .Include(x => x.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.GeographicId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteGeographicAsync(int id)
     // ---------------------------------------------------------                 
@@ -7695,6 +8133,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl87Geographic entity)
     // ---------------------------------------------------------
@@ -7737,6 +8176,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return result;
     }
+
     private static bool HaveSameLocalGeometry(Tbl87Geographic a, Tbl87Geographic b)
     {
         return
@@ -7835,7 +8275,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl87Geographics
             .Where(e => e.SpeciesId == speciesId)
             .Include(e => e.Species)
-                .ThenInclude(s => s.Genus)
+            .ThenInclude(s => s.Genus)
             .OrderBy(e => e.Info)
             .AsNoTracking()
             .ToListAsync();
@@ -7925,9 +8365,10 @@ public partial class DataService : ObservableObject, IDataService
     //    }
     //}
 
-    #endregion Image                  
+    #endregion Image
 
     #region Reference
+
     //---------------------------------------------------------------
     public async Task<IEnumerable<Tbl90Reference>> GetAllReferenceAsync()
     {
@@ -7938,6 +8379,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> SearchReferenceAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -7952,6 +8394,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<Tbl90Reference> GetReferenceByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -7959,6 +8402,7 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl90References
             .FirstOrDefaultAsync(x => x.ReferenceId == id);
     }
+
     public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference uiEntity)
     {
         await using var context = _factory.CreateDbContext();
@@ -7993,6 +8437,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return dbEntity;
     }
+
     public async Task DeleteReferenceAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -8004,6 +8449,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     public async Task<bool> ReferenceExistsAsync(Tbl90Reference entity)
     {
         await using var context = _factory.CreateDbContext();
@@ -8017,6 +8463,7 @@ public partial class DataService : ObservableObject, IDataService
             x.ReferenceId != entity.ReferenceId
         );
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForRegnumAsync(int regnumId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8025,6 +8472,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForPhylumAsync(int phylumId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8033,6 +8481,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubphylumAsync(int subphylumId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8041,6 +8490,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSuperclassAsync(int superclassId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8049,6 +8499,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForClassAsync(int classId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8057,6 +8508,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubclassAsync(int subclassId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8065,6 +8517,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfraclassAsync(int infraclassId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8073,6 +8526,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForLegioAsync(int legioId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8081,6 +8535,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForOrdoAsync(int ordoId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8089,6 +8544,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubordoAsync(int subordoId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8097,6 +8553,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfraordoAsync(int infraordoId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8105,6 +8562,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSuperfamilyAsync(int superfamilyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8113,6 +8571,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForFamilyAsync(int familyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8121,6 +8580,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubfamilyAsync(int subfamilyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8129,6 +8589,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfrafamilyAsync(int infrafamilyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8137,6 +8598,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSupertribusAsync(int supertribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8145,6 +8607,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSubtribusAsync(int subtribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8153,6 +8616,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForTribusAsync(int tribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8161,6 +8625,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8169,6 +8634,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForGenusAsync(int genusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8177,6 +8643,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl90Reference>> GetReferencesForSpeciesAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8185,6 +8652,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     //---------------------------------------------------------
     public async Task DeleteReferencesAsync(int infratribusId)
     {
@@ -8206,6 +8674,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.Info));
         return collection;
     }
+
     public ObservableCollection<Tbl90Reference> GetReferenceAsync(int referenceid)
     {
         var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
@@ -8216,6 +8685,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return collection;
     }
+
     public Task<ObservableCollection<Tbl90Reference>> GetReferenceAsync(string search)
     {
         ObservableCollection<Tbl90Reference> collection = null!;
@@ -8260,6 +8730,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Reference
 
     #region RefAuthor
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRefAuthorAsync()
@@ -8273,6 +8744,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefAuthorName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchRefAuthorWithNULLAsync(string? search)
     // ---------------------------------------------------------                 
@@ -8301,6 +8773,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefAuthorName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertRefAuthorAsync(Tbl90RefAuthor uiEntity)
     // ---------------------------------------------------------                 
@@ -8314,6 +8787,7 @@ public partial class DataService : ObservableObject, IDataService
             MapRefAuthorFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapRefAuthorFields(Tbl90RefAuthor source, Tbl90RefAuthor target)
     // ---------------------------------------------------------                 
@@ -8333,6 +8807,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetRefAuthorByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -8344,6 +8819,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.RefAuthorId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteRefAuthorAsync(int id)
     // ---------------------------------------------------------                 
@@ -8358,6 +8834,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl90RefAuthor entity)
     // ---------------------------------------------------------                 
@@ -8386,6 +8863,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion RefAuthor
 
     #region RefSource
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRefSourceAsync()
@@ -8399,6 +8877,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefSourceName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchRefSourceWithNULLAsync(string? search)
     // ---------------------------------------------------------                 
@@ -8427,6 +8906,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefSourceName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertRefSourceAsync(Tbl90RefSource uiEntity)
     // ---------------------------------------------------------                 
@@ -8440,6 +8920,7 @@ public partial class DataService : ObservableObject, IDataService
             MapRefSourceFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapRefSourceFields(Tbl90RefSource source, Tbl90RefSource target)
     // ---------------------------------------------------------                 
@@ -8451,6 +8932,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetRefSourceByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -8462,6 +8944,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.RefSourceId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteRefSourceAsync(int id)
     // ---------------------------------------------------------                 
@@ -8476,6 +8959,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl90RefSource entity)
     // ---------------------------------------------------------                 
@@ -8492,6 +8976,7 @@ public partial class DataService : ObservableObject, IDataService
             x.RefSourceId != entity.RefSourceId
         );
     }
+
     //alt----------------------
     public ObservableCollection<Tbl90RefSource> GetRefSourceAsyncAlt()
     {
@@ -8503,6 +8988,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion
 
     #region RefExpert
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRefExpertAsync()
@@ -8516,6 +9002,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchRefExpertWithNULLAsync(string? search)
     // ---------------------------------------------------------                 
@@ -8544,6 +9031,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertRefExpertAsync(Tbl90RefExpert uiEntity)
     // ---------------------------------------------------------                 
@@ -8557,6 +9045,7 @@ public partial class DataService : ObservableObject, IDataService
             MapRefExpertFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapRefExpertFields(Tbl90RefExpert source, Tbl90RefExpert target)
     // ---------------------------------------------------------                 
@@ -8568,6 +9057,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Info = source.Info;
         target.Memo = source.Memo;
     }
+
     // ---------------------------------------------------------                  
     // GetRefExpertByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -8579,6 +9069,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.RefExpertId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteRefExpertAsync(int id)
     // ---------------------------------------------------------                 
@@ -8593,6 +9084,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(Tbl90RefExpert entity)
     // ---------------------------------------------------------                 
@@ -8775,7 +9267,9 @@ public partial class DataService : ObservableObject, IDataService
 
     public async Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert)
     {
-        var current = await _context.Tbl90RefExperts.FirstOrDefaultAsync(_comment => _comment.RefExpertId == refexpert.RefExpertId);
+        var current =
+            await _context.Tbl90RefExperts.FirstOrDefaultAsync(_comment =>
+                _comment.RefExpertId == refexpert.RefExpertId);
         if (null == current)
         {
             if (refexpert.Valid != null)
@@ -8797,21 +9291,25 @@ public partial class DataService : ObservableObject, IDataService
         {
             _context.Entry(current).CurrentValues.SetValues(refexpert);
         }
+
         await _context.SaveChangesAsync();
         return refexpert;
     }
 
     public async Task DeleteRefExpertAsyncAlt(int refexpertid)
     {
-        var reference = await _context.Tbl90RefExperts.FirstOrDefaultAsync(_reference => _reference.RefExpertId == refexpertid);
+        var reference =
+            await _context.Tbl90RefExperts.FirstOrDefaultAsync(_reference => _reference.RefExpertId == refexpertid);
         if (null != reference)
         {
             _context.Tbl90RefExperts.Remove(reference);
             await _context.SaveChangesAsync();
         }
     }
+
     //--------------------------------------------------------
-    public ObservableCollection<Tbl90Reference> GetTbl90ReferenceAuthorsCollectionOrderByInfoFromGenusIdAndRefSourceIdIsNullAndRefExpertIdIsNull(int? genusId)
+    public ObservableCollection<Tbl90Reference>
+        GetTbl90ReferenceAuthorsCollectionOrderByInfoFromGenusIdAndRefSourceIdIsNullAndRefExpertIdIsNull(int? genusId)
     {
         if (_context.Tbl90References != null)
         {
@@ -8820,10 +9318,12 @@ public partial class DataService : ObservableObject, IDataService
                 .OrderBy(k => k.Info));
             return collection;
         }
+
         return null!;
     }
 
-    public ObservableCollection<Tbl90Reference> GetTbl90ReferenceSourcesCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefExpertIdIsNull(int? genusId)
+    public ObservableCollection<Tbl90Reference>
+        GetTbl90ReferenceSourcesCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefExpertIdIsNull(int? genusId)
     {
         if (_context.Tbl90References != null)
         {
@@ -8832,10 +9332,12 @@ public partial class DataService : ObservableObject, IDataService
                 .OrderBy(k => k.Info));
             return collection;
         }
+
         return null!;
     }
 
-    public ObservableCollection<Tbl90Reference> GetTbl90ReferenceExpertsCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefSourceIdIsNull(int? genusId)
+    public ObservableCollection<Tbl90Reference>
+        GetTbl90ReferenceExpertsCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefSourceIdIsNull(int? genusId)
     {
         if (_context.Tbl90References != null)
         {
@@ -8844,6 +9346,7 @@ public partial class DataService : ObservableObject, IDataService
                 .OrderBy(k => k.Info));
             return collection;
         }
+
         return null!;
     }
     //-----------------------------------------------------------
@@ -8851,6 +9354,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion RefExpert
 
     #region Comment
+
     //--------------------------------------------------------
     public async Task<IEnumerable<Tbl93Comment>> GetAllCommentAsync()
     {
@@ -8861,6 +9365,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> SearchCommentAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -8876,6 +9381,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<Tbl93Comment> GetCommentByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -8884,6 +9390,7 @@ public partial class DataService : ObservableObject, IDataService
 
             .FirstOrDefaultAsync(x => x.CommentId == id);
     }
+
     public async Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment uiEntity)
     {
         await using var context = _factory.CreateDbContext();
@@ -8917,6 +9424,7 @@ public partial class DataService : ObservableObject, IDataService
 
         return dbEntity;
     }
+
     public async Task DeleteCommentAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
@@ -8928,6 +9436,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     public async Task<bool> CommentExistsAsync(Tbl93Comment entity)
     {
         await using var context = _factory.CreateDbContext();
@@ -8974,6 +9483,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForPhylumAsync(int phylumId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8983,6 +9493,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubphylumAsync(int subphylumId)
     {
         await using var context = _factory.CreateDbContext();
@@ -8992,6 +9503,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSuperclassAsync(int superclassId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9001,6 +9513,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForClassAsync(int classId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9010,6 +9523,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubclassAsync(int subclassId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9019,6 +9533,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int infraclassId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9028,6 +9543,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForLegioAsync(int legioId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9037,6 +9553,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForOrdoAsync(int ordoId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9046,6 +9563,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubordoAsync(int subordoId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9055,6 +9573,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraordoAsync(int infraordoId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9064,6 +9583,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSuperfamilyAsync(int superfamilyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9073,6 +9593,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForFamilyAsync(int familyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9082,6 +9603,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubfamilyAsync(int subfamilyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9091,6 +9613,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfrafamilyAsync(int infrafamilyId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9100,6 +9623,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSupertribusAsync(int supertribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9109,6 +9633,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForTribusAsync(int tribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9119,6 +9644,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSubtribusAsync(int subtribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9129,6 +9655,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForInfratribusAsync(int infratribusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9139,6 +9666,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForGenusAsync(int genusId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9149,6 +9677,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
+
     public async Task<IEnumerable<Tbl93Comment>> GetCommentsForSpeciesAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
@@ -9242,6 +9771,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Comment
 
     #region Country
+
     // ---------------------------------------------------------                  
     // GetAllCountryAsync()
     // ---------------------------------------------------------
@@ -9321,6 +9851,7 @@ public partial class DataService : ObservableObject, IDataService
         //    .OrderBy(e => e.Name)
         //    .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertCountryAsync(TblCountry uiEntity)
     // ---------------------------------------------------------
@@ -9351,7 +9882,7 @@ public partial class DataService : ObservableObject, IDataService
         );
 
         var isNew = dbEntity.CountryId == 0;
-   //     ApplyAuditInfo(dbEntity, isNew);
+        //     ApplyAuditInfo(dbEntity, isNew);
 
         await context.SaveChangesAsync();
 
@@ -9394,6 +9925,7 @@ public partial class DataService : ObservableObject, IDataService
         target.Latitude = source.Latitude;
         target.Longitude = source.Longitude;
     }
+
     // ---------------------------------------------------------                  
     // GetCountryByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -9405,6 +9937,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.CountryId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteCountryAsync(int id)
     // ---------------------------------------------------------                 
@@ -9419,6 +9952,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(TblCountry entity)
     // ---------------------------------------------------------                 
@@ -9435,7 +9969,7 @@ public partial class DataService : ObservableObject, IDataService
             x.CountryId != entity.CountryId
         );
     }
-    
+
 
     //alt
     public async Task<List<TblCountry>> GetAllCountriesAsync()
@@ -9470,6 +10004,7 @@ public partial class DataService : ObservableObject, IDataService
                 .ToListAsync();
         }
     }
+
     public async Task<List<TblCountry>> GetCountriesByNameAsync(string? query)
     {
         if (string.IsNullOrWhiteSpace(query))
@@ -9491,6 +10026,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(a => a.Name)
             .ToListAsync();
     }
+
     public async Task<List<TblCountry>> GetCountryAsync(int countryid)
     {
         return await _context.TblCountries
@@ -9540,6 +10076,7 @@ public partial class DataService : ObservableObject, IDataService
     #endregion Country
 
     #region UserProfile
+
     // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllUserProfileAsync()
@@ -9553,10 +10090,11 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Email)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // SearchUserProfileWithNULLAsync(string? search)
     // ---------------------------------------------------------                 
-    public async Task<IEnumerable<TblUserProfile>> SearchUserProfileWithNULLAsync(string? search)
+    public async Task<IEnumerable<TblUserProfile>> SearchUserProfileAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
             return Enumerable.Empty<TblUserProfile>();
@@ -9581,6 +10119,7 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Email)
             .ToListAsync();
     }
+
     // ---------------------------------------------------------                  
     // UpsertUserProfileAsync(TblUserProfile uiEntity)
     // ---------------------------------------------------------                 
@@ -9594,25 +10133,46 @@ public partial class DataService : ObservableObject, IDataService
             MapUserProfileFields
         );
     }
+
     // ---------------------------------------------------------                  
     // MapUserProfileFields(TblUserProfile source, TblUserProfile target)
     // ---------------------------------------------------------                 
     private static void MapUserProfileFields(TblUserProfile source, TblUserProfile target)
     {
         target.Email = source.Email;
-        target.FirstName = source.FirstName;
         target.LastName = source.LastName;
-        target.Filestream = source.Filestream;
-        target.FilestreamId = source.FilestreamId;
-        //target.Author = source.Author;
-        //target.AuthorYear = source.AuthorYear;
-        //target.Info = source.Info;
-        //target.EngName = source.EngName;
-        //target.GerName = source.GerName;
-        //target.FraName = source.FraName;
-        //target.PorName = source.PorName;
+        target.FirstName = source.FirstName;
+        target.Title = source.Title;
+        target.Password = source.Password;
+        target.Role = source.Role;
+        target.Flag = source.Flag;
+        target.StartDate = source.StartDate;
+        target.EndDate = source.EndDate;
+        target.Notes = source.Notes;
+        target.Colour = source.Colour;
+        target.BirthDate = source.BirthDate;
+        target.Gender = source.Gender;
+        target.Country = source.Country;
+        target.Postcode = source.Postcode;
+        target.City = source.City;
+        target.Street1 = source.Street1;
+        target.Street2 = source.Street2;
+        target.Tel = source.Tel;
+        target.Mobil = source.Mobil;
+        target.Fax = source.Fax;
+        target.HomePageUrl = source.HomePageUrl;
+        target.Business = source.Business;
+        target.Company = source.Company;
         target.Memo = source.Memo;
+        target.Filestream = source.Filestream;
+        target.ImageMimeType = source.ImageMimeType;
+        target.FilestreamId = source.FilestreamId;
+        target.Signature = source.Signature;
+        target.MailNewsletter = source.MailNewsletter;
+        target.MaulHtml = source.MaulHtml;
+        target.Known = source.Known;
     }
+
     // ---------------------------------------------------------                  
     // GetUserProfileByIdAsync(int id)
     // ---------------------------------------------------------                 
@@ -9624,6 +10184,7 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.UserProfileId == id);
     }
+
     // ---------------------------------------------------------                  
     // DeleteUserProfileAsync(int id)
     // ---------------------------------------------------------                 
@@ -9638,6 +10199,7 @@ public partial class DataService : ObservableObject, IDataService
             await context.SaveChangesAsync();
         }
     }
+
     // ---------------------------------------------------------                  
     // ExistsAsync(TblUserProfile entity)
     // ---------------------------------------------------------                 
@@ -9646,23 +10208,38 @@ public partial class DataService : ObservableObject, IDataService
         await using var context = _factory.CreateDbContext();
 
         return await context.TblUserProfiles.AnyAsync(x =>
-            x.Email == entity.Email &&          
-            x.FirstName == entity.FirstName &&
+            x.Email == entity.Email &&
             x.LastName == entity.LastName &&
-            x.Filestream == entity.Filestream &&
-            x.FilestreamId == entity.FilestreamId &&
-            //x.NULLId == entity.NULLId &&
-            //x.Valid == entity.Valid &&
-            //x.ValidYear == entity.ValidYear &&
-            //x.Synonym == entity.Synonym &&
-            //x.Author == entity.Author &&
-            //x.AuthorYear == entity.AuthorYear &&
-            //x.Info == entity.Info &&
-            //x.EngName == entity.EngName &&
-            ////x.GerName == entity.GerName &&
-            //  x.FraName == entity.FraName &&
-            //x.PorName == entity.PorName &&
+            x.FirstName == entity.FirstName &&
+            x.Title == entity.Title &&
+            x.Password == entity.Password &&
+            x.Role == entity.Role &&
+            x.Flag == entity.Flag &&
+            x.StartDate == entity.StartDate &&
+            x.EndDate == entity.EndDate &&
+            x.Notes == entity.Notes &&
+            x.Colour == entity.Colour &&
+            x.BirthDate == entity.BirthDate &&
+            x.Gender == entity.Gender &&
+            x.Country == entity.Country &&
+            x.Postcode == entity.Postcode &&
+            x.City == entity.City &&
+            x.Street1 == entity.Street1 &&
+            x.Street2 == entity.Street2 &&
+            x.Tel == entity.Tel &&
+            x.Mobil == entity.Mobil &&
+            x.Fax == entity.Fax &&
+            x.HomePageUrl == entity.HomePageUrl &&
+            x.Business == entity.Business &&
+            x.Company == entity.Company &&
             x.Memo == entity.Memo &&
+            x.Filestream == entity.Filestream &&
+            x.ImageMimeType == entity.ImageMimeType &&
+            x.FilestreamId == entity.FilestreamId &&
+            x.Signature == entity.Signature &&
+            x.MailNewsletter == entity.MailNewsletter &&
+            x.MaulHtml == entity.MaulHtml &&
+            x.Known == entity.Known &&
             x.UserProfileId != entity.UserProfileId
         );
     }
@@ -9679,13 +10256,24 @@ public partial class DataService : ObservableObject, IDataService
     public ObservableCollection<TblUserProfile> GetUserProfileAsync(int userprofileid)
     {
         var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-        .AsNoTracking()
+            .AsNoTracking()
             .Where(e => e.UserProfileId == userprofileid)
             .OrderBy(k => k.Email)
         );
 
         return collection;
     }
+
+
+    //alt
+    //public ObservableCollection<TblUserProfile> GetUserProfileAsync()
+    //{
+    //    var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
+    //        .AsNoTracking()
+    //        .OrderBy(a => a.Email));
+    //    return collection;
+    //}
+
 
     public ObservableCollection<TblUserProfile> GetEmailFromUserProfileAsync(string email)
     {
@@ -12579,7 +13167,7 @@ public partial class DataService : ObservableObject, IDataService
 
             if (dbset != null)
             {
-                return dbset.SuperfamilyId;
+               // return dbset.SuperfamilyId;
             }
         }
 
@@ -12855,7 +13443,7 @@ public partial class DataService : ObservableObject, IDataService
 
             if (dbset != null)
             {
-                return dbset.SubfamilyId;
+              //  return dbset.SubfamilyId;
             }
         }
 

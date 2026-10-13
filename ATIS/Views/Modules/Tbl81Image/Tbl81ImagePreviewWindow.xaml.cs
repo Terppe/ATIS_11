@@ -16,6 +16,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics;
 using WinRT.Interop;
+using WinUI3Localizer;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,8 +37,39 @@ public sealed partial class Tbl81ImagePreviewWindow : Window
         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
         var appWindow = AppWindow.GetFromWindowId(windowId);
 
+        appWindow.Title = GetPreviewTitle(item);
         appWindow.Resize(new SizeInt32(1200, 800));
         appWindow.Move(new PointInt32(100, 80));
+    }
+
+    private static string GetPreviewTitle(Models.Tbl81Image item)
+    {
+        var loc = Localizer.Get();
+
+        var raw = item.ImageMimeType;
+
+        var titleKey = "PreviewTitle";
+
+        if (!string.IsNullOrWhiteSpace(raw))
+        {
+            var value = raw.Trim().ToLowerInvariant().TrimStart('.');
+
+            titleKey = value switch
+            {
+                "jpg" or "jpeg" or "png" or "bmp" or "gif" or "tif" or "tiff"
+                    => "ImagePreviewTitle",
+
+                "mp4" or "wmv" or "avi" or "mov"
+                    => "VideoPreviewTitle",
+
+                "mp3" or "wav" or "wma" or "m4a"
+                    => "AudioPreviewTitle",
+
+                _ => "PreviewTitle"
+            };
+        }
+
+        return loc.GetLocalizedString(titleKey);
     }
 }
 

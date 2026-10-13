@@ -63,8 +63,8 @@ public class Tbl45Family : ObservableObject, IDataService.IAuditable, IHierarchi
     // SuperfamilyId (FK)
     // ---------------------------------------------------------                   
 
-    private int _superfamilyId;
-    public int SuperfamilyId
+    private int? _superfamilyId;
+    public int? SuperfamilyId
     {
         get => _superfamilyId;
         set => SetProperty(ref _superfamilyId, value);

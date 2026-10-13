@@ -536,7 +536,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
                 return;
 
             Item.Filestream = await File.ReadAllBytesAsync(file.Path);
-      //      Item.ImageMimeType = GetImageTypeFromExtension(file.FileType);
 
             var fileType = GetImageTypeFromExtension(file.FileType);
 

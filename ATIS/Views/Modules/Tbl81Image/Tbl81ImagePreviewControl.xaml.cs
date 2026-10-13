@@ -1,14 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Media.Core;
 using Windows.Storage.Streams;
-using static ATIS.Views.Report.ReportViewModel;
 
 namespace ATIS.Views.Modules.Tbl81Image
 {
@@ -21,7 +14,7 @@ namespace ATIS.Views.Modules.Tbl81Image
 
         public Tbl81ImagePreviewControl()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public Models.Tbl81Image? Item
@@ -88,21 +81,22 @@ namespace ATIS.Views.Modules.Tbl81Image
             _mediaStream?.Dispose();
             _mediaStream = null;
 
+            ImageToolbar.Visibility = Visibility.Collapsed;
             MediaGrid.Visibility = Visibility.Collapsed;
             ImageScrollViewer.Visibility = Visibility.Collapsed;
         }
         private void ShowImage()
         {
+            ImageToolbar.Visibility = Visibility.Visible;
             ImageScrollViewer.Visibility = Visibility.Visible;
             MediaGrid.Visibility = Visibility.Collapsed;
         }
-
         private void ShowMedia()
         {
+            ImageToolbar.Visibility = Visibility.Collapsed;
             ImageScrollViewer.Visibility = Visibility.Collapsed;
             MediaGrid.Visibility = Visibility.Visible;
         }
-
         private async Task LoadImageAsync(Models.Tbl81Image item)
         {
             try

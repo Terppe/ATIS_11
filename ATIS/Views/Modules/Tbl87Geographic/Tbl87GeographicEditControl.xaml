@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:loc="using:WinUI3Localizer"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tbl87Geographic="using:ATIS.Views.Modules.Tbl87Geographic"
              xmlns:winUi="using:Mapsui.UI.WinUI"
              x:Name="Root"
              mc:Ignorable="d">
 
     <!--  Tbl87GeographicEditControl Skriptdatum:  13.09.2026  10:32  -->
 
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <MenuFlyout x:Key="PointContextFlyout">
             <MenuFlyoutItem x:Name="MenuAddPoint"
                             loc:Uids.Uid="MenuFlyout_Add_Point"
@@ -23,7 +24,7 @@
                             loc:Uids.Uid="MenuFlyout_Delete_Point"
                             Click="MenuDeletePoint_Click" />
         </MenuFlyout>
-    </UserControl.Resources>
+    </UserControl.Resources>-->
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
             BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
@@ -86,6 +87,8 @@
                         </StackPanel>
                     </Button>
 
+                    <Button Click="OpenMapButton_Click"
+                            Content="Karte groß anzeigen" />
                     <!--  Replace Point  -->
                     <!--<Button x:Name="ReplacePointButton"
                     Click="ReplacePointButton_Click"
@@ -219,7 +222,7 @@
                             Orientation="Horizontal"
                             Spacing="4">
 
-                    <Button x:Name="MapTab"
+                    <!--<Button x:Name="MapTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
                             Tag="0">
@@ -230,7 +233,7 @@
                                     Height="2"
                                     Background="Transparent" />
                         </StackPanel>
-                    </Button>
+                    </Button>-->
 
                     <Button x:Name="DataTab"
                             Click="DetailTabButton_Click"
@@ -261,20 +264,9 @@
 
                 <Grid x:Name="TabContentGrid"
                       Grid.Row="1">
-                    <Grid x:Name="MapGrid">
-                        <Border Width="1100"
-                                Height="400">
-                            <Grid>
-                                <winUi:MapControl x:Name="MyMap"
-                                                  HorizontalAlignment="Stretch"
-                                                  VerticalAlignment="Stretch"
-                                                  MapPointerPressed="MyMap_OnMapPointerPressed"
-                                                  MapPointerReleased="MyMap_OnMapPointerReleased"
-                                                  RightTapped="MyMap_OnRightTapped"
-                                                  Tapped="MyMap_OnTapped" />
-                            </Grid>
-                        </Border>
-                    </Grid>
+                    <!--<Grid>
+                        <tbl87Geographic:Tbl87GeographicMapControl x:Name="GeographicMapControl" />
+                    </Grid>-->
                     <Grid x:Name="DataGrid"
                           Visibility="Collapsed">
                         <StackPanel>

@@ -455,6 +455,9 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
 
         var saved = await Data.UpsertGeographicAsync(item);
 
+        System.Diagnostics.Debug.WriteLine(
+            $"[Tbl87GeographicVM] SaveItemAsync AFTER Upsert: id={saved?.GeographicId}, zoom={saved?.ZoomLevel}");
+
         if (saved != null)
         {
             _lookupService.InvalidateAllCaches();

@@ -704,6 +704,8 @@
 		<None Remove="Views\Modules\Tbl84Synonym\Tbl84SynonymParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicMapControl.xaml" />
+		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicMapWindow.xaml" />
 		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicPage.xaml" />
 		<None Remove="Views\Modules\Tbl87Geographic\Tbl87GeographicParentControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml" />
@@ -848,6 +850,18 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicMapWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicMapControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>
