@@ -5,7 +5,6 @@ using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-//public class TblCountry : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
 
 public class TblCountry : ObservableObject, IHierarchicalEntity
 {
@@ -59,15 +58,44 @@ public class TblCountry : ObservableObject, IHierarchicalEntity
 
 
     // ---------------------------------------------------------               
-    // CountId
+    // Continent
     // ---------------------------------------------------------               
+    private string? _continent;
 
-    //private int _countId;
-    //public int CountId
-    //{
-    //    get => _countId;
-    //    set => SetProperty(ref _countId, value);
-    //}
+    /// Ein Erdteil oder mehrere, getrennt durch ";" (z. B. "Europe;Asia" für Türkei).
+    [StringLength(100)]
+    public string? Continent
+    {
+        get => _continent;
+        set
+        {
+            SetProperty(ref _continent, value);
+            ValidateContinent();
+        }
+    }
+
+    private string? _continentError;
+    [NotMapped]
+    public string? ContinentError
+    {
+        get => _continentError;
+        set => SetProperty(ref _continentError, value);
+    }
+
+    private bool _hasContinentError;
+    [NotMapped]
+    public bool HasContinentError
+    {
+        get => _hasContinentError;
+        set
+        {
+            if (_hasContinentError != value)
+            {
+                _hasContinentError = value;
+                OnPropertyChanged(); // WICHTIG!
+            }
+        }
+    }
 
     // ---------------------------------------------------------
     // Regex
@@ -230,6 +258,25 @@ public class TblCountry : ObservableObject, IHierarchicalEntity
     }
 
     // ---------------------------------------------------------
+    // Validate Continent
+    // ---------------------------------------------------------
+
+    public void ValidateContinent()
+    {
+        ClearErrors(nameof(Continent));
+        var loc = Localizer.Get();  // ← Direkt verwenden wie in deinem Code
+
+        if (string.IsNullOrWhiteSpace(_continent))
+            AddError(nameof(Continent), loc.GetLocalizedString("Error_Continent_Empty"));
+
+        if (_continent?.Length > 100)
+            AddError(nameof(Continent), loc.GetLocalizedString("Error_Continent_TooLong"));
+
+        UpdateErrorProperty(nameof(Continent));
+    }
+
+
+    // ---------------------------------------------------------
     // Validate ValidYear
     // ---------------------------------------------------------
 
@@ -264,9 +311,10 @@ Notify:
     public bool IsValid()
     {
         ValidateName();
+        ValidateContinent();
         ValidateRegex();
 
-        return !HasNameError && !HasRegexError;
+        return !HasNameError && !HasContinentError && !HasRegexError;
     }
 
 

@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
@@ -107,11 +109,29 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             OnPropertyChanged(nameof(CountryList));
         }
     }
+
+    public static class ContinentLookup
+    {
+        public static string[] Split(string? value) =>
+            string.IsNullOrWhiteSpace(value)
+                ? Array.Empty<string>()
+                : value.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        public static bool Matches(string? countryContinents, string? itemContinent)
+        {
+            var allowed = Split(countryContinents);
+
+            if (allowed.Length == 0 || string.IsNullOrWhiteSpace(itemContinent))
+                return true;
+
+            return allowed.Contains(itemContinent, StringComparer.OrdinalIgnoreCase);
+        }
+    }
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();
         UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_GeographicId")) ? "Id" : loc.GetLocalizedString("HeaderSort_GeographicId"));
-        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_GeographicName")) ? "Name" : loc.GetLocalizedString("HeaderSort_GeographicName"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_GeographicInfo")) ? "Name" : loc.GetLocalizedString("HeaderSort_GeographicInfo"));
     }
 
     public void Dispose()
@@ -173,13 +193,9 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
 
         try
         {
-            System.Diagnostics.Debug.WriteLine("[LoadAsync] before species");
             await LoadSpeciesLookupAsync();
-            System.Diagnostics.Debug.WriteLine("[LoadAsync] after species");
 
-            System.Diagnostics.Debug.WriteLine("[LoadAsync] before country");
             await LoadCountryLookupAsync();
-            System.Diagnostics.Debug.WriteLine("[LoadAsync] after country");
         }
         catch (Exception ex)
         {
@@ -278,7 +294,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     {
         return Task.CompletedTask;
     }
-    
+
     private Models.Tbl87Geographic? _item;
 
     public Models.Tbl87Geographic? Item
@@ -286,13 +302,47 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
         get => _item;
         set
         {
+            if (ReferenceEquals(_item, value))
+                return;
+
+            if (_item != null)
+                _item.PropertyChanged -= Item_PropertyChanged;
+
             if (SetProperty(ref _item, value))
             {
+                if (_item != null)
+                    _item.PropertyChanged += Item_PropertyChanged;
+
                 OnPropertyChanged(nameof(HasActiveItem));
+                OnPropertyChanged(nameof(CanSave));
+                OnPropertyChanged(nameof(CanDelete));
             }
         }
     }
     public bool HasActiveItem => Item != null;
+    public bool CanSave
+    {
+        get
+        {
+            Debug.WriteLine($"[Geo] CanSave => Item null? {Item == null}");
+            return Item != null && !string.IsNullOrWhiteSpace(Item.Info);
+        }
+    }
+
+    public bool CanDelete
+    {
+        get
+        {
+            Debug.WriteLine($"[Geo] CanDelete => Item null? {Item == null}");
+            return Item != null && Item.GeographicId != 0;
+        }
+    }
+
+    private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(Models.Tbl87Geographic.Info))
+            OnPropertyChanged(nameof(CanSave));
+    }
 
     public void PrepareViewState()
     {
@@ -449,6 +499,22 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
         {
             await Dialog.ShowErrorAsync("Error_MissInfo_Title", "Error_MissInfo_Message");
             return null;
+        }
+
+        if (!string.IsNullOrWhiteSpace(item.Country) && !string.IsNullOrWhiteSpace(item.Continent))
+        {
+            var country = CountryList.FirstOrDefault(c =>
+                string.Equals(c.Name, item.Country, StringComparison.OrdinalIgnoreCase));
+
+            if (country != null && !ContinentLookup.Matches(country.Continent, item.Continent))
+            {
+                var proceed = await Dialog.ShowYesNoAsync(
+                    "Warning_CountryContinent_Title",
+                    "Warning_CountryContinent_Message");
+
+                if (!proceed)
+                    return null;
+            }
         }
 
         NormalizePolygonPointsBeforeSave(item);

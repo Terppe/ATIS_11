@@ -17,13 +17,22 @@ public sealed partial class TblUserProfileEditControl : UserControl
     public TblUserProfileEditControl()
     {
         InitializeComponent();
-        SelectedTabIndex = 0;
-        Loaded += TblUserProfileEditControl_Loaded;
     }
-    private void TblUserProfileEditControl_Loaded(object sender, RoutedEventArgs e)
+    #region small Helpers
+
+    [System.Diagnostics.Conditional("DEBUG")]
+    private void LogDebug(string message)
     {
-       // UpdateDetailContentVisibility();
+        System.Diagnostics.Debug.WriteLine(message);
     }
+
+    [System.Diagnostics.Conditional("DEBUG")]
+    private void LogGuard(string source, string reason)
+    {
+        System.Diagnostics.Debug.WriteLine($"{source}: skip ({reason})");
+    }
+
+    #endregion
 
     // ---------------------------------------------------------
     //      DEPENDENCY PROPERTY: ITEM
@@ -127,22 +136,159 @@ public sealed partial class TblUserProfileEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
-    // DETAIL TAB VALIDATION
+    // Combos
     // ---------------------------------------------------------                   
-    private int SelectedTabIndex = 0;
 
-    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
+    private void RoleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is Button button &&
-            button.Tag is string tagText &&
-            int.TryParse(tagText, out int index))
+        var cmb = sender as ComboBox;
+        if (cmb == null)
         {
-            SelectedTabIndex = index;
-          //  UpdateTabButtonStates();
-         //   UpdateDetailContentVisibility();
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "Administrator":
+                break;
+            case "Developer":
+                break;
+            case "Biologist":
+                break;
+            case "Zoologist":
+                break;
+            case "User":
+                break;
+
         }
     }
 
+    private void TitleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
 
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "Dr.":
+                break;
+            case "Prof.":
+                break;
+            case "Dipl.- Ing.":
+                break;
+            case "Ing. grad":
+                break;
+            case "Dr. Ing":
+                break;
+        }
+    }
+
+    private void GenderCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "Female":
+                break;
+            case "Male":
+                break;
+        }
+    }
+
+    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+        if (ViewModel == null || Item == null)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
+            return;
+        }
+
+        var country = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
+        if (country == null)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
+            return;
+        }
+
+        // Country und Erdteil immer setzen, unabhängig von Karte und Punkten
+        Item.Country = country.Name;
+
+    }
+
+    private void ComboImageMimeType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "jpg":
+                break;
+            case "png":
+                break;
+            case "bmp":
+                break;
+            case "tif":
+                break;
+            case "tiff":
+                break;
+            case "gif":
+                break;
+            case "ico":
+                break;
+            case "jpeg":
+                break;
+            case "webp":
+                break;
+            case "wmf":
+                break;
+            case "wmv":
+                break;
+            case "mpg":
+                break;
+            case "mp4":
+                break;
+            case "avi":
+                break;
+            case "mov":
+                break;
+            case "swf":
+                break;
+            case "flv":
+                break;
+        }
+
+        //var cmb = sender as ComboBox;
+        //if (cmb != null)
+        //{
+        //    handle = !cmb.IsDropDownOpen;
+        //}
+
+        //Handle();
+    }
 
 }

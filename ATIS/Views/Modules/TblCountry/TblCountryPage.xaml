@@ -5,11 +5,10 @@
       xmlns:components="using:ATIS.DesignSystem.Components"
       xmlns:layout="using:ATIS.DesignSystem.Layout"
       xmlns:loc="using:WinUI3Localizer"
-      xmlns:tblCountry="using:ATIS.Views.Modules.TblCountry"     
-    
+      xmlns:tblCountry="using:ATIS.Views.Modules.TblCountry"
       x:Name="RootPage">
 
-    <!--    TblCountryPage Skriptdatum:   01.10.2026 12:32   -->
+    <!--  TblCountryPage Skriptdatum:   01.10.2026 12:32  -->
 
     <Grid x:Name="RootGrid">
         <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -122,72 +121,6 @@
                                                 Background="Transparent" />
                                     </StackPanel>
                                 </Button>
-
-                                <!--<Button x:Name="CommentsCountryTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="1">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Comments" />
-                                        <Border x:Name="CommentsCountryTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
-
-                                <!--<Button x:Name="ReferencesCountryTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="2">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_References" />
-                                        <Border x:Name="ReferencesCountryTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
-
-                                <!--<Button x:Name="NULLTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="3">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_NULL" />
-                                        <Border x:Name="NULLTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
-
-                                <!--<Button x:Name="CommentsNULLTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="4">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Comments" />
-                                        <Border x:Name="CommentsNULLTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
-
-                                <!--<Button x:Name="ReferencesNULLTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="5">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_References" />
-                                        <Border x:Name="ReferencesNULLTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
-
                             </StackPanel>
                         </ScrollViewer>
 
@@ -198,55 +131,6 @@
                                           Padding="1">
                                 <tblCountry:TblCountryEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
                             </ScrollViewer>
-
-                            <!--<Grid x:Name="CommentsCountryContent"
-                                  DataContext="{Binding CountryCommentViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                      Item="{Binding Item}"
-                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
-
-                            <!--<Grid x:Name="ReferencesCountryContent"
-                                  DataContext="{Binding CountryReferenceViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                            Grid.Row="0" />
-
-                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                          Item="{Binding Item}"
-                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
-
-                            <!--<Grid x:Name="NULLContent"
-                                  DataContext="{Binding NULLViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <NULL:NULLParentControl x:Name="NULLParentControl"
-                                                                    Grid.Row="0" />
-                                <NULL:NULLEditControl Grid.Row="1"
-                                                                  Item="{Binding SelectedItem}"
-                                                                  Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
-
-                            <!--<Grid x:Name="CommentsNULLContent"
-                                  DataContext="{Binding NULLViewModel.NULLCommentViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                      Item="{Binding Item}"
-                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
-
-                            <!--<Grid x:Name="ReferencesNULLContent"
-                                  DataContext="{Binding NULLViewModel.NULLReferenceViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
-
-                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                          Item="{Binding Item}"
-                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
                         </Grid>
                     </Grid>
                 </layout:BaseBossPageLayout.DetailContent>
@@ -260,4 +144,4 @@
                                           IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
-</Page>  
+</Page>

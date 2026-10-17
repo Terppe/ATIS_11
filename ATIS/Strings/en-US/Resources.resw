@@ -1944,6 +1944,9 @@
   <data name="TextBlock_Built.Text" xml:space="preserve">
     <value>Built</value>
   </data>
+  <data name="TextBlock_BirthDate.Text" xml:space="preserve">
+    <value>Birth Date</value>
+  </data>
   <data name="TextBlock_CarboHardness.Text" xml:space="preserve">
     <value>Carbonat Hardness</value>
   </data>
@@ -2081,6 +2084,12 @@
   </data>
   <data name="TextBlock_FiSpecies.Text" xml:space="preserve">
     <value>Species</value>
+  </data>
+  <data name="TextBlock_FirstName.Text" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="TextBlock_LastName.Text" xml:space="preserve">
+    <value>Last Name</value>
   </data>
   <data name="TextBlock_FiSpeciesId.Text" xml:space="preserve">
     <value>Species ID</value>
@@ -2664,6 +2673,9 @@
   <data name="TextBlock_Role_Flag.Text" xml:space="preserve">
     <value>Role/Flag</value>
   </data>
+  <data name="TextBlock_Role.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
   <data name="TextBlock_ResetMapView.Text" xml:space="preserve">
     <value>Reset View</value>
   </data>
@@ -2904,6 +2916,12 @@
   <data name="Valid" xml:space="preserve">
     <value>valid</value>
   </data>
+  <data name="Warning_CountryContinent_Title" xml:space="preserve">
+    <value>Continent does not match country</value>
+  </data>
+  <data name="Warning_CountryContinent_Message" xml:space="preserve">
+    <value>The selected country and continent do not match. Do you want to save anyway?</value>
+  </data>
   <data name="Invalid" xml:space="preserve">
     <value>invalid</value>
   </data>
@@ -2985,11 +3003,17 @@
   <data name="TextBox_Company.Header" xml:space="preserve">
     <value>Company</value>
   </data>
+  <data name="TextBox_Continent.Header" xml:space="preserve">
+    <value>Continent</value>
+  </data>
   <data name="TextBox_Divers.Header" xml:space="preserve">
     <value>Divers</value>
   </data>
   <data name="TextBox_DivisionName.Header" xml:space="preserve">
     <value>Division Name</value>
+  </data>
+  <data name="TextBox_Email.Header" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="TextBox_DiseaseName.Header" xml:space="preserve">
     <value>Disease Name</value>
@@ -3287,6 +3311,12 @@
   </data>
   <data name="TextBox_Street.Header" xml:space="preserve">
     <value>Street</value>
+  </data>
+  <data name="TextBox_Street1.Header" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="TextBox_Street2.Header" xml:space="preserve">
+    <value>More Infos</value>
   </data>
   <data name="TextBox_SubclassName.Header" xml:space="preserve">
     <value>Subclass Name</value>
@@ -5064,20 +5094,101 @@
   <data name="HeaderSort_SubphylumId" xml:space="preserve">
     <value>Subphylum ID</value>
   </data>
+  <data name="HeaderSort_SubordoName" xml:space="preserve">
+    <value>Subordo Name</value>
+  </data>
+  <data name="HeaderSort_SubfamilyName" xml:space="preserve">
+    <value>Subfamily Name</value>
+  </data>
+  <data name="HeaderSort_SubclassName" xml:space="preserve">
+    <value>Subclass Name</value>
+  </data>
   <data name="HeaderSort_SuperclassId" xml:space="preserve">
     <value>Superclass ID</value>
   </data>
   <data name="HeaderSort_SuperclassName" xml:space="preserve">
     <value>Superclass Name</value>
   </data>
+  <data name="HeaderSort_SuperfamilyName" xml:space="preserve">
+    <value>Superfamily Name</value>
+  </data>
+  <data name="HeaderSort_SupertribusName" xml:space="preserve">
+    <value>Supertribus Name</value>
+  </data>
+  <data name="HeaderSort_SpeciesName" xml:space="preserve">
+    <value>Species Name</value>
+  </data>
+  <data name="HeaderSort_SynonymName" xml:space="preserve">
+    <value>Synonym Name</value>
+  </data>
+  <data name="HeaderSort_TribusName" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="HeaderSort_SpeciesgroupName" xml:space="preserve">
+    <value>Speciesgroup Name</value>
+  </data>
+  <data name="HeaderSort_UserProfileName" xml:space="preserve">
+    <value>User Name</value>
+  </data>
   <data name="HeaderSort_SubphylumName" xml:space="preserve">
     <value>Subphylum Name</value>
+  </data>
+  <data name="HeaderSort_SubtribusName" xml:space="preserve">
+    <value>Subtribus Name</value>
   </data>
   <data name="HeaderSort_RegnumName" xml:space="preserve">
     <value>Regnum Name</value>
   </data>
+  <data name="HeaderSort_RefAuthorName" xml:space="preserve">
+    <value>Reference Author Name</value>
+  </data>
+  <data name="HeaderSort_RefExpertName" xml:space="preserve">
+    <value>Reference Expert Name</value>
+  </data>
+  <data name="HeaderSort_RefSourceName" xml:space="preserve">
+    <value>Reference Source Name</value>
+  </data>
   <data name="HeaderSort_PhylumName" xml:space="preserve">
     <value>Phylum Name</value>
+  </data>
+  <data name="HeaderSort_CountryName" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="HeaderSort_ClassName" xml:space="preserve">
+    <value>Class Name</value>
+  </data>
+  <data name="HeaderSort_GenusName" xml:space="preserve">
+    <value>Genus Name</value>
+  </data>
+  <data name="HeaderSort_NameName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HeaderSort_OrdoName" xml:space="preserve">
+    <value>Ordo Name</value>
+  </data>
+  <data name="HeaderSort_FamilyName" xml:space="preserve">
+    <value>Family Name</value>
+  </data>
+  <data name="HeaderSort_LegioName" xml:space="preserve">
+    <value>Superorder Name</value>
+  </data>
+  <data name="HeaderSort_InfraclassName" xml:space="preserve">
+    <value>Infraclass Name</value>
+  </data>
+  <data name="HeaderSort_InfraordoName" xml:space="preserve">
+    <value>Infraordo Name</value>
+  </data>
+  <data name="HeaderSort_InfratribusName" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="HeaderSort_InfrafamilyName" xml:space="preserve">
+    <value>Infrafamily Name</value>
+  </data>
+  <data name="HeaderSort_ImageInfo" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="HeaderSort_GeographicInfo" xml:space="preserve">
+    <value>Info</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>Saved</value>

@@ -53,6 +53,7 @@
 
                     <!--  SAVE  -->
                     <Button Command="{Binding SaveCommand}"
+                            IsEnabled="{Binding CanSave}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
@@ -63,6 +64,7 @@
 
                     <!--  DELETE  -->
                     <Button Command="{Binding DeleteCommand}"
+                            IsEnabled="{Binding CanSave}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
@@ -96,6 +98,7 @@
                     </Button>
 
                     <Button Click="OpenPreviewButton_Click"
+                            IsEnabled="{Binding CanSave}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">

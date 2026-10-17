@@ -102,6 +102,20 @@ public sealed partial class TblCountryEditControl : UserControl
     }
 
     // ---------------------------------------------------------                   
+    // Continent VALIDATION
+    // ---------------------------------------------------------                   
+
+    private void ContinentBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(ContinentBox, Item?.HasContinentError ?? false);
+    }
+
+    private void ContinentBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(ContinentBox, Item?.HasContinentError ?? false);
+    }
+
+    // ---------------------------------------------------------                   
     // VALID YEAR VALIDATION
     // ---------------------------------------------------------                   
 

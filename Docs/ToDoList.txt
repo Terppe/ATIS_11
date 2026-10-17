@@ -1249,3 +1249,13 @@ Neuer datensatz bei Combo-Auswahl nur Continent ok
 TblImageEditControl öffnen des Windows automatisch nach auswahl im Explorer.
 ----------------------------------------
 13.10.2026 16:30 Uhr Image nur noch im window anzeigen. tab raus.ok evtl noch Map und Image vergrößern.
+UserProfile und Disease, Food und TblMiscellaneousPage, Comment und References Bosspages auf aktuellen Stand bringen
+----------------------------------------
+13.10.2026 16:30 Uhr Nuget update.Image geändert mit z.t. Butten disabled. Bei geographic nicht sauber gelöst
+----------------------------------------
+15.10.2026 14:30 Uhr Continent 100 in DB eingefügt. jetzt muss noch Erdteil eingefügt werden in DB.Erdteil automatisch aus TblCountry übernehmen.
+Tbl87GeographicEditControl komplett fertig.
+----------------------------------------
+15.10.2026 14:30 Uhr Tabelle TblCountry um Feld Continent erweitert. BTblCountryEditcontrol Continent mit eingefügt. UserProfile weiter gemacht
+----------------------------------------
+17.10.2026 11:30 Uhr userprofile fast fertig. TblFood angefangen

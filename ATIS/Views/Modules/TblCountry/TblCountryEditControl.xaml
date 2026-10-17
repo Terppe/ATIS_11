@@ -8,7 +8,7 @@
              x:Name="Root"
              mc:Ignorable="d">
 
-    <!--    TblCountryEditControl Skriptdatum:   01.10.2026 12:32   -->
+    <!--  TblCountryEditControl Skriptdatum:   01.10.2026 12:32  -->
 
     <Border Padding="4"
             Background="{ThemeResource ControlFillColorSecondaryBrush}"
@@ -75,7 +75,7 @@
                 </StackPanel>
             </Grid>
 
-            <!--  ID + Name   -->
+            <!--  ID + Name  -->
             <StackPanel Orientation="Horizontal"
                         Spacing="4">
 
@@ -104,23 +104,22 @@
                                Visibility="{Binding Item.HasNameError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
 
-                <!--  NULL Combo  -->
-                <!--<StackPanel MinWidth="150"
+                <!--  Continent  -->
+                <StackPanel MinWidth="150"
                             VerticalAlignment="Top"
                             Spacing="2">
-                    <TextBlock Visibility="Collapsed" />
-
-                    <ComboBox x:Name="NULLCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_NULLName"
-                              DisplayMemberPath="NULLName"
-                              ItemsSource="{Binding NULLList}"
-                              SelectedValue="{Binding Item.NULLId, ElementName=Root, Mode=TwoWay}"
-                              SelectedValuePath="NULLId"
-                              Style="{StaticResource AtisComboBox}" />
-                </StackPanel>-->
-
+                    <TextBox x:Name="ContinentBox"
+                             loc:Uids.Uid="TextBox_Continent"
+                             Loaded="ContinentBox_OnLoaded"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Continent, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="ContinentBox_OnTextChanged" />
+                    <TextBlock Height="18"
+                               FontSize="10"
+                               Foreground="Red"
+                               Text="{Binding Item.ContinentError, ElementName=Root}"
+                               Visibility="{Binding Item.HasContinentError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </StackPanel>
 
                 <!--  Regex  -->
                 <StackPanel MinWidth="60"
@@ -139,24 +138,25 @@
                                Visibility="{Binding Item.HasRegexError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4">
 
-            <!--  ZoomLevel  -->
-            <TextBox loc:Uids.Uid="TextBox_ZoomLevel"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.ZoomLevel, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <!--  ZoomLevel  -->
+                <TextBox loc:Uids.Uid="TextBox_ZoomLevel"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.ZoomLevel, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <!--  Latitude  -->
-            <TextBox loc:Uids.Uid="TextBox_Latitude"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Latitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <!--  Longitude  -->
-            <TextBox loc:Uids.Uid="TextBox_Longitude"
-                     Style="{StaticResource AtisTextBox}"
-                     Text="{Binding Item.Longitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <!--  Latitude  -->
+                <TextBox loc:Uids.Uid="TextBox_Latitude"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.Latitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <!--  Longitude  -->
+                <TextBox loc:Uids.Uid="TextBox_Longitude"
+                         Style="{StaticResource AtisTextBox}"
+                         Text="{Binding Item.Longitude, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-
-
+            </StackPanel>
         </StackPanel>
 
     </Border>
-</UserControl>  
+</UserControl>

@@ -52,10 +52,10 @@
 		<PackageReference Include="log4net" Version="3.5.0" />
 		<PackageReference Include="MailKit" Version="4.18.1" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.13" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.13" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
@@ -64,6 +64,7 @@
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
 		<PackageReference Include="QuestPDF" Version="2026.9.1" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
@@ -727,6 +728,9 @@
 		<None Remove="Views\Modules\TblCountry\TblCountryEditControl.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryPage.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryParentControl.xaml" />
+		<None Remove="Views\Modules\TblFood\TblFoodBossControl.xaml" />
+		<None Remove="Views\Modules\TblFood\TblFoodEditControl.xaml" />
+		<None Remove="Views\Modules\TblFood\TblFoodPage.xaml" />
 		<None Remove="Views\Modules\TblUserProfile\TblUserProfileBossControl.xaml" />
 		<None Remove="Views\Modules\TblUserProfile\TblUserProfileEditControl.xaml" />
 		<None Remove="Views\Modules\TblUserProfile\TblUserProfilePage.xaml" />
@@ -814,6 +818,8 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
+	<Folder Include="Views\Modules\TblMiscellaneous\" />
+	<Folder Include="Views\Modules\TblDisease\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
 
@@ -850,6 +856,24 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblFood\TblFoodPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblFood\TblFoodEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblFood\TblFoodBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

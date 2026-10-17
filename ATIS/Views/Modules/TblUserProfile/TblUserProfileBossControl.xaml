@@ -8,15 +8,15 @@
              xmlns:models="using:ATIS.Models"
              mc:Ignorable="d">
 
-    <!--    TblUserProfileBossControl Skriptdatum:   10.10.2026  10:32 -->
+    <!--  TblUserProfileBossControl Skriptdatum:   10.10.2026  10:32  -->
 
     <UserControl.Resources>
-        <GridLength x:Key="IdWidthResource">120</GridLength>
-        <GridLength x:Key="Extra1WidthResource">200</GridLength>
-        <GridLength x:Key="Extra2WidthResource">200</GridLength>
-        <GridLength x:Key="Extra3WidthResource">80</GridLength>
+        <GridLength x:Key="IdWidthResource">70</GridLength>
+        <GridLength x:Key="Extra1WidthResource">130</GridLength>
+        <GridLength x:Key="Extra2WidthResource">150</GridLength>
+        <GridLength x:Key="Extra3WidthResource">150</GridLength>
         <GridLength x:Key="Extra4WidthResource">100</GridLength>
-        <GridLength x:Key="Extra5WidthResource">250</GridLength>
+        <GridLength x:Key="Extra5WidthResource">100</GridLength>
         <GridLength x:Key="Extra6WidthResource">80</GridLength>
     </UserControl.Resources>
 
@@ -65,13 +65,13 @@
                        FontWeight="Bold" />
             <TextBlock Grid.Column="4"
                        Margin="0,6,0,0"
-                       loc:Uids.Uid="TextBlock_FilestreamId"
+                       loc:Uids.Uid="TextBlock_Role"
                        FontWeight="Bold" />
-            <!--<TextBlock Grid.Column="5"
-            Margin="0,6,0,0"
-            loc:Uids.Uid="TextBlock_Author"
-            FontWeight="Bold" />
-            <TextBlock Grid.Column="6"
+            <TextBlock Grid.Column="5"
+                       Margin="0,6,0,0"
+                       loc:Uids.Uid="TextBlock_BirthDate"
+                       FontWeight="Bold" />
+            <!--<TextBlock Grid.Column="6"
             Margin="0,6,0,0"
             loc:Uids.Uid="TextBlock_Year"
             FontWeight="Bold" />-->
@@ -152,6 +152,14 @@
                         <TextBlock Grid.Column="3"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind LastName}" />
+
+                        <TextBlock Grid.Column="4"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Bind Role}" />
+                        <TextBlock Grid.Column="5"
+                                   VerticalAlignment="Center"
+                                   Text="{x:Bind BirthDate}" />
+
                         <!--<CheckBox Grid.Column="4"
                         IsChecked="{x:Bind Valid}"
                         IsEnabled="False"

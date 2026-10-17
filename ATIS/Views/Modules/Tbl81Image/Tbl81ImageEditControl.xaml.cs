@@ -119,10 +119,15 @@ public sealed partial class Tbl81ImageEditControl : UserControl
 
     private async void SelectFileButton_Click(object sender, RoutedEventArgs e)
     {
+        if (ViewModel == null)
+        {
+            Debug.WriteLine("[ImageEdit] ViewModel ist null");
+            return;
+        }
+
         await ViewModel.SelectFileForCurrentItemAsync();
         OpenPreviewWindow();
     }
-
     // ---------------------------------------------------------
     // VALIDATION HELPER
     // ---------------------------------------------------------

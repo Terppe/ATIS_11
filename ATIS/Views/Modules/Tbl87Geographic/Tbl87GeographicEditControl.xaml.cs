@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
+using static ATIS.Views.Modules.Tbl87Geographic.Tbl87GeographicViewModel;
 
 //    Tbl87GeographicEditControl Skriptdatum:  13.09.2026  10:32    
 
@@ -123,12 +124,99 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
             !(item.Latitude2 == 0 && item.Longitude2 == 0) ||
             !(item.Latitude3 == 0 && item.Longitude3 == 0);
     }
-    private void SaveButton_Click(object sender, RoutedEventArgs e)
-    {
 
-        LogDebug($"SaveButton_Click: itemId={Item?.GeographicId}, zoom={Item?.ZoomLevel}");
+    private Control? GetNextInputFocus()
+    {
+        if (Item == null)
+            return InfoTextBox; // oder null, je nachdem was du willst
+
+        // Priorität:
+        // 1. Info muss gefüllt sein
+        // 2. wenn Land noch fehlt -> CountryCombo
+        // 3. sonst ContinentCombo
+        // 4. sonst Info (Fallback)
+        if (string.IsNullOrWhiteSpace(Item.Info))
+            return InfoTextBox;
+
+        if (string.IsNullOrWhiteSpace(Item.Country))
+            return CountryCombo;
+
+        if (string.IsNullOrWhiteSpace(Item.Continent))
+            return ContinentCombo;
+
+        return CountryCombo; // meist die präzisere Eingabe
     }
 
+    private void FocusNextInput()
+    {
+        var next = GetNextInputFocus();
+        next?.Focus(FocusState.Programmatic);
+    }
+
+    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isInitializingCombos)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "initializing");
+            return;
+        }
+
+        if (_isApplyingItem)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "applying item");
+            return;
+        }
+
+        if (ViewModel == null || Item == null)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
+            return;
+        }
+
+        var country = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
+        if (country == null)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
+            return;
+        }
+
+        // Country und Erdteil immer setzen, unabhängig von Karte und Punkten
+        Item.Country = country.Name;
+        ApplyContinentFromCountry(country);
+
+        // Ab hier nur die Karten-Defaults
+        if (HasStoredPoints(Item))
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "stored points already exist");
+            return;
+        }
+
+        if (_mapEditedByUser)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "map already edited by user");
+            return;
+        }
+
+        // Country ist präziser als Continent und darf Fallback überschreiben
+        Item.Latitude = country.Latitude;
+        Item.Longitude = country.Longitude;
+
+        Item.ZoomLevel = country.ZoomLevel.HasValue && country.ZoomLevel.Value > 0
+            ? country.ZoomLevel.Value
+            : 5;
+
+        _mapFallbackActive = true;
+    }
+
+    private void ApplyContinentFromCountry(Models.TblCountry country)
+    {
+        var continents = ContinentLookup.Split(country.Continent);
+        if (continents.Length > 0
+            && !continents.Contains(Item!.Continent, StringComparer.OrdinalIgnoreCase))
+        {
+            Item.Continent = continents[0];
+        }
+    }
     private void ContinentCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (HasStoredPoints(Item))
@@ -169,6 +257,7 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         // Nur grober Fallback
         GetContinentDefaults(continent, out var latitude, out var longitude, out var zoomLevel);
 
+
         // Continent nur anwenden, wenn noch kein Country gewählt ist
         if (string.IsNullOrWhiteSpace(Item.Country))
         {
@@ -180,56 +269,6 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
 
             _mapFallbackActive = true;
         }
-    }
-    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (HasStoredPoints(Item))
-        {
-            LogGuard(nameof(CountryCombo_OnSelectionChanged), "stored points already exist");
-            return;
-        }
-        if (_isInitializingCombos)
-        {
-            LogGuard(nameof(CountryCombo_OnSelectionChanged), "initializing");
-            return;
-        }
-
-        if (_isApplyingItem)
-        {
-            LogGuard(nameof(CountryCombo_OnSelectionChanged), "applying item");
-            return;
-        }
-
-        if (ViewModel == null || Item == null)
-        {
-            LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
-            return;
-        }
-
-        if (_mapEditedByUser)
-        {
-            LogGuard(nameof(CountryCombo_OnSelectionChanged), "map already edited by user");
-            return;
-        }
-
-        var selectedCountry = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
-        if (selectedCountry == null)
-        {
-            LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
-            return;
-        }
-
-        Item.Country = selectedCountry.Name;
-
-        // Country ist präziser als Continent und darf Fallback überschreiben
-        Item.Latitude = selectedCountry.Latitude;
-        Item.Longitude = selectedCountry.Longitude;
-
-        Item.ZoomLevel = selectedCountry.ZoomLevel.HasValue && selectedCountry.ZoomLevel.Value > 0
-            ? selectedCountry.ZoomLevel.Value
-            : 5;
-
-        _mapFallbackActive = true;
     }
 
 
@@ -297,6 +336,12 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
             _isInitializingCombos = false;
             _isApplyingItem = false;
         }
+
+        // Fokus nur bei neuem Datensatz, nicht beim Blättern in der Liste
+        if (newItem.GeographicId == 0)
+        {
+            DispatcherQueue.TryEnqueue(FocusNextInput);
+        }
     }
     #endregion
 
@@ -360,4 +405,5 @@ public sealed partial class Tbl87GeographicEditControl : UserControl
         UpdateValidationState(HttpBox, Item?.HasHttpError ?? false);
     }
     #endregion
+
 }

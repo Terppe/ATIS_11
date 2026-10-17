@@ -52,8 +52,8 @@
                     </Button>
 
                     <!--  SAVE  -->
-                    <Button Click="SaveButton_Click"
-                            Command="{Binding SaveCommand}"
+                    <Button Command="{Binding SaveCommand}"
+                            IsEnabled="{Binding CanSave}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
@@ -64,6 +64,7 @@
 
                     <!--  DELETE  -->
                     <Button Command="{Binding DeleteCommand}"
+                            IsEnabled="{Binding CanDelete}"
                             Style="{StaticResource AtisSecondaryButton}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
@@ -102,24 +103,6 @@
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.GenusSpeciesFullName, ElementName=Root, Mode=OneWay}" />
 
-                    <!--  Continent  -->
-                    <ComboBox x:Name="ContinentCombo"
-                              MinWidth="200"
-                              VerticalAlignment="Center"
-                              loc:Uids.Uid="ComboBox_Continent"
-                              PlaceholderText="Select"
-                              SelectedValue="{Binding Item.Continent, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              SelectionChanged="ContinentCombo_OnSelectionChanged"
-                              Style="{StaticResource AtisComboBox}">
-                        <x:String>Africa</x:String>
-                        <x:String>Antarctica</x:String>
-                        <x:String>Asia</x:String>
-                        <x:String>Australia</x:String>
-                        <x:String>Central/South America</x:String>
-                        <x:String>Europe</x:String>
-                        <x:String>North America/Caribbean</x:String>
-                    </ComboBox>
-
                     <!--  Country Combo  -->
                     <StackPanel MinWidth="200"
                                 VerticalAlignment="Top"
@@ -135,9 +118,29 @@
                                   SelectedValue="{Binding Item.Country, ElementName=Root, Mode=TwoWay}"
                                   SelectedValuePath="Name"
                                   SelectionChanged="CountryCombo_OnSelectionChanged"
-                                  Style="{StaticResource AtisComboBox}" />
+                                  Style="{StaticResource AtisComboBox}"
+                                  TabIndex="1" />
 
                     </StackPanel>
+
+                    <!--  Continent  -->
+                    <ComboBox x:Name="ContinentCombo"
+                              MinWidth="200"
+                              VerticalAlignment="Center"
+                              loc:Uids.Uid="ComboBox_Continent"
+                              PlaceholderText="Select"
+                              SelectedValue="{Binding Item.Continent, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectionChanged="ContinentCombo_OnSelectionChanged"
+                              Style="{StaticResource AtisComboBox}"
+                              TabIndex="2">
+                        <x:String>Africa</x:String>
+                        <x:String>Antarctica</x:String>
+                        <x:String>Asia</x:String>
+                        <x:String>Australia</x:String>
+                        <x:String>Central/South America</x:String>
+                        <x:String>Europe</x:String>
+                        <x:String>North America/Caribbean</x:String>
+                    </ComboBox>
 
                     <!--  Valid  -->
                     <CheckBox MinWidth="60"
@@ -176,8 +179,10 @@
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.Address, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <!--  Info  -->
-                    <TextBox loc:Uids.Uid="TextBox_Info"
+                    <TextBox x:Name="InfoTextBox"
+                             loc:Uids.Uid="TextBox_Info"
                              Style="{StaticResource AtisTextBox}"
+                             TabIndex="0"
                              Text="{Binding Item.Info, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <!--  Jurisdiction  -->
                     <TextBox loc:Uids.Uid="TextBox_Jurisdiction"
@@ -266,6 +271,7 @@
                              Style="{StaticResource AtisTextBox}"
                              Text="{Binding Item.Longitude3, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
+
                 <!--  Memo  -->
                 <TextBox MinWidth="200"
                          MinHeight="75"

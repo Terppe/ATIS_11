@@ -1944,6 +1944,9 @@
   <data name="TextBlock_Built.Text" xml:space="preserve">
     <value>Körperbau</value>
   </data>
+  <data name="TextBlock_BirthDate.Text" xml:space="preserve">
+    <value>Geburtstag</value>
+  </data>
   <data name="TextBlock_CarboHardness.Text" xml:space="preserve">
     <value>Karbonathärte</value>
   </data>
@@ -2081,6 +2084,12 @@
   </data>
   <data name="TextBlock_FiSpecies.Text" xml:space="preserve">
     <value>Art</value>
+  </data>
+  <data name="TextBlock_FirstName.Text" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="TextBlock_LastName.Text" xml:space="preserve">
+    <value>Nachname</value>
   </data>
   <data name="TextBlock_FiSpeciesId.Text" xml:space="preserve">
     <value>Art ID</value>
@@ -2664,6 +2673,9 @@
   <data name="TextBlock_Role_Flag.Text" xml:space="preserve">
     <value>Rolle/Flag</value>
   </data>
+  <data name="TextBlock_Role.Text" xml:space="preserve">
+    <value>Rolle</value>
+  </data>
   <data name="TextBlock_ResetMapView.Text" xml:space="preserve">
     <value>Ansicht zurücksetzen</value>
   </data>
@@ -2904,6 +2916,12 @@
   <data name="Valid" xml:space="preserve">
     <value>gültig</value>
   </data>
+  <data name="Warning_CountryContinent_Title" xml:space="preserve">
+    <value>Kontinent und Land passen icht zusammen</value>
+  </data>
+  <data name="Warning_CountryContinent_Message" xml:space="preserve">
+    <value>Die gewählten Land und Kontinent passen nicht zusammen. Möchten Sie trotzdem sichern?</value>
+  </data>
   <data name="Invalid" xml:space="preserve">
     <value>ungültig</value>
   </data>
@@ -2985,11 +3003,17 @@
   <data name="TextBox_Company.Header" xml:space="preserve">
     <value>Firma</value>
   </data>
+  <data name="TextBox_Continent.Header" xml:space="preserve">
+    <value>Erdteil</value>
+  </data>
   <data name="TextBox_Divers.Header" xml:space="preserve">
     <value>Divers</value>
   </data>
   <data name="TextBox_DivisionName.Header" xml:space="preserve">
     <value>Abteilung Name</value>
+  </data>
+  <data name="TextBox_Email.Header" xml:space="preserve">
+    <value>E-Mail</value>
   </data>
   <data name="TextBox_DiseaseName.Header" xml:space="preserve">
     <value>Krankheit Name</value>
@@ -3287,6 +3311,12 @@
   </data>
   <data name="TextBox_Street.Header" xml:space="preserve">
     <value>Strasse</value>
+  </data>
+  <data name="TextBox_Street1.Header" xml:space="preserve">
+    <value>Strasse</value>
+  </data>
+  <data name="TextBox_Street2.Header" xml:space="preserve">
+    <value>Weitere Informationen</value>
   </data>
   <data name="TextBox_SubclassName.Header" xml:space="preserve">
     <value>Unterklasse Name</value>
@@ -5064,20 +5094,101 @@
   <data name="HeaderSort_SubphylumId" xml:space="preserve">
     <value>Unterstamm ID</value>
   </data>
+  <data name="HeaderSort_SubordoName" xml:space="preserve">
+    <value>Unterordnung Name</value>
+  </data>
+  <data name="HeaderSort_SubfamilyName" xml:space="preserve">
+    <value>Unterfamilie Name</value>
+  </data>
+  <data name="HeaderSort_SubclassName" xml:space="preserve">
+    <value>Unterklasse Name</value>
+  </data>
   <data name="HeaderSort_SuperclassId" xml:space="preserve">
     <value>Überklasse ID</value>
   </data>
   <data name="HeaderSort_SuperclassName" xml:space="preserve">
     <value>Überklasse Name</value>
   </data>
+  <data name="HeaderSort_SuperfamilyName" xml:space="preserve">
+    <value>Überfamilie Name</value>
+  </data>
+  <data name="HeaderSort_SupertribusName" xml:space="preserve">
+    <value>Übertribus Name</value>
+  </data>
+  <data name="HeaderSort_SpeciesName" xml:space="preserve">
+    <value>Art Name</value>
+  </data>
+  <data name="HeaderSort_SynonymName" xml:space="preserve">
+    <value>Synonym Name</value>
+  </data>
+  <data name="HeaderSort_TribusName" xml:space="preserve">
+    <value>Tribus Name</value>
+  </data>
+  <data name="HeaderSort_SpeciesgroupName" xml:space="preserve">
+    <value>Artengruppe Name</value>
+  </data>
+  <data name="HeaderSort_UserProfileName" xml:space="preserve">
+    <value>Nutzer Name</value>
+  </data>
   <data name="HeaderSort_SubphylumName" xml:space="preserve">
     <value>Unterstamm Name</value>
+  </data>
+  <data name="HeaderSort_SubtribusName" xml:space="preserve">
+    <value>Untertribus Name</value>
   </data>
   <data name="HeaderSort_RegnumName" xml:space="preserve">
     <value>Reich Name</value>
   </data>
+  <data name="HeaderSort_RefAuthorName" xml:space="preserve">
+    <value>Bezug Autor Name</value>
+  </data>
+  <data name="HeaderSort_RefExpertName" xml:space="preserve">
+    <value>Bezug Experte Name</value>
+  </data>
+  <data name="HeaderSort_RefSourceName" xml:space="preserve">
+    <value>Bezug Quelle Name</value>
+  </data>
   <data name="HeaderSort_PhylumName" xml:space="preserve">
     <value>Stamm Name</value>
+  </data>
+  <data name="HeaderSort_CountryName" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="HeaderSort_ClassName" xml:space="preserve">
+    <value>Klasse Name</value>
+  </data>
+  <data name="HeaderSort_GenusName" xml:space="preserve">
+    <value>Gattung Name</value>
+  </data>
+  <data name="HeaderSort_NameName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HeaderSort_OrdoName" xml:space="preserve">
+    <value>Ordnung Name</value>
+  </data>
+  <data name="HeaderSort_FamilyName" xml:space="preserve">
+    <value>Familie Name</value>
+  </data>
+  <data name="HeaderSort_LegioName" xml:space="preserve">
+    <value>Überordnung Name</value>
+  </data>
+  <data name="HeaderSort_InfraclassName" xml:space="preserve">
+    <value>Infraklasse Name</value>
+  </data>
+  <data name="HeaderSort_InfraordoName" xml:space="preserve">
+    <value>Infraordnung Name</value>
+  </data>
+  <data name="HeaderSort_InfratribusName" xml:space="preserve">
+    <value>Infratribus Name</value>
+  </data>
+  <data name="HeaderSort_InfrafamilyName" xml:space="preserve">
+    <value>Infrafamilie Name</value>
+  </data>
+  <data name="HeaderSort_ImageInfo" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="HeaderSort_GeographicInfo" xml:space="preserve">
+    <value>Information</value>
   </data>
   <data name="Save_Success_Title" xml:space="preserve">
     <value>Gespeichert</value>

@@ -69,33 +69,35 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
     // ---------------------------------------------------------
     // LOOKUPS
     // ---------------------------------------------------------
-    //public ObservableCollection<Models.NULL> NULLList { get; private set; } = new();
-    //public Dictionary<int, string?> NULLLookup { get; private set; } = new();
+    public ObservableCollection<string> CountryNameList { get; private set; } = new();
+    public ObservableCollection<Models.TblCountry> CountryList { get; private set; } = new();
+    public Dictionary<int, string?> CountryLookup { get; private set; } = new();
+    public async Task LoadCountryLookupAsync()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("[VM] LoadCountryLookupAsync START");
 
-    //public async Task LoadNULLLookupAsync()
-    //{
-    //    try
-    //    {
-    //        var list = await _lookupService.GetNULLListAsync();
-    //        var lookup = await _lookupService.GetNULLLookupAsync();
+            var list = await _lookupService.GetCountryListAsync();
+            var lookup = await _lookupService.GetCountryLookupAsync();
 
-    //        NULLList.Clear();
-    //        foreach (var item in list)
-    //            NULLList.Add(item);
 
-    //        NULLLookup = lookup;
-    //        OnPropertyChanged(nameof(NULLLookup));
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"[LoadNULLLookupAsync] {ex}");
+            CountryList.Clear();
+            foreach (var item in list)
+                CountryList.Add(item);
 
-    //        NULLList.Clear();
-    //        NULLLookup = new Dictionary<int, string?>();
-    //        OnPropertyChanged(nameof(NULLLookup));
-    //    }
-    //}
-
+            CountryLookup = lookup;
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
+        catch (Exception ex)
+        {
+            CountryList.Clear();
+            CountryLookup = new Dictionary<int, string?>();
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
+    }
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
@@ -179,11 +181,11 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
         try
         {
 
-           // await LoadNULLLookupAsync();
+            await LoadCountryLookupAsync();
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadNULLLookupAsync] {ex}");
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadCountryLookupAsync] {ex}");
             // absichtlich weiterlaufen
         }
 

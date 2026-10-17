@@ -54,8 +54,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 
         ApplyHeaders();
 
-     //   LoadFromUrlCommand = new AsyncRelayCommand(() => LoadFromUrlAsync(MediaUrl));
-
     }
 
     // ---------------------------------------------------------
@@ -95,7 +93,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     {
         var loc = Localizer.Get();
         UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_ImageId")) ? "Id" : loc.GetLocalizedString("HeaderSort_ImageId"));
-        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_ImageName")) ? "Name" : loc.GetLocalizedString("HeaderSort_ImageName"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_ImageInfo")) ? "Name" : loc.GetLocalizedString("HeaderSort_ImageInfo"));
     }
 
     public void Dispose()
@@ -243,25 +241,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         }
     }
 
-    //private async Task LoadInternalAsync(
-    //    int parentId,
-    //    Func<int, Task<IEnumerable<Models.Tbl81Image>>> loader)
-    //{
-    //    _currentParentId = parentId;
-    //    _activeLoader = loader;
-
-    //    var items = await loader(parentId);
-    //    Items = new ObservableCollection<Models.Tbl81Image>(items);
-    //    OnPropertyChanged(nameof(HasItems));
-
-    //    DataSetCount = Items.Count;
-
-    //    // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
-    //    SelectedItem = null;
-    //    Item = null;
-
-    //}
-
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
@@ -310,6 +289,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             if (SetProperty(ref _item, value))
             {
                 OnPropertyChanged(nameof(HasActiveItem));
+                OnPropertyChanged(nameof(CanSave));
             }
         }
     }
@@ -430,6 +410,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             Debug.WriteLine($"[URL LOAD] type: {Item.ImageMimeType}");
 
             OnPropertyChanged(nameof(Item));
+            OnPropertyChanged(nameof(CanSave));
         }
         catch (Exception xe)
         {
@@ -549,6 +530,8 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             Debug.WriteLine($"LOAD item hash: {Item.GetHashCode()}");
             Debug.WriteLine($"LOAD bytes: {Item.Filestream?.Length ?? 0}");
             Debug.WriteLine($"LOAD type: {Item.ImageMimeType}");
+
+            OnPropertyChanged(nameof(CanSave));
         }
         catch (Exception xe)
         {
@@ -598,6 +581,8 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // SAVE
     // ---------------------------------------------------------
+    public bool CanSave => Item?.Filestream is { Length: > 0 };
+
     protected override async Task<Models.Tbl81Image?> SaveItemAsync(Models.Tbl81Image item)
     {
         if (item.Filestream == null || item.Filestream.Length == 0)

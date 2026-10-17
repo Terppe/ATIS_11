@@ -13,7 +13,6 @@ namespace ATIS.Views.Modules.TblCountry;
 
 public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
 {
-
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
@@ -34,10 +33,7 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
         : base(new DataService(factory, user), dialog, coordinator)
     {
 
-        _lookupService = lookupService;
-
-        //CountryCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
-        //CountryReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
+     //   _lookupService = lookupService;
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -50,49 +46,7 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
 
         ApplyHeaders();
     }
-
-    public async Task LoadReferenceLookupsAsync()
-    {
-        //await CountryReferenceViewModel.LoadReferenceLookupsAsync();
-    }
-
-    // ---------------------------------------------------------
-    // CHILD-VMs
-    // ---------------------------------------------------------
-    //public Tbl93CommentViewModel CountryCommentViewModel { get; }
-    //public Tbl90ReferenceViewModel CountryReferenceViewModel { get; }
-    //public NULLViewModel NULLViewModel { get; }
-
-    // ---------------------------------------------------------
-    // LOOKUPS
-    // ---------------------------------------------------------
-    //public ObservableCollection<Models.NULL> NULLList { get; private set; } = new();
-    //public Dictionary<int, string?> NULLLookup { get; private set; } = new();
-
-    //public async Task LoadNULLLookupAsync()
-    //{
-    //    try
-    //    {
-    //        var list = await _lookupService.GetNULLListAsync();
-    //        var lookup = await _lookupService.GetNULLLookupAsync();
-
-    //        NULLList.Clear();
-    //        foreach (var item in list)
-    //            NULLList.Add(item);
-
-    //        NULLLookup = lookup;
-    //        OnPropertyChanged(nameof(NULLLookup));
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"[LoadNULLLookupAsync] {ex}");
-
-    //        NULLList.Clear();
-    //        NULLLookup = new Dictionary<int, string?>();
-    //        OnPropertyChanged(nameof(NULLLookup));
-    //    }
-    //}
-
+    
     // ---------------------------------------------------------                  
     // SORTING HEADERS
     // ---------------------------------------------------------    
@@ -132,16 +86,8 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
 
     private async Task UpdateButtonStatesAsync()
     {
-
-
         // Tab 0 = Boss-Modus
         IsInParentMode = SelectedDetailTabIndex != 0;
-
-        //if (SelectedDetailTabIndex == 2)
-        //    await CountryReferenceViewModel.LoadReferenceLookupsAsync();
-
-        //if (SelectedDetailTabIndex == 5)
-        //    await NULLViewModel.NULLReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
 
@@ -157,8 +103,6 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
             await ReloadAsync();
         }
     }
-
- //   public bool IsNULLParentSelected => NULLViewModel.SelectedItem != null;
 
     public bool IsDetailVisible => SelectedItem != null;
     public bool IsEditMode => SelectedItem != null;
@@ -181,7 +125,6 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
         try
         {
 
-          //  await LoadNULLLookupAsync();
         }
         catch (Exception ex)
         {
@@ -198,17 +141,9 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
-            // optional: Dialog zeigen
             await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
         }
     }
-
-    // ---------------------------------------------------------
-    // LOAD FOR VK 
-    // ---------------------------------------------------------
-    //public async Task LoadForNULLAsync(int NULLId)
-    //    => await LoadInternalAsync(NULLId, Data.GetCountryForNULLAsync);
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
@@ -270,32 +205,13 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
     // ---------------------------------------------------------
     // CHILDREN
     // ---------------------------------------------------------
-    protected override async Task LoadChildrenAsync(int entityId)
+    protected override  Task LoadChildrenAsync(int entityId)
     {
-        //await CountryCommentViewModel.LoadForCountryAsync(entityId);
-        //await CountryReferenceViewModel.LoadForCountryAsync(entityId);
-
-        //await NULLViewModel.LoadCountryLookupAsync();
-        //await NULLViewModel.LoadForCountryAsync(entityId);
-
-
-        //// ⭐ HIER MUSS DER MODUS GESETZT WERDEN
-        //NULLViewModel.IsInParentMode = true;
+        return Task.CompletedTask;
     }
 
     protected override Task ClearChildCollectionsAsync()
     {
-        //CountryCommentViewModel.Items?.Clear();
-        //CountryReferenceViewModel.Items?.Clear();
-        //NULLViewModel.Items?.Clear();
-
-        if (IsBossMode)
-        {
-            //CountryCommentViewModel.SelectedItem = null;
-            //CountryReferenceViewModel.SelectedItem = null;
-            //NULLViewModel.SelectedItem = null;
-        }
-
         return Task.CompletedTask;
     }
 
@@ -325,7 +241,6 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
 
         return new Models.TblCountry
         {
-            //NULLId = _currentParentId
         };
     }
 
@@ -368,14 +283,6 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
     {
         if (item.CountryId == 0)
             return false;
-
-        //if (await Data.CountryHasNULLAsync(item.CountryId) ||
-        //    await Data.CountryHasReferenceAsync(item.CountryId) ||
-        //    await Data.CountryHasCommentAsync(item.CountryId))
-        //{
-        //    await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
-        //    return false;
-        //}
 
         await Data.DeleteCountryAsync(item.CountryId);
         return true;

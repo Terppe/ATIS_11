@@ -255,7 +255,7 @@
                             Orientation="Horizontal"
                             Spacing="4">
 
-                    <Button x:Name="ImporterTab" 
+                    <Button x:Name="ImporterTab"
                             Click="DetailTabButton_Click"
                             Style="{StaticResource TabButtonStyle}"
                             Tag="0">
@@ -754,8 +754,7 @@
 
                     <Grid x:Name="SpecialGrid"
                           Visibility="Collapsed">
-                        <TextBox
-                            MinWidth="200"
+                        <TextBox MinWidth="200"
                                  MinHeight="152"
                                  MaxHeight="304"
                                  loc:Uids.Uid="TextBox_MemoSpecial"
