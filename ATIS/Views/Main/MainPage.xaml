@@ -538,7 +538,7 @@
                                 </NavigationViewItem>
                                 <NavigationViewItem x:Name="NavReferences"
                                                     loc:Uids.Uid="Nav_References"
-                                                    Tag="ATIS.Views.Database.Tbl90ReferenceListPage">
+                                                    Tag="ATIS.Views.Modules.Tbl90Reference.Tbl90ReferencePage">
                                     <NavigationViewItem.Icon>
                                         <BitmapIcon ShowAsMonochrome="False"
                                                     UriSource="ms-appx:///Assets/Fluent/database.png" />

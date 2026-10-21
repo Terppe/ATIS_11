@@ -1268,4 +1268,6 @@ Tbl87GeographicEditControl komplett fertig.
 ----------------------------------------
 20.10.2026 18:30 Uhr CommentPage angefangen
 ----------------------------------------
-21.10.2026 18:30 Uhr Comment fertig
+21.10.2026 12:30 Uhr Comment fertig
+----------------------------------------
+21.10.2026 16:30 Uhr References fertig.

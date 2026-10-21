@@ -1,11 +1,9 @@
 ﻿using System.Configuration;
 using System.Globalization;
-using ATIS.Core.Taxonomy;
 using ATIS.Models;
 using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
-using ATIS.Views.Database;
 using ATIS.Views.Modules.Tbl03Regnum;
 using ATIS.Views.Modules.Tbl06Phylum;
 using ATIS.Views.Modules.Tbl12Subphylum;
@@ -44,6 +42,7 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
+using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Modules.TblCountry;
 using ATIS.Views.Modules.TblDisease;
@@ -586,7 +585,7 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavReferences.Content)
         {
-           // NavFrame.Navigate(typeof(Tbl90ReferencePage));
+           NavFrame.Navigate(typeof(Tbl90ReferencePage));
         }
 
         //------------------------------------------
@@ -605,11 +604,12 @@ public sealed partial class MainPage : Page
             NavFrame.Navigate(typeof(Tbl90RefSourcePage));
         }
 
-        //-----------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavComments.Content)
         {
             NavFrame.Navigate(typeof(Tbl93CommentPage));
         }
+
+        //-----------------------------------------------
 
         if ((string)args.ChosenSuggestion == (string)NavCountries.Content)
         {

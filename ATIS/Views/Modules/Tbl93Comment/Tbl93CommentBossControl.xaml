@@ -17,48 +17,10 @@
     </UserControl.Resources>
 
     <Grid Padding="2"
-          RowDefinitions="Auto,Auto,*">
-        <!--  TOP BAR  -->
-        <!--  MINI BAR (Row 0)  -->
-        <Grid Grid.Row="0"
-              Margin="0,0,0,8"
-              ColumnDefinitions="*,Auto">
-            <!--  LEFT  -->
-            <StackPanel Margin="8,0,0,8"
-                        Orientation="Horizontal"
-                        Spacing="10">
-
-                <TextBlock Margin="0,4,0,0"
-                           loc:Uids.Uid="TextBlock_Comments"
-                           Style="{StaticResource AtisSectionTitleTextStyle}" />
-
-                <TextBlock Margin="0,12,0,0"
-                           loc:Uids.Uid="TextBlock_DataSetCount"
-                           Style="{StaticResource AtisBodyTextStyle}" />
-
-                <TextBlock Margin="0,12,0,0"
-                           Style="{StaticResource AtisBodyTextStyle}"
-                           Text="{Binding DataSetCount}" />
-            </StackPanel>
-
-            <!--  RIGHT  -->
-            <StackPanel Grid.Column="2"
-                        Margin="0,0,8,0"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                <Button Command="{Binding NewCommand}"
-                        Style="{StaticResource AtisPrimaryButton}">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="6">
-                        <FontIcon Glyph="&#xE710;" />
-                        <TextBlock Text="Neu" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Grid>
+          RowDefinitions="Auto,*">
 
         <!--  LIST HEADER  -->
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="0"
               Padding="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource IdWidthResource}" />
@@ -82,7 +44,7 @@
         </Grid>
 
         <ListView x:Name="CommentListView"
-                  Grid.Row="2"
+                  Grid.Row="1"
                   MaxHeight="112.5"
                   Margin="0,0,10,0"
                   BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"

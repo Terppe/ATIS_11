@@ -16,6 +16,8 @@ namespace ATIS.Views.Modules.Tbl87Geographic;
 
 public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geographic>
 {
+    #region Fields / state
+    // ---------------------------------------------------------
 
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
@@ -25,6 +27,9 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     private Func<int, Task<IEnumerable<Models.Tbl87Geographic>>>? _activeLoader;
     private readonly Action<string> _langHandler;
     public event Action? RequestMapReset;
+
+    #endregion
+
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
@@ -51,8 +56,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
         ApplyHeaders();
     }
 
-    // ---------------------------------------------------------
-    // LOOKUPS
+    #region LOOKUPS
     // ---------------------------------------------------------
     public ObservableCollection<string> CountryNameList { get; private set; } = new();
     public ObservableCollection<Models.TblCountry> CountryList { get; private set; } = new();
@@ -127,6 +131,9 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             return allowed.Contains(itemContinent, StringComparer.OrdinalIgnoreCase);
         }
     }
+
+    #endregion
+
     private void ApplyHeaders()
     {
         var loc = Localizer.Get();

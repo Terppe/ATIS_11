@@ -7,17 +7,11 @@ using Mapsui.Styles;
 using Mapsui.Tiling;
 using Mapsui.Widgets;
 using Mapsui.Widgets.InfoWidgets;
-using Microsoft.UI;
-using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using NetTopologySuite.Geometries;
 using Brush = Mapsui.Styles.Brush;
 using Color = Mapsui.Styles.Color;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace ATIS.Views.Modules.Tbl87Geographic;
 

@@ -5,7 +5,6 @@ using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Database;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl03Regnum;
 using ATIS.Views.Modules.Tbl06Phylum;

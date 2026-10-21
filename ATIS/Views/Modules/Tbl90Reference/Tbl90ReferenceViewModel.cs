@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
@@ -10,14 +9,31 @@ namespace ATIS.Views.Modules.Tbl90Reference;
 
 public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Reference>
 {
-    private readonly LookupService _lookupService;
+    #region Fields / state
+    // ---------------------------------------------------------
 
+    private readonly LookupService _lookupService;
     private int _currentParentId;
     private Func<int, Task<IEnumerable<Models.Tbl90Reference>>>? _activeLoader;
     private Action<Models.Tbl90Reference>? _assignParentFk;
 
-    // ---------------------------------------------------------
-    // LOOKUPS
+    #endregion
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+    public Tbl90ReferenceViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookupService,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
+    {
+        _lookupService = lookupService;
+    }
+
+    #region LOOKUPS
     // ---------------------------------------------------------
     public ObservableCollection<Models.Tbl90RefAuthor> RefAuthorsList { get; } = new();
     public ObservableCollection<Models.Tbl90RefExpert> RefExpertsList { get; } = new();
@@ -56,33 +72,451 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         OnPropertyChanged(nameof(RefExpertLookup));
         OnPropertyChanged(nameof(RefSourceLookup));
     }
+    //---------------------------------------------------------
 
-    public Tbl90ReferenceViewModel(
-        IDbContextFactory<AtisDbContext> factory,
-        IDialogService dialog,
-        HierarchyCoordinator coordinator,
-        LookupService lookupService,
-        IUserService user)
-        : base(new DataService(factory, user), dialog, coordinator)
+    private bool _speciesLoaded;
+    private bool _genusLoaded;
+    //---------------------------------------------------------
+    private bool _infratribusLoaded;
+    private bool _subtribusLoaded;
+    private bool _tribusLoaded;
+    private bool _supertribusLoaded;
+    //---------------------------------------------------------
+    private bool _infrafamilyLoaded;
+    private bool _subfamilyLoaded;
+    private bool _familyLoaded;
+    private bool _superfamilyLoaded;
+    //---------------------------------------------------------
+    private bool _infraordoLoaded;
+    private bool _subordoLoaded;
+    private bool _ordoLoaded;
+    private bool _legioLoaded;
+    //---------------------------------------------------------
+    private bool _infraclassLoaded;
+    private bool _subclassLoaded;
+    private bool _classLoaded;
+    private bool _superclassLoaded;
+    //---------------------------------------------------------
+    private bool _subphylumLoaded;
+    private bool _phylumLoaded;
+    private bool _regnumLoaded;
+
+    // ---------------------------------------------------------
+    public ObservableCollection<Models.Tbl75Species> SpeciesList { get; } = new();
+    public ObservableCollection<Models.Tbl66Genus> GenusList { get; } = new();
+    public ObservableCollection<Models.Tbl63Infratribus> InfratribusList { get; } = new();
+    public ObservableCollection<Models.Tbl60Subtribus> SubtribusList { get; } = new();
+    public ObservableCollection<Models.Tbl57Tribus> TribusList { get; } = new();
+    public ObservableCollection<Models.Tbl54Supertribus> SupertribusList { get; } = new();
+    public ObservableCollection<Models.Tbl51Infrafamily> InfrafamilyList { get; } = new();
+    public ObservableCollection<Models.Tbl48Subfamily> SubfamilyList { get; } = new();
+    public ObservableCollection<Models.Tbl45Family> FamilyList { get; } = new();
+    public ObservableCollection<Models.Tbl42Superfamily> SuperfamilyList { get; } = new();
+    public ObservableCollection<Models.Tbl39Infraordo> InfraordoList { get; } = new();
+    public ObservableCollection<Models.Tbl36Subordo> SubordoList { get; } = new();
+    public ObservableCollection<Models.Tbl33Ordo> OrdoList { get; } = new();
+    public ObservableCollection<Models.Tbl30Legio> LegioList { get; } = new();
+    public ObservableCollection<Models.Tbl27Infraclass> InfraclassList { get; } = new();
+    public ObservableCollection<Models.Tbl24Subclass> SubclassList { get; } = new();
+    public ObservableCollection<Models.Tbl21Class> ClassList { get; } = new();
+    public ObservableCollection<Models.Tbl18Superclass> SuperclassList { get; } = new();
+    public ObservableCollection<Models.Tbl12Subphylum> SubphylumList { get; } = new();
+    public ObservableCollection<Models.Tbl06Phylum> PhylumList { get; } = new();
+    public ObservableCollection<Models.Tbl03Regnum> RegnumList { get; } = new();
+
+    public async Task EnsureLookupForTabAsync(int tabIndex)
     {
-        _lookupService = lookupService;
+        switch (tabIndex)
+        {
+            case 0: // Species/Genus
+                await EnsureTbl75SpeciesLookupAsync();
+                await EnsureTbl66GenusLookupAsync();
+                break;
+
+            case 1: // Tribus-Tab
+                await EnsureTbl63InfratribusLookupAsync();
+                await EnsureTbl60SubtribusLookupAsync();
+                await EnsureTbl57TribusLookupAsync();
+                await EnsureTbl54SupertribusLookupAsync();
+                break;
+
+            case 2: // Family-Tab
+                await EnsureTbl51InfrafamilyLookupAsync();
+                await EnsureTbl48SubfamilyLookupAsync();
+                await EnsureTbl45FamilyLookupAsync();
+                await EnsureTbl42SuperfamilyLookupAsync();
+                break;
+
+            case 3: // Ordo-Tab
+                await EnsureTbl39InfraordoLookupAsync();
+                await EnsureTbl36SubordoLookupAsync();
+                await EnsureTbl33OrdoLookupAsync();
+                await EnsureTbl30LegioLookupAsync();
+                break;
+
+            case 4: // Class-Tab
+                await EnsureTbl27InfraclassLookupAsync();
+                await EnsureTbl24SubclassLookupAsync();
+                await EnsureTbl21ClassLookupAsync();
+                await EnsureTbl18SuperclassLookupAsync();
+                break;
+
+            case 5: // Phylum/Regnum-Tab
+                await EnsureTbl12SubphylumLookupAsync();
+                await EnsureTbl06PhylumLookupAsync();
+                await EnsureTbl03RegnumLookupAsync();
+                break;
+        }
     }
+    // ---------------------------------------------------------
+    public async Task EnsureTbl75SpeciesLookupAsync()
+    {
+        if (_speciesLoaded) return;
+
+        var list = await _lookupService.GetSpeciesListAsync();
+        SpeciesList.Clear();
+        foreach (var item in list)
+            SpeciesList.Add(item);
+
+        _speciesLoaded = true;
+        OnPropertyChanged(nameof(SpeciesList));
+    }
+
+    public async Task EnsureTbl66GenusLookupAsync()
+    {
+        if (_genusLoaded) return;
+
+        var list = await _lookupService.GetGenusListAsync();
+        GenusList.Clear();
+        foreach (var item in list)
+            GenusList.Add(item);
+
+        _genusLoaded = true;
+        OnPropertyChanged(nameof(GenusList));
+    }
+    //---------------------------------------------------------
+    public async Task EnsureTbl63InfratribusLookupAsync()
+    {
+        if (_infratribusLoaded) return;
+
+        var list = await _lookupService.GetInfratribusListAsync();
+        InfratribusList.Clear();
+        foreach (var item in list)
+            InfratribusList.Add(item);
+
+        _infratribusLoaded = true;
+        OnPropertyChanged(nameof(InfratribusList));
+    }
+
+    public async Task EnsureTbl60SubtribusLookupAsync()
+    {
+        if (_subtribusLoaded) return;
+
+        var list = await _lookupService.GetSubtribusListAsync();
+        SubtribusList.Clear();
+        foreach (var item in list)
+            SubtribusList.Add(item);
+
+        _subtribusLoaded = true;
+        OnPropertyChanged(nameof(SubtribusList));
+    }
+
+    public async Task EnsureTbl57TribusLookupAsync()
+    {
+        if (_tribusLoaded) return;
+
+        var list = await _lookupService.GetTribusListAsync();
+        TribusList.Clear();
+        foreach (var item in list)
+            TribusList.Add(item);
+
+        _tribusLoaded = true;
+        OnPropertyChanged(nameof(TribusList));
+    }
+
+    public async Task EnsureTbl54SupertribusLookupAsync()
+    {
+        if (_supertribusLoaded) return;
+
+        var list = await _lookupService.GetSupertribusListAsync();
+        SupertribusList.Clear();
+        foreach (var item in list)
+            SupertribusList.Add(item);
+
+        _supertribusLoaded = true;
+        OnPropertyChanged(nameof(SupertribusList));
+    }
+
+    //---------------------------------------------------------
+    public async Task EnsureTbl51InfrafamilyLookupAsync()
+    {
+        if (_infrafamilyLoaded) return;
+
+        var list = await _lookupService.GetInfrafamilyListAsync();
+        InfrafamilyList.Clear();
+        foreach (var item in list)
+            InfrafamilyList.Add(item);
+
+        _infrafamilyLoaded = true;
+        OnPropertyChanged(nameof(InfrafamilyList));
+    }
+
+    public async Task EnsureTbl48SubfamilyLookupAsync()
+    {
+        if (_subfamilyLoaded) return;
+
+        var list = await _lookupService.GetSubfamilyListAsync();
+        SubfamilyList.Clear();
+        foreach (var item in list)
+            SubfamilyList.Add(item);
+
+        _subfamilyLoaded = true;
+        OnPropertyChanged(nameof(SubfamilyList));
+    }
+
+    public async Task EnsureTbl45FamilyLookupAsync()
+    {
+        if (_familyLoaded) return;
+
+        var list = await _lookupService.GetFamilyListAsync();
+        FamilyList.Clear();
+        foreach (var item in list)
+            FamilyList.Add(item);
+
+        _familyLoaded = true;
+        OnPropertyChanged(nameof(FamilyList));
+    }
+
+    public async Task EnsureTbl42SuperfamilyLookupAsync()
+    {
+        if (_superfamilyLoaded) return;
+
+        var list = await _lookupService.GetSuperfamilyListAsync();
+        SuperfamilyList.Clear();
+        foreach (var item in list)
+            SuperfamilyList.Add(item);
+
+        _superfamilyLoaded = true;
+        OnPropertyChanged(nameof(SuperfamilyList));
+    }
+
+    //---------------------------------------------------------
+    public async Task EnsureTbl39InfraordoLookupAsync()
+    {
+        if (_infraordoLoaded) return;
+
+        var list = await _lookupService.GetInfraordoListAsync();
+        InfraordoList.Clear();
+        foreach (var item in list)
+            InfraordoList.Add(item);
+
+        _infraordoLoaded = true;
+        OnPropertyChanged(nameof(InfraordoList));
+    }
+
+    public async Task EnsureTbl36SubordoLookupAsync()
+    {
+        if (_subordoLoaded) return;
+
+        var list = await _lookupService.GetSubordoListAsync();
+        SubordoList.Clear();
+        foreach (var item in list)
+            SubordoList.Add(item);
+
+        _subordoLoaded = true;
+        OnPropertyChanged(nameof(SubordoList));
+    }
+
+    public async Task EnsureTbl33OrdoLookupAsync()
+    {
+        if (_ordoLoaded) return;
+
+        var list = await _lookupService.GetOrdoListAsync();
+        OrdoList.Clear();
+        foreach (var item in list)
+            OrdoList.Add(item);
+
+        _ordoLoaded = true;
+        OnPropertyChanged(nameof(OrdoList));
+    }
+
+    public async Task EnsureTbl30LegioLookupAsync()
+    {
+        if (_legioLoaded) return;
+
+        var list = await _lookupService.GetLegioListAsync();
+        LegioList.Clear();
+        foreach (var item in list)
+            LegioList.Add(item);
+
+        _legioLoaded = true;
+        OnPropertyChanged(nameof(LegioList));
+    }
+
+    //---------------------------------------------------------
+    public async Task EnsureTbl27InfraclassLookupAsync()
+    {
+        if (_infraclassLoaded) return;
+
+        var list = await _lookupService.GetInfraclassListAsync();
+        InfraclassList.Clear();
+        foreach (var item in list)
+            InfraclassList.Add(item);
+
+        _infraclassLoaded = true;
+        OnPropertyChanged(nameof(InfraclassList));
+    }
+
+    public async Task EnsureTbl24SubclassLookupAsync()
+    {
+        if (_subclassLoaded) return;
+        var list = await _lookupService.GetSubclassListAsync();
+        SubclassList.Clear();
+        foreach (var item in list)
+            SubclassList.Add(item);
+
+        _subclassLoaded = true;
+        OnPropertyChanged(nameof(SubclassList));
+    }
+
+    public async Task EnsureTbl21ClassLookupAsync()
+    {
+        if (_classLoaded) return;
+
+        var list = await _lookupService.GetClassListAsync();
+        ClassList.Clear();
+        foreach (var item in list)
+            ClassList.Add(item);
+
+        _classLoaded = true;
+        OnPropertyChanged(nameof(ClassList));
+    }
+
+    public async Task EnsureTbl18SuperclassLookupAsync()
+    {
+        if (_superclassLoaded) return;
+
+        var list = await _lookupService.GetSuperclassListAsync();
+        SuperclassList.Clear();
+        foreach (var item in list)
+            SuperclassList.Add(item);
+
+        _superclassLoaded = true;
+        OnPropertyChanged(nameof(SuperclassList));
+    }
+
+    //---------------------------------------------------------
+    public async Task EnsureTbl12SubphylumLookupAsync()
+    {
+        if (_subphylumLoaded) return;
+
+        var list = await _lookupService.GetSubphylumListAsync();
+        SubphylumList.Clear();
+        foreach (var item in list)
+            SubphylumList.Add(item);
+
+        _subphylumLoaded = true;
+        OnPropertyChanged(nameof(SubphylumList));
+    }
+
+    public async Task EnsureTbl06PhylumLookupAsync()
+    {
+        if (_phylumLoaded) return;
+
+        var list = await _lookupService.GetPhylumListAsync();
+        PhylumList.Clear();
+        foreach (var item in list)
+            PhylumList.Add(item);
+
+        _phylumLoaded = true;
+        OnPropertyChanged(nameof(PhylumList));
+    }
+
+    public async Task EnsureTbl03RegnumLookupAsync()
+    {
+        if (_regnumLoaded) return;
+
+        var list = await _lookupService.GetRegnumListAsync();
+        RegnumList.Clear();
+        foreach (var item in list)
+            RegnumList.Add(item);
+
+        _regnumLoaded = true;
+        OnPropertyChanged(nameof(RegnumList));
+    }
+
+    //---------------------------------------------------------
+    public void ResetLookupLoadedFlags()
+    {
+        _speciesLoaded = false;
+        _genusLoaded = false;
+        _infratribusLoaded = false;
+        _subtribusLoaded = false;
+        _tribusLoaded = false;
+        _supertribusLoaded = false;
+        _infrafamilyLoaded = false;
+        _subfamilyLoaded = false;
+        _familyLoaded = false;
+        _superfamilyLoaded = false;
+        _infraordoLoaded = false;
+        _subordoLoaded = false;
+        _ordoLoaded = false;
+        _legioLoaded = false;
+        _infraclassLoaded = false;
+        _subclassLoaded = false;
+        _classLoaded = false;
+        _superclassLoaded = false;
+        _subphylumLoaded = false;
+        _phylumLoaded = false;
+        _regnumLoaded = false;
+    }
+
+    #endregion
+
+    #region LoadAsync
+    // ---------------------------------------------------------
 
     public async Task LoadAsync()
     {
+        // Boss-Start: Parent-Kontext löschen
+
         _currentParentId = 0;
         _activeLoader = null;
         _assignParentFk = null;
 
-        await LoadReferenceLookupsAsync();
-
         SelectedItem = null;
 
+        await LoadReferenceLookupsAsync();
+        await EnsureAllLookupsAsync();
 
+        Items = new ObservableCollection<Models.Tbl90Reference>();
+
+        OnPropertyChanged(nameof(HasItems));
+
+        // optional: Suchmodus aktivieren
+        await ReloadAsync();
     }
 
+    #endregion
+
+    #region UI-Zustand vorbereiten
     // ---------------------------------------------------------
-    // LOAD FOR EACH PARENT TYPE
+    public void PrepareViewState()
+    {
+        SelectedItem = null;
+        Item = null;
+    }
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+    #endregion
+
+    #region LOAD FOR EACH PARENT TYPE
     // ---------------------------------------------------------
     public async Task LoadForRegnumAsync(int id)
         => await LoadInternalAsync(id, Data.GetReferencesForRegnumAsync, r => r.RegnumId = id);
@@ -131,8 +565,9 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
     public async Task LoadForSpeciesAsync(int id)
         => await LoadInternalAsync(id, Data.GetReferencesForSpeciesAsync, r => r.SpeciesId = id);
 
-    // ---------------------------------------------------------
-    // INTERNAL LOADER
+    #endregion
+
+    #region INTERNAL LOADER
     // ---------------------------------------------------------
 
     private async Task LoadInternalAsync(
@@ -148,13 +583,10 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         Items = new ObservableCollection<Models.Tbl90Reference>(items);
 
         DataSetCount = Items.Count;
-
-        SelectedItem = null;
-        Item = null;
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // LOAD ITEMS (Boss)
+    #region LOAD ITEMS (Boss)
     // ---------------------------------------------------------
 
     protected override async Task<IEnumerable<Models.Tbl90Reference>> LoadItemsAsync()
@@ -167,14 +599,18 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
 
         return Items ?? Enumerable.Empty<Models.Tbl90Reference>();
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // CHILDREN (References haben keine Children)
+    #region CHILDREN (References haben keine Children)
     // ---------------------------------------------------------
 
     protected override Task LoadChildrenAsync(int entityId)
         => Task.CompletedTask;
 
+    #endregion
+
+    #region UI STATE
+    // ---------------------------------------------------------                   
 
     private Models.Tbl90Reference? _item;
     public Models.Tbl90Reference? Item
@@ -191,23 +627,26 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
 
     public bool HasActiveItem => Item != null;
 
-    public void PrepareViewState()
-    {
-        SelectedItem = null;
-        Item = null;
-    }
+    #endregion
 
+    #region ViewModel
+    // ---------------------------------------------------------
     protected override async Task OnSelectedItemChangedAsync()
     {
-        Item = SelectedItem;   // ⭐ EditControl bekommt Daten
+        if (SelectedItem != null)
+            await EnsureAllLookupsAsync();
 
-        // References haben keine Children
-        await Task.CompletedTask;
+        if (!ReferenceEquals(Item, SelectedItem))
+            Item = SelectedItem;
     }
+    private async Task EnsureAllLookupsAsync()
+    {
+        for (int i = 0; i <= 5; i++)
+            await EnsureLookupForTabAsync(i);
+    }
+    #endregion
 
-
-    // ---------------------------------------------------------
-    // NEW
+    #region NEW
     // ---------------------------------------------------------
 
     protected override Models.Tbl90Reference CreateNewItem()
@@ -221,19 +660,18 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
     protected override async Task NewAsync()
     {
         SelectedItem = CreateNewItem();
-        //  IsDetailVisible = true;
         await Task.Delay(50);
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // SAVE
+    #region SAVE
     // ---------------------------------------------------------
 
     protected override async Task<Models.Tbl90Reference?> SaveItemAsync(Models.Tbl90Reference item)
     {
         if (string.IsNullOrWhiteSpace(item.Info))
         {
-            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            await Dialog.ShowErrorAsync("Error_MissInfo_Title", "Error_MissInfo_Message");
             return null;
         }
 
@@ -255,9 +693,9 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
 
         return saved;
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // DELETE
+    #region DELETE
     // ---------------------------------------------------------
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl90Reference item)
@@ -269,11 +707,18 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         return true;
     }
 
+    #endregion
+
+    #region CONFIRM
+    // ---------------------------------------------------------
     protected override Task<bool> ConfirmSaveAsync(Models.Tbl90Reference item)
         => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
 
     protected override Task<bool> ConfirmDeleteAsync(Models.Tbl90Reference item)
         => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+    #endregion
+
+    #region Get
 
     protected override int GetId(Models.Tbl90Reference item)
         => item.ReferenceId;
@@ -287,6 +732,8 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
             _ => ""
         };
     }
+    #endregion
+
 }
 
 

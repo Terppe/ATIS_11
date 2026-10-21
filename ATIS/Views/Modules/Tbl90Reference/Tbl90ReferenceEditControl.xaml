@@ -75,13 +75,13 @@
                          loc:Uids.Uid="TextBox_ReferenceId"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.ReferenceId, Mode=OneWay}" />
+                         Text="{Binding Item.ReferenceId, ElementName=Root, Mode=OneWay}" />
 
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"
                           VerticalAlignment="Bottom"
                           loc:Uids.Uid="CheckBox_Valid"
-                          IsChecked="{x:Bind Item.Valid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsChecked="{Binding Item.Valid, Mode=TwoWay, ElementName=Root, UpdateSourceTrigger=PropertyChanged}"
                           Style="{StaticResource AtisCheckBox}" />
 
                 <!--  ValidYear  -->
@@ -92,17 +92,16 @@
                              loc:Uids.Uid="TextBox_ValidYear"
                              Loaded="ValidYearBox_OnLoaded"
                              Style="{StaticResource AtisTextBox}"
-                             Text="{x:Bind Item.ValidYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Text="{Binding Item.ValidYear, Mode=TwoWay, ElementName=Root, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="ValidYearBox_OnTextChanged" />
                     <TextBlock Height="16"
                                FontSize="10"
                                Foreground="Red"
-                               Text="{x:Bind Item.ValidYearError, Mode=OneWay}"
-                               Visibility="{x:Bind Item.HasValidYearError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                               Text="{Binding Item.ValidYearError, Mode=OneWay, ElementName=Root}"
+                               Visibility="{Binding Item.HasValidYearError, Mode=OneWay, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                 </StackPanel>
             </StackPanel>
 
-            <!--  RefExpertId  + ComboRefExpert Visibility="{x:Bind Item.ShowExpertCombo, Converter={StaticResource BoolToVisibilityConverter}}" Visibility="{x:Bind Item.ShowExpertCombo()}"  -->
             <StackPanel x:Name="ExpertPanel"
                         Orientation="Horizontal"
                         Spacing="4">
@@ -112,7 +111,7 @@
                          loc:Uids.Uid="TextBox_ReferenceExpertId"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.RefExpertId, Mode=OneWay}" />
+                         Text="{Binding Item.RefExpertId, Mode=OneWay, ElementName=Root}" />
 
                 <!--  Combo  -->
                 <StackPanel MinWidth="150"
@@ -124,14 +123,13 @@
                               loc:Uids.Uid="ComboBox_RefExpertName"
                               DisplayMemberPath="RefExpertName"
                               ItemsSource="{Binding RefExpertsList}"
-                              SelectedValue="{x:Bind Item.RefExpertId, Mode=TwoWay}"
+                              SelectedValue="{Binding Item.RefExpertId, Mode=TwoWay, ElementName=Root}"
                               SelectedValuePath="RefExpertId"
                               SelectionChanged="OnRefExpertChanged"
                               Style="{StaticResource AtisComboBox}" />
                 </StackPanel>
             </StackPanel>
 
-            <!--  RefSourceId  + ComboRefSource Visibility="{x:Bind Item.ShowSourceCombo, Converter={StaticResource BoolToVisibilityConverter}}" Visibility="{x:Bind Item.ShowSourceCombo()}"  -->
             <StackPanel x:Name="SourcePanel"
                         Orientation="Horizontal"
                         Spacing="4">
@@ -140,7 +138,7 @@
                          loc:Uids.Uid="TextBox_ReferenceSourceId"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.RefSourceId, Mode=OneWay}" />
+                         Text="{Binding Item.RefSourceId, Mode=OneWay, ElementName=Root}" />
 
                 <!--  RefSource  -->
                 <StackPanel MinWidth="150"
@@ -153,14 +151,13 @@
                               loc:Uids.Uid="ComboBox_RefSourceName"
                               DisplayMemberPath="RefSourceName"
                               ItemsSource="{Binding RefSourcesList}"
-                              SelectedValue="{x:Bind Item.RefSourceId, Mode=TwoWay}"
+                              SelectedValue="{Binding Item.RefSourceId, Mode=TwoWay, ElementName=Root}"
                               SelectedValuePath="RefSourceId"
                               SelectionChanged="OnRefSourceChanged"
                               Style="{StaticResource AtisComboBox}" />
                 </StackPanel>
             </StackPanel>
 
-            <!--  RefAuthorId  + ComboRefAuthor Visibility="{x:Bind Item.ShowAuthorCombo, Converter={StaticResource BoolToVisibilityConverter}}" Visibility="{x:Bind Item.ShowAuthorCombo()}"  -->
             <StackPanel x:Name="AuthorPanel"
                         Orientation="Horizontal"
                         Spacing="4">
@@ -169,7 +166,7 @@
                          loc:Uids.Uid="TextBox_ReferenceAuthorId"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.RefAuthorId, Mode=OneWay}" />
+                         Text="{Binding Item.RefAuthorId, Mode=OneWay, ElementName=Root}" />
 
                 <!--  RefAuthor  -->
                 <StackPanel MinWidth="150"
@@ -182,7 +179,7 @@
                               loc:Uids.Uid="ComboBox_RefAuthorName"
                               DisplayMemberPath="RefAuthorName"
                               ItemsSource="{Binding RefAuthorsList}"
-                              SelectedValue="{x:Bind Item.RefAuthorId, Mode=TwoWay}"
+                              SelectedValue="{Binding Item.RefAuthorId, Mode=TwoWay, ElementName=Root}"
                               SelectedValuePath="RefAuthorId"
                               SelectionChanged="OnRefAuthorChanged"
                               Style="{StaticResource AtisComboBox}" />
@@ -199,23 +196,382 @@
                          loc:Uids.Uid="TextBox_Info"
                          Loaded="InfoBox_OnLoaded"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{x:Bind Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Item.Info, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Root}"
                          TextChanged="InfoBox_OnTextChanged" />
 
                 <TextBlock Height="16"
                            FontSize="10"
                            Foreground="Red"
-                           Text="{x:Bind Item.InfoError, Mode=OneWay}"
-                           Visibility="{x:Bind Item.HasInfoError, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                           Text="{Binding Item.InfoError, Mode=OneWay, ElementName=Root}"
+                           Visibility="{Binding Item.HasInfoError, Mode=OneWay, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
             </StackPanel>
 
+            <!--  Tabellen Tab  -->
+            <Grid RowDefinitions="Auto, Auto">
+                <StackPanel Margin="0,0,0,10"
+                            Orientation="Horizontal"
+                            Spacing="4">
+
+                    <Button x:Name="SpeciesGenusTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="0">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_SpeciesGenus" />
+                            <Border x:Name="SpeciesGenusTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="TribusTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="1">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Tribus" />
+                            <Border x:Name="TribusTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="FamilyTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="2">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Family" />
+                            <Border x:Name="FamilyTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="OrdoTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="3">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Ordo" />
+                            <Border x:Name="OrdoTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="ClassTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="4">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_Class" />
+                            <Border x:Name="ClassTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="PhylumRegnumTab"
+                            Click="DetailTabButton_Click"
+                            Style="{StaticResource TabButtonStyle}"
+                            Tag="5">
+                        <StackPanel Spacing="4">
+                            <TextBlock HorizontalAlignment="Center"
+                                       loc:Uids.Uid="TextBlock_PhylumRegnum" />
+                            <Border x:Name="PhylumRegnumTabUnderline"
+                                    Height="2"
+                                    Background="Transparent" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <Grid x:Name="TabContentGrid"
+                      Grid.Row="1">
+
+                    <Grid x:Name="SpeciesGenusGrid"
+                          Visibility="Collapsed">
+                        <StackPanel MinWidth="150"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <TextBlock Visibility="Collapsed" />
+                            <ComboBox x:Name="SpeciesCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SpeciesName"
+                                      DisplayMemberPath="SpeciesName"
+                                      ItemsSource="{Binding ViewModel.SpeciesList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SpeciesId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SpeciesId"
+                                      Style="{StaticResource AtisComboBox}" />
+                            <ComboBox x:Name="GenusCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_GenusName"
+                                      DisplayMemberPath="GenusName"
+                                      ItemsSource="{Binding ViewModel.GenusList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.GenusId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="GenusId"
+                                      Style="{StaticResource AtisComboBox}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="TribusGrid"
+                          Visibility="Collapsed">
+                        <StackPanel MinWidth="150"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <TextBlock Visibility="Collapsed" />
+
+                            <ComboBox x:Name="InfratribusCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_InfratribusName"
+                                      DisplayMemberPath="InfratribusName"
+                                      ItemsSource="{Binding ViewModel.InfratribusList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.InfratribusId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="InfratribusId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="SubtribusCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SubtribusName"
+                                      DisplayMemberPath="SubtribusName"
+                                      ItemsSource="{Binding ViewModel.SubtribusList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SubtribusId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SubtribusId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="TribusCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_TribusName"
+                                      DisplayMemberPath="TribusName"
+                                      ItemsSource="{Binding ViewModel.TribusList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.TribusId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="TribusId"
+                                      Style="{StaticResource AtisComboBox}" />
+                            <ComboBox x:Name="SupertribusCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SupertribusName"
+                                      DisplayMemberPath="SupertribusName"
+                                      ItemsSource="{Binding ViewModel.SupertribusList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SupertribusId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SupertribusId"
+                                      Style="{StaticResource AtisComboBox}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="FamilyGrid"
+                          Visibility="Collapsed">
+                        <StackPanel MinWidth="150"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <TextBlock Visibility="Collapsed" />
+                            <ComboBox x:Name="InfrafamilyCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_InfrafamilyName"
+                                      DisplayMemberPath="InfrafamilyName"
+                                      ItemsSource="{Binding ViewModel.InfrafamilyList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.InfrafamilyId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="InfrafamilyId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="SubfamilyCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SubfamilyName"
+                                      DisplayMemberPath="SubfamilyName"
+                                      ItemsSource="{Binding ViewModel.SubfamilyList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SubfamilyId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SubfamilyId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="FamilyCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_FamilyName"
+                                      DisplayMemberPath="FamilyName"
+                                      ItemsSource="{Binding ViewModel.FamilyList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.FamilyId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="FamilyId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="SuperfamilyCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SuperfamilyName"
+                                      DisplayMemberPath="SuperfamilyName"
+                                      ItemsSource="{Binding ViewModel.SuperfamilyList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SuperfamilyId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SuperfamilyId"
+                                      Style="{StaticResource AtisComboBox}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="OrderGrid"
+                          Visibility="Collapsed">
+                        <StackPanel MinWidth="150"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <TextBlock Visibility="Collapsed" />
+
+                            <ComboBox x:Name="InfraordoCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_InfraordoName"
+                                      DisplayMemberPath="InfraordoName"
+                                      ItemsSource="{Binding ViewModel.InfraordoList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.InfraordoId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="InfraordoId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="SubordoCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SubordoName"
+                                      DisplayMemberPath="SubordoName"
+                                      ItemsSource="{Binding ViewModel.SubordoList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SubordoId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SubordoId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="OrdoCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_OrdoName"
+                                      DisplayMemberPath="OrdoName"
+                                      ItemsSource="{Binding ViewModel.OrdoList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.OrdoId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="OrdoId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="LegioCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_LegioName"
+                                      DisplayMemberPath="LegioName"
+                                      ItemsSource="{Binding ViewModel.LegioList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.LegioId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="LegioId"
+                                      Style="{StaticResource AtisComboBox}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="ClassGrid"
+                          Visibility="Collapsed">
+                        <StackPanel MinWidth="150"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <TextBlock Visibility="Collapsed" />
+
+                            <ComboBox x:Name="InfraclassCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_InfraclassName"
+                                      DisplayMemberPath="InfraclassName"
+                                      ItemsSource="{Binding ViewModel.InfraclassList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.InfraclassId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="InfraclassId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="SubclassCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SubclassName"
+                                      DisplayMemberPath="SubclassName"
+                                      ItemsSource="{Binding ViewModel.SubclassList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SubclassId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SubclassId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="ClassCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_ClassName"
+                                      DisplayMemberPath="ClassName"
+                                      ItemsSource="{Binding ViewModel.ClassList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.ClassId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="ClassId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="SuperclassCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SuperclassName"
+                                      DisplayMemberPath="SuperclassName"
+                                      ItemsSource="{Binding ViewModel.SuperclassList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SuperclassId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SuperclassId"
+                                      Style="{StaticResource AtisComboBox}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid x:Name="PhylumRegnumGrid"
+                          Visibility="Collapsed">
+                        <StackPanel MinWidth="150"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <TextBlock Visibility="Collapsed" />
+
+                            <ComboBox x:Name="SubphylumCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_SubphylumName"
+                                      DisplayMemberPath="SubphylumName"
+                                      ItemsSource="{Binding ViewModel.SubphylumList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.SubphylumId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="SubphylumId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="PhylumCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_PhylumName"
+                                      DisplayMemberPath="PhylumName"
+                                      ItemsSource="{Binding ViewModel.PhylumList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.PhylumId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="PhylumId"
+                                      Style="{StaticResource AtisComboBox}" />
+
+                            <ComboBox x:Name="RegnumCombo"
+                                      MinWidth="200"
+                                      VerticalAlignment="Center"
+                                      loc:Uids.Uid="ComboBox_RegnumName"
+                                      DisplayMemberPath="RegnumName"
+                                      ItemsSource="{Binding ViewModel.RegnumList, ElementName=Root}"
+                                      SelectedValue="{Binding Item.RegnumId, ElementName=Root, Mode=TwoWay}"
+                                      SelectedValuePath="RegnumId"
+                                      Style="{StaticResource AtisComboBox}" />
+                        </StackPanel>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+
+
             <!--  Memo  -->
-            <TextBox MinHeight="75"
+            <TextBox MinWidth="200"
+                     MinHeight="75"
                      MaxHeight="150"
                      loc:Uids.Uid="TextBox_Memo"
                      AcceptsReturn="True"
                      Style="{StaticResource AtisTextBox}"
-                     Text="{x:Bind Item.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Item.Memo, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap" />
         </StackPanel>
     </Border>

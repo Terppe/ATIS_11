@@ -8497,11 +8497,33 @@ public partial class DataService : ObservableObject, IDataService
         await using var context = _factory.CreateDbContext();
 
         return await context.Tbl90References.AnyAsync(x =>
-            x.Info == entity.Info &&
+            x.GenusId == entity.GenusId &&
+            x.InfratribusId == entity.InfratribusId &&
             x.SubtribusId == entity.SubtribusId &&
+            x.TribusId == entity.TribusId &&
+            x.SupertribusId == entity.SupertribusId &&
+            x.InfrafamilyId == entity.InfrafamilyId &&
+            x.SubfamilyId == entity.SubfamilyId &&
+            x.FamilyId == entity.FamilyId &&
+            x.SuperfamilyId == entity.SuperfamilyId &&
+            x.InfraordoId == entity.InfraordoId &&
+            x.SubordoId == entity.SubordoId &&
+            x.OrdoId == entity.OrdoId &&
+            x.LegioId == entity.LegioId &&
+            x.InfraclassId == entity.InfraclassId &&
+            x.SubclassId == entity.SubclassId &&
+            x.ClassId == entity.ClassId &&
+            x.SuperclassId == entity.SuperclassId &&
+            x.SubdivisionId == entity.SubdivisionId &&
+            x.SubphylumId == entity.SubphylumId &&
+            x.DivisionId == entity.DivisionId &&
+            x.PhylumId == entity.PhylumId &&
+            x.RegnumId == entity.RegnumId &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
             x.Valid == entity.Valid &&
             x.ValidYear == entity.ValidYear &&
-            x.Memo == entity.Memo &&
+
             x.ReferenceId != entity.ReferenceId
         );
     }

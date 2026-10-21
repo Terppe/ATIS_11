@@ -22,7 +22,7 @@
                                 Spacing="10">
 
                         <TextBlock Margin="0,4,0,0"
-                                   loc:Uids.Uid="TextBlock_Names"
+                                   loc:Uids.Uid="TextBlock_Comments"
                                    Style="{StaticResource AtisSectionTitleTextStyle}" />
 
                         <TextBlock Margin="0,12,0,0"
@@ -106,13 +106,6 @@
                                 <tbl93Comment:Tbl93CommentEditControl
                                     Item="{Binding SelectedItem, Mode=TwoWay}"
                                     ViewModel="{x:Bind ViewModel}" />
-                                <!--<tbl93Comment:Tbl93CommentEditControl
-                                    Item="{Binding SelectedItem, Mode=TwoWay}"
-                                    ViewModel="{Binding}" />-->
-                                <!--<tbl93Comment:Tbl93CommentEditControl
-                                Item="{Binding SelectedItem, Mode=TwoWay}"
-                                InfratribusList="{Binding InfratribusList, Mode=OneWay}" />-->
-                                <!--<tbl93Comment:Tbl93CommentEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />-->
                             </ScrollViewer>
                         </Grid>
                     </Grid>

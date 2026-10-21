@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Services;
-using ATIS.Views.Authentication;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +10,20 @@ namespace ATIS.Views.Modules.Tbl93Comment;
 
 public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 {
+    // ------------------------------------------------------------
+    #region [ STATE / FIELDS]
+    // ------------------------------------------------------------
     private readonly LookupService _lookupService;
 
     private int _currentParentId;
     private Func<int, Task<IEnumerable<Models.Tbl93Comment>>>? _activeLoader;
     private Action<Models.Tbl93Comment>? _assignParentFk;
 
+    #endregion
 
-
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
     public Tbl93CommentViewModel(
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
@@ -28,12 +33,11 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
         : base(new DataService(factory, user), dialog, coordinator)
     {
         _lookupService = lookupService;
-
     }
 
-    #region LOOKUPS
-    // ---------------------------------------------------------
-
+    // ------------------------------------------------------------
+    #region [ LOOKUPS ]
+    // ------------------------------------------------------------
     private bool _speciesLoaded;
     private bool _genusLoaded;
     //---------------------------------------------------------
@@ -434,9 +438,9 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 
     #endregion
 
-    // ---------------------------------------------------------                  
-    // LOAD ASYNC (Boss)
-    // ---------------------------------------------------------                  
+    // ------------------------------------------------------------
+    #region [ LOADASYNC ]
+    // ------------------------------------------------------------
     public async Task LoadAsync()
     {
         // Boss-Start: Parent-Kontext löschen
@@ -456,10 +460,11 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
         // optional: Suchmodus aktivieren
         await ReloadAsync();
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // UI-Zustand vorbereiten
-    // ---------------------------------------------------------
+    // ------------------------------------------------------------
+    #region [ UI-ZUSTAND VORBEREITEN ]
+    // ------------------------------------------------------------
     public void PrepareViewState()
     {
         SelectedItem = null;
@@ -473,8 +478,10 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
             await ReloadAsync();
         }
     }
+    #endregion
 
-    #region LOAD FOR EACH PARENT TYPE
+    // ------------------------------------------------------------
+    #region [ LOAD FOR EACH PARENT TYPE ]
     // ---------------------------------------------------------
     public async Task LoadForRegnumAsync(int id)
         => await LoadInternalAsync(id, Data.GetCommentsForRegnumAsync, c => c.RegnumId = id);
@@ -526,22 +533,9 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 
     #endregion
 
+    // ------------------------------------------------------------
+    #region [ INTERNAL LOADER ]
     // ---------------------------------------------------------
-    // INTERNAL LOADER
-    // ---------------------------------------------------------
-    //private async Task LoadInternalAsync(
-    //    int parentId,
-    //    Func<int, Task<IEnumerable<Models.Tbl66Genus>>> loader)
-    //{
-    //    _currentParentId = parentId;
-    //    _activeLoader = loader;
-
-    //    var items = await loader(parentId);
-    //    Items = new ObservableCollection<Models.Tbl93Comment>(items);
-    //    OnPropertyChanged(nameof(HasItems));
-
-    //    DataSetCount = Items.Count;
-    //}
 
     private async Task LoadInternalAsync(
         int parentId,
@@ -557,13 +551,15 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 
         DataSetCount = Items.Count;
 
-        // ❗ Parent-Comments: KEINE Auto-Auswahl
+        //// ❗ Parent-Comments: KEINE Auto-Auswahl
         //SelectedItem = null;
         //Item = null;
     }
 
-    // ---------------------------------------------------------
-    // LOAD ITEMS (Boss)
+    #endregion
+
+    // ------------------------------------------------------------
+    #region [ LOAD ITEMS (Boss) ]
     // ---------------------------------------------------------
 
     protected override async Task<IEnumerable<Models.Tbl93Comment>> LoadItemsAsync()
@@ -577,8 +573,10 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
         return Items ?? Enumerable.Empty<Models.Tbl93Comment>();
     }
 
-    // ---------------------------------------------------------
-    // CHILDREN (Comments haben keine Children)
+    #endregion
+
+    // ------------------------------------------------------------
+    #region [ CHILDREN (Comments haben keine Children) ]
     // ---------------------------------------------------------
 
     protected override Task LoadChildrenAsync(int entityId)
@@ -586,6 +584,11 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
     protected override Task ClearChildCollectionsAsync()
         => Task.CompletedTask;
 
+    #endregion
+
+    // ------------------------------------------------------------
+    #region [ UI STATE ]
+    // ---------------------------------------------------------                   
     private Models.Tbl93Comment? _item;
     public Models.Tbl93Comment? Item
     {
@@ -601,14 +604,11 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 
     public bool HasActiveItem => Item != null;
 
-    //protected override async Task OnSelectedItemChangedAsync()
-    //{
-    //    Item = SelectedItem;   // ⭐ EditControl bekommt Daten
+    #endregion
 
-    //    // Comments haben keine Children
-    //    await Task.CompletedTask;
-    //}
-    // ViewModel
+    // ------------------------------------------------------------
+    #region [ VIEWMODEL ]
+    // ---------------------------------------------------------
     protected override async Task OnSelectedItemChangedAsync()
     {
         if (SelectedItem != null)
@@ -622,8 +622,10 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
         for (int i = 0; i <= 5; i++)
             await EnsureLookupForTabAsync(i);
     }
-    // ---------------------------------------------------------
-    // NEW
+    #endregion
+
+    // ------------------------------------------------------------
+    #region [ NEW ]
     // ---------------------------------------------------------
 
     protected override Models.Tbl93Comment CreateNewItem()
@@ -640,17 +642,20 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
         await Task.Delay(50);
     }
 
-    // ---------------------------------------------------------
-    // SAVE
+    #endregion
+
+    // ------------------------------------------------------------
+    #region [ SAVE ]
     // ---------------------------------------------------------
 
     protected override async Task<Models.Tbl93Comment?> SaveItemAsync(Models.Tbl93Comment item)
     {
         if (string.IsNullOrWhiteSpace(item.Info))
         {
-            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            await Dialog.ShowErrorAsync("Error_MissInfo_Title", "Error_MissInfo_Message");
             return null;
         }
+
 
         var saved = await Data.UpsertCommentAsync(item);
 
@@ -670,9 +675,10 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 
         return saved;
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // DELETE
+    // ------------------------------------------------------------
+    #region [ DELETE ]
     // ---------------------------------------------------------
 
     protected override async Task<bool> DeleteItemAsync(Models.Tbl93Comment item)
@@ -683,13 +689,23 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
         await Data.DeleteCommentAsync(item.CommentId);
         return true;
     }
+    #endregion
+
+    // ------------------------------------------------------------
+    #region [ CONFIRM ]
+    // ---------------------------------------------------------
 
     protected override Task<bool> ConfirmSaveAsync(Models.Tbl93Comment item)
         => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
 
     protected override Task<bool> ConfirmDeleteAsync(Models.Tbl93Comment item)
         => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
+    #endregion
 
+    // ------------------------------------------------------------
+    #region [ GET ]
+    // ---------------------------------------------------------
+    
     protected override int GetId(Models.Tbl93Comment item)
         => item.CommentId;
 
@@ -702,6 +718,7 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
             _ => ""
         };
     }
+    #endregion
 }
 
 

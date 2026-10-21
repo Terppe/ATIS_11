@@ -9,7 +9,6 @@ using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
-using ATIS.Views.Database;
 using ATIS.Views.Main;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl03Regnum;
