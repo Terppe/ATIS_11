@@ -51,8 +51,7 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <RelativePanel x:Name="UserProfileRoot"
-                   Margin="{StaticResource SmallLeftTopRightBottomMargin}">
+    <RelativePanel x:Name="UserProfileRoot">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
@@ -631,46 +630,39 @@
                         <TextBlock Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="2"
-                                   Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                    Foreground="Red"
                                    Style="{ThemeResource DetailSubTitleStyle}"
                                    Text=" Achtung !! Vorsicht beim Anlegen eines neuen Passworts, wird in Appconfig gespeichert !!" />
                         <TextBlock Grid.Row="1"
                                    Grid.Column="0"
-                                   Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                    Style="{ThemeResource DetailSubTitleStyle}"
                                    Text=" New MailAccountPassword:" />
                         <TextBox x:Name="TbMailAccountPassword"
                                  Grid.Row="1"
                                  Grid.Column="1"
-                                 Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                  Style="{StaticResource BodyTextBoxStyle}"
                                  Text="{Binding MailAccountPassword}" />
                         <Button x:Name="BtnEncrypt"
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 Width="200"
-                                Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                 Click="BtnEncrypt_OnClick"
                                 Content="Berechnen"
                                 IsEnabled="True"
                                 Style="{StaticResource AtisButtonPrimary}" />
                         <TextBlock Grid.Row="3"
                                    Grid.Column="0"
-                                   Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                    Style="{ThemeResource DetailSubTitleStyle}"
                                    Text="Encryptetes MailAccountPassword:" />
                         <TextBox x:Name="TbEncryptMailAccountPassword"
                                  Grid.Row="3"
                                  Grid.Column="1"
-                                 Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                  Style="{StaticResource BodyTextBoxStyle}"
                                  Text="{Binding EncryptMailAccountPassword}" />
                         <Button x:Name="BtnSave"
                                 Grid.Row="4"
                                 Grid.Column="1"
                                 Width="200"
-                                Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
                                 Click="BtnSave_OnClick"
                                 Content="Save"
                                 IsEnabled="True"

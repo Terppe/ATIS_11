@@ -73,11 +73,11 @@
                        loc:Uids.Uid="TextBlock_ImageId"
                        FontWeight="Bold" />
             <TextBlock Grid.Column="1"
-                       loc:Uids.Uid="TextBlock_ImageName"
+                       loc:Uids.Uid="TextBlock_Info"
                        FontWeight="Bold" />
 
             <TextBlock Grid.Column="2"
-                       loc:Uids.Uid="TextBlock_SpeciesName"
+                       loc:Uids.Uid="TextBlock_ImageMimeType"
                        FontWeight="Bold" />
 
             <TextBlock Grid.Column="3"
@@ -86,16 +86,16 @@
             <TextBlock Grid.Column="4"
                        loc:Uids.Uid="TextBlock_Year"
                        FontWeight="Bold" />
-            <TextBlock Grid.Column="5"
-                       loc:Uids.Uid="TextBlock_ImageMimeType"
-                       FontWeight="Bold" />
-            
+            <!--<TextBlock Grid.Column="5"
+            loc:Uids.Uid="TextBlock_ImageMimeType"
+            FontWeight="Bold" />-->
+
             <!--<TextBlock Grid.Column="6"
-                       loc:Uids.Uid="TextBlock_Author"
-                       FontWeight="Bold" />
+            loc:Uids.Uid="TextBlock_Author"
+            FontWeight="Bold" />
             <TextBlock Grid.Column="7"
-                       loc:Uids.Uid="TextBlock_Year"
-                       FontWeight="Bold" />-->
+            loc:Uids.Uid="TextBlock_Year"
+            FontWeight="Bold" />-->
 
         </Grid>
 
@@ -163,7 +163,7 @@
 
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
-                                   Text="{x:Bind SpeciesName}" />
+                                   Text="{x:Bind ImageMimeType}" />
 
                         <CheckBox Grid.Column="3"
                                   IsChecked="{x:Bind Valid}"
@@ -172,12 +172,12 @@
                         <TextBlock Grid.Column="4"
                                    VerticalAlignment="Center"
                                    Text="{x:Bind ValidYear}" />
-                        <TextBlock Grid.Column="5"
-                                   VerticalAlignment="Center"
-                                   Text="{x:Bind ImageMimeType}" />
+                        <!--<TextBlock Grid.Column="5"
+                        VerticalAlignment="Center"
+                        Text="{x:Bind ImageMimeType}" />-->
                         <!--<TextBlock Grid.Column="6"
-                                   VerticalAlignment="Center"
-                                   Text="{x:Bind AuthorYear}" />-->
+                        VerticalAlignment="Center"
+                        Text="{x:Bind AuthorYear}" />-->
 
                         <!--  Hier noch ImageMimeType einfügen  -->
 

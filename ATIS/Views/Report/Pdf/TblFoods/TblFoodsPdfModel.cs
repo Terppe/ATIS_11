@@ -7,7 +7,7 @@ public class TblFoodsPdfModel
 {
     public string FoodName { get; set; }
     public int CountId { get; set; }
-    public bool Valid { get; set; }
+    public bool? Valid { get; set; }
     public string ValidYear { get; set; }
     public string ShortInfo { get; set; }
     public string Symptom { get; set; }

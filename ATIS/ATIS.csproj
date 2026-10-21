@@ -595,12 +595,9 @@
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
 		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
-		<None Remove="Views\Main\Disease\DiseasePdf\ReportDiseasesWindow.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
-		<None Remove="Views\Main\Food\FoodPdf\ReportFoodsWindow.xaml" />
 		<None Remove="Views\Main\HomePage.xaml" />
 		<None Remove="Views\Main\MiscellaneousPage.xaml" />
-		<None Remove="Views\Main\Miscellaneous\MiscellaneousPdf\ReportMiscellaneoussesWindow.xaml" />
 		<None Remove="Views\Main\SpeciesPage.xaml" />
 		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Main\UtilityPage.xaml" />
@@ -723,14 +720,22 @@
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml" />
 		<None Remove="Views\Modules\Tbl90RefSource\Tbl90RefSourceParentControl.xaml" />
+		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentEditControl.xaml" />
+		<None Remove="Views\Modules\Tbl93Comment\Tbl93CommentPage.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryBossControl.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryEditControl.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryPage.xaml" />
 		<None Remove="Views\Modules\TblCountry\TblCountryParentControl.xaml" />
+		<None Remove="Views\Modules\TblDisease\TblDiseaseBossControl.xaml" />
+		<None Remove="Views\Modules\TblDisease\TblDiseaseEditControl.xaml" />
+		<None Remove="Views\Modules\TblDisease\TblDiseasePage.xaml" />
 		<None Remove="Views\Modules\TblFood\TblFoodBossControl.xaml" />
 		<None Remove="Views\Modules\TblFood\TblFoodEditControl.xaml" />
 		<None Remove="Views\Modules\TblFood\TblFoodPage.xaml" />
+		<None Remove="Views\Modules\TblMiscellaneous\TblMiscellaneousBossControl.xaml" />
+		<None Remove="Views\Modules\TblMiscellaneous\TblMiscellaneousEditControl.xaml" />
+		<None Remove="Views\Modules\TblMiscellaneous\TblMiscellaneousPage.xaml" />
 		<None Remove="Views\Modules\TblUserProfile\TblUserProfileBossControl.xaml" />
 		<None Remove="Views\Modules\TblUserProfile\TblUserProfileEditControl.xaml" />
 		<None Remove="Views\Modules\TblUserProfile\TblUserProfilePage.xaml" />
@@ -818,8 +823,6 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="Themes\Templates\" />
-	<Folder Include="Views\Modules\TblMiscellaneous\" />
-	<Folder Include="Views\Modules\TblDisease\" />
 	<Folder Include="Views\Search\Pdf\Tbl75SpeciesSubs\" />
 	</ItemGroup>
 
@@ -856,6 +859,54 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblDisease\TblDiseasePage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblDisease\TblDiseaseEditControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Modules\TblDisease\TblDiseaseBossControl.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

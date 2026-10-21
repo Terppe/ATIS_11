@@ -5,6 +5,7 @@ using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Database;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl03Regnum;
 using ATIS.Views.Modules.Tbl06Phylum;
@@ -33,10 +34,11 @@ using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl93Comment;
+using ATIS.Views.Modules.TblDisease;
+using ATIS.Views.Modules.TblFood;
+using ATIS.Views.Modules.TblMiscellaneous;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Media;
 using WinUI3Localizer;
 
 namespace ATIS.Views.Main;
@@ -79,6 +81,10 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
     public Tbl87GeographicViewModel GeographicVM { get; }
     public Tbl90ReferenceViewModel ReferenceVM { get; }
     public Tbl93CommentViewModel CommentVM { get; }
+    public TblFoodViewModel FoodVM { get; }
+    public TblDiseaseViewModel DiseaseVM { get; }
+    public TblMiscellaneousViewModel MiscellaneousVM { get; }
+
 
     public MainViewModel(
         IDbContextFactory<AtisDbContext> factory,
@@ -121,6 +127,10 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         ImageVM = new Tbl81ImageViewModel(factory, dialogService, coordinator, lookupService, user);
         SynonymVM = new Tbl84SynonymViewModel(factory, dialogService, coordinator, lookupService, user);
         GeographicVM = new Tbl87GeographicViewModel(factory, dialogService, coordinator, lookupService, user);
+
+        FoodVM = new TblFoodViewModel(factory, dialogService, coordinator, lookupService, user);
+        DiseaseVM = new TblDiseaseViewModel(factory, dialogService, coordinator, lookupService, user);
+        MiscellaneousVM = new TblMiscellaneousViewModel(factory, dialogService, coordinator, lookupService, user);
     }
 
     private bool _isLoading;

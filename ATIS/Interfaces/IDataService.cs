@@ -917,6 +917,9 @@ public interface IDataService
     //Task<bool> ImageHasCommentAsync(int simageId);
 
     Task<IEnumerable<Tbl81Image>> GetImageForSpeciesAsync(int speciesId);
+    Task<IEnumerable<Tbl81Image>> GetImageForFoodAsync(int foodId);
+    Task<IEnumerable<Tbl81Image>> GetImageForDiseaseAsync(int diseaseId);
+    Task<IEnumerable<Tbl81Image>> GetImageForMiscellaneousAsync(int miscellaneousId);
 
     //alr------------------------   
     ObservableCollection<Tbl81Image> GetImageAsync();
@@ -924,7 +927,7 @@ public interface IDataService
     ObservableCollection<Tbl81Image> GetImageAsync(string search);
     ObservableCollection<Tbl81Image> GetImageFromSpeciesIdAsync(int speciesid);
     //ObservableCollection<Tbl81Image> GetImageFromPlSpeciesIdAsync(int plspeciesid);
-    Task<Tbl81Image> UpsertImageAsync(Tbl81Image image, string selectedpath);
+   // Task<Tbl81Image> UpsertImageAsync(Tbl81Image image, string selectedpath);
     //Task DeleteImageAsync(int imageid);
 
     #endregion Image                  
@@ -1187,32 +1190,57 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     #endregion UserProfile
 
     #region Food
+    // ---------------------------------------------------------   
+    Task<IEnumerable<TblFood>> GetAllFoodAsync();
+    Task<IEnumerable<TblFood>> SearchFoodAsync(string? search);
+    Task<TblFood?> GetFoodByIdAsync(int id);
+    Task<TblFood> UpsertFoodAsync(TblFood entity);
+    Task DeleteFoodAsync(int id);
+    Task<bool> FoodExistsAsync(TblFood entity);
 
+    //alt
     ObservableCollection<TblFood> GetFoodAsync();
     ObservableCollection<TblFood> GetFoodAsync(int foodid);
     Task<ObservableCollection<TblFood>> GetFoodAsync(string search);
-    Task<TblFood> UpsertFoodAsync(TblFood food);
-    Task DeleteFoodAsync(int foodid);
+    //Task<TblFood> UpsertFoodAsync(TblFood food);
+    //Task DeleteFoodAsync(int foodid);
 
     #endregion Food
 
     #region Disease
+    // ---------------------------------------------------------   
+    Task<IEnumerable<TblDisease>> GetAllDiseaseAsync();
+    Task<IEnumerable<TblDisease>> SearchDiseaseAsync(string? search);
+    Task<TblDisease?> GetDiseaseByIdAsync(int id);
+    Task<TblDisease> UpsertDiseaseAsync(TblDisease entity);
+    Task DeleteDiseaseAsync(int id);
+    Task<bool> DiseaseExistsAsync(TblDisease entity);
 
+    //alt
     ObservableCollection<TblDisease> GetDiseaseAsync();
     ObservableCollection<TblDisease> GetDiseaseAsync(int diseaseid);
     Task<ObservableCollection<TblDisease>> GetDiseaseAsync(string search);
-    Task<TblDisease> UpsertDiseaseAsync(TblDisease disease);
-    Task DeleteDiseaseAsync(int diseaseid);
+    //Task<TblDisease> UpsertDiseaseAsync(TblDisease disease);
+    //Task DeleteDiseaseAsync(int diseaseid);
 
     #endregion Disease
 
-    #region Miscellaneous
 
+    #region Miscellaneous
+    // ---------------------------------------------------------   
+    Task<IEnumerable<TblMiscellaneous>> GetAllMiscellaneousAsync();
+    Task<IEnumerable<TblMiscellaneous>> SearchMiscellaneousAsync(string? search);
+    Task<TblMiscellaneous?> GetMiscellaneousByIdAsync(int id);
+    Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous entity);
+    Task DeleteMiscellaneousAsync(int id);
+    Task<bool> MiscellaneousExistsAsync(TblMiscellaneous entity);
+
+    //alt
     ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync();
     ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync(int miscellaneousid);
     Task<ObservableCollection<TblMiscellaneous>> GetMiscellaneousAsync(string search);
-    Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous);
-    Task DeleteMiscellaneousAsync(int miscellaneousid);
+    //Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous);
+    //Task DeleteMiscellaneousAsync(int miscellaneousid);
 
     #endregion Miscellaneous
 

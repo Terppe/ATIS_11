@@ -1527,6 +1527,12 @@
   <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
     <value>Edit Class</value>
   </data>
+  <data name="TextBlock_Edit_Disease.Text" xml:space="preserve">
+    <value>Edit Disease</value>
+  </data>
+  <data name="TextBlock_Edit_Miscellaneous.Text" xml:space="preserve">
+    <value>Edit Miscellaneous</value>
+  </data>
   <data name="TextBlock_Edit_Regnum.Text" xml:space="preserve">
     <value>Edit Regnum</value>
   </data>
@@ -1544,6 +1550,9 @@
   </data>
   <data name="TextBlock_Edit_Family.Text" xml:space="preserve">
     <value>Edit Family</value>
+  </data>
+  <data name="TextBlock_Edit_Food.Text" xml:space="preserve">
+    <value>Edit Food</value>
   </data>
   <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
     <value>Edit Legio</value>
@@ -1959,6 +1968,9 @@
   <data name="Class" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="ClassTab" xml:space="preserve">
+    <value>Class</value>
+  </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
     <value>Classes</value>
   </data>
@@ -2068,6 +2080,9 @@
     <value>Family</value>
   </data>
   <data name="Family" xml:space="preserve">
+    <value>Family</value>
+  </data>
+  <data name="FamilyTab" xml:space="preserve">
     <value>Family</value>
   </data>
   <data name="TextBlock_FamilyId.Text" xml:space="preserve">
@@ -2484,6 +2499,9 @@
   <data name="Ordo" xml:space="preserve">
     <value>Ordo</value>
   </data>
+  <data name="OrdoTab" xml:space="preserve">
+    <value>Ordo</value>
+  </data>
   <data name="TextBlock_OrdoId.Text" xml:space="preserve">
     <value>Ordo ID</value>
   </data>
@@ -2526,6 +2544,9 @@
   <data name="Phylum" xml:space="preserve">
     <value>Phylum</value>
   </data>
+  <data name="PhylumRegnumTab" xml:space="preserve">
+    <value>Phylum / Regnum</value>
+  </data>
   <data name="PdfExport_Hidden" xml:space="preserve">
     <value>PdfExport Hidden</value>
   </data>
@@ -2561,6 +2582,9 @@
   </data>
   <data name="TextBlock_Phylums.Text" xml:space="preserve">
     <value>Phylums</value>
+  </data>
+  <data name="TextBlock_PhylumRegnum.Text" xml:space="preserve">
+    <value>Phylum / Regnum</value>
   </data>
   <data name="TextBlock_Print.Text" xml:space="preserve">
     <value>PRINT</value>
@@ -2881,6 +2905,9 @@
     <value>Tribus</value>
   </data>
   <data name="Tribus" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="TribusTab" xml:space="preserve">
     <value>Tribus</value>
   </data>
   <data name="TypeSpecies" xml:space="preserve">
@@ -3225,6 +3252,9 @@
   <data name="TextBox_Thema2.Header" xml:space="preserve">
     <value>Thema 2</value>
   </data>
+  <data name="TextBox_Therapie.Header" xml:space="preserve">
+    <value>Therapie</value>
+  </data>
   <data name="TextBox_MemoTherapie.Header" xml:space="preserve">
     <value>Memo Therapie</value>
   </data>
@@ -3298,7 +3328,7 @@
     <value>Shot Date</value>
   </data>
   <data name="TextBox_ShortInfo.Header" xml:space="preserve">
-    <value>Short Symptom</value>
+    <value>Short Info</value>
   </data>
   <data name="TextBox_Signature.Header" xml:space="preserve">
     <value>Signature</value>
@@ -3364,7 +3394,7 @@
     <value>Synonym Name</value>
   </data>
   <data name="TextBox_Symptom.Header" xml:space="preserve">
-    <value>Symptom</value>
+    <value>Symptome</value>
   </data>
   <data name="TextBox_Tel.Header" xml:space="preserve">
     <value>Telefon</value>
@@ -3386,6 +3416,9 @@
   </data>
   <data name="TextBox_ValidYear.Header" xml:space="preserve">
     <value>Year</value>
+  </data>
+  <data name="TextBox_FoodVolume.Header" xml:space="preserve">
+    <value>Not Short</value>
   </data>
   <data name="TextBox_ZoomLevel.Header" xml:space="preserve">
     <value>ZoomLevel</value>
@@ -3639,6 +3672,9 @@
   <data name="Species" xml:space="preserve">
     <value>Species</value>
   </data>
+  <data name="SpeciesGenusTab" xml:space="preserve">
+    <value>Species / Genus</value>
+  </data>
   <data name="SQL_Server_Ok" xml:space="preserve">
     <value>SQL-Server running</value>
   </data>
@@ -3647,6 +3683,9 @@
   </data>
   <data name="TextBlock_SpeciesName.Text" xml:space="preserve">
     <value>Species</value>
+  </data>
+  <data name="TextBlock_SpeciesGenus.Text" xml:space="preserve">
+    <value>Species / Genus</value>
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">
     <value>Synonym(s):</value>
@@ -3728,9 +3767,6 @@
   </data>
   <data name="Legio" xml:space="preserve">
     <value>Legio</value>
-  </data>
-  <data name="TextBlock_Ordo1.Text" xml:space="preserve">
-    <value>Ordo</value>
   </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordo</value>
@@ -4836,6 +4872,9 @@
   <data name="Error_MissingInfo_Title" xml:space="preserve">
     <value>info</value>
   </data>
+  <data name="Error_MissingShortInfo_Title" xml:space="preserve">
+    <value>Short-Info</value>
+  </data>
   <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
     <value>Media not loaded</value>
   </data>
@@ -4844,6 +4883,9 @@
   </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>info missing</value>
+  </data>
+  <data name="Error_MissingShortInfo_Message" xml:space="preserve">
+    <value>Short-Info missing</value>
   </data>
   <data name="Error_NoFile_Title" xml:space="preserve">
     <value>filestrem</value>
@@ -5061,6 +5103,12 @@
   <data name="Error_SourceYear_Length" xml:space="preserve">
     <value>Year must have 4 Numbers</value>
   </data>
+  <data name="Error_ShortInfo_Empty" xml:space="preserve">
+    <value>Shortinfo must not be empty.</value>
+  </data>
+  <data name="Error_ShortInfo_TooLong" xml:space="preserve">
+    <value>Shortinfo must not exceed 100 characters</value>
+  </data>
   <data name="Error_ValidYear_NotNumber" xml:space="preserve">
     <value>Year must be a Number</value>
   </data>
@@ -5154,6 +5202,12 @@
   <data name="HeaderSort_CountryName" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="HeaderSort_DiseaseName" xml:space="preserve">
+    <value>Disease</value>
+  </data>
+  <data name="HeaderSort_MiscellaneousName" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
   <data name="HeaderSort_ClassName" xml:space="preserve">
     <value>Class Name</value>
   </data>
@@ -5168,6 +5222,9 @@
   </data>
   <data name="HeaderSort_FamilyName" xml:space="preserve">
     <value>Family Name</value>
+  </data>
+  <data name="HeaderSort_FoodName" xml:space="preserve">
+    <value>Food Name</value>
   </data>
   <data name="HeaderSort_LegioName" xml:space="preserve">
     <value>Superorder Name</value>

@@ -1527,6 +1527,12 @@
   <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
     <value>Bearbeiten Klasse</value>
   </data>
+  <data name="TextBlock_Edit_Disease.Text" xml:space="preserve">
+    <value>Bearbeiten Krankheiten</value>
+  </data>
+  <data name="TextBlock_Edit_Miscellaneous.Text" xml:space="preserve">
+    <value>Bearbeiten Verschiedenes</value>
+  </data>
   <data name="TextBlock_Edit_Regnum.Text" xml:space="preserve">
     <value>Bearbeiten Reich</value>
   </data>
@@ -1544,6 +1550,9 @@
   </data>
   <data name="TextBlock_Edit_Family.Text" xml:space="preserve">
     <value>Bearbeiten Familie</value>
+  </data>
+  <data name="TextBlock_Edit_Food.Text" xml:space="preserve">
+    <value>Bearbeiten Nahrung</value>
   </data>
   <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
     <value>Bearbeiten Übewrordnung</value>
@@ -1959,6 +1968,9 @@
   <data name="Class" xml:space="preserve">
     <value>Klasse</value>
   </data>
+  <data name="ClassTab" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
     <value>Klassen</value>
   </data>
@@ -2068,6 +2080,9 @@
     <value>Familie</value>
   </data>
   <data name="Family" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="FamilyTab" xml:space="preserve">
     <value>Familie</value>
   </data>
   <data name="TextBlock_FamilyId.Text" xml:space="preserve">
@@ -2484,6 +2499,9 @@
   <data name="Ordo" xml:space="preserve">
     <value>Ordnung</value>
   </data>
+  <data name="OrdoTab" xml:space="preserve">
+    <value>Ordnung</value>
+  </data>
   <data name="TextBlock_OrdoId.Text" xml:space="preserve">
     <value>Ordnung ID</value>
   </data>
@@ -2526,6 +2544,9 @@
   <data name="Phylum" xml:space="preserve">
     <value>Stamm</value>
   </data>
+  <data name="PhylumRegnumTab" xml:space="preserve">
+    <value>Stamm / Reich</value>
+  </data>
   <data name="PdfExport_Hidden" xml:space="preserve">
     <value>Keine PDF Datei</value>
   </data>
@@ -2561,6 +2582,9 @@
   </data>
   <data name="TextBlock_Phylums.Text" xml:space="preserve">
     <value>Stämme</value>
+  </data>
+  <data name="TextBlock_PhylumRegnum.Text" xml:space="preserve">
+    <value>Stamm / Reich</value>
   </data>
   <data name="TextBlock_Print.Text" xml:space="preserve">
     <value>DRUCK</value>
@@ -2881,6 +2905,9 @@
     <value>Tribus</value>
   </data>
   <data name="Tribus" xml:space="preserve">
+    <value>Tribus</value>
+  </data>
+  <data name="TribusTab" xml:space="preserve">
     <value>Tribus</value>
   </data>
   <data name="TypeSpecies" xml:space="preserve">
@@ -3225,6 +3252,9 @@
   <data name="TextBox_Thema2.Header" xml:space="preserve">
     <value>Thema 2</value>
   </data>
+  <data name="TextBox_Therapie.Header" xml:space="preserve">
+    <value>Heilbarkeit</value>
+  </data>
   <data name="TextBox_MemoTherapie.Header" xml:space="preserve">
     <value>Memo Behandlung</value>
   </data>
@@ -3298,7 +3328,7 @@
     <value>Shot Datum</value>
   </data>
   <data name="TextBox_ShortInfo.Header" xml:space="preserve">
-    <value>Kurz Symptom</value>
+    <value>Kurze Information</value>
   </data>
   <data name="TextBox_Signature.Header" xml:space="preserve">
     <value>Unterschrift</value>
@@ -3364,7 +3394,7 @@
     <value>Synonym Name</value>
   </data>
   <data name="TextBox_Symptom.Header" xml:space="preserve">
-    <value>Ursache</value>
+    <value>Symptome</value>
   </data>
   <data name="TextBox_Tel.Header" xml:space="preserve">
     <value>Telefon</value>
@@ -3386,6 +3416,9 @@
   </data>
   <data name="TextBox_ValidYear.Header" xml:space="preserve">
     <value>Jahr</value>
+  </data>
+  <data name="TextBox_FoodVolume.Header" xml:space="preserve">
+    <value>Ausführliche Information</value>
   </data>
   <data name="TextBox_ZoomLevel.Header" xml:space="preserve">
     <value>ZoomLevel</value>
@@ -3639,6 +3672,9 @@
   <data name="Species" xml:space="preserve">
     <value>Art</value>
   </data>
+  <data name="SpeciesGenusTab" xml:space="preserve">
+    <value>Art / Gattung</value>
+  </data>
   <data name="SQL_Server_Ok" xml:space="preserve">
     <value>SQL-Server läuft</value>
   </data>
@@ -3647,6 +3683,9 @@
   </data>
   <data name="TextBlock_SpeciesName.Text" xml:space="preserve">
     <value>Art</value>
+  </data>
+  <data name="TextBlock_SpeciesGenus.Text" xml:space="preserve">
+    <value>Art / Gattung</value>
   </data>
   <data name="TextBlock_SynonymsReport.Text" xml:space="preserve">
     <value>Synonym(e):</value>
@@ -3728,9 +3767,6 @@
   </data>
   <data name="Legio" xml:space="preserve">
     <value>Überordnung</value>
-  </data>
-  <data name="TextBlock_Ordo1.Text" xml:space="preserve">
-    <value>Ordnung</value>
   </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordnung</value>
@@ -4836,6 +4872,9 @@
   <data name="Error_MissingInfo_Title" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Error_MissingShortInfo_Title" xml:space="preserve">
+    <value>Kurz-Info</value>
+  </data>
   <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
     <value>Medium konnte nicht geladen werden</value>
   </data>
@@ -4844,6 +4883,9 @@
   </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>Info fehlt</value>
+  </data>
+  <data name="Error_MissingShortInfo_Message" xml:space="preserve">
+    <value>Kurz-Info fehlt</value>
   </data>
   <data name="Error_NoFile_Title" xml:space="preserve">
     <value>Filestream</value>
@@ -5061,6 +5103,12 @@
   <data name="Error_SourceYear_Length" xml:space="preserve">
     <value>Jahr muss genau 4 Zeichen haben.</value>
   </data>
+  <data name="Error_ShortInfo_Empty" xml:space="preserve">
+    <value>Kurze Infos darf nicht leer sein.</value>
+  </data>
+  <data name="Error_ShortInfo_TooLong" xml:space="preserve">
+    <value>Kurzinfo darf nicht länger als 100 Zeichen sein.</value>
+  </data>
   <data name="Error_ValidYear_NotNumber" xml:space="preserve">
     <value>Jahr muss eine Zahl sein.</value>
   </data>
@@ -5154,6 +5202,12 @@
   <data name="HeaderSort_CountryName" xml:space="preserve">
     <value>Land</value>
   </data>
+  <data name="HeaderSort_DiseaseName" xml:space="preserve">
+    <value>Krankheit</value>
+  </data>
+  <data name="HeaderSort_MiscellaneousName" xml:space="preserve">
+    <value>Verschiedenes</value>
+  </data>
   <data name="HeaderSort_ClassName" xml:space="preserve">
     <value>Klasse Name</value>
   </data>
@@ -5168,6 +5222,9 @@
   </data>
   <data name="HeaderSort_FamilyName" xml:space="preserve">
     <value>Familie Name</value>
+  </data>
+  <data name="HeaderSort_FoodName" xml:space="preserve">
+    <value>Nahrung Name</value>
   </data>
   <data name="HeaderSort_LegioName" xml:space="preserve">
     <value>Überordnung Name</value>

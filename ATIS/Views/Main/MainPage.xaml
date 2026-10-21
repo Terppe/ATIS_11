@@ -259,14 +259,6 @@
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="NavTest"
-                                    loc:Uids.Uid="Nav_Home"
-                                    Tag="ATIS.Views.Database.TblCountryListTestPage">
-                    <NavigationViewItem.Icon>
-                        <BitmapIcon ShowAsMonochrome="False"
-                                    UriSource="ms-appx:///Assets/Fluent/dashboard.png" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem x:Name="NavHome"
                                     loc:Uids.Uid="Nav_Home"
                                     Tag="ATIS.Views.Main.HomePage">
@@ -588,7 +580,7 @@
                         </NavigationViewItem>
                         <NavigationViewItem x:Name="NavComments"
                                             loc:Uids.Uid="Nav_Comments"
-                                            Tag="ATIS.Views.Database.Tbl93CommentListPage">
+                                            Tag="ATIS.Views.Modules.Tbl93Comment.Tbl93CommentPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -602,25 +594,25 @@
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                        <NavigationViewItem x:Name="NavDiseases1"
+                        <NavigationViewItem x:Name="NavDiseases"
                                             loc:Uids.Uid="Nav_Diseases"
-                                            Tag="ATIS.Views.Database.TblDiseaseListPage">
+                                            Tag="ATIS.Views.Modules.TblDisease.TblDiseasePage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                        <NavigationViewItem x:Name="NavFoods1"
+                        <NavigationViewItem x:Name="NavFoods"
                                             loc:Uids.Uid="Nav_Foods"
-                                            Tag="ATIS.Views.Database.TblFoodListPage">
+                                            Tag="ATIS.Views.Modules.TblFood.TblFoodPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                        <NavigationViewItem x:Name="NavMiscellaneousses1"
+                        <NavigationViewItem x:Name="NavMiscellaneousses"
                                             loc:Uids.Uid="Nav_Miscellaneousses"
-                                            Tag="ATIS.Views.Database.TblMiscellaneousListPage">
+                                            Tag="ATIS.Views.Modules.TblMiscellaneous.TblMiscellaneousPage">
                             <NavigationViewItem.Icon>
                                 <BitmapIcon ShowAsMonochrome="False"
                                             UriSource="ms-appx:///Assets/Fluent/database.png" />
@@ -636,25 +628,25 @@
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="NavDiseases"
+                <NavigationViewItem x:Name="NavDiseases1"
                                     loc:Uids.Uid="Nav_Diseases"
-                                    Tag="ATIS.Views.Main.Disease.DiseasePage">
+                                    Tag="ATIS.Views.Modules.TblDisease.TblDiseasePage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/disease.png" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="NavFoods"
+                <NavigationViewItem x:Name="NavFoods1"
                                     loc:Uids.Uid="Nav_Foods"
-                                    Tag="ATIS.Views.Main.Food.FoodPage">
+                                    Tag="ATIS.Views.Modules.TblFood.TblFoodPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/food.png" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="NavMiscellaneousses"
+                <NavigationViewItem x:Name="NavMiscellaneousses1"
                                     loc:Uids.Uid="Nav_Miscellaneousses"
-                                    Tag="ATIS.Views.Main.Miscellaneous.MiscellaneousPage">
+                                    Tag="ATIS.Views.Modules.TblMiscellaneous.TblMiscellaneousPage">
                     <NavigationViewItem.Icon>
                         <BitmapIcon ShowAsMonochrome="False"
                                     UriSource="ms-appx:///Assets/Fluent/miscellaneous.png" />

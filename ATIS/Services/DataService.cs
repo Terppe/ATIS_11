@@ -7682,6 +7682,48 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
+    // ---------------------------------------------------------                  
+    // GetImageForFoodAsync(int foodId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl81Image>> GetImageForFoodAsync(int foodId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images
+            .Where(e => e.FoodId == foodId)
+            .OrderBy(e => e.FoodId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetImageForDiseaseAsync(int diseaseId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl81Image>> GetImageForDiseaseAsync(int diseaseId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images
+            .Where(e => e.DiseaseId == diseaseId)
+            .OrderBy(e => e.DiseaseId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    // ---------------------------------------------------------                  
+    // GetImageForMiscellaneousAsync(int miscellaneousId)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<Tbl81Image>> GetImageForMiscellaneousAsync(int miscellaneousId)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl81Images
+            .Where(e => e.MiscellaneousId == miscellaneousId)
+            .OrderBy(e => e.MiscellaneousId)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
 
     //alt-----------------------------------------------------
     public ObservableCollection<Tbl81Image> GetImageAsync()
@@ -9004,7 +9046,7 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     // ---------------------------------------------------------                  
-    // SearchRefExpertWithNULLAsync(string? search)
+    // SearchRefExpertAsync(string? search)
     // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl90RefExpert>> SearchRefExpertAsync(string? search)
     {
@@ -9791,15 +9833,6 @@ public partial class DataService : ObservableObject, IDataService
 
         return list;
     }
-    //public async Task<IEnumerable<TblCountry>> GetAllCountryAsync()
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.TblCountries
-    //        .AsNoTracking()
-    //        .OrderBy(e => e.Name)
-    //        .ToListAsync();
-    //}
     // ---------------------------------------------------------                  
     // SearchCountryAsync(string? search)
     // ---------------------------------------------------------                 
@@ -9828,28 +9861,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.Name)
             .ToListAsync();
 
-        //if (string.IsNullOrWhiteSpace(search))
-        //    return Enumerable.Empty<TblCountry>();
-
-        //search = search.Trim();
-
-        //await using var context = _factory.CreateDbContext();
-
-        //var query = context.TblCountries
-        //    .AsNoTracking();
-
-        //if (int.TryParse(search, out var id))
-        //{
-        //    return await query
-        //        .Where(e => e.CountryId == id || e.Name.StartsWith(search))
-        //        .OrderBy(e => e.Name)
-        //        .ToListAsync();
-        //}
-
-        //return await query
-        //    .Where(e => e.Name.StartsWith(search))
-        //    .OrderBy(e => e.Name)
-        //    .ToListAsync();
     }
 
     // ---------------------------------------------------------                  
@@ -9889,31 +9900,6 @@ public partial class DataService : ObservableObject, IDataService
         return dbEntity;
     }
 
-    //public Task<TblCountry> UpsertCountryAsync(TblCountry uiEntity)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    if (uiEntity.CountryId == 0)
-    //    {
-    //        await context.TblCountries.AddAsync(uiEntity);
-    //    }
-    //    else
-    //    {
-    //        context.TblCountries.Update(uiEntity);
-    //    }
-
-    //    await context.SaveChangesAsync();
-
-    //    return uiEntity;
-
-    //    //return UpsertAsync<TblCountry, int>(
-    //    //    uiEntity,
-    //    //    ctx => ctx.Set<TblCountry>(),
-    //    //    x => x.CountryId,
-    //    //    (set, id) => set.FirstOrDefaultAsync(x => x.CountryId == id),
-    //    //    MapCountryFields
-    //    //);
-    //}
     // ---------------------------------------------------------                  
     // MapCountryFields(TblCountry source, TblCountry target)
     // ---------------------------------------------------------                 
@@ -10364,6 +10350,122 @@ public partial class DataService : ObservableObject, IDataService
     #endregion UserProfile
 
     #region Food
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllFoodAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<TblFood>> GetAllFoodAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblFoods
+            .AsNoTracking()
+            .OrderBy(e => e.FoodName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchFoodAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<TblFood>> SearchFoodAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<TblFood>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.TblFoods
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.FoodId == id || e.FoodName.StartsWith(search))
+                .OrderBy(e => e.FoodName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.FoodName.StartsWith(search))
+            .OrderBy(e => e.FoodName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertFoodAsync(TblFood uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<TblFood> UpsertFoodAsync(TblFood uiEntity)
+    {
+        return UpsertAsync<TblFood, int>(
+            uiEntity,
+            ctx => ctx.Set<TblFood>(),
+            x => x.FoodId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.FoodId == id),
+            MapFoodFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapFoodFields(TblFood source, TblFood target)
+    // ---------------------------------------------------------                 
+    private static void MapFoodFields(TblFood source, TblFood target)
+    {
+        target.FoodName = source.FoodName;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.ShortInfo = source.ShortInfo;
+        target.FoodVolume = source.FoodVolume;
+        target.Info = source.Info;
+        target.Symptom = source.Symptom;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetFoodByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<TblFood?> GetFoodByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblFoods
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.FoodId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteFoodAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteFoodAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.TblFoods.FindAsync(id);
+        if (entity != null)
+        {
+            context.TblFoods.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(TblFood entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> FoodExistsAsync(TblFood entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblFoods.AnyAsync(x =>
+            x.FoodName == entity.FoodName &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.ShortInfo == entity.ShortInfo &&
+            x.FoodVolume == entity.FoodVolume &&
+            x.Info == entity.Info &&
+            x.Symptom == entity.Symptom &&
+            x.Memo == entity.Memo &&
+            x.FoodId != entity.FoodId
+        );
+    }
+
+
+
+    //alt
     public ObservableCollection<TblFood> GetFoodAsync()
     {
         var collection = new ObservableCollection<TblFood>(_context.TblFoods
@@ -10396,42 +10498,159 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<TblFood> UpsertFoodAsync(TblFood food)
-    {
-        var current = await _context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == food.FoodId);
-        if (null == current)
-        {
-            food.CountId = RandomHelper.Randomnumber();
-            food.Writer = Environment.UserName;
-            food.WriterDate = DateTime.Now;
-            food.Updater = Environment.UserName;
-            food.UpdaterDate = DateTime.Now;
+    //public async Task<TblFood> UpsertFoodAsync(TblFood food)
+    //{
+    //    var current = await _context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == food.FoodId);
+    //    if (null == current)
+    //    {
+    //        food.CountId = RandomHelper.Randomnumber();
+    //        food.Writer = Environment.UserName;
+    //        food.WriterDate = DateTime.Now;
+    //        food.Updater = Environment.UserName;
+    //        food.UpdaterDate = DateTime.Now;
 
-            _context.TblFoods.Add(food);
-        }
-        else
-        {
-            food.Updater = Environment.UserName;
-            food.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(food);
-        }
-        await _context.SaveChangesAsync();
-        return food;
-    }
+    //        _context.TblFoods.Add(food);
+    //    }
+    //    else
+    //    {
+    //        food.Updater = Environment.UserName;
+    //        food.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(food);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return food;
+    //}
 
-    public async Task DeleteFoodAsync(int foodid)
-    {
-        var food = await _context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == foodid);
-        if (null != food)
-        {
-            _context.TblFoods.Remove(food);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteFoodAsync(int foodid)
+    //{
+    //    var food = await _context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == foodid);
+    //    if (null != food)
+    //    {
+    //        _context.TblFoods.Remove(food);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Food
 
     #region Disease
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllDiseaseAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<TblDisease>> GetAllDiseaseAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblDiseases
+            .AsNoTracking()
+            .OrderBy(e => e.DiseaseName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchDiseaseWithNULLAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<TblDisease>> SearchDiseaseAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<TblDisease>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.TblDiseases
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.DiseaseId == id || e.DiseaseName.StartsWith(search))
+                .OrderBy(e => e.DiseaseName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.DiseaseName.StartsWith(search))
+            .OrderBy(e => e.DiseaseName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertDiseaseAsync(TblDisease uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<TblDisease> UpsertDiseaseAsync(TblDisease uiEntity)
+    {
+        return UpsertAsync<TblDisease, int>(
+            uiEntity,
+            ctx => ctx.Set<TblDisease>(),
+            x => x.DiseaseId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.DiseaseId == id),
+            MapDiseaseFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapDiseaseFields(TblDisease source, TblDisease target)
+    // ---------------------------------------------------------                 
+    private static void MapDiseaseFields(TblDisease source, TblDisease target)
+    {
+        target.DiseaseName = source.DiseaseName;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.ShortInfo = source.ShortInfo;
+        target.Symptom = source.Symptom;
+        target.Reason = source.Reason;
+        target.Therapie = source.Therapie;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetDiseaseByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<TblDisease?> GetDiseaseByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblDiseases
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.DiseaseId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteDiseaseAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteDiseaseAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.TblDiseases.FindAsync(id);
+        if (entity != null)
+        {
+            context.TblDiseases.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(TblDisease entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> DiseaseExistsAsync(TblDisease entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblDiseases.AnyAsync(x =>
+            x.DiseaseName == entity.DiseaseName &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.ShortInfo == entity.ShortInfo &&
+            x.Symptom == entity.Symptom &&
+            x.Reason == entity.Reason &&
+            x.Therapie == entity.Therapie &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.DiseaseId != entity.DiseaseId
+        );
+    }
+
+
+    //alt
     public ObservableCollection<TblDisease> GetDiseaseAsync()
     {
         var collection = new ObservableCollection<TblDisease>(_context.TblDiseases
@@ -10464,42 +10683,157 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<TblDisease> UpsertDiseaseAsync(TblDisease disease)
-    {
-        var current = await _context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == disease.DiseaseId);
-        if (null == current)
-        {
-            disease.CountId = RandomHelper.Randomnumber();
-            disease.Writer = Environment.UserName;
-            disease.WriterDate = DateTime.Now;
-            disease.Updater = Environment.UserName;
-            disease.UpdaterDate = DateTime.Now;
+    //public async Task<TblDisease> UpsertDiseaseAsync(TblDisease disease)
+    //{
+    //    var current = await _context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == disease.DiseaseId);
+    //    if (null == current)
+    //    {
+    //        disease.CountId = RandomHelper.Randomnumber();
+    //        disease.Writer = Environment.UserName;
+    //        disease.WriterDate = DateTime.Now;
+    //        disease.Updater = Environment.UserName;
+    //        disease.UpdaterDate = DateTime.Now;
 
-            _context.TblDiseases.Add(disease);
-        }
-        else
-        {
-            disease.Updater = Environment.UserName;
-            disease.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(disease);
-        }
-        await _context.SaveChangesAsync();
-        return disease;
-    }
+    //        _context.TblDiseases.Add(disease);
+    //    }
+    //    else
+    //    {
+    //        disease.Updater = Environment.UserName;
+    //        disease.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(disease);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return disease;
+    //}
 
-    public async Task DeleteDiseaseAsync(int diseaseid)
-    {
-        var disease = await _context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == diseaseid);
-        if (null != disease)
-        {
-            _context.TblDiseases.Remove(disease);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteDiseaseAsync(int diseaseid)
+    //{
+    //    var disease = await _context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == diseaseid);
+    //    if (null != disease)
+    //    {
+    //        _context.TblDiseases.Remove(disease);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Disease
 
     #region Miscellaneous
+    // ---------------------------------------------------------   
+    // ---------------------------------------------------------                  
+    // GetAllMiscellaneousAsync()
+    // ---------------------------------------------------------                           
+    public async Task<IEnumerable<TblMiscellaneous>> GetAllMiscellaneousAsync()
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblMiscellaneousses
+            .AsNoTracking()
+            .OrderBy(e => e.MiscellaneousName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // SearchMiscellaneousAsync(string? search)
+    // ---------------------------------------------------------                 
+    public async Task<IEnumerable<TblMiscellaneous>> SearchMiscellaneousAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<TblMiscellaneous>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        var query = context.TblMiscellaneousses
+            .AsNoTracking();
+
+        if (int.TryParse(search, out var id))
+        {
+            return await query
+                .Where(e => e.MiscellaneousId == id || e.MiscellaneousName.StartsWith(search))
+                .OrderBy(e => e.MiscellaneousName)
+                .ToListAsync();
+        }
+
+        return await query
+            .Where(e => e.MiscellaneousName.StartsWith(search))
+            .OrderBy(e => e.MiscellaneousName)
+            .ToListAsync();
+    }
+    // ---------------------------------------------------------                  
+    // UpsertMiscellaneousAsync(TblMiscellaneous uiEntity)
+    // ---------------------------------------------------------                 
+    public Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous uiEntity)
+    {
+        return UpsertAsync<TblMiscellaneous, int>(
+            uiEntity,
+            ctx => ctx.Set<TblMiscellaneous>(),
+            x => x.MiscellaneousId,
+            (set, id) => set.FirstOrDefaultAsync(x => x.MiscellaneousId == id),
+            MapMiscellaneousFields
+        );
+    }
+    // ---------------------------------------------------------                  
+    // MapMiscellaneousFields(TblMiscellaneous source, TblMiscellaneous target)
+    // ---------------------------------------------------------                 
+    private static void MapMiscellaneousFields(TblMiscellaneous source, TblMiscellaneous target)
+    {
+        target.MiscellaneousName = source.MiscellaneousName;
+        target.Valid = source.Valid;
+        target.ValidYear = source.ValidYear;
+        target.ShortInfo = source.ShortInfo;
+        target.Thema1 = source.Thema1;
+        target.Thema2 = source.Thema2;
+        target.Info = source.Info;
+        target.Memo = source.Memo;
+    }
+    // ---------------------------------------------------------                  
+    // GetMiscellaneousByIdAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task<TblMiscellaneous?> GetMiscellaneousByIdAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblMiscellaneousses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.MiscellaneousId == id);
+    }
+    // ---------------------------------------------------------                  
+    // DeleteMiscellaneousAsync(int id)
+    // ---------------------------------------------------------                 
+    public async Task DeleteMiscellaneousAsync(int id)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        var entity = await context.TblMiscellaneousses.FindAsync(id);
+        if (entity != null)
+        {
+            context.TblMiscellaneousses.Remove(entity);
+            await context.SaveChangesAsync();
+        }
+    }
+    // ---------------------------------------------------------                  
+    // ExistsAsync(TblMiscellaneous entity)
+    // ---------------------------------------------------------                 
+    public async Task<bool> MiscellaneousExistsAsync(TblMiscellaneous entity)
+    {
+        await using var context = _factory.CreateDbContext();
+
+        return await context.TblMiscellaneousses.AnyAsync(x =>
+            x.MiscellaneousName == entity.MiscellaneousName &&
+            x.Valid == entity.Valid &&
+            x.ValidYear == entity.ValidYear &&
+            x.ShortInfo == entity.ShortInfo &&
+            x.Thema1 == entity.Thema1 &&
+            x.Thema2 == entity.Thema2 &&
+            x.Info == entity.Info &&
+            x.Memo == entity.Memo &&
+            x.MiscellaneousId != entity.MiscellaneousId
+        );
+    }
+
+    //alt
+    //---------------------------------------------------
     public ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync()
     {
         var collection = new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
@@ -10532,38 +10866,38 @@ public partial class DataService : ObservableObject, IDataService
         return collection;
     }
 
-    public async Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous)
-    {
-        var current = await _context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneous.MiscellaneousId);
-        if (null == current)
-        {
-            miscellaneous.CountId = RandomHelper.Randomnumber();
-            miscellaneous.Writer = Environment.UserName;
-            miscellaneous.WriterDate = DateTime.Now;
-            miscellaneous.Updater = Environment.UserName;
-            miscellaneous.UpdaterDate = DateTime.Now;
+    //public async Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous)
+    //{
+    //    var current = await _context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneous.MiscellaneousId);
+    //    if (null == current)
+    //    {
+    //        miscellaneous.CountId = RandomHelper.Randomnumber();
+    //        miscellaneous.Writer = Environment.UserName;
+    //        miscellaneous.WriterDate = DateTime.Now;
+    //        miscellaneous.Updater = Environment.UserName;
+    //        miscellaneous.UpdaterDate = DateTime.Now;
 
-            _context.TblMiscellaneousses.Add(miscellaneous);
-        }
-        else
-        {
-            miscellaneous.Updater = Environment.UserName;
-            miscellaneous.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(miscellaneous);
-        }
-        await _context.SaveChangesAsync();
-        return miscellaneous;
-    }
+    //        _context.TblMiscellaneousses.Add(miscellaneous);
+    //    }
+    //    else
+    //    {
+    //        miscellaneous.Updater = Environment.UserName;
+    //        miscellaneous.UpdaterDate = DateTime.Now;
+    //        _context.Entry(current).CurrentValues.SetValues(miscellaneous);
+    //    }
+    //    await _context.SaveChangesAsync();
+    //    return miscellaneous;
+    //}
 
-    public async Task DeleteMiscellaneousAsync(int miscellaneousid)
-    {
-        var miscellaneous = await _context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneousid);
-        if (null != miscellaneous)
-        {
-            _context.TblMiscellaneousses.Remove(miscellaneous);
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task DeleteMiscellaneousAsync(int miscellaneousid)
+    //{
+    //    var miscellaneous = await _context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneousid);
+    //    if (null != miscellaneous)
+    //    {
+    //        _context.TblMiscellaneousses.Remove(miscellaneous);
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     #endregion Miscellaneous
 

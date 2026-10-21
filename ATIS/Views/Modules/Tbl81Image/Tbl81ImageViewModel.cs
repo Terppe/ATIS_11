@@ -23,12 +23,13 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
     public IRelayCommand BackCommand { get; }
- //   public IRelayCommand LoadFromUrlCommand { get; }
-    private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl81Image>>>? _activeLoader;
     private readonly Action<string> _langHandler;
 
+
+    private ImageParentKind _parentKind = ImageParentKind.None;
+    private int _currentParentId;
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
@@ -104,7 +105,23 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------               
     // UI STATE
     // ---------------------------------------------------------                   
+    private enum ImageParentKind
+    {
+        None,
+        Species,
+        Food,
+        Disease,
+        Miscellaneous
+    }
+    public bool IsSpeciesParent => _parentKind == ImageParentKind.Species
+                                   || _parentKind == ImageParentKind.None; // Boss-Modus: wie bisher anzeigen
 
+    private void SetParentContext(ImageParentKind kind, int parentId)
+    {
+        _parentKind = kind;
+        _currentParentId = parentId;
+        OnPropertyChanged(nameof(IsSpeciesParent));
+    }
 
     public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
     {
@@ -165,7 +182,13 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)
     // ---------------------------------------------------------
-
+    private void ResetParentContext()
+    {
+        _parentKind = ImageParentKind.None;
+        _currentParentId = 0;
+        _activeLoader = null;
+        OnPropertyChanged(nameof(IsSpeciesParent));
+    }
     public async Task LoadAsync()
     {
         System.Diagnostics.Debug.WriteLine("[ImageVM] LoadAsync START");
@@ -174,7 +197,9 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         {
             _activeLoader = null;
             _currentParentId = 0;
+            _parentKind = ImageParentKind.None;
 
+            ResetParentContext();
             IsInParentMode = false;
 
             try
@@ -188,7 +213,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 
             Items = new ObservableCollection<Models.Tbl81Image>();
             OnPropertyChanged(nameof(HasItems));
-
+            OnPropertyChanged(nameof(IsSpeciesParent));
             try
             {
                 await ReloadAsync();
@@ -204,8 +229,30 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             System.Diagnostics.Debug.WriteLine("[ImageVM] LoadAsync END");
         }
     }
+
     public async Task LoadForSpeciesAsync(int speciesId)
-        => await LoadInternalAsync(speciesId, Data.GetImageForSpeciesAsync);
+    {
+        SetParentContext(ImageParentKind.Species, speciesId);
+        await LoadInternalAsync(speciesId, Data.GetImageForSpeciesAsync);
+    }
+
+    public async Task LoadForFoodAsync(int foodId)
+    {
+        SetParentContext(ImageParentKind.Food, foodId);
+        await LoadInternalAsync(foodId, Data.GetImageForFoodAsync);
+    }
+
+    public async Task LoadForDiseaseAsync(int diseaseId)
+    {
+        SetParentContext(ImageParentKind.Disease, diseaseId);
+        await LoadInternalAsync(diseaseId, Data.GetImageForDiseaseAsync);
+    }
+
+    public async Task LoadForMiscellaneousAsync(int miscellaneousId)
+    {
+        SetParentContext(ImageParentKind.Miscellaneous, miscellaneousId);
+        await LoadInternalAsync(miscellaneousId, Data.GetImageForMiscellaneousAsync);
+    }
 
     // ---------------------------------------------------------
     // INTERNAL LOADER (Boss + Parent)
@@ -229,7 +276,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 
             DataSetCount = Items.Count;
 
-            // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
             SelectedItem = null;
             Item = null;
         }
@@ -240,7 +286,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             System.Diagnostics.Debug.WriteLine($"[ImageVM] LoadInternalAsync END parentId={parentId}");
         }
     }
-
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)
     // ---------------------------------------------------------
@@ -490,18 +535,37 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     {
         _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-        var currentSpecies = Item?.Species;
-
-        return new Models.Tbl81Image
+        var item = new Models.Tbl81Image
         {
-            SpeciesId = _currentParentId,
-            Species = currentSpecies,
+            SpeciesId = 0,
+            FoodId = 0,
+            DiseaseId = 0,
+            MiscellaneousId = 0,
             FilestreamId = Guid.NewGuid(),
             ShotDate = DateTime.Today
         };
-    }
 
-    // ---------------------------------------------------------
+        switch (_parentKind)
+        {
+            case ImageParentKind.Species:
+                item.SpeciesId = _currentParentId;
+                break;
+
+            case ImageParentKind.Food:
+                item.FoodId = _currentParentId;
+                break;
+
+            case ImageParentKind.Disease:
+                item.DiseaseId = _currentParentId;
+                break;
+
+            case ImageParentKind.Miscellaneous:
+                item.MiscellaneousId = _currentParentId;
+                break;
+        }
+
+        return item;
+    }    // ---------------------------------------------------------
     // Image/Video
     // ---------------------------------------------------------
 

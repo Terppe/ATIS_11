@@ -6,7 +6,6 @@ using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Authentication;
 using ATIS.Views.Database;
-using ATIS.Views.Main.Disease;
 using ATIS.Views.Modules.Tbl03Regnum;
 using ATIS.Views.Modules.Tbl06Phylum;
 using ATIS.Views.Modules.Tbl12Subphylum;
@@ -45,7 +44,11 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
+using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Modules.TblCountry;
+using ATIS.Views.Modules.TblDisease;
+using ATIS.Views.Modules.TblFood;
+using ATIS.Views.Modules.TblMiscellaneous;
 using ATIS.Views.Modules.TblUserProfile;
 using WinRT.Interop;
 using WinUI3Localizer;
@@ -605,7 +608,7 @@ public sealed partial class MainPage : Page
         //-----------------------------------------------
         if ((string)args.ChosenSuggestion == (string)NavComments.Content)
         {
-           // NavFrame.Navigate(typeof(Tbl93CommentPage));
+            NavFrame.Navigate(typeof(Tbl93CommentPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavCountries.Content)
@@ -620,17 +623,17 @@ public sealed partial class MainPage : Page
 
         if ((string)args.ChosenSuggestion == (string)NavDiseases1.Content)
         {
-            NavFrame.Navigate(typeof(TblDiseaseListPage));
+            NavFrame.Navigate(typeof(TblDiseasePage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavFoods1.Content)
         {
-            NavFrame.Navigate(typeof(TblFoodListPage));
+            NavFrame.Navigate(typeof(TblFoodPage));
         }
 
         if ((string)args.ChosenSuggestion == (string)NavMiscellaneousses1.Content)
         {
-            NavFrame.Navigate(typeof(TblMiscellaneousListPage));
+            NavFrame.Navigate(typeof(TblMiscellaneousPage));
         }
 
         //--------------------------------------------
@@ -648,28 +651,6 @@ public sealed partial class MainPage : Page
 
     private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-
-        if (args.InvokedItemContainer != null &&
-            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Disease.DiseasePage")
-        {
-            NavFrame.Navigate(typeof(DiseasePage), null, args.RecommendedNavigationTransitionInfo);
-            return;
-        }
-
-        if (args.InvokedItemContainer != null &&
-            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Food.FoodPage")
-        {
-            NavFrame.Navigate(typeof(Food.FoodPage), null, args.RecommendedNavigationTransitionInfo);
-            return;
-        }
-
-        if (args.InvokedItemContainer != null &&
-            (string)args.InvokedItemContainer.Tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
-        {
-            NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage), null, args.RecommendedNavigationTransitionInfo);
-            return;
-        }
-
         if (args.IsSettingsInvoked)
         {
             NavFrame.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);
@@ -693,83 +674,6 @@ public sealed partial class MainPage : Page
         // NICHT navigieren!
         NavView.SelectedItem = NavHome;
     }
-
-    //private async void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-    //{
-    //    var nvi = args.SelectedItemContainer as NavigationViewItem;
-    //    if (nvi == null) return;
-
-    //    var tag = (string)nvi.Tag;
-    //    if (tag == null) return;
-
-
-    //    // 1. Seiten ohne Permission-Prüfung
-    //    if (tag == "ATIS.Views.Search.SearchQuickPage")
-    //    {
-    //        NavFrame.Navigate(typeof(SearchQuickPage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    if (tag == "ATIS.Views.Main.HomePage")
-    //    {
-    //        NavFrame.Navigate(typeof(HomePage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    // ⬅️ Während der Entwicklung, da keine Berechtigung!
-    //    if (tag == "ATIS.Views.Database.TblCountryListPage")
-    //    {
-    //        NavFrame.Navigate(typeof(TblCountryListPage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    if (tag == "ATIS.Views.Main.Disease.DiseasePage")
-    //    {
-    //        NavFrame.Navigate(typeof(Disease.DiseasePage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    if (tag == "ATIS.Views.Main.Food.FoodPage")
-    //    {
-    //        NavFrame.Navigate(typeof(Food.FoodPage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    if (tag == "ATIS.Views.Main.Miscellaneous.MiscellaneousPage")
-    //    {
-    //        NavFrame.Navigate(typeof(Miscellaneous.MiscellaneousPage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    if (tag == "Settings")
-    //    {
-    //        NavFrame.Navigate(typeof(SettingsPage));
-    //        PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //        return;
-    //    }
-
-    //    // 2.🔥 PermissionHelper einsetzen
-    //    if (!await PermissionHelper.CheckOrGoBackAsync(NavView, NavFrame, tag))
-    //        return;
-
-
-    //    // 3. Permission OK → Page laden
-    //    var type = Type.GetType(tag);
-    //    NavFrame.Navigate(type);
-
-    //    // 4. Und jetzt WICHTIG:
-    //    PermissionHelper.UpdateLastPage(tag); // ⬅️ WICHTIG!
-    //}
-
-
-
-
 
     private void ControlsSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {

@@ -1259,3 +1259,13 @@ Tbl87GeographicEditControl komplett fertig.
 15.10.2026 14:30 Uhr Tabelle TblCountry um Feld Continent erweitert. BTblCountryEditcontrol Continent mit eingefügt. UserProfile weiter gemacht
 ----------------------------------------
 17.10.2026 11:30 Uhr userprofile fast fertig. TblFood angefangen
+----------------------------------------
+18.10.2026 12:30 Uhr Bei Food fehlt noch Image und Video. speichert noch nicht.
+----------------------------------------
+19.10.2026 14:30 Uhr TblFoodPage weiter ist ok. DiseasePage fast fertig speichert das Bild nicht.
+----------------------------------------
+20.10.2026 09:30 Uhr Miscellaneous fertig. DiseasePage und FoodPage fertig. 
+----------------------------------------
+20.10.2026 18:30 Uhr CommentPage angefangen
+----------------------------------------
+21.10.2026 18:30 Uhr Comment fertig

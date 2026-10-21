@@ -126,7 +126,12 @@
                 <TextBox loc:Uids.Uid="TextBox_GenusSpeciesName"
                          IsReadOnly="True"
                          Style="{StaticResource AtisTextBox}"
-                         Text="{Binding Item.GenusSpeciesFullName, ElementName=Root, Mode=OneWay}" />
+                         Text="{Binding Item.GenusSpeciesFullName, ElementName=Root, Mode=OneWay}"
+                         Visibility="{Binding IsSpeciesParent, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <!--<TextBox loc:Uids.Uid="TextBox_GenusSpeciesName"
+                IsReadOnly="True"
+                Style="{StaticResource AtisTextBox}"
+                Text="{Binding Item.GenusSpeciesFullName, ElementName=Root, Mode=OneWay}" />-->
 
                 <!--  Valid  -->
                 <CheckBox MinWidth="60"

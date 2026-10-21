@@ -6,14 +6,29 @@
 public enum HierarchyLevel
 {
     Unknown = 0,
-    Supertribus = 1,
-    Tribus = 2,
-    Subtribus = 3,
-    Infratribus = 4,
-    Genus = 5,
-    Species = 6,
-    Comment = 7,  // ← Hinzufügen
-    Reference = 8 // ← Optional
+    Regnum = 1,
+    Phylum = 2,
+    Subphylum = 3,
+    Superclass = 4,
+    Class = 5,
+    Subclass = 6,
+    Infraclass = 7,
+    Superordo = 8,
+    Ordo = 9,
+    Subordo = 10,
+    Infraordo = 11,
+    Superfamily = 12,
+    Family = 13,
+    Subfamily = 14,
+    Infrafamily = 15,
+    Supertribus = 16,
+    Tribus = 17,
+    Subtribus = 18,
+    Infratribus = 19,
+    Genus = 20,
+    Species = 21,
+    Comment = 22,  // ← Hinzufügen
+    Reference = 23 // ← Optional
 }
 
 /// <summary>
@@ -37,6 +52,21 @@ public static class HierarchyLevelExtensions
     {
         HierarchyLevel.Comment => "Comment",
         HierarchyLevel.Reference => "Reference",
+        HierarchyLevel.Regnum => "Regnum",
+        HierarchyLevel.Phylum => "Phylum",
+        HierarchyLevel.Subphylum => "Subphylum",
+        HierarchyLevel.Superclass => "Superclass",
+        HierarchyLevel.Class => "Class",
+        HierarchyLevel.Subclass => "Subclass",
+        HierarchyLevel.Infraclass => "Infraclass",
+        HierarchyLevel.Superordo => "Superordo",
+        HierarchyLevel.Ordo => "Ordo",
+        HierarchyLevel.Subordo => "Subordo",
+        HierarchyLevel.Infraordo => "Infraordo",
+        HierarchyLevel.Superfamily => "Superfamily",
+        HierarchyLevel.Family => "Family",
+        HierarchyLevel.Subfamily => "Subfamily",
+        HierarchyLevel.Infrafamily => "Infrafamily",
         HierarchyLevel.Supertribus => "Supertribus",
         HierarchyLevel.Tribus => "Tribus",
         HierarchyLevel.Subtribus => "Subtribus",

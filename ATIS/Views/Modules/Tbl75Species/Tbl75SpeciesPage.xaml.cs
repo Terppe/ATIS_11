@@ -40,6 +40,9 @@ public sealed partial class Tbl75SpeciesPage : Page
         Vm.GeographicViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         _tabs.UpdateNameTabs(Vm.NameViewModel.SelectedItem != null);
+        //_tabs.UpdateImageTabs(Vm.ImageViewModel.SelectedItem != null);
+        //_tabs.UpdateSynonymTabs(Vm.SynonymViewModel.SelectedItem != null);
+        //_tabs.UpdateGeographicTabs(Vm.GeographicViewModel.SelectedItem != null);
         _tabs.PrepareCurrentTabState();
         _tabs.UpdateTabButtonStates();
         _tabs.UpdateDetailContentVisibility();
