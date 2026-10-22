@@ -1,4 +1,4 @@
-﻿using ATIS.Views.Authentication;
+﻿using ATIS.Views.Auth;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
 

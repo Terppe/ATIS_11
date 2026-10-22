@@ -1,9 +1,11 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Admin;
-using ATIS.Views.Authentication;
+using ATIS.Views.Auth;
 using ATIS.Views.Modules.Tbl03Regnum;
 using ATIS.Views.Modules.Tbl06Phylum;
 using ATIS.Views.Modules.Tbl12Subphylum;
@@ -24,31 +26,32 @@ using ATIS.Views.Modules.Tbl57Tribus;
 using ATIS.Views.Modules.Tbl60Subtribus;
 using ATIS.Views.Modules.Tbl63Infratribus;
 using ATIS.Views.Modules.Tbl66Genus;
-using ATIS.Views.Modules.Tbl75Species;
-using ATIS.Views.Modules.Tbl90RefAuthor;
-using ATIS.Views.Modules.Tbl90RefExpert;
-using ATIS.Views.Modules.Tbl90RefSource;
-using ATIS.Views.Search;
-using ATIS.Views.Settings;
-using ATIS.Views.User;
-using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml.Media;
-using Windows.ApplicationModel;
-using Windows.Management.Deployment;
 using ATIS.Views.Modules.Tbl68Speciesgroup;
+using ATIS.Views.Modules.Tbl75Species;
 using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
+using ATIS.Views.Modules.Tbl90RefAuthor;
 using ATIS.Views.Modules.Tbl90Reference;
+using ATIS.Views.Modules.Tbl90RefExpert;
+using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Modules.TblCountry;
 using ATIS.Views.Modules.TblDisease;
 using ATIS.Views.Modules.TblFood;
 using ATIS.Views.Modules.TblMiscellaneous;
 using ATIS.Views.Modules.TblUserProfile;
+using ATIS.Views.Search;
+using ATIS.Views.Settings;
+using ATIS.Views.User;
+using CommunityToolkit.Mvvm.Messaging;
+using log4net;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml.Media;
+using Windows.ApplicationModel;
+using Windows.Management.Deployment;
 using WinRT.Interop;
 using WinUI3Localizer;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
@@ -61,13 +64,14 @@ public sealed partial class MainPage : Page
     private AppWindow _appWindow;
     public MainViewModel ViewModel { get; set; }
     private string _currentPageTag { get; set; }
+    private IDialogService dialog;
 
     public MainPage()
     {
         ViewModel = App.GetService<MainViewModel>();
+        dialog = App.GetService<IDialogService>();
 
         InitializeComponent();
-        //DataContext = ViewModel;
         System.Diagnostics.Debug.WriteLine($"DataContext ({this.GetType().Name}): {this.DataContext?.GetType().Name}");
 
         NavFrame.Navigate(typeof(HomePage)); // ← garantiert sofort sichtbar
@@ -289,20 +293,33 @@ public sealed partial class MainPage : Page
     }
 
     //----------------------------------------------------
+
     private async Task LogIn()
     {
-        await ContentDialogLogIn.ShowAsync();
-
-        if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
+        var loginView = new ATIS.Views.Auth.LoginView();
+        var dialog = new ContentDialog
         {
-            return;
-        }
+            XamlRoot = this.XamlRoot,
+            Title = "Login",
+            Content = loginView,
+            CloseButtonText = "Schließen"
+        };
 
-        var name = customPrincipal.Identity.Email;
-        if (name != "")
+        loginView.ViewModel.LoginSucceeded += (_, _) => dialog.Hide();
+
+        await dialog.ShowAsync();
+
+        EnforceCurrentPagePermission();
+
+        var userService = App.GetService<IUserService>();
+        if (!string.IsNullOrWhiteSpace(userService.CurrentUser))
         {
             TbUser.Foreground = new SolidColorBrush(Colors.Green);
-            TbUser.Text = name + " " + StringsRes.LoggedIn;
+            TbUser.Text = userService.CurrentUser + " " + "ist angemeldet";
+        }
+        else
+        {
+            TbUser.Text = "keiner angemeldet";
         }
     }
 
@@ -354,13 +371,11 @@ public sealed partial class MainPage : Page
 
     private Task LogOut()
     {
-        if (Thread.CurrentPrincipal is CustomPrincipal customPrincipal)
-        {
-            customPrincipal.Identity = new AnonymousIdentity();
-        }
+        App.GetService<IUserService>().Clear();
+        TbUser.Text = "keiner angemeldet";
 
-        TbUser.Foreground = new SolidColorBrush(Colors.Red);
-        TbUser.Text = StringsRes.NobodyLoggedIn;
+        EnforceCurrentPagePermission();
+
         return Task.CompletedTask;
     }
 
@@ -649,7 +664,23 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    // zentral: Tag -> erlaubte Rollen
+    private static readonly Dictionary<string, string[]> PageRoleRules = new(StringComparer.OrdinalIgnoreCase)
+    {
+        // Beispiel: nur Admin + Developer
+        ["ATIS.Views.Modules.Tbl75Species.Tbl75SpeciesPage"] = new[] { "Administrator", "Developer" },
+
+        // weitere Ausnahmen...
+        // ["ATIS.Views.Modules.XYZ.SomePage"] = new[] { "Administrator" },
+    };
+
+    // Standardrollen für alle Module-Seiten ohne Sonderregel
+    private static readonly string[] DefaultModuleRoles =
+    {
+        "Administrator", "Developer", "Zoologist", "Biologist"
+    };
+
+    private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
         if (args.IsSettingsInvoked)
         {
@@ -657,17 +688,75 @@ public sealed partial class MainPage : Page
             return;
         }
 
-        if (args.InvokedItemContainer != null && args.InvokedItemContainer.Tag != null)
+        if (args.InvokedItemContainer?.Tag is not string tag || string.IsNullOrWhiteSpace(tag))
+            return;
+
+        var newPage = Type.GetType(tag);
+        if (newPage is null) return;
+
+        var isModulePage = tag.Contains(".Views.Modules.", StringComparison.OrdinalIgnoreCase);
+
+        if (isModulePage)
         {
-            var newPage = Type.GetType(args.InvokedItemContainer.Tag.ToString()!);
-            NavFrame.Navigate(
-                newPage,
-                null,
-                args.RecommendedNavigationTransitionInfo
-            );
+            // hat diese Seite eine Sonderregel?
+            var allowedRoles = PageRoleRules.TryGetValue(tag, out var roles)
+                ? roles
+                : DefaultModuleRoles;
+
+            if (!Permission.HasAccess(allowedRoles))
+            {
+                await dialog.ShowErrorAsync("Error_NoPermission_Title", "Error_NoPermission_Message");
+                NavFrame.Navigate(typeof(HomePage));
+                return;
+            }
         }
+
+        NavFrame.Navigate(newPage, null, args.RecommendedNavigationTransitionInfo);
     }
 
+    private void EnforceCurrentPagePermission()
+    {
+        if (NavFrame.Content is not Page currentPage) return;
+
+        var pageType = currentPage.GetType();
+        var fullName = pageType.FullName ?? string.Empty;
+
+        var isModulePage = fullName.Contains(".Views.Modules.", StringComparison.OrdinalIgnoreCase);
+        if (!isModulePage) return;
+
+        var allowedRoles = PageRoleRules.TryGetValue(fullName, out var roles)
+            ? roles
+            : DefaultModuleRoles;
+
+        if (!Permission.HasAccess(allowedRoles))
+        {
+            // sichere Zielseite ohne Spezialrechte:
+            NavFrame.Navigate(typeof(HomePage)); // oder StartPage/Dashboard
+        }
+    }
+    //private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    //{
+    //    if (args.IsSettingsInvoked)
+    //    {
+    //        NavFrame.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);
+    //        return;
+    //    }
+
+    //    if (args.InvokedItemContainer?.Tag is not string tag || string.IsNullOrWhiteSpace(tag))
+    //        return;
+
+    //    var newPage = Type.GetType(tag);
+    //    if (newPage is null) return;
+
+    //    var requiresRole = tag.Contains(".Views.Modules.", StringComparison.OrdinalIgnoreCase);
+    //    if (requiresRole && !Permission.HasAccess())
+    //    {
+    //        await dialog.ShowErrorAsync("Error_NoPermission_Title", "Error_NoPermission_Message");
+    //        return;
+    //    }
+
+    //    NavFrame.Navigate(newPage, null, args.RecommendedNavigationTransitionInfo);
+    //}
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)
     {
         //  NavFrame.Navigate(typeof(HomePage));

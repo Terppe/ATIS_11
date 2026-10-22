@@ -88,19 +88,6 @@
                        Foreground="Red"
                        Text="{x:Bind ViewModel.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextWrapping="Wrap" />
-            <!--<StackPanel
-            Grid.Row="6"
-            Grid.Column="0"
-            Orientation="Horizontal">
-            <ProgressRing
-            Width="16"
-            Height="16"
-            MinWidth="16"
-            MinHeight="16"
-            Margin="100,0,0,0"
-            IsActive="True" />
-            <TextBlock Margin="50,0,0,0" Text="Signing in..." />
-            </StackPanel>-->
             <StackPanel Grid.Row="7"
                         Grid.Column="0"
                         Margin="100,25,0,0"
@@ -113,18 +100,6 @@
                         IsEnabled="False"
                         LostFocus="BtnLogin_OnLostFocus"
                         Style="{StaticResource AtisButtonPrimary}" />
-                <!--<Button
-                Margin="20,0,0,0"
-                HorizontalAlignment="Center"
-                Command="{x:Bind ViewModel.LogoutCommand, Mode=OneTime}"
-                Content="Log out"
-                Visibility="{x:Bind ViewModel.IsAuthenticated}" />-->
-                <!--<Button
-                x:Name="BtnCancel"
-                Margin="20,0,0,0"
-                Click="BtnCancel_Click"
-                Content="Cancel"
-                Style="{StaticResource AtisButtonPrimary}" />-->
                 <Button Margin="20,0,0,0"
                         Command="{x:Bind ViewModel.RegisterCommand}"
                         CommandParameter="{Binding ElementName=PasswordBox}"
@@ -133,60 +108,6 @@
                         Style="{StaticResource AtisButtonPrimary}"
                         Visibility="Visible" />
             </StackPanel>
-            <!--<StackPanel
-            Grid.Row="5"
-            Grid.Column="0"
-            Height="Auto"
-            Orientation="Horizontal">
-            -->
-            <!--  Button as a Link button using style  -->
-            <!--
-            <Button
-            Margin="300,5,0,0"
-            Command="{x:Bind ViewModel.ShowViewCommand}"
-            CommandParameter="Register"
-            Content="Register">
-            -->
-            <!--<Button.Template>
-            <ControlTemplate TargetType="Button">
-            <TextBlock TextDecorations="Underline">
-            <ContentPresenter />
-            </TextBlock>
-            </ControlTemplate>
-            </Button.Template>-->
-            <!--<Button.Style>
-            <Style TargetType="Button">
-            <Setter Property="Foreground" Value="Navy" />
-            <Style.Triggers>
-            <interactivity:Trigger Property="IsMouseOver" Value="true">
-            <Setter Property="Foreground" Value="Red" />
-            </interactivity:Trigger>
-            </Style.Triggers>
-            </Style>
-            </Button.Style>-->
-            <!--
-            </Button>
-            -->
-            <!--  end Button as a Link button using style  -->
-            <!--
-            </StackPanel>-->
-
-            <!--<StackPanel
-            Grid.Row="6"
-            Grid.Column="0"
-            VerticalAlignment="Center">
-            <Button
-            HorizontalAlignment="Center"
-            Command="{Binding ShowViewCommand}"
-            CommandParameter="Secret"
-            Content="Show secret view" />
-            <Button
-            Margin="2,2,0,0"
-            HorizontalAlignment="Center"
-            Command="{Binding ShowViewCommand}"
-            CommandParameter="Admin"
-            Content="Show admin view" />
-            </StackPanel>-->
         </Grid>
     </Grid>
 </UserControl>

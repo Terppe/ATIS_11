@@ -126,19 +126,5 @@
                     Style="{StaticResource AtisButtonPrimary}" />
         </StackPanel>
 
-        <!--<StackPanel
-        Grid.Row="8"
-        Grid.Column="0"
-        Margin="150,25,0,0"
-        Orientation="Horizontal">
-        <Button
-        Name="BtRegisterSave"
-        HorizontalAlignment="Center"
-        Command="{x:Bind ViewModel.RegisterCommand}"
-        CommandParameter="{Binding ElementName=PasswordBox}"
-        Content="Register"
-        IsEnabled="False"
-        Style="{StaticResource CrudButtonStyle}" />
-        </StackPanel>-->
     </Grid>
 </UserControl>

@@ -547,7 +547,7 @@ public class TblUserProfile : ObservableObject, IDataService.IAuditable, IHierar
         if (string.IsNullOrWhiteSpace(FirstName))
             AddError(nameof(FirstName), loc.GetLocalizedString("Error_FirstName_Empty"));
 
-        if (FirstName?.Length > 200)
+        if (FirstName?.Length > 100)
             AddError(nameof(FirstName), loc.GetLocalizedString("Error_FirstName_TooLong"));
 
         UpdateErrorProperty(nameof(FirstName));
@@ -565,7 +565,7 @@ public class TblUserProfile : ObservableObject, IDataService.IAuditable, IHierar
         if (string.IsNullOrWhiteSpace(LastName))
             AddError(nameof(LastName), loc.GetLocalizedString("Error_LastName_Empty"));
 
-        if (LastName?.Length > 200)
+        if (LastName?.Length > 100)
             AddError(nameof(LastName), loc.GetLocalizedString("Error_LastName_TooLong"));
 
         UpdateErrorProperty(nameof(LastName));

@@ -1271,3 +1271,5 @@ Tbl87GeographicEditControl komplett fertig.
 21.10.2026 12:30 Uhr Comment fertig
 ----------------------------------------
 21.10.2026 16:30 Uhr References fertig.
+----------------------------------------
+22.10.2026 09:30 Uhr Nuget => MimeKit.Login /Register. Login fertig.

@@ -8,7 +8,7 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Admin;
-using ATIS.Views.Authentication;
+using ATIS.Views.Auth;
 using ATIS.Views.Main;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl03Regnum;
@@ -37,9 +37,9 @@ using ATIS.Views.Modules.Tbl78Name;
 using ATIS.Views.Modules.Tbl81Image;
 using ATIS.Views.Modules.Tbl84Synonym;
 using ATIS.Views.Modules.Tbl87Geographic;
+using ATIS.Views.Modules.Tbl90RefAuthor;
 using ATIS.Views.Modules.Tbl90Reference;
 using ATIS.Views.Modules.Tbl90RefExpert;
-using ATIS.Views.Modules.Tbl90RefAuthor;
 using ATIS.Views.Modules.Tbl90RefSource;
 using ATIS.Views.Modules.Tbl93Comment;
 using ATIS.Views.Modules.TblCountry;
@@ -57,9 +57,7 @@ using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
-//using TblDiseaseViewModel = ATIS.Views.Modules.TblDisease.TblDiseaseViewModel;
-//using TblFoodViewModel = ATIS.Views.Modules.TblFood.TblFoodViewModel;
-//using TblMiscellaneousViewModel = ATIS.Views.Modules.TblMiscellaneous.TblMiscellaneousViewModel;
+using AuthenticationViewModel = ATIS.Views.Auth.AuthenticationViewModel;
 
 namespace ATIS;
 
@@ -318,12 +316,15 @@ public partial class App : Application
         // USER SERVICES
         services.AddScoped<IUserService, UserService>();
 
+        // AUTHENTICATION SERVICES
+        services.AddTransient<IAuthenticationService, AuthenticationService>();
+
         // VIEWMODELS
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();
         services.AddTransient<AuthenticationViewModel>();
         services.AddTransient<SearchViewModel>();
-        services.AddTransient<DatabaseViewModel>();
+
         services.AddTransient<SpeciesViewModel>();
         services.AddTransient<UtilityViewModel>();
         services.AddTransient<GeneralSettingViewModel>();
@@ -372,6 +373,9 @@ public partial class App : Application
         services.AddTransient<TblFoodViewModel>();
         services.AddTransient<TblDiseaseViewModel>();
         services.AddTransient<TblMiscellaneousViewModel>();
+
+        services.AddTransient<LoginViewModel>();
+    //    services.AddTransient<LoginView>();
 
         services.AddTransient<UserAreaViewModel>();
         services.AddTransient<AdminAreaViewModel>();

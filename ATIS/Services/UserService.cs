@@ -4,17 +4,20 @@ namespace ATIS.Services;
 
 public class UserService : IUserService
 {
-    public string CurrentUser { get; private set; }
-    public UserService()
+    public string CurrentUser { get; private set; } = string.Empty;
+    public string CurrentRole { get; private set; } = string.Empty;
+
+    public bool IsAuthenticated => !string.IsNullOrWhiteSpace(CurrentUser);
+
+    public void SetUser(string username, string role)
     {
-        // Beispiel: Windows-Benutzername
-        CurrentUser = Environment.UserName;
-        // Oder später: Login-Mechanismus
-        // // CurrentUser = "Rudolf";
+        CurrentUser = username ?? string.Empty;
+        CurrentRole = role ?? string.Empty;
     }
 
-    public void SetUser(string username)
+    public void Clear()
     {
-        CurrentUser = username;
+        CurrentUser = string.Empty;
+        CurrentRole = string.Empty;
     }
 }

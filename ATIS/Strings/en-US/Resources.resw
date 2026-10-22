@@ -3768,6 +3768,9 @@
   <data name="Legio" xml:space="preserve">
     <value>Legio</value>
   </data>
+  <data name="LoggedIn" xml:space="preserve">
+    <value>is logged</value>
+  </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordo</value>
   </data>
@@ -4869,6 +4872,9 @@
   <data name="Error_NotPossible_Title" xml:space="preserve">
     <value>Not possible to delete.</value>
   </data>
+  <data name="Error_NoPermission_Title" xml:space="preserve">
+    <value>No Permission</value>
+  </data>
   <data name="Error_MissingInfo_Title" xml:space="preserve">
     <value>info</value>
   </data>
@@ -4892,6 +4898,9 @@
   </data>
   <data name="Error_NoFile_Message" xml:space="preserve">
     <value>No filestrem exist</value>
+  </data>
+  <data name="Error_NoPermission_Message" xml:space="preserve">
+    <value>No permission exist</value>
   </data>
   <data name="Error_LNumber_NotNumeric" xml:space="preserve">
     <value>L-Number must be numeric</value>

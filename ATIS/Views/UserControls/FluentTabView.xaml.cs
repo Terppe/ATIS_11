@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Themes.Controls;
-using ATIS.Views.Authentication;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 
 // To learn more about WinUI, the WinUI project structure,

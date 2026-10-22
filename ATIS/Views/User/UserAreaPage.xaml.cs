@@ -4,7 +4,7 @@ using ATIS.Infrastructure;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
-using ATIS.Views.Authentication;
+using ATIS.Views.Auth;
 using ATIS.Views.ContentDialogs;
 using Microsoft.EntityFrameworkCore;
 

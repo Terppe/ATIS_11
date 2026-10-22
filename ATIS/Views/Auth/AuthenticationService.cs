@@ -1,7 +1,8 @@
 ﻿using ATIS.Helpers;
 using ATIS.Services;
 
-namespace ATIS.Views.Authentication;
+namespace ATIS.Views.Auth;
+
 public interface IAuthenticationService
 {
     AuthenticationService.User AuthenticateUser(string username, string password);

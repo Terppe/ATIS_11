@@ -12,7 +12,8 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
-namespace ATIS.Views.Authentication;
+namespace ATIS.Views.Auth;
+
 public interface IViewModel
 {
 }

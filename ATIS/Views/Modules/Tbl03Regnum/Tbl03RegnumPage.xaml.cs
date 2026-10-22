@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel;
+using ATIS.Helpers;
+using ATIS.Interfaces;
 using ATIS.Views.Modules.Tbl06Phylum;
+using log4net;
 using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
@@ -11,7 +14,6 @@ namespace ATIS.Views.Modules.Tbl03Regnum;
 
 public sealed partial class Tbl03RegnumPage : Page
 {
-
     public Tbl03RegnumViewModel ViewModel { get; }
 
     // ---------------------------------------------------------

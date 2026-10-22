@@ -16,8 +16,8 @@
         <!--<Style TargetType="contentDialogs:SignInContentDialog" BasedOn="{StaticResource DefaultContentDialogStyle}"/>-->
 
         <!--
-            These flyouts or used for confirmation when the user changes
-            the option to save their user name.
+        These flyouts or used for confirmation when the user changes
+        the option to save their user name.
         -->
         <Flyout x:Key="DiscardNameFlyout"
                 Closed="Flyout_Closed">

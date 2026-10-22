@@ -59,7 +59,7 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
-		<PackageReference Include="MimeKit" Version="4.18.1" />
+		<PackageReference Include="MimeKit" Version="4.18.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
@@ -312,9 +312,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Main\DiseasePage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\DatabasePage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Admin\AdminAreaPage.xaml">
@@ -590,10 +587,10 @@
 		<None Remove="DesignSystem\Layout\BaseBossPageLayout.xaml" />
 		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
+		<None Remove="Views\Auth\LoginView.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
-		<None Remove="Views\Main\DatabasePage.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
 		<None Remove="Views\Main\HomePage.xaml" />
@@ -861,6 +858,12 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Auth\LoginView.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>
