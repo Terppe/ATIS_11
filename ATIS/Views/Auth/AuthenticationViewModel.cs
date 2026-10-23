@@ -1,620 +1,233 @@
-﻿using System.Configuration;
-using System.Text.RegularExpressions;
-using System.Windows.Input;
-using ATIS.Helpers;
+﻿using System.Text.RegularExpressions;
 using ATIS.Interfaces;
-using ATIS.Models;
-using ATIS.Services;
-using ATIS.Strings;
-using MailKit;
-using MailKit.Net.Imap;
-using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
 
 namespace ATIS.Views.Auth;
 
-public interface IViewModel
-{
-}
-
 public partial class AuthenticationViewModel : ObservableObject
 {
-    #region [Private Data Members]
+    private readonly IAuthenticationService _authService;
+    private readonly IUserService _userService;
 
-    private readonly AtisDbContext _context = new();
-    private readonly AllDialogs _allDialogs = new();
-    private readonly IDataService _dataService;
-
-    private string _email = null!;
-    private string _status = null!;
-    private string _errormessage = null!;
-    private string _authenticatedUser = null!;
-    private string _passwordChar = null!;
-    private string _passwordCharNew = null!;
-    private string _passwordCharOld = null!;
-    //   private readonly DelegateCommand _logoutCommand;
-
-    #endregion [Private Data Members]
-
-    #region [Constructor]
-
-    public AuthenticationViewModel(IDataService dataService)
+    public AuthenticationViewModel(
+        IAuthenticationService authService,
+        IUserService userService)
     {
-        _dataService = dataService;
-        //_authenticationService = authenticationService;
-        //_logoutCommand = new DelegateCommand(Logout, CanLogout);
-    }
-    #endregion [Constructor]
+        _authService = authService;
+        _userService = userService;
 
-    #region Commands
-    public ICommand LoginCommand => new WinUICommunity.RelayCommand(execute: delegate { var task = Login(PasswordChar); });
-    public ICommand RegisterCommand => new WinUICommunity.RelayCommand(execute: delegate { var task = Register(PasswordChar); });
-    public ICommand GotFocusPasswordChangeCommand => new WinUICommunity.RelayCommand(execute: delegate { var task = GotFocusPasswordChange(PasswordCharOld); });
-    public ICommand PasswordChangeCommand => new WinUICommunity.RelayCommand(execute: delegate { var task = PasswordChange(PasswordCharNew); });
-    public ICommand PasswordForgotCommand => new WinUICommunity.RelayCommand(execute: delegate { var task = PasswordForgotWithEmail(); });
-    public ICommand LogoutCommand => new WinUICommunity.RelayCommand(execute: delegate { var task = Logout(); });
-
-    //public DelegateCommand LogoutCommand => _logoutCommand;
-
-    #endregion
-
-    #region Properties
-
-    public string Email
-    {
-        get => _email;
-        set
-        {
-            _email = value; OnPropertyChanged(nameof(Email));
-        }
-    }
-
-    public string Status
-    {
-        get => _status;
-        set
-        {
-            _status = value; OnPropertyChanged(nameof(Status));
-        }
-    }
-
-    public string Errormessage
-    {
-        get => _errormessage;
-        set
-        {
-            _errormessage = value; OnPropertyChanged(nameof(Errormessage));
-        }
-    }
-    public string PasswordChar
-    {
-        get => _passwordChar;
-        set
-        {
-            _passwordChar = value; OnPropertyChanged(nameof(PasswordChar));
-        }
-    }
-    public string PasswordCharNew
-    {
-        get => _passwordCharNew;
-        set
-        {
-            _passwordCharNew = value; OnPropertyChanged(nameof(PasswordCharNew));
-        }
-    }
-
-    public string PasswordCharOld
-    {
-        get => _passwordCharOld;
-        set
-        {
-            _passwordCharOld = value; OnPropertyChanged(nameof(PasswordCharOld));
-        }
-    }
-
-    public string AuthenticatedUser
-    {
-        get
-        {
-            if (IsAuthenticated)
-            {
-                return string.Format("Signed in as {0}. {1}", Email,
-                    Thread.CurrentPrincipal != null && Thread.CurrentPrincipal.IsInRole("Administrator") ? "You are an administrator!"
-                        : "You are NOT a member of the administrators group.");
-            }
-
-            return "Not authenticated!";
-        }
-        set
-        {
-            _authenticatedUser = value; OnPropertyChanged();
-        }
+        LoginCommand = new AsyncRelayCommand<string?>(LoginAsync);
+        RegisterCommand = new AsyncRelayCommand<string?>(RegisterAsync);
+        ForgotPasswordCommand = new AsyncRelayCommand(ForgotPasswordAsync);
+        ChangePasswordCommand = new AsyncRelayCommand(ChangePasswordAsync);
 
     }
 
-    public bool IsModified { get; set; }
+    private string? _email;
+    public string? Email { get => _email; set => SetProperty(ref _email, value); }
 
-    private TblUserProfile _userProfileSelected;
+    private string? _firstName;
+    public string? FirstName { get => _firstName; set => SetProperty(ref _firstName, value); }
 
-    public TblUserProfile UserProfileSelected
+    private string? _lastName;
+    public string? LastName { get => _lastName; set => SetProperty(ref _lastName, value); }
+
+    private string? _role = "Developer";
+    public string? Role { get => _role; set => SetProperty(ref _role, value); }
+
+    private string? _password;
+    public string? Password { get => _password; set => SetProperty(ref _password, value); }
+
+    private string? _currentPassword;
+    public string? CurrentPassword { get => _currentPassword; set => SetProperty(ref _currentPassword, value); }
+
+    private string? _newPassword;
+    public string? NewPassword { get => _newPassword; set => SetProperty(ref _newPassword, value); }
+
+    private string _status = string.Empty;
+    public string Status { get => _status; set => SetProperty(ref _status, value); }
+
+    private string _errorMessage = string.Empty;
+    public string ErrorMessage { get => _errorMessage; set => SetProperty(ref _errorMessage, value); }
+
+    private string _statusMessage = string.Empty;
+    public string StatusMessage { get => _statusMessage; set => SetProperty(ref _statusMessage, value); }
+
+    private bool _isBusy;
+    public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
+
+    private bool _canLogin;
+    public bool CanLogin { get => !_canLogin; set => SetProperty(ref _canLogin, !value); }
+
+    private bool _canRegister;
+    public bool CanRegister { get => !_canRegister; set => SetProperty(ref _canRegister, !value); }
+
+    public IAsyncRelayCommand<string?> LoginCommand { get; }
+    public IAsyncRelayCommand<string?> RegisterCommand { get; }
+    public IAsyncRelayCommand ForgotPasswordCommand { get; }
+    public IAsyncRelayCommand ChangePasswordCommand { get; }
+
+
+
+    public event EventHandler? LoginSucceeded;
+    public event EventHandler? RegisterSucceeded;
+    public event EventHandler? PasswordChangedSucceeded;
+
+    private static bool IsValidEmail(string? value)
     {
-        get => _userProfileSelected;
-        set => SetProperty(ref _userProfileSelected, value);
+        if (string.IsNullOrWhiteSpace(value)) return false;
+        return Regex.IsMatch(value,
+            @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
     }
 
-    #endregion
-
-    #region Methods
-
-
-    public static bool IsAuthenticated => Thread.CurrentPrincipal != null && Thread.CurrentPrincipal.Identity!.IsAuthenticated;
-    private Task Login(string parameter)
+    private async Task LoginAsync(string? clearTextPassword)
     {
-        if (parameter == null)
-        {
-            return Task.CompletedTask;
-        }
-
-        var clearTextPassword = parameter;
-        Errormessage = "";
+        if (IsBusy) return;
+        ErrorMessage = "";
         Status = "";
 
-        if (Email == null)
+        if (!IsValidEmail(Email))
         {
-            Errormessage = "Email is a required field.";
-        }
-        else if (!Regex.IsMatch(Email, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
-        {
-            Errormessage = "Email must formated like so; xxx@xxx.xxx";
-        }
-        else
-        {
-            try
-            {
-                var authenticationService = new AuthenticationService();
-                //Validate credentials through the authentication service
-                var user = authenticationService.AuthenticateUser(Email, clearTextPassword);
-
-                //Get the current principal object
-
-                if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
-                {
-                    throw new ArgumentException(
-                        "The application's default thread principal must be set to a CustomPrincipal object on startup.");
-                }
-
-                //Authenticate the user
-                customPrincipal.Identity = new CustomIdentity(user.Email, user.Role);
-
-                Status = StringsRes.LoginSuccsessful;
-
-                //Update UI
-                OnPropertyChanged(nameof(AuthenticatedUser));
-                OnPropertyChanged(nameof(IsAuthenticated));
-
-                Email = string.Empty; //reset
-                PasswordChar = string.Empty; //reset
-                Status = string.Empty;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Status = StringsRes.LoginFail;
-            }
-            catch (Exception ex)
-            {
-                Status = $"ERROR: {ex.Message}";
-            }
-        }
-
-        return Task.CompletedTask;
-    }
-    private async Task Register(string parameter)
-    {
-        if (parameter == null)
-        {
+            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(clearTextPassword))
         {
-            var clearTextPassword = parameter;
-            Errormessage = "";
-            Status = "";
-
-            if (Email == null)
-            {
-                Errormessage = "Email is a required field.";
-            }
-            else if (!Regex.IsMatch(Email,
-                @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
-            {
-                Errormessage = "Email must formated like so; x@x.x";
-            }
-            else
-            {
-                try
-                {
-                    if (_context.TblUserProfiles != null)
-                    {
-                        var userprofile = _context.TblUserProfiles.SingleOrDefault(i => i.Email == Email);
-
-                        if (userprofile == null)
-                        {
-                            userprofile = new TblUserProfile //add new
-                            {
-                                Email = Email,
-                                CountId = RandomHelper.Randomnumber(),
-                                Password = Crypt.CalculateHash(clearTextPassword, Email),
-                                Role = "User",
-                                BirthDate = DateTime.Now,
-                                StartDate = DateTime.Now,
-                                EndDate = DateTime.Now,
-                                Writer = Environment.UserName,
-                                WriterDate = DateTime.Now,
-                                Updater = Environment.UserName,
-                                UpdaterDate = DateTime.Now
-                            };
-
-                            _context.TblUserProfiles.Add(userprofile);
-                            await _context.SaveChangesAsync();
-                            Status = StringsRes.SaveSuccess;
-
-                            await Login(parameter);   //Login
-                            Status = StringsRes.LoginSuccsessful;
-                        }
-                        else
-                        {
-                            Status = StringsRes.DatasetExist;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Status = $"ERROR: {ex.Message}";
-                }
-            }
-        }
-    }
-    private static bool CanLogin()
-    {
-        return !IsAuthenticated;
-    }
-
-    private Task<Task> Logout()
-    {
-        if (Thread.CurrentPrincipal as CustomPrincipal is { } customPrincipal)
-        {
-            customPrincipal.Identity = new AnonymousIdentity();
-            OnPropertyChanged(nameof(AuthenticatedUser));
-            OnPropertyChanged(nameof(IsAuthenticated));
-            Status = string.Empty;
-        }
-        return (Task<Task>)Task.CompletedTask;
-    }
-
-    private static bool CanLogout()
-    {
-        return IsAuthenticated;
-    }
-
-    private static bool CanRegister()
-    {
-        return !IsAuthenticated;
-    }
-    public static string GeneratePassword(int passLength)
-    {
-        const string chars = "abcdefghijklmnopqrstuvwxyz@#$&ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var random = new Random();
-
-        var result = new string(
-            [.. Enumerable.Repeat(chars, passLength).Select(s => s[random.Next(s.Length)])]);
-        return result;
-    }
-
-    private async Task PasswordForgotWithEmail()
-    {
-        Errormessage = "";
-        Status = "";
-
-        var clearTextPasswordNew = GeneratePassword(8);
-
-        if (Email == null)
-        {
-            Errormessage = "Email is a required field";
-        }
-        else if (!Regex.IsMatch(Email,
-                     @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
-        {
-            Errormessage = "Email must formated like so; x@x.xx";
-        }
-        else
-        {
-            //---------------save-----------------------
-            try
-            {
-                if (_context.TblUserProfiles != null)
-                {
-                    var userprofile = _context.TblUserProfiles.SingleOrDefault(i => i.Email == Email);
-
-                    if (userprofile != null)
-                    {
-                        userprofile.Password = Crypt.CalculateHash(clearTextPasswordNew, Email);
-                        userprofile.Writer = Environment.UserName;
-                        userprofile.WriterDate = DateTime.Now;
-                        userprofile.Updater = Environment.UserName;
-                        userprofile.UpdaterDate = DateTime.Now;
-
-                        await _dataService.UpsertEmailFromUserProfileAsync(userprofile);
-                    }
-
-                    await _context.SaveChangesAsync();
-
-                    Status = StringsRes.SaveSuccess;
-                }
-            }
-            catch (Exception ex)
-            {
-                Status = $"ERROR: {ex.Message}";
-            }
-
-            //---------------mail von info@terppe.de ----------------------------
-            try
-            {
-                //for Provider 1&1
-                var smtpServer = ConfigurationManager.AppSettings["SmtpHost"];
-                var smtpPort = Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"]);
-                var imapServer = ConfigurationManager.AppSettings["ImapHost"];
-                var imapPort = Convert.ToInt32(ConfigurationManager.AppSettings["ImapPort"]);
-                var email = ConfigurationManager.AppSettings["Sender"];
-
-                //from
-                //var smtpServer = "smtp.1und1.de";
-                //var smtpPort = 587;  //465
-                //var imapServer = "imap.1und1.de";
-                //var imapPort = 993;
-
-                //string email = "info@terppe.de";
-                //string password = "elsaQ0424";  //at 1und1
-
-                var encryptMailAccountPassword = ConfigurationManager.AppSettings.Get("EncryptMailAccountPassword");
-
-                if (encryptMailAccountPassword != null)
-                {
-                    var password = Crypt.DecryptString(encryptMailAccountPassword);
-
-                    var message = new MimeMessage();
-                    message.From.Add(new MailboxAddress("Hotline T-Soft", email)); //Deine E-Mailadresse, von der gesendet werden soll, entspricht oftmals deinem Benutzernamen
-                    message.To.Add(new MailboxAddress("User", Email));
-                    message.Subject = StringsRes.ForgotPassword;
-                    message.Body = new TextPart("plain")
-                    {
-                        Text = StringsRes.NewGeneratedPassord + " " + clearTextPasswordNew
-                    };
-
-                    var smtpClient = new SmtpClient();
-
-                    try
-                    {
-                        if (smtpServer != null)
-                        {
-                            if (email != null)
-                            {
-                                SendEmail(smtpClient, message, smtpServer, smtpPort, email, password);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Errormessage = StringsRes.Error + ex.Message;
-                        Errormessage = "Stack: " + ex.StackTrace;
-                    }
-                    finally
-                    {
-                        await smtpClient.DisconnectAsync(true);
-                        smtpClient.Dispose();
-                    }
-                }
-                //alternate not ok
-                //var imapClient = new ImapClient();
-                //var password1 = Crypt.DecryptString(encryptMailAccountPassword);
-
-                //try
-                //{
-                //    RetrieveInbox(imapClient, imapServer, imapPort, email, password1);
-                //}
-                //catch (Exception ex)
-                //{
-                //    Errormessage = "Error: " + ex.Message;
-                //    Errormessage = "Stack: " + ex.StackTrace;
-                //    Console.WriteLine(ex.Message);
-                //    Console.WriteLine(ex.StackTrace);
-                //}
-                //finally
-                //{
-                //    await imapClient.DisconnectAsync(true);
-                //    imapClient.Dispose();
-                //}
-            }
-            catch (Exception ex)
-            {
-                Errormessage = "Error: " + ex.Message;
-            }
-        }
-    }
-
-    private static void SendEmail(SmtpClient client, MimeMessage message, string server, int port, string email, string password)
-    {
-        client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
-        client.Connect(server, port, SecureSocketOptions.StartTls);
-
-        // Note: only needed if the SMTP server requires authentication
-        client.Authenticate(email, password);
-        client.Send(message);
-    }
-
-    private Task GotFocusPasswordChange(string parameter)
-    {
-        if (parameter == null)
-        {
-            return Task.CompletedTask;
-        }
-
-        {
-            var clearTextPasswordOld = parameter;
-
-            Errormessage = "";
-            Status = "";
-
-            if (Email == null)
-            {
-                Errormessage = "Email is a required field.";
-            }
-            else if (!Regex.IsMatch(Email, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
-            {
-                Errormessage = "Email must formated like so; x@x.xx";
-            }
-            else
-            {
-                try
-                {
-                    var crypPassword = Crypt.CalculateHash(clearTextPasswordOld, Email);
-
-                    if (_context.TblUserProfiles != null)
-                    {
-                        var userprofile = _context.TblUserProfiles.SingleOrDefault(i => i.Email == Email && i.Password == crypPassword);
-
-                        if (userprofile == null)
-                        {
-                            Status = StringsRes.DatasetNotExist;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Status = $"ERROR: {ex.Message}";
-                }
-            }
-        }
-        return Task.CompletedTask;
-    }
-
-    private async Task PasswordChange(string parameter)
-    {
-        if (parameter == null)
-        {
+            ErrorMessage = "Passwort ist erforderlich.";
             return;
         }
 
+        try
         {
-            var clearTextPasswordNew = parameter;
-            Errormessage = "";
-            Status = "";
+            IsBusy = true;
 
-            if (Email == null)
+            var user = await _authService.AuthenticateUserAsync(Email!, clearTextPassword);
+            if (user is null)
             {
-                Errormessage = "Email is a required field.";
+                ErrorMessage = "Ungültige Anmeldedaten.";
+                return;
             }
-            else if (!Regex.IsMatch(Email, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"))
-            {
-                Errormessage = "Email must formated like so; x@x.xx";
-            }
-            else
-            {
-                try
-                {
-                    var mail = _context.TblUserProfiles.SingleOrDefault(i => i.Email == Email);
-                    if (mail == null)
-                    {
-                        Status = StringsRes.EMailNotExist;
-                        return;
-                    }
-
-                    if (_context.TblUserProfiles != null)
-                    {
-                        var userprofile = _context.TblUserProfiles.FirstOrDefault(i => i.Email == Email);
-
-                        if (userprofile != null)  //update
-                        {
-                            {
-                                userprofile.Password = Crypt.CalculateHash(clearTextPasswordNew, Email);
-                                userprofile.Writer = Environment.UserName;
-                                userprofile.WriterDate = DateTime.Now;
-                                userprofile.Updater = Environment.UserName;
-                                userprofile.UpdaterDate = DateTime.Now;
-                            }
 
 
-                            //if (!await _allDialogs.SaveDatasetQuestionConfirmationDialogAsync(Email))
-                            //{
-                            //    return;
-                            //}
-
-                            _context.TblUserProfiles.Update(userprofile);
-
-                            await _context.SaveChangesAsync();
-                            Status = StringsRes.SaveSuccess;
-                        }
-                        else
-                        {
-                            Status = StringsRes.DatasetNotExist;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Status = $"ERROR: {ex.Message}";
-                }
-            }
+            _userService.SetUser(user.Email, user.Role);
+            Status = "Login erfolgreich.";
+            LoginSucceeded?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
-    private static void RetrieveInbox(ImapClient client, string server, int port, string email, string password)
+    private async Task RegisterAsync(string? clearTextPassword)
     {
-        client.ServerCertificateValidationCallback = (s, c, ch, e) => true;
-        client.Connect(server, port, true);
-        client.Authenticate(email, password);
+        if (IsBusy) return;
+        ErrorMessage = "";
+        Status = "";
 
-        var inbox = client.Inbox;
-        inbox.Open(FolderAccess.ReadOnly);
-
-        //Console.WriteLine("Total messages: {0}", inbox.Count);
-        //Console.WriteLine("Recent messages: {0}", inbox.Recent);
-
-        for (var i = 0; i < inbox.Count; i++)
+        if (!IsValidEmail(Email))
         {
-            var message = inbox.GetMessage(i);
-            //Console.WriteLine("Subject: {0}", message.Subject);
+            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(clearTextPassword))
+        {
+            ErrorMessage = "Passwort ist erforderlich.";
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+
+            var created = await _authService.RegisterAsync(
+                email: Email!,
+                password: clearTextPassword,
+                role: Role);
+
+            Status = $"Registrierung erfolgreich (ID: {created.UserProfileId}).";
+            RegisterSucceeded?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
-    #endregion Methods
-
-    private static string _Key = "";
-    protected static string EncryptionKey
+    private async Task ForgotPasswordAsync()
     {
-        get
-        {
-            if (string.IsNullOrEmpty(_Key))
-            {
-                _Key = ConfigurationManager.AppSettings.Get("EncryptMailAccountPassword");
-            }
+        if (IsBusy) return;
+        ErrorMessage = "";
+        Status = "";
 
-            return _Key;
+        if (!IsValidEmail(Email))
+        {
+            ErrorMessage = "Bitte gültige Email eingeben.";
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+            var exists = await _authService.RequestPasswordResetAsync(Email!);
+
+            // bewusst neutral (kein User-Leak)
+            Status = exists
+                ? "Falls ein Konto existiert, wurden Reset-Schritte ausgelöst."
+                : "Falls ein Konto existiert, wurden Reset-Schritte ausgelöst.";
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
         }
     }
 
-    #region INotifyPropertyChanged Members
-    //public event PropertyChangedEventHandler PropertyChanged;
-
-    //private void NotifyPropertyChanged(string propertyName)
-    //{
-    //    if (PropertyChanged != null)
-    //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-    //}
-    #endregion
-
-    public AuthenticationViewModel()
+    private async Task ChangePasswordAsync()
     {
+        if (IsBusy) return;
+        ErrorMessage = "";
+        Status = "";
 
+        if (string.IsNullOrWhiteSpace(Email))
+        {
+            ErrorMessage = "Email ist erforderlich.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(CurrentPassword) || string.IsNullOrWhiteSpace(NewPassword))
+        {
+            ErrorMessage = "Aktuelles und neues Passwort sind erforderlich.";
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+            await _authService.ChangePasswordByEmailAsync(Email!, CurrentPassword!, NewPassword!);
+
+            Status = "Passwort erfolgreich geändert.";
+            PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 }

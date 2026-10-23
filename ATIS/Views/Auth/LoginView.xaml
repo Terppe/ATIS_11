@@ -14,18 +14,20 @@
             <TextBlock Text="E-Mail"/>
             <TextBox Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <PasswordBox x:Name="PwdBox"
-                         PasswordChanged="PwdBox_OnPasswordChanged" />
+            <TextBlock Text="Passwort"/>
+            <PasswordBox x:Name="PwdBox" />
 
             <Button Content="Anmelden"
-                    Command="{x:Bind ViewModel.LoginCommand}"
-                    IsEnabled="{x:Bind ViewModel.CanLogin, Mode=OneWay}" />
+                    Click="LoginButton_Click"
+                    IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}" />
 
             <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 
-            <TextBlock Text="{x:Bind ViewModel.StatusMessage, Mode=OneWay}"
+            <TextBlock Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
                        TextWrapping="Wrap"
                        Foreground="OrangeRed"/>
+            <TextBlock Text="{x:Bind ViewModel.Status, Mode=OneWay}"
+                       TextWrapping="Wrap"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -50,7 +50,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="log4net" Version="3.5.0" />
-		<PackageReference Include="MailKit" Version="4.18.1" />
+		<PackageReference Include="MailKit" Version="4.18.2" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.13" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.13" />
@@ -79,7 +79,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4258.31" ExcludeAssets="buildTransitive" />
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" ExcludeAssets="buildTransitive" />
 		<PackageReference Include="WinUIEx" Version="2.9.3" />
 	</ItemGroup>
 
@@ -521,18 +521,6 @@
 	<Page Update="Views\UserControls\SqlConnectionSettingsPanelControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\UserControls\PasswordForgotControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\UserControls\PasswordChangeControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\UserControls\RegisterControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\UserControls\LogInControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -587,7 +575,10 @@
 		<None Remove="DesignSystem\Layout\BaseBossPageLayout.xaml" />
 		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
+		<None Remove="Views\Auth\ChangePasswordView.xaml" />
+		<None Remove="Views\Auth\ForgotPasswordView.xaml" />
 		<None Remove="Views\Auth\LoginView.xaml" />
+		<None Remove="Views\Auth\RegisterView.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
@@ -809,10 +800,6 @@
 		<None Remove="Views\Settings\SqlConnectionSettingPage.xaml" />
 		<None Remove="Views\UserControls\AtisDataGrid.xaml" />
 		<None Remove="Views\UserControls\BreadcrumbBarUserControl.xaml" />
-		<None Remove="Views\UserControls\LogInControl.xaml" />
-		<None Remove="Views\UserControls\PasswordChangeControl.xaml" />
-		<None Remove="Views\UserControls\PasswordForgotControl.xaml" />
-		<None Remove="Views\UserControls\RegisterControl.xaml" />
 		<None Remove="Views\UserControls\SqlConnectionSettingsPanelControl.xaml" />
 		<None Remove="Views\User\UserAreaPage.xaml" />
 	</ItemGroup>
@@ -858,6 +845,24 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Auth\ForgotPasswordView.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Auth\ChangePasswordView.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Auth\RegisterView.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

@@ -21,76 +21,26 @@ public class DialogService() : IDialogService
             Title = loc.GetLocalizedString(titleKey),
             Content = loc.GetLocalizedString(messageKey),
             CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-            XamlRoot = App.MainWindow.Content.XamlRoot,
-        };
-
-        await dialog.ShowAsync();
-    }
-
-    public static async Task ShowErrorDialogAsync(string titleKey, string messageKey)
-    {
-        var loc = Localizer.Get();
-
-        var dialog = new ContentDialog
-        {
-            Title = loc.GetLocalizedString(titleKey),
-            Content = loc.GetLocalizedString(messageKey),
-            CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
             XamlRoot = App.MainWindow.Content.XamlRoot
         };
 
         await dialog.ShowAsync();
     }
 
-    public async Task<bool> ShowConfirmationDialogAsync(string titleKey, string messageKey)
-    {
-        var loc = Localizer.Get();
+    //public static async Task ShowErrorDialogAsync(string titleKey, string messageKey)
+    //{
+    //    var loc = Localizer.Get();
 
-        var dialog = new ContentDialog
-        {
-            Title = loc.GetLocalizedString(titleKey),
-            Content = loc.GetLocalizedString(messageKey),
-            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
-            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
-        };
+    //    var dialog = new ContentDialog
+    //    {
+    //        Title = loc.GetLocalizedString(titleKey),
+    //        Content = loc.GetLocalizedString(messageKey),
+    //        CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+    //        XamlRoot = App.MainWindow.Content.XamlRoot
+    //    };
 
-        var result = await dialog.ShowAsync();
-        return result == ContentDialogResult.Primary;
-    }
-
-    public async Task<bool> ShowActionDialogAsync(string titleKey, string messageKey)
-    {
-        var loc = Localizer.Get();
-
-        var dialog = new ContentDialog
-        {
-            Title = loc.GetLocalizedString(titleKey),
-            Content = loc.GetLocalizedString(messageKey),
-            PrimaryButtonText = loc.GetLocalizedString("Dialog_Ok"),
-            CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
-        };
-
-        var result = await dialog.ShowAsync();
-        return result == ContentDialogResult.Primary;
-    }
-
-    public async Task ShowInfoAsync(string titleKey, string messageKey)
-    {
-        var loc = Localizer.Get();
-
-        var dialog = new ContentDialog
-        {
-            Title = loc.GetLocalizedString(titleKey),
-            Content = loc.GetLocalizedString(messageKey),
-            CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-            XamlRoot = App.MainWindow.Content.XamlRoot,
-        };
-
-        await dialog.ShowAsync();
-    }
-
+    //    await dialog.ShowAsync();
+    //}
     public async Task ShowErrorAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
@@ -106,23 +56,25 @@ public class DialogService() : IDialogService
         await dialog.ShowAsync();
     }
 
-    public async Task<bool> ShowYesNoAsync(string titleKey, string messageKey)
-    {
-        var loc = Localizer.Get();
 
-        var dialog = new ContentDialog
-        {
-            Title = loc.GetLocalizedString(titleKey),
-            Content = loc.GetLocalizedString(messageKey),
-            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
-            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
-        };
 
-        var result = await dialog.ShowAsync();
-        return result == ContentDialogResult.Primary;
-    }
 
+    //public async Task<bool> ShowActionDialogAsync(string titleKey, string messageKey)
+    //{
+    //    var loc = Localizer.Get();
+
+    //    var dialog = new ContentDialog
+    //    {
+    //        Title = loc.GetLocalizedString(titleKey),
+    //        Content = loc.GetLocalizedString(messageKey),
+    //        PrimaryButtonText = loc.GetLocalizedString("Dialog_Ok"),
+    //        CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
+    //        XamlRoot = App.MainWindow.Content.XamlRoot
+    //    };
+
+    //    var result = await dialog.ShowAsync();
+    //    return result == ContentDialogResult.Primary;
+    //}
     public async Task<bool> ShowOkCancelAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
@@ -140,8 +92,42 @@ public class DialogService() : IDialogService
         return result == ContentDialogResult.Primary;
     }
 
+    public async Task ShowViewDialogAsync(
+        string title,
+        FrameworkElement content,
+        Action<ContentDialog>? configure = null)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = content,
+            CloseButtonText = Localizer.Get().GetLocalizedString("Dialog_Close"),
+            XamlRoot = App.MainWindow.Content.XamlRoot
+        };
 
-    public async Task<bool> ShowConfirmAsync(string titleKey, string messageKey)
+        configure?.Invoke(dialog);
+
+        await dialog.ShowAsync();
+    }
+    public async Task ShowInfoAsync(string titleKey, string messageKey)
+    {
+        var loc = Localizer.Get();
+
+        var dialog = new ContentDialog
+        {
+            Title = loc.GetLocalizedString(titleKey),
+            Content = loc.GetLocalizedString(messageKey),
+            CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+        };
+
+        await dialog.ShowAsync();
+    }
+
+
+
+
+    public async Task<bool> ShowYesNoAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
 
@@ -157,6 +143,41 @@ public class DialogService() : IDialogService
         var result = await dialog.ShowAsync();
         return result == ContentDialogResult.Primary;
     }
+    //public async Task<bool> ShowConfirmAsync(string titleKey, string messageKey)
+    //{
+    //    var loc = Localizer.Get();
+
+    //    var dialog = new ContentDialog
+    //    {
+    //        Title = loc.GetLocalizedString(titleKey),
+    //        Content = loc.GetLocalizedString(messageKey),
+    //        PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+    //        CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+    //        XamlRoot = App.MainWindow.Content.XamlRoot
+    //    };
+
+    //    var result = await dialog.ShowAsync();
+    //    return result == ContentDialogResult.Primary;
+    //}
+    //public async Task<bool> ShowConfirmationDialogAsync(string titleKey, string messageKey)
+    //{
+    //    var loc = Localizer.Get();
+
+    //    var dialog = new ContentDialog
+    //    {
+    //        Title = loc.GetLocalizedString(titleKey),
+    //        Content = loc.GetLocalizedString(messageKey),
+    //        PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+    //        CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+    //        XamlRoot = App.MainWindow.Content.XamlRoot
+    //    };
+
+    //    var result = await dialog.ShowAsync();
+    //    return result == ContentDialogResult.Primary;
+    //}
+
+
+
     public async Task<T?> ShowDetailDialogWithResultAsync<T>(string titleKey, FrameworkElement content, Func<T> onSave)
     {
         var loc = Localizer.Get();
@@ -168,7 +189,7 @@ public class DialogService() : IDialogService
             CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
             DefaultButton = ContentDialogButton.Primary,
             Content = content,
-            XamlRoot = _xamlRoot
+            XamlRoot = App.MainWindow.Content.XamlRoot,
         };
 
         var result = await dialog.ShowAsync();
@@ -201,7 +222,7 @@ public class DialogService() : IDialogService
             Content = loc.GetLocalizedString(messageKey),
             PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
             CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-            XamlRoot = _xamlRoot
+            XamlRoot = App.MainWindow.Content.XamlRoot,
         };
 
         using var cts = new CancellationTokenSource(timeoutMilliseconds);

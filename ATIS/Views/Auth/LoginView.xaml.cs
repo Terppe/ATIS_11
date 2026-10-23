@@ -4,17 +4,16 @@ namespace ATIS.Views.Auth;
 
 public sealed partial class LoginView : UserControl
 {
-    public LoginViewModel ViewModel { get; }
+    public AuthenticationViewModel ViewModel { get; }
 
     public LoginView()
     {
-        ViewModel = App.GetService<LoginViewModel>();
+        ViewModel = App.GetService<AuthenticationViewModel>();
         InitializeComponent();
     }
-    private void PwdBox_OnPasswordChanged(object sender, RoutedEventArgs e)
+
+    private async void LoginButton_Click(object sender, RoutedEventArgs e)
     {
-        if (ViewModel is null || sender is not PasswordBox pb) return;
-        ViewModel.Password = pb.Password;
-        System.Diagnostics.Debug.WriteLine($"PwdChanged: len={ViewModel.Password?.Length}");
+        await ViewModel.LoginCommand.ExecuteAsync(PwdBox.Password);
     }
 }

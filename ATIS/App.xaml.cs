@@ -57,7 +57,6 @@ using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
-using AuthenticationViewModel = ATIS.Views.Auth.AuthenticationViewModel;
 
 namespace ATIS;
 
@@ -314,10 +313,10 @@ public partial class App : Application
         services.AddScoped<LookupService>();
 
         // USER SERVICES
-        services.AddScoped<IUserService, UserService>();
+        services.AddSingleton<IUserService, UserService>();
 
         // AUTHENTICATION SERVICES
-        services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<ATIS.Interfaces.IAuthenticationService, ATIS.Services.AuthenticationService>();
 
         // VIEWMODELS
         services.AddTransient<MainViewModel>();
@@ -374,12 +373,10 @@ public partial class App : Application
         services.AddTransient<TblDiseaseViewModel>();
         services.AddTransient<TblMiscellaneousViewModel>();
 
-        services.AddTransient<LoginViewModel>();
-    //    services.AddTransient<LoginView>();
-
         services.AddTransient<UserAreaViewModel>();
         services.AddTransient<AdminAreaViewModel>();
         services.AddTransient<ReportViewModel>();
+
 
         Services = services.BuildServiceProvider();
         //try

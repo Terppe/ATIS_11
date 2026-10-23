@@ -188,28 +188,28 @@
                                    CloseButtonText="Close">
                         <StackPanel>
                             <!--<contentDialogs:SignInContentDialog />-->
-                            <userControls:LogInControl />
+                            <!--<userControls:LogInControl />-->
                         </StackPanel>
                     </ContentDialog>
                     <ContentDialog x:Name="ContentDialogRegister"
                                    CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
-                            <userControls:RegisterControl />
+                            <!--<userControls:RegisterControl />-->
                         </StackPanel>
                     </ContentDialog>
                     <ContentDialog x:Name="ContentDialogPasswordChange"
                                    CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
-                            <userControls:PasswordChangeControl />
+                            <!--<userControls:PasswordChangeControl />-->
                         </StackPanel>
                     </ContentDialog>
                     <ContentDialog x:Name="ContentDialogPasswordForgot"
                                    CloseButtonStyle="{StaticResource AtisButtonPrimary}"
                                    CloseButtonText="Close">
                         <StackPanel>
-                            <userControls:PasswordForgotControl />
+                            <!--<userControls:PasswordForgotControl />-->
                         </StackPanel>
                     </ContentDialog>
 

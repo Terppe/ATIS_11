@@ -36,17 +36,16 @@ public partial class DataService : ObservableObject, IDataService
 
     private void ApplyAuditInfo(IAuditable entity, bool isNew)
     {
-        var user = _user.CurrentUser;
-        var now = DateTime.UtcNow;
+        var now = DateTime.Now;
 
         if (isNew)
         {
-            entity.Writer = user;
+            entity.Writer = Environment.UserName; 
             entity.WriterDate = now;
             entity.CountId = RandomHelper.Randomnumber();
         }
 
-        entity.Updater = user;
+        entity.Updater = Environment.UserName; 
         entity.UpdaterDate = now;
     }
 
@@ -10100,7 +10099,7 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     // ---------------------------------------------------------                  
-    // SearchUserProfileWithNULLAsync(string? search)
+    // SearchUserProfileAsync(string? search)
     // ---------------------------------------------------------                 
     public async Task<IEnumerable<TblUserProfile>> SearchUserProfileAsync(string? search)
     {

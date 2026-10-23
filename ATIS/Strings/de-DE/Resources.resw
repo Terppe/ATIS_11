@@ -4953,6 +4953,9 @@
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="Dialog_Close" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
   <data name="Dialog_Delete_Success" xml:space="preserve">
     <value>Der Datensatz wurde erfolgreich gelöscht.</value>
   </data>

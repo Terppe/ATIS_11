@@ -45,8 +45,6 @@ using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
-using CommunityToolkit.Mvvm.Messaging;
-using log4net;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
@@ -195,10 +193,10 @@ public sealed partial class MainPage : Page
                     await Register();
                     break;
                 case "changepw":
-                    await ContentDialogPasswordChange.ShowAsync();
+                    await ChangePassword();
                     break;
                 case "forgotpw":
-                    await ContentDialogPasswordForgot.ShowAsync();
+                    await ForgotPassword();
                     break;
                 case "update":
                     await CheckForUpdatesButton_Click(sender, e);
@@ -323,22 +321,68 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private async Task Register() //register and login
+    private async Task Register()
     {
-        await ContentDialogRegister.ShowAsync();
-
-        if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
+        var registerView = new ATIS.Views.Auth.RegisterView();
+        var dialog = new ContentDialog
         {
-            return;
-        }
+            XamlRoot = this.XamlRoot,
+            Title = "Register",
+            Content = registerView,
+            CloseButtonText = "Schließen"
+        };
 
-        var name = customPrincipal.Identity.Email;
-        if (name != "")
-        {
-            TbUser.Foreground = new SolidColorBrush(Colors.Green);
-            TbUser.Text = name + " " + StringsRes.LoggedIn;
-        }
+        registerView.ViewModel.RegisterSucceeded += (_, _) => dialog.Hide();
+
+        await dialog.ShowAsync();
     }
+
+    private async Task ForgotPassword()
+    {
+        var view = new ATIS.Views.Auth.ForgotPasswordView();
+        var dialog = new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = "Passwort vergessen",
+            Content = view,
+            CloseButtonText = "Schließen"
+        };
+
+        await dialog.ShowAsync();
+    }
+
+    private async Task ChangePassword()
+    {
+        var view = new ATIS.Views.Auth.ChangePasswordView();
+        var dialog = new ContentDialog
+        {
+            XamlRoot = this.XamlRoot,
+            Title = "Passwort ändern",
+            Content = view,
+            CloseButtonText = "Schließen"
+        };
+
+        view.ViewModel.PasswordChangedSucceeded += (_, _) => dialog.Hide();
+
+        await dialog.ShowAsync();
+    }
+
+    //private async Task Register() //register and login
+    //{
+    //    await ContentDialogRegister.ShowAsync();
+
+    //    if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
+    //    {
+    //        return;
+    //    }
+
+    //    var name = customPrincipal.Identity.Email;
+    //    if (name != "")
+    //    {
+    //        TbUser.Foreground = new SolidColorBrush(Colors.Green);
+    //        TbUser.Text = name + " " + StringsRes.LoggedIn;
+    //    }
+    //}
 
     private static async Task CheckForUpdatesButton_Click(object sender, RoutedEventArgs e)
     {

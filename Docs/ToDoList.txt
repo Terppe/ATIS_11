@@ -1272,4 +1272,9 @@ Tbl87GeographicEditControl komplett fertig.
 ----------------------------------------
 21.10.2026 16:30 Uhr References fertig.
 ----------------------------------------
-22.10.2026 09:30 Uhr Nuget => MimeKit.Login /Register. Login fertig.
+22.10.2026 09:30 Uhr Nuget => MimeKit.Login /Register. Login fertig.aber zu viele VMs.
+LoginViewModel ,RegisterViewModel ,PasswordForgotVm, PasswordChangeVm. Nur AuthenticationViewModel 
+----------------------------------------
+22.10.2026 17:30 Uhr LoginViewModel ,RegisterViewModel ,PasswordForgotVm, PasswordChangeVm in  AuthenticationViewModel klappt nicht
+----------------------------------------
+23.10.2026 10:30 Uhr Login, Register, ForgotPasswort mit Mail, ChangePasswort ok
