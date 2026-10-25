@@ -1280,3 +1280,5 @@ LoginViewModel ,RegisterViewModel ,PasswordForgotVm, PasswordChangeVm. Nur Authe
 23.10.2026 10:30 Uhr Login, Register, ForgotPasswort mit Mail, ChangePasswort ok userareapage weiter bearbeiten
 ----------------------------------------
 24.10.2026 11:30 Uhr userareapage weiter Feintuning fehlt noch. Fehler bei close der appUs. Fertig ok
+----------------------------------------
+25.10.2026 16:30 Uhr Versioning
