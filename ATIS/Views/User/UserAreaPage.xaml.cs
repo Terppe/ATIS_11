@@ -1,217 +1,906 @@
-﻿using System.Collections.ObjectModel;
-using ATIS.Helpers;
-using ATIS.Infrastructure;
-using ATIS.Models;
-using ATIS.Services;
-using ATIS.Strings;
-using ATIS.Views.Auth;
-using ATIS.Views.ContentDialogs;
-using Microsoft.EntityFrameworkCore;
+﻿namespace ATIS.Views.User;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
-namespace ATIS.Views.User;
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class UserAreaPage : Page
 {
-    #region [Private Data Members]
-
-    public UserAreaViewModel ViewModel { get; set; }
-  //  private static readonly AtisDbContext Context = new();
-    public string _search;
-    private readonly string _name;
-
-    #endregion [Private Data Members]   
-
-    #region [Constructor]
+    public UserAreaViewModel ViewModel { get; }
 
     public UserAreaPage()
     {
-
-        var customPrincipal = (CustomPrincipal)Thread.CurrentPrincipal;
-        if (customPrincipal == null)
-        {
-            return;
-        }
-        _name = customPrincipal.Identity.Email;
-        if (_name == "")
-        {
-            _ = AllDialogs.NobodyLoggedInSelectedWarnMessageDialogAsync();
-            return;
-        }
-
-        var role = customPrincipal.Identity.Role;
-
-        if (role == "Administrator" || role == "User" && _name == customPrincipal.Identity.Email)
-        {
-            InitializeComponent();
-            Loaded += OnLoaded;
-
-        }
-        else
-        {
-            AllDialogs.WarningNoPermissionMessageDialogAsync(_name).ConfigureAwait(false);
-        }
-    }
-
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
         ViewModel = App.GetService<UserAreaViewModel>();
-        GetUserProfilesByName();
+        DataContext = ViewModel;
+        InitializeComponent();
 
+        Loaded += async (_, _) => await ViewModel.LoadAsync();
     }
 
-    #endregion [Constructor]
+    public Models.TblUserProfile? Item => ViewModel.Item;
 
-    #region [UserProfile Methods]
 
-    private async void GetUserProfilesByName()
+    #region small Helpers
+
+    [System.Diagnostics.Conditional("DEBUG")]
+    private void LogDebug(string message)
     {
-        try
-        {
-
-            //_search = args.QueryText;
-            //ViewModel.IsLoading = true;
-
-
-            ViewModel.TblUserProfilesList?.Clear();
-            //    ViewModel.UserProfileItems.Clear();
-
-            //const int milliseconds = 1500;
-            //await Task.Delay(milliseconds);
-
-            if (_name == "")
-            {
-                //          ViewModel.IsLoading = false;
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
-
-            //if _search = "" und count = 0 you see the whole Tab thousands of datasets
-            //change to % for all Datasets in 20 Parts of sets
-
-
-            ViewModel.TblUserProfilesList ??= [];
-            //ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-            //    ? new ObservableCollection<TblUserProfile>(Context.TblUserProfiles
-            //        .Where(e => e.UserProfileId == id))
-            //    : new ObservableCollection<TblUserProfile>(Context.TblUserProfiles
-            //        .Where(e => e.Email.StartsWith(_search))
-            //        .OrderBy(a => a.Email));
-
-            ViewModel.TblUserProfilesList = new ObservableCollection<TblUserProfile>(AppData.Data.TblUserProfiles
-                .Where(e => e.Email == _name));
-
-            //   UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-
-
-            if (ViewModel.TblUserProfilesList is { Count: 0 })
-            {
-                ViewModel.TblUserProfilesList?.Clear();
-                //AppBarButtonDeleteUserProfile.IsEnabled = false;
-                //AppBarButtonSync.IsEnabled = false;
-
-                DetailPanelUserProfile.Visibility = Visibility.Visible;
-                //    UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            }
-            else
-            {
-                //        UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-                ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-            }
-            ViewModel.IsLoading = false;
-        }
-        catch (Exception xe)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
+        System.Diagnostics.Debug.WriteLine(message);
     }
 
-    private async void SaveUserProfile_Click(object sender, RoutedEventArgs e)
+    [System.Diagnostics.Conditional("DEBUG")]
+    private void LogGuard(string source, string reason)
     {
-        var saveDialog = new SaveChangesDialog
-        {
-            Title = StringsRes.SaveChanges,
-            XamlRoot = Content.XamlRoot
-        };
-        await saveDialog.ShowAsync();
-        var res = saveDialog.Result;
-
-        switch (res)
-        {
-            case SaveChangesDialogResult.Save:
-                await SaveUserProfile(ViewModel.UserProfileSelected);
-                break;
-            case SaveChangesDialogResult.DontSave:
-                await ViewModel.RevertChangesAsync();
-                break;
-            case SaveChangesDialogResult.Cancel:
-                break;
-        }
+        System.Diagnostics.Debug.WriteLine($"{source}: skip ({reason})");
     }
 
-    private async Task SaveUserProfile(TblUserProfile userprofile)
+    #endregion
+
+    // ---------------------------------------------------------
+    // VALIDATION HELPER
+    // ---------------------------------------------------------
+
+    private void UpdateValidationState(TextBox box, bool hasError)
     {
-        if (ViewModel.IsNewUserProfile)
+        if (box == null)
+            return;
+
+        if (hasError)
         {
-            ViewModel.IsNewUserProfile = false;
+            VisualStateManager.GoToState(box, "Invalid", true);
+            return;
         }
 
-        TblUserProfile result = null;
-        try
-        {
-            var current = await AppData.Data.TblUserProfiles.FirstOrDefaultAsync(a => a.UserProfileId == userprofile.UserProfileId);
-            if (null == current)
-            {
-                userprofile.CountId = RandomHelper.Randomnumber();
-                userprofile.Writer = Environment.UserName;
-                userprofile.WriterDate = DateTime.Now;
-                userprofile.Updater = Environment.UserName;
-                userprofile.UpdaterDate = DateTime.Now;
-                //AppData.Data.TblUserProfiles.Add(userprofile);
-            }
-            else
-            {
-                userprofile.Updater = Environment.UserName;
-                userprofile.UpdaterDate = DateTime.Now;
-                //AppData.Data.Entry(current).CurrentValues.SetValues(userprofile);
-            }
-            //await AppData.Data.SaveChangesAsync();
-
-            result = userprofile;
-        }
-        catch (DbUpdateException e)
-        {
-            if (e.InnerException != null)
-            {
-                await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
-            }
-
-            SimpleLog.Log(e);
-        }
-        catch (Exception ex)
-        {
-            await AllDialogs.ErrorMessageDialogAsync(ex.Message);
-            SimpleLog.Log(ex);
-            throw new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2, ex);
-        }
-
-        if (result != null)
-        {
-            ViewModel.IsInEdit = false;
-            ViewModel.IsModified = false;
-            ViewModel.IsExistingUserProfile = true;
-        }
+        if (box.FocusState == FocusState.Pointer || box.FocusState == FocusState.Keyboard)
+            VisualStateManager.GoToState(box, "Focused", true);
         else
+            VisualStateManager.GoToState(box, "Normal", true);
+    }
+
+    // ---------------------------------------------------------                   
+    // UserProfile EMAIL VALIDATION
+    // ---------------------------------------------------------                   
+
+    private void EmailBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(EmailBox, Item?.HasEmailError ?? false);
+    }
+
+    private void EmailBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(EmailBox, Item?.HasEmailError ?? false);
+    }
+
+    // ---------------------------------------------------------                   
+    // UserProfile FIRSTNAME VALIDATION
+    // ---------------------------------------------------------                   
+    private void FirstNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(FirstNameBox, Item?.HasFirstNameError ?? false);
+    }
+
+    private void FirstNameBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(FirstNameBox, Item?.HasFirstNameError ?? false);
+    }
+
+    // ---------------------------------------------------------                   
+    // UserProfile LASTNAME VALIDATION
+    // ---------------------------------------------------------                   
+    private void LastNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        UpdateValidationState(LastNameBox, Item?.HasLastNameError ?? false);
+    }
+
+    private void LastNameBox_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        UpdateValidationState(LastNameBox, Item?.HasLastNameError ?? false);
+    }
+
+    // ---------------------------------------------------------                   
+    // Combos
+    // ---------------------------------------------------------                   
+
+    private void RoleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
         {
-            _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+            //    break;
+            //case "Administrator":
+            //    break;
+            //case "Developer":
+            //    break;
+            case "Biologist":
+                break;
+            case "Zoologist":
+                break;
+            case "User":
+                break;
+
         }
     }
 
-    #endregion [UserProfile Methods]
+    private void TitleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "Dr.":
+                break;
+            case "Prof.":
+                break;
+            case "Dipl.- Ing.":
+                break;
+            case "Ing. grad":
+                break;
+            case "Dr. Ing":
+                break;
+        }
+    }
+
+    private void GenderCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "Female":
+                break;
+            case "Male":
+                break;
+        }
+    }
+
+    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+        if (ViewModel == null || Item == null)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
+            return;
+        }
+
+        var country = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
+        if (country == null)
+        {
+            LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
+            return;
+        }
+
+        // Country und Erdteil immer setzen, unabhängig von Karte und Punkten
+        Item.Country = country.Name;
+
+    }
+
+    private void ComboImageMimeType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var cmb = sender as ComboBox;
+        if (cmb == null)
+        {
+            return;
+        }
+
+        var text = ((ComboBox)sender).SelectedItem as string;
+        switch (text)
+        {
+            case "":    //neu
+                break;
+            case "jpg":
+                break;
+            case "png":
+                break;
+            case "bmp":
+                break;
+            case "tif":
+                break;
+            case "tiff":
+                break;
+            case "gif":
+                break;
+            case "ico":
+                break;
+            case "jpeg":
+                break;
+            case "webp":
+                break;
+            case "wmf":
+                break;
+            case "wmv":
+                break;
+            case "mpg":
+                break;
+            case "mp4":
+                break;
+            case "avi":
+                break;
+            case "mov":
+                break;
+            case "swf":
+                break;
+            case "flv":
+                break;
+        }
+
+        //var cmb = sender as ComboBox;
+        //if (cmb != null)
+        //{
+        //    handle = !cmb.IsDropDownOpen;
+        //}
+
+        //Handle();
+    }
+
+
+    //private void RoleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void TitleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void FirstNameBox_OnLoaded(object sender, RoutedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void LastNameBox_OnLoaded(object sender, RoutedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void LastNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void GenderCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void ComboImageMimeType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //private void FirstNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }
+
+
+//public sealed partial class UserAreaPage : Page
+//{
+//    public UserAreaViewModel ViewModel { get; }
+
+//    //   public UserAreaViewModel? ViewModel => DataContext as UserAreaViewModel;
+//    // ---------------------------------------------------------
+//    // CONSTRUCTOR
+//    // ---------------------------------------------------------
+
+//    public UserAreaPage()
+//    {
+//        ViewModel = App.GetService<UserAreaViewModel>();
+//        InitializeComponent();
+//        Loaded += async (_, _) => await ViewModel.LoadAsync();
+//    }
+//    #region small Helpers
+
+//    [System.Diagnostics.Conditional("DEBUG")]
+//    private void LogDebug(string message)
+//    {
+//        System.Diagnostics.Debug.WriteLine(message);
+//    }
+
+//    [System.Diagnostics.Conditional("DEBUG")]
+//    private void LogGuard(string source, string reason)
+//    {
+//        System.Diagnostics.Debug.WriteLine($"{source}: skip ({reason})");
+//    }
+
+//    #endregion
+
+//    // ---------------------------------------------------------
+//    //      DEPENDENCY PROPERTY: ITEM
+//    // ---------------------------------------------------------
+
+//    public Models.TblUserProfile? Item
+//    {
+//        get => (Models.TblUserProfile?)GetValue(ItemProperty);
+//        set => SetValue(ItemProperty, value);
+//    }
+
+//    public static readonly DependencyProperty ItemProperty =
+//        DependencyProperty.Register(
+//            nameof(Item),
+//            typeof(Models.TblUserProfile),
+//            typeof(UserAreaPage),
+//            new PropertyMetadata(null, OnItemChanged));
+
+//    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+//    {
+//        var control = (TblUserProfileEditControl)d;
+//        var item = e.NewValue as Models.TblUserProfile;
+
+//        control.ApplyItem(item);
+//    }
+
+//    // ---------------------------------------------------------                    
+//    // APPLY ITEM
+//    // ---------------------------------------------------------                   
+
+//    public void ApplyItem(Models.TblUserProfile? newItem)
+//    {
+//        // ⭐ WICHTIG:
+//        // KEIN DataContext-Wechsel!
+//        // KEIN Boss-Workflow!
+//        // KEIN Parent-Workflow!
+//        //
+//        // Bindings im XAML zeigen direkt auf Item.XXX
+//        // Deshalb bleibt diese Methode LEER.
+//    }
+
+//    // ---------------------------------------------------------
+//    // VALIDATION HELPER
+//    // ---------------------------------------------------------
+
+//    private void UpdateValidationState(TextBox box, bool hasError)
+//    {
+//        if (box == null)
+//            return;
+
+//        if (hasError)
+//        {
+//            VisualStateManager.GoToState(box, "Invalid", true);
+//            return;
+//        }
+
+//        if (box.FocusState == FocusState.Pointer || box.FocusState == FocusState.Keyboard)
+//            VisualStateManager.GoToState(box, "Focused", true);
+//        else
+//            VisualStateManager.GoToState(box, "Normal", true);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // UserProfile EMAIL VALIDATION
+//    // ---------------------------------------------------------                   
+
+//    private void EmailBox_OnTextChanged(object sender, TextChangedEventArgs e)
+//    {
+//        UpdateValidationState(EmailBox, Item?.HasEmailError ?? false);
+//    }
+
+//    private void EmailBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        UpdateValidationState(EmailBox, Item?.HasEmailError ?? false);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // UserProfile FIRSTNAME VALIDATION
+//    // ---------------------------------------------------------                   
+//    private void FirstNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+//    {
+//        UpdateValidationState(FirstNameBox, Item?.HasFirstNameError ?? false);
+//    }
+
+//    private void FirstNameBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        UpdateValidationState(FirstNameBox, Item?.HasFirstNameError ?? false);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // UserProfile LASTNAME VALIDATION
+//    // ---------------------------------------------------------                   
+//    private void LastNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+//    {
+//        UpdateValidationState(LastNameBox, Item?.HasLastNameError ?? false);
+//    }
+
+//    private void LastNameBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        UpdateValidationState(LastNameBox, Item?.HasLastNameError ?? false);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // Combos
+//    // ---------------------------------------------------------                   
+
+//    private void RoleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "Administrator":
+//                break;
+//            case "Developer":
+//                break;
+//            case "Biologist":
+//                break;
+//            case "Zoologist":
+//                break;
+//            case "User":
+//                break;
+
+//        }
+//    }
+
+//    private void TitleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "Dr.":
+//                break;
+//            case "Prof.":
+//                break;
+//            case "Dipl.- Ing.":
+//                break;
+//            case "Ing. grad":
+//                break;
+//            case "Dr. Ing":
+//                break;
+//        }
+//    }
+
+//    private void GenderCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "Female":
+//                break;
+//            case "Male":
+//                break;
+//        }
+//    }
+
+//    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+
+//        if (ViewModel == null || Item == null)
+//        {
+//            LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
+//            return;
+//        }
+
+//        var country = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
+//        if (country == null)
+//        {
+//            LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
+//            return;
+//        }
+
+//        // Country und Erdteil immer setzen, unabhängig von Karte und Punkten
+//        Item.Country = country.Name;
+
+//    }
+
+//    private void ComboImageMimeType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "jpg":
+//                break;
+//            case "png":
+//                break;
+//            case "bmp":
+//                break;
+//            case "tif":
+//                break;
+//            case "tiff":
+//                break;
+//            case "gif":
+//                break;
+//            case "ico":
+//                break;
+//            case "jpeg":
+//                break;
+//            case "webp":
+//                break;
+//            case "wmf":
+//                break;
+//            case "wmv":
+//                break;
+//            case "mpg":
+//                break;
+//            case "mp4":
+//                break;
+//            case "avi":
+//                break;
+//            case "mov":
+//                break;
+//            case "swf":
+//                break;
+//            case "flv":
+//                break;
+//        }
+
+//        //var cmb = sender as ComboBox;
+//        //if (cmb != null)
+//        //{
+//        //    handle = !cmb.IsDropDownOpen;
+//        //}
+
+//        //Handle();
+//    }
+
+//}
+
+
+
+//public sealed partial class UserAreaPage : Page
+//{
+//    public TblUserProfileViewModel? ViewModel => DataContext as TblUserProfileViewModel;
+//    // ---------------------------------------------------------
+//    // CONSTRUCTOR
+//    // ---------------------------------------------------------
+
+//    public UserAreaPage()
+//    {
+//        InitializeComponent();
+//        Loaded += UserAreaPage_Loaded;
+//    }
+//    #region small Helpers
+
+//    [System.Diagnostics.Conditional("DEBUG")]
+//    private void LogDebug(string message)
+//    {
+//        System.Diagnostics.Debug.WriteLine(message);
+//    }
+
+//    [System.Diagnostics.Conditional("DEBUG")]
+//    private void LogGuard(string source, string reason)
+//    {
+//        System.Diagnostics.Debug.WriteLine($"{source}: skip ({reason})");
+//    }
+
+//    #endregion
+
+//    private async void UserAreaPage_Loaded(object sender, RoutedEventArgs e)
+//    {
+//        try
+//        {
+//            var userService = App.GetService<IUserService>();
+//            var factory = App.GetService<IDbContextFactory<AtisDbContext>>();
+
+//         //   var email = userService.Email; // ggf. Property-Name anpassen
+
+//            var email = userService.SetUser(user.Email, user.Role);
+
+//            if (string.IsNullOrWhiteSpace(email))
+//                return;
+
+//            await using var db = await factory.CreateDbContextAsync();
+//            var me = await db.TblUserProfiles.FirstOrDefaultAsync(x => x.Email == email);
+
+//            Item = me;
+
+//            // falls SaveCommand genutzt wird:
+//            if (ViewModel != null)
+//                ViewModel.SelectedItem = me;
+//        }
+//        catch (Exception ex)
+//        {
+//            System.Diagnostics.Debug.WriteLine(ex);
+//        }
+//    }
+
+//    // ---------------------------------------------------------
+//    //      DEPENDENCY PROPERTY: ITEM
+//    // ---------------------------------------------------------
+
+//    public Models.TblUserProfile? Item
+//    {
+//        get => (Models.TblUserProfile?)GetValue(ItemProperty);
+//        set => SetValue(ItemProperty, value);
+//    }
+
+//    public static readonly DependencyProperty ItemProperty =
+//        DependencyProperty.Register(
+//            nameof(Item),
+//            typeof(Models.TblUserProfile),
+//            typeof(UserAreaPage),
+//            new PropertyMetadata(null, OnItemChanged));
+
+//    private static void OnItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+//    {
+//        var control = (UserAreaPage)d;
+//        var item = e.NewValue as Models.TblUserProfile;
+
+//        control.ApplyItem(item);
+//    }
+
+//    // ---------------------------------------------------------                    
+//    // APPLY ITEM
+//    // ---------------------------------------------------------                   
+
+//    private void ApplyItem(Models.TblUserProfile? newItem)
+//    {
+//        // ⭐ WICHTIG:
+//        // KEIN DataContext-Wechsel!
+//        // KEIN Boss-Workflow!
+//        // KEIN Parent-Workflow!
+//        //
+//        // Bindings im XAML zeigen direkt auf Item.XXX
+//        // Deshalb bleibt diese Methode LEER.
+//    }
+
+//    // ---------------------------------------------------------
+//    // VALIDATION HELPER
+//    // ---------------------------------------------------------
+
+//    private void UpdateValidationState(TextBox box, bool hasError)
+//    {
+//        if (box == null)
+//            return;
+
+//        if (hasError)
+//        {
+//            VisualStateManager.GoToState(box, "Invalid", true);
+//            return;
+//        }
+
+//        if (box.FocusState == FocusState.Pointer || box.FocusState == FocusState.Keyboard)
+//            VisualStateManager.GoToState(box, "Focused", true);
+//        else
+//            VisualStateManager.GoToState(box, "Normal", true);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // UserProfile EMAIL VALIDATION
+//    // ---------------------------------------------------------                   
+
+//    private void EmailBox_OnTextChanged(object sender, TextChangedEventArgs e)
+//    {
+//        UpdateValidationState(EmailBox, Item?.HasEmailError ?? false);
+//    }
+
+//    private void EmailBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        UpdateValidationState(EmailBox, Item?.HasEmailError ?? false);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // UserProfile FIRSTNAME VALIDATION
+//    // ---------------------------------------------------------                   
+//    private void FirstNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+//    {
+//        UpdateValidationState(FirstNameBox, Item?.HasFirstNameError ?? false);
+//    }
+
+//    private void FirstNameBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        UpdateValidationState(FirstNameBox, Item?.HasFirstNameError ?? false);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // UserProfile LASTNAME VALIDATION
+//    // ---------------------------------------------------------                   
+//    private void LastNameBox_OnTextChanged(object sender, TextChangedEventArgs e)
+//    {
+//        UpdateValidationState(LastNameBox, Item?.HasLastNameError ?? false);
+//    }
+
+//    private void LastNameBox_OnLoaded(object sender, RoutedEventArgs e)
+//    {
+//        UpdateValidationState(LastNameBox, Item?.HasLastNameError ?? false);
+//    }
+
+//    // ---------------------------------------------------------                   
+//    // Combos
+//    // ---------------------------------------------------------                   
+
+//    private void RoleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "Administrator":
+//                break;
+//            case "Developer":
+//                break;
+//            case "Biologist":
+//                break;
+//            case "Zoologist":
+//                break;
+//            case "User":
+//                break;
+
+//        }
+//    }
+
+//    private void TitleCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "Dr.":
+//                break;
+//            case "Prof.":
+//                break;
+//            case "Dipl.- Ing.":
+//                break;
+//            case "Ing. grad":
+//                break;
+//            case "Dr. Ing":
+//                break;
+//        }
+//    }
+
+//    private void GenderCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "Female":
+//                break;
+//            case "Male":
+//                break;
+//        }
+//    }
+
+//    private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+
+//        if (ViewModel == null || Item == null)
+//        {
+//            LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
+//            return;
+//        }
+
+//        var country = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
+//        if (country == null)
+//        {
+//            LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
+//            return;
+//        }
+
+//        // Country und Erdteil immer setzen, unabhängig von Karte und Punkten
+//        Item.Country = country.Name;
+
+//    }
+
+//    private void ComboImageMimeType_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        var cmb = sender as ComboBox;
+//        if (cmb == null)
+//        {
+//            return;
+//        }
+
+//        var text = ((ComboBox)sender).SelectedItem as string;
+//        switch (text)
+//        {
+//            case "":    //neu
+//                break;
+//            case "jpg":
+//                break;
+//            case "png":
+//                break;
+//            case "bmp":
+//                break;
+//            case "tif":
+//                break;
+//            case "tiff":
+//                break;
+//            case "gif":
+//                break;
+//            case "ico":
+//                break;
+//            case "jpeg":
+//                break;
+//            case "webp":
+//                break;
+//            case "wmf":
+//                break;
+//            case "wmv":
+//                break;
+//            case "mpg":
+//                break;
+//            case "mp4":
+//                break;
+//            case "avi":
+//                break;
+//            case "mov":
+//                break;
+//            case "swf":
+//                break;
+//            case "flv":
+//                break;
+//        }
+
+//        //var cmb = sender as ComboBox;
+//        //if (cmb != null)
+//        //{
+//        //    handle = !cmb.IsDropDownOpen;
+//        //}
+
+//        //Handle();
+//    }
+
+//}

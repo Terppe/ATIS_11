@@ -2,7 +2,6 @@
 using System.Globalization;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Auth;
@@ -45,6 +44,7 @@ using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
@@ -99,13 +99,8 @@ public sealed partial class MainPage : Page
         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
         _appWindow = AppWindow.GetFromWindowId(windowId);
 
-        _appWindow.Closing += AppWindow_Closing;
-
         await ViewModel.InitAsync();
-
     }
-
-    //--------------------------------------------------------------------
     private void AppTitleBar_OnBackRequested(TitleBar sender, object args)
     {
         if (NavFrame.CanGoBack)
@@ -128,27 +123,6 @@ public sealed partial class MainPage : Page
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
     {
         ThemeService.ChangeThemeWithoutSave(App.MainWindow);
-    }
-
-    private async void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
-    {
-        args.Cancel = true;
-
-        var loc = Localizer.Get();
-
-        var dialog = new ContentDialog
-        {
-            Title = loc.GetLocalizedString("ConfirmExitTitle"),
-            Content = loc.GetLocalizedString("ConfirmExitMessage"),
-            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
-            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
-        };
-
-        var result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.Primary)
-            Application.Current.Exit();
     }
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -186,9 +160,6 @@ public sealed partial class MainPage : Page
                 case "login":
                     await LogIn();
                     break;
-                //case "register":
-                //    await ContentDialogRegister.ShowAsync();
-                //    break;
                 case "register":
                     await Register();
                     break;
@@ -208,46 +179,12 @@ public sealed partial class MainPage : Page
                     SimpleLog.ShowLogFile();
                     break;
                 case "close":
-                    await Exit();
+                    _ = App.RequestCloseAsync();
                     break;
             }
         }
     }
-    private async Task Exit()
-    {
-  //      var result = await _dialogService.ShowYesNoAsync("ConfirmExitTitle", "ConfirmExitMessage");
 
-     //   if (result)
-            Application.Current.Exit();
-    }
-
-    //private async Task Exit()
-    //{
-    //    try
-    //    {
-
-    //        var loc = Localizer.Get();
-
-    //        var dialog = new ContentDialog
-    //        {
-    //            Title = loc.GetLocalizedString("ConfirmExitTitle"),
-    //            Content = loc.GetLocalizedString("ConfirmExitMessage"),
-    //            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
-    //            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-    //            XamlRoot = App.MainWindow.Content.XamlRoot
-    //        };
-
-    //        var result = await dialog.ShowAsync();
-
-    //        if (result == ContentDialogResult.Primary)
-    //            Application.Current.Exit();
-    //    }
-    //    finally
-    //    {
-    //    }
-    //}
-
-    //await _dialogService.ShowYesNoAsync("ConfirmExitTitle", "ConfirmExitMessage");
 
     //--------------------------------------------------------------------
     private void MenuFlyoutLanguage_Click(object sender, RoutedEventArgs e)
@@ -367,23 +304,6 @@ public sealed partial class MainPage : Page
         await dialog.ShowAsync();
     }
 
-    //private async Task Register() //register and login
-    //{
-    //    await ContentDialogRegister.ShowAsync();
-
-    //    if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
-    //    {
-    //        return;
-    //    }
-
-    //    var name = customPrincipal.Identity.Email;
-    //    if (name != "")
-    //    {
-    //        TbUser.Foreground = new SolidColorBrush(Colors.Green);
-    //        TbUser.Text = name + " " + StringsRes.LoggedIn;
-    //    }
-    //}
-
     private static async Task CheckForUpdatesButton_Click(object sender, RoutedEventArgs e)
     {
         // Get the current app's package for the current user.
@@ -431,34 +351,6 @@ public sealed partial class MainPage : Page
         ConfigurationManager.RefreshSection("AppSettings");
     }
 
-    private async Task Close()
-    {
-        var dialog = new ContentDialog
-        {
-            XamlRoot = Content.XamlRoot,
-            Title = "StringsRes.WantToCloseApp",
-            PrimaryButtonText = StringsRes.Yes,
-            CloseButtonText = StringsRes.No,
-            DefaultButton = ContentDialogButton.Close
-        };
-        //    dialog.PrimaryButtonClick += (se, ee) => DispatcherQueue.TryEnqueue(dialog.Hide);
-        var result = await dialog.ShowAsync();
-        if (result != ContentDialogResult.None)
-        {
-            dialog.Hide();
-            // to write in App.config not possible in unpacked version find solution
-            //SaveCulture(App.Cult);
-
-            // Write info message to log
-            SimpleLog.Info(StringsRes.AppClosed);
-
-            // Close this Application
-            App.MainWindow.Close();
-
-            //   Process.GetCurrentProcess().Kill();
-            Application.Current.Exit();
-        }
-    }
 
     private void ControlsSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
@@ -708,6 +600,8 @@ public sealed partial class MainPage : Page
         }
     }
 
+    #region [ PERMISSION ROLES ]
+
     // zentral: Tag -> erlaubte Rollen
     private static readonly Dictionary<string, string[]> PageRoleRules = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -778,36 +672,13 @@ public sealed partial class MainPage : Page
             NavFrame.Navigate(typeof(HomePage)); // oder StartPage/Dashboard
         }
     }
-    //private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-    //{
-    //    if (args.IsSettingsInvoked)
-    //    {
-    //        NavFrame.Navigate(typeof(SettingsPage), null, args.RecommendedNavigationTransitionInfo);
-    //        return;
-    //    }
-
-    //    if (args.InvokedItemContainer?.Tag is not string tag || string.IsNullOrWhiteSpace(tag))
-    //        return;
-
-    //    var newPage = Type.GetType(tag);
-    //    if (newPage is null) return;
-
-    //    var requiresRole = tag.Contains(".Views.Modules.", StringComparison.OrdinalIgnoreCase);
-    //    if (requiresRole && !Permission.HasAccess())
-    //    {
-    //        await dialog.ShowErrorAsync("Error_NoPermission_Title", "Error_NoPermission_Message");
-    //        return;
-    //    }
-
-    //    NavFrame.Navigate(newPage, null, args.RecommendedNavigationTransitionInfo);
-    //}
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)
     {
         //  NavFrame.Navigate(typeof(HomePage));
         // NICHT navigieren!
         NavView.SelectedItem = NavHome;
     }
-
+    #endregion
     private void ControlsSearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         // Only get results when it was a user typing, 

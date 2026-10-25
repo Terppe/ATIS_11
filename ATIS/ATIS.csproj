@@ -506,9 +506,6 @@
 	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl21ClassHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\ContentDialogs\SignInContentDialog.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\ContentDialogs\SaveChangesDialog.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -581,7 +578,6 @@
 		<None Remove="Views\Auth\RegisterView.xaml" />
 		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
 		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
-		<None Remove="Views\ContentDialogs\SignInContentDialog.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
 		<None Remove="Views\Main\HomePage.xaml" />

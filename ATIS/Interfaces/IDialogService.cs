@@ -11,6 +11,7 @@ public interface IDialogService
         FrameworkElement content,
         Action<ContentDialog>? configure = null);
     Task<bool> ShowOkCancelAsync(string titleKey, string messageKey);
-    //Task<bool> ShowConfirmAsync(string titleKey, string messageKey);
+    Task<bool> ShowConfirmAsync(string titleKey, string messageKey);
     Task<bool> ShowDetailDialogAsync(FrameworkElement content, string titleKey);
+    Task<string?> ShowPasswordPromptAsync(string title, string message);
 }

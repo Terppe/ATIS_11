@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
-using System.Text;
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
 using ATIS.Views.Modules.Tbl81Image;
-using log4net;
-using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using WinUI3Localizer;
-using static WinUI3Localizer.LanguageDictionary;
 
 namespace ATIS.Views.Modules.TblDisease;
 

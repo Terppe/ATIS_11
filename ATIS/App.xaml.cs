@@ -52,8 +52,6 @@ using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
 using ATIS.Views.UserControls;
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Documents;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
 using WinUIEx;
@@ -66,21 +64,25 @@ public partial class App : Application
     // 1. FELDER & PROPERTIES
     // ---------------------------------------------------------
 
-    public static Window MainWindow { get; private set; }
-    public static IServiceProvider Services { get; private set; }
-    public static FrameworkElement MainRoot { get; private set; }
+    public static Window? MainWindow { get; private set; }
+    public static IServiceProvider? Services { get; private set; }
+    public static FrameworkElement? MainRoot { get; private set; }
     public new static App Current => (App)Application.Current;
-    public string AppVersion { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-    public string AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
-    public string Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
-
+    public string? AppVersion { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+    public string? AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
+    public string? Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
     public static string? Cult = "";
-
     private SplashWindow splash;
-
     public static event Action<string>? LanguageChanged;
+    private static bool _closeConfirmed;
+    private static bool _dialogOpen;
 
-    public static MainPage MainPageInstance { get; private set; }
+    public static MainPage? MainPageInstance { get; private set; }
+    public static string AppConfigFolderPath { get; private set; } = string.Empty;
+    public static string StringsFolderPath { get; private set; } = string.Empty;
+    public static string? SearchQuickString { get; set; } // from MainPage filled
+    public static int WindowsCounter { get; set; } = 0;// Count the created and open windows
+
     // ---------------------------------------------------------
     // 2. KONSTRUKTOR
     // ---------------------------------------------------------
@@ -126,28 +128,8 @@ public partial class App : Application
     // Window erstellen
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-
         var connected = await new AtisDbContext().Database.CanConnectAsync();
         System.Diagnostics.Debug.WriteLine($"[DB] connected={connected}");
-
-        //var factory =
-        //    Services.GetRequiredService<IDbContextFactory<AtisDbContext>>();
-
-        //try
-        //{
-        //    await using var db = await factory.CreateDbContextAsync();
-
-        //    var connected1 = await db.Database.CanConnectAsync();
-
-        //    System.Diagnostics.Debug.WriteLine(
-        //        $"[DB] CanConnect = {connected1}");
-        //}
-        //catch (Exception ex)
-        //{
-        //    System.Diagnostics.Debug.WriteLine(
-        //        $"[DB] Verbindungsfehler: {ex}");
-        //}
-
 
 
         // 1. Localizer EINMAL initialisieren
@@ -156,31 +138,34 @@ public partial class App : Application
         // 2. Culture setzen
         ApplyCulture();
 
-        // 2. Window erstellen
-        MainWindow = new Window
+        // 3. Window erstellen
+        MainWindow = new Window { Title = AppName };
+
+        MainWindow.AppWindow.Closing += (sender, e) =>
         {
-            Title = AppName
+            if (_closeConfirmed) return;
+            e.Cancel = true;
+            _ = RequestCloseAsync();
         };
 
-        // 3. MainPage setzen
+        // 4. MainPage setzen
         MainPageInstance = new MainPage();
         MainWindow.Content = MainPageInstance;
         MainRoot = MainWindow.Content as FrameworkElement;
 
-        // 4 ThemeService
-        var themeService = Services.GetService<IThemeService>();
-        themeService?.AutoInitialize(MainWindow);
-
-        // 5  
+        // 5 ThemeService
+        if (Services != null)
+        {
+            var themeService = Services.GetService<IThemeService>();
+            themeService?.AutoInitialize(MainWindow);
+        }
 
         // 6 Logging 
         InitializeLogging();
 
         // 7 Splash 
-        //solange entwickelt wird     await ShowSplashAsync();
+        //solange entwickelt wird // danach     await ShowSplashAsync();
 
-        // 8 Close Application
-        Close();
 
         MainWindow.Activate();
 
@@ -191,106 +176,77 @@ public partial class App : Application
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
     }
 
-    //---------------------------------------------------------
-    // 3. CLOSE
-    //---------------------------------------------------------
-    private static void Close()
+    // ---------------------------------------------------------
+    // 2. CULTURE
+    // ---------------------------------------------------------
+    private void ApplyCulture()
     {
-        var closing = false;
+        Cult = ConfigurationManager.AppSettings.Get("Culture");
 
-        App.MainWindow.Closed += async (se, ee) =>
-        {
-            if (closing)
-            {
-                return;
-            }
-
-            closing = true;
-            ee.Handled = true;
-
-            var dialog = new ContentDialog
-            {
-                XamlRoot = MainWindow.Content.XamlRoot,
-                Title = StringsRes.WantToCloseApp,
-                PrimaryButtonText = StringsRes.Yes,
-                CloseButtonText = StringsRes.No,
-                DefaultButton = ContentDialogButton.Close
-            };
-            //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
-            var result = await dialog.ShowAsync();
-            if (result == ContentDialogResult.None)
-            {
-                closing = false;
-            }
-            else
-            {
-                dialog.Hide();
-                // to write in App.config not possible in unpacked version find solution
-                //SaveCulture(App.Cult);
-
-                // Write info message to log
-                SimpleLog.Info(StringsRes.AppClosed);
-
-                // Close this Application
-                App.MainWindow.Close();
-
-                //   Process.GetCurrentProcess().Kill();
-                Application.Current.Exit();
-            }
-        };
-        //return closing;
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
     }
 
-    //private static void Close()
-    //{
-    //    var closing = false;
+    public static void RaiseLanguageChanged(string lang)
+        => LanguageChanged?.Invoke(lang);
 
-    //    App.MainWindow.Closed += async (se, ee) =>
-    //    {
-    //        if (closing)
-    //        {
-    //            return;
-    //        }
+    public static void SetCulture(string culture)
+    {
+        Cult = culture;
 
-    //        closing = true;
-    //        ee.Handled = true;
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
 
-    //        var dialog = new ContentDialog
-    //        {
-    //            XamlRoot = MainWindow.Content.XamlRoot,
-    //            Title = "StringsRes.WantToCloseApp",
-    //            PrimaryButtonText = StringsRes.Yes,
-    //            CloseButtonText = StringsRes.No,
-    //            DefaultButton = ContentDialogButton.Close
-    //        };
-    //        //      dialog.PrimaryButtonClick += (s, e) => DispatcherQueue.TryEnqueue(dialog.Hide);
-    //        var result = await dialog.ShowAsync();
-    //        if (result == ContentDialogResult.None)
-    //        {
-    //            closing = false;
-    //        }
-    //        else
-    //        {
-    //            dialog.Hide();
-    //            // to write in App.config not possible in unpacked version find solution
-    //            //SaveCulture(App.Cult);
+        Localizer.Get().SetLanguage(culture);
+    }
 
-    //            // Write info message to log
-    //            SimpleLog.Info(StringsRes.AppClosed);
+    //---------------------------------------------------------
+    //3. Window erstellen
+    //---------------------------------------------------------
+    // Centralized app-close flow (WinUI 3)
+    // ------------------------------------
+    // Why this exists:
+    // - We had shutdown crashes (0xC000027B / 0xC0000005) caused by multiple close paths
+    //   and dialog/localization interactions during teardown.
+    // - Therefore, close handling is centralized in App.xaml.cs.
+    //
+    // Rules:
+    // 1) Exactly ONE AppWindow.Closing handler in the whole app (registered in App).
+    // 2) All user-initiated close actions (menu, commands, etc.) call App.RequestCloseAsync().
+    // 3) Do not show additional close dialogs in pages/viewmodels.
+    // 4) Use _dialogOpen to prevent re-entrant/double dialogs.
+    // 5) Use _closeConfirmed to allow the final close without re-prompt.
+    //
+    // Notes:
+    // - Window.Close() from menu may bypass the same UX path as titlebar close.
+    //   Always use RequestCloseAsync() for consistent behavior.
+    // - Keep this logic in App (not MainPage) to avoid duplicate subscriptions from Loaded events.
+    public static async Task<bool> ConfirmCloseAsync()
+    {
+        if (_dialogOpen) return false;
+        _dialogOpen = true;
+        try
+        {
+            var loc = Localizer.Get();
+            var dialog = GetService<IDialogService>();
+            return await dialog.ShowConfirmAsync(
+                loc.GetLocalizedString("ConfirmExitTitle"),
+                loc.GetLocalizedString("ConfirmExitMessage"));
+        }
+        finally
+        {
+            _dialogOpen = false;
+        }
+    }
 
-    //            // Close this Application
-    //            App.MainWindow.Close();
+    public static async Task RequestCloseAsync()
+    {
+        if (!await ConfirmCloseAsync()) return;
 
-    //            //   Process.GetCurrentProcess().Kill();
-    //            Application.Current.Exit();
-    //        }
-    //    };
-    //    //return closing;
-    //}
-
-    // ---------------------------------------------------------
-    // 4. DI KONFIGURATION
-    // ---------------------------------------------------------
+        SimpleLog.Info("AppClosed");
+        _closeConfirmed = true;
+        MainWindow?.DispatcherQueue.TryEnqueue(() => MainWindow.Close());
+    }
 
     private static ServiceProvider ConfigureServices()
     {
@@ -411,74 +367,6 @@ public partial class App : Application
         await new LocalizerBuilder()
             .AddStringResourcesFolderForLanguageDictionaries(StringsFolderPath)
 
-            //later to use for DataGridTemplateColumn, DataGridTextColumn, DataGridComboBoxColumn, DataGridCheckBoxColumn
-            .AddLocalizationAction(
-                new LocalizationActions.ActionItem(
-                    typeof(DataGridColumn),
-                    arguments =>
-                    {
-                        if (arguments.DependencyObject is DataGridColumn target)
-                        {
-                            target.Header = arguments.Value;
-                        }
-                    }))
-            .AddLocalizationAction(new LocalizationActions.ActionItem(
-                typeof(DataGridTemplateColumn),
-                arguments =>
-                {
-                    if (arguments.DependencyObject is DataGridTemplateColumn target)
-                    {
-                        target.Header = arguments.Value;
-                    }
-                }))
-            .AddLocalizationAction(new LocalizationActions.ActionItem(
-                typeof(DataGridTextColumn),
-                arguments =>
-                {
-                    if (arguments.DependencyObject is DataGridTextColumn target)
-                    {
-                        target.Header = arguments.Value;
-                    }
-                }))
-            .AddLocalizationAction(new LocalizationActions.ActionItem(
-                typeof(DataGridComboBoxColumn),
-                arguments =>
-                {
-                    if (arguments.DependencyObject is DataGridComboBoxColumn target)
-                    {
-                        target.Header = arguments.Value;
-                    }
-                }))
-            .AddLocalizationAction(new LocalizationActions.ActionItem(
-                typeof(DataGridCheckBoxColumn),
-                arguments =>
-                {
-                    if (arguments.DependencyObject is DataGridCheckBoxColumn target)
-                    {
-                        target.Header = arguments.Value;
-                    }
-                }))
-            .AddLocalizationAction(
-                new LocalizationActions.ActionItem(
-                    typeof(Run),
-                    arguments =>
-                    {
-                        if (arguments.DependencyObject is Run target)
-                        {
-                            target.Text = arguments.Value;
-                        }
-                    }))
-            .AddLocalizationAction(
-                new LocalizationActions.ActionItem(
-                    typeof(Hyperlink),
-                    arguments =>
-                    {
-                        if (arguments.DependencyObject is Hyperlink target && target.Inlines.Count is 0)
-                        {
-                            target.Inlines.Clear();
-                            target.Inlines.Add(new Run() { Text = arguments.Value });
-                        }
-                    }))
             .SetOptions(options =>
             {
                 //    options.DefaultLanguage = "de-DE";
@@ -488,32 +376,8 @@ public partial class App : Application
             .Build();
     }
 
-    private async Task ShowSplashAsync()
-    {
-        splash = new SplashWindow();
-        splash.CenterOnScreen();
-     //   splash.IsAlwaysOnTop = true;
-        splash.Activate();
-        await Task.Delay(5000);
-        splash.Close();
-    }
-
     // ---------------------------------------------------------
-    // 7. CULTURE
-    // ---------------------------------------------------------
-    private void ApplyCulture()
-    {
-        Cult = ConfigurationManager.AppSettings.Get("Culture");
-
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
-    }
-
-    public static void RaiseLanguageChanged(string lang)
-        => LanguageChanged?.Invoke(lang);
-
-    // ---------------------------------------------------------
-    // 8. LOGGING
+    // 6. LOGGING
     // ---------------------------------------------------------
     private void InitializeLogging()
     {
@@ -523,6 +387,20 @@ public partial class App : Application
             prefix: $"Atis_Log_{AppVersion}_",
             writeText: true);
         SimpleLog.Info("ATIS Application started");
+    }
+
+    // ---------------------------------------------------------
+    // 7. Splash
+    // ---------------------------------------------------------
+
+    private async Task ShowSplashAsync()
+    {
+        splash = new SplashWindow();
+        splash.CenterOnScreen();
+     //   splash.IsAlwaysOnTop = true;
+        splash.Activate();
+        await Task.Delay(5000);
+        splash.Close();
     }
 
     // ---------------------------------------------------------
@@ -554,20 +432,6 @@ public partial class App : Application
 
         Debug.WriteLine("========================================");
     }
-    private static async Task ObserveBackgroundTaskAsync(
-        Task task,
-        string operation)
-    {
-        try
-        {
-            await task;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(
-                $"[{operation}] Hintergrundfehler: {ex}");
-        }
-    }
     // ---------------------------------------------------------
     // 10. Helper
     // ---------------------------------------------------------
@@ -581,23 +445,6 @@ public partial class App : Application
     {
         return Services.GetRequiredService<IThemeService>();
     }
-
-    public static void SetCulture(string culture)
-    {
-        Cult = culture;
-
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
-
-        Localizer.Get().SetLanguage(culture);
-    }
-
-    // MainWindow.xaml.cs
-
-    public static string AppConfigFolderPath { get; private set; } = string.Empty;
-    public static string StringsFolderPath { get; private set; } = string.Empty;
-    public static string? SearchQuickString { get; set; } // from MainPage filled
-    public static int WindowsCounter { get; set; } = 0;// Count the created and open windows
 
 }
 

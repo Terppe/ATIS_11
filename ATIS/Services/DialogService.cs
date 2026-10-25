@@ -1,5 +1,7 @@
 ﻿using ATIS.Interfaces;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using WinUI3Localizer;
+using static MailKit.Net.Imap.ImapEvent;
 
 namespace ATIS.Services;
 
@@ -27,20 +29,6 @@ public class DialogService() : IDialogService
         await dialog.ShowAsync();
     }
 
-    //public static async Task ShowErrorDialogAsync(string titleKey, string messageKey)
-    //{
-    //    var loc = Localizer.Get();
-
-    //    var dialog = new ContentDialog
-    //    {
-    //        Title = loc.GetLocalizedString(titleKey),
-    //        Content = loc.GetLocalizedString(messageKey),
-    //        CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-    //        XamlRoot = App.MainWindow.Content.XamlRoot
-    //    };
-
-    //    await dialog.ShowAsync();
-    //}
     public async Task ShowErrorAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
@@ -56,25 +44,6 @@ public class DialogService() : IDialogService
         await dialog.ShowAsync();
     }
 
-
-
-
-    //public async Task<bool> ShowActionDialogAsync(string titleKey, string messageKey)
-    //{
-    //    var loc = Localizer.Get();
-
-    //    var dialog = new ContentDialog
-    //    {
-    //        Title = loc.GetLocalizedString(titleKey),
-    //        Content = loc.GetLocalizedString(messageKey),
-    //        PrimaryButtonText = loc.GetLocalizedString("Dialog_Ok"),
-    //        CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
-    //        XamlRoot = App.MainWindow.Content.XamlRoot
-    //    };
-
-    //    var result = await dialog.ShowAsync();
-    //    return result == ContentDialogResult.Primary;
-    //}
     public async Task<bool> ShowOkCancelAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
@@ -124,10 +93,58 @@ public class DialogService() : IDialogService
         await dialog.ShowAsync();
     }
 
+    public async Task<string?> ShowPasswordPromptAsync(string titleKey, string messageKey)
+    {
+        var box = new PasswordBox { PlaceholderText = Localizer.Get().GetLocalizedString(messageKey) };
+        var loc = Localizer.Get();
 
+        var dialog = new ContentDialog
+        {
+            Title = loc.GetLocalizedString(titleKey),
+            Content = box,
+            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = App.MainWindow.Content.XamlRoot,
+        };
+
+        var result = await dialog.ShowAsync();
+        return result == ContentDialogResult.Primary ? box.Password : null;
+    }
 
 
     public async Task<bool> ShowYesNoAsync(string titleKey, string messageKey)
+    {
+        var loc = Localizer.Get();
+
+        var dialog = new ContentDialog
+        {
+            Title = loc.GetLocalizedString(titleKey),
+            Content = loc.GetLocalizedString(messageKey),
+            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+            XamlRoot = App.MainWindow?.Content.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+        return result == ContentDialogResult.Primary;
+    }
+    public async Task<bool> ShowConfirmAsync(string title, string message)
+    {
+        var loc = Localizer.Get();
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = message,
+            PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
+            CloseButtonText = loc.GetLocalizedString("Dialog_No"),
+            DefaultButton = ContentDialogButton.Close,
+            XamlRoot = App.MainWindow?.Content.XamlRoot
+        };
+
+        return await dialog.ShowAsync() == ContentDialogResult.Primary;
+    }
+    public async Task<bool> ShowConfirmationDialogAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
 
@@ -143,38 +160,6 @@ public class DialogService() : IDialogService
         var result = await dialog.ShowAsync();
         return result == ContentDialogResult.Primary;
     }
-    //public async Task<bool> ShowConfirmAsync(string titleKey, string messageKey)
-    //{
-    //    var loc = Localizer.Get();
-
-    //    var dialog = new ContentDialog
-    //    {
-    //        Title = loc.GetLocalizedString(titleKey),
-    //        Content = loc.GetLocalizedString(messageKey),
-    //        PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
-    //        CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-    //        XamlRoot = App.MainWindow.Content.XamlRoot
-    //    };
-
-    //    var result = await dialog.ShowAsync();
-    //    return result == ContentDialogResult.Primary;
-    //}
-    //public async Task<bool> ShowConfirmationDialogAsync(string titleKey, string messageKey)
-    //{
-    //    var loc = Localizer.Get();
-
-    //    var dialog = new ContentDialog
-    //    {
-    //        Title = loc.GetLocalizedString(titleKey),
-    //        Content = loc.GetLocalizedString(messageKey),
-    //        PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
-    //        CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-    //        XamlRoot = App.MainWindow.Content.XamlRoot
-    //    };
-
-    //    var result = await dialog.ShowAsync();
-    //    return result == ContentDialogResult.Primary;
-    //}
 
 
 

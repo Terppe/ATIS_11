@@ -1899,6 +1899,18 @@
   <data name="Address" xml:space="preserve">
     <value>Adresse</value>
   </data>
+  <data name="Account_Delete_Done_Title" xml:space="preserve">
+    <value>Anmeldung löschen</value>
+  </data>
+  <data name="Account_Delete_Password_Title" xml:space="preserve">
+    <value>Passwort eingeben</value>
+  </data>
+  <data name="Account_Delete_Password_Message" xml:space="preserve">
+    <value>Passwort eingeben zum Löschen der Anmeldung</value>
+  </data>
+  <data name="Account_Delete_Done_Message" xml:space="preserve">
+    <value>Anmeldung gelöscht</value>
+  </data>
   <data name="TextBlock_Add.Text" xml:space="preserve">
     <value>Neu</value>
   </data>

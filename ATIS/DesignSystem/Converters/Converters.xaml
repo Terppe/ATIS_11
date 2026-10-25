@@ -6,6 +6,8 @@
                     xmlns:converters="using:ATIS.DesignSystem.Converters">
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:BoolToVisibilityConverter x:Key="BoolToCollapsedConverter"
+                                          Invert="True" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
     <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
     <converters:BoolToRowBackgroundConverter x:Key="BoolToRowBackgroundConverter" />

@@ -4,10 +4,6 @@ using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-
-
-using ATIS.Views.Modules.Tbl90Reference;
-using ATIS.Views.Modules.Tbl93Comment;
 using Microsoft.EntityFrameworkCore;
 using WinUI3Localizer;
 
@@ -39,9 +35,6 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
     {
 
         _lookupService = lookupService;
-
-        //UserProfileCommentViewModel = new Tbl93CommentViewModel(factory, dialog, coordinator, lookupService, user);
-        //UserProfileReferenceViewModel = new Tbl90ReferenceViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);

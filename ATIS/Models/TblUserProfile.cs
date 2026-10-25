@@ -357,6 +357,28 @@ public class TblUserProfile : ObservableObject, IDataService.IAuditable, IHierar
         get => _company;
         set => SetProperty(ref _company, value);
     }
+
+    // ---------------------------------------------------------
+    // Company
+    // ---------------------------------------------------------
+    [StringLength(200)]
+    private string? _passwordResetToken;
+    public string? PasswordResetToken
+    {
+        get => _passwordResetToken;
+        set => SetProperty(ref _passwordResetToken, value);
+    }
+
+    // ---------------------------------------------------------
+    // PasswordResetTokenExpiryUtc
+    // ---------------------------------------------------------
+    private DateTime? _passwordResetTokenExpiryUtc;
+    public DateTime? PasswordResetTokenExpiryUtc
+    {
+        get => _passwordResetTokenExpiryUtc;
+        set => SetProperty(ref _passwordResetTokenExpiryUtc, value);
+    }
+
     // ---------------------------------------------------------
     // Writer
     // ---------------------------------------------------------

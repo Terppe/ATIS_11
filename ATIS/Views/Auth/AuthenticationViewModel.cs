@@ -5,8 +5,20 @@ namespace ATIS.Views.Auth;
 
 public partial class AuthenticationViewModel : ObservableObject
 {
+    #region [ Fields / state ]
+    // ---------------------------------------------------------
+
     private readonly IAuthenticationService _authService;
     private readonly IUserService _userService;
+    public event EventHandler? LoginSucceeded;
+    public event EventHandler? RegisterSucceeded;
+    public event EventHandler? PasswordChangedSucceeded;
+
+    #endregion
+
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
 
     public AuthenticationViewModel(
         IAuthenticationService authService,
@@ -19,26 +31,17 @@ public partial class AuthenticationViewModel : ObservableObject
         RegisterCommand = new AsyncRelayCommand<string?>(RegisterAsync);
         ForgotPasswordCommand = new AsyncRelayCommand(ForgotPasswordAsync);
         ChangePasswordCommand = new AsyncRelayCommand(ChangePasswordAsync);
-
+        ResetPasswordWithCodeCommand = new AsyncRelayCommand(ResetPasswordWithCodeAsync);
     }
+
+    #region UI STATE
+    // ---------------------------------------------------------                   
 
     private string? _email;
     public string? Email { get => _email; set => SetProperty(ref _email, value); }
 
-    private string? _firstName;
-    public string? FirstName { get => _firstName; set => SetProperty(ref _firstName, value); }
-
-    private string? _lastName;
-    public string? LastName { get => _lastName; set => SetProperty(ref _lastName, value); }
-
-    private string? _role = "Developer";
-    public string? Role { get => _role; set => SetProperty(ref _role, value); }
-
-    private string? _password;
-    public string? Password { get => _password; set => SetProperty(ref _password, value); }
-
-    private string? _currentPassword;
-    public string? CurrentPassword { get => _currentPassword; set => SetProperty(ref _currentPassword, value); }
+    private string? _resetCode;
+    public string? ResetCode { get => _resetCode; set => SetProperty(ref _resetCode, value); }
 
     private string? _newPassword;
     public string? NewPassword { get => _newPassword; set => SetProperty(ref _newPassword, value); }
@@ -49,11 +52,23 @@ public partial class AuthenticationViewModel : ObservableObject
     private string _errorMessage = string.Empty;
     public string ErrorMessage { get => _errorMessage; set => SetProperty(ref _errorMessage, value); }
 
-    private string _statusMessage = string.Empty;
-    public string StatusMessage { get => _statusMessage; set => SetProperty(ref _statusMessage, value); }
+    private string? _role = "User";
+    public string? Role { get => _role; set => SetProperty(ref _role, value); }
+
+    private string? _password;
+    public string? Password { get => _password; set => SetProperty(ref _password, value); }
 
     private bool _isBusy;
     public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
+
+    private bool _resetCodeSent; // steuert Stufe 2
+    public bool ResetCodeSent { get => _resetCodeSent; set => SetProperty(ref _resetCodeSent, value); }
+
+    private string? _currentPassword;
+    public string? CurrentPassword { get => _currentPassword; set => SetProperty(ref _currentPassword, value); }
+
+    private string _statusMessage = string.Empty;
+    public string StatusMessage { get => _statusMessage; set => SetProperty(ref _statusMessage, value); }
 
     private bool _canLogin;
     public bool CanLogin { get => !_canLogin; set => SetProperty(ref _canLogin, !value); }
@@ -65,12 +80,11 @@ public partial class AuthenticationViewModel : ObservableObject
     public IAsyncRelayCommand<string?> RegisterCommand { get; }
     public IAsyncRelayCommand ForgotPasswordCommand { get; }
     public IAsyncRelayCommand ChangePasswordCommand { get; }
+    public IAsyncRelayCommand ResetPasswordWithCodeCommand { get; }
 
+    #endregion
 
-
-    public event EventHandler? LoginSucceeded;
-    public event EventHandler? RegisterSucceeded;
-    public event EventHandler? PasswordChangedSucceeded;
+    #region [ METHODS ]
 
     private static bool IsValidEmail(string? value)
     {
@@ -78,7 +92,6 @@ public partial class AuthenticationViewModel : ObservableObject
         return Regex.IsMatch(value,
             @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$");
     }
-
     private async Task LoginAsync(string? clearTextPassword)
     {
         if (IsBusy) return;
@@ -122,7 +135,6 @@ public partial class AuthenticationViewModel : ObservableObject
             IsBusy = false;
         }
     }
-
     private async Task RegisterAsync(string? clearTextPassword)
     {
         if (IsBusy) return;
@@ -162,39 +174,43 @@ public partial class AuthenticationViewModel : ObservableObject
             IsBusy = false;
         }
     }
-
     private async Task ForgotPasswordAsync()
     {
         if (IsBusy) return;
         ErrorMessage = "";
         Status = "";
 
+        Email = Email?.Trim();
+
         if (!IsValidEmail(Email))
         {
-            ErrorMessage = "Bitte gültige Email eingeben.";
+            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
             return;
         }
 
         try
         {
             IsBusy = true;
-            var exists = await _authService.RequestPasswordResetAsync(Email!);
 
-            // bewusst neutral (kein User-Leak)
-            Status = exists
-                ? "Falls ein Konto existiert, wurden Reset-Schritte ausgelöst."
-                : "Falls ein Konto existiert, wurden Reset-Schritte ausgelöst.";
+            var ok = await _authService.RequestPasswordResetAsync(Email!, CancellationToken.None);
+
+            if (!ok)
+                System.Diagnostics.Debug.WriteLine($"Reset: Benutzer nicht gefunden: {Email}");
+
+            Status = "Wenn die E-Mail existiert, wurde ein Code gesendet.";
+            ResetCodeSent = true; // NUR hier, nach erfolgreichem Call
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            System.Diagnostics.Debug.WriteLine(ex);
+            ErrorMessage = "Der Code konnte nicht gesendet werden. Bitte später erneut versuchen.";
+            ResetCodeSent = false; // explizit
         }
         finally
         {
             IsBusy = false;
         }
     }
-
     private async Task ChangePasswordAsync()
     {
         if (IsBusy) return;
@@ -230,4 +246,53 @@ public partial class AuthenticationViewModel : ObservableObject
             IsBusy = false;
         }
     }
+    private async Task ResetPasswordWithCodeAsync()
+    {
+        if (IsBusy) return;
+        ErrorMessage = "";
+        Status = "";
+
+        Email = Email?.Trim();
+        ResetCode = ResetCode?.Trim();
+
+        if (!IsValidEmail(Email))
+        {
+            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(ResetCode))
+        {
+            ErrorMessage = "Code ist erforderlich.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(NewPassword))
+        {
+            ErrorMessage = "Neues Passwort ist erforderlich.";
+            return;
+        }
+
+        try
+        {
+            IsBusy = true;
+            await _authService.ResetPasswordWithCodeAsync(Email!, ResetCode!, NewPassword!, CancellationToken.None);
+
+            Status = "Passwort wurde erfolgreich geändert.";
+            ResetCode = "";
+            NewPassword = "";
+            ResetCodeSent = false;
+            PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    #endregion
 }

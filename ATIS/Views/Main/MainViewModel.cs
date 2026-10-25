@@ -149,27 +149,6 @@ public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAw
         IsLoading = false;
     }
 
-
-    public async Task RequestCloseAsync()
-    {
-        var dialog = new ContentDialog
-        {
-            XamlRoot = App.MainWindow.Content.XamlRoot,
-            Title = StringsRes.WantToCloseApp,
-            PrimaryButtonText = StringsRes.Yes,
-            CloseButtonText = StringsRes.No,
-            DefaultButton = ContentDialogButton.Close
-        };
-
-        var result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.Primary)
-        {
-            SimpleLog.Info(StringsRes.AppClosed);
-            App.MainWindow.Close();
-        }
-    }
-
     private async Task CheckSql_DbAsync()
     {
         var serverName = ConfigurationManager.AppSettings.Get("ServerName");

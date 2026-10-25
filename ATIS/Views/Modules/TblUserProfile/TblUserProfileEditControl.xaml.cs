@@ -63,7 +63,7 @@ public sealed partial class TblUserProfileEditControl : UserControl
     // APPLY ITEM
     // ---------------------------------------------------------                   
 
-    private void ApplyItem(Models.TblUserProfile? newItem)
+    public void ApplyItem(Models.TblUserProfile? newItem)
     {
         // ⭐ WICHTIG:
         // KEIN DataContext-Wechsel!

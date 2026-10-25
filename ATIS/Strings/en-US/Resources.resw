@@ -1899,6 +1899,18 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="Account_Delete_Done_Title" xml:space="preserve">
+    <value>Account Delete</value>
+  </data>
+  <data name="Account_Delete_Password_Title" xml:space="preserve">
+    <value>Passwort insert</value>
+  </data>
+  <data name="Account_Delete_Password_Message" xml:space="preserve">
+    <value>Passwort insert to delete the Account</value>
+  </data>
+  <data name="Account_Delete_Done_Message" xml:space="preserve">
+    <value>Account Delete done </value>
+  </data>
   <data name="TextBlock_Add.Text" xml:space="preserve">
     <value>New</value>
   </data>

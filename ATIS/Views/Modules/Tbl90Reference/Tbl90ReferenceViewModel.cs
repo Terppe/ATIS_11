@@ -9,7 +9,7 @@ namespace ATIS.Views.Modules.Tbl90Reference;
 
 public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Reference>
 {
-    #region Fields / state
+    #region [ Fields / state ]
     // ---------------------------------------------------------
 
     private readonly LookupService _lookupService;
@@ -33,7 +33,7 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
         _lookupService = lookupService;
     }
 
-    #region LOOKUPS
+    #region [ LOOKUPS ]
     // ---------------------------------------------------------
     public ObservableCollection<Models.Tbl90RefAuthor> RefAuthorsList { get; } = new();
     public ObservableCollection<Models.Tbl90RefExpert> RefExpertsList { get; } = new();

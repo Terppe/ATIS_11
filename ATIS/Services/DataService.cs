@@ -10178,6 +10178,8 @@ public partial class DataService : ObservableObject, IDataService
         target.MailNewsletter = source.MailNewsletter;
         target.MaulHtml = source.MaulHtml;
         target.Known = source.Known;
+        target.PasswordResetToken = source.PasswordResetToken;
+        target.PasswordResetTokenExpiryUtc = source.PasswordResetTokenExpiryUtc;
     }
 
     // ---------------------------------------------------------                  
@@ -10247,6 +10249,8 @@ public partial class DataService : ObservableObject, IDataService
             x.MailNewsletter == entity.MailNewsletter &&
             x.MaulHtml == entity.MaulHtml &&
             x.Known == entity.Known &&
+            x.PasswordResetToken == entity.PasswordResetToken &&
+            x.PasswordResetTokenExpiryUtc == entity.PasswordResetTokenExpiryUtc &&
             x.UserProfileId != entity.UserProfileId
         );
     }
