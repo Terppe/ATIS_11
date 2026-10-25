@@ -16,11 +16,15 @@ jobs:
       - name: Restore
         run: dotnet restore ATIS.slnx
 
-      - name: Show Version
-        run: echo "Version=10.6.0.${{ github.run_number }}"
+      - name: Set CI Version
+        shell: bash
+        run: echo "ATIS_VERSION=10.6.0.${{ github.run_number }}" >> $GITHUB_ENV
+
+      - name: Show CI Version
+        run: echo "ATIS_VERSION=${{ env.ATIS_VERSION }}"
 
       - name: Build
-        run: dotnet build ATIS.slnx --no-restore --configuration Release -p:Version=10.6.0.${{ github.run_number }}
+        run: dotnet build ATIS.slnx --no-restore --configuration Release -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
 
       - name: Check outdated NuGet packages
         run: dotnet list ATIS.slnx package --outdated

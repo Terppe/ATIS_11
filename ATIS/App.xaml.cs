@@ -6,7 +6,6 @@ using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
-using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Auth;
 using ATIS.Views.Main;
@@ -68,8 +67,12 @@ public partial class App : Application
     public static IServiceProvider? Services { get; private set; }
     public static FrameworkElement? MainRoot { get; private set; }
     public new static App Current => (App)Application.Current;
-    public string? AppVersion { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-    public string? AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
+    public string AppVersion { get; set; } =
+        Assembly.GetExecutingAssembly()
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion
+        ?? Assembly.GetExecutingAssembly().GetName().Version?.ToString()
+        ?? "unknown"; public string? AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
     public string? Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
     public static string? Cult = "";
     private SplashWindow splash;
