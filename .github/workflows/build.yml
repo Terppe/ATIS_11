@@ -16,6 +16,9 @@ jobs:
       - name: Restore
         run: dotnet restore ATIS.slnx
 
+      - name: Show Version
+        run: echo "Version=10.6.0.${{ github.run_number }}"
+
       - name: Build
         run: dotnet build ATIS.slnx --no-restore --configuration Release -p:Version=10.6.0.${{ github.run_number }}
 

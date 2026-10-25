@@ -1013,7 +1013,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     });
                     table.Cell().Text("");
                     table.Cell().Text(Loc("LdaNumberLdaOrigin"));
-                    table.Cell().Text($"{Model.LdaNumber} / {Model.LdaOrigin}");
+                    table.Cell().Text($"{Model.LDANumber} / {Model.LDAOrigin}");
                 });
                 column.Item().Table(table =>
                 {

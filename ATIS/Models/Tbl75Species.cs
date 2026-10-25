@@ -301,7 +301,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     [StringLength(10)] private string? _ldaNumber;
 
-    public string? LdaNumber
+    public string? LDANumber
     {
         get => _ldaNumber;
         set
@@ -311,15 +311,15 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         }
     }
 
-    [NotMapped] public string? LdaNumberError { get; set; }
-    [NotMapped] public bool HasLdaNumberError { get; set; }
+    [NotMapped] public string? LDANumberError { get; set; }
+    [NotMapped] public bool HasLDANumberError { get; set; }
 
     // ---------------------------------------------------------
     // LdaOrigin
     // ---------------------------------------------------------
     [StringLength(50)] private string? _ldaOrigin;
 
-    public string? LdaOrigin
+    public string? LDAOrigin
     {
         get => _ldaOrigin;
         set
@@ -329,8 +329,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         }
     }
 
-    [NotMapped] public string? LdaOriginError { get; set; }
-    [NotMapped] public bool HasLdaOriginError { get; set; }
+    [NotMapped] public string? LDAOriginError { get; set; }
+    [NotMapped] public bool HasLDAOriginError { get; set; }
 
     // ---------------------------------------------------------
     // BasinLength (> 0)
@@ -517,14 +517,14 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
                 HasLOriginError = hasErrors;
                 break;
 
-            case nameof(LdaNumber):
-                LdaNumberError = message;
-                HasLdaNumberError = hasErrors;
+            case nameof(LDANumber):
+                LDANumberError = message;
+                HasLDANumberError = hasErrors;
                 break;
 
-            case nameof(LdaOrigin):
-                LdaOriginError = message;
-                HasLdaOriginError = hasErrors;
+            case nameof(LDAOrigin):
+                LDAOriginError = message;
+                HasLDAOriginError = hasErrors;
                 break;
 
             case nameof(Creature):
@@ -725,24 +725,24 @@ Notify:
 
     private void ValidateLdaNumber()
     {
-        ClearErrors(nameof(LdaNumber));
+        ClearErrors(nameof(LDANumber));
         var loc = Localizer.Get();
 
-        if (!string.IsNullOrWhiteSpace(LdaNumber) && !LdaNumber.All(char.IsDigit))
-            AddError(nameof(LdaNumber), loc.GetLocalizedString("Error_LdaNumber_NotNumeric"));
+        if (!string.IsNullOrWhiteSpace(LDANumber) && !LDANumber.All(char.IsDigit))
+            AddError(nameof(LDANumber), loc.GetLocalizedString("Error_LDANumber_NotNumeric"));
 
-        UpdateErrorProperty(nameof(LdaNumber));
+        UpdateErrorProperty(nameof(LDANumber));
     }
 
     private void ValidateLdaOrigin()
     {
-        ClearErrors(nameof(LdaOrigin));
+        ClearErrors(nameof(LDAOrigin));
         var loc = Localizer.Get();
 
-        if (LdaOrigin?.Length > 50)
-            AddError(nameof(LdaOrigin), loc.GetLocalizedString("Error_LdaOrigin_TooLong"));
+        if (LDAOrigin?.Length > 50)
+            AddError(nameof(LDAOrigin), loc.GetLocalizedString("Error_LDAOrigin_TooLong"));
 
-        UpdateErrorProperty(nameof(LdaOrigin));
+        UpdateErrorProperty(nameof(LDAOrigin));
     }
 
     private void ValidateCreature()

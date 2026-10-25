@@ -6758,8 +6758,8 @@ public partial class DataService : ObservableObject, IDataService
         target.TypeSpecies = source.TypeSpecies;
         target.LNumber = source.LNumber;
         target.LOrigin = source.LOrigin;
-        target.LdaNumber = source.LdaNumber;
-        target.LdaOrigin = source.LdaOrigin;
+        target.LDANumber = source.LDANumber;
+        target.LDAOrigin = source.LDAOrigin;
         target.BasinLength = source.BasinLength;
         target.FishLength = source.FishLength;
         target.Karnivore = source.Karnivore;

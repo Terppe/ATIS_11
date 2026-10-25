@@ -1049,11 +1049,11 @@ public class PdfModels
         {
             get; set;
         }
-        public string? LdaNumber
+        public string? LDANumber
         {
             get; set;
         }
-        public string? LdaOrigin
+        public string? LDAOrigin
         {
             get; set;
         }

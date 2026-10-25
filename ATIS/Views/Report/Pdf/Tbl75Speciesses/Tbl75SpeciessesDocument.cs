@@ -1048,8 +1048,8 @@ public class Tbl75SpeciessesDocument : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Loc("LdaNumberLdaOrigin"));
-                    table.Cell().Text($"{Model.LdaNumber} / {Model.LdaOrigin}");
+                    table.Cell().Text(Loc("LDANumberLDAOrigin"));
+                    table.Cell().Text($"{Model.LDANumber} / {Model.LDAOrigin}");
                 });
                 column.Item().Table(table =>
                 {

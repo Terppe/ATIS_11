@@ -531,13 +531,13 @@
                                          loc:Uids.Uid="TextBox_LdaNumber"
                                          Loaded="LdaNumberBox_OnLoaded"
                                          Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.LdaNumber, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding Item.LDANumber, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          TextChanged="LdaNumberBox_OnTextChanged" />
                                 <TextBlock Height="18"
                                            FontSize="10"
                                            Foreground="Red"
-                                           Text="{Binding Item.LdaNumberError, ElementName=Root}"
-                                           Visibility="{Binding Item.HasLdaNumberError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                           Text="{Binding Item.LDANumberError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasLDANumberError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </StackPanel>
 
                             <StackPanel MinWidth="150"
@@ -547,13 +547,13 @@
                                          loc:Uids.Uid="TextBox_LdaOrigin"
                                          Loaded="LdaOriginBox_OnLoaded"
                                          Style="{StaticResource AtisTextBox}"
-                                         Text="{Binding Item.LdaOrigin, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding Item.LDAOrigin, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          TextChanged="LdaOriginBox_OnTextChanged" />
                                 <TextBlock Height="18"
                                            FontSize="10"
                                            Foreground="Red"
-                                           Text="{Binding Item.LdaOriginError, ElementName=Root}"
-                                           Visibility="{Binding Item.HasLdaOriginError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                           Text="{Binding Item.LDAOriginError, ElementName=Root}"
+                                           Visibility="{Binding Item.HasLDAOriginError, ElementName=Root, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </StackPanel>
                         </StackPanel>
                     </Grid>

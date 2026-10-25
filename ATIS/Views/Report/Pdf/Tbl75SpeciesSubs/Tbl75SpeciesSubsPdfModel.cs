@@ -23,8 +23,8 @@ public class Tbl75SpeciesSubsPdfModel
     public bool? TypeSpecies { get; set; }
     public string? LNumber { get; set; }
     public string? LOrigin { get; set; }
-    public string? LdaNumber { get; set; }
-    public string? LdaOrigin { get; set; }
+    public string? LDANumber { get; set; }
+    public string? LDAOrigin { get; set; }
     public int? BasinLength { get; set; }
     public decimal? FishLength { get; set; }
     public bool? Karnivore { get; set; }

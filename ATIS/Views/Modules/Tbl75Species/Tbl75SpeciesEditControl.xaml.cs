@@ -228,12 +228,12 @@ public sealed partial class Tbl75SpeciesEditControl : UserControl
 
     private void LdaNumberBox_OnLoaded(object sender, RoutedEventArgs e)
     {
-        UpdateValidationState(LdaNumberBox, Item?.HasLdaNumberError ?? false);
+        UpdateValidationState(LdaNumberBox, Item?.HasLDANumberError ?? false);
     }
 
     private void LdaNumberBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        UpdateValidationState(LdaNumberBox, Item?.HasLdaNumberError ?? false);
+        UpdateValidationState(LdaNumberBox, Item?.HasLDANumberError ?? false);
     }
 
     // ---------------------------------------------------------                   
@@ -242,12 +242,12 @@ public sealed partial class Tbl75SpeciesEditControl : UserControl
 
     private void LdaOriginBox_OnLoaded(object sender, RoutedEventArgs e)
     {
-        UpdateValidationState(LdaOriginBox, Item?.HasLdaOriginError ?? false);
+        UpdateValidationState(LdaOriginBox, Item?.HasLDAOriginError ?? false);
     }
 
     private void LdaOriginBox_OnTextChanged(object sender, TextChangedEventArgs e)
     {
-        UpdateValidationState(LdaOriginBox, Item?.HasLdaOriginError ?? false);
+        UpdateValidationState(LdaOriginBox, Item?.HasLDAOriginError ?? false);
     }
 
 
