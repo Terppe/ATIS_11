@@ -1289,3 +1289,26 @@ LoginViewModel ,RegisterViewModel ,PasswordForgotVm, PasswordChangeVm. Nur Authe
 git add .github/workflows/build.yml
 git commit -m "CI: remove WinUICommunity workaround, keep clean build pipeline"
 git push
+//-------------------------------------
+Direct pushen nach Atis_11
+git status
+git config --global user.name "Terppe"
+git config --global user.email "DEINE_GITHUB_MAIL"
+git add -A
+git commit -m "Baseline for ATIS_11"
+git remote -v
+git remote rename origin old-origin
+git remote add origin https://github.com/Terppe/ATIS_11.git
+git push -u origin master
+//-------------------------------------
+Dein täglicher Ablauf
+In Visual Studio im Ordner ATIS_V10.6.0.2610_000 arbeiten, wie bisher.
+Wenn etwas fertig ist, in der PowerShell:
+PowerShell
+
+cd D:\Develop\T\Atis\V10.6.0.2610\ATIS_V10.6.0.2610_000
+git add -A
+git commit -m "build.yml Version geändert auf 11.0.0"
+git push
+
+Auf GitHub im Tab Actions prüfen, ob der Build grün ist.

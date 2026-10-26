@@ -18,7 +18,7 @@ jobs:
       - name: Set CI Version
         shell: pwsh
         run: |
-          "ATIS_VERSION=10.6.0.${{ github.run_number }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "ATIS_VERSION=11.0.0.${{ github.run_number }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Show CI Version
         shell: pwsh
