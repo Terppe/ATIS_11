@@ -67,9 +67,10 @@ jobs:
             foreach ($rid in "win-x86","win-x64","win-arm64") {
               $dll = Join-Path $base "runtimes\$rid\native\WebView2Loader.dll"
               if (-not (Test-Path $dll)) {
-                Set-Content -Path $dll -Value "" -Encoding Byte
+                [IO.File]::WriteAllBytes($dll, [byte[]]@())
               }
             }
           }
       - name: Build
         run: dotnet build ATIS/ATIS.csproj --no-restore -c Release -p:Platform=x64 -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
+
