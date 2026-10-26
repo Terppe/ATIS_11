@@ -25,54 +25,8 @@ jobs:
         run: |
           Write-Host "ATIS_VERSION=$env:ATIS_VERSION"
 
-      - name: Clear NuGet cache
-        run: dotnet nuget locals all --clear
-
       - name: Restore
         run: dotnet restore ATIS/ATIS.csproj -p:Platform=x64 --force
 
-      - name: Diagnose WinUICommunity package
-        shell: pwsh
-        run: |
-          $p1 = "$env:USERPROFILE\.nuget\packages\winuicommunity.core\7.1.0"
-          $p2 = "$env:USERPROFILE\.nuget\packages\winuicommunity.landingpages\7.1.0"
-          Write-Host "CORE exists: $(Test-Path $p1)"
-          Write-Host "LANDING exists: $(Test-Path $p2)"
-          Write-Host "CORE WebView2Loader.dll:"
-          Get-ChildItem $p1 -Recurse -Filter WebView2Loader.dll -ErrorAction SilentlyContinue | Select-Object -First 10 FullName
-          Write-Host "LANDING WebView2Loader.dll:"
-          Get-ChildItem $p2 -Recurse -Filter WebView2Loader.dll -ErrorAction SilentlyContinue | Select-Object -First 10 FullName
-
-      - name: Patch missing WinUICommunity files
-        shell: pwsh
-        run: |
-          $root = "$env:USERPROFILE\.nuget\packages"
-          $map = @(
-            "winuicommunity.core\7.1.0\lib\net8.0-windows10.0.26100\WinUICommunity.Core",
-            "winuicommunity.landingpages\7.1.0\lib\net8.0-windows10.0.26100\WinUICommunity.LandingPages",
-            "winuicommunity.components\7.1.0\lib\net8.0-windows10.0.26100\WinUICommunity.Components"
-          )
-
-          foreach ($rel in $map) {
-            $base = Join-Path $root $rel
-            New-Item -ItemType Directory -Force -Path (Join-Path $base "Assets") | Out-Null
-            New-Item -ItemType Directory -Force -Path (Join-Path $base "runtimes\win-x86\native") | Out-Null
-            New-Item -ItemType Directory -Force -Path (Join-Path $base "runtimes\win-x64\native") | Out-Null
-            New-Item -ItemType Directory -Force -Path (Join-Path $base "runtimes\win-arm64\native") | Out-Null
-
-            if (-not (Test-Path (Join-Path $base "Assets\icon.png"))) {
-              [byte[]]$png = 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,1,0,0,0,1,8,6,0,0,0,31,21,196,137,0,0,0,13,73,68,65,84,120,156,99,0,1,0,0,5,0,1,13,10,45,180,0,0,0,0,73,69,78,68,174,66,96,130
-              [IO.File]::WriteAllBytes((Join-Path $base "Assets\icon.png"), $png)
-            }
-
-            foreach ($rid in "win-x86","win-x64","win-arm64") {
-              $dll = Join-Path $base "runtimes\$rid\native\WebView2Loader.dll"
-              if (-not (Test-Path $dll)) {
-                [IO.File]::WriteAllBytes($dll, [byte[]]@())
-              }
-            }
-          }
       - name: Build
         run: dotnet build ATIS/ATIS.csproj --no-restore -c Release -p:Platform=x64 -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
-
-
