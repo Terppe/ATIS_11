@@ -66,9 +66,6 @@
 		<PackageReference Include="QuestPDF" Version="2026.9.1" />
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
-		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
-		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
-		<PackageReference Include="WinUICommunity.LandingPages" Version="7.1.0" />
 	</ItemGroup>
 
   <PropertyGroup>
@@ -87,7 +84,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" ExcludeAssets="buildTransitive" />
-		<PackageReference Include="WinUIEx" Version="2.9.3" />
 	</ItemGroup>
 
 	<!--<PropertyGroup>
@@ -250,15 +246,6 @@
 		<Page Update="Themes\ATISTheme.xaml">
 			<SubType>Designer</SubType>
 		</Page>
-	<Page Update="Views\Report\Pdf\TblMiscellaneous\ReportMiscellaneoussesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Report\Pdf\TblFoods\ReportFoodsWindow.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\Search\SearchItemTemplateTblFoodControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -705,9 +692,6 @@
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml" />
 		<None Remove="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml" />
-		<None Remove="Views\Report\Pdf\TblDisease\ReportDiseasesWindow.xaml" />
-		<None Remove="Views\Report\Pdf\TblFoods\ReportFoodsWindow.xaml" />
-		<None Remove="Views\Report\Pdf\TblMiscellaneous\ReportMiscellaneoussesWindow.xaml" />
 		<None Remove="Views\Report\ReportResources.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateFiSpeciesControl.xaml" />
 		<None Remove="Views\Search\DataTemplates\ReportItemTemplateGeographicControl.xaml" />
