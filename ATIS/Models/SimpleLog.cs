@@ -471,7 +471,7 @@ public static class SimpleLog
     /// <param name="writeText"><see cref="WriteText"/> for details. When null is passed here, <see cref="WriteText"/> is not set.</param>
     /// <param name="textSeparator"><see cref="TextSeparator"/> for details. When null is passed here, <see cref="TextSeparator"/> is not set.</param>
     /// <returns>Null on success, otherwise an exception with what went wrong.</returns>
-    public static Exception SetLogFile(string logDir = null, string prefix = null, string suffix = null, string extension = null, string dateFormat = null, Severity? logLevel = null, bool? startExplicitly = null, bool check = true, bool? writeText = null, string textSeparator = null)
+    public static Exception SetLogFile(string? logDir = null, string? prefix = null, string? suffix = null, string? extension = null, string? dateFormat = null, Severity? logLevel = null, bool? startExplicitly = null, bool check = true, bool? writeText = null, string? textSeparator = null)
     {
         Exception result = null!;
 

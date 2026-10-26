@@ -253,8 +253,8 @@ public class Tbl33Ordo : ObservableObject, IDataService.IAuditable, IHierarchica
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string? _writer;
-    public string? Writer
+    private string _writer;
+    public string Writer
     {
         get => _writer;
         set => SetProperty(ref _writer, value);

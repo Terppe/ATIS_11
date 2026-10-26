@@ -1285,4 +1285,7 @@ LoginViewModel ,RegisterViewModel ,PasswordForgotVm, PasswordChangeVm. Nur Authe
 ----------------------------------------
 26.10.2026 10:30 Uhr Nuget
 ----------------------------------------
-26.10.2026 11:30 Uhr Versioning und update weiter
+26.10.2026 11:30 Uhr Versioning und update weiter.Pwershell:
+git add .github/workflows/build.yml
+git commit -m "CI: remove WinUICommunity workaround, keep clean build pipeline"
+git push
