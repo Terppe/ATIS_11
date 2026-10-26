@@ -1305,10 +1305,17 @@ Dein täglicher Ablauf
 In Visual Studio im Ordner ATIS_V10.6.0.2610_000 arbeiten, wie bisher.
 Wenn etwas fertig ist, in der PowerShell:
 PowerShell
+//-------------------------------------
 
-cd D:\Develop\T\Atis\V10.6.0.2610\ATIS_V10.6.0.2610_000
+cd D:\Develop\T\Atis\V11\ATIS_11
 git add -A
 git commit -m "build.yml Version geändert auf 11.0.0"
 git push
 
+//-------------------------------------
+cd D:\Develop\T\Atis\V10.6.0.2610\ATIS_V10.6.0.2610_000
+git add -A
+git commit -m "Kurze Beschreibung, was du gemacht hast"
+git push
+//-------------------------------------
 Auf GitHub im Tab Actions prüfen, ob der Build grün ist.
