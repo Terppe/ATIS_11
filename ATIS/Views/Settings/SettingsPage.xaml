@@ -6,9 +6,8 @@
       xmlns:local="using:ATIS"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:settings="using:ATIS.Views.Settings"
-      xmlns:wuc="using:WinUICommunity"
       mc:Ignorable="d">
-    <ScrollView Margin="{ThemeResource ContentPageMargin}"
+    <!--<ScrollView Margin="{ThemeResource ContentPageMargin}"
                 HorizontalAlignment="Stretch"
                 VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="10"
@@ -46,6 +45,6 @@
                               IsClickEnabled="True" />
 
         </StackPanel>
-    </ScrollView>
+    </ScrollView>-->
 </Page>
 

@@ -8,7 +8,7 @@ public partial class GitUpdateSettingViewModel : ObservableObject
 
     public GitUpdateSettingViewModel()
     {
-        UpdateCommand = new AsyncRelayCommand(OnUpdateAsync);
+       // UpdateCommand = new AsyncRelayCommand(OnUpdateAsync);
     }
 
     //[ObservableProperty]
@@ -25,7 +25,7 @@ public partial class GitUpdateSettingViewModel : ObservableObject
     public string TagName { get; set; }
     public string Changelog { get; set; }
 
-    //    public ObservableCollection<string> Assets { get; } = new();
+        public ObservableCollection<string> Assets { get; } = new();
 
     //[ObservableProperty]
     //private string releaseUrl;
@@ -45,35 +45,35 @@ public partial class GitUpdateSettingViewModel : ObservableObject
     //[ObservableProperty]
     //private string changelog;
 
-    public ObservableCollection<string> Assets { get; } = new();
+ //   public ObservableCollection<string> Assets { get; } = new();
 
-    private async Task OnUpdateAsync()
-    {
-        if (string.IsNullOrEmpty(User) || string.IsNullOrEmpty(Repo))
-        {
-            User = "Terppe";
-            Repo = "ATIS";
-        }
+    //private async Task OnUpdateAsync()
+    //{
+    //    //if (string.IsNullOrEmpty(User) || string.IsNullOrEmpty(Repo))
+        //{
+        //    User = "Terppe";
+        //    Repo = "ATIS";
+        //}
 
-        var ver = await Update.UpdateHelper.CheckUpdateAsync(User, Repo);
+// //       var ver = await Update.UpdateHelper.CheckUpdateAsync(User, Repo);
 
-        if (ver.IsExistNewVersion)
-        {
-            ReleaseUrl = $"Release Url: {ver.HtmlUrl}";
-            CreatedAt = $"Created At: {ver.CreatedAt}";
-            PublishedAt = $"Published At: {ver.PublishedAt}";
-            IsPreRelease = $"Is PreRelease: {ver.IsPreRelease}";
-            TagName = $"Tag Name: {ver.TagName}";
-            Changelog = $"Changelog: {ver.Changelog}";
+//        if (ver.IsExistNewVersion)
+//        {
+//            ReleaseUrl = $"Release Url: {ver.HtmlUrl}";
+//            CreatedAt = $"Created At: {ver.CreatedAt}";
+//            PublishedAt = $"Published At: {ver.PublishedAt}";
+//            IsPreRelease = $"Is PreRelease: {ver.IsPreRelease}";
+//            TagName = $"Tag Name: {ver.TagName}";
+//            Changelog = $"Changelog: {ver.Changelog}";
 
-            Assets.Clear();
-            foreach (var item in ver.Assets!)
-            {
-                Assets.Add($"{item.Url}\nSize: {item.Size}");
-            }
-        }
-    }
-}
+//            Assets.Clear();
+//            foreach (var item in ver.Assets!)
+//            {
+//                Assets.Add($"{item.Url}\nSize: {item.Size}");
+//            }
+//        }
+//    }
+//}
 
 //public partial class GitUpdateSettingViewModel : ObservableObject
 //{
@@ -116,4 +116,4 @@ public partial class GitUpdateSettingViewModel : ObservableObject
 //            }
 //        }
 //    }
-//}
+}

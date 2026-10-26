@@ -5,19 +5,16 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:loc="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:wuc="using:WinUICommunity"
       mc:Ignorable="d">
 
     <Grid RowDefinitions="45, *">
         <TitleBar x:Name="AppTitleBar"
-                  Title="{x:Bind wuc:ProcessInfoHelper.ProductName}"
                   Grid.Row="0"
                   BackRequested="AppTitleBar_OnBackRequested"
-                  IconSource="{wuc:BitmapIconSource Source=ms-appx:///Assets/icon.png}"
                   IsBackButtonVisible="True"
                   IsPaneToggleButtonVisible="True"
                   PaneToggleRequested="AppTitleBar_OnPaneToggleRequested"
-                  Subtitle="{x:Bind wuc:ProcessInfoHelper.VersionWithPrefix}">
+                  >
             <TitleBar.Content>
                 <StackPanel Orientation="Horizontal">
                     <MenuBar x:Name="MenuBar"
@@ -226,10 +223,10 @@
                             Height="32"
                             Margin="0,0,4,0"
                             Click="ThemeButton_Click"
-                            Content="{wuc:FontIcon GlyphCode=E793,
-                            FontSize=16}"
                             Style="{ThemeResource SubtleButtonStyle}"
                             ToolTipService.ToolTip="Toggle Theme" />
+                    <FontIcon Glyph="&#xE72B;" />
+
                 </StackPanel>
             </TitleBar.RightHeader>
         </TitleBar>

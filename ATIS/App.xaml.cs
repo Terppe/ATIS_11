@@ -159,8 +159,8 @@ public partial class App : Application
         // 5 ThemeService
         if (Services != null)
         {
-            var themeService = Services.GetService<IThemeService>();
-            themeService?.AutoInitialize(MainWindow);
+            //var themeService = Services.GetService<IThemeService>();
+            //themeService?.AutoInitialize(MainWindow);
         }
 
         // 6 Logging 
@@ -256,7 +256,7 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         // THEME SERVICE (KORREKT)
-        services.AddSingleton<IThemeService, ThemeService>();
+     //   services.AddSingleton<IThemeService, ThemeService>();
 
         // HIERARCHY COORDINATOR - SINGLETON!
         services.AddSingleton<HierarchyCoordinator>();
@@ -443,10 +443,10 @@ public partial class App : Application
         return Services.GetRequiredService<T>();
     }
 
-    public static IThemeService GetThemeService()
-    {
-        return Services.GetRequiredService<IThemeService>();
-    }
+    //public static IThemeService GetThemeService()
+    //{
+    //    return Services.GetRequiredService<IThemeService>();
+    //}
 
 }
 

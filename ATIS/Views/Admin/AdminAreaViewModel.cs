@@ -8,7 +8,7 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using Microsoft.EntityFrameworkCore;
-using RelayCommand = WinUICommunity.RelayCommand;
+using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 
 namespace ATIS.Views.Admin;
 public partial class AdminAreaViewModel : ObservableObject

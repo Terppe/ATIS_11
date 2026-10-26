@@ -32,7 +32,6 @@
                     <Button Command="{Binding CloseEditCommand}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="6">
-                            <FontIcon Glyph="&#xE72B;" />
                             <TextBlock Text="Back" />
                         </StackPanel>
                     </Button>

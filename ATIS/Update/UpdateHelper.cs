@@ -31,66 +31,66 @@ public static class UpdateHelper
     //    return null!;
     //}
 
-    public static async Task<WinUICommunity.UpdateInfo> CheckUpdateAsync(
-    string username,
-    string repository,
-    Version currentVersion = null)
-    {
-        if (string.IsNullOrWhiteSpace(username))
-            throw new ArgumentNullException(nameof(username));
+    //public static async Task<WinUICommunity.UpdateInfo> CheckUpdateAsync(
+    //string username,
+    //string repository,
+    //Version currentVersion = null)
+    //{
+    //    if (string.IsNullOrWhiteSpace(username))
+    //        throw new ArgumentNullException(nameof(username));
 
-        if (string.IsNullOrWhiteSpace(repository))
-            throw new ArgumentNullException(nameof(repository));
+    //    if (string.IsNullOrWhiteSpace(repository))
+    //        throw new ArgumentNullException(nameof(repository));
 
-        using var client = new HttpClient();
-        client.DefaultRequestHeaders.UserAgent.ParseAdd(username);
+    //    using var client = new HttpClient();
+    //    client.DefaultRequestHeaders.UserAgent.ParseAdd(username);
 
-        var url = string.Format(GITHUB_API, username, repository);
-        var response = await client.GetAsync(url);
-        response.EnsureSuccessStatusCode();
+    //    var url = string.Format(GITHUB_API, username, repository);
+    //    var response = await client.GetAsync(url);
+    //    response.EnsureSuccessStatusCode();
 
-        var responseBody = await response.Content.ReadAsStringAsync();
+    //    var responseBody = await response.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<WinUICommunity.UpdateInfo>(responseBody);
+    //    var result = JsonSerializer.Deserialize<WinUICommunity.UpdateInfo>(responseBody);
 
-        if (result is null)
-            return null;
+    //    if (result is null)
+    //        return null;
 
-        // Version ermitteln
-        currentVersion ??= new Version(
-            Windows.ApplicationModel.Package.Current.Id.Version.Major,
-            Windows.ApplicationModel.Package.Current.Id.Version.Minor,
-            Windows.ApplicationModel.Package.Current.Id.Version.Build,
-            Windows.ApplicationModel.Package.Current.Id.Version.Revision);
+    //    // Version ermitteln
+    //    currentVersion ??= new Version(
+    //        Windows.ApplicationModel.Package.Current.Id.Version.Major,
+    //        Windows.ApplicationModel.Package.Current.Id.Version.Minor,
+    //        Windows.ApplicationModel.Package.Current.Id.Version.Build,
+    //        Windows.ApplicationModel.Package.Current.Id.Version.Revision);
 
-        var newVersionInfo = GetAsVersionInfo(result.TagName);
+    //    var newVersionInfo = GetAsVersionInfo(result.TagName);
 
-        var currentVersionInfo = new WinUICommunity.SystemVersionInfo(
-            currentVersion.Major,
-            currentVersion.Minor,
-            currentVersion.Build,
-            currentVersion.Revision);
+    //    var currentVersionInfo = new WinUICommunity.SystemVersionInfo(
+    //        currentVersion.Major,
+    //        currentVersion.Minor,
+    //        currentVersion.Build,
+    //        currentVersion.Revision);
 
-        return new WinUICommunity.UpdateInfo
-        {
-            Changelog = result.Changelog,
-            CreatedAt = result.CreatedAt,
-            Assets = result.Assets,
-            IsPreRelease = result.IsPreRelease,
-            PublishedAt = result.PublishedAt,
-            TagName = result.TagName,
-            AssetsUrl = result.AssetsUrl,
-            Author = result.Author,
-            HtmlUrl = result.HtmlUrl,
-            Name = result.Name,
-            TarballUrl = result.TarballUrl,
-            TargetCommitish = result.TargetCommitish,
-            UploadUrl = result.UploadUrl,
-            Url = result.Url,
-            ZipballUrl = result.ZipballUrl,
-            IsExistNewVersion = newVersionInfo > currentVersionInfo
-        };
-    }
+    //    return new WinUICommunity.UpdateInfo
+    //    {
+    //        Changelog = result.Changelog,
+    //        CreatedAt = result.CreatedAt,
+    //        Assets = result.Assets,
+    //        IsPreRelease = result.IsPreRelease,
+    //        PublishedAt = result.PublishedAt,
+    //        TagName = result.TagName,
+    //        AssetsUrl = result.AssetsUrl,
+    //        Author = result.Author,
+    //        HtmlUrl = result.HtmlUrl,
+    //        Name = result.Name,
+    //        TarballUrl = result.TarballUrl,
+    //        TargetCommitish = result.TargetCommitish,
+    //        UploadUrl = result.UploadUrl,
+    //        Url = result.Url,
+    //        ZipballUrl = result.ZipballUrl,
+    //        IsExistNewVersion = newVersionInfo > currentVersionInfo
+    //    };
+    //}
 
     //  [Obsolete("Obsolete")]
     //public static async Task<WinUICommunity.UpdateInfo> CheckUpdateAsync(string username, string repository, Version currentVersion = null!)
@@ -153,27 +153,27 @@ public static class UpdateHelper
     //    return null!;
     //}
 
-    private static WinUICommunity.SystemVersionInfo GetAsVersionInfo(string version)
-    {
-        var nums = GetVersionNumbers(version).Split('.').Select(int.Parse).ToList();
+    //private static WinUICommunity.SystemVersionInfo GetAsVersionInfo(string version)
+    //{
+    //    var nums = GetVersionNumbers(version).Split('.').Select(int.Parse).ToList();
 
-        if (nums.Count <= 1)
-        {
-            return new WinUICommunity.SystemVersionInfo(nums[0], 0, 0, 0);
-        }
-        else if (nums.Count <= 2)
-        {
-            return new WinUICommunity.SystemVersionInfo(nums[0], nums[1], 0, 0);
-        }
-        else if (nums.Count <= 3)
-        {
-            return new WinUICommunity.SystemVersionInfo(nums[0], nums[1], nums[2], 0);
-        }
-        else
-        {
-            return new WinUICommunity.SystemVersionInfo(nums[0], nums[1], nums[2], nums[3]);
-        }
-    }
+    //    if (nums.Count <= 1)
+    //    {
+    //        return new WinUICommunity.SystemVersionInfo(nums[0], 0, 0, 0);
+    //    }
+    //    else if (nums.Count <= 2)
+    //    {
+    //        return new WinUICommunity.SystemVersionInfo(nums[0], nums[1], 0, 0);
+    //    }
+    //    else if (nums.Count <= 3)
+    //    {
+    //        return new WinUICommunity.SystemVersionInfo(nums[0], nums[1], nums[2], 0);
+    //    }
+    //    else
+    //    {
+    //        return new WinUICommunity.SystemVersionInfo(nums[0], nums[1], nums[2], nums[3]);
+    //    }
+    //}
 
     private static string GetVersionNumbers(string version)
     {

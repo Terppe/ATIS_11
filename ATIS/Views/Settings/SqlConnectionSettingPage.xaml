@@ -5,16 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:userControls="using:ATIS.Views.UserControls"
-      xmlns:wuc="using:WinUICommunity"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       mc:Ignorable="d">
 
     <ScrollView Margin="{ThemeResource ContentPageMargin}"
                 VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="10"
+        <!--<StackPanel Margin="10"
                     wuc:PanelAttach.ChildrenTransitions="Default"
                     Spacing="5">
             <userControls:SqlConnectionSettingsPanelControl />
-        </StackPanel>
+        </StackPanel>-->
     </ScrollView>
 </Page>

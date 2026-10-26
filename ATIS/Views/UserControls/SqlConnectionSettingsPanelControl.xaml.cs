@@ -124,7 +124,7 @@ public sealed partial class SqlConnectionSettingsPanelControl : UserControl, INo
         set
         {
             _builder.ConnectionString = value;
-            CboAuthenticationProtocols.SelectedIndex = (int)_builder.Authentication;
+            //CboAuthenticationProtocols.SelectedIndex = (int)_builder.Authentication;
             OnPropertyChanged();
         }
     }
@@ -229,14 +229,14 @@ public sealed partial class SqlConnectionSettingsPanelControl : UserControl, INo
                 await connection.OpenAsync();
             }
 
-            RedIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-            GreenIcon.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            //RedIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            //GreenIcon.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
         }
         catch (Exception ex)
         {
-            ErrorText.Text = ex.Message;
-            GreenIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-            RedIcon.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+            //ErrorText.Text = ex.Message;
+            //GreenIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            //RedIcon.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
         }
         finally
         {
@@ -251,8 +251,8 @@ public sealed partial class SqlConnectionSettingsPanelControl : UserControl, INo
 
     private void ConnectionFlyout_Opened(object sender, object e)
     {
-        RedIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-        GreenIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+        //RedIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+        //GreenIcon.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
     }
 
     private void Authentication_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -313,26 +313,26 @@ public sealed partial class SqlConnectionSettingsPanelControl : UserControl, INo
 
     private void ActivateUserId()
     {
-        CrdUserId.IsEnabled = true;
+ //       CrdUserId.IsEnabled = true;
     }
 
     private void DeactivateUserId()
     {
         UserId = string.Empty;
         _builder.Remove(nameof(UserId));
-        CrdUserId.IsEnabled = false;
+  //      CrdUserId.IsEnabled = false;
     }
 
     private void ActivatePassword()
     {
-        CrdPassword.IsEnabled = true;
+      //  CrdPassword.IsEnabled = true;
     }
 
     private void DeactivatePassword()
     {
         Password = string.Empty;
         _builder.Remove(nameof(Password));
-        CrdPassword.IsEnabled = false;
+ //       CrdPassword.IsEnabled = false;
     }
 
     private void Database_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

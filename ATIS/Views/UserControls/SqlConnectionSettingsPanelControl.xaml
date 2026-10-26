@@ -4,141 +4,139 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:winUi="using:CommunityToolkit.WinUI"
-             xmlns:wuc="using:WinUICommunity"
              mc:Ignorable="d">
 
     <StackPanel Spacing="6">
-        <wuc:SettingsCard Description="Name or network address of the SQL Server instance."
-                          Header="Instance Name"
-                          HeaderIcon="{winUi:FontIcon Glyph=}">
-            <TextBox MinWidth="200"
-                     Text="{x:Bind Server, Mode=TwoWay}" />
+        <!--<wuc:SettingsCard Description="Name or network address of the SQL Server instance."
+        Header="Instance Name"
+        HeaderIcon="{winUi:FontIcon Glyph=}">
+        <TextBox MinWidth="200"
+        Text="{x:Bind Server, Mode=TwoWay}" />
         </wuc:SettingsCard>
 
         <wuc:SettingsCard Description="Authentication method."
-                          Header="Authentication"
-                          HeaderIcon="{winUi:FontIcon Glyph=}">
-            <ComboBox x:Name="CboAuthenticationProtocols"
-                      MinWidth="200"
-                      ItemsSource="{x:Bind AuthenticationProtocols}"
-                      SelectedIndex="0"
-                      SelectionChanged="Authentication_SelectionChanged" />
+        Header="Authentication"
+        HeaderIcon="{winUi:FontIcon Glyph=}">
+        <ComboBox x:Name="CboAuthenticationProtocols"
+        MinWidth="200"
+        ItemsSource="{x:Bind AuthenticationProtocols}"
+        SelectedIndex="0"
+        SelectionChanged="Authentication_SelectionChanged" />
         </wuc:SettingsCard>
 
         <wuc:SettingsCard x:Name="CrdUserId"
-                          Margin="0,-5,0,0"
-                          Header="User Id"
-                          HeaderIcon="{winUi:FontIcon Glyph=}"
-                          IsEnabled="False">
-            <!--<winUiCommunity:SettingsCard.HeaderIcon>
-                <FontIcon Foreground="Transparent" Glyph="&#xE7EF;" />
-            </winUiCommunity:SettingsCard.HeaderIcon>-->
-            <TextBox MinWidth="200"
-                     Text="{x:Bind UserId, Mode=TwoWay}" />
+        Margin="0,-5,0,0"
+        Header="User Id"
+        HeaderIcon="{winUi:FontIcon Glyph=}"
+        IsEnabled="False">
+        --><!--<winUiCommunity:SettingsCard.HeaderIcon>
+        <FontIcon Foreground="Transparent" Glyph="&#xE7EF;" />
+        </winUiCommunity:SettingsCard.HeaderIcon>--><!--
+        <TextBox MinWidth="200"
+        Text="{x:Bind UserId, Mode=TwoWay}" />
         </wuc:SettingsCard>
 
         <wuc:SettingsCard x:Name="CrdPassword"
-                          Margin="0,-5,0,0"
-                          Header="Password"
-                          HeaderIcon="{winUi:FontIcon Glyph=}"
-                          IsEnabled="False">
-            <!--<winUiCommunity:SettingsCard.HeaderIcon>
-                <FontIcon Foreground="Transparent" Glyph="&#xE7EF;" />
-            </winUiCommunity:SettingsCard.HeaderIcon>-->
-            <PasswordBox MinWidth="200"
-                         Password="{x:Bind Password, Mode=TwoWay}" />
+        Margin="0,-5,0,0"
+        Header="Password"
+        HeaderIcon="{winUi:FontIcon Glyph=}"
+        IsEnabled="False">
+        --><!--<winUiCommunity:SettingsCard.HeaderIcon>
+        <FontIcon Foreground="Transparent" Glyph="&#xE7EF;" />
+        </winUiCommunity:SettingsCard.HeaderIcon>--><!--
+        <PasswordBox MinWidth="200"
+        Password="{x:Bind Password, Mode=TwoWay}" />
         </wuc:SettingsCard>
 
         <wuc:SettingsCard Description="Name of the database."
-                          Header="Database"
-                          HeaderIcon="{winUi:FontIcon Glyph=}">
-            <Grid>
-                <!--  AutoSuggestBox only works properly when the cursor is in the box  -->
-                <!--<AutoSuggestBox Text="{x:Bind Database, Mode=TwoWay}"
-                                QuerySubmitted="Database_QuerySubmitted"
-                                ItemsSource="{x:Bind Databases, Mode=OneWay}"
-                                UpdateTextOnSelect="True"
-                                QueryIcon="Find"
-                                MinWidth="200" />-->
-                <ComboBox MinWidth="200"
-                          DropDownOpened="DatabaseComboBox_DropDownOpened"
-                          IsEditable="True"
-                          ItemsSource="{x:Bind Databases, Mode=OneWay}"
-                          SelectionChanged="Database_SelectionChanged"
-                          Text="{x:Bind Database, Mode=TwoWay}" />
-                <ProgressBar VerticalAlignment="Bottom"
-                             IsIndeterminate="{x:Bind IsFetchingDatabases, Mode=OneWay}" />
-            </Grid>
+        Header="Database"
+        HeaderIcon="{winUi:FontIcon Glyph=}">
+        <Grid>
+        --><!--  AutoSuggestBox only works properly when the cursor is in the box  -->
+        <!--<AutoSuggestBox Text="{x:Bind Database, Mode=TwoWay}"
+        QuerySubmitted="Database_QuerySubmitted"
+        ItemsSource="{x:Bind Databases, Mode=OneWay}"
+        UpdateTextOnSelect="True"
+        QueryIcon="Find"
+        MinWidth="200" />--><!--
+        <ComboBox MinWidth="200"
+        DropDownOpened="DatabaseComboBox_DropDownOpened"
+        IsEditable="True"
+        ItemsSource="{x:Bind Databases, Mode=OneWay}"
+        SelectionChanged="Database_SelectionChanged"
+        Text="{x:Bind Database, Mode=TwoWay}" />
+        <ProgressBar VerticalAlignment="Bottom"
+        IsIndeterminate="{x:Bind IsFetchingDatabases, Mode=OneWay}" />
+        </Grid>
         </wuc:SettingsCard>
 
         <wuc:SettingsCard Description="See, modify, and test the connection string."
-                          Header="Connection String"
-                          HeaderIcon="{winUi:FontIcon Glyph=}">
-            <!--  Will expand the settings card's height  -->
-            <!--<Expander Header="Open" MinWidth="200"></Expander>-->
-            <Button MinWidth="200"
-                    Content="Open"
-                    Style="{StaticResource AtisButtonPrimary}">
-                <Button.Flyout>
-                    <Flyout Opened="ConnectionFlyout_Opened">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Grid.ColumnSpan="2"
-                                     MinWidth="300"
-                                     MaxWidth="600"
-                                     Text="{x:Bind ConnectionString, Mode=TwoWay}"
-                                     TextWrapping="Wrap" />
-                            <Button Grid.Row="1"
-                                    Grid.Column="0"
-                                    Margin="0,6,6,0"
-                                    Click="ConnectionButton_Click"
-                                    Content="Test"
-                                    Style="{StaticResource AtisButtonPrimary}" />
-                            <Button Grid.Row="2"
-                                    Grid.Column="0"
-                                    Margin="0,6,6,0"
-                                    Click="SaveButton_Click"
-                                    Content="Save"
-                                    Style="{StaticResource AtisButtonPrimary}" />
-                            <FontIcon x:Name="RedIcon"
-                                      Grid.Row="1"
-                                      Grid.Column="1"
-                                      HorizontalAlignment="Right"
-                                      Foreground="Red"
-                                      Glyph="&#xE730;"
-                                      Visibility="Collapsed">
-                                <ToolTipService.ToolTip>
-                                    <TextBlock x:Name="ErrorText"
-                                               TextWrapping="Wrap" />
-                                </ToolTipService.ToolTip>
-                            </FontIcon>
-                            <FontIcon x:Name="GreenIcon"
-                                      Grid.Row="1"
-                                      Grid.Column="1"
-                                      HorizontalAlignment="Right"
-                                      Foreground="Green"
-                                      Glyph="&#xE8E1;"
-                                      Visibility="Collapsed">
-                                <ToolTipService.ToolTip>OK</ToolTipService.ToolTip>
-                            </FontIcon>
-                            <ProgressBar Grid.Row="0"
-                                         Grid.Column="0"
-                                         Grid.ColumnSpan="2"
-                                         VerticalAlignment="Bottom"
-                                         IsIndeterminate="{x:Bind IsConnecting, Mode=OneWay}" />
-                        </Grid>
-                    </Flyout>
-                </Button.Flyout>
-            </Button>
-        </wuc:SettingsCard>
+        Header="Connection String"
+        HeaderIcon="{winUi:FontIcon Glyph=}">
+        --><!--  Will expand the settings card's height  -->
+        <!--<Expander Header="Open" MinWidth="200"></Expander>--><!--
+        <Button MinWidth="200"
+        Content="Open"
+        Style="{StaticResource AtisButtonPrimary}">
+        <Button.Flyout>
+        <Flyout Opened="ConnectionFlyout_Opened">
+        <Grid>
+        <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
+        <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.ColumnSpan="2"
+        MinWidth="300"
+        MaxWidth="600"
+        Text="{x:Bind ConnectionString, Mode=TwoWay}"
+        TextWrapping="Wrap" />
+        <Button Grid.Row="1"
+        Grid.Column="0"
+        Margin="0,6,6,0"
+        Click="ConnectionButton_Click"
+        Content="Test"
+        Style="{StaticResource AtisButtonPrimary}" />
+        <Button Grid.Row="2"
+        Grid.Column="0"
+        Margin="0,6,6,0"
+        Click="SaveButton_Click"
+        Content="Save"
+        Style="{StaticResource AtisButtonPrimary}" />
+        <FontIcon x:Name="RedIcon"
+        Grid.Row="1"
+        Grid.Column="1"
+        HorizontalAlignment="Right"
+        Foreground="Red"
+        Glyph="&#xE730;"
+        Visibility="Collapsed">
+        <ToolTipService.ToolTip>
+        <TextBlock x:Name="ErrorText"
+        TextWrapping="Wrap" />
+        </ToolTipService.ToolTip>
+        </FontIcon>
+        <FontIcon x:Name="GreenIcon"
+        Grid.Row="1"
+        Grid.Column="1"
+        HorizontalAlignment="Right"
+        Foreground="Green"
+        Glyph="&#xE8E1;"
+        Visibility="Collapsed">
+        <ToolTipService.ToolTip>OK</ToolTipService.ToolTip>
+        </FontIcon>
+        <ProgressBar Grid.Row="0"
+        Grid.Column="0"
+        Grid.ColumnSpan="2"
+        VerticalAlignment="Bottom"
+        IsIndeterminate="{x:Bind IsConnecting, Mode=OneWay}" />
+        </Grid>
+        </Flyout>
+        </Button.Flyout>
+        </Button>
+        </wuc:SettingsCard>-->
     </StackPanel>
 </UserControl>

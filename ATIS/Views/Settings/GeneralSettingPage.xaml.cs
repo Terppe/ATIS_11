@@ -3,7 +3,6 @@ using System.Windows.Input;
 using ATIS.Helpers;
 using Windows.System;
 using WinUI3Localizer;
-using RelayCommand = WinUICommunity.RelayCommand;
 
 namespace ATIS.Views.Settings;
 

@@ -3,7 +3,6 @@ using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
-using RelayCommand = WinUICommunity.RelayCommand;
 
 namespace ATIS.Views.Report;
 
@@ -72,7 +71,7 @@ public class ReportViewModel : ObservableObject
     }
 
     #region Search
-    public ICommand SearchRunCommand => new WinUICommunity.RelayCommand(execute: delegate { SearchRun(FilterText); });
+    public ICommand SearchRunCommand => new RelayCommand(execute: delegate { SearchRun(FilterText); });
 
     public void SearchRun(string filterText)
     {

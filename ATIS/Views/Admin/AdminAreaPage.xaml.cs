@@ -93,7 +93,7 @@ public sealed partial class AdminAreaPage : Page
 
             //if _search = "" und count = 0 you see the whole Tab thousands of datasets
             //change to % for all Datasets in 20 Parts of sets
-            await _dispatcherQueue.EnqueueAsync(() =>
+            //await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
@@ -102,7 +102,8 @@ public sealed partial class AdminAreaPage : Page
                     : [.. AppData.Data.TblUserProfiles
                         .Where(a => _search != null && a.Email.StartsWith(_search))
                         .OrderBy(a => a.Email)];
-            });
+            }
+            //);
 
             UserProfileDetailExpander.Visibility = Visibility.Collapsed;
 
@@ -302,12 +303,13 @@ public sealed partial class AdminAreaPage : Page
     private async Task<bool> BeforeSaveUserProfile()
     {
         _search = UserProfileSearchBox.Text;
-        await _dispatcherQueue.EnqueueAsync(() =>
+      //  await _dispatcherQueue.EnqueueAsync(() =>
         {
             ViewModel.TblUserProfilesList ??= [];
             ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
                 .Where(a => a.Email == ViewModel.UserProfileSelected.Email)];
-        });
+        }
+        //);
         if (ViewModel.IsNewUserProfile)
         {
             if (ViewModel.TblUserProfilesList.Count != 0)
@@ -324,7 +326,7 @@ public sealed partial class AdminAreaPage : Page
     {
         if (string.IsNullOrEmpty(UserProfileSearchBox.Text))
         {
-            await _dispatcherQueue.EnqueueAsync(async () =>
+       //     await _dispatcherQueue.EnqueueAsync(async () =>
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
@@ -343,7 +345,8 @@ public sealed partial class AdminAreaPage : Page
                 //var org = ViewModel.FamilySelected.FamilyName;
                 //var cutorg = org.Remove(length - 1, 1);
                 //FamilySearchBox.Text = cutorg;
-            });
+            }
+            //);
         }
         await Refresh();
     }
@@ -701,7 +704,7 @@ public sealed partial class AdminAreaPage : Page
             }
             UserProfileDataGrid.SelectedIndex = iNdx;
 
-            await _dispatcherQueue.EnqueueAsync(() =>
+         //   await _dispatcherQueue.EnqueueAsync(() =>
             {
                 ViewModel.TblUserProfilesList ??= [];
                 ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
@@ -710,7 +713,8 @@ public sealed partial class AdminAreaPage : Page
                     : [.. AppData.Data.TblUserProfiles
                             .Where(a => a.Email.StartsWith(_search))
                             .OrderBy(a => a.Email)];
-            });
+            }
+            //);
             if (ViewModel.TblUserProfilesList is { Count: 0 })
             {
                 ViewModel.TblUserProfilesList?.Clear();

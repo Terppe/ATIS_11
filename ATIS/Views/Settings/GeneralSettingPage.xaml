@@ -5,55 +5,53 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:loca="using:WinUI3Localizer"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:wuc="using:WinUICommunity"
       mc:Ignorable="d">
 
     <ScrollView Margin="{ThemeResource ContentPageMargin}"
                 VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="10"
-                    wuc:PanelAttach.ChildrenTransitions="Default"
                     Spacing="5">
 
-            <wuc:SettingsCard x:Name="ThemeSetting"
-                              Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
-                              CommandParameter="{Binding ElementName=ThemeSetting}"
-                              Description="Explore the different ways to customize the appearance and behavior of your app. You can change the material, theme, accent, and more options to suit your style and preference."
-                              Header="Appearance &amp; behavior"
-                              HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/theme.png}"
-                              IsClickEnabled="True"
-                              Tag="ThemeSettingPage" />
-            <wuc:SettingsCard x:Name="AppUpdateSetting"
-                              Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
-                              CommandParameter="{Binding ElementName=AppUpdateSetting}"
-                              Description="Check for Updates"
-                              Header="Update App"
-                              HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/update.png}"
-                              IsClickEnabled="True"
-                              Tag="AppUpdateSettingPage" />
-            <wuc:SettingsCard x:Name="CheckUpdate"
-                              Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
-                              CommandParameter="{Binding ElementName=CheckUpdate}"
-                              Description="Check for Updates"
-                              Header="Git Update App"
-                              HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/update.png}"
-                              IsClickEnabled="True"
-                              Tag="GitUpdateSettingPage" />
-            <wuc:SettingsCard x:Name="AboutUsSettingPage"
-                              Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
-                              CommandParameter="{Binding ElementName=AboutUsSettingPage}"
-                              Description="About App and Developer"
-                              Header="About us"
-                              HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/info.png}"
-                              IsClickEnabled="True"
-                              Tag="AboutUsSettingPage" />
-            <wuc:SettingsCard x:Name="SqlConnectionSettingPage"
-                              Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
-                              CommandParameter="{Binding ElementName=SqlConnectionSettingPage}"
-                              Description="Configure the database connection string."
-                              Header="Database Connection"
-                              HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/fancyZones.png}"
-                              IsClickEnabled="True"
-                              Tag="SqlConnectionSettingPage" />
+            <!--<wuc:SettingsCard x:Name="ThemeSetting"
+            Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
+            CommandParameter="{Binding ElementName=ThemeSetting}"
+            Description="Explore the different ways to customize the appearance and behavior of your app. You can change the material, theme, accent, and more options to suit your style and preference."
+            Header="Appearance &amp; behavior"
+            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/theme.png}"
+            IsClickEnabled="True"
+            Tag="ThemeSettingPage" />-->
+            <!--<wuc:SettingsCard x:Name="AppUpdateSetting"
+            Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
+            CommandParameter="{Binding ElementName=AppUpdateSetting}"
+            Description="Check for Updates"
+            Header="Update App"
+            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/update.png}"
+            IsClickEnabled="True"
+            Tag="AppUpdateSettingPage" />-->
+            <!--<wuc:SettingsCard x:Name="CheckUpdate"
+            Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
+            CommandParameter="{Binding ElementName=CheckUpdate}"
+            Description="Check for Updates"
+            Header="Git Update App"
+            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/update.png}"
+            IsClickEnabled="True"
+            Tag="GitUpdateSettingPage" />-->
+            <!--<wuc:SettingsCard x:Name="AboutUsSettingPage"
+            Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
+            CommandParameter="{Binding ElementName=AboutUsSettingPage}"
+            Description="About App and Developer"
+            Header="About us"
+            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/info.png}"
+            IsClickEnabled="True"
+            Tag="AboutUsSettingPage" />-->
+            <!--<wuc:SettingsCard x:Name="SqlConnectionSettingPage"
+            Command="{x:Bind ViewModel.GoToGeneralSettingPageCommand}"
+            CommandParameter="{Binding ElementName=SqlConnectionSettingPage}"
+            Description="Configure the database connection string."
+            Header="Database Connection"
+            HeaderIcon="{wuc:BitmapIcon Source=Assets/Fluent/fancyZones.png}"
+            IsClickEnabled="True"
+            Tag="SqlConnectionSettingPage" />-->
 
             <StackPanel Orientation="Horizontal">
                 <StackPanel Orientation="Vertical">

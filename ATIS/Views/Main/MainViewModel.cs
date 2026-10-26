@@ -41,7 +41,7 @@ using WinUI3Localizer;
 
 namespace ATIS.Views.Main;
 
-public partial class MainViewModel : ObservableObject, ITitleBarAutoSuggestBoxAware
+public partial class MainViewModel : ObservableObject
 {
     private readonly IDialogService _dialogService;
     private readonly LookupService _lookupService;
