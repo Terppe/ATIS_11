@@ -1,10 +1,8 @@
 ﻿
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <Style x:Key="AtisNumberBox"
-           TargetType="NumberBox">
+    <Style x:Key="AtisNumberBox" TargetType="NumberBox">
 
         <!--  Enabled + Disabled (WinUI übernimmt diese Werte in beiden States)  -->
         <Setter Property="Background" Value="{ThemeResource AtisNumberBoxBackgroundBrush}" />
@@ -31,8 +29,7 @@
         <Setter Property="HeaderTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <TextBlock Style="{StaticResource AtisInputHeaderTextStyle}"
-                               Text="{Binding}" />
+                    <TextBlock Style="{StaticResource AtisInputHeaderTextStyle}" Text="{Binding}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -40,8 +37,7 @@
     </Style>
 
     <!--  Header Style  -->
-    <Style x:Key="AtisInputHeaderTextStyle"
-           TargetType="TextBlock">
+    <Style x:Key="AtisInputHeaderTextStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeM}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
@@ -182,8 +178,7 @@
     </Style>-->
 
     <!--  GLOBALER STYLE  -->
-    <Style BasedOn="{StaticResource AtisNumberBox}"
-           TargetType="NumberBox" />
+    <Style BasedOn="{StaticResource AtisNumberBox}" TargetType="NumberBox" />
 
 
 </ResourceDictionary>

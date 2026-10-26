@@ -44,7 +44,6 @@ using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
@@ -52,8 +51,6 @@ using Windows.ApplicationModel;
 using Windows.Management.Deployment;
 using WinRT.Interop;
 using WinUI3Localizer;
-using AppWindow = Microsoft.UI.Windowing.AppWindow;
-using TitleBar = Microsoft.UI.Xaml.Controls.TitleBar;
 
 namespace ATIS.Views.Main;
 
@@ -92,8 +89,8 @@ public sealed partial class MainPage : Page
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        App.MainWindow.ExtendsContentIntoTitleBar = true;
-        App.MainWindow.SetTitleBar(AppTitleBar);
+        App.MainWindow?.ExtendsContentIntoTitleBar = true;
+        App.MainWindow?.SetTitleBar(AppTitleBar);
 
         var hWnd = WindowNative.GetWindowHandle(App.MainWindow);
         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
@@ -101,7 +98,7 @@ public sealed partial class MainPage : Page
 
         await ViewModel.InitAsync();
     }
-    private void AppTitleBar_OnBackRequested(TitleBar sender, object args)
+    private void AppTitleBar_OnBackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
     {
         if (NavFrame.CanGoBack)
         {
@@ -109,7 +106,7 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void AppTitleBar_OnPaneToggleRequested(TitleBar sender, object args)
+    private void AppTitleBar_OnPaneToggleRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
     {
         NavView.IsPaneOpen = !NavView.IsPaneOpen;
     }

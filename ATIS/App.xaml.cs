@@ -53,7 +53,6 @@ using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
-using WinUIEx;
 
 namespace ATIS;
 
@@ -71,8 +70,9 @@ public partial class App : Application
         Assembly.GetExecutingAssembly()
             .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
             .InformationalVersion
-        ?? Assembly.GetExecutingAssembly().GetName().Version?.ToString()
-        ?? "unknown"; public string? AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
+        ?? "unknown";
+
+    public string? AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
     public string? Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
     public static string? Cult = "";
     private SplashWindow splash;
@@ -290,7 +290,6 @@ public partial class App : Application
         services.AddTransient<AppUpdateSettingViewModel>();
         services.AddTransient<GitUpdateSettingViewModel>();
         services.AddTransient<AboutUsSettingViewModel>();
-        services.AddTransient<BreadCrumbBarViewModel>();
 
         services.AddTransient<Tbl03RegnumViewModel>();
         services.AddTransient<Tbl06PhylumViewModel>();
@@ -399,7 +398,7 @@ public partial class App : Application
     private async Task ShowSplashAsync()
     {
         splash = new SplashWindow();
-        splash.CenterOnScreen();
+     //   splash.CenterOnScreen();
      //   splash.IsAlwaysOnTop = true;
         splash.Activate();
         await Task.Delay(5000);

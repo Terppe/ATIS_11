@@ -5,7 +5,6 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Auth;
-using ATIS.Views.ContentDialogs;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Dispatching;
@@ -204,7 +203,7 @@ public sealed partial class AdminAreaPage : Page
 
     private void UserProfileDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
     {
-        (sender as DataGrid).Sort(e.Column, ViewModel.TblUserProfilesList.Sort);
+      //  (sender as DataGrid).Sort(e.Column, ViewModel.TblUserProfilesList.Sort);
     }
 
     private void AddNewUserProfileCanceled(object sender, EventArgs e) => UserProfileDetailExpander.IsExpanded = false;
@@ -221,7 +220,7 @@ public sealed partial class AdminAreaPage : Page
     {
         try
         {
-            await DeleteUserProfile();
+          //  await DeleteUserProfile();
         }
         catch (Exception xe)
         {
@@ -230,38 +229,38 @@ public sealed partial class AdminAreaPage : Page
         }
     }
 
-    private async Task DeleteUserProfile()
-    {
-        var deleteDialog = new DeleteDialog
-        {
-            Title = StringsRes.Delete,
-            XamlRoot = Content.XamlRoot
-        };
-        await deleteDialog.ShowAsync();
-        var res = deleteDialog.Result;
+    //private async Task DeleteUserProfile()
+    //{
+    //    var deleteDialog = new DeleteDialog
+    //    {
+    //        Title = StringsRes.Delete,
+    //        XamlRoot = Content.XamlRoot
+    //    };
+    //    await deleteDialog.ShowAsync();
+    //    var res = deleteDialog.Result;
 
-        switch (res)
-        {
-            case DeleteDialogResult.Delete:
-                await ViewModel.DeleteUserProfileAsync(ViewModel.UserProfileSelected);
-                await Refresh();
-                break;
-            case DeleteDialogResult.DontDelete:
-                await ViewModel.RevertChangesAsync();
-                break;
-            case DeleteDialogResult.Cancel:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+    //    switch (res)
+    //    {
+    //        case DeleteDialogResult.Delete:
+    //            await ViewModel.DeleteUserProfileAsync(ViewModel.UserProfileSelected);
+    //            await Refresh();
+    //            break;
+    //        case DeleteDialogResult.DontDelete:
+    //            await ViewModel.RevertChangesAsync();
+    //            break;
+    //        case DeleteDialogResult.Cancel:
+    //            break;
+    //        default:
+    //            throw new ArgumentOutOfRangeException();
+    //    }
 
-    }
+    //}
 
     private async void SaveUserProfile_Click(object sender, RoutedEventArgs e)
     {
         try
         {
-            await SaveUserProfile();
+          //  await SaveUserProfile();
         }
         catch (Exception xe)
         {
@@ -270,35 +269,35 @@ public sealed partial class AdminAreaPage : Page
         }
     }
 
-    private async Task SaveUserProfile()
-    {
-        var saveDialog = new SaveChangesDialog
-        {
-            Title = StringsRes.SaveChanges,
-            XamlRoot = Content.XamlRoot
-        };
-        await saveDialog.ShowAsync();
-        var res = saveDialog.Result;
+    //private async Task SaveUserProfile()
+    //{
+    //    var saveDialog = new SaveChangesDialog
+    //    {
+    //        Title = StringsRes.SaveChanges,
+    //        XamlRoot = Content.XamlRoot
+    //    };
+    //    await saveDialog.ShowAsync();
+    //    var res = saveDialog.Result;
 
-        switch (res)
-        {
-            case SaveChangesDialogResult.Save:
-                if (await BeforeSaveUserProfile())
-                {
-                    return;
-                }
-                await ViewModel.SaveUserProfileAsync(ViewModel.UserProfileSelected);
-                await BehindSaveUserProfile();
-                break;
-            case SaveChangesDialogResult.DontSave:
-                await ViewModel.RevertChangesAsync();
-                break;
-            case SaveChangesDialogResult.Cancel:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
+    //    switch (res)
+    //    {
+    //        case SaveChangesDialogResult.Save:
+    //            if (await BeforeSaveUserProfile())
+    //            {
+    //                return;
+    //            }
+    //            await ViewModel.SaveUserProfileAsync(ViewModel.UserProfileSelected);
+    //            await BehindSaveUserProfile();
+    //            break;
+    //        case SaveChangesDialogResult.DontSave:
+    //            await ViewModel.RevertChangesAsync();
+    //            break;
+    //        case SaveChangesDialogResult.Cancel:
+    //            break;
+    //        default:
+    //            throw new ArgumentOutOfRangeException();
+    //    }
+    //}
 
     private async Task<bool> BeforeSaveUserProfile()
     {

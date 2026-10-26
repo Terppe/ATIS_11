@@ -23,7 +23,7 @@
 
 		<IsAotCompatible>False</IsAotCompatible>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-	<Version>10.6.0.2610</Version>
+	<!--<Version>10.6.0.2610</Version>-->
 
     <!-- 🔥 HIER: XAML-Debug-Break deaktivieren -->
     <DefineConstants>DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
@@ -52,10 +52,10 @@
 		<PackageReference Include="log4net" Version="3.5.0" />
 		<PackageReference Include="MailKit" Version="4.18.2" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.13" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.13" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.13" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
@@ -64,12 +64,19 @@
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
 		<PackageReference Include="QuestPDF" Version="2026.9.1" />
-		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 		<PackageReference Include="WinUICommunity.Components" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.Core" Version="7.1.0" />
 		<PackageReference Include="WinUICommunity.LandingPages" Version="7.1.0" />
 	</ItemGroup>
+
+  <PropertyGroup>
+    <VersionPrefix>10.6.0</VersionPrefix>
+    <Version Condition="'$(ATIS_VERSION)' != ''">$(ATIS_VERSION)</Version>
+    <Version Condition="'$(ATIS_VERSION)' == ''">$(VersionPrefix).0</Version>
+  </PropertyGroup>
+
 	<PropertyGroup Label="Globals">
 		<WebView2EnableCsWinRTProjection>False</WebView2EnableCsWinRTProjection>
 	</PropertyGroup>
@@ -189,21 +196,8 @@
 	<Page Update="DesignSystem\UserControls\AtisPageLayout.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Compile Update="Views\UserControls\DataGridRowControl.xaml.cs">
-		<SubType>Code</SubType>
-	</Compile>
 	<Page Update="DesignSystem\Controls\DataGrid\DataGridStyles.xaml">
 		<SubType>Designer</SubType>
-	</Page>
-
-<Page Update="Views\ContentDialogs\AtisDeleteDialog.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="Views\ContentDialogs\AtisSaveChangesDialog.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="Views\UserControls\AtisHeaderBar.xaml">
-		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Themes\Colors\Colors.xaml">
 		<SubType>Designer</SubType>
@@ -216,13 +210,6 @@
 	</Page>
 	<Page Update="Themes\Styles\PageLayout.xaml">
 		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="Views\UserControls\DataGridRowControl.xaml">
-		<SubType>Designer</SubType>
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\UserControls\AtisDataGrid.xaml">
-		<Generator>MSBuild:Compile</Generator>
 	</Page>
 <!---->		<Page Update="Themes\AppTheme.xaml">
 			<SubType>Designer</SubType>
@@ -292,9 +279,6 @@
 	</Page>
 	<Page Update="Views\Settings\GitUpdateSettingPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\UserControls\FluentTabView.xaml">
-		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="Views\User\UserAreaPage.xaml">
 		<Generator>MSBuild:Compile</Generator>
@@ -506,15 +490,6 @@
 	<Page Update="Views\Report\DataTemplateHeader\TemplateTbl21ClassHeaderControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
-	<Page Update="Views\ContentDialogs\SaveChangesDialog.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\ContentDialogs\DeleteDialog.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\UserControls\BreadcrumbBarUserControl.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
 	<Page Update="Views\UserControls\SqlConnectionSettingsPanelControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -576,8 +551,6 @@
 		<None Remove="Views\Auth\ForgotPasswordView.xaml" />
 		<None Remove="Views\Auth\LoginView.xaml" />
 		<None Remove="Views\Auth\RegisterView.xaml" />
-		<None Remove="Views\ContentDialogs\DeleteDialog.xaml" />
-		<None Remove="Views\ContentDialogs\SaveChangesDialog.xaml" />
 		<None Remove="Views\Main\DiseasePage.xaml" />
 		<None Remove="Views\Main\FoodPage.xaml" />
 		<None Remove="Views\Main\HomePage.xaml" />
@@ -794,8 +767,6 @@
 		<None Remove="Views\Search\SearchPage.xaml" />
 		<None Remove="Views\Settings\GitUpdateSettingPage.xaml" />
 		<None Remove="Views\Settings\SqlConnectionSettingPage.xaml" />
-		<None Remove="Views\UserControls\AtisDataGrid.xaml" />
-		<None Remove="Views\UserControls\BreadcrumbBarUserControl.xaml" />
 		<None Remove="Views\UserControls\SqlConnectionSettingsPanelControl.xaml" />
 		<None Remove="Views\User\UserAreaPage.xaml" />
 	</ItemGroup>

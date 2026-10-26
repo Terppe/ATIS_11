@@ -107,7 +107,7 @@ public partial class AdminAreaViewModel : ObservableObject
         }
         else
         {
-            _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
+          //  _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
         }
     }
     public async Task DeleteUserProfileAsync(TblUserProfile viewModelUserProfileSelected)
@@ -133,7 +133,7 @@ public partial class AdminAreaViewModel : ObservableObject
         {
             await AllDialogs.ErrorMessageDialogAsync(e.Message);
             SimpleLog.Log(e);
-            throw new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2, e);
+     //       throw new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2, e);
         }
 
         if (result != null)
@@ -145,7 +145,7 @@ public partial class AdminAreaViewModel : ObservableObject
         }
         else
         {
-            _ = new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2);
+          //  _ = new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2);
         }
     }
 

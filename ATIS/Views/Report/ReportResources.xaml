@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
-                    xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
-                    xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
-                    xmlns:dataTemplates="using:ATIS.Views.Search.DataTemplates"
-                    xmlns:dataTemplates1="using:ATIS.Views.Report.DataTemplates">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dataTemplateHeader="using:ATIS.Views.Report.DataTemplateHeader"
+    xmlns:dataTemplateHeaderTaxoNomen="using:ATIS.Views.Report.DataTemplateHeaderTaxoNomen"
+    xmlns:dataTemplateHyperlink="using:ATIS.Views.Report.DataTemplateHyperlink"
+    xmlns:dataTemplates="using:ATIS.Views.Search.DataTemplates"
+    xmlns:dataTemplates1="using:ATIS.Views.Report.DataTemplates">
 
     <!--<ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="ms-appx:///DesignSystem/DesignSystemResources.xaml" />
@@ -77,8 +78,7 @@
     </DataTemplate>
 
 
-    <Style x:Key="NoSpacesListViewItemStyle"
-           TargetType="ListViewItem">
+    <Style x:Key="NoSpacesListViewItemStyle" TargetType="ListViewItem">
         <Setter Property="MinHeight" Value="24" />
     </Style>
 

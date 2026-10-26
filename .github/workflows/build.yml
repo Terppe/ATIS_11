@@ -6,25 +6,30 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
       - name: Restore
-        run: dotnet restore ATIS.slnx
+        run: dotnet restore ATIS.slnx -p:Platform=x64
 
       - name: Set CI Version
-        shell: bash
-        run: echo "ATIS_VERSION=10.6.0.${{ github.run_number }}" >> $GITHUB_ENV
+        shell: pwsh
+        run: |
+          "ATIS_VERSION=10.6.0.${{ github.run_number }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Show CI Version
-        run: echo "ATIS_VERSION=${{ env.ATIS_VERSION }}"
+        shell: pwsh
+        run: |
+          Write-Host "ATIS_VERSION=$env:ATIS_VERSION"
 
       - name: Build
-        run: dotnet build ATIS.slnx --no-restore --configuration Release -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
+        run: dotnet build ATIS.slnx --no-restore -c Release -p:Platform=x64 -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
 
       - name: Check outdated NuGet packages
         run: dotnet list ATIS.slnx package --outdated

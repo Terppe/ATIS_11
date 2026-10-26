@@ -1,5 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  =========================================================  -->
     <!--  Alte Styles  -->
@@ -8,19 +7,16 @@
     <Thickness x:Key="XSmallLeftTopRightBottomMargin">2,2,2,2</Thickness>
     <Thickness x:Key="SmallLeftMargin">4,0,0,0</Thickness>
 
-    <Style x:Key="ListTitleStyle"
-           TargetType="TextBlock">
+    <Style x:Key="ListTitleStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 
-    <Style x:Key="ListSubTitleStyle"
-           TargetType="TextBlock">
+    <Style x:Key="ListSubTitleStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Opacity" Value="0.8" />
     </Style>
-    <Style x:Key="BodyTextStyle"
-           TargetType="TextBlock">
+    <Style x:Key="BodyTextStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="18" />
         <Setter Property="Opacity" Value="0.8" />
     </Style>
@@ -29,8 +25,7 @@
     <!--  =========================================================  -->
     <!--  BASE TEXTBLOCK STYLE  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisTextBlockBase"
-           TargetType="TextBlock">
+    <Style x:Key="AtisTextBlockBase" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{ThemeResource AtisTextForegroundBrush}" />
         <Setter Property="TextWrapping" Value="Wrap" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
@@ -41,9 +36,10 @@
     <!--  =========================================================  -->
     <!--  PAGE TITLE (H1)  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisPageTitleTextStyle"
-           BasedOn="{StaticResource AtisTextBlockBase}"
-           TargetType="TextBlock">
+    <Style
+        x:Key="AtisPageTitleTextStyle"
+        BasedOn="{StaticResource AtisTextBlockBase}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeXxl}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,12" />
@@ -53,9 +49,10 @@
     <!--  =========================================================  -->
     <!--  SECTION TITLE (H2)  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisSectionTitleTextStyle"
-           BasedOn="{StaticResource AtisTextBlockBase}"
-           TargetType="TextBlock">
+    <Style
+        x:Key="AtisSectionTitleTextStyle"
+        BasedOn="{StaticResource AtisTextBlockBase}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeXl}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,8" />
@@ -65,9 +62,10 @@
     <!--  =========================================================  -->
     <!--  SUBTITLE (H3)  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisSubtitleTextStyle"
-           BasedOn="{StaticResource AtisTextBlockBase}"
-           TargetType="TextBlock">
+    <Style
+        x:Key="AtisSubtitleTextStyle"
+        BasedOn="{StaticResource AtisTextBlockBase}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeL}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,6" />
@@ -77,9 +75,10 @@
     <!--  =========================================================  -->
     <!--  BODY TEXT  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisBodyTextStyle"
-           BasedOn="{StaticResource AtisTextBlockBase}"
-           TargetType="TextBlock">
+    <Style
+        x:Key="AtisBodyTextStyle"
+        BasedOn="{StaticResource AtisTextBlockBase}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeM}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Margin" Value="0,0,0,4" />
@@ -89,9 +88,10 @@
     <!--  =========================================================  -->
     <!--  CAPTION / SMALL TEXT  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisCaptionTextStyle"
-           BasedOn="{StaticResource AtisTextBlockBase}"
-           TargetType="TextBlock">
+    <Style
+        x:Key="AtisCaptionTextStyle"
+        BasedOn="{StaticResource AtisTextBlockBase}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeS}" />
         <Setter Property="FontWeight" Value="Normal" />
         <Setter Property="Foreground" Value="{ThemeResource AtisTextCaptionBrush}" />
@@ -101,8 +101,7 @@
     <!--  =========================================================  -->
     <!--  CAPTION / SMALL TEXT Felder im Detail  -->
     <!--  =========================================================  -->
-    <Style x:Key="AtisFormLabelTextStyle"
-           TargetType="TextBlock">
+    <Style x:Key="AtisFormLabelTextStyle" TargetType="TextBlock">
         <!--  kleiner als normaler Text  -->
         <Setter Property="FontSize" Value="12" />
         <!--  nicht schwarz, sondern dezenter  -->

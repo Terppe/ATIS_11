@@ -1,29 +1,23 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--  =========================================================  -->
     <!--  1) THEME COLORS (Light + Dark)  -->
     <!--  =========================================================  -->
 
     <!--  Hintergrund der Tab-Leiste  -->
-    <SolidColorBrush x:Key="TabViewBackground"
-                     Color="{ThemeResource LayerFillColorDefault}" />
+    <SolidColorBrush x:Key="TabViewBackground" Color="{ThemeResource LayerFillColorDefault}" />
 
     <!--  Textfarbe der Tab-Header  -->
-    <SolidColorBrush x:Key="TabViewForeground"
-                     Color="{ThemeResource TextFillColorPrimary}" />
+    <SolidColorBrush x:Key="TabViewForeground" Color="{ThemeResource TextFillColorPrimary}" />
 
     <!--  Untere Linie der Tab-Leiste  -->
-    <SolidColorBrush x:Key="TabViewBorderBrush"
-                     Color="{ThemeResource DividerStrokeColorDefault}" />
+    <SolidColorBrush x:Key="TabViewBorderBrush" Color="{ThemeResource DividerStrokeColorDefault}" />
 
     <!--  Hover-Hintergrund  -->
-    <SolidColorBrush x:Key="TabViewItemHeaderBackgroundPointerOver"
-                     Color="{ThemeResource SubtleFillColorSecondary}" />
+    <SolidColorBrush x:Key="TabViewItemHeaderBackgroundPointerOver" Color="{ThemeResource SubtleFillColorSecondary}" />
 
     <!--  Aktiver Tab: Unterstreichung  -->
-    <SolidColorBrush x:Key="TabViewItemHeaderUnderlineBrush"
-                     Color="{ThemeResource AccentColor}" />
+    <SolidColorBrush x:Key="TabViewItemHeaderUnderlineBrush" Color="{ThemeResource AccentColor}" />
 
     <Thickness x:Key="TabViewItemHeaderUnderlineThickness">0,0,0,2</Thickness>
 

@@ -1,6 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:helpers="using:Atis.Helpers">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:helpers="using:Atis.Helpers">
 
 
 
@@ -20,8 +21,7 @@
     <!--  PAGE CONTAINER  -->
     <!--  =========================================================  -->
 
-    <Style x:Key="AtisPageContainer"
-           TargetType="Grid">
+    <Style x:Key="AtisPageContainer" TargetType="Grid">
         <Setter Property="Padding" Value="24" />
         <Setter Property="RowSpacing" Value="{StaticResource AtisSpacingL}" />
         <Setter Property="ColumnSpacing" Value="{StaticResource AtisSpacingL}" />
@@ -33,8 +33,7 @@
     <!--  SECTION HEADER  -->
     <!--  =========================================================  -->
 
-    <Style x:Key="AtisSectionHeader"
-           TargetType="TextBlock">
+    <Style x:Key="AtisSectionHeader" TargetType="TextBlock">
         <Setter Property="FontSize" Value="{StaticResource AtisFontSizeL}" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{ThemeResource AtisNeutralDarkBrush}" />
@@ -61,8 +60,7 @@
     <!--  SECTION CONTAINER  -->
     <!--  =========================================================  -->
 
-    <Style x:Key="AtisSection"
-           TargetType="StackPanel">
+    <Style x:Key="AtisSection" TargetType="StackPanel">
         <Setter Property="Spacing" Value="{StaticResource AtisSpacingM}" />
         <Setter Property="Margin" Value="0,0,0,24" />
     </Style>
@@ -73,20 +71,17 @@
     <!--  =========================================================  -->
 
     <!--  2-Spalten Layout  -->
-    <Style x:Key="AtisTwoRowGrid"
-           TargetType="Grid">
+    <Style x:Key="AtisTwoRowGrid" TargetType="Grid">
         <Setter Property="helpers:AtisRowExtensions.Rows" Value="2" />
         <Setter Property="RowSpacing" Value="{StaticResource AtisSpacingM}" />
     </Style>
 
-    <Style x:Key="AtisThreeRowGrid"
-           TargetType="Grid">
+    <Style x:Key="AtisThreeRowGrid" TargetType="Grid">
         <Setter Property="helpers:AtisRowExtensions.Rows" Value="3" />
         <Setter Property="RowSpacing" Value="{StaticResource AtisSpacingM}" />
     </Style>
 
-    <Style x:Key="AtisTwoColumnGrid"
-           TargetType="Grid">
+    <Style x:Key="AtisTwoColumnGrid" TargetType="Grid">
         <Setter Property="helpers:AtisGridExtensions.Columns" Value="2" />
         <Setter Property="helpers:AtisGridSpacing.ColumnSpacing" Value="{StaticResource AtisSpacingL}" />
         <Setter Property="helpers:AtisGridSpacing.RowSpacing" Value="{StaticResource AtisSpacingM}" />
@@ -99,14 +94,12 @@
 
         <!--  LIGHT  -->
         <ResourceDictionary x:Key="Light">
-            <SolidColorBrush x:Key="AtisCardShadowBrush"
-                             Color="#22000000" />
+            <SolidColorBrush x:Key="AtisCardShadowBrush" Color="#22000000" />
         </ResourceDictionary>
 
         <!--  DARK  -->
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="AtisCardShadowBrush"
-                             Color="#33FFFFFF" />
+            <SolidColorBrush x:Key="AtisCardShadowBrush" Color="#33FFFFFF" />
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

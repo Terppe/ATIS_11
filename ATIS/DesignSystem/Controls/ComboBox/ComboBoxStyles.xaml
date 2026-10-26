@@ -1,12 +1,12 @@
 ﻿<!--  Copyright (c) Microsoft Corporation and Contributors.  -->
 <!--  Licensed under the MIT License.  -->
 
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="using:System">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="using:System">
 
-    <Style x:Key="AtisComboBox"
-           TargetType="ComboBox">
+    <Style x:Key="AtisComboBox" TargetType="ComboBox">
 
         <!--  Grundwerte wie bei AtisTextBox  -->
         <Setter Property="Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
@@ -26,6 +26,61 @@
                 <ControlTemplate TargetType="ComboBox">
 
                     <Grid x:Name="RootGrid">
+                        <!--  HEADER + BORDER  -->
+                        <Grid RowDefinitions="Auto,32">
+
+                            <!--  HEADER  -->
+                            <TextBlock
+                                x:Name="HeaderElement"
+                                Grid.Row="0"
+                                Margin="0,0,0,4"
+                                Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
+                                Text="{TemplateBinding Header}" />
+
+                            <!--  COMBOBOX  -->
+                            <Border
+                                x:Name="RootBorder"
+                                Grid.Row="1"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6"
+                                FocusVisualPrimaryThickness="0"
+                                FocusVisualSecondaryThickness="0">
+                                <Grid>
+                                    <ContentPresenter
+                                        x:Name="ContentPresenter"
+                                        Margin="0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center" />
+
+                                    <FontIcon
+                                        Margin="0,0,10,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
+                                        Glyph="&#xE70D;" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <!--  POPUP  -->
+                        <Popup x:Name="Popup">
+                            <Border
+                                Padding="4"
+                                Background="{ThemeResource AtisTextBoxBackgroundBrush}"
+                                BorderBrush="{ThemeResource AtisTextBoxBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6">
+
+                                <ScrollViewer>
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+
+                            </Border>
+                        </Popup>
 
                         <!--  VISUAL STATES  -->
                         <VisualStateManager.VisualStateGroups>
@@ -85,58 +140,6 @@
                             </VisualStateGroup>
 
                         </VisualStateManager.VisualStateGroups>
-
-                        <!--  HEADER + BORDER  -->
-                        <Grid RowDefinitions="Auto,32">
-
-                            <!--  HEADER  -->
-                            <TextBlock x:Name="HeaderElement"
-                                       Grid.Row="0"
-                                       Margin="0,0,0,4"
-                                       Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
-                                       Text="{TemplateBinding Header}" />
-
-                            <!--  COMBOBOX  -->
-                            <Border x:Name="RootBorder"
-                                    Grid.Row="1"
-                                    Padding="{TemplateBinding Padding}"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="6"
-                                    FocusVisualPrimaryThickness="0"
-                                    FocusVisualSecondaryThickness="0">
-                                <Grid>
-                                    <ContentPresenter x:Name="ContentPresenter"
-                                                      Margin="0"
-                                                      HorizontalAlignment="Stretch"
-                                                      VerticalAlignment="Center" />
-
-                                    <FontIcon Margin="0,0,10,0"
-                                              HorizontalAlignment="Right"
-                                              VerticalAlignment="Center"
-                                              FontSize="12"
-                                              Foreground="{ThemeResource AtisTextBoxForegroundBrush}"
-                                              Glyph="&#xE70D;" />
-                                </Grid>
-                            </Border>
-                        </Grid>
-
-                        <!--  POPUP  -->
-                        <Popup x:Name="Popup">
-                            <Border Padding="4"
-                                    Background="{ThemeResource AtisTextBoxBackgroundBrush}"
-                                    BorderBrush="{ThemeResource AtisTextBoxBorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="6">
-
-                                <ScrollViewer>
-                                    <ItemsPresenter />
-                                </ScrollViewer>
-
-                            </Border>
-                        </Popup>
-
                     </Grid>
 
                 </ControlTemplate>
