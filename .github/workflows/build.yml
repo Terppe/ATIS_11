@@ -1,5 +1,4 @@
-@'
-name: Build
+ name: Build
 
 on:
   push:
@@ -14,7 +13,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Set CI Version
         shell: pwsh
@@ -46,4 +45,3 @@ jobs:
 
       - name: Build
         run: dotnet build ATIS/ATIS.csproj --no-restore -c Release -p:Platform=x64 -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
-'@ | Set-Content -Path ".github/workflows/build.yml" -Encoding UTF8
