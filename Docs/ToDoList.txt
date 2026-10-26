@@ -1319,3 +1319,14 @@ git commit -m "Kurze Beschreibung, was du gemacht hast"
 git push
 //-------------------------------------
 Auf GitHub im Tab Actions prüfen, ob der Build grün ist.
+//-------------------------------------
+Ab jetzt Standardablauf:
+git add -A
+git commit -m "kurze Änderung"
+git push
+//-------------------------------------
+Dann in ATIS_11 → Actions prüfen, ob grün.
+Wenn du eine Action ohne Codeänderung neu starten willst:
+//-------------------------------------
+git commit --allow-empty -m "rerun ci"
+git push
