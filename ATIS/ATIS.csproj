@@ -23,7 +23,6 @@
 
 		<IsAotCompatible>False</IsAotCompatible>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
-	<!--<Version>10.6.0.2610</Version>-->
 
     <!-- 🔥 HIER: XAML-Debug-Break deaktivieren -->
     <DefineConstants>DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
@@ -69,9 +68,14 @@
 	</ItemGroup>
 
   <PropertyGroup>
-    <VersionPrefix>10.6.0</VersionPrefix>
+    <VersionPrefix>11.0.0</VersionPrefix>
     <Version Condition="'$(ATIS_VERSION)' != ''">$(ATIS_VERSION)</Version>
     <Version Condition="'$(ATIS_VERSION)' == ''">$(VersionPrefix).0</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <InformationalVersion Condition="'$(ATIS_VERSION)' != ''">$(Version)</InformationalVersion>
+    <InformationalVersion Condition="'$(ATIS_VERSION)' == '' and '$(Configuration)' == 'Debug'">$(VersionPrefix)-dev</InformationalVersion>
+    <InformationalVersion Condition="'$(ATIS_VERSION)' == '' and '$(Configuration)' != 'Debug'">$(VersionPrefix)-local</InformationalVersion>
   </PropertyGroup>
 
 	<PropertyGroup Label="Globals">

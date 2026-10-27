@@ -1,5 +1,7 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using System.Reflection;
+using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Strings;
@@ -60,6 +62,7 @@ public sealed partial class MainPage : Page
     public MainViewModel ViewModel { get; set; }
     private string _currentPageTag { get; set; }
     private IDialogService dialog;
+    public string? WinAppSdkVersion { get; set; } = ConfigurationManager.AppSettings.Get("WinAppSDK");
 
     public MainPage()
     {
@@ -97,6 +100,9 @@ public sealed partial class MainPage : Page
         _appWindow = AppWindow.GetFromWindowId(windowId);
 
         await ViewModel.InitAsync();
+
+        //Version
+        TbVersion.Text = BuildInfo.Text;
     }
     private void AppTitleBar_OnBackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
     {
@@ -191,7 +197,6 @@ public sealed partial class MainPage : Page
             ReloadLanguage(languageCode);
         }
     }
-
     private void ReloadLanguage(string languageOverride)
     {
         // 1. Globale Culture setzen
@@ -207,8 +212,6 @@ public sealed partial class MainPage : Page
         // 3. UI neu laden color in header
         ChangeLanguageLoginReset();
     }
-
-
     private void ChangeLanguageLoginReset()
     {
         if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
@@ -254,7 +257,6 @@ public sealed partial class MainPage : Page
             TbUser.Text = "keiner angemeldet";
         }
     }
-
     private async Task Register()
     {
         var registerView = new ATIS.Views.Auth.RegisterView();

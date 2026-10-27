@@ -1330,3 +1330,10 @@ Wenn du eine Action ohne Codeänderung neu starten willst:
 //-------------------------------------
 git commit --allow-empty -m "rerun ci"
 git push
+----------------------------------------
+27.10.2026 14:30 Uhr in ATIS.csproj die Version auf 11.0.0 geändert.
+  <PropertyGroup>
+    <VersionPrefix>11.0.0</VersionPrefix>
+    <Version Condition="'$(ATIS_VERSION)' != ''">$(ATIS_VERSION)</Version>
+    <Version Condition="'$(ATIS_VERSION)' == ''">$(VersionPrefix).0</Version>
+  </PropertyGroup>
