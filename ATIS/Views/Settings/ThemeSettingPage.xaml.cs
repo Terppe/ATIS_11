@@ -36,7 +36,7 @@ public sealed partial class ThemeSettingPage : Page
         catch (Exception ex)
         {
             //throw; // TODO handle exception
-            await AllDialogs.ErrorMessageDialogAsync(ex.Message);
+          //  await AllDialogs.ErrorMessageDialogAsync(ex.Message);
         }
     }
 

@@ -10,7 +10,7 @@ namespace ATIS.Views.Main;
 public sealed partial class UtilityPage : Page
 {
     public UtilityViewModel ViewModel { get; set; }
-    private readonly AllDialogs _allDialogs = new();
+  //  private readonly AllDialogs _allDialogs = new();
 
     public UtilityPage()
     {

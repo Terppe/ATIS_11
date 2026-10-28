@@ -87,14 +87,14 @@ public partial class AdminAreaViewModel : ObservableObject
         {
             if (e.InnerException != null)
             {
-                await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
+             //   await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
                 SimpleLog.Log(e);
                 return;
             }
         }
         catch (Exception ex)
         {
-            await AllDialogs.ErrorMessageDialogAsync(ex.Message);
+           // await AllDialogs.ErrorMessageDialogAsync(ex.Message);
             SimpleLog.Log(ex);
             return;
         }
@@ -124,14 +124,14 @@ public partial class AdminAreaViewModel : ObservableObject
         {
             if (e.InnerException != null)
             {
-                await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
+                //await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
             }
 
             SimpleLog.Log(e);
         }
         catch (Exception e)
         {
-            await AllDialogs.ErrorMessageDialogAsync(e.Message);
+            //await AllDialogs.ErrorMessageDialogAsync(e.Message);
             SimpleLog.Log(e);
      //       throw new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2, e);
         }

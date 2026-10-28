@@ -599,7 +599,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
+          //  await AllDialogs.ErrorMessageDialogAsync(xe.ToString());
             SimpleLog.Log(xe);
         }
     }

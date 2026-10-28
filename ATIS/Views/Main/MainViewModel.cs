@@ -263,9 +263,9 @@ public partial class MainViewModel : ObservableObject
         }
         catch (SqlException e)
         {
-            _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
+            _ = //AllDialogs.ErrorMessageDialogAsync(e.ToString());
 
-            _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
+            _ = //AllDialogs.NoServerConnectWarnMessageDialogAsync();
             //MessageBox.Show(CultRes.StringsRes.NoConnectServer, e.Message,
             //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
 
@@ -314,7 +314,7 @@ public partial class MainViewModel : ObservableObject
         }
         catch (SqlException e)
         {
-            _ = AllDialogs.ErrorMessageDialogAsync(e.ToString());
+            _ = //AllDialogs.ErrorMessageDialogAsync(e.ToString());
 
             //  _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
             //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,

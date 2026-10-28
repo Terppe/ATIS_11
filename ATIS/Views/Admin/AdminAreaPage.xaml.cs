@@ -37,7 +37,7 @@ public sealed partial class AdminAreaPage : Page
         var name = customPrincipal.Identity.Email;
         if (name == "")
         {
-            _ = AllDialogs.NobodyLoggedInSelectedWarnMessageDialogAsync();
+          //  _ = AllDialogs.NobodyLoggedInSelectedWarnMessageDialogAsync();
             return;
         }
 
@@ -51,7 +51,7 @@ public sealed partial class AdminAreaPage : Page
         }
         else
         {
-            AllDialogs.WarningNoPermissionMessageDialogAsync(name).ConfigureAwait(false);
+            //AllDialogs.WarningNoPermissionMessageDialogAsync(name).ConfigureAwait(false);
         }
     }
 
@@ -87,7 +87,7 @@ public sealed partial class AdminAreaPage : Page
 
                 ViewModel.IsLoading = false;
                 ViewModel.IsDeleting = false;
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 return;
             }
 
@@ -116,7 +116,7 @@ public sealed partial class AdminAreaPage : Page
 
                 DetailPanelUserProfile.Visibility = Visibility.Visible;
                 UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+                //await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
             }
             else
             {
@@ -128,7 +128,7 @@ public sealed partial class AdminAreaPage : Page
         }
         catch (Exception e)
         {
-            await AllDialogs.ErrorMessageDialogAsync(e.InnerException?.ToString());
+         //   await AllDialogs.ErrorMessageDialogAsync(e.InnerException?.ToString());
             SimpleLog.Log(e);
         }
     }
@@ -141,7 +141,7 @@ public sealed partial class AdminAreaPage : Page
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
             SimpleLog.Log(xe);
         }
     }
@@ -172,7 +172,7 @@ public sealed partial class AdminAreaPage : Page
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
             SimpleLog.Log(xe);
         }
     }
@@ -225,7 +225,7 @@ public sealed partial class AdminAreaPage : Page
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
             SimpleLog.Log(xe);
         }
     }
@@ -265,7 +265,7 @@ public sealed partial class AdminAreaPage : Page
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
             SimpleLog.Log(xe);
         }
     }
@@ -314,7 +314,7 @@ public sealed partial class AdminAreaPage : Page
         {
             if (ViewModel.TblUserProfilesList.Count != 0)
             {
-                await AllDialogs.DatasetExistInfoMessageDialogAsync();
+                //await AllDialogs.DatasetExistInfoMessageDialogAsync();
                 return true;
             }
         }
@@ -334,7 +334,7 @@ public sealed partial class AdminAreaPage : Page
 
                 if (ViewModel.TblUserProfilesList.Count == 0)
                 {
-                    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+                    //await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                     return;
                 }
                 UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
@@ -668,7 +668,7 @@ public sealed partial class AdminAreaPage : Page
         }
         catch (Exception xe)
         {
-            await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
+            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
             SimpleLog.Log(xe);
         }
     }
@@ -720,7 +720,7 @@ public sealed partial class AdminAreaPage : Page
                 ViewModel.TblUserProfilesList?.Clear();
                 ViewModel.IsLoading = false;
 
-                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
+                //await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
                 return;
             }
             UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
@@ -765,16 +765,16 @@ public sealed partial class AdminAreaPage : Page
 
     private async void BtnSave_OnClick(object sender, RoutedEventArgs e)
     {
-        if (await AllDialogs.SaveResultQuestionConfirmationDialogAsync())
-        {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        //if (//await// AllDialogs.SaveResultQuestionConfirmationDialogAsync())
+        //{
+        //    var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-            config.AppSettings.Settings["EncryptMailAccountPassword"].Value = TbEncryptMailAccountPassword.Text;
+        //    config.AppSettings.Settings["EncryptMailAccountPassword"].Value = TbEncryptMailAccountPassword.Text;
 
-            // Save the configuration file.
-            config.Save(ConfigurationSaveMode.Full);
+        //    // Save the configuration file.
+        //    config.Save(ConfigurationSaveMode.Full);
 
-            ConfigurationManager.RefreshSection("AppSettings");
-        }
+        //    ConfigurationManager.RefreshSection("AppSettings");
+        //}
     }
 }

@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Page x:Class="ATIS.Views.Admin.AdminAreaPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:conv="using:ATIS.Helpers.Converters"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:loca="using:WinUI3Localizer"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:models="using:ATIS.Models"
-      xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
-      NavigationCacheMode="Disabled"
-      mc:Ignorable="d">
+<Page
+    x:Class="ATIS.Views.Admin.AdminAreaPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:ATIS.Helpers.Converters"
+    xmlns:converters="using:ATIS.DesignSystem.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loca="using:WinUI3Localizer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:ATIS.Models"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    NavigationCacheMode="Disabled"
+    mc:Ignorable="d">
 
 
     <!--  AdminAreaPage.xaml  Skriptdatum:  06.01.2025  10:32  -->
@@ -17,122 +19,93 @@
 
 
     <Page.Resources>
-        <conv:DateConverter x:Key="DateConverter" />
+        <converters:DateConverter x:Key="DateConverter" />
 
         <MenuFlyout x:Key="UserProfileDataContextMenu">
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_UserProfile"
-                            Click="SaveUserProfile_Click">
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Save_UserProfile" Click="SaveUserProfile_Click">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/save.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/save.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_UserProfile"
-                            Click="DeleteUserProfile_Click">
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Delete_UserProfile" Click="DeleteUserProfile_Click">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/delete.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/delete.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_UserProfile"
-                            Click="AddUserProfile_Click">
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Add_UserProfile" Click="AddUserProfile_Click">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/add.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
-            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh"
-                            Click="Refresh_Click">
+            <MenuFlyoutItem loca:Uids.Uid="MenuFlyout_Refresh" Click="Refresh_Click">
                 <MenuFlyoutItem.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/refresh.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/refresh.png" />
                 </MenuFlyoutItem.Icon>
             </MenuFlyoutItem>
         </MenuFlyout>
     </Page.Resources>
 
     <RelativePanel x:Name="UserProfileRoot">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="UserProfileCommandBar.DefaultLabelPosition" Value="Bottom" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        <TextBlock x:Name="PageTitle"
-                   loca:Uids.Uid="TextBlock_UserProfiles"
-                   Style="{StaticResource PageTitleTextBlockStyle}" />
-        <CommandBar x:Name="UserProfileCommandBar"
-                    HorizontalAlignment="Stretch"
-                    Background="Transparent"
-                    DefaultLabelPosition="Right"
-                    RelativePanel.LeftOf="UserProfileSearchBox"
-                    RelativePanel.RightOf="PageTitle">
-            <AppBarButton x:Name="AppBarButtonDeleteUserProfile"
-                          loca:Uids.Uid="AppBarButtonDeleteUserProfile"
-                          Click="DeleteUserProfile_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.UserProfileSelected), Mode=OneWay}">
+        <TextBlock
+            x:Name="PageTitle"
+            loca:Uids.Uid="TextBlock_UserProfiles"
+            Style="{StaticResource PageTitleTextBlockStyle}" />
+        <CommandBar
+            x:Name="UserProfileCommandBar"
+            HorizontalAlignment="Stretch"
+            Background="Transparent"
+            DefaultLabelPosition="Right"
+            RelativePanel.LeftOf="UserProfileSearchBox"
+            RelativePanel.RightOf="PageTitle">
+            <AppBarButton
+                x:Name="AppBarButtonDeleteUserProfile"
+                loca:Uids.Uid="AppBarButtonDeleteUserProfile"
+                Click="DeleteUserProfile_Click">
                 <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/delete.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/delete.png" />
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton x:Name="AppBarButtonAddUserProfile"
-                          loca:Uids.Uid="AppBarButtonAddUserProfile"
-                          Background="{ThemeResource SystemAccentColor}"
-                          Click="AddUserProfile_Click"
-                          Foreground="White">
+            <AppBarButton
+                x:Name="AppBarButtonAddUserProfile"
+                loca:Uids.Uid="AppBarButtonAddUserProfile"
+                Background="{ThemeResource SystemAccentColor}"
+                Click="AddUserProfile_Click"
+                Foreground="White">
                 <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/add.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/add.png" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton x:Name="AppBarButtonSync"
-                          loca:Uids.Uid="AppBarButtonSync"
-                          Click="Refresh_Click"
-                          IsEnabled="{x:Bind conv:NotConverter.IsNotNull(ViewModel.UserProfileSelected), Mode=OneWay}">
+            <AppBarButton
+                x:Name="AppBarButtonSync"
+                loca:Uids.Uid="AppBarButtonSync"
+                Click="Refresh_Click">
                 <AppBarButton.Icon>
-                    <BitmapIcon ShowAsMonochrome="False"
-                                UriSource="/Assets/Fluent/refresh.png" />
+                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/refresh.png" />
                 </AppBarButton.Icon>
             </AppBarButton>
         </CommandBar>
 
-        <AutoSuggestBox Name="UserProfileSearchBox"
-                        Width="200"
-                        Margin="4,8,4,0"
-                        loca:Uids.Uid="AutoSuggestBox_Search"
-                        Loaded="UserProfileSearchBox_OnLoaded"
-                        QuerySubmitted="GetUserProfilesByNameOrId"
-                        RelativePanel.AlignRightWithPanel="True">
+        <AutoSuggestBox
+            Name="UserProfileSearchBox"
+            Width="200"
+            Margin="4,8,4,0"
+            loca:Uids.Uid="AutoSuggestBox_Search"
+            Loaded="UserProfileSearchBox_OnLoaded"
+            QuerySubmitted="GetUserProfilesByNameOrId"
+            RelativePanel.AlignRightWithPanel="True">
             <AutoSuggestBox.QueryIcon>
-                <BitmapIcon ShowAsMonochrome="False"
-                            UriSource="/Assets/Fluent/search.png" />
+                <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/search.png" />
             </AutoSuggestBox.QueryIcon>
         </AutoSuggestBox>
 
-        <ScrollViewer x:Name="PanelUserProfile"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.Below="PageTitle"
-                      VerticalScrollBarVisibility="Auto"
-                      VerticalScrollMode="Auto">
+        <ScrollViewer
+            x:Name="PanelUserProfile"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.Below="PageTitle"
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto">
             <StackPanel Margin="-10,8,4,0">
                 <StackPanel.Resources>
                     <Style TargetType="Expander">
@@ -141,71 +114,446 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <toolkit:DataGrid x:Name="UserProfileDataGrid"
-                                  MaxHeight="330"
-                                  Margin="0,0,20,0"
-                                  VerticalAlignment="Top"
-                                  x:FieldModifier="public"
-                                  AutoGenerateColumns="False"
-                                  Background="Transparent"
-                                  BorderThickness="0"
-                                  CanUserReorderColumns="False"
-                                  CanUserResizeColumns="False"
-                                  ContextFlyout="{StaticResource UserProfileDataContextMenu}"
-                                  CurrentCellChanged="UserProfileDataGrid_OnCurrentCellChanged"
-                                  GridLinesVisibility="Horizontal"
-                                  ItemsSource="{x:Bind ViewModel.UserProfileItems}"
-                                  SelectedItem="{x:Bind ViewModel.UserProfileSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectionMode="Single"
-                                  Sorting="UserProfileDataGrid_Sorting">
+                <toolkit:DataGrid
+                    x:Name="UserProfileDataGrid"
+                    MaxHeight="330"
+                    Margin="0,0,20,0"
+                    VerticalAlignment="Top"
+                    x:FieldModifier="public"
+                    AutoGenerateColumns="False"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    CanUserReorderColumns="False"
+                    CanUserResizeColumns="False"
+                    ContextFlyout="{StaticResource UserProfileDataContextMenu}"
+                    CurrentCellChanged="UserProfileDataGrid_OnCurrentCellChanged"
+                    GridLinesVisibility="Horizontal"
+                    ItemsSource="{x:Bind ViewModel.UserProfileItems}"
+                    SelectedItem="{x:Bind ViewModel.UserProfileSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionMode="Single"
+                    Sorting="UserProfileDataGrid_Sorting">
                     <toolkit:DataGrid.Columns>
-                        <toolkit:DataGridTemplateColumn x:Uid="DataGridTemplateColumn_UserProfileId"
-                                                        Tag="UserProfileId">
+                        <toolkit:DataGridTemplateColumn x:Uid="DataGridTemplateColumn_UserProfileId" Tag="UserProfileId">
                             <toolkit:DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate x:DataType="models:TblUserProfile">
-                                    <HyperlinkButton Margin="12,0"
-                                                     BorderThickness="0"
-                                                     Click="ViewUserProfileHyperlinkButton_Click"
-                                                     Content="{Binding UserProfileId}" />
+                                    <HyperlinkButton
+                                        Margin="12,0"
+                                        BorderThickness="0"
+                                        Click="ViewUserProfileHyperlinkButton_Click"
+                                        Content="{Binding UserProfileId}" />
                                 </DataTemplate>
                             </toolkit:DataGridTemplateColumn.CellTemplate>
                         </toolkit:DataGridTemplateColumn>
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_UserProfileEmail"
-                                                    Binding="{Binding Email}"
-                                                    CanUserSort="True"
-                                                    Tag="UserProfileName" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_Role"
-                                                    Binding="{Binding Role}"
-                                                    Tag="Role" />
-                        <toolkit:DataGridCheckBoxColumn x:Uid="DataGridCheckBoxColumn_Flag"
-                                                        Binding="{Binding Flag}"
-                                                        Tag="Flag" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_FirstName"
-                                                    Binding="{Binding FirstName}"
-                                                    Tag="FirstName" />
-                        <toolkit:DataGridTextColumn x:Uid="DataGridTextColumn_LastName"
-                                                    Binding="{Binding LastName}"
-                                                    Tag="LastName" />
+                        <toolkit:DataGridTextColumn
+                            x:Uid="DataGridTextColumn_UserProfileEmail"
+                            Binding="{Binding Email}"
+                            CanUserSort="True"
+                            Tag="UserProfileName" />
+                        <toolkit:DataGridTextColumn
+                            x:Uid="DataGridTextColumn_Role"
+                            Binding="{Binding Role}"
+                            Tag="Role" />
+                        <toolkit:DataGridCheckBoxColumn
+                            x:Uid="DataGridCheckBoxColumn_Flag"
+                            Binding="{Binding Flag}"
+                            Tag="Flag" />
+                        <toolkit:DataGridTextColumn
+                            x:Uid="DataGridTextColumn_FirstName"
+                            Binding="{Binding FirstName}"
+                            Tag="FirstName" />
+                        <toolkit:DataGridTextColumn
+                            x:Uid="DataGridTextColumn_LastName"
+                            Binding="{Binding LastName}"
+                            Tag="LastName" />
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
 
                 <!--  UserProfileDetailExpander  -->
-                <Expander x:Name="UserProfileDetailExpander"
-                          Margin="{StaticResource XSmallTopBottomMargin}"
-                          Visibility="Collapsed">
+                <Expander
+                    x:Name="UserProfileDetailExpander"
+                    Margin="{StaticResource XSmallTopBottomMargin}"
+                    Visibility="Collapsed">
                     <Expander.Header>
                         <Grid>
-                            <TextBlock loca:Uids.Uid="TextBlock_UserProfile"
-                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                            <TextBlock HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                       Text="{x:Bind ViewModel.UserProfileSelected.Email, Mode=OneWay}" />
+                            <TextBlock loca:Uids.Uid="TextBlock_UserProfile" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="{x:Bind ViewModel.UserProfileSelected.Email, Mode=OneWay}" />
                         </Grid>
                     </Expander.Header>
 
-                    <RelativePanel x:Name="UserProfileDetailRoot"
-                                   Margin="{StaticResource SmallLeftRightMargin}">
+                    <RelativePanel x:Name="UserProfileDetailRoot" Margin="{StaticResource SmallLeftRightMargin}">
+                        <CommandBar
+                            x:Name="UserProfileDetailCommandBar"
+                            Margin="{StaticResource SmallLeftRightCommandBarMargin}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Background="Transparent"
+                            DefaultLabelPosition="Right"
+                            RelativePanel.AlignRightWithPanel="True">
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonSave"
+                                Background="{ThemeResource SystemBaseLowColor}"
+                                Click="SaveUserProfile_Click"
+                                Foreground="White"
+                                Visibility="{x:Bind ViewModel.IsInEdit, Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/save.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonCancel"
+                                Click="{x:Bind ViewModel.CancelEditsAsync}"
+                                Visibility="{x:Bind ViewModel.IsInEdit, Mode=OneWay}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/cancel.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarSeparator Visibility="{x:Bind ViewModel.IsInEdit, Mode=OneWay}" />
+                            <AppBarButton
+                                loca:Uids.Uid="AppBarButtonBack"
+                                Background="{ThemeResource SystemAccentColor}"
+                                Click="BackUserProfile_Click"
+                                Foreground="White">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/arrowleft.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton loca:Uids.Uid="AppBarButtonEdit" Click="{x:Bind ViewModel.StartEdit}">
+                                <AppBarButton.Icon>
+                                    <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/edit.png" />
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </CommandBar>
+                        <ScrollViewer
+                            x:Name="DetailPanelUserProfile"
+                            Margin="0,36,0,0"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.AlignRightWithPanel="True"
+                            VerticalScrollBarVisibility="Auto"
+                            VerticalScrollMode="Auto">
+                            <StackPanel Margin="0,8,4,0">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Expander">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <RelativePanel Margin="4,0,0,0">
+                                    <TextBox
+                                        x:Name="UserProfileId"
+                                        MinWidth="110"
+                                        Margin="{StaticResource XSmallRightMargin}"
+                                        loca:Uids.Uid="TextBox_UserProfileId"
+                                        IsReadOnly="True"
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        Text="{x:Bind ViewModel.UserProfileSelected.UserProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox
+                                        x:Name="UserProfileEmail"
+                                        MinWidth="150"
+                                        Margin="{StaticResource XSmallRightMargin}"
+                                        loca:Uids.Uid="TextBox_UserProfileEmail"
+                                        Background="SlateGray"
+                                        Foreground="White"
+                                        MaxLength="100"
+                                        RelativePanel.RightOf="UserProfileId"
+                                        Text="{x:Bind ViewModel.UserProfileSelected.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ComboBox
+                                        x:Name="RoleCombo"
+                                        Width="150"
+                                        Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                        loca:Uids.Uid="ComboBox_Role"
+                                        PlaceholderText="Pick a Role"
+                                        RelativePanel.RightOf="UserProfileEmail"
+                                        SelectedValue="{x:Bind ViewModel.UserProfileSelected.Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <x:String>Administrator</x:String>
+                                        <x:String>Developer</x:String>
+                                        <x:String>Biologist</x:String>
+                                        <x:String>Zoologist</x:String>
+                                        <x:String>User</x:String>
+                                    </ComboBox>
+                                    <CheckBox
+                                        x:Name="FlagCheckUserProfile"
+                                        Width="80"
+                                        Margin="{StaticResource SmallRightCheckBoxMargin}"
+                                        VerticalAlignment="Bottom"
+                                        loca:Uids.Uid="CheckBox_Flag"
+                                        IsChecked="{x:Bind ViewModel.UserProfileSelected.Flag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        RelativePanel.RightOf="RoleCombo" />
+                                    <TextBox
+                                        x:Name="PasswordTextUserProfile"
+                                        MinWidth="1120"
+                                        Margin="{StaticResource XSmallRightMargin}"
+                                        HorizontalAlignment="Stretch"
+                                        loca:Uids.Uid="TextBox_Password"
+                                        MaxLength="250"
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        RelativePanel.Below="UserProfileId"
+                                        Text="{x:Bind ViewModel.UserProfileSelected.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox
+                                        x:Name="ColourUserProfile"
+                                        MinWidth="1120"
+                                        Margin="{StaticResource XSmallRightMargin}"
+                                        HorizontalAlignment="Stretch"
+                                        loca:Uids.Uid="TextBox_Colour"
+                                        MaxLength="100"
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        RelativePanel.Below="PasswordTextUserProfile"
+                                        Text="{x:Bind ViewModel.UserProfileSelected.Colour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ComboBox
+                                        x:Name="TitleCombo"
+                                        Width="150"
+                                        Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                        loca:Uids.Uid="ComboBox_Title"
+                                        PlaceholderText="Pick a Title"
+                                        RelativePanel.AlignLeftWithPanel="True"
+                                        RelativePanel.Below="ColourUserProfile"
+                                        SelectedValue="{x:Bind ViewModel.UserProfileSelected.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <x:String>Dr.</x:String>
+                                        <x:String>Prof.</x:String>
+                                        <x:String>Dipl.-Ing.</x:String>
+                                        <x:String>Ing. grad</x:String>
+                                        <x:String>Dr. Ing</x:String>
+                                    </ComboBox>
+                                    <TextBox
+                                        x:Name="FirstNameUserProfile"
+                                        MinWidth="250"
+                                        Margin="{StaticResource XSmallRightMargin}"
+                                        loca:Uids.Uid="TextBox_FirstName"
+                                        MaxLength="100"
+                                        RelativePanel.Below="ColourUserProfile"
+                                        RelativePanel.RightOf="TitleCombo"
+                                        Text="{x:Bind ViewModel.UserProfileSelected.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBox
+                                        x:Name="LastNameUserProfile"
+                                        MinWidth="250"
+                                        Margin="{StaticResource XSmallRightMargin}"
+                                        loca:Uids.Uid="TextBox_LastName"
+                                        MaxLength="100"
+                                        RelativePanel.Below="ColourUserProfile"
+                                        RelativePanel.RightOf="FirstNameUserProfile"
+                                        Text="{x:Bind ViewModel.UserProfileSelected.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </RelativePanel>
+                                <Expander x:Name="DetailsExpanderUserProfile">
+                                    <Expander.Header>
+                                        <Grid>
+                                            <TextBlock loca:Uids.Uid="TextBlock_Details" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                                        </Grid>
+                                    </Expander.Header>
+                                    <RelativePanel>
+                                        <ComboBox
+                                            x:Name="GenderCombo"
+                                            Width="150"
+                                            Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                            loca:Uids.Uid="ComboBox_Gender"
+                                            PlaceholderText="Pick a Gender"
+                                            RelativePanel.AlignLeftWithPanel="True"
+                                            SelectedValue="{x:Bind ViewModel.UserProfileSelected.Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <x:String>Female</x:String>
+                                            <x:String>Male</x:String>
+                                        </ComboBox>
+                                        <TextBox
+                                            x:Name="BirthDateUserProfile"
+                                            MinWidth="100"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_BirthDate"
+                                            RelativePanel.RightOf="GenderCombo"
+                                            Style="{StaticResource BodyTextBoxStyle}"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.BirthDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <!--<DatePicker
+                                        x:Name="DpBirthDate"
+                                        Width="150"
+                                        RelativePanel.RightOf="GenderCombo"
+                                        RelativePanel.Below="TitleCombo"
+                                        Margin="20,5,5,5"
+                                        HorizontalAlignment="Left"
+                                        Date="{x:Bind ViewModel.UserProfileSelected.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+                                        <ComboBox
+                                            x:Name="ComboCountry"
+                                            MinWidth="250"
+                                            Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                            loca:Uids.Uid="ComboBox_Country"
+                                            ItemsSource="{x:Bind ViewModel.TblCountriesAllList}"
+                                            PlaceholderText="Pick a Country"
+                                            RelativePanel.RightOf="BirthDateUserProfile"
+                                            SelectedValue="{x:Bind ViewModel.UserProfileSelected.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectedValuePath="Name" />
+                                        <TextBox
+                                            x:Name="PostcodeUserProfile"
+                                            MinWidth="100"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Postcode"
+                                            CornerRadius="3"
+                                            MaxLength="50"
+                                            RelativePanel.RightOf="ComboCountry"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Postcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="CityUserProfile"
+                                            MinWidth="250"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_City"
+                                            MaxLength="100"
+                                            RelativePanel.RightOf="PostcodeUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="Street1UserProfile"
+                                            MinWidth="500"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Street"
+                                            MaxLength="100"
+                                            RelativePanel.AlignLeftWithPanel="True"
+                                            RelativePanel.Below="GenderCombo"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Street1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="Street2UserProfile"
+                                            MinWidth="500"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Street"
+                                            MaxLength="100"
+                                            RelativePanel.Below="GenderCombo"
+                                            RelativePanel.RightOf="Street1UserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Street1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="TelUserProfile"
+                                            MinWidth="100"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Tel"
+                                            MaxLength="100"
+                                            RelativePanel.AlignLeftWithPanel="True"
+                                            RelativePanel.Below="Street1UserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Tel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="MobilUserProfile"
+                                            MinWidth="100"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Mobil"
+                                            MaxLength="100"
+                                            RelativePanel.Below="Street1UserProfile"
+                                            RelativePanel.RightOf="TelUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Mobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="FaxUserProfile"
+                                            MinWidth="100"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Fax"
+                                            MaxLength="100"
+                                            RelativePanel.Below="Street1UserProfile"
+                                            RelativePanel.RightOf="MobilUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="HomePageUrlUserProfile"
+                                            MinWidth="200"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_HomePageUrl"
+                                            MaxLength="100"
+                                            RelativePanel.Below="Street1UserProfile"
+                                            RelativePanel.RightOf="FaxUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.HomePageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="BusinessUserProfile"
+                                            MinWidth="300"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Business"
+                                            MaxLength="100"
+                                            RelativePanel.Below="Street1UserProfile"
+                                            RelativePanel.RightOf="HomePageUrlUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Business, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="CompanyUserProfile"
+                                            MinWidth="150"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Company"
+                                            MaxLength="100"
+                                            RelativePanel.AlignLeftWithPanel="True"
+                                            RelativePanel.Below="TelUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBox
+                                            x:Name="SignatureUserProfile"
+                                            MinWidth="100"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Signature"
+                                            MaxLength="50"
+                                            RelativePanel.Below="TelUserProfile"
+                                            RelativePanel.RightOf="CompanyUserProfile"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ComboBox
+                                            x:Name="ImageMimeTypeCombo"
+                                            Width="200"
+                                            Margin="{StaticResource XSmallRightComboBoxMargin}"
+                                            loca:Uids.Uid="ComboBox_ImageMimeType"
+                                            PlaceholderText="Pick a mime type"
+                                            RelativePanel.Below="TelUserProfile"
+                                            RelativePanel.RightOf="SignatureUserProfile"
+                                            SelectedValue="{x:Bind ViewModel.UserProfileSelected.ImageMimeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <x:String>jpg</x:String>
+                                            <x:String>png</x:String>
+                                            <x:String>bmp</x:String>
+                                            <x:String>tif</x:String>
+                                            <x:String>tiff</x:String>
+                                            <x:String>gif</x:String>
+                                            <x:String>ico</x:String>
+                                            <x:String>jpeg</x:String>
+                                            <x:String>webp</x:String>
+                                            <x:String>wmf</x:String>
+                                            <x:String>wmv</x:String>
+                                            <x:String>mpg</x:String>
+                                            <x:String>mp4</x:String>
+                                            <x:String>avi</x:String>
+                                            <x:String>mov</x:String>
+                                            <x:String>swf</x:String>
+                                            <x:String>flv</x:String>
+                                        </ComboBox>
+                                        <TextBox
+                                            x:Name="FilestreamIdUserProfile"
+                                            MinWidth="250"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_FilestreamId"
+                                            RelativePanel.Below="TelUserProfile"
+                                            RelativePanel.RightOf="ImageMimeTypeCombo"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.FilestreamId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox
+                                            x:Name="MailNewsletterCheckName"
+                                            MinWidth="200"
+                                            Margin="{StaticResource SmallRightCheckBoxMargin}"
+                                            loca:Uids.Uid="CheckBox_MailNewsletter"
+                                            IsChecked="{x:Bind ViewModel.UserProfileSelected.MailNewsletter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            RelativePanel.Below="TelUserProfile"
+                                            RelativePanel.RightOf="FilestreamIdUserProfile" />
+                                        <CheckBox
+                                            x:Name="MaulHtmlCheckName"
+                                            MinWidth="150"
+                                            Margin="{StaticResource SmallRightCheckBoxMargin}"
+                                            loca:Uids.Uid="CheckBox_MaulHtml"
+                                            IsChecked="{x:Bind ViewModel.UserProfileSelected.MaulHtml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            RelativePanel.Below="TelUserProfile"
+                                            RelativePanel.RightOf="MailNewsletterCheckName" />
+                                    </RelativePanel>
+                                </Expander>
+                                <Expander x:Name="MemoExpanderUserProfile">
+                                    <Expander.Header>
+                                        <Grid>
+                                            <TextBlock loca:Uids.Uid="TextBlock_Memo" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                                        </Grid>
+                                    </Expander.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox
+                                            x:Name="MemoUserProfile"
+                                            MinWidth="1120"
+                                            MaxWidth="1300"
+                                            MaxHeight="75"
+                                            Margin="{StaticResource XSmallRightMargin}"
+                                            loca:Uids.Uid="TextBox_Memo"
+                                            AcceptsReturn="True"
+                                            RelativePanel.AlignLeftWithPanel="True"
+                                            RelativePanel.Below="TelUserProfile"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            Text="{x:Bind ViewModel.UserProfileSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </Expander>
+                            </StackPanel>
+                        </ScrollViewer>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup>
                                 <VisualState>
@@ -228,390 +576,21 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <CommandBar x:Name="UserProfileDetailCommandBar"
-                                    Margin="{StaticResource SmallLeftRightCommandBarMargin}"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Top"
-                                    Background="Transparent"
-                                    DefaultLabelPosition="Right"
-                                    RelativePanel.AlignRightWithPanel="True">
-                            <AppBarButton loca:Uids.Uid="AppBarButtonSave"
-                                          Background="{ThemeResource SystemBaseLowColor}"
-                                          Click="SaveUserProfile_Click"
-                                          Foreground="White"
-                                          Visibility="{x:Bind ViewModel.IsInEdit, Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/save.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonCancel"
-                                          Click="{x:Bind ViewModel.CancelEditsAsync}"
-                                          Visibility="{x:Bind ViewModel.IsInEdit, Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/cancel.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarSeparator Visibility="{x:Bind ViewModel.IsInEdit, Mode=OneWay}" />
-                            <AppBarButton loca:Uids.Uid="AppBarButtonBack"
-                                          Background="{ThemeResource SystemAccentColor}"
-                                          Click="BackUserProfile_Click"
-                                          Foreground="White">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/arrowleft.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                            <AppBarButton loca:Uids.Uid="AppBarButtonEdit"
-                                          Click="{x:Bind ViewModel.StartEdit}"
-                                          IsEnabled="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                          Visibility="{x:Bind conv:NotConverter.CollapsedIf(ViewModel.IsNewUserProfile), Mode=OneWay}">
-                                <AppBarButton.Icon>
-                                    <BitmapIcon ShowAsMonochrome="False"
-                                                UriSource="/Assets/Fluent/edit.png" />
-                                </AppBarButton.Icon>
-                            </AppBarButton>
-                        </CommandBar>
-                        <ScrollViewer x:Name="DetailPanelUserProfile"
-                                      Margin="0,36,0,0"
-                                      RelativePanel.AlignLeftWithPanel="True"
-                                      RelativePanel.AlignRightWithPanel="True"
-                                      VerticalScrollBarVisibility="Auto"
-                                      VerticalScrollMode="Auto">
-                            <StackPanel Margin="0,8,4,0">
-                                <StackPanel.Resources>
-                                    <Style TargetType="Expander">
-                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                    </Style>
-                                </StackPanel.Resources>
-                                <RelativePanel Margin="4,0,0,0">
-                                    <TextBox x:Name="UserProfileId"
-                                             MinWidth="110"
-                                             Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_UserProfileId"
-                                             IsReadOnly="True"
-                                             RelativePanel.AlignLeftWithPanel="True"
-                                             Text="{x:Bind ViewModel.UserProfileSelected.UserProfileId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox x:Name="UserProfileEmail"
-                                             MinWidth="150"
-                                             Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_UserProfileEmail"
-                                             Background="SlateGray"
-                                             Foreground="White"
-                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                             MaxLength="100"
-                                             RelativePanel.RightOf="UserProfileId"
-                                             Text="{x:Bind ViewModel.UserProfileSelected.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ComboBox x:Name="RoleCombo"
-                                              Width="150"
-                                              Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                              loca:Uids.Uid="ComboBox_Role"
-                                              IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEdit), Mode=OneWay}"
-                                              PlaceholderText="Pick a Role"
-                                              RelativePanel.RightOf="UserProfileEmail"
-                                              SelectedValue="{x:Bind ViewModel.UserProfileSelected.Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <x:String>Administrator</x:String>
-                                        <x:String>Developer</x:String>
-                                        <x:String>Biologist</x:String>
-                                        <x:String>Zoologist</x:String>
-                                        <x:String>User</x:String>
-                                    </ComboBox>
-                                    <CheckBox x:Name="FlagCheckUserProfile"
-                                              Width="80"
-                                              Margin="{StaticResource SmallRightCheckBoxMargin}"
-                                              VerticalAlignment="Bottom"
-                                              loca:Uids.Uid="CheckBox_Flag"
-                                              IsChecked="{x:Bind ViewModel.UserProfileSelected.Flag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              RelativePanel.RightOf="RoleCombo" />
-                                    <TextBox x:Name="PasswordTextUserProfile"
-                                             MinWidth="1120"
-                                             Margin="{StaticResource XSmallRightMargin}"
-                                             HorizontalAlignment="Stretch"
-                                             loca:Uids.Uid="TextBox_Password"
-                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                             MaxLength="250"
-                                             RelativePanel.AlignLeftWithPanel="True"
-                                             RelativePanel.Below="UserProfileId"
-                                             Text="{x:Bind ViewModel.UserProfileSelected.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox x:Name="ColourUserProfile"
-                                             MinWidth="1120"
-                                             Margin="{StaticResource XSmallRightMargin}"
-                                             HorizontalAlignment="Stretch"
-                                             loca:Uids.Uid="TextBox_Colour"
-                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                             MaxLength="100"
-                                             RelativePanel.AlignLeftWithPanel="True"
-                                             RelativePanel.Below="PasswordTextUserProfile"
-                                             Text="{x:Bind ViewModel.UserProfileSelected.Colour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ComboBox x:Name="TitleCombo"
-                                              Width="150"
-                                              Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                              loca:Uids.Uid="ComboBox_Title"
-                                              IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEdit), Mode=OneWay}"
-                                              PlaceholderText="Pick a Title"
-                                              RelativePanel.AlignLeftWithPanel="True"
-                                              RelativePanel.Below="ColourUserProfile"
-                                              SelectedValue="{x:Bind ViewModel.UserProfileSelected.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <x:String>Dr.</x:String>
-                                        <x:String>Prof.</x:String>
-                                        <x:String>Dipl.-Ing.</x:String>
-                                        <x:String>Ing. grad</x:String>
-                                        <x:String>Dr. Ing</x:String>
-                                    </ComboBox>
-                                    <TextBox x:Name="FirstNameUserProfile"
-                                             MinWidth="250"
-                                             Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_FirstName"
-                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                             MaxLength="100"
-                                             RelativePanel.Below="ColourUserProfile"
-                                             RelativePanel.RightOf="TitleCombo"
-                                             Text="{x:Bind ViewModel.UserProfileSelected.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox x:Name="LastNameUserProfile"
-                                             MinWidth="250"
-                                             Margin="{StaticResource XSmallRightMargin}"
-                                             loca:Uids.Uid="TextBox_LastName"
-                                             IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                             MaxLength="100"
-                                             RelativePanel.Below="ColourUserProfile"
-                                             RelativePanel.RightOf="FirstNameUserProfile"
-                                             Text="{x:Bind ViewModel.UserProfileSelected.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </RelativePanel>
-                                <Expander x:Name="DetailsExpanderUserProfile">
-                                    <Expander.Header>
-                                        <Grid>
-                                            <TextBlock loca:Uids.Uid="TextBlock_Details"
-                                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                                        </Grid>
-                                    </Expander.Header>
-                                    <RelativePanel>
-                                        <ComboBox x:Name="GenderCombo"
-                                                  Width="150"
-                                                  Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                                  loca:Uids.Uid="ComboBox_Gender"
-                                                  PlaceholderText="Pick a Gender"
-                                                  RelativePanel.AlignLeftWithPanel="True"
-                                                  SelectedValue="{x:Bind ViewModel.UserProfileSelected.Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <x:String>Female</x:String>
-                                            <x:String>Male</x:String>
-                                        </ComboBox>
-                                        <TextBox x:Name="BirthDateUserProfile"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_BirthDate"
-                                                 RelativePanel.RightOf="GenderCombo"
-                                                 Style="{StaticResource BodyTextBoxStyle}"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.BirthDate, Converter={StaticResource ResourceKey=DateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <!--<DatePicker
-                                        x:Name="DpBirthDate"
-                                        Width="150"
-                                        RelativePanel.RightOf="GenderCombo"
-                                        RelativePanel.Below="TitleCombo"
-                                        Margin="20,5,5,5"
-                                        HorizontalAlignment="Left"
-                                        Date="{x:Bind ViewModel.UserProfileSelected.BirthDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
-                                        <ComboBox x:Name="ComboCountry"
-                                                  MinWidth="250"
-                                                  Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                                  loca:Uids.Uid="ComboBox_Country"
-                                                  DisplayMemberPath="Name"
-                                                  IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEdit), Mode=OneWay}"
-                                                  ItemsSource="{x:Bind ViewModel.TblCountriesAllList}"
-                                                  PlaceholderText="Pick a Country"
-                                                  RelativePanel.RightOf="BirthDateUserProfile"
-                                                  SelectedValue="{x:Bind ViewModel.UserProfileSelected.Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  SelectedValuePath="Name" />
-                                        <TextBox x:Name="PostcodeUserProfile"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Postcode"
-                                                 CornerRadius="3"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="50"
-                                                 RelativePanel.RightOf="ComboCountry"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Postcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="CityUserProfile"
-                                                 MinWidth="250"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_City"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.RightOf="PostcodeUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="Street1UserProfile"
-                                                 MinWidth="500"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Street"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="GenderCombo"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Street1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="Street2UserProfile"
-                                                 MinWidth="500"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Street"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.Below="GenderCombo"
-                                                 RelativePanel.RightOf="Street1UserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Street1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="TelUserProfile"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Tel"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="Street1UserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Tel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="MobilUserProfile"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Mobil"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.Below="Street1UserProfile"
-                                                 RelativePanel.RightOf="TelUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Mobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="FaxUserProfile"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Fax"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.Below="Street1UserProfile"
-                                                 RelativePanel.RightOf="MobilUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="HomePageUrlUserProfile"
-                                                 MinWidth="200"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_HomePageUrl"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.Below="Street1UserProfile"
-                                                 RelativePanel.RightOf="FaxUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.HomePageUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="BusinessUserProfile"
-                                                 MinWidth="300"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Business"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.Below="Street1UserProfile"
-                                                 RelativePanel.RightOf="HomePageUrlUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Business, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="CompanyUserProfile"
-                                                 MinWidth="150"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Company"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="100"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="TelUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBox x:Name="SignatureUserProfile"
-                                                 MinWidth="100"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Signature"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 MaxLength="50"
-                                                 RelativePanel.Below="TelUserProfile"
-                                                 RelativePanel.RightOf="CompanyUserProfile"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <ComboBox x:Name="ImageMimeTypeCombo"
-                                                  Width="200"
-                                                  Margin="{StaticResource XSmallRightComboBoxMargin}"
-                                                  loca:Uids.Uid="ComboBox_ImageMimeType"
-                                                  IsEnabled="{x:Bind conv:NotConverter.NotCombo(ViewModel.IsInEdit), Mode=OneWay}"
-                                                  PlaceholderText="Pick a mime type"
-                                                  RelativePanel.Below="TelUserProfile"
-                                                  RelativePanel.RightOf="SignatureUserProfile"
-                                                  SelectedValue="{x:Bind ViewModel.UserProfileSelected.ImageMimeType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                            <x:String>jpg</x:String>
-                                            <x:String>png</x:String>
-                                            <x:String>bmp</x:String>
-                                            <x:String>tif</x:String>
-                                            <x:String>tiff</x:String>
-                                            <x:String>gif</x:String>
-                                            <x:String>ico</x:String>
-                                            <x:String>jpeg</x:String>
-                                            <x:String>webp</x:String>
-                                            <x:String>wmf</x:String>
-                                            <x:String>wmv</x:String>
-                                            <x:String>mpg</x:String>
-                                            <x:String>mp4</x:String>
-                                            <x:String>avi</x:String>
-                                            <x:String>mov</x:String>
-                                            <x:String>swf</x:String>
-                                            <x:String>flv</x:String>
-                                        </ComboBox>
-                                        <TextBox x:Name="FilestreamIdUserProfile"
-                                                 MinWidth="250"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_FilestreamId"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 RelativePanel.Below="TelUserProfile"
-                                                 RelativePanel.RightOf="ImageMimeTypeCombo"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.FilestreamId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <CheckBox x:Name="MailNewsletterCheckName"
-                                                  MinWidth="200"
-                                                  Margin="{StaticResource SmallRightCheckBoxMargin}"
-                                                  loca:Uids.Uid="CheckBox_MailNewsletter"
-                                                  IsChecked="{x:Bind ViewModel.UserProfileSelected.MailNewsletter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  RelativePanel.Below="TelUserProfile"
-                                                  RelativePanel.RightOf="FilestreamIdUserProfile" />
-                                        <CheckBox x:Name="MaulHtmlCheckName"
-                                                  MinWidth="150"
-                                                  Margin="{StaticResource SmallRightCheckBoxMargin}"
-                                                  loca:Uids.Uid="CheckBox_MaulHtml"
-                                                  IsChecked="{x:Bind ViewModel.UserProfileSelected.MaulHtml, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  RelativePanel.Below="TelUserProfile"
-                                                  RelativePanel.RightOf="MailNewsletterCheckName" />
-                                    </RelativePanel>
-                                </Expander>
-                                <Expander x:Name="MemoExpanderUserProfile">
-                                    <Expander.Header>
-                                        <Grid>
-                                            <TextBlock loca:Uids.Uid="TextBlock_Memo"
-                                                       Style="{ThemeResource SubtitleTextBlockStyle}" />
-                                        </Grid>
-                                    </Expander.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBox x:Name="MemoUserProfile"
-                                                 MinWidth="1120"
-                                                 MaxWidth="1300"
-                                                 MaxHeight="75"
-                                                 Margin="{StaticResource XSmallRightMargin}"
-                                                 loca:Uids.Uid="TextBox_Memo"
-                                                 AcceptsReturn="True"
-                                                 IsReadOnly="{x:Bind conv:NotConverter.Not(ViewModel.IsInEdit), Mode=OneWay}"
-                                                 RelativePanel.AlignLeftWithPanel="True"
-                                                 RelativePanel.Below="TelUserProfile"
-                                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                 Text="{x:Bind ViewModel.UserProfileSelected.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    </StackPanel>
-                                </Expander>
-                            </StackPanel>
-                        </ScrollViewer>
                     </RelativePanel>
                 </Expander>
 
                 <!--  MailAccount  -->
-                <Expander x:Name="MailAccountExpander"
-                          Margin="{StaticResource XSmallTopBottomMargin}">
+                <Expander x:Name="MailAccountExpander" Margin="{StaticResource XSmallTopBottomMargin}">
                     <Expander.Header>
                         <Grid>
-                            <TextBlock HorizontalAlignment="Right"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
-                                       Text="Mail Account" />
+                            <TextBlock
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Style="{StaticResource CaptionTextBlockStyle}"
+                                Text="Mail Account" />
                         </Grid>
                     </Expander.Header>
-                    <Grid x:Name="ContentArea"
-                          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid x:Name="ContentArea" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -627,46 +606,53 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <!--  MailAccountPassword  -->
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
-                                   Grid.ColumnSpan="2"
-                                   Foreground="Red"
-                                   Style="{ThemeResource DetailSubTitleStyle}"
-                                   Text=" Achtung !! Vorsicht beim Anlegen eines neuen Passworts, wird in Appconfig gespeichert !!" />
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="0"
-                                   Style="{ThemeResource DetailSubTitleStyle}"
-                                   Text=" New MailAccountPassword:" />
-                        <TextBox x:Name="TbMailAccountPassword"
-                                 Grid.Row="1"
-                                 Grid.Column="1"
-                                 Style="{StaticResource BodyTextBoxStyle}"
-                                 Text="{Binding MailAccountPassword}" />
-                        <Button x:Name="BtnEncrypt"
-                                Grid.Row="2"
-                                Grid.Column="1"
-                                Width="200"
-                                Click="BtnEncrypt_OnClick"
-                                Content="Berechnen"
-                                IsEnabled="True"
-                                Style="{StaticResource AtisButtonPrimary}" />
-                        <TextBlock Grid.Row="3"
-                                   Grid.Column="0"
-                                   Style="{ThemeResource DetailSubTitleStyle}"
-                                   Text="Encryptetes MailAccountPassword:" />
-                        <TextBox x:Name="TbEncryptMailAccountPassword"
-                                 Grid.Row="3"
-                                 Grid.Column="1"
-                                 Style="{StaticResource BodyTextBoxStyle}"
-                                 Text="{Binding EncryptMailAccountPassword}" />
-                        <Button x:Name="BtnSave"
-                                Grid.Row="4"
-                                Grid.Column="1"
-                                Width="200"
-                                Click="BtnSave_OnClick"
-                                Content="Save"
-                                IsEnabled="True"
-                                Style="{StaticResource AtisButtonPrimary}" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Foreground="Red"
+                            Style="{ThemeResource DetailSubTitleStyle}"
+                            Text=" Achtung !! Vorsicht beim Anlegen eines neuen Passworts, wird in Appconfig gespeichert !!" />
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Style="{ThemeResource DetailSubTitleStyle}"
+                            Text=" New MailAccountPassword:" />
+                        <TextBox
+                            x:Name="TbMailAccountPassword"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource BodyTextBoxStyle}"
+                            Text="{Binding MailAccountPassword}" />
+                        <Button
+                            x:Name="BtnEncrypt"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Width="200"
+                            Click="BtnEncrypt_OnClick"
+                            Content="Berechnen"
+                            IsEnabled="True"
+                            Style="{StaticResource AtisButtonPrimary}" />
+                        <TextBlock
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Style="{ThemeResource DetailSubTitleStyle}"
+                            Text="Encryptetes MailAccountPassword:" />
+                        <TextBox
+                            x:Name="TbEncryptMailAccountPassword"
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Style="{StaticResource BodyTextBoxStyle}"
+                            Text="{Binding EncryptMailAccountPassword}" />
+                        <Button
+                            x:Name="BtnSave"
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Width="200"
+                            Click="BtnSave_OnClick"
+                            Content="Save"
+                            IsEnabled="True"
+                            Style="{StaticResource AtisButtonPrimary}" />
 
                     </Grid>
 
@@ -674,14 +660,37 @@
             </StackPanel>
         </ScrollViewer>
 
-        <ProgressRing x:Name="LoadingProgressRing"
-                      Width="40"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
-                      RelativePanel.AlignHorizontalCenterWithPanel="True"
-                      RelativePanel.AlignVerticalCenterWithPanel="True"
-                      Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <ProgressRing
+            x:Name="LoadingProgressRing"
+            Width="40"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+            RelativePanel.AlignHorizontalCenterWithPanel="True"
+            RelativePanel.AlignVerticalCenterWithPanel="True"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="UserProfileCommandBar.DefaultLabelPosition" Value="Bottom" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </RelativePanel>
 </Page>
 

@@ -39,7 +39,7 @@ public class SpeciesViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = [];
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = [];
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = [];
-    private readonly AllDialogs _allDialogs = new();
+ //   private readonly AllDialogs _allDialogs = new();
 
 
     #endregion [Private Data Members]

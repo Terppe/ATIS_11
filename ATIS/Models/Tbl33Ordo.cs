@@ -272,8 +272,8 @@ public class Tbl33Ordo : ObservableObject, IDataService.IAuditable, IHierarchica
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string? _updater;
-    public string? Updater
+    private string _updater;
+    public string Updater
     {
         get => _updater;
         set => SetProperty(ref _updater, value);

@@ -35,7 +35,7 @@ public sealed partial class GeneralSettingPage : Page
         }
         catch (Exception ex)
         {
-            await AllDialogs.ErrorMessageDialogAsync(ex.Message);
+           // await AllDialogs.ErrorMessageDialogAsync(ex.Message);
         }
     }
 
