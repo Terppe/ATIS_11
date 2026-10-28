@@ -5,9 +5,13 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
 using ATIS.Views.Auth;
+using ATIS.Views.Modules.TblUserProfile;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -18,763 +22,139 @@ namespace ATIS.Views.Admin;
 /// </summary>
 public sealed partial class AdminAreaPage : Page
 {
-    #region [Private Data Members]
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    public AdminAreaViewModel ViewModel { get; set; }
-    //private static readonly AtisDbContext Context = new();
-    private string _search;
-    #endregion [Private Data Members]
 
-    #region [Constructor]
+    public TblUserProfileViewModel ViewModel { get; }
 
+    // ---------------------------------------------------------
+    // CONSTRUCTOR
+    // ---------------------------------------------------------
     public AdminAreaPage()
     {
-        var customPrincipal = (CustomPrincipal)Thread.CurrentPrincipal;
-        if (customPrincipal == null)
-        {
-            return;
-        }
-        var name = customPrincipal.Identity.Email;
-        if (name == "")
-        {
-          //  _ = AllDialogs.NobodyLoggedInSelectedWarnMessageDialogAsync();
-            return;
-        }
+        InitializeComponent();
 
-        var role = customPrincipal.Identity.Role;
+        ViewModel = App.GetService<TblUserProfileViewModel>();
+        DataContext = ViewModel;
 
-        if (role == "Administrator")
-        {
-            InitializeComponent();
-            Loaded += OnLoaded;
-
-        }
-        else
-        {
-            //AllDialogs.WarningNoPermissionMessageDialogAsync(name).ConfigureAwait(false);
-        }
+        Loaded += UserProfilePage_Loaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private TblUserProfileViewModel Vm => (TblUserProfileViewModel)DataContext;
+
+    // ---------------------------------------------------------
+    // PAGE LOADED
+    // ---------------------------------------------------------
+    private async void UserProfilePage_Loaded(object sender, RoutedEventArgs e)
     {
-        ViewModel = App.GetService<AdminAreaViewModel>();
+        Loaded -= UserProfilePage_Loaded;
+
+        await ViewModel.LoadAsync();
+
+        await Task.Delay(50);
+        SearchBox.Focus(FocusState.Programmatic);
+
+        PrepareCurrentTabState();
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
-    #endregion [Constructor]
-
-    #region [UserProfile Methods]
-
-    private async void GetUserProfilesByNameOrId(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    // ---------------------------------------------------------                   
+    // QUERY-SUBMITTED
+    // ---------------------------------------------------------                   
+    private async void SearchBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        try
-        {
-            _search = args.QueryText;
-
-            ViewModel.IsLoading = true;
-
-            ViewModel.TblUserProfilesList?.Clear();
-
-            ViewModel.UserProfileItems.Clear();
-
-            const int milliseconds = 1500;
-            await Task.Delay(milliseconds);
-
-            if (string.IsNullOrEmpty(_search))
-            {
-                ViewModel.TblUserProfilesList?.Clear();
-
-                UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-
-                ViewModel.IsLoading = false;
-                ViewModel.IsDeleting = false;
-            //    await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
-
-            //if _search = "" und count = 0 you see the whole Tab thousands of datasets
-            //change to % for all Datasets in 20 Parts of sets
-            //await _dispatcherQueue.EnqueueAsync(() =>
-            {
-                ViewModel.TblUserProfilesList ??= [];
-                ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                    ? [.. AppData.Data.TblUserProfiles
-                        .Where(a => a.UserProfileId == id)]
-                    : [.. AppData.Data.TblUserProfiles
-                        .Where(a => _search != null && a.Email.StartsWith(_search))
-                        .OrderBy(a => a.Email)];
-            }
-            //);
-
-            UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-
-            if (ViewModel.TblUserProfilesList is { Count: 0 })
-            {
-                ViewModel.TblUserProfilesList?.Clear();
-
-                AppBarButtonDeleteUserProfile.IsEnabled = false;
-                AppBarButtonSync.IsEnabled = false;
-
-                DetailPanelUserProfile.Visibility = Visibility.Visible;
-                UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-                //await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-            }
-            else
-            {
-                UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-                //fehler
-                ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-            }
-            ViewModel.IsLoading = false;
-        }
-        catch (Exception e)
-        {
-         //   await AllDialogs.ErrorMessageDialogAsync(e.InnerException?.ToString());
-            SimpleLog.Log(e);
-        }
+        await ViewModel.ApplyFilterAsync(sender.Text);
     }
 
-    private async void UserProfileDataGrid_OnCurrentCellChanged(object sender, EventArgs e)
+    // ---------------------------------------------------------                   
+    // TABSTATE, STYLE, CLICK-EVENTS
+    // ---------------------------------------------------------                   
+    private void PrepareCurrentTabState()
     {
-        try
+        switch (Vm.SelectedDetailTabIndex)
         {
-            await UserProfileDataGridCurrentCellChanged();
-        }
-        catch (Exception xe)
-        {
-            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
+            //case 1:
+            //    Vm.UserProfileCommentViewModel.PrepareViewState();
+            //    break;
+
+            //case 2:
+            //    Vm.UserProfileReferenceViewModel.PrepareViewState();
+            //    break;
+
+            //case 4:
+            //    Vm.NULLViewModel.NULLCommentViewModel.PrepareViewState();
+            //    break;
+
+            //case 5:
+            //    Vm.NULLViewModel.NULLReferenceViewModel.PrepareViewState();
+            //    break;
         }
     }
-
-    private async Task UserProfileDataGridCurrentCellChanged()
+    private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
     {
-        ViewModel.IsLoading = true;
-
-        if (ViewModel.UserProfileSelected == null)
-        {
-            ViewModel.IsLoading = false;
-            return;
-        }
-
-        //delay loading
-        const int milliseconds = 1500;
-        await Task.Delay(milliseconds);
-
-        ViewModel.IsLoading = false;
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
     }
-
-    private async void AddUserProfile_Click(object sender, RoutedEventArgs e)
+    private void DetailTabButton_Click(object sender, RoutedEventArgs e)
     {
-        try
+        if (sender is Button button &&
+            button.Tag is string tagText &&
+            int.TryParse(tagText, out int index))
         {
-            BackDetailExpanders();
-            await AddUserProfile();
-        }
-        catch (Exception xe)
-        {
-            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
+            Vm.SelectedDetailTabIndex = index;
+
+            PrepareCurrentTabState();
+            UpdateTabButtonStates();
+            UpdateDetailContentVisibility();
         }
     }
 
-    private async Task AddUserProfile()
+    // ------------------------------------------------------------------------------------------------------------------------
+    // NULL  -UNTERTABS SICHTBARKEIT UND STATUS VERWALTEN
+    // ------------------------------------------------------------------------------------------------------------------------
+    private void UpdateNULLTabs(bool hasSelection)
     {
-        ViewModel.IsInEdit = true;
-        ViewModel.IsNewUserProfile = true;
 
-        await ViewModel.AddUserProfileAsync();
+        if (!hasSelection && Vm.SelectedDetailTabIndex >= 4)
+            Vm.SelectedDetailTabIndex = 3;
 
-        if (ViewModel.TblUserProfilesList != null)
-        {
-            ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-        }
-
-        UserProfileDetailExpander.IsExpanded = true;
-        UserProfileDetailExpander.Visibility = Visibility.Visible;
-
-        ViewModel.IsNewUserProfile = false;
+        UpdateTabButtonStates();
+        UpdateDetailContentVisibility();
     }
 
-    private void UserProfileSearchBox_OnLoaded(object sender, RoutedEventArgs e)
+    private void UpdateTabButtonStates()
     {
-        UserProfileSearchBox.Visibility = Visibility.Visible;
-        UserProfileSearchBox.Focus(FocusState.Programmatic);
-        UserProfileSearchBox.PlaceholderText = StringsRes.SearchNameOrId;
+        SetTabButtonStyle(EditUserProfileTab, EditUserProfileTabUnderline, Vm.SelectedDetailTabIndex == 0);
     }
 
-    private void UserProfileDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
+    private void UpdateDetailContentVisibility()
     {
-      //  (sender as DataGrid).Sort(e.Column, ViewModel.TblUserProfilesList.Sort);
+        EditUserProfileContent.Visibility = Vm.SelectedDetailTabIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    private void AddNewUserProfileCanceled(object sender, EventArgs e) => UserProfileDetailExpander.IsExpanded = false;
-
-    private void ViewUserProfileHyperlinkButton_Click(object sender, RoutedEventArgs e)
-    {
-        ViewModel.IsInEdit = false;
-        ViewModel.IsNewUserProfile = false;
-        UserProfileDetailExpander.IsExpanded = true;
-        UserProfileDetailExpander.Visibility = Visibility.Visible;
-    }
-
-    private async void DeleteUserProfile_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-          //  await DeleteUserProfile();
-        }
-        catch (Exception xe)
-        {
-            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    //private async Task DeleteUserProfile()
+    // ---------------------------------------------------------                  
+    // PROPERTY CHANGED
+    // ---------------------------------------------------------                  
+    //private void NULLViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     //{
-    //    var deleteDialog = new DeleteDialog
+    //    if (e.PropertyName == nameof(NULLViewModel.SelectedItem))
     //    {
-    //        Title = StringsRes.Delete,
-    //        XamlRoot = Content.XamlRoot
-    //    };
-    //    await deleteDialog.ShowAsync();
-    //    var res = deleteDialog.Result;
-
-    //    switch (res)
-    //    {
-    //        case DeleteDialogResult.Delete:
-    //            await ViewModel.DeleteUserProfileAsync(ViewModel.UserProfileSelected);
-    //            await Refresh();
-    //            break;
-    //        case DeleteDialogResult.DontDelete:
-    //            await ViewModel.RevertChangesAsync();
-    //            break;
-    //        case DeleteDialogResult.Cancel:
-    //            break;
-    //        default:
-    //            throw new ArgumentOutOfRangeException();
-    //    }
-
-    //}
-
-    private async void SaveUserProfile_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-          //  await SaveUserProfile();
-        }
-        catch (Exception xe)
-        {
-            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    //private async Task SaveUserProfile()
-    //{
-    //    var saveDialog = new SaveChangesDialog
-    //    {
-    //        Title = StringsRes.SaveChanges,
-    //        XamlRoot = Content.XamlRoot
-    //    };
-    //    await saveDialog.ShowAsync();
-    //    var res = saveDialog.Result;
-
-    //    switch (res)
-    //    {
-    //        case SaveChangesDialogResult.Save:
-    //            if (await BeforeSaveUserProfile())
-    //            {
-    //                return;
-    //            }
-    //            await ViewModel.SaveUserProfileAsync(ViewModel.UserProfileSelected);
-    //            await BehindSaveUserProfile();
-    //            break;
-    //        case SaveChangesDialogResult.DontSave:
-    //            await ViewModel.RevertChangesAsync();
-    //            break;
-    //        case SaveChangesDialogResult.Cancel:
-    //            break;
-    //        default:
-    //            throw new ArgumentOutOfRangeException();
+    //        DispatcherQueue.TryEnqueue(() =>
+    //            UpdateNULLTabs(Vm.NULLViewModel.SelectedItem != null));
     //    }
     //}
 
-    private async Task<bool> BeforeSaveUserProfile()
+    // ---------------------------------------------------------         
+    // NAVIGATED FROM
+    // ---------------------------------------------------------
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        _search = UserProfileSearchBox.Text;
-      //  await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            ViewModel.TblUserProfilesList ??= [];
-            ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
-                .Where(a => a.Email == ViewModel.UserProfileSelected.Email)];
-        }
-        //);
-        if (ViewModel.IsNewUserProfile)
-        {
-            if (ViewModel.TblUserProfilesList.Count != 0)
-            {
-                //await AllDialogs.DatasetExistInfoMessageDialogAsync();
-                return true;
-            }
-        }
-        ViewModel.IsModified = true;
-        return false;
-    }
+        //if (DataContext is TblUserProfileViewModel vm)
+        //    vm.NULLViewModel.PropertyChanged -= NULLViewModel_PropertyChanged;
 
-    private async Task BehindSaveUserProfile()
-    {
-        if (string.IsNullOrEmpty(UserProfileSearchBox.Text))
-        {
-       //     await _dispatcherQueue.EnqueueAsync(async () =>
-            {
-                ViewModel.TblUserProfilesList ??= [];
-                ViewModel.TblUserProfilesList = [.. AppData.Data.TblUserProfiles
-                    .Where(a => a.UserProfileId == ViewModel.UserProfileSelected.UserProfileId)];
-
-                if (ViewModel.TblUserProfilesList.Count == 0)
-                {
-                    //await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                    return;
-                }
-                UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-                ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-
-                ////string cut last Char
-                //var length = ViewModel.FamilySelected.FamilyName.Length;
-                //var org = ViewModel.FamilySelected.FamilyName;
-                //var cutorg = org.Remove(length - 1, 1);
-                //FamilySearchBox.Text = cutorg;
-            }
-            //);
-        }
-        await Refresh();
-    }
-
-    private void BackUserProfile_Click(object sender, RoutedEventArgs e)
-    {
-        BackDetailExpanders();
-    }
-
-    #endregion [UserProfile Methods]                    
-
-
-    //#region [UserProfile Methods]
-
-    //private async void GetUserProfilesByNameOrId(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
-    //{
-    //    try
-    //    {
-    //        _search = args.QueryText;
-
-    //        ViewModel.IsLoading = true;
-
-    //        ViewModel.TblUserProfilesList?.Clear();
-
-    //        ViewModel.UserProfileItems.Clear();
-
-    //        const int milliseconds = 1500;
-    //        await Task.Delay(milliseconds);
-
-    //        if (string.IsNullOrEmpty(_search))
-    //        {
-    //            ViewModel.TblUserProfilesList?.Clear();
-
-    //            UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-    //            UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-
-    //            ViewModel.IsLoading = false;
-    //            ViewModel.IsDeleting = false;
-    //            await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-    //            return;
-    //        }
-
-    //        //if _search = "" und count = 0 you see the whole Tab thousands of datasets
-    //        //change to % for all Datasets in 20 Parts of sets
-
-    //        await _dispatcherQueue.EnqueueAsync(() =>
-    //        {
-    //            ViewModel.TblUserProfilesList ??= [];
-    //            ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-    //            ? [.. Context.TblUserProfiles
-    //                .Where(e => e.UserProfileId == id)]
-    //            : [.. Context.TblUserProfiles
-    //                .Where(e => e.Email.StartsWith(_search))
-    //                .OrderBy(a => a.Email)];
-    //        });
-
-    //        UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-
-    //        if (ViewModel.TblUserProfilesList is { Count: 0 })
-    //        {
-    //            ViewModel.TblUserProfilesList?.Clear();
-
-    //            AppBarButtonDeleteUserProfile.IsEnabled = false;
-    //            AppBarButtonSync.IsEnabled = false;
-
-    //            DetailPanelUserProfile.Visibility = Visibility.Visible;
-    //            UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-    //            await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-    //        }
-    //        else
-    //        {
-    //            UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-    //            ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-    //        }
-    //        ViewModel.IsLoading = false;
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        //hier wird Fehler ausgelöst aber ungeklärt
-    //                 await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async void UserProfileDataGrid_OnCurrentCellChanged(object sender, EventArgs e)
-    //{
-    //    try
-    //    {
-    //        await UserProfileDataGridCurrentCellChanged();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async Task UserProfileDataGridCurrentCellChanged()
-    //{
-    //    ViewModel.IsLoading = true;
-
-    //    if (ViewModel.UserProfileSelected == null)
-    //    {
-    //        ViewModel.IsLoading = false;
-    //        return;
-    //    }
-
-    //    //delay loading
-    //    const int milliseconds = 1500;
-    //    await Task.Delay(milliseconds);
-    //    ViewModel.IsLoading = false;
-
-    //}
-
-    //private async void AddUserProfile_Click(object sender, RoutedEventArgs e)
-    //{
-    //    try
-    //    {
-    //        await AddUserProfile();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async Task AddUserProfile()
-    //{
-    //    ViewModel.IsInEdit = true;
-    //    ViewModel.IsNewUserProfile = true;
-
-    //    await ViewModel.AddUserProfileAsync();
-
-    //    if (ViewModel.TblUserProfilesList != null)
-    //    {
-    //        ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-    //    }
-
-    //    UserProfileDetailExpander.IsExpanded = true;
-    //    UserProfileDetailExpander.Visibility = Visibility.Visible;
-
-    //    ViewModel.IsNewUserProfile = false;
-
-    //}
-
-    //private void UserProfileSearchBox_OnLoaded(object sender, RoutedEventArgs e)
-    //{
-    //    UserProfileSearchBox.Visibility = Visibility.Visible;
-    //    UserProfileSearchBox.Focus(FocusState.Programmatic);
-    //    UserProfileSearchBox.PlaceholderText = StringsRes.SearchNameOrId;
-    //}
-
-    //private void UserProfileDataGrid_Sorting(object sender, DataGridColumnEventArgs e)
-    //{
-    //    (sender as DataGrid).Sort(e.Column, ViewModel.TblUserProfilesList.Sort);
-    //}
-
-    //private void AddNewUserProfileCanceled(object sender, EventArgs e) => UserProfileDetailExpander.IsExpanded = false;
-
-    //private void ViewUserProfileHyperlinkButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    ViewModel.IsInEdit = false;
-    //    ViewModel.IsNewUserProfile = false;
-    //    UserProfileDetailExpander.IsExpanded = true;
-    //    UserProfileDetailExpander.Visibility = Visibility.Visible;
-    //}
-
-    //private async void DeleteUserProfile_Click(object sender, RoutedEventArgs e)
-    //{
-    //    try
-    //    {
-    //        await DeleteUserProfile();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async Task DeleteUserProfile()
-    //{
-    //    var deleteDialog = new DeleteDialog
-    //    {
-    //        Title = StringsRes.Delete,
-    //        XamlRoot = Content.XamlRoot
-    //    };
-    //    await deleteDialog.ShowAsync();
-    //    var res = deleteDialog.Result;
-
-    //    switch (res)
-    //    {
-    //        case DeleteDialogResult.Delete:
-    //            await ViewModel.DeleteUserProfileAsync(ViewModel.UserProfileSelected);
-    //            await Refresh();
-    //            break;
-    //        case DeleteDialogResult.DontDelete:
-    //            await ViewModel.RevertChangesAsync();
-    //            break;
-    //        case DeleteDialogResult.Cancel:
-    //            break;
-    //        default:
-    //            throw new ArgumentOutOfRangeException();
-    //    }
-
-    //}
-
-    //private async void SaveUserProfile_Click(object sender, RoutedEventArgs e)
-    //{
-    //    try
-    //    {
-    //        await SaveUserProfile();
-    //    }
-    //    catch (Exception xe)
-    //    {
-    //        await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-    //        SimpleLog.Log(xe);
-    //    }
-    //}
-
-    //private async Task SaveUserProfile()
-    //{
-    //    var saveDialog = new SaveChangesDialog
-    //    {
-    //        Title = StringsRes.SaveChanges,
-    //        XamlRoot = Content.XamlRoot
-    //    };
-    //    await saveDialog.ShowAsync();
-    //    var res = saveDialog.Result;
-
-    //    switch (res)
-    //    {
-    //        case SaveChangesDialogResult.Save:
-    //            if (await BeforeSaveUserProfile())
-    //            {
-    //                return;
-    //            }
-    //            await ViewModel.SaveUserProfileAsync(ViewModel.UserProfileSelected);
-    //            await BehindSaveUserProfile();
-    //            break;
-    //        case SaveChangesDialogResult.DontSave:
-    //            await ViewModel.RevertChangesAsync();
-    //            break;
-    //        case SaveChangesDialogResult.Cancel:
-    //            break;
-    //        default:
-    //            throw new ArgumentOutOfRangeException();
-    //    }
-
-    //}
-
-    //private async Task<bool> BeforeSaveUserProfile()
-    //{
-    //    _search = UserProfileSearchBox.Text;
-    //    await _dispatcherQueue.EnqueueAsync(() =>
-    //    {
-    //        ViewModel.TblUserProfilesList ??= [];
-    //        ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
-    //            .Where(a => a.Email == ViewModel.UserProfileSelected.Email &&
-    //                        a.FirstName == ViewModel.UserProfileSelected.FirstName &&
-    //                        a.LastName == ViewModel.UserProfileSelected.LastName)];
-    //    });
-
-    //    if (ViewModel.IsNewUserProfile)
-    //    {
-    //        if (ViewModel.TblUserProfilesList.Count != 0)
-    //        {
-    //            await AllDialogs.DatasetExistInfoMessageDialogAsync();
-    //            return true;
-    //        }
-    //    }
-    //    ViewModel.IsModified = true;
-    //    return false;
-    //}
-
-    //private async Task BehindSaveUserProfile()
-    //{
-    //    if (string.IsNullOrEmpty(UserProfileSearchBox.Text))
-    //    {
-    //        await _dispatcherQueue.EnqueueAsync(async () =>
-    //        {
-    //            ViewModel.TblUserProfilesList ??= [];
-    //            ViewModel.TblUserProfilesList = [.. Context.TblUserProfiles
-    //                .Where(a => a.UserProfileId == ViewModel.UserProfileSelected.UserProfileId)];
-
-    //            if (ViewModel.TblUserProfilesList.Count == 0)
-    //            {
-    //                await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-    //                return;
-    //            }
-    //            UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-    //            ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[0];
-
-    //            ////string cut last Char
-    //            //var length = ViewModel.UserProfileSelected.Email.Length;
-    //            //var org = ViewModel.UserProfileSelected.Email;
-    //            //var cutorg = org.Remove(length - 1, 1);
-    //            //UserProfileSearchBox.Text = cutorg;
-    //        });
-    //    }
-    //    await Refresh();
-    //}
-
-    //private void BackUserProfile_Click(object sender, RoutedEventArgs e)
-    //{
-    //    UserProfileDetailExpander.IsExpanded = false;
-    //    UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-    //}
-
-    //#endregion [UserProfile Methods]                    
-
-    #region [Refresh Methods]
-    private async void Refresh_Click(object sender, RoutedEventArgs e)
-    {
-        try
-        {
-            await Refresh();
-        }
-        catch (Exception xe)
-        {
-            //await AllDialogs.ErrorMessageDialogAsync(xe.InnerException?.ToString());
-            SimpleLog.Log(xe);
-        }
-    }
-
-    private async Task Refresh()
-    {
-        ViewModel.IsLoading = true;
-
-        //delay loading
-        const int milliseconds = 1500;
-        await Task.Delay(milliseconds);
-
-        if (string.IsNullOrEmpty(_search))
-        {
-            DetailPanelUserProfile.Visibility = Visibility.Visible;
-            UserProfileDetailExpander.Visibility = Visibility.Visible;
-        }
-        else
-        {
-            //   Index Position ?
-            var x = (DataGrid)FindName("UserProfileDataGrid");
-            var iNdx = x.SelectedIndex;
-
-            if (iNdx < ViewModel.TblUserProfilesList!.Count)
-            {
-                ViewModel.UserProfileItems.Clear();
-                foreach (var item in ViewModel.TblUserProfilesList)
-                {
-                    ViewModel.UserProfileItems.Add(item);
-                }
-
-                ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
-            }
-            UserProfileDataGrid.SelectedIndex = iNdx;
-
-         //   await _dispatcherQueue.EnqueueAsync(() =>
-            {
-                ViewModel.TblUserProfilesList ??= [];
-                ViewModel.TblUserProfilesList = int.TryParse(_search, out var id)
-                    ? [.. AppData.Data.TblUserProfiles
-                            .Where(a => a.UserProfileId == id)]
-                    : [.. AppData.Data.TblUserProfiles
-                            .Where(a => a.Email.StartsWith(_search))
-                            .OrderBy(a => a.Email)];
-            }
-            //);
-            if (ViewModel.TblUserProfilesList is { Count: 0 })
-            {
-                ViewModel.TblUserProfilesList?.Clear();
-                ViewModel.IsLoading = false;
-
-                //await AllDialogs.NoDatasetFoundInfoMessageDialogAsync();
-                return;
-            }
-            UserProfileDataGrid.ItemsSource = ViewModel.TblUserProfilesList;
-
-            if (ViewModel.IsDeleting)
-            {
-                if (iNdx == 0 && ViewModel.TblUserProfilesList.Count == 0)
-                {
-                    ViewModel.TblUserProfilesList.Clear();
-                    return;
-                }
-            }
-            else
-            {
-                ViewModel.UserProfileSelected = ViewModel.TblUserProfilesList[iNdx];
-            }
-        }
-        UserProfileDataGrid_OnCurrentCellChanged(null, null);
-
-        ViewModel.IsLoading = false;
-        ViewModel.IsDeleting = false;
-
-    }
-
-    private void BackDetailExpanders()
-    {
-        UserProfileDetailExpander.IsExpanded = false;
-        UserProfileDetailExpander.Visibility = Visibility.Collapsed;
-    }
-
-    #endregion [Refresh Methods] 
-
-
-    private void BtnEncrypt_OnClick(object sender, RoutedEventArgs e)
-    {
-        if (TbMailAccountPassword != null && TbMailAccountPassword.Text != "")
-        {
-            TbEncryptMailAccountPassword.Text = Crypt.EncryptString(TbMailAccountPassword.Text);
-        }
+        base.OnNavigatedFrom(e);
     }
 
 
-    private async void BtnSave_OnClick(object sender, RoutedEventArgs e)
-    {
-        //if (//await// AllDialogs.SaveResultQuestionConfirmationDialogAsync())
-        //{
-        //    var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
-        //    config.AppSettings.Settings["EncryptMailAccountPassword"].Value = TbEncryptMailAccountPassword.Text;
-
-        //    // Save the configuration file.
-        //    config.Save(ConfigurationSaveMode.Full);
-
-        //    ConfigurationManager.RefreshSection("AppSettings");
-        //}
-    }
 }

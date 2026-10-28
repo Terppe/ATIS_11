@@ -1,369 +1,410 @@
 ﻿using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows.Input;
-using Windows.System;
 using ATIS.Helpers;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Strings;
+using ATIS.Views.Base;
+using ATIS.Views.Modules.Hierarchy;
+using log4net;
+using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Windows.System;
+using WinUI3Localizer;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static WinUI3Localizer.LanguageDictionary;
 using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 
 namespace ATIS.Views.Admin;
-public partial class AdminAreaViewModel : ObservableObject
+
+public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserProfile>
 {
-    #region [Private Data Members]
-    private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-    //private static readonly AtisDbContext Context = new();
-    private readonly IDataService _dataService;
-    public ObservableCollection<TblUserProfile> UserProfileItems { get; } = [];
 
-    #endregion [Private Data Members]           
+    private readonly LookupService _lookupService;
+    public ICommand SortCommand { get; }
+    public IRelayCommand BackCommand { get; }
+    private int _currentParentId;
+    private bool _wasEmptyBeforeSave;
+    private Func<int, Task<IEnumerable<Models.TblUserProfile>>>? _activeLoader;
+    private readonly Action<string> _langHandler;
 
-    #region [Constructor]
-    public AdminAreaViewModel(IDataService dataService)
+    // ---------------------------------------------------------                   
+    // CTOR
+    // ---------------------------------------------------------                   
+    public AdminAreaViewModel(
+        IDbContextFactory<AtisDbContext> factory,
+        IDialogService dialog,
+        HierarchyCoordinator coordinator,
+        LookupService lookupService,
+        IUserService user)
+        : base(new DataService(factory, user), dialog, coordinator)
     {
-        _dataService = dataService;
-        GetAllCollections();
+
+        _lookupService = lookupService;
+
+        SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
+        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
+        RegisterHeader("Id", "Id");
+        RegisterHeader("Name", "Name");
+
+        _langHandler = _ => ApplyHeaders();
+        App.LanguageChanged += _langHandler;
+
+        ApplyHeaders();
     }
 
-    private void GetAllCollections()
+    public async Task LoadReferenceLookupsAsync()
     {
-        TblCountriesAllList ??= [];
-        TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
+        //await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
     }
 
-    public AdminAreaViewModel()
+    // ---------------------------------------------------------
+    // CHILD-VMs
+    // ---------------------------------------------------------
+    //public Tbl93CommentViewModel UserProfileCommentViewModel { get; }
+    //public Tbl90ReferenceViewModel UserProfileReferenceViewModel { get; }
+
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+    public ObservableCollection<string> CountryNameList { get; private set; } = new();
+    public ObservableCollection<Models.TblCountry> CountryList { get; private set; } = new();
+    public Dictionary<int, string?> CountryLookup { get; private set; } = new();
+    public async Task LoadCountryLookupAsync()
     {
-
-    }
-
-    #endregion [Constructor]
-
-    //    Part 1    
-
-    #region [Methods UserProfile]
-
-    public async Task AddUserProfileAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            IsInEdit = true;
-            IsNewUserProfile = true;
-
-            TblUserProfilesList ??= [];
-            TblUserProfilesList.Insert(index: 0, item: new TblUserProfile { Role = "User", Password = "0424"});
-        });
-    }
-
-    public async Task SaveUserProfileAsync(TblUserProfile viewModelUserProfileSelected)
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            if (IsNewUserProfile)
-            {
-                IsNewUserProfile = false;
-            }
-        });
-
-        TblUserProfile result = null;
         try
         {
-            if (IsModified)
-            {
-                await _dispatcherQueue.EnqueueAsync(async () =>
-                {
-                    result = await _dataService.UpsertUserProfileAsync(viewModelUserProfileSelected);
-                    IsModified = false;
-                });
-            }
-            else
-            {
-                IsModified = true;
-            }
-        }
-        catch (DbUpdateException e)
-        {
-            if (e.InnerException != null)
-            {
-             //   await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
-                SimpleLog.Log(e);
-                return;
-            }
+            System.Diagnostics.Debug.WriteLine("[VM] LoadCountryLookupAsync START");
+
+            var list = await _lookupService.GetCountryListAsync();
+            var lookup = await _lookupService.GetCountryLookupAsync();
+
+
+            CountryList.Clear();
+            foreach (var item in list)
+                CountryList.Add(item);
+
+            CountryLookup = lookup;
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
         }
         catch (Exception ex)
         {
-           // await AllDialogs.ErrorMessageDialogAsync(ex.Message);
-            SimpleLog.Log(ex);
+            CountryList.Clear();
+            CountryLookup = new Dictionary<int, string?>();
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
+    }
+    // ---------------------------------------------------------                  
+    // SORTING HEADERS
+    // ---------------------------------------------------------    
+    private void ApplyHeaders()
+    {
+        var loc = Localizer.Get();
+        UpdateHeader("Id", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_UserProfileId")) ? "Id" : loc.GetLocalizedString("HeaderSort_UserProfileId"));
+        UpdateHeader("Name", string.IsNullOrWhiteSpace(loc.GetLocalizedString("HeaderSort_UserProfileName")) ? "Name" : loc.GetLocalizedString("HeaderSort_UserProfileName"));
+    }
+
+    public void Dispose()
+    {
+        App.LanguageChanged -= _langHandler;
+    }
+
+    // ---------------------------------------------------------               
+    // UI STATE
+    // ---------------------------------------------------------                   
+
+    public ICommand SelectDetailTabCommand => new CommunityToolkit.Mvvm.Input.RelayCommand<int>(index =>
+    {
+        SelectedDetailTabIndex = index;
+    });
+
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailTabIndex, value))
+            {
+                _ = UpdateButtonStatesAsync();
+            }
+        }
+    }
+
+    private async Task UpdateButtonStatesAsync()
+    {
+
+
+        // Tab 0 = Boss-Modus
+        IsInParentMode = SelectedDetailTabIndex != 0;
+
+        //if (SelectedDetailTabIndex == 2)
+        //    await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
+
+        UpdateRefreshState();
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    public async Task ApplyFilterAsync(string? filter)
+    {
+        if (IsBossMode)
+        {
+            SearchText = filter;
+            await ReloadAsync();
+        }
+    }
+
+    public bool IsDetailVisible => SelectedItem != null;
+    public bool IsEditMode => SelectedItem != null;
+    public bool HasItems => Items != null && Items.Count > 0;
+
+    // ---------------------------------------------------------                  
+    // LOAD ASYNC (Boss)
+    // ---------------------------------------------------------                  
+    public async Task LoadAsync()
+    {
+
+        // Boss-Start: Parent-Kontext löschen
+        _activeLoader = null;
+        _currentParentId = 0;
+
+        // Für Simple-Page sinnvoll: Boss-Modus aktiv
+        IsInParentMode = false;
+
+        // Lookup nur versuchen, Fehler darf UI nicht stoppen
+        try
+        {
+
+            await LoadCountryLookupAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadCountryLookupAsync] {ex}");
+            // absichtlich weiterlaufen
+        }
+
+        Items = new ObservableCollection<Models.TblUserProfile>();
+        OnPropertyChanged(nameof(HasItems));
+
+        // Hauptdaten trotzdem laden
+        try
+        {
+            await ReloadAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
+            // optional: Dialog zeigen
+            await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
+        }
+    }
+
+    // ---------------------------------------------------------
+    // INTERNAL LOADER (Boss + Parent)
+    // ---------------------------------------------------------
+    private async Task LoadInternalAsync(
+        int parentId,
+        Func<int, Task<IEnumerable<Models.TblUserProfile>>> loader)
+    {
+        _currentParentId = parentId;
+        _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.TblUserProfile>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+    }
+
+    // ---------------------------------------------------------
+    // LOAD ITEMS (Boss)
+    // ---------------------------------------------------------
+    protected override async Task<IEnumerable<Models.TblUserProfile>> LoadItemsAsync()
+    {
+        if (_activeLoader != null && _currentParentId > 0)
+            return await _activeLoader(_currentParentId);
+
+        if (!string.IsNullOrWhiteSpace(SearchText))
+            return await Data.SearchUserProfileAsync(SearchText);
+
+        return Items ?? Enumerable.Empty<Models.TblUserProfile>();
+    }
+
+    // ---------------------------------------------------------
+    // SELECTED ITEM
+    // ---------------------------------------------------------
+    protected override async Task OnSelectedItemChangedAsync()
+    {
+        // 1. BACK → SelectedItem == null
+        if (SelectedItem == null)
+        {
+            OnPropertyChanged(nameof(IsDetailVisible));
+            //      await ClearChildCollectionsAsync();
+            SelectedDetailTabIndex = 0;
             return;
         }
 
-        if (result != null)
-        {
-            IsInEdit = false;
-            IsModified = false;
-            IsExistingUserProfile = true;
-        }
-        else
-        {
-          //  _ = new SavingException(StringsRes.UnableToSave1 + StringsRes.UnableToSave2);
-        }
-    }
-    public async Task DeleteUserProfileAsync(TblUserProfile viewModelUserProfileSelected)
-    {
-        TblUserProfile result = null;
-        try
-        {
-            var deleteUserProfileId = viewModelUserProfileSelected.UserProfileId;
-            await DeleteUserProfile(deleteUserProfileId);
+        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
+        //if (IsInParentMode)
+        //{
+        //    await LoadChildrenAsync(GetId(SelectedItem));
+        //    return;
+        //}
 
-            result = viewModelUserProfileSelected;
-        }
-        catch (DbUpdateException e)
-        {
-            if (e.InnerException != null)
-            {
-                //await AllDialogs.ErrorMessageDialogAsync(e.InnerException.ToString());
-            }
-
-            SimpleLog.Log(e);
-        }
-        catch (Exception e)
-        {
-            //await AllDialogs.ErrorMessageDialogAsync(e.Message);
-            SimpleLog.Log(e);
-     //       throw new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2, e);
-        }
-
-        if (result != null)
-        {
-            IsInEdit = false;
-            IsModified = false;
-            IsExistingUserProfile = true;
-            IsDeleting = true;
-        }
-        else
-        {
-          //  _ = new DeletionException(StringsRes.UnableToDelete1 + StringsRes.UnableToDelete2);
-        }
+        // 3. Boss-Modus → volle Detail-Logik
+        OnPropertyChanged(nameof(IsDetailVisible));
+        await LoadChildrenAsync(GetId(SelectedItem));
     }
 
-    private async Task DeleteUserProfile(int userprofileid)
+    // ---------------------------------------------------------
+    // CHILDREN
+    // ---------------------------------------------------------
+    protected override async Task LoadChildrenAsync(int entityId)
     {
-        await _dispatcherQueue.EnqueueAsync(async () =>
-        {
-            var userprofile = await AppData.Data.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofileid);
-            if (userprofile != null)
-            {
-                //AppData.Data.TblUserProfiles.Remove(userprofile);
-                //await AppData.Data.SaveChangesAsync();
-            }
-        });
-    }
-    private async Task RefreshUserProfileAsync()
-    {
-        await _dispatcherQueue.EnqueueAsync(() =>
-        {
-            TblUserProfilesList ??= [];
-            TblUserProfilesList = _dataService.GetUserProfileAsync();
+        //await UserProfileCommentViewModel.LoadForUserProfileAsync(entityId);
+        //await UserProfileReferenceViewModel.LoadForUserProfileAsync(entityId);
 
-            RefreshUserProfileItems();
-        });
+        //await NULLViewModel.LoadUserProfileLookupAsync();
+        //await NULLViewModel.LoadForUserProfileAsync(entityId);
+
+
+        //// ⭐ HIER MUSS DER MODUS GESETZT WERDEN
+        //NULLViewModel.IsInParentMode = true;
     }
 
-    public async Task RevertChangesAsync()
-    {
-        IsInEdit = false;
-        if (IsModified)
+    //protected override Task ClearChildCollectionsAsync()
+    //{
+    //    UserProfileCommentViewModel.Items?.Clear();
+    //    UserProfileReferenceViewModel.Items?.Clear();
+    //  //  NULLViewModel.Items?.Clear();
+
+    //    if (IsBossMode)
+    //    {
+    //        UserProfileCommentViewModel.SelectedItem = null;
+    //        UserProfileReferenceViewModel.SelectedItem = null;
+    //   //     NULLViewModel.SelectedItem = null;
+    //    }
+
+    //    return Task.CompletedTask;
+    //}
+
+    // ---------------------------------------------------------
+    // SORTING
+    // ---------------------------------------------------------
+    protected override object GetSortKey(Models.TblUserProfile item, string column)
+        => column switch
         {
-            await RefreshUserProfileAsync();
-            IsModified = false;
-        }
-    }
+            "Id" => item.UserProfileId,
+            "Name" => item.Email ?? "",
+            _ => ""
+        };
 
-    public void CancelEditsAsync()
+
+    // ---------------------------------------------------------
+    // NEW
+    // ---------------------------------------------------------
+    protected override Task NewAsync()
     {
-        if (IsNewUserProfile)
-        {
-            AddNewUserProfileCanceled?.Invoke(this, EventArgs.Empty);
-        }
-        else
-        {
-            RevertChangesAsync().ConfigureAwait(false);
-        }
-    }
-
-    #endregion [Methods UserProfile ]  
-
-
-    #region [Methods Comment]
-    public ICommand MailAccountPasswordCommand => new RelayCommand(execute: delegate { var task = MailAccountPw(); });
-
-
-    private Task MailAccountPw()
-    {
-        _ = Crypt.EncryptString(MailAccountPassword);
         return Task.CompletedTask;
     }
-    private string _mailAccountPassword;
-    public string MailAccountPassword
+
+    protected override Models.TblUserProfile CreateNewItem()
     {
-        get => _mailAccountPassword;
-        set { _mailAccountPassword = value; OnPropertyChanged(); }
-    }
+        _wasEmptyBeforeSave = Items == null || Items.Count == 0;
 
-    #endregion [Methods Comment]
-
-    //    Part 2    
-
-    #region All Properties
-
-    #region [Propertys]
-
-    public bool IsModified { get; set; }
-
-    private bool _isLoading;
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set => SetProperty(ref _isLoading, value);
-    }
-    private bool _isDeleting;
-    public bool IsDeleting
-    {
-        get => _isDeleting;
-        set => SetProperty(ref _isDeleting, value);
-    }
-
-    private bool IsLoaded => UserProfileItems != null;
-    public bool IsNotLoaded => !IsLoaded;
-
-    private bool _isNewUserProfile;
-
-    public bool IsNewUserProfile
-    {
-        get => _isNewUserProfile;
-        set => SetProperty(ref _isNewUserProfile, value);
-    }
-    private bool _isExistingUserProfile;
-
-    public bool IsExistingUserProfile
-    {
-        get => _isExistingUserProfile;
-        set => SetProperty(ref _isExistingUserProfile, value);
-    }
-
-    private bool _isInEdit = false;
-    public bool IsInEdit
-    {
-        get => _isInEdit;
-        set => SetProperty(ref _isInEdit, value);
-    }
-    public void StartEdit()
-    {
-        IsInEdit = true;
-        IsModified = false;
-    }
-    public static void BeginEdit()
-    {
-        // Not used.
-    }
-    public void CancelEdit() => CancelEditsAsync();
-    public async void EndEdit() => await SaveUserProfileAsync(UserProfileSelected);
-    public event EventHandler AddNewUserProfileCanceled;
-    public bool CanRefresh => !IsModified && IsExistingUserProfile;
-    public bool CanRevert => IsModified && IsExistingUserProfile;
-
-    #endregion [Propertys]
-
-    #region Selected Properties
-
-    private TblUserProfile _userprofileSelected;
-
-    public TblUserProfile UserProfileSelected
-    {
-        get => _userprofileSelected;
-        set => SetProperty(ref _userprofileSelected, value);
-    }
-
-    #endregion Selected Properties     
-
-
-    #region Public Properties  
-
-    private int _userprofileDataSetCount;
-
-    public int UserProfileDataSetCount
-    {
-        get => _userprofileDataSetCount;
-        set
+        return new Models.TblUserProfile
         {
-            _userprofileDataSetCount = value; OnPropertyChanged();
-        }
+            UserProfileId = _currentParentId
+        };
     }
 
-    private string _searchUserProfileName = "";
-
-    public string SearchUserProfileName
+    // ---------------------------------------------------------
+    // SAVE
+    // ---------------------------------------------------------
+    protected override async Task<Models.TblUserProfile?> SaveItemAsync(Models.TblUserProfile item)
     {
-        get => _searchUserProfileName;
-        set
+        if (string.IsNullOrWhiteSpace(item.Email))
         {
-            _searchUserProfileName = value; OnPropertyChanged();
+            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            return null;
         }
+
+        var saved = await Data.UpsertUserProfileAsync(item);
+
+        if (saved != null)
+        {
+            _lookupService.InvalidateAllCaches();
+        }
+
+        return saved;
     }
 
-    private ObservableCollection<TblUserProfile> _tblUserProfilesList;
-
-    public ObservableCollection<TblUserProfile> TblUserProfilesList
+    protected override Task OnBeforeReloadAfterSaveAsync(Models.TblUserProfile item)
     {
-        get => _tblUserProfilesList;
-        set
+        if (_wasEmptyBeforeSave && IsBossMode)
         {
-            _tblUserProfilesList = value; OnPropertyChanged();
+            SearchText = item.Email;
+            IsInParentMode = false;
         }
+
+        return Task.CompletedTask;
     }
-    private ObservableCollection<TblCountry> _tblCountriesAllList;
-    public ObservableCollection<TblCountry> TblCountriesAllList
+
+    // ---------------------------------------------------------
+    // DELETE
+    // ---------------------------------------------------------
+    protected override async Task<bool> DeleteItemAsync(Models.TblUserProfile item)
     {
-        get => _tblCountriesAllList;
-        set
-        {
-            _tblCountriesAllList = value; OnPropertyChanged();
-        }
+        if (item.UserProfileId == 0)
+            return false;
+
+        //if (await Data.UserProfileHasNULLAsync(item.UserProfileId) ||
+        //    await Data.UserProfileHasReferenceAsync(item.UserProfileId) ||
+        //    await Data.UserProfileHasCommentAsync(item.UserProfileId))
+        //{
+        //    await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+        //    return false;
+        //}
+
+        await Data.DeleteUserProfileAsync(item.UserProfileId);
+        return true;
     }
 
+    protected override Task<bool> ConfirmSaveAsync(Models.TblUserProfile item)
+        => Dialog.ShowYesNoAsync("Confirm_Save_Title", "Confirm_Save_Message");
 
-    #endregion Public Properties
+    protected override Task<bool> ConfirmDeleteAsync(Models.TblUserProfile item)
+        => Dialog.ShowYesNoAsync("Confirm_Delete_Title", "Confirm_Delete_Message");
 
-    #region Refresh Methods
+    protected override int GetId(Models.TblUserProfile item)
+        => item.UserProfileId;
 
-
-    public void RefreshUserProfileItems()
+    // ---------------------------------------------------------
+    // BACK
+    // ---------------------------------------------------------
+    private void ExecuteBack()
     {
-        UserProfileItems.Clear();
-        if (TblUserProfilesList != null)
-        {
-            foreach (var item in TblUserProfilesList)
-            {
-                UserProfileItems.Add(item);
-            }
+        // ⭐ Back MUSS SelectedItem löschen
+        SelectedItem = null;
 
-            if (TblUserProfilesList.Count == 0)
-            {
-                return;
-            }
+        // ⭐ Detail schließen
+        OnPropertyChanged(nameof(IsDetailVisible));
 
-            if (UserProfileSelected == null && TblUserProfilesList.Count != 0)
-            {
-                UserProfileSelected = UserProfileItems.FirstOrDefault();
-            }
-        }
+        // Parent-Modus bleibt aktiv
+        IsInParentMode = true;
+
+        SelectedDetailTabIndex = 0;
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
     }
-    #endregion Refresh Methods
-
-    #endregion All Properties
-
 }

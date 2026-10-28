@@ -333,6 +333,7 @@ public partial class App : Application
 
         services.AddTransient<UserAreaViewModel>();
         services.AddTransient<AdminAreaViewModel>();
+
         services.AddTransient<ReportViewModel>();
 
 
