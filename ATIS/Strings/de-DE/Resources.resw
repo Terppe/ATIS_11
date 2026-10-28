@@ -1983,6 +1983,9 @@
   <data name="ClassTab" xml:space="preserve">
     <value>Klasse</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
     <value>Klassen</value>
   </data>
@@ -2024,6 +2027,9 @@
   </data>
   <data name="TextBlock_Continent.Text" xml:space="preserve">
     <value>Erdteil</value>
+  </data>
+  <data name="TextBlock_Confirm_Password.Text" xml:space="preserve">
+    <value>Passwort wiederholen</value>
   </data>
   <data name="Continent" xml:space="preserve">
     <value>Erdteil</value>
@@ -2367,6 +2373,9 @@
   <data name="TextBlock_Longitude.Text" xml:space="preserve">
     <value>Längengrad</value>
   </data>
+  <data name="TextBlock_Login.Text" xml:space="preserve">
+    <value>ANMELDEN</value>
+  </data>
   <data name="TextBlock_LoadFromClipboard.Text" xml:space="preserve">
     <value>Aus Zwischenablage laden</value>
   </data>
@@ -2550,6 +2559,9 @@
   <data name="CarboHardness12" xml:space="preserve">
     <value>Karbonathärte 1 / karbonathärte 2</value>
   </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Passwort ändern</value>
+  </data>
   <data name="TextBlock_Phylum.Text" xml:space="preserve">
     <value>Stamm</value>
   </data>
@@ -2675,6 +2687,9 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
+  </data>
+  <data name="TextBlock_Register.Text" xml:space="preserve">
+    <value>REGISTRIEREN</value>
   </data>
   <data name="RegionTop" xml:space="preserve">
     <value>Bereich oben</value>
@@ -3690,6 +3705,9 @@
   <data name="SQL_Server_Ok" xml:space="preserve">
     <value>SQL-Server läuft</value>
   </data>
+  <data name="SQL_Server_Not_Connected" xml:space="preserve">
+    <value>SQL-Server nicht verbunden</value>
+  </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Art</value>
   </data>
@@ -3750,6 +3768,9 @@
   <data name="Regnum" xml:space="preserve">
     <value>Reich</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
   <data name="ShotDate" xml:space="preserve">
     <value>Aufgenommen am</value>
   </data>
@@ -3758,6 +3779,30 @@
   </data>
   <data name="Subclass" xml:space="preserve">
     <value>Unterklasse</value>
+  </data>
+  <data name="Status_Login_Successful" xml:space="preserve">
+    <value>Login erfolgreich</value>
+  </data>
+  <data name="Status_Login_User_Successful" xml:space="preserve">
+    <value>ist angemeldet</value>
+  </data>
+  <data name="Status_Registration_Successful" xml:space="preserve">
+    <value>Registrierung erfolgreich</value>
+  </data>
+  <data name="Status_Reset_Code_Sent" xml:space="preserve">
+    <value>Wenn die E-Mail existiert, wurde ein Code gesendet.</value>
+  </data>
+  <data name="Status_No_User_Logged_In" xml:space="preserve">
+    <value>Keiner angemeldet</value>
+  </data>
+  <data name="Status_Password_Changed_Successfully" xml:space="preserve">
+    <value>Passwort erfolgreich geändert</value>
+  </data>
+  <data name="Error_Reset_Code_Failed" xml:space="preserve">
+    <value>Der Code konnte nicht gesendet werden. Bitte später erneut versuchen.</value>
+  </data>
+  <data name="Error_Reset_Code_Required_Message" xml:space="preserve">
+    <value>Code ist erforderlich.</value>
   </data>
   <data name="TextBlock_Subdivision.Text" xml:space="preserve">
     <value>Unterabteilung</value>
@@ -3782,6 +3827,9 @@
   </data>
   <data name="LoggedIn" xml:space="preserve">
     <value>ist angemeldet</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Anmelden</value>
   </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordnung</value>
@@ -3934,10 +3982,13 @@
     <value>Reich</value>
   </data>
   <data name="TextBlock_NewPhylum.Text" xml:space="preserve">
-    <value>New Stamm</value>
+    <value>Neuer Stamm</value>
+  </data>
+  <data name="TextBlock_New_Password.Text" xml:space="preserve">
+    <value>Neues Passwort</value>
   </data>
   <data name="TextBlock_NewRegnum.Text" xml:space="preserve">
-    <value>New Reich</value>
+    <value>Neues Reich</value>
   </data>
   <data name="TextBox_General.Header" xml:space="preserve">
     <value>General</value>
@@ -4434,11 +4485,20 @@
   <data name="Button_PrintPdf.Content" xml:space="preserve">
     <value>Drucken PDF</value>
   </data>
+  <data name="Button_Request_Code.Content" xml:space="preserve">
+    <value>Code anfordern</value>
+  </data>
+  <data name="Button_Reset_Password.Content" xml:space="preserve">
+    <value>Passwort zurücksetzen</value>
+  </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Neu</value>
   </data>
   <data name="Button_Refresh" xml:space="preserve">
     <value>Aktualisieren</value>
+  </data>
+  <data name="Button_Register.Content" xml:space="preserve">
+    <value>Registrieren</value>
   </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>Löschen</value>
@@ -4457,6 +4517,9 @@
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
+  </data>
+  <data name="Button_Change_Password.Content" xml:space="preserve">
+    <value>Passwort ändern</value>
   </data>
   <data name="MenuFlyout_Print.Text" xml:space="preserve">
     <value>Drucken Datensatz</value>
@@ -4502,6 +4565,9 @@
   </data>
   <data name="Button_Close.Content" xml:space="preserve">
     <value>Schliessen</value>
+  </data>
+  <data name="Button_Login.Content" xml:space="preserve">
+    <value>Anmelden</value>
   </data>
   <data name="SearchBox_Search.PlaceholderText" xml:space="preserve">
     <value>Suchen</value>
@@ -4671,6 +4737,9 @@
   <data name="TextBlock_CurrentStanding.Text" xml:space="preserve">
     <value>Gültig</value>
   </data>
+  <data name="TextBlock_Current_Password.Text" xml:space="preserve">
+    <value>Aktuelles Passwort</value>
+  </data>
   <data name="CurrentStanding" xml:space="preserve">
     <value>Gültig</value>
   </data>
@@ -4806,6 +4875,9 @@
   <data name="TextBlock_Expert.Text" xml:space="preserve">
     <value>Experte:</value>
   </data>
+  <data name="TextBlock_Email.Text" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
   <data name="Expert" xml:space="preserve">
     <value>Experte:</value>
   </data>
@@ -4911,6 +4983,15 @@
   <data name="Error_NoFile_Message" xml:space="preserve">
     <value>Kein Filestream vorhanden</value>
   </data>
+  <data name="Error_Email_Format_Message" xml:space="preserve">
+    <value>Email muss das Format name@domain.tld haben.</value>
+  </data>
+  <data name="Error_Current_And_New_Password_Required_Message" xml:space="preserve">
+    <value>Aktuelles und neues Passwort sind erforderlich.</value>
+  </data>
+  <data name="Error_Email_Required_Message" xml:space="preserve">
+    <value>Email ist erforderlich.</value>
+  </data>
   <data name="Error_NoPermission_Message" xml:space="preserve">
     <value>Keine Berechtigung vorhanden</value>
   </data>
@@ -5010,6 +5091,9 @@
   <data name="Error_Name_Required" xml:space="preserve">
     <value>Name muss zwischen {0} und {1} Zeichen lang sein.</value>
   </data>
+  <data name="Error_New_Password_Required_Message" xml:space="preserve">
+    <value>Neues Passwort ist erforderlich.</value>
+  </data>
   <data name="Error_PublicationYear_Length" xml:space="preserve">
     <value>Das Publikationsjahr muss genau 4 Zeichen haben.</value>
   </data>
@@ -5042,6 +5126,9 @@
   </data>
   <data name="Error_PlantLength_Positive" xml:space="preserve">
     <value>Die Pflanzenlänge muss positiv sein</value>
+  </data>
+  <data name="Error_Password_Required_Message" xml:space="preserve">
+    <value>Passwort ist erforderlich.</value>
   </data>
   <data name="Error_BasinHeight_Positive" xml:space="preserve">
     <value>Die Beckenhöhe muss positiv sein</value>
@@ -5099,6 +5186,9 @@
   </data>
   <data name="Error_InvalidUrl_Message" xml:space="preserve">
     <value>Die angegebene URL ist ungültig oder unvollständig.</value>
+  </data>
+  <data name="Error_Invalid_Login_Credentials_Message" xml:space="preserve">
+    <value>Ungültige Anmeldedaten.</value>
   </data>
   <data name="Error_MissInfo_Message" xml:space="preserve">
     <value>Eingabe fehlt</value>
@@ -5390,5 +5480,8 @@
   </data>
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Neu</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Passwort vergessen</value>
   </data>
 </root>

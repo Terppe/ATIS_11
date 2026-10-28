@@ -46,6 +46,7 @@ using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
@@ -116,7 +117,6 @@ public sealed partial class MainPage : Page
     {
         NavView.IsPaneOpen = !NavView.IsPaneOpen;
     }
-
 
     private void NavFrame_Navigated(object sender, NavigationEventArgs e)
     {
@@ -231,13 +231,15 @@ public sealed partial class MainPage : Page
 
     private async Task LogIn()
     {
-        var loginView = new ATIS.Views.Auth.LoginView();
+        var loc = Localizer.Get();
+
+        var loginView = new LoginView();
         var dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
-            Title = "Login",
+            Title = loc.GetLocalizedString("Login"),
             Content = loginView,
-            CloseButtonText = "Schließen"
+            CloseButtonText = loc.GetLocalizedString("Close")
         };
 
         loginView.ViewModel.LoginSucceeded += (_, _) => dialog.Hide();
@@ -250,22 +252,24 @@ public sealed partial class MainPage : Page
         if (!string.IsNullOrWhiteSpace(userService.CurrentUser))
         {
             TbUser.Foreground = new SolidColorBrush(Colors.Green);
-            TbUser.Text = userService.CurrentUser + " " + "ist angemeldet";
+            TbUser.Text = userService.CurrentUser + " " + loc.GetLocalizedString("Status_Login_User_Successful");
         }
         else
         {
-            TbUser.Text = "keiner angemeldet";
+            TbUser.Text = loc.GetLocalizedString("Status_No_User_Logged_In");
         }
     }
     private async Task Register()
     {
-        var registerView = new ATIS.Views.Auth.RegisterView();
+        var loc = Localizer.Get();
+
+        var registerView = new RegisterView();
         var dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
-            Title = "Register",
+            Title = loc.GetLocalizedString("Register"),
             Content = registerView,
-            CloseButtonText = "Schließen"
+            CloseButtonText = loc.GetLocalizedString("Close")
         };
 
         registerView.ViewModel.RegisterSucceeded += (_, _) => dialog.Hide();
@@ -275,13 +279,15 @@ public sealed partial class MainPage : Page
 
     private async Task ForgotPassword()
     {
-        var view = new ATIS.Views.Auth.ForgotPasswordView();
+        var loc = Localizer.Get();
+
+        var view = new ForgotPasswordView();
         var dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
-            Title = "Passwort vergessen",
+            Title = loc.GetLocalizedString("ForgotPassword"),
             Content = view,
-            CloseButtonText = "Schließen"
+            CloseButtonText = loc.GetLocalizedString("Close")
         };
 
         await dialog.ShowAsync();
@@ -289,13 +295,15 @@ public sealed partial class MainPage : Page
 
     private async Task ChangePassword()
     {
-        var view = new ATIS.Views.Auth.ChangePasswordView();
+        var loc = Localizer.Get();
+
+        var view = new ChangePasswordView();
         var dialog = new ContentDialog
         {
             XamlRoot = this.XamlRoot,
-            Title = "Passwort ändern",
+            Title = loc.GetLocalizedString("ChangePassword"),
             Content = view,
-            CloseButtonText = "Schließen"
+            CloseButtonText = loc.GetLocalizedString("Close")
         };
 
         view.ViewModel.PasswordChangedSucceeded += (_, _) => dialog.Hide();

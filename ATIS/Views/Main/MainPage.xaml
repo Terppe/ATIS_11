@@ -18,9 +18,10 @@
             PaneToggleRequested="AppTitleBar_OnPaneToggleRequested">
             <TitleBar.Content>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="TbVersion" Margin="10,16,10,0" />
-
-
+                    <TextBlock
+                        x:Name="TbVersion"
+                        Margin="0,14,10,0"
+                        HorizontalTextAlignment="Left" />
                     <MenuBar
                         x:Name="MenuBar"
                         Width="Auto"
@@ -175,39 +176,6 @@
                         QueryIcon="Find"
                         QuerySubmitted="AutoSuggestBox_QuerySubmitted"
                         TextChanged="AutoSuggestBox_TextChanged" />
-                    <ContentDialog
-                        x:Name="ContentDialogLogIn"
-                        CloseButtonStyle="{StaticResource AtisButtonPrimary}"
-                        CloseButtonText="Close">
-                        <StackPanel>
-                            <!--<contentDialogs:SignInContentDialog />-->
-                            <!--<userControls:LogInControl />-->
-                        </StackPanel>
-                    </ContentDialog>
-                    <ContentDialog
-                        x:Name="ContentDialogRegister"
-                        CloseButtonStyle="{StaticResource AtisButtonPrimary}"
-                        CloseButtonText="Close">
-                        <StackPanel>
-                            <!--<userControls:RegisterControl />-->
-                        </StackPanel>
-                    </ContentDialog>
-                    <ContentDialog
-                        x:Name="ContentDialogPasswordChange"
-                        CloseButtonStyle="{StaticResource AtisButtonPrimary}"
-                        CloseButtonText="Close">
-                        <StackPanel>
-                            <!--<userControls:PasswordChangeControl />-->
-                        </StackPanel>
-                    </ContentDialog>
-                    <ContentDialog
-                        x:Name="ContentDialogPasswordForgot"
-                        CloseButtonStyle="{StaticResource AtisButtonPrimary}"
-                        CloseButtonText="Close">
-                        <StackPanel>
-                            <!--<userControls:PasswordForgotControl />-->
-                        </StackPanel>
-                    </ContentDialog>
 
                     <TextBlock
                         x:Name="TbUser"
@@ -220,14 +188,14 @@
             </TitleBar.Content>
             <TitleBar.RightHeader>
                 <StackPanel Orientation="Horizontal">
-                    <Button
-                        x:Name="ThemeButton"
-                        Height="32"
-                        Margin="0,0,4,0"
-                        Click="ThemeButton_Click"
-                        Style="{ThemeResource SubtleButtonStyle}"
-                        ToolTipService.ToolTip="Toggle Theme" />
-                    <FontIcon Glyph="&#xE72B;" />
+                    <!--<Button
+                    x:Name="ThemeButton"
+                    Height="32"
+                    Margin="0,0,4,0"
+                    Click="ThemeButton_Click"
+                    Style="{ThemeResource SubtleButtonStyle}"
+                    ToolTipService.ToolTip="Toggle Theme" />
+                    <FontIcon Glyph="&#xE72B;" />-->
 
                 </StackPanel>
             </TitleBar.RightHeader>
@@ -237,13 +205,12 @@
             Grid.Row="1"
             CompactModeThresholdWidth="641"
             IsBackButtonVisible="Collapsed"
-            IsPaneToggleButtonVisible="True"
+            IsPaneToggleButtonVisible="False"
             ItemInvoked="NavigationView_ItemInvoked"
             Loaded="NavigationView_Loaded"
             OpenPaneLength="285"
             PaneDisplayMode="Left">
-            <NavigationView.Header>
-            </NavigationView.Header>
+            <NavigationView.Header />
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox
                     x:Name="ControlsSearchBox"

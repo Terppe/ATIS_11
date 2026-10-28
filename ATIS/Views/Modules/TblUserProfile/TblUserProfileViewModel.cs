@@ -53,11 +53,6 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
         //await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
     }
 
-    // ---------------------------------------------------------
-    // CHILD-VMs
-    // ---------------------------------------------------------
-    //public Tbl93CommentViewModel UserProfileCommentViewModel { get; }
-    //public Tbl90ReferenceViewModel UserProfileReferenceViewModel { get; }
 
     // ---------------------------------------------------------
     // LOOKUPS
@@ -135,8 +130,6 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
         // Tab 0 = Boss-Modus
         IsInParentMode = SelectedDetailTabIndex != 0;
 
-        //if (SelectedDetailTabIndex == 2)
-        //    await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
 
         UpdateRefreshState();
 

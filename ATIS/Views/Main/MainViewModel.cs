@@ -220,7 +220,7 @@ public partial class MainViewModel : ObservableObject
             }
             //noch bearbeiten
             var loc1 = Localizer.Get();
-            DbExist_SQLActiv = loc1.GetLocalizedString("SQL_Server_Ok");
+            DbExist_SQLActiv = loc1.GetLocalizedString("SQL_Server_Ok") + $" {db}";
         //    DbExist_SQLActiv = $"SQL-Server ok: {db}";
 
             return true;
@@ -229,7 +229,9 @@ public partial class MainViewModel : ObservableObject
         {
             SimpleLog.Error($"SQL-Server nicht verbunden: {db} - {ex}");
 
-            DbExist_SQLActiv = $"SQL-Server nicht verbunden: {db}";
+          //  DbExist_SQLActiv = $"SQL-Server nicht verbunden: {db}";
+            var loc2 = Localizer.Get();
+            DbExist_SQLActiv = loc2.GetLocalizedString("SQL_Server_Not_Connected") + $" {db}";
 
             await _dialogService.ShowYesNoAsync(
                 "Server_Exist_Title",

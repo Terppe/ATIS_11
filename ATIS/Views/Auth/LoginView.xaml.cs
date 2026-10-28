@@ -1,6 +1,4 @@
-﻿
-
-namespace ATIS.Views.Auth;
+﻿namespace ATIS.Views.Auth;
 
 public sealed partial class LoginView : UserControl
 {

@@ -1343,3 +1343,4 @@ Inno Setup angefangen
 "ATIS_VERSION=11.0.1.${{ github.run_number }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 Version 11.0.0.7 erzeugt. Alte Converter löschen bei Helper/Converters
 AdminAreaPage und AdminAreaViewModel fertig.
+loc:Uids.Uid bei Login, Register, AdminPage, Userpage anfangen.

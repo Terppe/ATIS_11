@@ -1983,6 +1983,9 @@
   <data name="ClassTab" xml:space="preserve">
     <value>Class</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
     <value>Classes</value>
   </data>
@@ -2024,6 +2027,9 @@
   </data>
   <data name="TextBlock_Continent.Text" xml:space="preserve">
     <value>Continent</value>
+  </data>
+  <data name="TextBlock_Confirm_Password.Text" xml:space="preserve">
+    <value>Confirm pPassword</value>
   </data>
   <data name="Continent" xml:space="preserve">
     <value>Continent</value>
@@ -2367,6 +2373,9 @@
   <data name="TextBlock_Longitude.Text" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="TextBlock_Login.Text" xml:space="preserve">
+    <value>LOGIN</value>
+  </data>
   <data name="TextBlock_LoadFromClipboard.Text" xml:space="preserve">
     <value>Load from Clipboard</value>
   </data>
@@ -2550,6 +2559,9 @@
   <data name="CarboHardness12" xml:space="preserve">
     <value>Carbo Hardness 1 / Carbo Hardness 2</value>
   </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
   <data name="TextBlock_Phylum.Text" xml:space="preserve">
     <value>Phylum</value>
   </data>
@@ -2675,6 +2687,9 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
+  </data>
+  <data name="TextBlock_Register.Text" xml:space="preserve">
+    <value>REGISTER</value>
   </data>
   <data name="RegionTop" xml:space="preserve">
     <value>Region Top</value>
@@ -3688,7 +3703,10 @@
     <value>Species / Genus</value>
   </data>
   <data name="SQL_Server_Ok" xml:space="preserve">
-    <value>SQL-Server running</value>
+    <value>SQL - Server running</value>
+  </data>
+  <data name="SQL_Server_Not_Connected" xml:space="preserve">
+    <value>SQL - Server not connected</value>
   </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Species</value>
@@ -3750,6 +3768,9 @@
   <data name="Regnum" xml:space="preserve">
     <value>Regnum</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
   <data name="ShotDate" xml:space="preserve">
     <value>Shotdate</value>
   </data>
@@ -3758,6 +3779,30 @@
   </data>
   <data name="Subclass" xml:space="preserve">
     <value>Subclass</value>
+  </data>
+  <data name="Status_Login_Successful" xml:space="preserve">
+    <value>Login successful</value>
+  </data>
+  <data name="Status_Login_User_Successful" xml:space="preserve">
+    <value>logged</value>
+  </data>
+  <data name="Status_Registration_Successful" xml:space="preserve">
+    <value>Registration successful</value>
+  </data>
+  <data name="Status_Reset_Code_Sent" xml:space="preserve">
+    <value>Reset_Code_Sent</value>
+  </data>
+  <data name="Status_No_User_Logged_In" xml:space="preserve">
+    <value>No User logged in</value>
+  </data>
+  <data name="Status_Password_Changed_Successfully" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="Error_Reset_Code_Failed" xml:space="preserve">
+    <value>Reset Code failed</value>
+  </data>
+  <data name="Error_Reset_Code_Required_Message" xml:space="preserve">
+    <value>Reset Code required</value>
   </data>
   <data name="TextBlock_Subdivision.Text" xml:space="preserve">
     <value>Subdivision</value>
@@ -3782,6 +3827,9 @@
   </data>
   <data name="LoggedIn" xml:space="preserve">
     <value>is logged</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
   </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordo</value>
@@ -3935,6 +3983,9 @@
   </data>
   <data name="TextBlock_NewPhylum.Text" xml:space="preserve">
     <value>New Phylum</value>
+  </data>
+  <data name="TextBlock_New_Password.Text" xml:space="preserve">
+    <value>New Password</value>
   </data>
   <data name="TextBlock_NewRegnum.Text" xml:space="preserve">
     <value>New Regnum</value>
@@ -4434,11 +4485,20 @@
   <data name="Button_PrintPdf.Content" xml:space="preserve">
     <value>Print Pdf</value>
   </data>
+  <data name="Button_Request_Code.Content" xml:space="preserve">
+    <value>Request Code</value>
+  </data>
+  <data name="Button_Reset_Password.Content" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="Button_Refresh" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="Button_Register.Content" xml:space="preserve">
+    <value>Register</value>
   </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>Delete</value>
@@ -4457,6 +4517,9 @@
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="Button_Change_Password.Content" xml:space="preserve">
+    <value>Change Password</value>
   </data>
   <data name="MenuFlyout_Print.Text" xml:space="preserve">
     <value>Print Dataset</value>
@@ -4502,6 +4565,9 @@
   </data>
   <data name="Button_Close.Content" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="Button_Login.Content" xml:space="preserve">
+    <value>Log In</value>
   </data>
   <data name="SearchBox_Search.PlaceholderText" xml:space="preserve">
     <value>Search</value>
@@ -4671,6 +4737,9 @@
   <data name="TextBlock_CurrentStanding.Text" xml:space="preserve">
     <value>Current Standing:</value>
   </data>
+  <data name="TextBlock_Current_Password.Text" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
   <data name="CurrentStanding" xml:space="preserve">
     <value>Current Standing:</value>
   </data>
@@ -4806,6 +4875,9 @@
   <data name="TextBlock_Expert.Text" xml:space="preserve">
     <value>Expert:</value>
   </data>
+  <data name="TextBlock_Email.Text" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
   <data name="Expert" xml:space="preserve">
     <value>Expert:</value>
   </data>
@@ -4911,6 +4983,15 @@
   <data name="Error_NoFile_Message" xml:space="preserve">
     <value>No filestrem exist</value>
   </data>
+  <data name="Error_Email_Format_Message" xml:space="preserve">
+    <value>Email must have Format name@domain.tld</value>
+  </data>
+  <data name="Error_Current_And_New_Password_Required_Message" xml:space="preserve">
+    <value>Current and new Password required</value>
+  </data>
+  <data name="Error_Email_Required_Message" xml:space="preserve">
+    <value>Email_required</value>
+  </data>
   <data name="Error_NoPermission_Message" xml:space="preserve">
     <value>No permission exist</value>
   </data>
@@ -5010,6 +5091,9 @@
   <data name="Error_Name_Required" xml:space="preserve">
     <value>Name must be between {0} and {1} characters.</value>
   </data>
+  <data name="Error_New_Password_Required_Message" xml:space="preserve">
+    <value>New Password required</value>
+  </data>
   <data name="Error_PublicationYear_Length" xml:space="preserve">
     <value>Publication year must be exactly 4 characters.</value>
   </data>
@@ -5042,6 +5126,9 @@
   </data>
   <data name="Error_PlantLength_Positive" xml:space="preserve">
     <value>The Plantlength must be Positive</value>
+  </data>
+  <data name="Error_Password_Required_Message" xml:space="preserve">
+    <value>Password Required</value>
   </data>
   <data name="Error_BasinHeight_Positive" xml:space="preserve">
     <value>The Basinheight must be Positive</value>
@@ -5099,6 +5186,9 @@
   </data>
   <data name="Error_InvalidUrl_Message" xml:space="preserve">
     <value>URL is invalid or incomplete</value>
+  </data>
+  <data name="Error_Invalid_Login_Credentials_Message" xml:space="preserve">
+    <value>Login is invalid or incomplete</value>
   </data>
   <data name="Error_MissInfo_Message" xml:space="preserve">
     <value>Miss Info</value>
@@ -5390,5 +5480,8 @@
   </data>
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot Password</value>
   </data>
 </root>

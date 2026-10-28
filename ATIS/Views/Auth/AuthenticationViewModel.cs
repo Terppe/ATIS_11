@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using ATIS.Interfaces;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Auth;
 
@@ -94,19 +95,21 @@ public partial class AuthenticationViewModel : ObservableObject
     }
     private async Task LoginAsync(string? clearTextPassword)
     {
+        var loc = Localizer.Get();
+
         if (IsBusy) return;
         ErrorMessage = "";
         Status = "";
 
         if (!IsValidEmail(Email))
         {
-            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
+            ErrorMessage = loc.GetLocalizedString("Error_Email_Format_Message");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(clearTextPassword))
         {
-            ErrorMessage = "Passwort ist erforderlich.";
+            ErrorMessage = loc.GetLocalizedString("Error_Password_Required_Message");
             return;
         }
 
@@ -117,13 +120,12 @@ public partial class AuthenticationViewModel : ObservableObject
             var user = await _authService.AuthenticateUserAsync(Email!, clearTextPassword);
             if (user is null)
             {
-                ErrorMessage = "Ungültige Anmeldedaten.";
+                ErrorMessage = loc.GetLocalizedString("Error_Invalid_Login_Credentials_Message");
                 return;
             }
 
-
             _userService.SetUser(user.Email, user.Role);
-            Status = "Login erfolgreich.";
+            Status = loc.GetLocalizedString("Status_Login_Successful");
             LoginSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
@@ -137,19 +139,21 @@ public partial class AuthenticationViewModel : ObservableObject
     }
     private async Task RegisterAsync(string? clearTextPassword)
     {
+        var loc = Localizer.Get();
+
         if (IsBusy) return;
         ErrorMessage = "";
         Status = "";
 
         if (!IsValidEmail(Email))
         {
-            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
+            ErrorMessage = loc.GetLocalizedString("Error_Email_Format_Message");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(clearTextPassword))
         {
-            ErrorMessage = "Passwort ist erforderlich.";
+            ErrorMessage = loc.GetLocalizedString("Error_Password_Required_Message");
             return;
         }
 
@@ -162,7 +166,7 @@ public partial class AuthenticationViewModel : ObservableObject
                 password: clearTextPassword,
                 role: Role);
 
-            Status = $"Registrierung erfolgreich (ID: {created.UserProfileId}).";
+            Status = loc.GetLocalizedString("Status_Registration_Successful") + $" (ID: {created.UserProfileId})";
             RegisterSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
@@ -176,6 +180,8 @@ public partial class AuthenticationViewModel : ObservableObject
     }
     private async Task ForgotPasswordAsync()
     {
+        var loc = Localizer.Get();
+
         if (IsBusy) return;
         ErrorMessage = "";
         Status = "";
@@ -184,7 +190,7 @@ public partial class AuthenticationViewModel : ObservableObject
 
         if (!IsValidEmail(Email))
         {
-            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
+            ErrorMessage = loc.GetLocalizedString("Error_Email_Format_Message");
             return;
         }
 
@@ -195,15 +201,13 @@ public partial class AuthenticationViewModel : ObservableObject
             var ok = await _authService.RequestPasswordResetAsync(Email!, CancellationToken.None);
 
             if (!ok)
-                System.Diagnostics.Debug.WriteLine($"Reset: Benutzer nicht gefunden: {Email}");
-
-            Status = "Wenn die E-Mail existiert, wurde ein Code gesendet.";
+                Status = loc.GetLocalizedString("Status_Reset_Code_Sent");
             ResetCodeSent = true; // NUR hier, nach erfolgreichem Call
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(ex);
-            ErrorMessage = "Der Code konnte nicht gesendet werden. Bitte später erneut versuchen.";
+            ErrorMessage = loc.GetLocalizedString("Error_Reset_Code_Failed");
             ResetCodeSent = false; // explizit
         }
         finally
@@ -213,19 +217,21 @@ public partial class AuthenticationViewModel : ObservableObject
     }
     private async Task ChangePasswordAsync()
     {
+        var loc = Localizer.Get();
+
         if (IsBusy) return;
         ErrorMessage = "";
         Status = "";
 
         if (string.IsNullOrWhiteSpace(Email))
         {
-            ErrorMessage = "Email ist erforderlich.";
+            ErrorMessage = loc.GetLocalizedString("Error_Email_Required_Message");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(CurrentPassword) || string.IsNullOrWhiteSpace(NewPassword))
         {
-            ErrorMessage = "Aktuelles und neues Passwort sind erforderlich.";
+            ErrorMessage = loc.GetLocalizedString("Error_Current_And_New_Password_Required_Message");
             return;
         }
 
@@ -234,7 +240,7 @@ public partial class AuthenticationViewModel : ObservableObject
             IsBusy = true;
             await _authService.ChangePasswordByEmailAsync(Email!, CurrentPassword!, NewPassword!);
 
-            Status = "Passwort erfolgreich geändert.";
+            Status = loc.GetLocalizedString("Status_Password_Changed_Successfully");
             PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
@@ -248,6 +254,8 @@ public partial class AuthenticationViewModel : ObservableObject
     }
     private async Task ResetPasswordWithCodeAsync()
     {
+        var loc = Localizer.Get();
+
         if (IsBusy) return;
         ErrorMessage = "";
         Status = "";
@@ -257,19 +265,19 @@ public partial class AuthenticationViewModel : ObservableObject
 
         if (!IsValidEmail(Email))
         {
-            ErrorMessage = "Email muss das Format xxx@xxx.xxx haben.";
+            ErrorMessage = loc.GetLocalizedString("Error_Email_Format_Message");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ResetCode))
         {
-            ErrorMessage = "Code ist erforderlich.";
+            ErrorMessage = loc.GetLocalizedString("Error_Reset_Code_Required_Message");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(NewPassword))
         {
-            ErrorMessage = "Neues Passwort ist erforderlich.";
+            ErrorMessage = loc.GetLocalizedString("Error_New_Password_Required_Message");
             return;
         }
 
@@ -278,7 +286,7 @@ public partial class AuthenticationViewModel : ObservableObject
             IsBusy = true;
             await _authService.ResetPasswordWithCodeAsync(Email!, ResetCode!, NewPassword!, CancellationToken.None);
 
-            Status = "Passwort wurde erfolgreich geändert.";
+            Status = loc.GetLocalizedString("Status_Password_Changed_Successfully");
             ResetCode = "";
             NewPassword = "";
             ResetCodeSent = false;
