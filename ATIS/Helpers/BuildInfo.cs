@@ -15,7 +15,7 @@ public static class BuildInfo
 #else
             var type = info.EndsWith("-local", StringComparison.OrdinalIgnoreCase) ? "Release lokal" : "CI";
 #endif
-            return $"ATIS-Version {info} ({type})";
+            return $"v{info}";
         }
     }
 }
