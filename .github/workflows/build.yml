@@ -2,11 +2,15 @@
 
 on:
   push:
+    branches: ["**"]
+    tags: ["v*"]
   pull_request:
 
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
