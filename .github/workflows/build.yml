@@ -30,3 +30,15 @@ jobs:
 
       - name: Build
         run: dotnet build ATIS/ATIS.csproj --no-restore -c Release -p:Platform=x64 -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
+
+      - name: Build Installer (Inno Setup)
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$env:ATIS_VERSION" Installer\ATIS.iss
+
+      - name: Upload Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ATIS-Setup-${{ env.ATIS_VERSION }}
+          path: Installer/Output/*.exe
