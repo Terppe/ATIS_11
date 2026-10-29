@@ -35,11 +35,6 @@ jobs:
       - name: Build
         run: dotnet build ATIS/ATIS.csproj --no-restore -c Release -p:Platform=x64 -p:Version=${{ env.ATIS_VERSION }} -p:InformationalVersion=${{ env.ATIS_VERSION }}
 
-      - name: Find ATIS.exe
-        shell: pwsh
-        run: |
-          Get-ChildItem -Recurse -Filter ATIS.exe | Select-Object -ExpandProperty FullName
-
       - name: Build Installer (Inno Setup)
         shell: pwsh
         run: |
@@ -51,3 +46,10 @@ jobs:
         with:
           name: ATIS-Setup-${{ env.ATIS_VERSION }}
           path: Installer/Output/*.exe
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Installer/Output/*.exe
+          generate_release_notes: true
