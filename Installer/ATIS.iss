@@ -15,7 +15,7 @@
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
 #define MyPathStart SourcePath + "..\"
 #define MyPathDev ""
-#define MyPathBin "ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\win-x64\"
+#define MyPathBin "ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
