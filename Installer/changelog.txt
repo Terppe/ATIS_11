@@ -1,0 +1,142 @@
+﻿
+Updateinformationen zum Aquaristik Taxonomie Informationssystem
+
+-------------------------------- 11.0.0.7 --------------------------
+28.10.2026
+Aktualisieren auf diese Version:
+•	Für dieses Update ist eine vollständige Installation erforderlich. 
+	Patch-Dateien sind nicht verfügbar.
+Erweiterungen:
+•	Based On WinAppSDK 2.5.1
+•	Auf GitHub umgestellt  		
+Fehlerbehebung:
+•	Alle ListPages überarbeitet
+•	Datenbank nur mit kleinen Veränderungen überarbeitet
+
+-------------------------------- 9.1.3.2507 --------------------------
+25.08.2025
+Aktualisieren auf diese Version:
+•	Für dieses Update ist eine vollständige Installation erforderlich. 
+	Patch-Dateien sind nicht verfügbar.
+Erweiterungen:
+•	Based On WinAppSDK 1.7
+•	Vorversion von Map über Country-Tabelle installiert  		
+Fehlerbehebung:
+•	Alle ListPages überarbeitet
+
+-------------------------------- 9.1.3.2503 --------------------------
+15.02.2025
+Aktualisieren auf diese Version:
+•	Für dieses Update ist eine vollständige Installation erforderlich. 
+	Patch-Dateien sind nicht verfügbar.
+Erweiterungen:
+•	Based On WinAppSDK 1.7
+•	SplashWindow neu  		
+Fehlerbehebung:
+•	Alle ListPages überarbeitet
+
+-------------------------------- 9.1.3.2502 --------------------------
+15.02.2025
+Aktualisieren auf diese Version:
+•	Für dieses Update ist eine vollständige Installation erforderlich. 
+	Patch-Dateien sind nicht verfügbar.
+Erweiterungen:
+•	Log-File Anzeige in LogDir: C:\Temp
+•	RemoveFoldersWithMuiFilesExceptSomeSpecified in ATIS.csproj erweitert auf 4 Sprachen 
+•	German de-DE, English en-US, French fr-FR, Spanish es-ES 	
+•	Splash Window einfach erzeugt muss noch später neu	
+Fehlerbehebung:
+•	In NameListPage, ImageListPage, SynonymListPage und GeographicListPage
+	wurde ValidYear und FiSpeciesFullName im Datagrid und DetailPanel rausgenommen
+•	In SpeciesListPage wurde bei Name, Image, Synonym und Geographic
+	unbearbeitbares GenusCombo, Speciesname, Subspecies und Divers eingefügt
+•	In SpeciesPage wird bei Name, Image, Synonym, Geographic,Comment und RefExpert, RefSource und RefAuthor
+	Genusname, Speciesname, Subspecies und Divers eingefügt
+•	Try Catch für alle Pages in Codebehind eingefügt
+•	Localization eingefügt
+
+-------------------------------- 9.1.3.2501 --------------------------
+
+15.12.2024
+Aktualisieren auf diese Version:
+•	Für dieses Update ist eine vollständige Installation erforderlich. 
+	Patch-Dateien sind nicht verfügbar.
+Erweiterungen:
+•	Inno Setup Pfad als Variable versucht
+•	Log-File Anzeige in LogDir: C:\Temp
+•	RemoveFoldersWithMuiFilesExceptSomeSpecified in ATIS.csproj erweitert auf 4 Sprachen 
+•	German de-DE, English en-US, French fr-FR, Spanish sp-SP 	
+•	Splash Window einfach erzeugt muss noch später neu	
+Fehlerbehebung:
+•	Log-Datei wird in C:\Temp angezeigt
+•	Bei Species und References den Save-Button vor Neudatensatz-Button
+
+-------------------------------- 9.1.3.2412 --------------------------
+
+15.12.2024
+Erweiterungen:
+•	Inno Setup Phad als Variable versucht
+•	Log-File Anzeige in LogDir: C:\Temp
+•	RemoveFoldersWithMuiFilesExceptSomeSpecified in ATIS.csproj erweitert auf 4 Sprachen 
+•	German de-DE, English en-US, French fr-FR, Spanish es-ES 	
+•	Splash Window einfach erzeugt muss noch später neu	
+
+Fehlerbehebung:
+•	Log-Datei wird in C:\Temp angezeigt
+•	Bei Species und References den Save-Button vor Neudatensatz-Button
+
+
+-------------------------------- 9.1.2.2412 --------------------------
+
+15.12.2024
+Erweiterungen:
+•	Log-File Anzeige per Button im Menü Datei eingefügt
+•	angehangene Dateien können per Doppelklick geöffnet werden
+
+Fehlerbehebung:
+•	die TAN-Listenverwaltung ließ sich nicht mehr öffnen
+•	nach einem Kategorie-Export, landeten nach einer Änderung alle Einträge automatisch in der exportierten Datenbank
+•	Oberflächenkosmetik bei größeren Bildschirmauflösungen
+
+
+-------------------------------- 9.1.1.2412 --------------------------
+
+22.10.2024
+Neue Funktion:
+•	für Firmenlizenzen: über das Kontext-Menü KATEGORIE(N) EXPORTIEREN können Sie Kategorien samt Unterkategorien und Datensätzen in eine neue Datenbank übertragen, um z.B. bestimmte Daten an andere Personen oder Firmen weiterzugeben
+
+Erweiterungen:
+•	beim Datenimport wird der Filter auch auf den Kategorienamen angewendet
+•	keine Größenbeschränkung der Dateianhänge
+•	Standardschriftgröße ist abhängig von der Bildschirmauflösung
+•	Standardgröße der Icons ist abhängig von der Bildschirmauflösung
+•	beim Erstellen einer neuen Datenbank werden neue Standardwerte für die modernere Darstellung gesetzt
+
+Fehlerbehebung:
+•	Import: Fehler in der Filtersuche bei deutschen Umlauten behoben
+•	Dateianhang: Anzeige von Dateien mit Leerzeichen im Namen
+•	Anlegen des Datenbank-Backups beim Verlassen des Programms über DATEI - BEENDEN
+
+-------------------------------- 5.2 --------------------------
+
+26.04.2024
+Neue Funktionen:
+•	für Firmenlizenzen: wird die USB-Version im Netzwerk benutzt und von dort gestartet, gleicht die Software bei allen eingeloggten Benutzern automatisch den Stand der Datenbank ab. Diese Funktion kann in den Einstellungen unter 1PW im Netzwerk aktiviert werden.
+
+Nimmt ein Anwender eine Änderung vor und speichert diese, wird die Änderung sofort bei den anderen Anwendern angezeigt, ohne dass die Datenbank neu geöffnet werden muss. 
+
+Achtung: die Anzahl der gleichzeitig möglichen Zugriffe ist von der Anzahl der erworbenen Firmenlizenzen abhängig!
+
+•	die Zeit für die Ablage von Daten in der Zwischenablage kann für jede Datenbank von 10 - 60 Sekunden eingestellt werden (Standard = 30 Sekunden)
+
+Erweiterungen:
+•	beim Datenimport aus einer anderen Datenbank können die Datensätze zum besseren Überblick gefiltert werden
+•	und mit einem Klick auf den Spaltenkopf nach dem Bezeichner sortiert werden
+•	die manuelle Update-Suche setzt die Zeit für die Nachfrage zur automatischen Update-Suche zurück
+
+Fehlerbehebungen:
+•	neue QR-Code-Generierung für die Zwei-Faktor-Authentisierung (2FA)
+
+------------------------------------------------------------------
+
+

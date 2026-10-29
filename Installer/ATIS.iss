@@ -13,8 +13,8 @@
 #define MyAppAssocName MyAppName + " File"
 #define MyAppAssocExt ".exe"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
-#define MyPathStart "D:\Develop\T\Atis\V11\"
-#define MyPathDev "ATIS_11\"
+#define MyPathStart SourcePath + "..\"
+#define MyPathDev ""
 #define MyPathBin "ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\win-x64\"
 
 [Setup]
@@ -40,14 +40,14 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
-LicenseFile={#MyPathStart}license.txt
-InfoBeforeFile={#MyPathStart}readme.txt
-InfoAfterFile={#MyPathStart}changelog.txt
+LicenseFile={#SourcePath}license.txt
+InfoBeforeFile={#SourcePath}readme.txt
+InfoAfterFile={#SourcePath}changelog.txt
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir={#MyPathStart}Inno_{#MyAppVersion}
+OutputDir={#SourcePath}Output
 OutputBaseFilename=Atis_{#MyAppVersion}_Setup
-SetupIconFile={#MyPathStart}icon.ico
+SetupIconFile={#MyPathStart}ATIS\Assets\icon.ico
 Password=elsaQ0424
 Compression=lzma
 SolidCompression=yes
