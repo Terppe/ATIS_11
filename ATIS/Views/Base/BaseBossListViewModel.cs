@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Views.Modules.Hierarchy;
 

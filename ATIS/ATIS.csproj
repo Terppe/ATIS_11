@@ -47,7 +47,6 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="log4net" Version="3.5.0" />
 		<PackageReference Include="MailKit" Version="4.18.2" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
@@ -55,8 +54,8 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.14" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2705" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.4" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="MimeKit" Version="4.18.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />

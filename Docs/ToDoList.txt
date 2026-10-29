@@ -1344,3 +1344,17 @@ Inno Setup angefangen
 Version 11.0.0.7 erzeugt. Alte Converter löschen bei Helper/Converters
 AdminAreaPage und AdminAreaViewModel fertig.
 loc:Uids.Uid bei Login, Register, AdminPage, Userpage anfangen.
+Push Version
+----------------------------------------
+29.10.2026 13:30 Uhr erstes Release
+git tag v11.0.1.0
+git push origin v11.0.1.0
+----------------------------------------
+für die nächste Version bei GitHub
+git tag v11.0.1.1
+git push origin v11.0.1.1
+-----------------------------------------
+wichtig ==> um Version bei Installer im Output zu haben muss
+cd D:\Develop\T\Atis\V11\ATIS_11
+dotnet build ATIS/ATIS.csproj -c Release -p:Platform=x64 -p:ATIS_VERSION=11.0.1.1
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=11.0.1.1 Installer\ATIS.iss

@@ -15,8 +15,7 @@
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
 #define MyPathStart SourcePath + "..\"
 #define MyPathDev ""
-#define MyPathBin "ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\"
-#if !FileExists(SourcePath + "..\" + MyPathBin + MyAppExeName)
+#ifndef MyPathBin
   #define MyPathBin "ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\win-x64\"
 #endif
 

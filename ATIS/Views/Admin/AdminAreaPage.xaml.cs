@@ -1,15 +1,5 @@
-﻿using System.Configuration;
-using ATIS.Helpers;
-using ATIS.Infrastructure;
-using ATIS.Models;
-using ATIS.Services;
-using ATIS.Strings;
-using ATIS.Views.Auth;
-using ATIS.Views.Modules.TblUserProfile;
-using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.UI.Controls;
+﻿using ATIS.Views.Modules.TblUserProfile;
 using Microsoft.UI;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
 

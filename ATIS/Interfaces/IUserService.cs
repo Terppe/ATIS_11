@@ -7,6 +7,6 @@ public interface IUserService
     string CurrentRole { get; }
     bool IsAuthenticated { get; }
 
-    void SetUser(string username, string role);
+    void SetUser(string? username, string? role);
     void Clear();
 }

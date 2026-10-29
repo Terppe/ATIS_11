@@ -44,7 +44,7 @@ jobs:
         shell: pwsh
         run: |
           choco install innosetup -y --no-progress
-          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$env:ATIS_VERSION" Installer\ATIS.iss
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$env:ATIS_VERSION" "/DMyPathBin=ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\" Installer\ATIS.iss
 
       - name: Upload Installer
         uses: actions/upload-artifact@v4

@@ -176,7 +176,11 @@ public partial class App : Application
         UIContext.Root = (MainWindow.Content as FrameworkElement)?.XamlRoot;
 
         var customPrincipal = new CustomPrincipal();
+
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
+
+        //Update check on startup
+        _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
     }
 
     // ---------------------------------------------------------

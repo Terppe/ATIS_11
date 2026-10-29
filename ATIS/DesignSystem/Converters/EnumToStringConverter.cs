@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Data;
+﻿using Microsoft.UI.Xaml.Data;
 
 namespace ATIS.DesignSystem.Converters;
 
@@ -9,8 +8,8 @@ public class EnumToStringConverter : IValueConverter
     {
         return value switch
         {
-            DataGridSortDirection.Ascending => "▲",
-            DataGridSortDirection.Descending => "▼",
+            //DataGridSortDirection.Ascending => "▲",
+            //DataGridSortDirection.Descending => "▼",
             _ => ""
         };
     }

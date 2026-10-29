@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Globalization;
 using System.Reflection;
+using System.Text.Json;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
@@ -173,7 +174,7 @@ public sealed partial class MainPage : Page
                     await ForgotPassword();
                     break;
                 case "update":
-                    await CheckForUpdatesButton_Click(sender, e);
+                    await CheckForUpdatesAsync();
                     break;
                 case "logout":
                     await LogOut();
@@ -311,35 +312,90 @@ public sealed partial class MainPage : Page
         await dialog.ShowAsync();
     }
 
-    private static async Task CheckForUpdatesButton_Click(object sender, RoutedEventArgs e)
+    private static readonly HttpClient UpdateHttpClient = new()
     {
-        // Get the current app's package for the current user.
-        var pm = new PackageManager();
-        var currentPackage = pm.FindPackageForUser(string.Empty, Package.Current.Id.FullName);
+        Timeout = TimeSpan.FromSeconds(15)
+    };
 
-        var result = await currentPackage.CheckUpdateAvailabilityAsync();
-        switch (result.Availability)
+    public async Task CheckForUpdatesAsync(bool showStatusMessages = true)
+    {
+        async Task ShowMessageAsync(string title, string message)
         {
-            case PackageUpdateAvailability.Available:
-                //         GoToUpdateAvailableUIView();
-                break;
-            case PackageUpdateAvailability.Required:
-                //          GoToUpdateRequiredUIView();
-                break;
-            case PackageUpdateAvailability.NoUpdates:
-                // Dismissable ‘Ok’ dialog.
-                //          ShowNoUpdateAvailableDialog();
-                break;
-            case PackageUpdateAvailability.Unknown:
-            default:
-                // Log and ignore error.
-                //         Logger.Log($"No update information associated with app {Package.Current.DisplayName}");
-                // Dismissable ‘Ok’ dialog.
-                //         ShowNoUpdateAvailableDialog();
-                break;
+            var dialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = title,
+                Content = message,
+                CloseButtonText = "Schließen"
+            };
+
+            await dialog.ShowAsync();
+        }
+
+        try
+        {
+            using var request = new HttpRequestMessage(
+                HttpMethod.Get,
+                "https://api.github.com/repos/Terppe/ATIS_11/releases/latest");
+            request.Headers.UserAgent.ParseAdd("ATIS-Update-Check");
+
+            using var response = await UpdateHttpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            using var document = JsonDocument.Parse(
+                await response.Content.ReadAsStringAsync());
+
+            var root = document.RootElement;
+            var tag = root.GetProperty("tag_name").GetString();
+            var releaseUrlText = root.GetProperty("html_url").GetString();
+
+            if (string.IsNullOrWhiteSpace(tag) ||
+                !Uri.TryCreate(releaseUrlText, UriKind.Absolute, out var releaseUrl) ||
+                releaseUrl.Scheme != Uri.UriSchemeHttps)
+            {
+                throw new InvalidDataException("GitHub hat ungültige Release-Daten geliefert.");
+            }
+
+            var currentInfo = typeof(App).Assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                ?.InformationalVersion ?? "0.0.0";
+
+            var latestText = tag.TrimStart('v', 'V').Split('-', '+')[0];
+            var currentText = currentInfo.Split('-', '+')[0];
+
+            if (!Version.TryParse(latestText, out var latestVersion) ||
+                !Version.TryParse(currentText, out var currentVersion))
+            {
+                throw new InvalidDataException("Die App- oder Release-Version ist ungültig.");
+            }
+
+            if (latestVersion <= currentVersion)
+            {
+                await ShowMessageAsync("Kein Update verfügbar", $"Installiert ist bereits ATIS {currentInfo}.");
+                return;
+            }
+
+            var updateDialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = "Update verfügbar",
+                Content = $"Neue Version: {tag}",
+                PrimaryButtonText = "Release öffnen",
+                CloseButtonText = "Später"
+            };
+
+            if (await updateDialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                await Windows.System.Launcher.LaunchUriAsync(releaseUrl);
+            }
+        }
+        catch (Exception ex) when (
+            ex is HttpRequestException or TaskCanceledException or JsonException or
+            KeyNotFoundException or InvalidDataException or InvalidOperationException)
+        {
+            await ShowMessageAsync("Updateprüfung fehlgeschlagen", ex.Message);
         }
     }
-
     private Task LogOut()
     {
         App.GetService<IUserService>().Clear();
