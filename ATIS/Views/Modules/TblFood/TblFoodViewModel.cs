@@ -89,19 +89,11 @@ public class TblFoodViewModel : BaseBossListViewModel<Models.TblFood>
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-                OnPropertyChanged(nameof(ShowImageTabLoadingOverlay));
-                _ = HandleSelectedTabChangedAsync(value);
-            }
-        }
+        UpdateButtonStates();
+        OnPropertyChanged(nameof(ShowImageTabLoadingOverlay));
+        _ = HandleSelectedTabChangedAsync(SelectedDetailTabIndex);
     }
 
     private int _loadedImageFoodId;

@@ -106,17 +106,9 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-            }
-        }
+        UpdateButtonStates();
     }
 
     private void UpdateButtonStates()

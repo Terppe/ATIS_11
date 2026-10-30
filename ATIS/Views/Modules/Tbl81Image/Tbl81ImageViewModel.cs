@@ -128,17 +128,9 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                _ = UpdateButtonStatesAsync();
-            }
-        }
+        _ = UpdateButtonStatesAsync();
     }
 
     private async Task UpdateButtonStatesAsync()

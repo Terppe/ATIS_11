@@ -106,17 +106,9 @@ public class Tbl42SuperfamilyViewModel : BaseBossListViewModel<Models.Tbl42Super
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-            }
-        }
+        UpdateButtonStates();
     }
 
     private void UpdateButtonStates()

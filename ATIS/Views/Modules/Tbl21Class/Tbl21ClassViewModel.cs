@@ -106,17 +106,9 @@ public class Tbl21ClassViewModel : BaseBossListViewModel<Models.Tbl21Class>
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-            }
-        }
+        UpdateButtonStates();
     }
 
     private void UpdateButtonStates()

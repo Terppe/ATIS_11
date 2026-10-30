@@ -64,17 +64,9 @@ public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSour
     // UI STATE
     // ---------------------------------------------------------                   
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-            }
-        }
+        UpdateButtonStates();
     }
 
     private void UpdateButtonStates()

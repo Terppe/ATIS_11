@@ -150,19 +150,11 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-                OnPropertyChanged(nameof(ShowImageTabLoadingOverlay));
-                _ = HandleSelectedTabChangedAsync(value);
-            }
-        }
+        UpdateButtonStates();
+        OnPropertyChanged(nameof(ShowImageTabLoadingOverlay));
+        _ = HandleSelectedTabChangedAsync(SelectedDetailTabIndex);
     }
 
     private int _loadedImageSpeciesId;

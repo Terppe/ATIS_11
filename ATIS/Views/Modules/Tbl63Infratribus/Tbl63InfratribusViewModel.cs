@@ -106,17 +106,9 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                UpdateButtonStates();
-            }
-        }
+        UpdateButtonStates();
     }
 
     private void UpdateButtonStates()

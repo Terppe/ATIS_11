@@ -102,17 +102,9 @@ public class Tbl84SynonymViewModel : BaseBossListViewModel<Models.Tbl84Synonym>
         SelectedDetailTabIndex = index;
     });
 
-    private int _selectedDetailTabIndex;
-    public int SelectedDetailTabIndex
+    protected override void OnSelectedDetailTabIndexChanged()
     {
-        get => _selectedDetailTabIndex;
-        set
-        {
-            if (SetProperty(ref _selectedDetailTabIndex, value))
-            {
-                _ = UpdateButtonStatesAsync();
-            }
-        }
+        _ = UpdateButtonStatesAsync();
     }
 
     private async Task UpdateButtonStatesAsync()
