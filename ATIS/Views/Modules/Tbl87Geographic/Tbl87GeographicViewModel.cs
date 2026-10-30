@@ -560,7 +560,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // SelectedItem zurücksetzen -> Detail schließen
         SelectedItem = null;

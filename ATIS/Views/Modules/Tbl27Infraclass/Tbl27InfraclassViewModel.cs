@@ -343,20 +343,4 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
-    {
-        // ⭐ Back MUSS SelectedItem löschen
-        SelectedItem = null;
-
-        // ⭐ Detail schließen
-        OnPropertyChanged(nameof(IsDetailVisible));
-
-        // Parent-Modus bleibt aktiv
-        IsInParentMode = true;
-
-        SelectedDetailTabIndex = 0;
-
-        NewCommand.NotifyCanExecuteChanged();
-        RefreshCommand.NotifyCanExecuteChanged();
-    }
 }

@@ -324,7 +324,7 @@ public class TblFoodViewModel : BaseBossListViewModel<Models.TblFood>
     // BACK
     // ---------------------------------------------------------
 
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;

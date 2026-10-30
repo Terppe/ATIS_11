@@ -325,7 +325,7 @@ public class TblDiseaseViewModel : BaseBossListViewModel<Models.TblDisease>
     // BACK
     // ---------------------------------------------------------
 
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;

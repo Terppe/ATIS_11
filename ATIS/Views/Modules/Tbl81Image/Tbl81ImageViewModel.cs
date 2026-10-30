@@ -362,19 +362,19 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // Image/Video
     // ---------------------------------------------------------
-    private bool _isLoading;
-    public bool IsLoading
-    {
-        get => _isLoading;
-        set
-        {
-            if (_isLoading != value)
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-    }
+    //private bool _isLoading;
+    //public bool IsLoading
+    //{
+    //    get => _isLoading;
+    //    set
+    //    {
+    //        if (_isLoading != value)
+    //        {
+    //            _isLoading = value;
+    //            OnPropertyChanged(nameof(IsLoading));
+    //        }
+    //    }
+    //}
 
 
     public async Task LoadFromUrlAsync(string url)
@@ -698,7 +698,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // SelectedItem zurücksetzen -> Detail schließen
         SelectedItem = null;

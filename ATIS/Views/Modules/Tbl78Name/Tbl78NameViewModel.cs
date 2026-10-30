@@ -385,7 +385,7 @@ public class Tbl78NameViewModel : BaseBossListViewModel<Models.Tbl78Name>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // SelectedItem zurücksetzen -> Detail schließen
         SelectedItem = null;

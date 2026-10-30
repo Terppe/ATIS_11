@@ -352,7 +352,7 @@ public class Tbl84SynonymViewModel : BaseBossListViewModel<Models.Tbl84Synonym>
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // SelectedItem zurücksetzen -> Detail schließen
         SelectedItem = null;

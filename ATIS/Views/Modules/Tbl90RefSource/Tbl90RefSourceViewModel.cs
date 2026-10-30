@@ -212,7 +212,7 @@ public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSour
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;

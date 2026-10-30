@@ -343,20 +343,4 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
-    {
-        // ⭐ Back MUSS SelectedItem löschen
-        SelectedItem = null;
-
-        // ⭐ Detail schließen
-        OnPropertyChanged(nameof(IsDetailVisible));
-
-        // Parent-Modus bleibt aktiv
-        IsInParentMode = true;
-
-        SelectedDetailTabIndex = 0;
-
-        NewCommand.NotifyCanExecuteChanged();
-        RefreshCommand.NotifyCanExecuteChanged();
-    }
 }

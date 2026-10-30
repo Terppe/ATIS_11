@@ -212,7 +212,7 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;

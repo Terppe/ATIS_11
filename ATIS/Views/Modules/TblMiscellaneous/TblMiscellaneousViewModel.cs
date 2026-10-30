@@ -325,7 +325,7 @@ public class TblMiscellaneousViewModel : BaseBossListViewModel<Models.TblMiscell
     // BACK
     // ---------------------------------------------------------
 
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;

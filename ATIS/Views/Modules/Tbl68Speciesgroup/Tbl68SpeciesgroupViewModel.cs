@@ -207,7 +207,7 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ExecuteBack()
     {
         // ⭐ Back MUSS SelectedItem löschen
         SelectedItem = null;
