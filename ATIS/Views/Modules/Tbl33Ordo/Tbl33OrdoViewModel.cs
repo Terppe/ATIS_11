@@ -19,7 +19,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
@@ -72,7 +71,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
         SubordoViewModel = new Tbl36SubordoViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");

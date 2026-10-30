@@ -22,7 +22,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
     private readonly FileOpenPicker _filePicker = new();
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl81Image>>>? _activeLoader;
     private readonly Action<string> _langHandler;
@@ -45,7 +44,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         _lookupService = lookupService;
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");

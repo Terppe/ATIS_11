@@ -18,7 +18,6 @@ public class TblDiseaseViewModel : BaseBossListViewModel<Models.TblDisease>
     private Func<int, Task<IEnumerable<Models.TblDisease>>>? _activeLoader;
 
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
     private bool _wasEmptyBeforeSave;
     private readonly Action<string> _langHandler;
     // ---------------------------------------------------------
@@ -40,7 +39,6 @@ public class TblDiseaseViewModel : BaseBossListViewModel<Models.TblDisease>
         _lookupService = lookupService;
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         ImageViewModel = new Tbl81ImageViewModel(factory, dialog, coordinator, lookupService, user);
 

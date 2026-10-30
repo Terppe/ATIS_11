@@ -17,7 +17,6 @@ public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSour
 {
 
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
     private bool _wasEmptyBeforeSave;
     private readonly Action<string> _langHandler;
 
@@ -34,7 +33,6 @@ public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSour
     {
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");

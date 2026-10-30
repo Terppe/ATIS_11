@@ -15,7 +15,6 @@ namespace ATIS.Views.Modules.Tbl68Speciesgroup;
 public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Speciesgroup>
 {
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
     private bool _wasEmptyBeforeSave;
     private readonly Action<string> _langHandler;
 
@@ -31,7 +30,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         : base(new DataService(factory, user), dialog, coordinator)
     {
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");

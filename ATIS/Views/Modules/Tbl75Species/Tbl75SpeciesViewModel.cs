@@ -23,7 +23,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
@@ -103,7 +102,6 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         GeographicViewModel = new Tbl87GeographicViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Species ID");
         RegisterHeader("Name", "Species Name");

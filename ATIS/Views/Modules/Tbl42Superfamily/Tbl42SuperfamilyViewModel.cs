@@ -19,7 +19,6 @@ public class Tbl42SuperfamilyViewModel : BaseBossListViewModel<Models.Tbl42Super
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
@@ -72,7 +71,6 @@ public class Tbl42SuperfamilyViewModel : BaseBossListViewModel<Models.Tbl42Super
         FamilyViewModel = new Tbl45FamilyViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");

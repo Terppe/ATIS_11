@@ -21,7 +21,6 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
 
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
     private Func<int, Task<IEnumerable<Models.Tbl87Geographic>>>? _activeLoader;
@@ -45,7 +44,6 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
         _lookupService = lookupService;
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");

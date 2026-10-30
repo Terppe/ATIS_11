@@ -19,7 +19,6 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
@@ -72,7 +71,6 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
         SuperclassViewModel = new Tbl18SuperclassViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");
