@@ -34,9 +34,19 @@ public partial class AtisDbContext : DbContext
 
         // Version with App.Config  
         optionsBuilder.EnableSensitiveDataLogging(true);
-        _connectionString = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
-        //    optionsBuilder?.UseSqlServer(_connectionString);
-        // optionsBuilder.UseSqlServer(_connectionString, providerOptions => providerOptions.EnableRetryOnFailure());
+        // _connectionString = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
+
+        var builder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(
+            ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString);
+
+        var saved = DbServerSettings.DataSource;
+        if (saved != null)
+        {
+            builder.DataSource = saved;
+        }
+
+        _connectionString = builder.ConnectionString;
+
 
         optionsBuilder.UseSqlServer(_connectionString,
             sqlServerOptionsAction: sqlOptions =>

@@ -150,47 +150,23 @@ public partial class MainViewModel : ObservableObject
 
     private async Task CheckSql_DbAsync()
     {
-        var serverName = ConfigurationManager.AppSettings.Get("ServerName");
+        var dataSource = DbServerSettings.DataSource
+                         ?? $"{ConfigurationManager.AppSettings.Get("ServerName")},{ConfigurationManager.AppSettings.Get("Port")}";
 
-        if (!int.TryParse(
-                ConfigurationManager.AppSettings.Get("Port"),
-                out var port))
+        // Benannte Instanzen (Server\Instanz) haben keinen festen Port, dort genügt der Verbindungstest
+        var parts = dataSource.Split(',');
+        if (!dataSource.Contains('\\'))
         {
-            SimpleLog.Error("Ungültiger Port in AppSettings.");
+            var port = parts.Length > 1 && int.TryParse(parts[1], out var p) ? p : 1433;
 
-            return;
+            if (!CheckForServer(parts[0], port))
+            {
+                return;
+            }
         }
 
-        if (!CheckForServer(serverName, port))
-        {
-            return;
-        }
-
-        await CheckDatabaseExistAsync(serverName);
+        await CheckDatabaseExistAsync(dataSource);
     }
-
-    //private Task CheckSql_DbAsync()
-    //{
-    //    if (!CheckForServer(ConfigurationManager.AppSettings.Get("ServerName"),
-    //            Convert.ToInt32(ConfigurationManager.AppSettings.Get("Port"))))
-    //    {
-    //        //           TbDataBase.Text = StringsRes.SqlServerNotRunning;
-    //    }
-    //    else
-    //    {
-    //        if (!CheckDatabaseExist(ConfigurationManager.AppSettings.Get("ServerName")))
-    //        {
-    //            //              TbDataBase.Text = StringsRes.DatabaseNotFound;
-    //            ;
-    //        }
-    //    }
-
-    //    return Task.CompletedTask;
-    //}
-
-
-    //------------------------Check Server and Database-------------------------------
-
     private async Task<bool> CheckDatabaseExistAsync(string? db)
     {
         try
@@ -277,58 +253,6 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    // Check if database exist or SQLServer not running
-    private bool CheckDatabaseExist(string db)
-    {
-        var ret = false;
-
-        try
-        {
-            using var context = new AtisDbContext();
-            var dbExists = context.Database.CanConnect();
-
-            if (!dbExists)
-            {
-                // MessageBox.Show(CultRes.StringsRes.NoConnectServer + " " + db, $"CultRes.StringsRes.NoConnectServer: {db}");
-                if (db != null)
-                {
-                    _dialogService.ShowErrorAsync("Server_Connect_Title", "Server_Connect_Message");
-                    //          _ = AllDialogs.WarningNoDatabaseWithSqlServerSelectedMessageDialogAsync(db);
-                }
-                _dialogService.ShowYesNoAsync("Server_Exist_Title", "Server_Exist_Question");
-                //MessageBox.Show($"Database does not exist", "SQL-Server ok " + db,
-                //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-                if (true)
-                {
-                    DbExist_SQLActiv = $"Database does not exist - SQL - Server ok: {db}";
-
-                    ret = false;
-                }
-
-                SimpleLog.Error("Database does not exist - SQL - Server ok");
-            }
-            else
-            {
-                DbExist_SQLActiv = $"SQL-Server ok: {db}";
-               // TbDataBase.Foreground = new SolidColorBrush(Colors.Green);
-                ret = true;
-            }
-        }
-        catch (SqlException e)
-        {
-            _ = //AllDialogs.ErrorMessageDialogAsync(e.ToString());
-
-            //  _ = AllDialogs.NoServerConnectWarnMessageDialogAsync();
-            //MessageBox.Show($"CultRes.StringsRes.NoConnectServer: {db}", e.Message,
-            //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-            _dialogService.ShowYesNoAsync("Server_Exist_Title", "Server_Exist_Question");
-
-            SimpleLog.Error($"Server not connected: {db}");
-            ret = false;
-        }
-
-        return ret;
-    }
 
 
     public void OnAutoSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

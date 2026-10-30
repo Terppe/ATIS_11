@@ -319,6 +319,19 @@ public sealed partial class MainPage : Page
 
     public async Task CheckForUpdatesAsync(bool showStatusMessages = true)
     {
+        if (XamlRoot == null)
+        {
+            var loaded = new TaskCompletionSource();
+            void OnLoaded(object s, RoutedEventArgs e)
+            {
+                Loaded -= OnLoaded;
+                loaded.TrySetResult();
+            }
+
+            Loaded += OnLoaded;
+            await loaded.Task;
+        }
+
         async Task ShowMessageAsync(string title, string message)
         {
             var dialog = new ContentDialog

@@ -53,6 +53,7 @@ using ATIS.Views.User;
 using ATIS.Views.UserControls;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
+using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
 
 namespace ATIS;
 
@@ -131,9 +132,30 @@ public partial class App : Application
     // Window erstellen
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
-        var connected = await new AtisDbContext().Database.CanConnectAsync();
-        System.Diagnostics.Debug.WriteLine($"[DB] connected={connected}");
 
+        var configured = DbServerSettings.DataSource
+                         ?? new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(
+                             ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString).DataSource;
+
+        var connected = await SqlInstanceFinder.CanConnectAsync(configured, "ATIS34");
+
+        List<string>? dbChoices = null;
+
+        if (!connected)
+        {
+            var found = await SqlInstanceFinder.FindReachableAsync("ATIS34");
+
+            if (found.Count == 1)
+            {
+                DbServerSettings.Save(found[0]);
+                connected = true;
+            }
+            else if (found.Count > 1)
+            {
+                dbChoices = found;
+            }
+        }
+        System.Diagnostics.Debug.WriteLine($"[DB] connected={connected}");
 
         // 1. Localizer EINMAL initialisieren
         await InitializeLocalizer();
@@ -179,10 +201,69 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
 
+        //Server-Abfrage
+        if (dbChoices != null)
+        {
+            await ChooseDbServerAsync(dbChoices);
+        }
+
         //Update check on startup
         _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
-    }
 
+
+    }
+    private async Task ChooseDbServerAsync(List<string> servers)
+    {
+        if (MainWindow.Content is not FrameworkElement root)
+        {
+            return;
+        }
+
+        if (root.XamlRoot == null)
+        {
+            var loaded = new TaskCompletionSource();
+            void OnLoaded(object s, RoutedEventArgs e)
+            {
+                root.Loaded -= OnLoaded;
+                loaded.TrySetResult();
+            }
+
+            root.Loaded += OnLoaded;
+            await loaded.Task;
+        }
+
+        var radios = new RadioButtons
+        {
+            ItemsSource = servers,
+            SelectedIndex = 0
+        };
+
+        var dialog = new ContentDialog
+        {
+            XamlRoot = root.XamlRoot,
+            Title = "SQL-Server auswählen",
+            Content = radios,
+            PrimaryButtonText = "Übernehmen und neu starten",
+            CloseButtonText = "Abbrechen",
+            DefaultButton = ContentDialogButton.Primary
+        };
+
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary || radios.SelectedItem is not string selected)
+        {
+            return;
+        }
+
+        DbServerSettings.Save(selected);
+
+        var exePath = Environment.ProcessPath;
+        if (exePath != null)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(exePath) { UseShellExecute = true });
+        }
+
+        _closeConfirmed = true;
+        Exit();
+    }
     // ---------------------------------------------------------
     // 2. CULTURE
     // ---------------------------------------------------------
@@ -399,7 +480,6 @@ public partial class App : Application
     // ---------------------------------------------------------
     // 7. Splash
     // ---------------------------------------------------------
-
     private async Task ShowSplashAsync()
     {
         splash = new SplashWindow();
