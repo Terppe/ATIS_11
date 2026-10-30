@@ -88,9 +88,6 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         }
     }
 
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

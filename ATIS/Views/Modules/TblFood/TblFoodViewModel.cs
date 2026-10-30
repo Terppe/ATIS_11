@@ -147,9 +147,6 @@ public class TblFoodViewModel : BaseBossListViewModel<Models.TblFood>
         }
     }
 
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------
     // LOAD ITEMS (Boss)

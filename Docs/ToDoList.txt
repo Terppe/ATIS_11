@@ -1358,3 +1358,15 @@ wichtig ==> um Version bei Installer im Output zu haben muss
 cd D:\Develop\T\Atis\V11\ATIS_11
 dotnet build ATIS/ATIS.csproj -c Release -p:Platform=x64 -p:ATIS_VERSION=11.0.1.1
 & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=11.0.1.1 Installer\ATIS.iss
+Anzeigen von vorhandenen SQL-Servern klappt nicht
+----------------------------------------
+30.10.2026 10:30 Uhr Anzeigen von vorhandenen SQL-Servern weiter.
+So wird ein neues release erzeugt bei Github i Powershell:
+git tag v11.0.2.0; git push origin v11.0.2.0 => um Version bei Installer im Output zu haben muss im Powershell:
+dotnet build ATIS/ATIS.csproj -c Release -p:Platform=x64 -p:ATIS_VERSION=11.0.2.0
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=11.0.2.0 Installer\ATIS.iss
+Automatisches Update über Github im Moment nicht möglich. Vielleicht später.
+Du musst jetzt kein Zertifikat kaufen. Kostenlos lässt sich die SmartScreen-Warnung nicht zuverlässig beseitigen;
+ein selbst erstelltes Zertifikat wäre für Kunden auch keine einfache Lösung.
+Für fünf bekannte Anwender bleibt vorerst nur, ihnen den Download und die Warnmeldungen verständlich zu erklären –
+oder ATIS über einen bereits vertrauenswürdigen internen Installationsweg bereitzustellen.

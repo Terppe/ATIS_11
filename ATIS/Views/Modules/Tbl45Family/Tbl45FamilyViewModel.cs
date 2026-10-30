@@ -145,9 +145,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     }
 
     public bool IsSubfamilyParentSelected => SubfamilyViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

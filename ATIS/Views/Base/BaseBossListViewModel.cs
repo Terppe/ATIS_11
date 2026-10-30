@@ -8,12 +8,11 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     where TModel : class
 {
     protected readonly HierarchyCoordinator Coordinator;
-    protected readonly IDataService Data;
-    protected readonly IDialogService Dialog;
-    public event EventHandler? ScrollRequested;
+    //protected readonly IDataService Data;
+    //protected readonly IDialogService Dialog;
+    //public event EventHandler? ScrollRequested;
 
-    // ---------------------------------------------------------
-    // MODUS: Boss / Parent
+    #region MODUS: Boss / Parent
     // ---------------------------------------------------------
 
     public bool IsBossMode { get; private set; } = true;
@@ -21,9 +20,9 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
 
     public void SetBossMode() => IsBossMode = true;
     public void SetParentMode() => IsBossMode = false;
+    #endregion
 
-    // ---------------------------------------------------------
-    // CTOR
+    #region CTOR
     // ---------------------------------------------------------
 
     protected BaseBossListViewModel(
@@ -32,8 +31,8 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         HierarchyCoordinator coordinator)
         : base(data, dialog)
     {
-        Data = data;
-        Dialog = dialog;
+        //Data = data;
+        //Dialog = dialog;
         Coordinator = coordinator;
 
         // EINHEITLICHE COMMANDS
@@ -49,10 +48,12 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         RefreshCommand =
             new CommunityToolkit.Mvvm.Input.RelayCommand(async () => await ReloadAsync(),
                 () => IsBossMode && IsRefreshEnabled);
-    }
 
-    // ---------------------------------------------------------
-    // Commands
+        BackCommand = new RelayCommand(ExecuteBack);
+    }
+    #endregion
+
+    #region Commands
     // ---------------------------------------------------------
 
     public IRelayCommand NewCommand { get; }
@@ -63,9 +64,9 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     public IRelayCommand RefreshCommand { get; }
     public IRelayCommand CloseEditCommand { get; }
     public IRelayCommand BackCommand { get; }
+    #endregion
 
-    // ---------------------------------------------------------
-    // CRUD Hooks
+    #region CRUD Hooks
     // ---------------------------------------------------------
 
     protected abstract override Task NewAsync();
@@ -75,12 +76,12 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     protected abstract Task<bool> DeleteItemAsync(TModel item);
     protected abstract Task<bool> ConfirmSaveAsync(TModel item);
     protected abstract Task<bool> ConfirmDeleteAsync(TModel item);
-
     protected virtual Task<bool> ValidateBeforeSaveAsync(TModel item)
         => Task.FromResult(true);
 
-    // ---------------------------------------------------------
-    // Parent / Children
+    #endregion
+
+    #region Parent / Children
     // ---------------------------------------------------------
 
     public virtual Task LoadParentAsync(int parentId) => Task.CompletedTask;
@@ -88,9 +89,9 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     protected virtual Task ClearChildCollectionsAsync() => Task.CompletedTask;
 
     public bool HasParentSelection => SelectedItem != null;
+    #endregion
 
-    // ---------------------------------------------------------
-    // SelectedItem Changed (Boss + Parent)
+    #region SelectedItem Changed (Boss + Parent)
     // ---------------------------------------------------------
 
     public virtual Task OnSelectedItemChangedBossAsync()
@@ -112,18 +113,19 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     {
         SelectedItem = null;
     }
+    #endregion
 
-    // ---------------------------------------------------------
-    // SCROLL REQUESTED EVENT
-    // ---------------------------------------------------------
+    //#region SCROLL REQUESTED EVENT
+    //// ---------------------------------------------------------
 
-    public virtual void OnScrollRequested()
-    {
-        ScrollRequested?.Invoke(this, EventArgs.Empty);
-    }
+    //public virtual void OnScrollRequested()
+    //{
+    //    ScrollRequested?.Invoke(this, EventArgs.Empty);
+    //}
+    //#endregion
 
-    // ---------------------------------------------------------
-    // SAVE
+
+    #region SAVE
     // ---------------------------------------------------------
 
     protected virtual Task OnBeforeSaveAsync(TModel item)
@@ -161,8 +163,9 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     protected virtual Task OnBeforeReloadAfterSaveAsync(TModel item)
         => Task.CompletedTask;
 
-    // ---------------------------------------------------------
-    // DELETE
+    #endregion
+
+    #region DELETE
     // ---------------------------------------------------------
     private async Task DeleteAsync()
     {
@@ -186,17 +189,37 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         });
     }
 
-    // ---------------------------------------------------------
-    // REFRESH STATE
+    #endregion
+
+    #region REFRESH STATE
     // ---------------------------------------------------------
     protected void UpdateRefreshState()
     {
         IsRefreshEnabled = Items?.Any() == true;
         RefreshCommand.NotifyCanExecuteChanged();
     }
+    #endregion
 
+    #region EXECUTE BACK (Parent / Children)
     // ---------------------------------------------------------
-    // SEARCH
+    protected virtual void ExecuteBack()
+    {
+        SelectedItem = null;
+        OnPropertyChanged(nameof(IsDetailVisible));
+        IsInParentMode = true;
+        ResetDetailTab();
+
+        NewCommand.NotifyCanExecuteChanged();
+        RefreshCommand.NotifyCanExecuteChanged();
+    }
+
+    protected virtual void ResetDetailTab()
+    {
+    }
+
+    #endregion
+
+    #region SEARCH
     // ---------------------------------------------------------
 
     private string? _searchText;
@@ -207,8 +230,10 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         set => SetProperty(ref _searchText, value);
     }
 
-    // ---------------------------------------------------------
-    // UI STATE
+    #endregion
+
+
+    #region UI STATE
     // ---------------------------------------------------------
 
     private bool _isRefreshEnabled;
@@ -233,10 +258,22 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
             }
         }
     }
+    private int _selectedDetailTabIndex;
+    public int SelectedDetailTabIndex
+    {
+        get => _selectedDetailTabIndex;
+        set
+        {
+            if (SetProperty(ref _selectedDetailTabIndex, value))
+                OnSelectedDetailTabIndexChanged();
+        }
+    }
 
+    protected virtual void OnSelectedDetailTabIndexChanged() { }
 
-    // ---------------------------------------------------------
-    // RELOAD (Boss + Parent)
+    #endregion
+
+    #region RELOAD (Boss + Parent)
     // ---------------------------------------------------------
 
     public override async Task ReloadAsync()
@@ -274,9 +311,9 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     }
 
     protected abstract int GetId(TModel item);
+    #endregion
 
-    // ---------------------------------------------------------
-    // Sorting + Header (kompakt)
+    #region Sorting + Header (kompakt)
     // ---------------------------------------------------------
     private string _currentSortColumn = "";
     private bool _sortAscending = true;
@@ -336,6 +373,6 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     public string IdHeaderText => GetHeaderText("Id");
     public string NameHeaderText => GetHeaderText("Name");
 
-
+    #endregion
 
 }

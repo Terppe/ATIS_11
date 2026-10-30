@@ -145,9 +145,6 @@ public class Tbl63InfratribusViewModel : BaseBossListViewModel<Models.Tbl63Infra
     }
 
     public bool IsGenusParentSelected => GenusViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

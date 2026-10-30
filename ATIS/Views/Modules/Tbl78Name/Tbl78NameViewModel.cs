@@ -133,9 +133,6 @@ public class Tbl78NameViewModel : BaseBossListViewModel<Models.Tbl78Name>
     }
 
 
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

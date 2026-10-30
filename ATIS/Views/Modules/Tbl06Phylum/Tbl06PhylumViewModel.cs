@@ -145,9 +145,6 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
     }
 
     public bool IsSubphylumParentSelected => SubphylumViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

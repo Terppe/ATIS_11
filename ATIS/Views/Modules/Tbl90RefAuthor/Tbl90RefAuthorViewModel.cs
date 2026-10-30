@@ -94,9 +94,6 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
         }
     }
 
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

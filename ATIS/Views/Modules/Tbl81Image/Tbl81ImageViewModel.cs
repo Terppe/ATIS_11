@@ -160,9 +160,6 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
         }
     }
 
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
     private bool _showBusyOverlay;
     public bool ShowBusyOverlay
     {

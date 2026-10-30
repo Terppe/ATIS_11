@@ -64,6 +64,8 @@ public abstract class BaseListViewModel<T> : ObservableObject
     }
     public virtual Task ReloadAsync() => Task.CompletedTask;
 
+    public virtual void OnScrollRequested() => ScrollRequested?.Invoke(this, EventArgs.Empty);
+
     // ---------------------------------------------------------
     // STATE PROPERTIES
     // ---------------------------------------------------------

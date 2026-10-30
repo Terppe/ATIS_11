@@ -145,9 +145,6 @@ public class Tbl33OrdoViewModel : BaseBossListViewModel<Models.Tbl33Ordo>
     }
 
     public bool IsSubordoParentSelected => SubordoViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

@@ -145,9 +145,6 @@ public class Tbl27InfraclassViewModel : BaseBossListViewModel<Models.Tbl27Infrac
     }
 
     public bool IsLegioParentSelected => LegioViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

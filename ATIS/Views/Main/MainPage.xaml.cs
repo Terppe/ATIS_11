@@ -334,15 +334,28 @@ public sealed partial class MainPage : Page
 
         async Task ShowMessageAsync(string title, string message)
         {
-            var dialog = new ContentDialog
+            if (!showStatusMessages)
             {
-                XamlRoot = XamlRoot,
-                Title = title,
-                Content = message,
-                CloseButtonText = "Schließen"
-            };
+                SimpleLog.Error($"{title}: {message}");
+                return;
+            }
 
-            await dialog.ShowAsync();
+            try
+            {
+                var dialog = new ContentDialog
+                {
+                    XamlRoot = XamlRoot,
+                    Title = title,
+                    Content = message,
+                    CloseButtonText = "Schließen"
+                };
+
+                await dialog.ShowAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                SimpleLog.Error($"Dialog nicht anzeigbar: {ex.Message}");
+            }
         }
 
         try
@@ -397,9 +410,16 @@ public sealed partial class MainPage : Page
                 CloseButtonText = "Später"
             };
 
-            if (await updateDialog.ShowAsync() == ContentDialogResult.Primary)
+            try
             {
-                await Windows.System.Launcher.LaunchUriAsync(releaseUrl);
+                if (await updateDialog.ShowAsync() == ContentDialogResult.Primary)
+                {
+                    await Windows.System.Launcher.LaunchUriAsync(releaseUrl);
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                SimpleLog.Error($"Update-Dialog nicht anzeigbar: {ex.Message}");
             }
         }
         catch (Exception ex) when (

@@ -145,9 +145,6 @@ public class Tbl39InfraordoViewModel : BaseBossListViewModel<Models.Tbl39Infraor
     }
 
     public bool IsSuperfamilyParentSelected => SuperfamilyViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

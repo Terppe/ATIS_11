@@ -50,10 +50,8 @@ using ATIS.Views.Report;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
-using ATIS.Views.UserControls;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
-using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
 
 namespace ATIS;
 
@@ -123,6 +121,15 @@ public partial class App : Application
             System.Diagnostics.Debug.WriteLine($"[UnobservedTask] {e.Exception}");
             e.SetObserved();
         };
+
+        UnhandledException += (s, e) =>
+        {
+            SimpleLog.Error($"UnhandledException: {e.Exception}");
+            System.Diagnostics.Debug.WriteLine($"UnhandledException: {e.Exception}");
+        };
+
+        TaskScheduler.UnobservedTaskException += (s, e) =>
+            SimpleLog.Error($"UnobservedTask: {e.Exception}");
     }
 
     // ---------------------------------------------------------
@@ -202,16 +209,23 @@ public partial class App : Application
         AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
 
         //Server-Abfrage
+#if !DEBUG
         if (dbChoices != null)
         {
             await ChooseDbServerAsync(dbChoices);
         }
-
+#endif
         //Update check on startup
-        _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
 
+#if !DEBUG
+_ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
+#endif
 
     }
+
+    // ---------------------------------------------------------
+    // 2. CHOOSE SERVER
+    // ---------------------------------------------------------
     private async Task ChooseDbServerAsync(List<string> servers)
     {
         if (MainWindow.Content is not FrameworkElement root)
@@ -321,6 +335,11 @@ public partial class App : Application
                 loc.GetLocalizedString("ConfirmExitTitle"),
                 loc.GetLocalizedString("ConfirmExitMessage"));
         }
+        catch (InvalidOperationException ex)
+        {
+            SimpleLog.Error($"Beenden-Dialog nicht anzeigbar: {ex.Message}");
+            return false;
+        }
         finally
         {
             _dialogOpen = false;
@@ -336,6 +355,9 @@ public partial class App : Application
         MainWindow?.DispatcherQueue.TryEnqueue(() => MainWindow.Close());
     }
 
+    // ---------------------------------------------------------
+    // 5. CONFICURE SERVICES
+    // ---------------------------------------------------------
     private static ServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();

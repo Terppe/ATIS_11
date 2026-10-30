@@ -145,9 +145,6 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
     }
 
     public bool IsClassParentSelected => ClassViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

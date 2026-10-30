@@ -145,9 +145,6 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
     }
 
     public bool IsInfraordoParentSelected => InfraordoViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

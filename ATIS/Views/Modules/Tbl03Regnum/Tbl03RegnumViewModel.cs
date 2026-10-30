@@ -19,7 +19,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
-    public IRelayCommand BackCommand { get; }
+ //   public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
@@ -33,27 +33,10 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     public Tbl90ReferenceViewModel RegnumReferenceViewModel { get; }
     public Tbl06PhylumViewModel PhylumViewModel { get; }
 
-    //// ---------------------------------------------------------
-    //// LOOKUPS
-    //// ---------------------------------------------------------
-    //public ObservableCollection<Models.NULL> NULLList { get; private set; } = new();
-    //public Dictionary<int, string?> NULLLookup { get; private set; } = new();
-
-    //public async Task LoadNULLLookupAsync()
-    //{
-    //    var list = await _lookupService.GetNULLListAsync();
-    //    var lookup = await _lookupService.GetNULLLookupAsync();
-
-    //    NULLList.Clear();
-    //    foreach (var item in list)
-    //    {
-    //        NULLList.Add(item);
-    //    }
-
-    //    NULLLookup = lookup;
-    //    OnPropertyChanged(nameof(NULLLookup));
-    //}
-
+    // ---------------------------------------------------------
+    // LOOKUPS
+    // ---------------------------------------------------------
+    //Regnum hat kein LookUp
     // ---------------------------------------------------------                   
     // CTOR
     // ---------------------------------------------------------                   
@@ -72,7 +55,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         PhylumViewModel = new Tbl06PhylumViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-        BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+    //    BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");
@@ -145,9 +128,9 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     }
 
     public bool IsPhylumParentSelected => PhylumViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
+    //public bool IsDetailVisible => SelectedItem != null;
+    //public bool IsEditMode => SelectedItem != null;
+    //public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)
@@ -353,23 +336,11 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     protected override int GetId(Models.Tbl03Regnum item)
         => item.RegnumId;
 
+    #region BACK
     // ---------------------------------------------------------
-    // BACK
-    // ---------------------------------------------------------
-    private void ExecuteBack()
+    protected override void ResetDetailTab()
     {
-        // ⭐ Back MUSS SelectedItem löschen
-        SelectedItem = null;
-
-        // ⭐ Detail schließen
-        OnPropertyChanged(nameof(IsDetailVisible));
-
-        // Parent-Modus bleibt aktiv
-        IsInParentMode = true;
-
         SelectedDetailTabIndex = 0;
-
-        NewCommand.NotifyCanExecuteChanged();
-        RefreshCommand.NotifyCanExecuteChanged();
     }
+    #endregion
 }

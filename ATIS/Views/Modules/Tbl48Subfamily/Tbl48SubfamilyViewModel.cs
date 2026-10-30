@@ -145,9 +145,6 @@ public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfami
     }
 
     public bool IsInfrafamilyParentSelected => InfrafamilyViewModel.SelectedItem != null;
-    public bool IsDetailVisible => SelectedItem != null;
-    public bool IsEditMode => SelectedItem != null;
-    public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)
