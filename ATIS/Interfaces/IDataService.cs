@@ -1064,8 +1064,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     #region Search
 
     Task<IEnumerable<SearchResultItem>> SearchAcrossTablesAsync(string? search, string? entityType = "All");
-    Task<IEnumerable<object>> SearchAsync(string tableName, string searchText);
-    Task<object?> GetByIdAsync(string tableName, int id);
     #endregion
 
     #region Search_Gets
@@ -1106,6 +1104,7 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
 
     #endregion Search_Gets
 
+
     #region Report_Gets
 
     #region Regnum
@@ -1121,7 +1120,7 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     ObservableCollection<Tbl90Reference> CollAuthorsByRegnumId(int id);
     //Comments
     ObservableCollection<Tbl93Comment> CollCommentsByRegnumId(int id);
-    #endregion Regnum
+#endregion Regnum
 
     #region Phylum
     Tbl06Phylum GetPhylumSingleByPhylumIdAndHash(int id);
@@ -1524,6 +1523,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
 
     #endregion Miscellaneou
 
-    #endregion Report_Gets
+#endregion Report_Gets
 
 }
