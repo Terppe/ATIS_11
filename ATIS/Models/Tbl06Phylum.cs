@@ -253,7 +253,7 @@ public class Tbl06Phylum : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string _writer;
+    private string _writer = string.Empty;
     public string Writer
     {
         get => _writer;
@@ -272,7 +272,7 @@ public class Tbl06Phylum : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string _updater;
+    private string _updater = string.Empty;
     public string Updater
     {
         get => _updater;

@@ -253,8 +253,8 @@ public class Tbl51Infrafamily : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string? _writer;
-    public string? Writer
+    private string _writer = string.Empty;
+    public string Writer
     {
         get => _writer;
         set => SetProperty(ref _writer, value);
@@ -272,8 +272,8 @@ public class Tbl51Infrafamily : ObservableObject, IDataService.IAuditable, IHier
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string? _updater;
-    public string? Updater
+    private string _updater = string.Empty;
+    public string Updater
     {
         get => _updater;
         set => SetProperty(ref _updater, value);

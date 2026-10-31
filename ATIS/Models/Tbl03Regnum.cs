@@ -25,6 +25,7 @@ public class Tbl03Regnum : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
 
     [StringLength(100)]
+    [Required]
     private string? _regnumName;
     public string? RegnumName
     {
@@ -74,6 +75,7 @@ public class Tbl03Regnum : ObservableObject, IDataService.IAuditable, IHierarchi
     // CountId
     // ---------------------------------------------------------               
 
+    [Required]
     private int _countId;
     public int CountId
     {
@@ -248,7 +250,7 @@ public class Tbl03Regnum : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string _writer;
+    private string _writer = string.Empty;
     public string Writer
     {
         get => _writer;
@@ -267,7 +269,7 @@ public class Tbl03Regnum : ObservableObject, IDataService.IAuditable, IHierarchi
     // ---------------------------------------------------------
 
     [StringLength(50)]
-    private string _updater;
+    private string _updater = string.Empty;
     public string Updater
     {
         get => _updater;

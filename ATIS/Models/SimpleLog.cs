@@ -159,7 +159,7 @@ public static class SimpleLog
     /// <remarks>
     /// Default is "yyyy_MM_dd" (e.g. 2013_04_21), which leads to a daily change of the log file.
     /// </remarks>
-    private static string _dateFormat;
+    private static string _dateFormat = "yyyy_MM_dd";
 
     /// <summary>
     /// Suffix to use in file name
@@ -167,16 +167,14 @@ public static class SimpleLog
     /// <remarks>
     /// Default is the empty string, i.e. no suffix.
     /// </remarks>
-    private static string _suffix;
-
+    private static string _suffix = string.Empty;
     /// <summary>
     /// Extension to use in file name
     /// </summary>
     /// <remarks>
     /// Default is "log".
     /// </remarks>
-    private static string _extension;
-
+    private static string _extension = "log";
     /// <summary>
     /// Log level
     /// </summary>
@@ -223,7 +221,7 @@ public static class SimpleLog
     /// <summary>
     /// Last message having been logged. Used to avoid repeating messages.
     /// </summary>
-    private static string _lastMessage;
+    private static string? _lastMessage;
 
     /// <summary>
     /// How often <see cref="_lastMessage"/> repeatedly should be logged.

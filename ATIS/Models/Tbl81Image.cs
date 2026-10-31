@@ -120,11 +120,11 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
     }
 
     [StringLength(50)]
-    public string Writer { get; set; }
+    public string Writer { get; set; } = string.Empty;
     public DateTime WriterDate { get; set; }
 
     [StringLength(50)]
-    public string Updater { get; set; }
+    public string Updater { get; set; } = string.Empty;
     public DateTime UpdaterDate { get; set; }
 
     private string? _memo;
