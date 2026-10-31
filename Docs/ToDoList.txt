@@ -1370,3 +1370,10 @@ Du musst jetzt kein Zertifikat kaufen. Kostenlos lässt sich die SmartScreen-War
 ein selbst erstelltes Zertifikat wäre für Kunden auch keine einfache Lösung.
 Für fünf bekannte Anwender bleibt vorerst nur, ihnen den Download und die Warnmeldungen verständlich zu erklären –
 oder ATIS über einen bereits vertrauenswürdigen internen Installationsweg bereitzustellen.
+committen und pushen:
+git add -A; git commit -m "Basisklassen-Duplikate in ViewModels bereinigt"; git push
+----------------------------------------
+30.10.2026 10:30 Uhr  Prüfe morgen noch, ob die GitHub-Action für a3b2df1 grün ist => Das geht mit: gh run list --branch ATIS_11 --limit 3
+Warnungen fertig bereinigen, Build prüfen, Änderungen committen und pushen.
+Einen Build ausfühern über ganzes ATIS-Project :  dotnet build ATIS/ATIS.csproj -c Debug -p:Platform=x64
+Fehler bei Tbl75SpeciessesDocument image

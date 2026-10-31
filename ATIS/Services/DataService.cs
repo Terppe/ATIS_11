@@ -10569,169 +10569,22 @@ public partial class DataService : ObservableObject, IDataService
 
         var results = new List<SearchResultItem>();
 
-        if (type is "All" or "Regnum")
-            results.AddRange(await SearchRegnumAsync(context, s, take: 30));
+        //if (type is "All" or "Regnum")
+        //    results.AddRange(await SearchRegnumAsync(context, s, take: 30));
 
-        if (type is "All" or "Phylum")
-            results.AddRange(await SearchPhylumAsync(context, s, take: 30));
+        //if (type is "All" or "Phylum")
+        //    results.AddRange(await SearchPhylumAsync(context, s, take: 30));
 
-        if (type is "All" or "Subphylum")
-            results.AddRange(await SearchSubphylumAsync(context, s, take: 30));
+        //if (type is "All" or "Subphylum")
+        //    results.AddRange(await SearchSubphylumAsync(context, s, take: 30));
 
-        if (type is "All" or "Class")
-            results.AddRange(await SearchClassAsync(context, s, take: 30));
+        //if (type is "All" or "Class")
+        //    results.AddRange(await SearchClassAsync(context, s, take: 30));
 
         return results
             .OrderBy(x => x.Title)
             .Take(200)
             .ToList();
-    }
-    private static async Task<List<SearchResultItem>> SearchRegnumAsync(AtisDbContext context, string s, int take)
-    {
-        var q = context.Tbl03Regnums.AsNoTracking();
-
-        if (int.TryParse(s, out var id))
-        {
-            return await q
-                .Where(e =>
-                    e.RegnumId == id ||
-                    (e.RegnumName != null && e.RegnumName.StartsWith(s)))
-                .OrderBy(e => e.RegnumName)
-                .Take(take)
-                .Select(e => new SearchResultItem
-                {
-                    EntityType = "Regnum",
-                    EntityId = e.RegnumId,
-                    Title = e.RegnumName ?? string.Empty,
-                    Subtitle = e.Subregnum ?? string.Empty
-                })
-                .ToListAsync();
-        }
-
-        return await q
-            .Where(e => e.RegnumName != null && e.RegnumName.StartsWith(s))
-            .OrderBy(e => e.RegnumName)
-            .Take(take)
-            .Select(e => new SearchResultItem
-            {
-                EntityType = "Regnum",
-                EntityId = e.RegnumId,
-                Title = e.RegnumName ?? string.Empty,
-                Subtitle = e.Subregnum ?? string.Empty
-            })
-            .ToListAsync();
-    }
-
-    private static async Task<List<SearchResultItem>> SearchPhylumAsync(AtisDbContext context, string s, int take)
-    {
-        var q = context.Tbl06Phylums
-            .Include(x => x.Regnum)
-            .AsNoTracking();
-
-        if (int.TryParse(s, out var id))
-        {
-            return await q
-                .Where(e =>
-                    e.PhylumId == id ||
-                    (e.PhylumName != null && e.PhylumName.StartsWith(s)))
-                .OrderBy(e => e.PhylumName)
-                .Take(take)
-                .Select(e => new SearchResultItem
-                {
-                    EntityType = "Phylum",
-                    EntityId = e.PhylumId,
-                    Title = e.PhylumName ?? string.Empty,
-                    Subtitle = e.Regnum != null ? e.Regnum.RegnumName ?? string.Empty : string.Empty
-                })
-                .ToListAsync();
-        }
-
-        return await q
-            .Where(e => e.PhylumName != null && e.PhylumName.StartsWith(s))
-            .OrderBy(e => e.PhylumName)
-            .Take(take)
-            .Select(e => new SearchResultItem
-            {
-                EntityType = "Phylum",
-                EntityId = e.PhylumId,
-                Title = e.PhylumName ?? string.Empty,
-                Subtitle = e.Regnum != null ? e.Regnum.RegnumName ?? string.Empty : string.Empty
-            })
-            .ToListAsync();
-    }
-
-    private static async Task<List<SearchResultItem>> SearchSubphylumAsync(AtisDbContext context, string s, int take)
-    {
-        var q = context.Tbl12Subphylums
-            .Include(x => x.Phylum)
-            .AsNoTracking();
-
-        if (int.TryParse(s, out var id))
-        {
-            return await q
-                .Where(e =>
-                    e.SubphylumId == id ||
-                    (e.SubphylumName != null && e.SubphylumName.StartsWith(s)))
-                .OrderBy(e => e.SubphylumName)
-                .Take(take)
-                .Select(e => new SearchResultItem
-                {
-                    EntityType = "Subphylum",
-                    EntityId = e.SubphylumId,
-                    Title = e.SubphylumName ?? string.Empty,
-                    Subtitle = e.Phylum != null ? e.Phylum.PhylumName ?? string.Empty : string.Empty
-                })
-                .ToListAsync();
-        }
-
-        return await q
-            .Where(e => e.SubphylumName != null && e.SubphylumName.StartsWith(s))
-            .OrderBy(e => e.SubphylumName)
-            .Take(take)
-            .Select(e => new SearchResultItem
-            {
-                EntityType = "Subphylum",
-                EntityId = e.SubphylumId,
-                Title = e.SubphylumName ?? string.Empty,
-                Subtitle = e.Author ?? string.Empty
-            })
-            .ToListAsync();
-    }
-
-    private static async Task<List<SearchResultItem>> SearchClassAsync(AtisDbContext context, string s, int take)
-    {
-        var q = context.Tbl21Classes.AsNoTracking();
-
-        if (int.TryParse(s, out var id))
-        {
-            return await q
-                .Where(e =>
-                    e.ClassId == id ||
-                    (e.ClassName != null && e.ClassName.StartsWith(s)))
-                .OrderBy(e => e.ClassName)
-                .Take(take)
-                .Select(e => new SearchResultItem
-                {
-                    EntityType = "Class",
-                    EntityId = e.ClassId,
-                    Title = e.ClassName ?? string.Empty,
-                    Subtitle = e.Author ?? string.Empty
-                })
-                .ToListAsync();
-        }
-
-        return await q
-            .Where(e => e.ClassName != null && e.ClassName.StartsWith(s))
-            .OrderBy(e => e.ClassName)
-            .Take(take)
-            .Select(e => new SearchResultItem
-            {
-                EntityType = "Class",
-                EntityId = e.ClassId,
-                Title = e.ClassName ?? string.Empty,
-                Subtitle = e.Author ?? string.Empty
-            })
-            .ToListAsync();
     }
 
     #endregion
@@ -11137,57 +10990,6 @@ public partial class DataService : ObservableObject, IDataService
         return null!;
     }
 
-    //public ObservableCollection<Tbl69FiSpecies>
-    //    GetTbl69FiSpeciessesCollectionOrderByGenusNameAndFiSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText)
-    //{
-    //    if (_context.Tbl69FiSpeciesses != null)
-    //    {
-    //        var collection = new ObservableCollection<Tbl69FiSpecies>(_context.Tbl69FiSpeciesses
-    //            .Include(a => a.Tbl66Genusses)
-    //            .Where(e => e.FiSpeciesName.StartsWith(filterText) &&
-    //                        e.FiSpeciesName.Contains(Value) == false ||
-    //                        e.Tbl66Genusses.GenusName.Contains(filterText) ||
-    //                        e.Subspecies.Contains(filterText) ||
-    //                        e.Divers.Contains(filterText) ||
-    //                        e.TradeName.Contains(filterText) ||
-    //                        e.Author.Contains(filterText)
-    //            )
-    //            .OrderBy(a => a.Tbl66Genusses.GenusName)
-    //            .ThenBy(a => a.FiSpeciesName)
-    //            .ThenBy(a => a.Subspecies)
-    //            .ThenBy(a => a.Divers)
-    //        );
-
-    //        return collection;
-    //    }
-    //    return null!;
-    //}
-
-    //public ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(
-    //    string filterText)
-    //{
-    //    if (_context.Tbl72PlSpeciesses != null)
-    //    {
-    //        var collection = new ObservableCollection<Tbl72PlSpecies>(_context.Tbl72PlSpeciesses
-    //            .Include(a => a.Tbl66Genusses)
-    //            .Where(e => e.PlSpeciesName.StartsWith(filterText) &&
-    //                        e.PlSpeciesName.Contains(Value) == false ||
-    //                        e.Tbl66Genusses.GenusName.Contains(filterText) ||
-    //                        e.Subspecies.Contains(filterText) ||
-    //                        e.Divers.Contains(filterText) ||
-    //                        e.TradeName.Contains(filterText) ||
-    //                        e.Author.Contains(filterText)
-    //            )
-    //            .OrderBy(a => a.Tbl66Genusses.GenusName)
-    //            .ThenBy(a => a.PlSpeciesName)
-    //            .ThenBy(a => a.Subspecies)
-    //            .ThenBy(a => a.Divers)
-    //        );
-
-    //        return collection;
-    //    }
-    //    return null!;
-    //}
 
     public ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText)
     {
@@ -11218,8 +11020,6 @@ public partial class DataService : ObservableObject, IDataService
         }
         return null!;
     }
-
-
 
     
     public ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText)

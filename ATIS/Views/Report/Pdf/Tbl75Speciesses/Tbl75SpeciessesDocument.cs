@@ -893,30 +893,37 @@ public class Tbl75SpeciessesDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text("");
-                        if (item.Filestream != null)
-                        {
-                            try
-                            {
-                                using var ms = new MemoryStream(item.Filestream);
-                                using var img = Image.FromStream(ms); // Test: ist es ein echtes Bild?
+                        var imageCell = table.Cell();
 
-                                table.Cell().Image(item.Filestream).FitArea();
-                            }
-                            catch (Exception ex)
-                            {
-                                var loc = Localizer.Get();
+                        if (item.Filestream is { Length: > 0 })
+                            imageCell.Image(item.Filestream).FitArea();
+                        else
+                            imageCell.Text(string.Empty);
+                        //if (item.Filestream != null)
+                        //{
+                        //    try
+                        //    {
 
-                                var errorDialog = new ContentDialog
-                                {
-                                    Title = loc.GetLocalizedString("PdfImage_Error_Title"),
-                                    Content = string.Format(loc.GetLocalizedString("PdfImage_Error"), ex.ToString()),
-                                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                                    XamlRoot = App.MainPageInstance.Content.XamlRoot
-                                };
+                        //        using var ms = new MemoryStream(item.Filestream);
+                        //        using var img = Image.FromStream(ms); // Test: ist es ein echtes Bild?
 
-                                 errorDialog.ShowAsync();
-                            }
-                        }
+                        //        table.Cell().Image(item.Filestream).FitArea();
+                        //    }
+                        //    catch (Exception ex)
+                        //    {
+                        //        var loc = Localizer.Get();
+
+                        //        var errorDialog = new ContentDialog
+                        //        {
+                        //            Title = loc.GetLocalizedString("PdfImage_Error_Title"),
+                        //            Content = string.Format(loc.GetLocalizedString("PdfImage_Error"), ex.ToString()),
+                        //            CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                        //            XamlRoot = App.MainPageInstance?.Content.XamlRoot
+                        //        };
+
+                        //         errorDialog.ShowAsync();
+                        //    }
+                        //}
                     }
                     if (i == 1)
                     {

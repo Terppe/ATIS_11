@@ -97,7 +97,7 @@ public partial class App : Application
         QuestPDF.Settings.License = LicenseType.Community;
         QuestPDF.Settings.ThrowOnMissingTextGlyphs = false;
         QuestPDF.Settings.UseSystemFonts = false;
-        QuestPDF.Settings.EnableDetailedLayoutErrors = false;
+        QuestPDF.Settings.EnableDetailedLayoutErrors = true;
 
         UnhandledException += App_UnhandledException;
 

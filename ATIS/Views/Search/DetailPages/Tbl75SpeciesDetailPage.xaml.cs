@@ -5,6 +5,7 @@ using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
+using WinUI3Localizer;
 
 //  Tbl75SpeciesDetailPage.xaml.cs Skriptdatum:  18.08.2026  10:32     
 
@@ -65,16 +66,38 @@ public sealed partial class Tbl75SpeciesDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        var document = await CreateDetailDocumentAsync();
-        if (document == null)
-            return;
+        try
+        {
+            var document = await CreateDetailDocumentAsync();
+            if (document == null)
+                return;
 
-        var speciesName = SanitizeFileNamePart(GetCurrentSpeciesName());
-        var suggestedFileName = $"Species_Detail_{speciesName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+            var speciesName = SanitizeFileNamePart(GetCurrentSpeciesName());
+            var suggestedFileName =
+                $"Species_Detail_{speciesName}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
-        await SaveDocumentAsPdfAsync(document, suggestedFileName);
+            await SaveDocumentAsPdfAsync(document, suggestedFileName);
+        }
+        catch (Exception ex) when (
+            ex is QuestPDF.Drawing.Exceptions.DocumentComposeException or
+                QuestPDF.Drawing.Exceptions.DocumentLayoutException or
+                IOException or UnauthorizedAccessException)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+            var loc = Localizer.Get();
+            var dialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(
+                    loc.GetLocalizedString("PdfExport_Error"), ex.Message),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok")
+            };
+
+            await dialog.ShowAsync();
+        }
     }
-
     //für später andere nutzung, z.B. Drucken
     //private async void PrintButton_Click(object sender, RoutedEventArgs e)
     //{

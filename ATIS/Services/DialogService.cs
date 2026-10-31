@@ -23,7 +23,7 @@ public class DialogService() : IDialogService
             Title = loc.GetLocalizedString(titleKey),
             Content = loc.GetLocalizedString(messageKey),
             CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
+            XamlRoot = App.MainWindow?.Content.XamlRoot
         };
 
         await dialog.ShowAsync();
@@ -38,7 +38,7 @@ public class DialogService() : IDialogService
             Title = loc.GetLocalizedString(titleKey),
             Content = loc.GetLocalizedString(messageKey),
             CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
+            XamlRoot = App.MainWindow?.Content.XamlRoot
         };
 
         await dialog.ShowAsync();
@@ -54,7 +54,7 @@ public class DialogService() : IDialogService
             Content = loc.GetLocalizedString(messageKey),
             PrimaryButtonText = loc.GetLocalizedString("Dialog_Ok"),
             CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
+            XamlRoot = App.MainWindow?.Content.XamlRoot
         };
 
         var result = await dialog.ShowAsync();
@@ -71,7 +71,7 @@ public class DialogService() : IDialogService
             Title = title,
             Content = content,
             CloseButtonText = Localizer.Get().GetLocalizedString("Dialog_Close"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
+            XamlRoot = App.MainWindow?.Content.XamlRoot
         };
 
         configure?.Invoke(dialog);
@@ -87,7 +87,7 @@ public class DialogService() : IDialogService
             Title = loc.GetLocalizedString(titleKey),
             Content = loc.GetLocalizedString(messageKey),
             CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-            XamlRoot = App.MainWindow.Content.XamlRoot,
+            XamlRoot = App.MainWindow?.Content.XamlRoot,
         };
 
         await dialog.ShowAsync();
@@ -105,7 +105,7 @@ public class DialogService() : IDialogService
             PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
             CloseButtonText = loc.GetLocalizedString("Dialog_No"),
             DefaultButton = ContentDialogButton.Primary,
-            XamlRoot = App.MainWindow.Content.XamlRoot,
+            XamlRoot = App.MainWindow?.Content.XamlRoot,
         };
 
         var result = await dialog.ShowAsync();
@@ -154,7 +154,7 @@ public class DialogService() : IDialogService
             Content = loc.GetLocalizedString(messageKey),
             PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
             CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-            XamlRoot = App.MainWindow.Content.XamlRoot
+            XamlRoot = App.MainWindow?.Content.XamlRoot
         };
 
         var result = await dialog.ShowAsync();
@@ -174,7 +174,7 @@ public class DialogService() : IDialogService
             CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
             DefaultButton = ContentDialogButton.Primary,
             Content = content,
-            XamlRoot = App.MainWindow.Content.XamlRoot,
+            XamlRoot = App.MainWindow?.Content.XamlRoot,
         };
 
         var result = await dialog.ShowAsync();
@@ -191,7 +191,7 @@ public class DialogService() : IDialogService
             CloseButtonText = loc.GetLocalizedString("Dialog_Cancel"),
             DefaultButton = ContentDialogButton.Primary,
             Content = content,
-            XamlRoot = App.MainWindow.Content.XamlRoot
+            XamlRoot = App.MainWindow?.Content.XamlRoot
         };
 
         var result = await dialog.ShowAsync();
@@ -207,7 +207,7 @@ public class DialogService() : IDialogService
             Content = loc.GetLocalizedString(messageKey),
             PrimaryButtonText = loc.GetLocalizedString("Dialog_Yes"),
             CloseButtonText = loc.GetLocalizedString("Dialog_No"),
-            XamlRoot = App.MainWindow.Content.XamlRoot,
+            XamlRoot = App.MainWindow?.Content.XamlRoot,
         };
 
         using var cts = new CancellationTokenSource(timeoutMilliseconds);
