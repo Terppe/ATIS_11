@@ -1377,3 +1377,5 @@ git add -A; git commit -m "Basisklassen-Duplikate in ViewModels bereinigt"; git 
 Warnungen fertig bereinigen, Build prüfen, Änderungen committen und pushen.
 Einen Build ausfühern über ganzes ATIS-Project :  dotnet build ATIS/ATIS.csproj -c Debug -p:Platform=x64
 Fehler bei Tbl75SpeciessesDocument image
+----------------------------------------
+01.11.2026 10:30 Uhr  Fehler bei Tbl75SpeciessesDocument image weil Audio und Video auch angezeigt werden sollen.

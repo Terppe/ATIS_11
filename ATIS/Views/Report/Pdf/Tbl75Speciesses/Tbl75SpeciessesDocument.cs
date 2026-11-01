@@ -895,35 +895,23 @@ public class Tbl75SpeciessesDocument : IDocument
                         table.Cell().Text("");
                         var imageCell = table.Cell();
 
-                        if (item.Filestream is { Length: > 0 })
+                        var type = item.ImageMimeType?.Trim().TrimStart('.').ToLowerInvariant();
+
+                        var mediaLabel = type switch
+                        {
+                            "mp4" or "avi" or "mov" or "mpg" or "wmv" or "flv" or "swf"
+                                => $"Video (.{type})",
+                            "mp3" or "wav" or "m4a"
+                                => $"Audio (.{type})",
+                            _ => null
+                        };
+
+                        if (mediaLabel != null)
+                            imageCell.Text(mediaLabel);
+                        else if (item.Filestream is { Length: > 0 })
                             imageCell.Image(item.Filestream).FitArea();
                         else
                             imageCell.Text(string.Empty);
-                        //if (item.Filestream != null)
-                        //{
-                        //    try
-                        //    {
-
-                        //        using var ms = new MemoryStream(item.Filestream);
-                        //        using var img = Image.FromStream(ms); // Test: ist es ein echtes Bild?
-
-                        //        table.Cell().Image(item.Filestream).FitArea();
-                        //    }
-                        //    catch (Exception ex)
-                        //    {
-                        //        var loc = Localizer.Get();
-
-                        //        var errorDialog = new ContentDialog
-                        //        {
-                        //            Title = loc.GetLocalizedString("PdfImage_Error_Title"),
-                        //            Content = string.Format(loc.GetLocalizedString("PdfImage_Error"), ex.ToString()),
-                        //            CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                        //            XamlRoot = App.MainPageInstance?.Content.XamlRoot
-                        //        };
-
-                        //         errorDialog.ShowAsync();
-                        //    }
-                        //}
                     }
                     if (i == 1)
                     {
