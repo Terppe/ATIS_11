@@ -10,7 +10,7 @@ public class UserService : IUserService
 
     public bool IsAuthenticated => !string.IsNullOrWhiteSpace(CurrentUser);
 
-    public void SetUser(string username, string role)
+    public void SetUser(string? username, string? role)
     {
         CurrentUser = username ?? string.Empty;
         CurrentRole = role ?? string.Empty;
