@@ -35,7 +35,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl03Regnum>> GetAllRegnumAsync();
     Task<IEnumerable<Tbl03Regnum>> SearchRegnumAsync(string? search);
-    Task<Tbl03Regnum> GetRegnumByIdAsync(int id);
+    Task<Tbl03Regnum?> GetRegnumByIdAsync(int id);
     Task<Tbl03Regnum> UpsertRegnumAsync(Tbl03Regnum entity);
     Task DeleteRegnumAsync(int id);
     Task<bool> RegnumExistsAsync(Tbl03Regnum entity);
@@ -98,7 +98,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl12Subphylum>> GetAllSubphylumAsync();
     Task<IEnumerable<Tbl12Subphylum>> SearchSubphylumWithPhylumAsync(string? search);
-    Task<Tbl12Subphylum> GetSubphylumByIdAsync(int id);
+    Task<Tbl12Subphylum?> GetSubphylumByIdAsync(int id);
     Task<Tbl12Subphylum> UpsertSubphylumAsync(Tbl12Subphylum entity);
     Task DeleteSubphylumAsync(int id);
     Task<bool> SubphylumExistsAsync(Tbl12Subphylum entity);
@@ -132,7 +132,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl18Superclass>> GetAllSuperclassAsync();
     Task<IEnumerable<Tbl18Superclass>> SearchSuperclassWithSubphylumAsync(string? search);
-    Task<Tbl18Superclass> GetSuperclassByIdAsync(int id);
+    Task<Tbl18Superclass?> GetSuperclassByIdAsync(int id);
     Task<Tbl18Superclass> UpsertSuperclassAsync(Tbl18Superclass entity);
     Task DeleteSuperclassAsync(int id);
     Task<bool> SuperclassExistsAsync(Tbl18Superclass entity);
@@ -163,7 +163,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl21Class>> GetAllClassAsync();
     Task<IEnumerable<Tbl21Class>> SearchClassWithSuperclassAsync(string? search);
-    Task<Tbl21Class> GetClassByIdAsync(int id);
+    Task<Tbl21Class?> GetClassByIdAsync(int id);
     Task<Tbl21Class> UpsertClassAsync(Tbl21Class entity);
     Task DeleteClassAsync(int id);
     Task<bool> ClassExistsAsync(Tbl21Class entity);
@@ -194,7 +194,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl24Subclass>> GetAllSubclassAsync();
     Task<IEnumerable<Tbl24Subclass>> SearchSubclassWithClassAsync(string? search);
-    Task<Tbl24Subclass> GetSubclassByIdAsync(int id);
+    Task<Tbl24Subclass?> GetSubclassByIdAsync(int id);
     Task<Tbl24Subclass> UpsertSubclassAsync(Tbl24Subclass entity);
     Task DeleteSubclassAsync(int id);
     Task<bool> SubclassExistsAsync(Tbl24Subclass entity);
@@ -224,7 +224,7 @@ public interface IDataService
     // ---------------------------------------------------------   
     Task<IEnumerable<Tbl27Infraclass>> GetAllInfraclassAsync();
     Task<IEnumerable<Tbl27Infraclass>> SearchInfraclassWithSubclassAsync(string? search);
-    Task<Tbl27Infraclass> GetInfraclassByIdAsync(int id);
+    Task<Tbl27Infraclass?> GetInfraclassByIdAsync(int id);
     Task<Tbl27Infraclass> UpsertInfraclassAsync(Tbl27Infraclass entity);
     Task DeleteInfraclassAsync(int id);
     Task<bool> InfraclassExistsAsync(Tbl27Infraclass entity);
