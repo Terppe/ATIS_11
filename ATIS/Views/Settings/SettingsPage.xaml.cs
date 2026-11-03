@@ -3,6 +3,12 @@ using ATIS.Services;
 using System.Configuration;
 using ATIS.Models;
 using Microsoft.Data.SqlClient;
+using System.Text.Json;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
+using Windows.System;
 
 namespace ATIS.Views.Settings;
 
@@ -11,13 +17,14 @@ public sealed partial class SettingsPage : Page
     private string? _testedServer;
     public SettingsPage()
     {
-        this.InitializeComponent();
+        InitializeComponent();
         LoadCurrentValues();
         LanguageBox.SelectionChanged += LanguageBox_SelectionChanged;
         ThemeBox.SelectionChanged += ThemeBox_SelectionChanged;
         TestConnectionButton.Click += TestConnectionButton_Click;
         TestConnectionButton.IsEnabled = true;
         SaveServerButton.Click += SaveServerButton_Click;
+        LoadUpdateSettings();
     }
 
     private void LoadCurrentValues()
@@ -192,9 +199,12 @@ public sealed partial class SettingsPage : Page
             DbServerSettings.Save(
                 DbServerSettings.NormalizeDataSource(selectedServer));
 
+            DbServerSettings.Save(_testedServer);
+            RefreshRestartNotice();
+
             SaveServerButton.IsEnabled = false;
-            ConnectionStatusText.Text =
-                "SQL-Server gespeichert. Bitte ATIS neu starten.";
+            ConnectionStatusText.Text = "SQL-Server gespeichert.";
+            ConnectionStatusText.Visibility = Visibility.Visible;
         }
         catch (Exception ex) when (ex is System.IO.IOException
                                        or UnauthorizedAccessException
@@ -218,6 +228,12 @@ public sealed partial class SettingsPage : Page
         SelectByTag(ServerBox, DbServerSettings.DataSource ?? string.Empty);
     }
 
+    private void RefreshRestartNotice()
+    {
+        RestartRequiredText.Visibility = DbServerSettings.RestartRequired
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
     private void RefreshServerList()
     {
         try
@@ -255,6 +271,164 @@ public sealed partial class SettingsPage : Page
             ConnectionStatusText.Text =
                 "Die installierten SQL-Server konnten nicht ermittelt werden.";
             ConnectionStatusText.Visibility = Visibility.Visible;
+        }
+    }
+
+    private bool _savedAutomaticUpdates;
+    private bool _restoringUpdateSetting;
+
+    private void LoadUpdateSettings()
+    {
+        try
+        {
+            _savedAutomaticUpdates = UpdateSettings.Load();
+            AutomaticUpdates.IsOn = _savedAutomaticUpdates;
+            AutomaticUpdates.Toggled += AutomaticUpdates_Toggled;
+        }
+        catch (Exception ex) when (ex is IOException
+                                       or UnauthorizedAccessException
+                                       or System.Security.SecurityException
+                                       or JsonException)
+        {
+            AutomaticUpdates.IsEnabled = false;
+            SimpleLog.Error($"Update-Einstellungen nicht lesbar: {ex.Message}");
+            UpdateStatusText.Text =
+                "Update-Einstellungen konnten nicht geladen werden.";
+            UpdateStatusText.Visibility = Visibility.Visible;
+        }
+    }
+
+    private void AutomaticUpdates_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (_restoringUpdateSetting)
+            return;
+
+        try
+        {
+            UpdateSettings.Save(AutomaticUpdates.IsOn);
+            _savedAutomaticUpdates = AutomaticUpdates.IsOn;
+            UpdateStatusText.Visibility = Visibility.Collapsed;
+        }
+        catch (Exception ex) when (ex is IOException
+                                       or UnauthorizedAccessException
+                                       or System.Security.SecurityException)
+        {
+            _restoringUpdateSetting = true;
+            try
+            {
+                AutomaticUpdates.IsOn = _savedAutomaticUpdates;
+            }
+            finally
+            {
+                _restoringUpdateSetting = false;
+            }
+
+            SimpleLog.Error($"Update-Einstellungen nicht gespeichert: {ex.Message}");
+            UpdateStatusText.Text =
+                "Die Einstellung konnte nicht gespeichert werden.";
+            UpdateStatusText.Visibility = Visibility.Visible;
+        }
+    }
+
+    private async void CheckUpdatesButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (App.MainPageInstance is not { } mainPage)
+        {
+            UpdateStatusText.Text = "Die Hauptansicht ist nicht verfügbar.";
+            UpdateStatusText.Visibility = Visibility.Visible;
+            return;
+        }
+
+        CheckUpdatesButton.IsEnabled = false;
+
+        try
+        {
+            await mainPage.CheckForUpdatesAsync(showStatusMessages: true);
+        }
+        finally
+        {
+            CheckUpdatesButton.IsEnabled = true;
+        }
+    }
+
+    private void ShowLogFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        DiagnosticsStatusText.Visibility = Visibility.Visible;
+
+        try
+        {
+            if (!SimpleLog.LogFileExists(DateTime.Now))
+            {
+                DiagnosticsStatusText.Text = "Für heute wurde noch keine Protokolldatei erstellt.";
+                return;
+            }
+
+            SimpleLog.ShowLogFile();
+            DiagnosticsStatusText.Text = "Das aktuelle Protokoll wurde geöffnet.";
+        }
+        catch (Exception ex) when (
+            ex is IOException or UnauthorizedAccessException or
+                System.Security.SecurityException or
+                System.ComponentModel.Win32Exception or InvalidOperationException)
+        {
+            SimpleLog.Error($"Protokolldatei konnte nicht geöffnet werden: {ex.Message}");
+            DiagnosticsStatusText.Text =
+                "Das Protokoll konnte nicht geöffnet werden. Details stehen im ATIS-Protokoll.";
+        }
+    }
+    private void CopyDiagnosticsButton_Click(object sender, RoutedEventArgs e)
+    {
+        DiagnosticsStatusText.Visibility = Visibility.Visible;
+
+        try
+        {
+            var assembly = typeof(App).Assembly;
+            var version = assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                ?.InformationalVersion
+                ?? assembly.GetName().Version?.ToString()
+                ?? "Unbekannt";
+
+            var activeServer = DbServerSettings.ActiveDataSource;
+            var savedServer = DbServerSettings.DataSource;
+
+            var restartRequired = activeServer is not null &&
+                !string.Equals(
+                    activeServer,
+                    savedServer,
+                    StringComparison.OrdinalIgnoreCase);
+
+            var text = string.Join(Environment.NewLine, new[]
+            {
+            "ATIS – Diagnoseinformationen",
+            $"Zeitpunkt: {DateTimeOffset.Now:yyyy-MM-dd HH:mm:ss zzz}",
+            $"ATIS-Version: {version}",
+            $"Betriebssystem: {RuntimeInformation.OSDescription}",
+            $"Prozessarchitektur: {RuntimeInformation.ProcessArchitecture}",
+            $".NET: {RuntimeInformation.FrameworkDescription}",
+            $"Aktiver SQL-Server: {activeServer ?? "Nicht festgelegt"}",
+            $"Gespeicherter SQL-Server: {savedServer ?? "Nicht festgelegt"}",
+            "Datenbank: ATIS34",
+            $"Serverwechsel nach Neustart: {(restartRequired ? "Ja" : "Nein")}",
+            "Verbindungsstatus: Nicht geprüft"
+        });
+
+            var package = new DataPackage();
+            package.SetText(text);
+            Clipboard.SetContent(package);
+
+            DiagnosticsStatusText.Text =
+                "Diagnoseinformationen kopiert. Sie können diese jetzt beispielsweise in eine E-Mail einfügen.";
+        }
+        catch (Exception ex) when (
+            ex is IOException or UnauthorizedAccessException or
+            System.Security.SecurityException or JsonException or
+            COMException or InvalidOperationException or ArgumentException)
+        {
+            SimpleLog.Error($"Diagnoseinformationen kopieren fehlgeschlagen: {ex.Message}");
+
+            DiagnosticsStatusText.Text =
+                "Diagnoseinformationen konnten nicht kopiert werden. Details stehen im ATIS-Protokoll.";
         }
     }
 }

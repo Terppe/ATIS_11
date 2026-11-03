@@ -867,6 +867,9 @@
   <data name="MenuFlyout_Add.Text" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="MenuFlyoutItemUpdate.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
   <data name="MenuFlyout_Add_Family.Text" xml:space="preserve">
     <value>Add Family</value>
   </data>

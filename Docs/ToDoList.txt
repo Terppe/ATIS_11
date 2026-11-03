@@ -1393,3 +1393,5 @@ Ereignisanzeige sehen ob fehler
 02.11.2026 17:30 Uhr  SettingsPage gestartet
 ----------------------------------------
 03.11.2026 08:30 Uhr  SettingsPage weiter
+Update eingebaut, aber die neue Exe-Datei ist nicht automatisch verschickbar. noch nicht gelöst. Handisch verteilen per stick.
+Log-Datei eingebaut und in Ordner C:\Users\r.terppe\AppData\Local\ATIS\Logs wird kopiert.

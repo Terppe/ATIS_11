@@ -6,13 +6,33 @@ namespace ATIS.Services;
 
 public static class DbServerSettings
 {
+    private static readonly object ActiveServerLock = new();
+    private static string? _activeDataSource;
+
+    // Bleibt nach der ersten erfolgreichen Auswahl bis zum Neustart gleich.
+    public static string? ActiveDataSource
+    {
+        get
+        {
+            lock (ActiveServerLock)
+            {
+                return _activeDataSource ??= DataSource;
+            }
+        }
+    }
+
+    public static bool RestartRequired =>
+        ActiveDataSource is string activeServer &&
+        !string.Equals(activeServer, DataSource, StringComparison.OrdinalIgnoreCase);
+
     private static readonly string FilePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "ATIS", "dbserver.json");
 
     private sealed record Data(string? DataSource);
 
-    // Gespeicherter Server, z. B. "WLAP02\SQLEXPRESS" oder "WLAP01" oder "localhost,1433"; null = Standard aus App.config
+    // Gespeicherter Server für den nächsten Start; null = noch kein Server gespeichert.
+
     public static string? DataSource
     {
         get
@@ -41,11 +61,16 @@ public static class DbServerSettings
 
         var server = NormalizeDataSource(dataSource);
 
-        Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
+        lock (ActiveServerLock)
+        {
+            _activeDataSource ??= DataSource;
 
-        File.WriteAllText(
-            FilePath,
-            JsonSerializer.Serialize(new Data(server)));
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
+
+            File.WriteAllText(
+                FilePath,
+                JsonSerializer.Serialize(new Data(server)));
+        }
     }
     private const string SqlInstancesRegistryPath = @"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL";
 
@@ -92,7 +117,7 @@ public static class DbServerSettings
     }
     public static string GetConnectionString(string? selectedServer = null)
     {
-        var server = selectedServer ?? DataSource;
+        var server = selectedServer ?? ActiveDataSource;
 
         if (string.IsNullOrWhiteSpace(server))
         {

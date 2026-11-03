@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:loc="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
 
     <Grid RowDefinitions="45, *">
         <TitleBar
@@ -96,9 +96,9 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                             <MenuFlyoutItem
+                                loc:Uids.Uid="MenuFlyoutItemUpdate"
                                 Click="MenuFlyoutItem_Click"
-                                Tag="update"
-                                Text="Update">
+                                Tag="update">
                                 <MenuFlyoutItem.Icon>
                                     <BitmapIcon ShowAsMonochrome="False" UriSource="/Assets/Fluent/update.png" />
                                 </MenuFlyoutItem.Icon>

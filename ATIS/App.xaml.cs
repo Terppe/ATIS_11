@@ -242,6 +242,25 @@ public partial class App : Application
 #if !DEBUG
     _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
 #endif
+
+#if !DEBUG
+    try
+    {
+        if (UpdateSettings.Load())
+        {
+            _ = MainPageInstance.CheckForUpdatesAsync(
+                showStatusMessages: false);
+        }
+    }
+    catch (Exception ex) when (ex is IOException
+                                   or UnauthorizedAccessException
+                                   or System.Security.SecurityException
+                                   or JsonException)
+    {
+        SimpleLog.Error(
+            $"Automatische Updateprüfung nicht gestartet: {ex.Message}");
+    }
+#endif
     }
     // ---------------------------------------------------------
     // 2. CHOOSE SERVER
@@ -298,62 +317,6 @@ public partial class App : Application
         return true;
     }
 
-
-    //private async Task ChooseDbServerAsync(List<string> servers)
-    //{
-    //    if (MainWindow.Content is not FrameworkElement root)
-    //    {
-    //        return;
-    //    }
-
-    //    if (root.XamlRoot == null)
-    //    {
-    //        var loaded = new TaskCompletionSource();
-    //        void OnLoaded(object s, RoutedEventArgs e)
-    //        {
-    //            root.Loaded -= OnLoaded;
-    //            loaded.TrySetResult();
-    //        }
-
-    //        root.Loaded += OnLoaded;
-    //        await loaded.Task;
-    //    }
-
-    //    var radios = new RadioButtons
-    //    {
-    //        ItemsSource = servers,
-    //        SelectedIndex = 0
-    //    };
-
-    //    var dialog = new ContentDialog
-    //    {
-    //        XamlRoot = root.XamlRoot,
-    //        Title = "SQL-Server auswählen",
-    //        Content = radios,
-    //        PrimaryButtonText = "Übernehmen und neu starten",
-    //        CloseButtonText = "Abbrechen",
-    //        DefaultButton = ContentDialogButton.Primary
-    //    };
-
-    //    if (await dialog.ShowAsync() != ContentDialogResult.Primary || radios.SelectedItem is not string selected)
-    //    {
-    //        return;
-    //    }
-
-    //    DbServerSettings.Save(selected);
-
-    //    var exePath = Environment.ProcessPath;
-    //    if (exePath != null)
-    //    {
-    //        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(exePath) { UseShellExecute = true });
-    //    }
-
-    //    _closeConfirmed = true;
-    //    Exit();
-    //}
-    // ---------------------------------------------------------
-    // 2. CULTURE
-    // ---------------------------------------------------------
     private void ApplyCulture()
     {
         Cult = ConfigurationManager.AppSettings.Get("Culture");
@@ -543,15 +506,44 @@ public partial class App : Application
     // ---------------------------------------------------------
     // 6. LOGGING
     // ---------------------------------------------------------
+
     private void InitializeLogging()
     {
-        SimpleLog.SetLogDir("C:\\Temp", true);
+        var localAppData =
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+        if (string.IsNullOrWhiteSpace(localAppData))
+            throw new InvalidOperationException("Der lokale App-Datenordner ist nicht verfügbar.");
+
+        var logDirectory = Path.Combine(localAppData, "ATIS", "Logs");
+
+        var directoryError = SimpleLog.SetLogDir(logDirectory, createIfNotExisting: true);
+        if (directoryError is not null)
+            throw directoryError;
+
         SimpleLog.SetLogFile(
-            logDir: "C:\\Temp\\LogAtis",
+            logDir: logDirectory,
             prefix: $"Atis_Log_{AppVersion}_",
-            writeText: true);
-        SimpleLog.Info("ATIS Application started");
+            writeText: true,
+            check: false);
+
+        var writeError = SimpleLog.Info(
+            "ATIS-Protokollierung initialisiert.",
+            useBackgroundTask: false);
+
+        if (writeError is not null)
+            throw writeError;
     }
+
+    //private void InitializeLogging()
+    //{
+    //    SimpleLog.SetLogDir("C:\\Temp", true);
+    //    SimpleLog.SetLogFile(
+    //        logDir: "C:\\Temp\\LogAtis",
+    //        prefix: $"Atis_Log_{AppVersion}_",
+    //        writeText: true);
+    //    SimpleLog.Info("ATIS Application started");
+    //}
 
     // ---------------------------------------------------------
     // 7. Splash

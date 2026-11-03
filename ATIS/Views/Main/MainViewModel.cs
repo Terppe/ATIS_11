@@ -140,11 +140,9 @@ public partial class MainViewModel : ObservableObject
     public async Task InitAsync()
     {
         IsLoading = true;
-
+        SimpleLog.Info("Prüfe Verbindung zu SQL-Server und Datenbank ATIS34.");
         await CheckSql_DbAsync();
-        // Logging etc.
-
-        SimpleLog.Info("MainWindow logging started.");
+        SimpleLog.Info("Datenbankprüfung abgeschlossen.");
         IsLoading = false;
     }
 
@@ -188,7 +186,8 @@ public partial class MainViewModel : ObservableObject
                     "Server_Exist_Title",
                     "Server_Exist_Question");
 
-                SimpleLog.Error($"Datenbank nicht erreichbar: {db}");
+                SimpleLog.Error(
+                    $"Datenbank nicht erreichbar: Server='{db}', Datenbank=ATIS34.");
 
                 DbExist_SQLActiv = $"Datenbank nicht erreichbar: {db}";
 
@@ -197,15 +196,14 @@ public partial class MainViewModel : ObservableObject
             //noch bearbeiten
             var loc1 = Localizer.Get();
             DbExist_SQLActiv = loc1.GetLocalizedString("SQL_Server_Ok") + $" {db}";
-        //    DbExist_SQLActiv = $"SQL-Server ok: {db}";
-
+            SimpleLog.Info($"Datenbank erreichbar: Server='{db}', Datenbank=ATIS34.");
             return true;
         }
         catch (SqlException ex)
         {
-            SimpleLog.Error($"SQL-Server nicht verbunden: {db} - {ex}");
+            SimpleLog.Error($"SQL-Verbindungsfehler: Server='{db}', Datenbank=ATIS34.");
+            SimpleLog.Log(ex);
 
-          //  DbExist_SQLActiv = $"SQL-Server nicht verbunden: {db}";
             var loc2 = Localizer.Get();
             DbExist_SQLActiv = loc2.GetLocalizedString("SQL_Server_Not_Connected") + $" {db}";
 
