@@ -6,8 +6,6 @@ namespace ATIS.Views.Taxonomy;
 
 using System.Linq;
 
-using System.Linq;
-
 public static class TaxonomyDisplayFormatter
 {
     public static string BuildPrefixedParts(string prefix, params string?[] parts)

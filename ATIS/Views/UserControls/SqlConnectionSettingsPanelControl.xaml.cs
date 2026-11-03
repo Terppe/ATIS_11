@@ -15,7 +15,7 @@ public sealed partial class SqlConnectionSettingsPanelControl : UserControl, INo
 
     private readonly SqlConnectionStringBuilder _builder = new();
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public SqlConnectionSettingsPanelControl()
     {

@@ -13,9 +13,9 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
 
@@ -47,7 +47,7 @@ jobs:
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$env:ATIS_VERSION" "/DMyPathBin=ATIS\bin\x64\Release\net10.0-windows10.0.26100.0\" Installer\ATIS.iss
 
       - name: Upload Installer
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: ATIS-Setup-${{ env.ATIS_VERSION }}
           path: Installer/Output/*.exe
