@@ -19,13 +19,6 @@ public interface IDataService
 
 
 
-    #region für provisorium
-
-    IQueryable<TblCountry> TblCountries { get; }
-
-    #endregion für provisorium
-
-
     #region CRUD
 
     #region Regnum
@@ -50,11 +43,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByRegnumIdAsync(int regnumId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByRegnumIdAsync(int regnumId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByRegnumIdAsync(int regnumId);
-
-    //alt-------------------------------------
-    ObservableCollection<Tbl03Regnum> GetRegnumAsync();
-    ObservableCollection<Tbl03Regnum> GetRegnumAsync(int regnumid);
-    ObservableCollection<Tbl03Regnum> GetRegnumAsync(string search);
 
     #endregion Regnum
 
@@ -81,13 +69,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByPhylumIdAsync(int phylumId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByPhylumIdAsync(int phylumId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByPhylumIdAsync(int phylumId);
-
-
-    //alt----------------------------------
-    ObservableCollection<Tbl06Phylum> GetPhylumAsync();
-    ObservableCollection<Tbl06Phylum> GetPhylumAsync(int phylumid);
-    ObservableCollection<Tbl06Phylum> GetPhylumAsync(string search);
-    ObservableCollection<Tbl06Phylum> GetPhylumFromRegnumIdAsync(int regnumid);
 
     #endregion Phylum
 
@@ -116,13 +97,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubphylumIdAsync(int subphylumId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySubphylumIdAsync(int subphylumId);
 
-
-    //alt
-    ObservableCollection<Tbl12Subphylum> GetSubphylumAsync();
-    ObservableCollection<Tbl12Subphylum> GetSubphylumAsync(int subphylumid);
-    ObservableCollection<Tbl12Subphylum> GetSubphylumAsync(string search);
-    ObservableCollection<Tbl12Subphylum> GetSubphylumFromPhylumIdAsync(int phylumid);
-
     #endregion Subphylum
 
     #region Superclass
@@ -150,13 +124,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySuperclassIdAsync(int superclassId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySuperclassIdAsync(int superclassId);
 
-
-    //alt
-    ObservableCollection<Tbl18Superclass> GetSuperclassAsync();
-    ObservableCollection<Tbl18Superclass> GetSuperclassAsync(int superclassid);
-    ObservableCollection<Tbl18Superclass> GetSuperclassAsync(string search);
-    ObservableCollection<Tbl18Superclass> GetSuperclassFromSubphylumIdAsync(int subphylumid);
-
     #endregion Superclass
 
     #region Class
@@ -180,13 +147,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByClassIdAsync(int classId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByClassIdAsync(int classId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByClassIdAsync(int classId);
-
-
-    //alt
-    ObservableCollection<Tbl21Class> GetClassAsync();
-    ObservableCollection<Tbl21Class> GetClassAsync(int classid);
-    ObservableCollection<Tbl21Class> GetClassAsync(string search);
-    ObservableCollection<Tbl21Class> GetClassFromSuperclassIdAsync(int superclassid);
 
     #endregion Class
 
@@ -212,12 +172,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubclassIdAsync(int subclassId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySubclassIdAsync(int subclassId);
 
-    //alt
-    ObservableCollection<Tbl24Subclass> GetSubclassAsync();
-    ObservableCollection<Tbl24Subclass> GetSubclassAsync(int subclassid);
-    ObservableCollection<Tbl24Subclass> GetSubclassAsync(string search);
-    ObservableCollection<Tbl24Subclass> GetSubclassFromClassIdAsync(int classeid);
-
     #endregion Subclass
 
     #region Infraclass                  
@@ -242,7 +196,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfraclassIdAsync(int infraclassId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByInfraclassIdAsync(int infraclassId);
 
-
     #endregion Infraclass
 
     #region Legio                  
@@ -266,7 +219,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByLegioIdAsync(int legioId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByLegioIdAsync(int legioId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByLegioIdAsync(int legioId);
-
 
     #endregion Legio
 
@@ -317,7 +269,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubordoIdAsync(int subordoId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySubordoIdAsync(int subordoId);
 
-
     #endregion Subordo
 
     #region Infraordo                  
@@ -341,7 +292,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfraordoIdAsync(int infraordoId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfraordoIdAsync(int infraordoId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByInfraordoIdAsync(int infraordoId);
-
 
     #endregion Infraordo
 
@@ -367,7 +317,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySuperfamilyIdAsync(int superfamilyId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySuperfamilyIdAsync(int superfamilyId);
 
-
     #endregion Superfamily
 
     #region Family                  
@@ -391,7 +340,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByFamilyIdAsync(int familyId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByFamilyIdAsync(int familyId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByFamilyIdAsync(int familyId);
-
 
     #endregion Family
 
@@ -417,7 +365,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubfamilyIdAsync(int subfamilyId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySubfamilyIdAsync(int subfamilyId);
 
-
     #endregion Subfamily
 
     #region Infrafamily                  
@@ -441,7 +388,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByInfrafamilyIdAsync(int infrafamilyId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfrafamilyIdAsync(int infrafamilyId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByInfrafamilyIdAsync(int infrafamilyId);
-
 
     #endregion Infrafamily
 
@@ -467,13 +413,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySupertribusIdAsync(int supertribusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySupertribusIdAsync(int supertribusId);
 
-    //----------------------------------------------------
-    //alt
-    ObservableCollection<Tbl54Supertribus> GetSupertribusAsync();
- //   ObservableCollection<Tbl54Supertribus> GetSupertribusAsync(int supertribusid);
-    ObservableCollection<Tbl54Supertribus> GetSupertribusAsync(string search);
-    ObservableCollection<Tbl54Supertribus> GetSupertribusFromInfrafamilyIdAsync(int infrafamilyid);
-
     #endregion Supertribus
 
     #region Tribus
@@ -497,17 +436,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetSourceReferencesByTribusIdAsync(int tribusId);
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByTribusIdAsync(int tribusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByTribusIdAsync(int tribusId);
-
-
-    //---------------------------
-    //Alt
-    Task<IEnumerable<Tbl57Tribus>> SearchTribusAsync(string? search);
-    Task<Tbl57Tribus> GetTribusByTribusIdAsync(int tribusId);
-    Task<string> GetTribusNameByTribusId(int tribusId);
-    Task<IEnumerable<Tbl57Tribus>> GetTribusAsync(int dummy);
-    ObservableCollection<Tbl57Tribus> GetTribusAsync();
-    ObservableCollection<Tbl57Tribus> GetTribusAsync(string search);
-    ObservableCollection<Tbl57Tribus> GetTribusFromSupertribusIdAsync(int supertribusid);
 
     #endregion Tribus
 
@@ -533,14 +461,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySubtribusIdAsync(int subtribusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySubtribusIdAsync(int subtribusId);
 
-    //alt
-    //--------------------------------------------------------
-    Task<IEnumerable<Tbl60Subtribus>> GetSubtribusAsync(int dummy);
-    Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search);
-    ObservableCollection<Tbl60Subtribus> GetSubtribusAsync();
-    ObservableCollection<Tbl60Subtribus> GetSubtribusAsync(string search);
-    ObservableCollection<Tbl60Subtribus> GetSubtribusFromTribusIdAsync(int tribusid);
-
     #endregion Subtribus
 
     #region Infratribus
@@ -565,16 +485,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByInfratribusIdAsync(int infratribusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByInfratribusIdAsync(int infratribusId);
 
-
-    //alt
-    //----------------------------
-    Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusAsync(string? search);
-    Task<IEnumerable<Tbl63Infratribus>> GetInfratribusAsync(int dummy);
-    Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId);
-
-    //-------------------------------------------------------------------------------
-    ObservableCollection<Tbl63Infratribus> GetInfratribusAsyncAlt();
-
     #endregion Infratribus
 
     #region Genus                  
@@ -582,7 +492,6 @@ public interface IDataService
     Task<IEnumerable<Tbl66Genus>> GetAllGenusAsync();
     Task<IEnumerable<Tbl66Genus>> SearchGenusWithInfratribusAsync(string? search);
     Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus entity);
-
     Task<Tbl66Genus> GetGenusByIdAsync(int id);
     Task DeleteGenusAsync(int id);
     Task<bool> GenusExistsAsync(Tbl66Genus entity);
@@ -600,18 +509,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesByGenusIdAsync(int genusId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsByGenusIdAsync(int genusId);
 
-
-    //--------------------------
-    //alt
-    Task<IEnumerable<Tbl66Genus>> GetGenusAsync(int dummy);
-    Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search);
-    ObservableCollection<Tbl66Genus> GetGenusAsync();
-  //  ObservableCollection<Tbl66Genus> GetGenusAsync(int genusid);
-    ObservableCollection<Tbl66Genus> GetGenusAsync(string search);
-    ObservableCollection<Tbl66Genus> GetGenusFromInfratribusIdAsync(int infratribusid);
-    //   Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus);
-    //   Task DeleteGenusAsync(int genusid);
-
     #endregion Genus
 
     #region Speciesgroup                  
@@ -624,13 +521,6 @@ public interface IDataService
     Task<bool> SpeciesgroupExistsAsync(Tbl68Speciesgroup entity);
 
     Task<bool> SpeciesgroupHasSpeciesAsync(int speciesgroupId);
-
-    //alt
-    ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync();
-    ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync(int speciesgroupid);
-    ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync(string search);
-    //Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup speciesgroup);
-    //Task DeleteSpeciesgroupAsync(int speciesgroupid);
 
     #endregion Speciesgroup
 
@@ -665,30 +555,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetAuthorReferencesBySpeciesIdAsync(int speciesId);
     Task<IEnumerable<Tbl93Comment>> GetCommentsBySpeciesIdAsync(int speciesId);
 
-    //neu
-    //Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync();
-    //Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search);
-    //Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species);
-    //Task DeleteSpeciesAsync(int speciesid);
-    //Task<bool> SpeciesExistsAsync(Tbl75Species entity);
-
-    //Task<bool> SpeciesHasReferenceAsync(int speciesId);
-    //Task<bool> SpeciesHasCommentAsync(int speciesId);
-    //Task<bool> SpeciesHasNameAsync(int speciesId);
-
-    //Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId);
-
-    //--------------------------------
-    //Alt
-    //   Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy);
-    //  Task<IEnumerable<Tbl75Species>> SearchSpeciesAsync(string? search);
-    ObservableCollection<Tbl75Species> GetSpeciesAsync();
-
-    //  ObservableCollection<Tbl75Species> GetSpeciesAsync(int speciesid);
-  //  ObservableCollection<Tbl75Species> GetSpeciesAsync(string search);
-    //ObservableCollection<Tbl75Species> GetSpeciesFromGenusNameAsync(string search);
-    ObservableCollection<Tbl75Species> GetSpeciesFromGenusIdAsync(int genusid);
-
     #endregion Species
 
     #region Name
@@ -700,21 +566,7 @@ public interface IDataService
     Task DeleteNameAsync(int id);
     Task<bool> NameExistsAsync(Tbl78Name entity);
 
-    //Task<bool> NameHasImageAsync(int nameId);
-    //Task<bool> NameHasReferenceAsync(int nameId);
-    //Task<bool> NameHasCommentAsync(int snameId);
-
     Task<IEnumerable<Tbl78Name>> GetNameForSpeciesAsync(int speciesId);
-
-
-    //alt------------------------
-    ObservableCollection<Tbl78Name> GetNameAsync();
-    ObservableCollection<Tbl78Name> GetNameAsync(int nameid);
-    ObservableCollection<Tbl78Name> GetNameAsync(string search);
-    ObservableCollection<Tbl78Name> GetNameFromSpeciesIdAsync(int speciesid);
-    //ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid);
-    //Task<Tbl78Name> UpsertNameAsync(Tbl78Name name);
-    //Task DeleteNameAsync(int nameid);
 
     #endregion Name
 
@@ -727,23 +579,10 @@ public interface IDataService
     Task DeleteImageAsync(int id);
     Task<bool> ImageExistsAsync(Tbl81Image entity);
 
-    //Task<bool> ImageHasNameAsync(int imageId);
-    //Task<bool> ImageHasReferenceAsync(int imageId);
-    //Task<bool> ImageHasCommentAsync(int simageId);
-
     Task<IEnumerable<Tbl81Image>> GetImageForSpeciesAsync(int speciesId);
     Task<IEnumerable<Tbl81Image>> GetImageForFoodAsync(int foodId);
     Task<IEnumerable<Tbl81Image>> GetImageForDiseaseAsync(int diseaseId);
     Task<IEnumerable<Tbl81Image>> GetImageForMiscellaneousAsync(int miscellaneousId);
-
-    //alr------------------------   
-    ObservableCollection<Tbl81Image> GetImageAsync();
-    ObservableCollection<Tbl81Image> GetImageAsync(int imageid);
-    ObservableCollection<Tbl81Image> GetImageAsync(string search);
-    ObservableCollection<Tbl81Image> GetImageFromSpeciesIdAsync(int speciesid);
-    //ObservableCollection<Tbl81Image> GetImageFromPlSpeciesIdAsync(int plspeciesid);
-   // Task<Tbl81Image> UpsertImageAsync(Tbl81Image image, string selectedpath);
-    //Task DeleteImageAsync(int imageid);
 
     #endregion Image                  
 
@@ -756,20 +595,7 @@ public interface IDataService
     Task DeleteSynonymAsync(int id);
     Task<bool> SynonymExistsAsync(Tbl84Synonym entity);
 
-    //Task<bool> SynonymHasNameAsync(int synonymId);
-    //Task<bool> SynonymHasReferenceAsync(int synonymId);
-    //Task<bool> SynonymHasCommentAsync(int ssynonymId);
-
     Task<IEnumerable<Tbl84Synonym>> GetSynonymForSpeciesAsync(int speciesId);
-
-    //alt-----------------------------------
-    ObservableCollection<Tbl84Synonym> GetSynonymAsync();
-    ObservableCollection<Tbl84Synonym> GetSynonymAsync(int synonymid);
-    ObservableCollection<Tbl84Synonym> GetSynonymAsync(string search);
-    ObservableCollection<Tbl84Synonym> GetSynonymFromSpeciesIdAsync(int speciesid);
-    //ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid);
-    //Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym);
-    //Task DeleteSynonymAsync(int synonymid);
 
     #endregion Synonym
 
@@ -784,20 +610,7 @@ public interface IDataService
     Task DeleteGeographicAsync(int id);
     Task<bool> GeographicExistsAsync(Tbl87Geographic entity);
 
-    //Task<bool> GeographicHasNameAsync(int geographicId);
-    //Task<bool> GeographicHasReferenceAsync(int geographicId);
-    //Task<bool> GeographicHasCommentAsync(int sgeographicId);
-
     Task<IEnumerable<Tbl87Geographic>> GetGeographicForSpeciesAsync(int speciesId);
-
-    //alt-----------------------------------
-    ObservableCollection<Tbl87Geographic> GetGeographicAsync();
-    ObservableCollection<Tbl87Geographic> GetGeographicAsync(int geographicid);
-    ObservableCollection<Tbl87Geographic> GetGeographicAsync(string search);
-    ObservableCollection<Tbl87Geographic> GetGeographicFromSpeciesIdAsync(int speciesid);
-    //ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid);
-    //Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic);
-    //Task DeleteGeographicAsync(int geographicid);
 
     #endregion Geographic                  
 
@@ -832,18 +645,6 @@ public interface IDataService
     Task<IEnumerable<Tbl90Reference>> GetReferencesForInfratribusAsync(int id);
     Task<IEnumerable<Tbl90Reference>> GetReferencesForGenusAsync(int id);
     Task<IEnumerable<Tbl90Reference>> GetReferencesForSpeciesAsync(int id);
-    //----------------------------------------
-    Task DeleteReferencesAsync(int infratribusId);
-    ObservableCollection<Tbl90Reference> GetReferenceAsync();
-    ObservableCollection<Tbl90Reference> GetReferenceAsync(int referenceid);
-    Task<ObservableCollection<Tbl90Reference>> GetReferenceAsync(string search);
-    //Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference reference);
-    //Task DeleteReferenceAsync(int referenceid);
-
-    //-----------------------------------------------------------
-    ObservableCollection<Tbl90Reference> GetTbl90ReferenceAuthorsCollectionOrderByInfoFromGenusIdAndRefSourceIdIsNullAndRefExpertIdIsNull(int? genusId);
-    ObservableCollection<Tbl90Reference> GetTbl90ReferenceSourcesCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefExpertIdIsNull(int? genusId);
-    ObservableCollection<Tbl90Reference> GetTbl90ReferenceExpertsCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefSourceIdIsNull(int? genusId);
 
     #endregion Reference
 
@@ -858,30 +659,6 @@ public interface IDataService
     Task DeleteRefAuthorAsync(int id);
     Task<bool> RefAuthorExistsAsync(Tbl90RefAuthor entity);
 
-    //Task<bool> RefAuthorHasSpeciesAsync(int refAuthorId);
-    //Task<bool> RefAuthorHasReferenceAsync(int refAuthorId);
-    //Task<bool> RefAuthorHasCommentAsync(int srefAuthorId);
-
-    //Task<IEnumerable<Tbl90RefAuthor>> GetRefAuthorForNULLAsync(int NULLId);
-
-    //Task<IEnumerable<Tbl90RefAuthor>> GetAllRefAuthorsAsync();
-    //Task<IEnumerable<Tbl90RefAuthor>> SearchRefAuthorAsync(string? search);
-    //Task<Tbl90RefAuthor> GetRefAuthorByIdAsync(int id);
-
-    //Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor model);
-    //Task DeleteRefAuthorAsync(int id);
-    //Task<bool> RefAuthorExistsAsync(Tbl90RefAuthor model);
-
-    //----------------------------------------------
-    //alt
-    ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsyncAlt();
-
-    //ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync();
-    //ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsync(int refauthorid);
-    //Task<ObservableCollection<Tbl90RefAuthor>> GetRefAuthorAsync(string search);
-    //Task<Tbl90RefAuthor> UpsertRefAuthorAsync(Tbl90RefAuthor refauthor);
-    //Task DeleteRefAuthorAsync(int refauthorid);
-
     #endregion RefAuthor
 
     #region RefSource
@@ -894,8 +671,6 @@ public interface IDataService
     Task<Tbl90RefSource> UpsertRefSourceAsync(Tbl90RefSource entity);
     Task DeleteRefSourceAsync(int id);
     Task<bool> RefSourceExistsAsync(Tbl90RefSource entity);
-    //alt----------------------
-    ObservableCollection<Tbl90RefSource> GetRefSourceAsyncAlt();
 
     #endregion
 
@@ -910,18 +685,9 @@ public interface IDataService
     Task DeleteRefExpertAsync(int id);
     Task<bool> RefExpertExistsAsync(Tbl90RefExpert entity);
 
-    //--------------------------------------------------------------
-
-    ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt();
-    ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt(int refexpertid);
-    Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsyncAlt(string search);
-    Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert);
-    Task DeleteRefExpertAsyncAlt(int refexpertid);
-
     #endregion RefExpert
 
     #region Comment
-    //Neu
     Task<IEnumerable<Tbl93Comment>> GetAllCommentAsync();
     Task<IEnumerable<Tbl93Comment>> SearchCommentAsync(string? search);
     Task<bool> CommentExistsAsync(Tbl93Comment entity);
@@ -934,7 +700,7 @@ public interface IDataService
     Task<IEnumerable<Tbl93Comment>> GetCommentsForSuperclassAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForClassAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForSubclassAsync(int id);
-Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
+    Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForLegioAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForOrdoAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForSubordoAsync(int id);
@@ -951,12 +717,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForSpeciesAsync(int id);
     Task DeleteCommentsAsync(int infratribusId);
 
-    //------------------------------------------
-    // alt
-    ObservableCollection<Tbl93Comment> GetCommentAsync();
-    ObservableCollection<Tbl93Comment> GetCommentAsync(int commentid);
-    Task<ObservableCollection<Tbl93Comment>> GetCommentAsync(string search);
-
     #endregion Comment
 
     #region Country
@@ -970,18 +730,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task DeleteCountryAsync(int id);
     Task<bool> CountryExistsAsync(TblCountry entity);
 
-
-    //alt
-    Task<List<TblCountry>> GetAllCountriesAsync();
-    Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query);
-    Task<List<TblCountry>> GetCountriesByNameAsync(string? query);
- //   Task<bool> CountryExistsAsync(TblCountry model);
-    Task<List<TblCountry>> GetCountryAsync();
-    Task<List<TblCountry>> GetCountryAsync(int countryid);
-    Task<TblCountry?> GetCountryByIdAsync(int? countryid);
- //   Task<TblCountry> UpsertCountryAsync(TblCountry country);
-    Task DeleteCountryAsync(int? countryId);
-
     #endregion Country
 
     #region UserProfile
@@ -992,15 +740,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile entity);
     Task DeleteUserProfileAsync(int id);
     Task<bool> UserProfileExistsAsync(TblUserProfile entity);
-
-    //alt
-    ObservableCollection<TblUserProfile> GetUserProfileAsync();
-    ObservableCollection<TblUserProfile> GetUserProfileAsync(int userprofileid);
-    ObservableCollection<TblUserProfile> GetEmailFromUserProfileAsync(string email);
-    Task<ObservableCollection<TblUserProfile>> GetUserProfileAsync(string search);
-    //Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile userprofile);
-    Task<TblUserProfile> UpsertEmailFromUserProfileAsync(TblUserProfile userprofile);
-    //Task DeleteUserProfileAsync(int userprofileid);
 
     #endregion UserProfile
 
@@ -1013,13 +752,6 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task DeleteFoodAsync(int id);
     Task<bool> FoodExistsAsync(TblFood entity);
 
-    //alt
-    ObservableCollection<TblFood> GetFoodAsync();
-    ObservableCollection<TblFood> GetFoodAsync(int foodid);
-    Task<ObservableCollection<TblFood>> GetFoodAsync(string search);
-    //Task<TblFood> UpsertFoodAsync(TblFood food);
-    //Task DeleteFoodAsync(int foodid);
-
     #endregion Food
 
     #region Disease
@@ -1031,15 +763,7 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task DeleteDiseaseAsync(int id);
     Task<bool> DiseaseExistsAsync(TblDisease entity);
 
-    //alt
-    ObservableCollection<TblDisease> GetDiseaseAsync();
-    ObservableCollection<TblDisease> GetDiseaseAsync(int diseaseid);
-    Task<ObservableCollection<TblDisease>> GetDiseaseAsync(string search);
-    //Task<TblDisease> UpsertDiseaseAsync(TblDisease disease);
-    //Task DeleteDiseaseAsync(int diseaseid);
-
     #endregion Disease
-
 
     #region Miscellaneous
     // ---------------------------------------------------------   
@@ -1050,479 +774,40 @@ Task<IEnumerable<Tbl93Comment>> GetCommentsForInfraclassAsync(int id);
     Task DeleteMiscellaneousAsync(int id);
     Task<bool> MiscellaneousExistsAsync(TblMiscellaneous entity);
 
-    //alt
-    ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync();
-    ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync(int miscellaneousid);
-    Task<ObservableCollection<TblMiscellaneous>> GetMiscellaneousAsync(string search);
-    //Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous);
-    //Task DeleteMiscellaneousAsync(int miscellaneousid);
-
     #endregion Miscellaneous
 
     #endregion CRUD
 
-    #region Search
+    #region REPORT
+    Task<IEnumerable<Tbl03Regnum>> SearchRegnumForReportAsync(string? search);
 
-    Task<IEnumerable<SearchResultItem>> SearchAcrossTablesAsync(string? search, string? entityType = "All");
-    #endregion
+    Task<IEnumerable<Tbl06Phylum>> SearchPhylumForReportAsync(string? search);
+    Task<IEnumerable<Tbl12Subphylum>> SearchSubphylumForReportAsync(string? search);
 
-    #region Search_Gets
+    Task<IEnumerable<Tbl18Superclass>> SearchSuperclassForReportAsync(string? search);
+    Task<IEnumerable<Tbl21Class>> SearchClassForReportAsync(string? search);
+    Task<IEnumerable<Tbl24Subclass>> SearchSubclassForReportAsync(string? search);
+    Task<IEnumerable<Tbl27Infraclass>> SearchInfraclassForReportAsync(string? search);
 
-    ObservableCollection<Tbl03Regnum> GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(string filterText);
-    ObservableCollection<Tbl06Phylum> GetTbl06PhylumsCollectionOrderByPhylumNameFromFilterText(string filterText);
-    ObservableCollection<Tbl12Subphylum> GetTbl12SubphylumsCollectionOrderBySubphylumNameFromFilterText(string filterText);
-    ObservableCollection<Tbl18Superclass> GetTbl18SuperclassesCollectionOrderBySuperclassNameFromFilterText(string filterText);
-    ObservableCollection<Tbl21Class> GetTbl21ClassesCollectionOrderByClassNameFromFilterText(string filterText);
-    ObservableCollection<Tbl24Subclass> GetTbl24SubclassesCollectionOrderBySubclassNameFromFilterText(string filterText);
-    ObservableCollection<Tbl27Infraclass> GetTbl27InfraclassesCollectionOrderByInfraclassNameFromFilterText(string filterText);
-    ObservableCollection<Tbl30Legio> GetTbl30LegiosCollectionOrderByLegioNameFromFilterText(string filterText);
-    ObservableCollection<Tbl33Ordo> GetTbl33OrdosCollectionOrderByOrdoNameFromFilterText(string filterText);
-    ObservableCollection<Tbl36Subordo> GetTbl36SubordosCollectionOrderBySubordoNameFromFilterText(string filterText);
-    ObservableCollection<Tbl39Infraordo> GetTbl39InfraordosCollectionOrderByInfraordoNameFromFilterText(string filterText);
-    ObservableCollection<Tbl42Superfamily> GetTbl42SuperfamiliesCollectionOrderBySuperfamilyNameFromFilterText(string filterText);
-    ObservableCollection<Tbl45Family> GetTbl45FamiliesCollectionOrderByFamilyNameFromFilterText(string filterText);
-    ObservableCollection<Tbl48Subfamily> GetTbl48SubfamiliesCollectionOrderBySubfamilyNameFromFilterText(string filterText);
-    ObservableCollection<Tbl51Infrafamily> GetTbl51InfrafamiliesCollectionOrderByInfrafamilyNameFromFilterText(string filterText);
-    ObservableCollection<Tbl54Supertribus> GetTbl54SupertribussesCollectionOrderBySupertribusNameFromFilterText(string filterText);
-    ObservableCollection<Tbl57Tribus> GetTbl57TribussesCollectionOrderByTribusNameFromFilterText(string filterText);
-    ObservableCollection<Tbl60Subtribus> GetTbl60SubtribussesCollectionOrderBySubtribusNameFromFilterText(string filterText);
-    ObservableCollection<Tbl63Infratribus> GetTbl63InfratribussesCollectionOrderByInfratribusNameFromFilterText(string filterText);
-    ObservableCollection<Tbl66Genus> GetTbl66GenussesCollectionOrderByGenusNameFromFilterText(string filterText);
-    ObservableCollection<Tbl75Species> GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
-    //ObservableCollection<Tbl72PlSpecies> GetTbl72PlSpeciessesCollectionOrderByGenusNameAndPlSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText);
-    ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText);
-    ObservableCollection<Tbl84Synonym> GetTbl84SynonymsCollectionOrderBySynonymNameFromFilterText(string filterText);
+    Task<IEnumerable<Tbl30Legio>> SearchLegioForReportAsync(string? search);
+    Task<IEnumerable<Tbl33Ordo>> SearchOrdoForReportAsync(string? search);
+    Task<IEnumerable<Tbl36Subordo>> SearchSubordoForReportAsync(string? search);
+    Task<IEnumerable<Tbl39Infraordo>> SearchInfraordoForReportAsync(string? search);
 
-    
-    ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText);
-    Task<List<TblDisease>> GetDiseasesByNameOrIdAsync(string query);
-    Task<List<TblFood>> GetFoodsByNameOrIdAsync(string query);
-    Task<List<TblMiscellaneous>> GetMiscellaneoussesByNameOrIdAsync(string query);
-    ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText);
-    ObservableCollection<TblMiscellaneous> GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(string filterText);
+    Task<IEnumerable<Tbl42Superfamily>> SearchSuperfamilyForReportAsync(string? search);
+    Task<IEnumerable<Tbl45Family>> SearchFamilyForReportAsync(string? search);
+    Task<IEnumerable<Tbl48Subfamily>> SearchSubfamilyForReportAsync(string? search);
+    Task<IEnumerable<Tbl51Infrafamily>> SearchInfrafamilyForReportAsync(string? search);
 
+    Task<IEnumerable<Tbl54Supertribus>> SearchSupertribusForReportAsync(string? search);
+    Task<IEnumerable<Tbl57Tribus>> SearchTribusForReportAsync(string? search);
+    Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusForReportAsync(string? search);
+    Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusForReportAsync(string? search);
 
-    #endregion Search_Gets
+    Task<IEnumerable<Tbl66Genus>> SearchGenusForReportAsync(string? search);
+    Task<IEnumerable<Tbl75Species>> SearchSpeciesForReportAsync(string? search);
 
+    #endregion REPORT
 
-    #region Report_Gets
-
-    #region Regnum
-    Tbl03Regnum GetRegnumSingleByRegnumIdAndHash(int id);
-    Tbl03Regnum GetRegnumSingleByRegnumId(int id);
-
-    ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumId(int id);
-    //direct children
-    ObservableCollection<Tbl06Phylum> CollPhylumsByRegnumIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByRegnumId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByRegnumId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByRegnumId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByRegnumId(int id);
-#endregion Regnum
-
-    #region Phylum
-    Tbl06Phylum GetPhylumSingleByPhylumIdAndHash(int id);
-    Tbl06Phylum GetPhylumSingleByPhylumId(int id);
-
-    ObservableCollection<Tbl06Phylum> CollPhylumsByPhylumId(int id);
-    //direct children
-    ObservableCollection<Tbl12Subphylum> CollSubphylumsByPhylumIdAndHash(int id);
-    //Function
-    int RegnumIdFromPhylumsCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByPhylumId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByPhylumId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByPhylumId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByPhylumId(int id);
-    #endregion Phylum
-
-    #region Subphylum
-    Tbl12Subphylum GetSubphylumSingleBySubphylumIdAndHash(int id);
-    Tbl12Subphylum GetSubphylumSingleBySubphylumId(int id);
-
-    ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumId(int id);
-    //direct children
-    ObservableCollection<Tbl18Superclass> CollSuperclassesBySubphylumIdAndHash(int id);
-    //Function
-    int PhylumIdFromSubphylumsCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl06Phylum> CollPhylumsByPhylumIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySubphylumId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySubphylumId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySubphylumId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySubphylumId(int id);
-    #endregion Subphylum
-
-    #region Superclass
-    Tbl18Superclass GetSuperclassSingleBySuperclassIdAndHash(int id);
-    ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassId(int id);
-    //direct children
-    ObservableCollection<Tbl21Class> CollClassesBySuperclassIdAndHash(int id);
-    //Function
-    //   int SubdivisionIdFromSuperclassesCollectionSelect(int id);
-    int SubphylumIdFromSuperclassesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySuperclassId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySuperclassId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySuperclassId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySuperclassId(int id);
-    #endregion Superclass
-
-    #region Class
-    Tbl21Class GetClassSingleByClassIdAndHash(int id);
-
-    ObservableCollection<Tbl21Class> CollClassesByClassId(int id);
-    //direct children
-    ObservableCollection<Tbl24Subclass> CollSubclassesByClassIdAndHash(int id);
-    //Function
-    int SuperclassIdFromClassesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByClassId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByClassId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByClassId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByClassId(int id);
-    #endregion Class
-
-    #region Subclass
-    Tbl24Subclass GetSubclassSingleBySubclassIdAndHash(int id);
-
-    ObservableCollection<Tbl24Subclass> CollSubclassesBySubclassId(int id);
-    //direct children
-    ObservableCollection<Tbl27Infraclass> CollInfraclassesBySubclassIdAndHash(int id);
-    //Function
-    int ClassIdFromSubclassesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl21Class> CollClassesByClassIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySubclassId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySubclassId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySubclassId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySubclassId(int id);
-    #endregion Subclass
-
-    #region Infraclass
-    Tbl27Infraclass GetInfraclassSingleByInfraclassIdAndHash(int id);
-
-    ObservableCollection<Tbl27Infraclass> CollInfraclassesByInfraclassId(int id);
-    //direct children
-    ObservableCollection<Tbl30Legio> CollLegiosByInfraclassIdAndHash(int id);
-    //Function
-    int SubclassIdFromInfraclassesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl24Subclass> CollSubclassesBySubclassIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByInfraclassId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByInfraclassId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByInfraclassId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByInfraclassId(int id);
-    #endregion Infraclass
-
-    #region Legio
-    Tbl30Legio GetLegioSingleByLegioIdAndHash(int id);
-
-    ObservableCollection<Tbl30Legio> CollLegiosByLegioId(int id);
-    //direct children
-    ObservableCollection<Tbl33Ordo> CollOrdosByLegioIdAndHash(int id);
-    //Function
-    int InfraclassIdFromLegiosCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl27Infraclass> CollInfraclassesByInfraclassIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByLegioId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByLegioId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByLegioId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByLegioId(int id);
-    #endregion Legio
-
-    #region Ordo
-    Tbl33Ordo GetOrdoSingleByOrdoIdAndHash(int id);
-
-    ObservableCollection<Tbl33Ordo> CollOrdosByOrdoId(int id);
-    //direct children
-    ObservableCollection<Tbl36Subordo> CollSubordosByOrdoIdAndHash(int id);
-    //Function
-    int LegioIdFromOrdosCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl30Legio> CollLegiosByLegioIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByOrdoId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByOrdoId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByOrdoId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByOrdoId(int id);
-    #endregion Ordo
-
-    #region Subordo
-    Tbl36Subordo GetSubordoSingleBySubordoIdAndHash(int id);
-
-    ObservableCollection<Tbl36Subordo> CollSubordosBySubordoId(int id);
-    //direct children
-    ObservableCollection<Tbl39Infraordo> CollInfraordosBySubordoIdAndHash(int id);
-    //Function
-    int OrdoIdFromSubordosCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl33Ordo> CollOrdosByOrdoIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySubordoId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySubordoId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySubordoId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySubordoId(int id);
-    #endregion Subordo
-
-    #region Infraordo
-    Tbl39Infraordo GetInfraordoSingleByInfraordoIdAndHash(int id);
-
-    ObservableCollection<Tbl39Infraordo> CollInfraordosByInfraordoId(int id);
-    //direct children
-    ObservableCollection<Tbl42Superfamily> CollSuperfamiliesByInfraordoIdAndHash(int id);
-    //Function
-    int SubordoIdFromInfraordosCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl36Subordo> CollSubordosBySubordoIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByInfraordoId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByInfraordoId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByInfraordoId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByInfraordoId(int id);
-    #endregion Infraordo
-
-    #region Superfamily
-    Tbl42Superfamily GetSuperfamilySingleBySuperfamilyIdAndHash(int id);
-
-    ObservableCollection<Tbl42Superfamily> CollSuperfamiliesBySuperfamilyId(int id);
-    //direct children
-    ObservableCollection<Tbl45Family> CollFamiliesBySuperfamilyIdAndHash(int id);
-    //Function
-    int InfraordoIdFromSuperfamiliesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl39Infraordo> CollInfraordosByInfraordoIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySuperfamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySuperfamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySuperfamilyId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySuperfamilyId(int id);
-    #endregion Superfamily
-
-    #region Family
-    Tbl45Family GetFamilySingleByFamilyIdAndHash(int id);
-
-    ObservableCollection<Tbl45Family> CollFamiliesByFamilyId(int id);
-    //direct children
-    ObservableCollection<Tbl48Subfamily> CollSubfamiliesByFamilyIdAndHash(int id);
-    //Function
-    int SuperfamilyIdFromFamiliesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl42Superfamily> CollSuperfamiliesBySuperfamilyIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByFamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByFamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByFamilyId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByFamilyId(int id);
-    #endregion Family
-
-    #region Subfamily
-    Tbl48Subfamily GetSubfamilySingleBySubfamilyIdAndHash(int id);
-
-    ObservableCollection<Tbl48Subfamily> CollSubfamiliesBySubfamilyId(int id);
-    //direct children
-    ObservableCollection<Tbl51Infrafamily> CollInfrafamiliesBySubfamilyIdAndHash(int id);
-    //Function
-    int FamilyIdFromSubfamiliesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl45Family> CollFamiliesByFamilyIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySubfamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySubfamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySubfamilyId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySubfamilyId(int id);
-    #endregion Subfamily
-
-    #region Infrafamily
-    Tbl51Infrafamily GetInfrafamilySingleByInfrafamilyIdAndHash(int id);
-
-    ObservableCollection<Tbl51Infrafamily> CollInfrafamiliesByInfrafamilyId(int id);
-    //direct children
-    ObservableCollection<Tbl54Supertribus> CollSupertribussesByInfrafamilyIdAndHash(int id);
-    //Function
-    int SubfamilyIdFromInfrafamiliesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl48Subfamily> CollSubfamiliesBySubfamilyIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByInfrafamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByInfrafamilyId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByInfrafamilyId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByInfrafamilyId(int id);
-    #endregion Infrafamily
-
-    #region Supertribus
-    Tbl54Supertribus GetSupertribusSingleBySupertribusIdAndHash(int id);
-
-    ObservableCollection<Tbl54Supertribus> CollSupertribussesBySupertribusId(int id);
-    //direct children
-    ObservableCollection<Tbl57Tribus> CollTribussesBySupertribusIdAndHash(int id);
-    //Function
-    int InfrafamilyIdFromSupertribussesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl51Infrafamily> CollInfrafamiliesByInfrafamilyIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySupertribusId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySupertribusId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySupertribusId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySupertribusId(int id);
-    #endregion Supertribus
-
-    #region Tribus
-    Tbl57Tribus GetTribusSingleByTribusIdAndHash(int id);
-
-    ObservableCollection<Tbl57Tribus> CollTribussesByTribusId(int id);
-    //direct children
-    ObservableCollection<Tbl60Subtribus> CollSubtribussesByTribusIdAndHash(int id);
-    //Function
-    int SupertribusIdFromTribussesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl54Supertribus> CollSupertribussesBySupertribusIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByTribusId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByTribusId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByTribusId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByTribusId(int id);
-    #endregion Tribus
-
-    #region Subtribus
-    Tbl60Subtribus GetSubtribusSingleBySubtribusIdAndHash(int id);
-
-    ObservableCollection<Tbl60Subtribus> CollSubtribussesBySubtribusId(int id);
-    //direct children
-    ObservableCollection<Tbl63Infratribus> CollInfratribussesBySubtribusIdAndHash(int id);
-    //Function
-    int TribusIdFromSubtribussesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl57Tribus> CollTribussesByTribusIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySubtribusId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySubtribusId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySubtribusId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySubtribusId(int id);
-    #endregion Subtribus
-
-    #region Infratribus
-    Tbl63Infratribus GetInfratribusSingleByInfratribusIdAndHash(int id);
-
-    ObservableCollection<Tbl63Infratribus> CollInfratribussesByInfratribusId(int id);
-    //direct children
-    ObservableCollection<Tbl66Genus> CollGenussesByInfratribusIdAndHash(int id);
-    //Function
-    int SubtribusIdFromInfratribussesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl60Subtribus> CollSubtribussesBySubtribusIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByInfratribusId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByInfratribusId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByInfratribusId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByInfratribusId(int id);
-    #endregion Infratribus
-
-    #region Genus
-    Tbl66Genus GetGenusSingleByGenusIdAndHash(int id);
-
-    ObservableCollection<Tbl66Genus> CollGenussesByGenusId(int id);
-    //direct children
-    ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndHash(int id);
-    ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id);
-    //ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndHash(int id);
-    //ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id);
-    //Function
-    int InfratribusIdFromGenussesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl63Infratribus> CollInfratribussesByInfratribusIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsByGenusId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesByGenusId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsByGenusId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsByGenusId(int id);
-    #endregion Genus
-
-    #region Species
-
-    Tbl75Species GetSpeciesSingleBySpeciesIdAndHash(int id);
-    Tbl75Species GetSpeciesSingleBySpeciesId(int speciesId);
-    Tbl75Species GetSpeciesSingleModelBySpeciesId(int speciesId);
-    ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesId(int speciesid);
-    ObservableCollection<Tbl75Species> CollSpeciesSubsBySpeciesNameandGenusId(string name, int genusId);
-    ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndNotEmptySubspecies(int id, string name);
-    ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSpeciesNameAndEmptySubspecies(int id, string name);
-    ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndSubspeciesAndDivers(string speciesName, string subspecies,
-        string divers);
-    //direct children
-    ObservableCollection<Tbl78Name> CollNamesBySpeciesIdAndHash(int id);
-    ObservableCollection<Tbl84Synonym> CollSynonymsBySpeciesIdAndHash(int id);
-    //Function
-    int GenusIdFromSpeciessesCollectionSelect(int id);
-    //ForeignKey
-    ObservableCollection<Tbl66Genus> CollGenussesByGenusIdAndHash(int id);
-    //References
-    ObservableCollection<Tbl90Reference> CollExpertsBySpeciesId(int id);
-    ObservableCollection<Tbl90Reference> CollSourcesBySpeciesId(int id);
-    ObservableCollection<Tbl90Reference> CollAuthorsBySpeciesId(int id);
-    //Comments
-    ObservableCollection<Tbl93Comment> CollCommentsBySpeciesId(int id);
-    //Images
-    ObservableCollection<Tbl81Image> CollImagesBySpeciesId(int id);
-    //Geographics
-    ObservableCollection<Tbl87Geographic> CollGeographicsBySpeciesId(int id);
-    #endregion Species
-
-    #region Disease
-
-    TblDisease GetDiseaseSingleByDiseaseId(int id);
-
-    ObservableCollection<TblDisease> CollDiseasesByDiseaseId(int id);
-
-    #endregion Disease
-
-    #region Food
-
-    TblFood GetFoodSingleByFoodId(int id);
-    ObservableCollection<TblFood> CollFoodsByFoodId(int id);
-
-
-    #endregion Food
-
-    #region Miscellaneou
-
-    TblMiscellaneous GetMiscellaneousSingleByMiscellaneousId(int id);
-    ObservableCollection<TblMiscellaneous> CollMiscellaneoussesByMiscellaneousId(int id);
-
-
-    #endregion Miscellaneou
-
-#endregion Report_Gets
 
 }

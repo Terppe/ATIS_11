@@ -47,7 +47,6 @@ using ATIS.Views.Modules.TblFood;
 using ATIS.Views.Modules.TblMiscellaneous;
 using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Report;
-using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
 using QuestPDF.Infrastructure;
@@ -97,7 +96,7 @@ public partial class App : Application
         QuestPDF.Settings.License = LicenseType.Community;
         QuestPDF.Settings.ThrowOnMissingTextGlyphs = false;
         QuestPDF.Settings.UseSystemFonts = false;
-        QuestPDF.Settings.EnableDetailedLayoutErrors = true;
+        QuestPDF.Settings.EnableDetailedLayoutErrors = false;
 
         UnhandledException += App_UnhandledException;
 
@@ -388,7 +387,6 @@ _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();
         services.AddTransient<AuthenticationViewModel>();
-        services.AddTransient<SearchViewModel>();
 
         services.AddTransient<SpeciesViewModel>();
         services.AddTransient<UtilityViewModel>();

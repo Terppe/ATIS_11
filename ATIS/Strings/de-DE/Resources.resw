@@ -4980,8 +4980,14 @@
   <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
     <value>Medium konnte nicht geladen werden</value>
   </data>
+  <data name="Error_LoadingData_Title" xml:space="preserve">
+    <value>Daten konnten nicht geladen werden</value>
+  </data>
   <data name="Error_LoadMediaFromUrl_Message" xml:space="preserve">
     <value>Das Medium konnte von der angegebenen URL nicht geladen oder gespeichert werden.</value>
+  </data>
+  <data name="Error_LoadingData_Message" xml:space="preserve">
+    <value>Daten konnten nicht geladen werden.</value>
   </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>Info fehlt</value>

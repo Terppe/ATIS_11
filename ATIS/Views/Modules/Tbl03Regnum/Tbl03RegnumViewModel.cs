@@ -19,7 +19,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 {
     private readonly LookupService _lookupService;
     public ICommand SortCommand { get; }
- //   public IRelayCommand BackCommand { get; }
 
     private int _currentParentId;
     private bool _wasEmptyBeforeSave;
@@ -55,7 +54,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         PhylumViewModel = new Tbl06PhylumViewModel(factory, dialog, coordinator, lookupService, user);
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
-    //    BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
 
         RegisterHeader("Id", "Id");
         RegisterHeader("Name", "Name");
@@ -120,9 +118,6 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
     }
 
     public bool IsPhylumParentSelected => PhylumViewModel.SelectedItem != null;
-    //public bool IsDetailVisible => SelectedItem != null;
-    //public bool IsEditMode => SelectedItem != null;
-    //public bool HasItems => Items != null && Items.Count > 0;
 
     // ---------------------------------------------------------                  
     // LOAD ASYNC (Boss)

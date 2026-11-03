@@ -1379,3 +1379,17 @@ Einen Build ausfühern über ganzes ATIS-Project :  dotnet build ATIS/ATIS.cspro
 Fehler bei Tbl75SpeciessesDocument image
 ----------------------------------------
 01.11.2026 10:30 Uhr  Fehler bei Tbl75SpeciessesDocument image weil Audio und Video auch angezeigt werden sollen.
+----------------------------------------
+02.11.2026 10:30 Uhr  DataService aufräumen
+1.ATIS: Absturz 0xc000027b untersuchen – mit aktuellem Fehlerprotokoll und möglichst genauen Schritten zum Auslösen.
+2.ATIS: Update ohne Key – zuerst klären, welcher Key gemeint ist und an welcher Stelle er verlangt wird.
+3.ATIS: Einstellungsbereich neu aufbauen – gewünschte Einstellungen und vorhandene Infrastruktur zusammentragen.
+4.ATIS: SearchPage und Breadcrumb korrigieren – diese beiden Themen gehören zusammen.
+5.ATIS: Listendruck erweitern – die funktionierende Class-Implementierung als Ausgangspunkt verwenden.
+neuer Chat Absturz 0xc000027b untersuchen
+Mit PullRequest und merge wurden die restlichen Warnungen beseitigt. aber 0xc000027b ist nicht gekärt.
+Ereignisanzeige sehen ob fehler
+----------------------------------------
+02.11.2026 17:30 Uhr  SettingsPage gestartet
+----------------------------------------
+03.11.2026 08:30 Uhr  SettingsPage weiter

@@ -2,6 +2,7 @@
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using static ATIS.Views.Report.PdfModels;
 
 namespace ATIS.Views.Report.Pdf.TblMiscellaneous;
 public abstract class TblMiscellaneoussesDocumentDataSource : ObservableObject
@@ -12,7 +13,7 @@ public abstract class TblMiscellaneoussesDocumentDataSource : ObservableObject
     #endregion [Private Data Members]      
 
     //    Part 1 
-    public static TblMiscellaneoussesPdfModel GetMiscellaneousDetails(int foodId)
+    public static TblMiscellaneoussesPdfModel GetMiscellaneousDetails(int miscellaneousId)
     {
         #region [Private Data Members]
 
@@ -24,9 +25,9 @@ public abstract class TblMiscellaneoussesDocumentDataSource : ObservableObject
 
 
 
-        MiscellaneoussesCollection = dataService.CollMiscellaneoussesByMiscellaneousId(foodId);
+     //   MiscellaneoussesCollection = dataService.CollMiscellaneoussesByMiscellaneousId(miscellaneousId);
 
-        _miscellaneousSingle = dataService.GetMiscellaneousSingleByMiscellaneousId(foodId);
+        var miscellaneousSingle = dataService.GetMiscellaneousByIdAsync(miscellaneousId);
 
         return new TblMiscellaneoussesPdfModel
         {

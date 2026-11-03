@@ -2,6 +2,7 @@
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using static ATIS.Views.Report.PdfModels;
 
 //    Tbl45FamiliesDocumentDataSourceSkriptdatum:  13.06.2023  10:32    
 
@@ -24,9 +25,9 @@ public abstract class TblFoodsDocumentDataSource : ObservableObject
 
         ClearAllCollections();
 
-        FoodsCollection = dataService.CollFoodsByFoodId(foodId);
+     //   FoodsCollection = dataService.CollFoodsByFoodId(foodId);
 
-        _foodSingle = dataService.GetFoodSingleByFoodId(foodId);
+        var foodSingle = dataService.GetFoodByIdAsync(foodId);
 
         return new TblFoodsPdfModel
         {

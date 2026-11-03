@@ -18,16 +18,10 @@ namespace ATIS.Services;
 public partial class DataService : ObservableObject, IDataService
 {
     private const string Value = "#";
-
     private readonly IUserService _user;
     private readonly AtisDbContext? _context;
     private readonly IDbContextFactory<AtisDbContext>? _factory;
 
-    //public DataService(AtisDbContext context, IUserService user)
-    //{
-    //    _context = context;
-    //    _user = user;
-    //}
     public DataService(IDbContextFactory<AtisDbContext> factory, IUserService user)
     {
         _factory = factory;
@@ -90,20 +84,10 @@ public partial class DataService : ObservableObject, IDataService
         return dbEntity;
     }
 
-    #region für provisorium
-
-    public IQueryable<TblCountry> TblCountries => _context.TblCountries;
-
-
-    #endregion für provisorium
-
-
     #region CRUD
-
 
     #region Regnum
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRegnumAsync()
     // ---------------------------------------------------------                           
@@ -347,45 +331,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //alt----------------------
-    public ObservableCollection<Tbl03Regnum> GetRegnumAsync()
-    {
-        var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
-            .AsNoTracking()
-            .OrderBy(a => a.RegnumName)
-            .ThenBy(a => a.Subregnum));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl03Regnum> GetRegnumAsync(int regnumid)
-    {
-        var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
-            .AsNoTracking()
-            .Where(e => e.RegnumId == regnumid)
-            .OrderBy(k => k.RegnumName)
-            .ThenBy(k => k.Subregnum));
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl03Regnum> GetRegnumAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
-                .Where(e => e.RegnumId == id))
-            : new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
-                .Where(e => search != null && e.RegnumName.StartsWith(search))
-                .OrderBy(a => a.RegnumName)
-                .ThenBy(a => a.Subregnum));
-        return collection;
-    }
-
     #endregion Regnum
 
     #region Phylum
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllPhylumAsync()
     // ---------------------------------------------------------                           
@@ -646,54 +595,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-
-    //alt--------------------------------------
-    public ObservableCollection<Tbl06Phylum> GetPhylumAsync()
-    {
-        var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
-            .AsNoTracking()
-            .OrderBy(a => a.PhylumName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl06Phylum> GetPhylumAsync(int phylumid)
-    {
-        var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
-            .AsNoTracking()
-            .Where(e => e.PhylumId == phylumid)
-            .OrderBy(k => k.PhylumName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl06Phylum> GetPhylumAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
-                .Where(e => e.PhylumId == id))
-            : new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
-                .Where(e => search != null && e.PhylumName.StartsWith(search))
-                .OrderBy(a => a.PhylumName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl06Phylum> GetPhylumFromRegnumIdAsync(int regnumid)
-    {
-        var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
-            .Where(e => e.RegnumId == regnumid)
-            .OrderBy(k => k.PhylumName)
-        );
-
-        return collection;
-    }
-
     #endregion Phylum
 
     #region Subphylum
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubphylumAsync()
     // ---------------------------------------------------------                           
@@ -954,52 +859,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-    //alt-------------------------------
-    public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync()
-    {
-        var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-            .AsNoTracking()
-            .OrderBy(a => a.SubphylumName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync(int subphylumid)
-    {
-        var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-            .AsNoTracking()
-            .Where(e => e.SubphylumId == subphylumid)
-            .OrderBy(k => k.SubphylumName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl12Subphylum> GetSubphylumAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-                .Where(e => e.SubphylumId == id))
-            : new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-                .Where(e => search != null && e.SubphylumName.StartsWith(search))
-                .OrderBy(a => a.SubphylumName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl12Subphylum> GetSubphylumFromPhylumIdAsync(int phylumid)
-    {
-        var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-            .Where(e => e.PhylumId == phylumid)
-            .OrderBy(k => k.SubphylumName)
-        );
-
-        return collection;
-    }
-
     #endregion Subphylum
 
     #region Superclass
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSuperclassAsync()
     // ---------------------------------------------------------                           
@@ -1260,55 +1123,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-
-    //alt-----------------------------------------
-    public ObservableCollection<Tbl18Superclass> GetSuperclassAsync()
-    {
-        var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
-            .AsNoTracking()
-            .OrderBy(a => a.SuperclassName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl18Superclass> GetSuperclassAsync(int superclassid)
-    {
-        var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
-            .AsNoTracking()
-            .Where(e => e.SuperclassId == superclassid)
-            .OrderBy(k => k.SuperclassName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl18Superclass> GetSuperclassAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
-                .Where(e => e.SuperclassId == id))
-            : new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
-                .Where(e => search != null && e.SuperclassName.StartsWith(search))
-                .OrderBy(a => a.SuperclassName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl18Superclass> GetSuperclassFromSubphylumIdAsync(int subphylumid)
-    {
-        var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
-            .Where(e => e.SubphylumId == subphylumid)
-            .OrderBy(k => k.SuperclassName)
-        );
-
-        return collection;
-    }
-
-
     #endregion Superclass
 
     #region Class
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllClassAsync()
     // ---------------------------------------------------------                           
@@ -1569,54 +1387,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //alt
-    public ObservableCollection<Tbl21Class> GetClassAsync()
-    {
-        var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-            .AsNoTracking()
-            .OrderBy(a => a.ClassName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl21Class> GetClassAsync(int classid)
-    {
-        var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-            .AsNoTracking()
-            .Where(e => e.ClassId == classid)
-            .OrderBy(k => k.ClassName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl21Class> GetClassAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-                .Where(e => e.ClassId == id))
-            : new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-                .Where(e => search != null && e.ClassName.StartsWith(search))
-                .OrderBy(a => a.ClassName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl21Class> GetClassFromSuperclassIdAsync(int superclassid)
-    {
-        var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-            .Where(e => e.SuperclassId == superclassid)
-            .OrderBy(k => k.ClassName)
-        );
-
-        return collection;
-    }
-
-
     #endregion Class
 
     #region Subclass
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubclassAsync()
     // ---------------------------------------------------------                           
@@ -1877,54 +1651,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-    //test
-    //alt
-    public ObservableCollection<Tbl24Subclass> GetSubclassAsync()
-    {
-        var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-            .AsNoTracking()
-            .OrderBy(a => a.SubclassName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl24Subclass> GetSubclassAsync(int subclassid)
-    {
-        var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-            .AsNoTracking()
-            .Where(e => e.SubclassId == subclassid)
-            .OrderBy(k => k.SubclassName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl24Subclass> GetSubclassAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-                .Where(e => e.SubclassId == id))
-            : new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-                .Where(e => search != null && e.SubclassName.StartsWith(search))
-                .OrderBy(a => a.SubclassName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl24Subclass> GetSubclassFromClassIdAsync(int classeid)
-    {
-        var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-            .Where(e => e.ClassId == classeid)
-            .OrderBy(k => k.SubclassName)
-        );
-
-        return collection;
-    }
-
-
     #endregion Subclass
 
     #region Infraclass
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfraclassAsync()
     // ---------------------------------------------------------                           
@@ -2185,64 +1915,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-    //Test
-    private static bool IsVisibleTaxonName(string? name)
-    {
-        return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
-    }
-
-    public async Task<DirectChildrenResult?> GetFirstDirectChildrenOfSubclassAsync(int subclassId)
-    {
-        var infraclasses = (await GetInfraclassesBySubclassIdAsync(subclassId))
-            .Where(x => IsVisibleTaxonName(x.InfraclassName))
-            .Cast<object>()
-            .ToList();
-
-        if (infraclasses.Count > 0)
-        {
-            return new DirectChildrenResult
-            {
-                Level = TaxonLevel.Infraclass,
-                Items = infraclasses
-            };
-        }
-
-        var legios = (await GetLegiosByInfraclassIdAsync(subclassId))
-            .Where(x => IsVisibleTaxonName(x.LegioName))
-            .Cast<object>()
-            .ToList();
-
-        if (legios.Count > 0)
-        {
-            return new DirectChildrenResult
-            {
-                Level = TaxonLevel.Legio,
-                Items = legios
-            };
-        }
-
-        var ordos = (await GetOrdosByLegioIdAsync(subclassId))
-            .Where(x => IsVisibleTaxonName(x.OrdoName))
-            .Cast<object>()
-            .ToList();
-
-        if (ordos.Count > 0)
-        {
-            return new DirectChildrenResult
-            {
-                Level = TaxonLevel.Ordo,
-                Items = ordos
-            };
-        }
-
-        return null;
-    }
-
     #endregion Infraclass
 
     #region Legio
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllLegioAsync()
     // ---------------------------------------------------------                           
@@ -2502,7 +2178,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
 
     #endregion Legio
 
@@ -2773,7 +2448,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Subordo
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubordoAsync()
     // ---------------------------------------------------------                           
@@ -3034,12 +2708,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
     #endregion Subordo
 
     #region Infraordo
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfraordoAsync()
     // ---------------------------------------------------------                           
@@ -3300,13 +2972,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-
     #endregion Infraordo
 
     #region Superfamily
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSuperfamilyAsync()
     // ---------------------------------------------------------                           
@@ -3567,12 +3236,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
     #endregion Superfamily
 
     #region Family
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllFamilyAsync()
     // ---------------------------------------------------------                           
@@ -3833,13 +3500,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-
     #endregion Family
 
     #region Subfamily
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubfamilyAsync()
     // ---------------------------------------------------------                           
@@ -4100,12 +3764,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
     #endregion Subfamily
 
     #region Infrafamily
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfrafamilyAsync()
     // ---------------------------------------------------------                           
@@ -4367,12 +4029,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-
     #endregion Infrafamily
 
     #region Supertribus
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSupertribusAsync()
     // ---------------------------------------------------------                           
@@ -4633,50 +4293,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //-------------------------------------------------
-    //alt
-    public async Task<IEnumerable<Tbl54Supertribus>> GetSupertribusAsync(int dummy)
-    {
-        return await _context.Tbl54Supertribusses
-            .OrderBy(x => x.SupertribusName)
-            .ToListAsync();
-    }
-
-    public ObservableCollection<Tbl54Supertribus> GetSupertribusAsync()
-    {
-        var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-            .AsNoTracking()
-            .OrderBy(a => a.SupertribusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl54Supertribus> GetSupertribusAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-                .Where(e => e.SupertribusId == id))
-            : new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-                .Where(e => search != null && e.SupertribusName.StartsWith(search))
-                .OrderBy(a => a.SupertribusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl54Supertribus> GetSupertribusFromInfrafamilyIdAsync(int infrafamilyid)
-    {
-        var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-            .Where(e => e.InfrafamilyId == infrafamilyid)
-            .OrderBy(k => k.SupertribusName)
-        );
-
-        return collection;
-    }
-
     #endregion Supertribus
 
     #region Tribus
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllTribusAsync()
     // ---------------------------------------------------------                           
@@ -4937,86 +4557,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //----------------------------------------------------
-    //alt
-    public async Task<IEnumerable<Tbl57Tribus>> SearchTribusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl57Tribus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl57Tribusses
-            .Where(e =>
-                e.TribusName.StartsWith(search) ||
-                e.TribusId.ToString() == search)
-            .Include(e => e.Supertribus)
-            .OrderBy(e => e.TribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<Tbl57Tribus> GetTribusByTribusIdAsync(int tribusId)
-    {
-        return await _context.Tbl57Tribusses
-            .FirstOrDefaultAsync(x => x.TribusId == tribusId);
-    }
-
-    public async Task<string> GetTribusNameByTribusId(int tribusId)
-    {
-        var tribus = await GetTribusByTribusIdAsync(tribusId);
-        return tribus?.TribusName ?? "Unknown"; // ✓ Null-safe
-    }
-
-
-    public async Task<IEnumerable<Tbl57Tribus>> GetTribusAsync(int dummy)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl57Tribusses
-            .Include(e => e.Supertribus)
-            .OrderBy(e => e.TribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public ObservableCollection<Tbl57Tribus> GetTribusAsync()
-    {
-        var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-            .AsNoTracking()
-            .OrderBy(a => a.TribusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl57Tribus> GetTribusAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-                .Where(e => e.TribusId == id))
-            : new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-                .Where(e => search != null && e.TribusName.StartsWith(search))
-                .OrderBy(a => a.TribusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl57Tribus> GetTribusFromSupertribusIdAsync(int supertribusid)
-    {
-        var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-            .Where(e => e.SupertribusId == supertribusid)
-            .OrderBy(k => k.TribusName)
-        );
-
-        return collection;
-    }
-
-
-
     #endregion Tribus
 
     #region Subtribus
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSubtribusAsync()
     // ---------------------------------------------------------                           
@@ -5277,75 +4821,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-
-    //alt
-    ////---------------------------------------------------------
-    public async Task<IEnumerable<Tbl60Subtribus>> GetSubtribusAsync(int dummy)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl60Subtribusses
-            .Include(e => e.Tribus)
-            .OrderBy(e => e.SubtribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusAsync(string? search)
-
-        //-------------------------------------------
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl60Subtribus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl60Subtribusses
-            .Where(e =>
-                e.SubtribusName.StartsWith(search) ||
-                e.SubtribusId.ToString() == search)
-            .Include(e => e.Tribus)
-            .OrderBy(e => e.SubtribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public ObservableCollection<Tbl60Subtribus> GetSubtribusAsync()
-    {
-        var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-            .AsNoTracking()
-            .OrderBy(a => a.SubtribusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl60Subtribus> GetSubtribusAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-                .Where(e => e.SubtribusId == id))
-            : new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-                .Where(e => search != null && e.SubtribusName.StartsWith(search))
-                .OrderBy(a => a.SubtribusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl60Subtribus> GetSubtribusFromTribusIdAsync(int tribusid)
-    {
-        var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-            .Where(e => e.TribusId == tribusid)
-            .OrderBy(k => k.SubtribusName)
-        );
-
-        return collection;
-    }
-
-
     #endregion Subtribus
 
     #region Infratribus
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllInfratribusAsync()
     // ---------------------------------------------------------                           
@@ -5608,67 +5087,6 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //-------------------------------------------------------
-    //alt
-
-    public async Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl63Infratribus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl63Infratribusses
-            .Where(e =>
-                e.InfratribusName.StartsWith(search) ||
-                e.InfratribusId.ToString() == search)
-            .Include(e => e.Subtribus)
-            .OrderBy(e => e.InfratribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<Tbl63Infratribus>> GetInfratribusAsync(int dummy)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl63Infratribusses
-            .OrderBy(x => x.InfratribusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public async Task<bool> HasGenusAsync(int infratribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl66Genusses
-            .AnyAsync(g => g.InfratribusId == infratribusId);
-    }
-
-    public async Task<ObservableCollection<Tbl63Infratribus>> GetInfratribusFromSubtribusIdAsync(int subtribusId)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        var list = await context.Tbl63Infratribusses
-            .Where(e => e.SubtribusId == subtribusId)
-            .Include(e => e.Subtribus)
-            .OrderBy(e => e.InfratribusName)
-            .AsNoTracking()
-            .ToListAsync();
-
-        return new ObservableCollection<Tbl63Infratribus>(list);
-    }
-
-    public ObservableCollection<Tbl63Infratribus> GetInfratribusAsyncAlt()
-    {
-        var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-            .OrderBy(k => k.InfratribusName));
-        return collection;
-    }
-
-
     #endregion Infratribus
 
     #region Genus
@@ -5688,7 +5106,8 @@ public partial class DataService : ObservableObject, IDataService
 
     // ---------------------------------------------------------                  
     // SearchGenusWithInfratribusAsync(string? search)
-    // ---------------------------------------------------------                 
+    // ---------------------------------------------------------
+
     public async Task<IEnumerable<Tbl66Genus>> SearchGenusWithInfratribusAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -5933,139 +5352,6 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-    //---------------------------------------
-    //Alt
-    public async Task<IEnumerable<Tbl66Genus>> GetGenusAsync(int dummy)
-    {
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl66Genusses
-            .OrderBy(x => x.GenusName)
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<Tbl66Genus>> SearchGenusAsync(string? search)
-    {
-        if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<Tbl66Genus>();
-
-        await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl66Genusses
-            .Where(e =>
-                e.GenusName.StartsWith(search) ||
-                e.GenusId.ToString() == search)
-            .Include(e => e.Infratribus)
-            .OrderBy(e => e.GenusName)
-            .AsNoTracking()
-            .ToListAsync();
-    }
-
-    public ObservableCollection<Tbl66Genus> GetGenusAsync()
-    {
-        var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-            .AsNoTracking()
-            .OrderBy(a => a.GenusName));
-        return collection;
-    }
-
-    //public ObservableCollection<Tbl66Genus> GetGenusAsync(int genusid)
-    //{
-    //    var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-    //        .AsNoTracking()
-    //        .Where(e => e.GenusId == genusid)
-    //        .OrderBy(k => k.GenusName)
-    //    );
-
-    //    return collection;
-    //}
-
-    public ObservableCollection<Tbl66Genus> GetGenusAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-                .Where(e => e.GenusId == id))
-            : new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-                .Where(e => search != null && e.GenusName.StartsWith(search))
-                .OrderBy(a => a.GenusName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl66Genus> GetGenusFromInfratribusIdAsync(int infratribusid)
-    {
-        var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-            .Where(e => e.InfratribusId == infratribusid)
-            .OrderBy(k => k.GenusName)
-        );
-
-        return collection;
-    }
-
-    //public async Task<Tbl66Genus> UpsertGenusAsync(Tbl66Genus genus)
-    //{
-    //    var current = await _context.Tbl66Genusses.FirstOrDefaultAsync(c => c.GenusId == genus.GenusId);
-    //    if (null == current)
-    //    {
-    //        genus.CountId = RandomHelper.Randomnumber();
-    //        genus.Writer = Environment.UserName;
-    //        genus.WriterDate = DateTime.Now;
-    //        genus.Updater = Environment.UserName;
-    //        genus.UpdaterDate = DateTime.Now;
-    //        _context.Tbl66Genusses.Add(genus);
-    //    }
-    //    else
-    //    {
-    //        genus.Updater = Environment.UserName;
-    //        genus.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(genus);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return genus;
-    //}
-
-    //public async Task DeleteGenusAsync(int genusid)
-    //{
-    //    var genus = await _context.Tbl66Genusses.FirstOrDefaultAsync(b => b.GenusId == genusid);
-    //    if (genus != null)
-    //    {
-    //        //necessary to delete before
-    //        //------ Species -------------
-    //        var speciess = await _context.Tbl75Speciesses.Where(a => a.GenusId == genusid).ToListAsync();
-    //        foreach (var species in speciess)
-    //        {
-    //            for (var i = 0; i <= speciess.Count; i++)
-    //            {
-    //                var speciesid = species.SpeciesId;
-    //                var singleref = _context.Tbl90References.SingleOrDefault(a => a.SpeciesId == speciesid);
-    //                if (singleref != null)
-    //                {
-    //                    _context.Tbl90References.Remove(singleref);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //                var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.SpeciesId == speciesid);
-    //                if (singlecom != null)
-    //                {
-    //                    _context.Tbl93Comments.Remove(singlecom);
-    //                    await _context.SaveChangesAsync();
-    //                }
-    //            }
-    //        }
-    //        _context.Tbl75Speciesses.RemoveRange(speciess);
-    //        await _context.SaveChangesAsync();
-    //        //---------------------------------------------------------
-    //        var references = await _context.Tbl90References.Where(reference => reference.GenusId == genusid).ToListAsync();
-    //        _context.Tbl90References.RemoveRange(references);
-    //        await _context.SaveChangesAsync();
-
-    //        var comments = await _context.Tbl93Comments.Where(comment => comment.GenusId == genusid).ToListAsync();
-    //        _context.Tbl93Comments.RemoveRange(comments);
-    //        await _context.SaveChangesAsync();
-
-    //        _context.Tbl66Genusses.Remove(genus);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Genus
 
     #region Speciesgroup
@@ -6208,96 +5494,6 @@ public partial class DataService : ObservableObject, IDataService
             .AnyAsync(x => x.SpeciesgroupId == speciesgroupId);
     }
 
-    //alt
-    public ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync()
-    {
-        var collection = new ObservableCollection<Tbl68Speciesgroup>(_context.Tbl68Speciesgroups
-            .AsNoTracking()
-            .OrderBy(a => a.SpeciesgroupName)
-            .ThenBy(a => a.Subspeciesgroup));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync(int speciesgroupid)
-    {
-        var collection = new ObservableCollection<Tbl68Speciesgroup>(_context.Tbl68Speciesgroups
-            .AsNoTracking()
-            .Where(e => e.SpeciesgroupId == speciesgroupid)
-            .OrderBy(k => k.SpeciesgroupName)
-            .ThenBy(a => a.Subspeciesgroup));
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl68Speciesgroup> GetSpeciesgroupAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl68Speciesgroup>(_context.Tbl68Speciesgroups
-                .Where(e => e.SpeciesgroupId == id))
-            : new ObservableCollection<Tbl68Speciesgroup>(_context.Tbl68Speciesgroups
-                .Where(e => search != null && e.SpeciesgroupName.StartsWith(search))
-                .OrderBy(a => a.SpeciesgroupName)
-                .ThenBy(a => a.Subspeciesgroup));
-        return collection;
-    }
-
-    //public async Task<Tbl68Speciesgroup> UpsertSpeciesgroupAsync(Tbl68Speciesgroup speciesgroup)
-    //{
-    //    var current = await _context.Tbl68Speciesgroups.FirstOrDefaultAsync(c => c.SpeciesgroupId == speciesgroup.SpeciesgroupId);
-    //    if (null == current)
-    //    {
-    //        speciesgroup.CountId = RandomHelper.Randomnumber();
-    //        speciesgroup.Writer = Environment.UserName;
-    //        speciesgroup.WriterDate = DateTime.Now;
-    //        speciesgroup.Updater = Environment.UserName;
-    //        speciesgroup.UpdaterDate = DateTime.Now;
-    //        _context.Tbl68Speciesgroups.Add(speciesgroup);
-    //    }
-    //    else
-    //    {
-    //        speciesgroup.Updater = Environment.UserName;
-    //        speciesgroup.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(speciesgroup);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return speciesgroup;
-    //}
-
-    //public async Task DeleteSpeciesgroupAsync(int speciesgroupid)
-    //{
-    //    var speciesgroup = await _context.Tbl68Speciesgroups.FirstOrDefaultAsync(b => b.SpeciesgroupId == speciesgroupid);
-    //    if (speciesgroup != null)
-    //    {
-    //        //necessary to delete before
-    //        //------ FiSpecies -------------
-    //        //var fispeciess = await _context.Tbl69FiSpeciesses.Where(a => a.SpeciesgroupId == speciesgroupid).ToListAsync();
-    //        //foreach (var fispecies in fispeciess)
-    //        //{
-    //        //    for (var i = 0; i <= fispeciess.Count; i++)
-    //        //    {
-    //        //        var fispeciesid = fispecies.FiSpeciesId;
-    //        //        var singleref = _context.Tbl90References.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
-    //        //        if (singleref != null)
-    //        //        {
-    //        //            _context.Tbl90References.Remove(singleref);
-    //        //            await _context.SaveChangesAsync();
-    //        //        }
-    //        //        var singlecom = _context.Tbl93Comments.SingleOrDefault(a => a.FiSpeciesId == fispeciesid);
-    //        //        if (singlecom != null)
-    //        //        {
-    //        //            _context.Tbl93Comments.Remove(singlecom);
-    //        //            await _context.SaveChangesAsync();
-    //        //        }
-    //        //    }
-    //        //}
-    //        //_context.Tbl69FiSpeciesses.RemoveRange(fispeciess);
-    //        //await _context.SaveChangesAsync();
-
-    //        _context.Tbl68Speciesgroups.Remove(speciesgroup);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Speciesgroup
 
     #region Species
@@ -6317,7 +5513,8 @@ public partial class DataService : ObservableObject, IDataService
 
     // ---------------------------------------------------------                  
     // GetSpeciesWithGenusAndSpeciesgroupByIdAsync(string? search)
-    // ---------------------------------------------------------                 
+    // ---------------------------------------------------------
+
     public async Task<IEnumerable<Tbl75Species>> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -6345,7 +5542,6 @@ public partial class DataService : ObservableObject, IDataService
             .OrderBy(e => e.SpeciesName)
             .ToListAsync();
     }
-
     // ---------------------------------------------------------                  
     // UpsertSpeciesAsync(Tbl75Species uiEntity)
     // ---------------------------------------------------------                 
@@ -6481,7 +5677,6 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
     // ---------------------------------------------------------                  
     // HasNameAsync(int speciesId)
     // ---------------------------------------------------------                 
@@ -6571,7 +5766,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
 
     // ---------------------------------------------------------                  
     // GetNamesBySpeciesIdAsync(int speciesId) FürReportPDF
@@ -6694,187 +5888,10 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //Neu
-    //public async Task<IEnumerable<Tbl75Species>> GetAllSpeciesAsync()
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl75Speciesses
-    //        .Include(e => e.Genus)
-    //        .OrderBy(a => a.Genus.GenusName)
-    //        .ThenBy(a => a.SpeciesName)
-    //        .ThenBy(a => a.Subspecies)
-    //        .ThenBy(a => a.Divers)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
-    //public async Task<IEnumerable<Tbl75Species>> GetSpeciesForGenusAsync(int genusId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl75Speciesses
-    //        .Where(e => e.GenusId == genusId)
-    //        .OrderBy(a => a.Genus.GenusName)
-    //        .ThenBy(a => a.SpeciesName)
-    //        .ThenBy(a => a.Subspecies)
-    //        .ThenBy(a => a.Divers)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
-    //public async Task<IEnumerable<Tbl75Species>> SearchSpeciesAsync(string? search)
-    //{
-    //    if (string.IsNullOrWhiteSpace(search))
-    //        return Enumerable.Empty<Tbl75Species>();
-
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl75Speciesses
-    //        .Where(e =>
-    //            e.SpeciesName.StartsWith(search) ||
-    //            e.SpeciesId.ToString() == search)
-    //        .Include(e => e.Genus)
-    //        .OrderBy(a => a.Genus.GenusName)
-    //        .ThenBy(a => a.SpeciesName)
-    //        .ThenBy(a => a.Subspecies)
-    //        .ThenBy(a => a.Divers)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
-    //public async Task<IEnumerable<Tbl75Species>> SearchSpeciesWithGenusAsync(string? search)
-    //{
-    //    if (string.IsNullOrWhiteSpace(search))
-    //        return Enumerable.Empty<Tbl75Species>();
-
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl75Speciesses
-    //        .Where(e =>
-    //            e.SpeciesName.StartsWith(search) ||
-    //            e.SpeciesId.ToString() == search)
-    //        .Include(e => e.Genus)
-    //        .OrderBy(a => a.Genus.GenusName)
-    //        .ThenBy(a => a.SpeciesName)
-    //        .ThenBy(a => a.Subspecies)
-    //        .ThenBy(a => a.Divers)
-    //        .AsNoTracking()
-    //        .ToListAsync();
-    //}
-
-    //public async Task<IEnumerable<Tbl75Species>> GetSpeciesAsync(int dummy)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl75Speciesses
-    //        .OrderBy(x => x.SpeciesName)
-    //        .ToListAsync();
-    //}
-    //public async Task<bool> SpeciesHasReferenceAsync(int speciesId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.Tbl90References.AnyAsync(x => x.SpeciesId == speciesId);
-    //}
-    //public async Task<bool> SpeciesHasCommentAsync(int speciesId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.Tbl93Comments.AnyAsync(x => x.SpeciesId == speciesId);
-    //}
-
-    //-----------------------------
-    //alt
-    public ObservableCollection<Tbl75Species> GetSpeciesAsync()
-    {
-        var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-            .OrderBy(a => a.Genus.GenusName)
-            .ThenBy(a => a.SpeciesName)
-            .ThenBy(a => a.Subspecies)
-            .ThenBy(a => a.Divers));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl75Species> GetSpeciesAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Where(e => e.SpeciesId == id))
-            : new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Where(e => search != null && e.SpeciesName.StartsWith(search))
-                .OrderBy(a => a.Genus.GenusName)
-                .ThenBy(a => a.SpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-        return collection;
-    }
-    //public ObservableCollection<Tbl75Species> SearchSpeciesWithGenusAsync(string search)
-    //{
-    //    //search about GenusName
-    //    var collection = int.TryParse(search, out var id)
-    //        ? new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-    //            .Where(e => e.SpeciesId == id))
-    //        : new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-    //            .Where(e => e.Tbl66Genusses.GenusName.StartsWith(search))
-    //            .OrderBy(a => a.Tbl66Genusses.GenusName)
-    //            .ThenBy(a => a.SpeciesName)
-    //            .ThenBy(a => a.Subspecies)
-    //            .ThenBy(a => a.Divers)
-    //        );
-    //    return collection;
-    //}
-
-    public ObservableCollection<Tbl75Species> GetSpeciesFromGenusIdAsync(int genusid)
-    {
-        var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-            .Where(e => e.GenusId == genusid)
-            .OrderBy(k => k.SpeciesName)
-        );
-
-        return collection;
-    }
-    //public async Task<Tbl75Species> UpsertSpeciesAsync(Tbl75Species species)
-    //{
-    //    var current = await _context.Tbl75Speciesses.FirstOrDefaultAsync(c => c.SpeciesId == species.SpeciesId);
-    //    if (null == current)
-    //    {
-    //        species.CountId = RandomHelper.Randomnumber();
-    //        species.Writer = Environment.UserName;
-    //        species.WriterDate = DateTime.Now;
-    //        species.Updater = Environment.UserName;
-    //        species.UpdaterDate = DateTime.Now;
-    //        _context.Tbl75Speciesses.Add(species);
-    //    }
-    //    else
-    //    {
-    //        species.Updater = Environment.UserName;
-    //        species.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(species);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return species;
-    //}
-    //public async Task DeleteSpeciesAsync(int speciesid)
-    //{
-    //    var species = await _context.Tbl75Speciesses.FirstOrDefaultAsync(b => b.SpeciesId == speciesid);
-    //    if (species != null)
-    //    {
-    //        //necessary to delete before
-    //        var references = await _context.Tbl90References.Where(reference => reference.SpeciesId == speciesid).ToListAsync();
-    //        _context.Tbl90References.RemoveRange(references);
-    //        await _context.SaveChangesAsync();
-
-    //        var comments = await _context.Tbl93Comments.Where(comment => comment.SpeciesId == speciesid).ToListAsync();
-    //        _context.Tbl93Comments.RemoveRange(comments);
-    //        await _context.SaveChangesAsync();
-
-    //        _context.Tbl75Speciesses.Remove(species);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Species
 
     #region Name
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllNameAsync()
     // ---------------------------------------------------------                           
@@ -7013,95 +6030,9 @@ public partial class DataService : ObservableObject, IDataService
             .ToListAsync();
     }
 
-
-    //alt-----------------------------------------------------
-
-    public ObservableCollection<Tbl78Name> GetNameAsync()
-    {
-        var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-            .AsNoTracking()
-            .OrderBy(a => a.NameName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl78Name> GetNameAsync(int nameid)
-    {
-        var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-            .AsNoTracking()
-            .Where(e => e.NameId == nameid)
-            .OrderBy(k => k.NameName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl78Name> GetNameAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-                .Where(e => e.NameId == id))
-            : new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-                .Where(e => search != null && e.NameName.StartsWith(search))
-                .OrderBy(a => a.NameName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl78Name> GetNameFromSpeciesIdAsync(int speciesid)
-    {
-        var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-            .Where(e => e.SpeciesId == speciesid)
-            .OrderBy(k => k.NameName)
-        );
-
-        return collection;
-    }
-
-    //public ObservableCollection<Tbl78Name> GetNameFromPlSpeciesIdAsync(int plspeciesid)
-    //{
-    //    var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-    //        .Where(e => e.PlSpeciesId == plspeciesid)
-    //        .OrderBy(k => k.NameName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public async Task<Tbl78Name> UpsertNameAsync(Tbl78Name name)
-    //{
-    //    var current = await _context.Tbl78Names.FirstOrDefaultAsync(c => c.NameId == name.NameId);
-    //    if (null == current)
-    //    {
-    //        name.CountId = RandomHelper.Randomnumber();
-    //        name.Writer = Environment.UserName;
-    //        name.WriterDate = DateTime.Now;
-    //        name.Updater = Environment.UserName;
-    //        name.UpdaterDate = DateTime.Now;
-    //        _context.Tbl78Names.Add(name);
-    //    }
-    //    else
-    //    {
-    //        name.Updater = Environment.UserName;
-    //        name.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(name);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return name;
-    //}
-
-    //public async Task DeleteNameAsync(int nameid)
-    //{
-    //    var names = await _context.Tbl78Names.FirstOrDefaultAsync(b => b.NameId == nameid);
-    //    if (names != null)
-    //    {
-    //        _context.Tbl78Names.Remove(names);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Name
 
     #region Image
-
     // ---------------------------------------------------------                  
     // GetAllImageAsync()
     // ---------------------------------------------------------                           
@@ -7238,59 +6169,6 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
-    //public async Task<bool> ImageExistsAsync(Tbl81Image entity)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl81Images.AnyAsync(x =>
-    //        x.SpeciesId == entity.SpeciesId &&
-    //        x.Valid == entity.Valid &&
-    //        x.ValidYear == entity.ValidYear &&
-    //        x.Filestream == entity.Filestream &&
-    //        x.FilestreamId == entity.FilestreamId &&
-    //        x.ShotDate == entity.ShotDate &&
-    //        x.ImageMimeType == entity.ImageMimeType &&
-    //        x.Info == entity.Info &&
-    //        x.Memo == entity.Memo &&
-    //        x.FoodId == entity.FoodId &&
-    //        x.DiseaseId == entity.DiseaseId &&
-    //        x.MiscellaneousId == entity.MiscellaneousId &&
-    //        x.ImageId != entity.ImageId
-    //    );
-    //}
-
-    // ---------------------------------------------------------                  
-    // HasNameAsync(int imageId)
-    // ---------------------------------------------------------                 
-    //public async Task<bool> ImageHasNameAsync(int imageId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.NULL
-    //        .AnyAsync(x => x.ImageId == imageId);
-    //}
-    // ---------------------------------------------------------                  
-    // HasReferenceAsync(int imageId)
-    // ---------------------------------------------------------                 
-    //public async Task<bool> ImageHasReferenceAsync(int imageId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.Tbl90References
-    //        .AnyAsync(x => x.ImageId == imageId);
-    //}
-    // ---------------------------------------------------------                  
-    // HasCommentAsync(int imageId)
-    // ---------------------------------------------------------                 
-    //public async Task<bool> ImageHasCommentAsync(int imageId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.Tbl93Comments
-    //        .AnyAsync(x => x.ImageId == imageId);
-    //}
-
-    // ---------------------------------------------------------                  
-    // GetImageForSpeciesAsync(int speciesId)
-    // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl81Image>> GetImageForSpeciesAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
@@ -7347,112 +6225,10 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    //alt-----------------------------------------------------
-    public ObservableCollection<Tbl81Image> GetImageAsync()
-    {
-        var collection = new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-            .AsNoTracking()
-            .OrderBy(a => a.Info));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl81Image> GetImageAsync(int imageid)
-    {
-        var collection = new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-            .AsNoTracking()
-            .Where(e => e.ImageId == imageid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl81Image> GetImageAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-                .Where(e => e.ImageId == id))
-            : new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-                .Where(e => search != null && e.Info.StartsWith(search))
-                .OrderBy(a => a.Info));
-        return collection;
-    }
-
-    //public ObservableCollection<Tbl81Image> GetImageFromFiSpeciesIdAsync(int fispeciesid)
-    //{
-    //    var collection = new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-    //        .Where(e => e.FiSpeciesId == fispeciesid)
-    //        .OrderBy(k => k.Info)
-    //    );
-
-    //    return collection;
-    //}
-
-    public ObservableCollection<Tbl81Image> GetImageFromSpeciesIdAsync(int speciesid)
-    {
-        var collection = new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-            .Where(e => e.SpeciesId == speciesid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    public async Task<Tbl81Image> UpsertImageAsync(Tbl81Image image, string selectedpath)
-    {
-        var current = await _context.Tbl81Images.FirstOrDefaultAsync(c => c.ImageId == image.ImageId);
-        if (null == current)
-        {
-            image.CountId = RandomHelper.Randomnumber();
-            image.Writer = Environment.UserName;
-            image.WriterDate = DateTime.Now;
-            image.Updater = Environment.UserName;
-            image.UpdaterDate = DateTime.Now;
-            image.FilestreamId = Guid.NewGuid();
-            image.Filestream = LoadImageData(selectedpath);
-
-            _context.Tbl81Images.Add(image);
-        }
-        else
-        {
-            image.Updater = Environment.UserName;
-            image.UpdaterDate = DateTime.Now;
-            image.Filestream = LoadImageData(selectedpath);
-            _context.Entry(current).CurrentValues.SetValues(image);
-        }
-
-        await _context.SaveChangesAsync();
-        return image;
-    }
-
-    private static byte[] LoadImageData(string filePath)
-    {
-        var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-        var br = new BinaryReader(fs);
-        var imageBytes = br.ReadBytes((int)fs.Length);
-        br.Close();
-        fs.Close();
-        return imageBytes;
-    }
-
-
-    //public async Task DeleteImageAsync(int imageid)
-    //{
-    //    var images = await _context.Tbl81Images.FirstOrDefaultAsync(b => b.ImageId == imageid);
-    //    if (images != null)
-    //    {
-    //        _context.Tbl81Images.Remove(images);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Image
 
     #region Synonym
 
-    // ---------------------------------------------------------                  
-    // Synonym 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllSynonymAsync()
     // ---------------------------------------------------------                           
@@ -7576,10 +6352,6 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     // ---------------------------------------------------------                  
-    // HasNameAsync(int synonymId)
-    // ---------------------------------------------------------                 
-
-    // ---------------------------------------------------------                  
     // GetSynonymForSpeciesAsync(int speciesId)
     // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl84Synonym>> GetSynonymForSpeciesAsync(int speciesId)
@@ -7594,90 +6366,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
-
-    //alt-----------------------------------------------------
-    public ObservableCollection<Tbl84Synonym> GetSynonymAsync()
-    {
-        var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-            .AsNoTracking()
-            .OrderBy(a => a.SynonymName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl84Synonym> GetSynonymAsync(int synonymid)
-    {
-        var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-            .AsNoTracking()
-            .Where(e => e.SynonymId == synonymid)
-            .OrderBy(k => k.SynonymName)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl84Synonym> GetSynonymAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-                .Where(e => e.SynonymId == id))
-            : new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-                .Where(e => search != null && e.SynonymName.StartsWith(search))
-                .OrderBy(a => a.SynonymName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl84Synonym> GetSynonymFromSpeciesIdAsync(int speciesid)
-    {
-        var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-            .Where(e => e.SpeciesId == speciesid)
-            .OrderBy(k => k.SynonymName)
-        );
-
-        return collection;
-    }
-
-    //public ObservableCollection<Tbl84Synonym> GetSynonymFromPlSpeciesIdAsync(int plspeciesid)
-    //{
-    //    var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-    //        .Where(e => e.PlSpeciesId == plspeciesid)
-    //        .OrderBy(k => k.SynonymName)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public async Task<Tbl84Synonym> UpsertSynonymAsync(Tbl84Synonym synonym)
-    //{
-    //    var current = await _context.Tbl84Synonyms.FirstOrDefaultAsync(c => c.SynonymId == synonym.SynonymId);
-    //    if (null == current)
-    //    {
-    //        synonym.CountId = RandomHelper.Randomnumber();
-    //        synonym.Writer = Environment.UserName;
-    //        synonym.WriterDate = DateTime.Now;
-    //        synonym.Updater = Environment.UserName;
-    //        synonym.UpdaterDate = DateTime.Now;
-    //        _context.Tbl84Synonyms.Add(synonym);
-    //    }
-    //    else
-    //    {
-    //        synonym.Updater = Environment.UserName;
-    //        synonym.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(synonym);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return synonym;
-    //}
-
-    //public async Task DeleteSynonymAsync(int synonymid)
-    //{
-    //    var synonyms = await _context.Tbl84Synonyms.FirstOrDefaultAsync(b => b.SynonymId == synonymid);
-    //    if (synonyms != null)
-    //    {
-    //        _context.Tbl84Synonyms.Remove(synonyms);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
 
     #endregion Name
 
@@ -7870,69 +6558,7 @@ public partial class DataService : ObservableObject, IDataService
         return Math.Abs(a - b) < epsilon;
     }
 
-
-    //public async Task<bool> GeographicExistsAsync(Tbl87Geographic entity)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-
-    //    return await context.Tbl87Geographics.AnyAsync(x =>
-    //        x.SpeciesId == entity.SpeciesId &&
-    //        x.Valid == entity.Valid &&
-    //        x.ValidYear == entity.ValidYear &&
-    //        x.Author == entity.Author &&
-    //        x.AuthorYear == entity.AuthorYear &&
-    //        x.Continent == entity.Continent &&
-    //        x.Country == entity.Country &&
-    //        x.Address == entity.Address &&
-    //        x.Jurisdiction == entity.Jurisdiction &&
-    //        x.Http == entity.Http &&
-    //        x.Latitude == entity.Latitude &&
-    //        x.Latitude1 == entity.Latitude1 &&
-    //        x.Latitude2 == entity.Latitude2 &&
-    //        x.Latitude3 == entity.Latitude3 &&
-    //        x.Longitude == entity.Longitude &&
-    //        x.Longitude1 == entity.Longitude1 &&
-    //        x.Longitude2 == entity.Longitude2 &&
-    //        x.Longitude3 == entity.Longitude3 &&
-    //        x.ZoomLevel == entity.ZoomLevel &&
-    //        x.Info == entity.Info &&
-    //        x.Memo == entity.Memo &&
-    //        x.GeographicId != entity.GeographicId
-    //    );
-    //}
-
-    // ---------------------------------------------------------                  
-    // HasNameAsync(int geographicId)
-    // ---------------------------------------------------------                 
-    //public async Task<bool> GeographicHasNameAsync(int geographicId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.NULL
-    //        .AnyAsync(x => x.GeographicId == geographicId);
-    //}
-    // ---------------------------------------------------------                  
-    // HasReferenceAsync(int geographicId)
-    // ---------------------------------------------------------                 
-    //public async Task<bool> GeographicHasReferenceAsync(int geographicId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.Tbl90References
-    //        .AnyAsync(x => x.GeographicId == geographicId);
-    //}
-    // ---------------------------------------------------------                  
-    // HasCommentAsync(int geographicId)
-    // ---------------------------------------------------------                 
-    //public async Task<bool> GeographicHasCommentAsync(int geographicId)
-    //{
-    //    await using var context = _factory.CreateDbContext();
-    //    return await context.Tbl93Comments
-    //        .AnyAsync(x => x.GeographicId == geographicId);
-    //}
-
-    // ---------------------------------------------------------                  
-    // GetGeographicForSpeciesAsync(int speciesId)
-    // ---------------------------------------------------------                 
-    public async Task<IEnumerable<Tbl87Geographic>> GetGeographicForSpeciesAsync(int speciesId)
+   public async Task<IEnumerable<Tbl87Geographic>> GetGeographicForSpeciesAsync(int speciesId)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -7944,90 +6570,6 @@ public partial class DataService : ObservableObject, IDataService
             .AsNoTracking()
             .ToListAsync();
     }
-
-
-    //alt-----------------------------------------------------
-    public ObservableCollection<Tbl87Geographic> GetGeographicAsync()
-    {
-        var collection = new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-            .AsNoTracking()
-            .OrderBy(a => a.Info));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl87Geographic> GetGeographicAsync(int geographicid)
-    {
-        var collection = new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-            .AsNoTracking()
-            .Where(e => e.GeographicId == geographicid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    public ObservableCollection<Tbl87Geographic> GetGeographicAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-                .Where(e => e.GeographicId == id))
-            : new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-                .Where(e => search != null && e.Info.StartsWith(search))
-                .OrderBy(a => a.Info));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl87Geographic> GetGeographicFromSpeciesIdAsync(int speciesid)
-    {
-        var collection = new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-            .Where(e => e.SpeciesId == speciesid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    //public ObservableCollection<Tbl87Geographic> GetGeographicFromPlSpeciesIdAsync(int plspeciesid)
-    //{
-    //    var collection = new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-    //        .Where(e => e.PlSpeciesId == plspeciesid)
-    //        .OrderBy(k => k.Info)
-    //    );
-
-    //    return collection;
-    //}
-
-    //public async Task<Tbl87Geographic> UpsertGeographicAsync(Tbl87Geographic geographic)
-    //{
-    //    var current = await _context.Tbl87Geographics.FirstOrDefaultAsync(c => c.GeographicId == geographic.GeographicId);
-    //    if (null == current)
-    //    {
-    //        geographic.CountId = RandomHelper.Randomnumber();
-    //        geographic.Writer = Environment.UserName;
-    //        geographic.WriterDate = DateTime.Now;
-    //        geographic.Updater = Environment.UserName;
-    //        geographic.UpdaterDate = DateTime.Now;
-    //        _context.Tbl87Geographics.Add(geographic);
-    //    }
-    //    else
-    //    {
-    //        geographic.Updater = Environment.UserName;
-    //        geographic.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(geographic);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return geographic;
-    //}
-
-    //public async Task DeleteGeographicAsync(int geographicid)
-    //{
-    //    var geographics = await _context.Tbl87Geographics.FirstOrDefaultAsync(b => b.GeographicId == geographicid);
-    //    if (geographics != null)
-    //    {
-    //        _context.Tbl87Geographics.Remove(geographics);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
 
     #endregion Image
 
@@ -8063,8 +6605,7 @@ public partial class DataService : ObservableObject, IDataService
     {
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl90References
-            .FirstOrDefaultAsync(x => x.ReferenceId == id);
+        return await context.Tbl90References.FirstOrDefaultAsync(x => x.ReferenceId == id);
     }
 
     public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference uiEntity)
@@ -8351,73 +6892,10 @@ public partial class DataService : ObservableObject, IDataService
         await context.SaveChangesAsync();
     }
 
-    //----------------------------------------------
-    //alt
-    public ObservableCollection<Tbl90Reference> GetReferenceAsync()
-    {
-        var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-            .AsNoTracking()
-            .OrderBy(a => a.Info));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl90Reference> GetReferenceAsync(int referenceid)
-    {
-        var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-            .AsNoTracking()
-            .Where(e => e.ReferenceId == referenceid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    public Task<ObservableCollection<Tbl90Reference>> GetReferenceAsync(string search)
-    {
-        ObservableCollection<Tbl90Reference> collection = null!;
-        collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-            .AsNoTracking()
-            .Where(e => search != null && e.Info.StartsWith(search))
-            .OrderBy(a => a.Info));
-
-        return Task.FromResult(collection);
-    }
-    //public async Task<Tbl90Reference> UpsertReferenceAsync(Tbl90Reference reference)
-    //{
-    //    var current = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == reference.ReferenceId);
-    //    if (null == current)
-    //    {
-    //        reference.CountId = RandomHelper.Randomnumber();
-    //        reference.Writer = Environment.UserName;
-    //        reference.WriterDate = DateTime.Now;
-    //        reference.Updater = Environment.UserName;
-    //        reference.UpdaterDate = DateTime.Now;
-    //        _context.Tbl90References.Add(reference);
-    //    }
-    //    else
-    //    {
-    //        reference.Updater = Environment.UserName;
-    //        reference.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(reference);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return reference;
-    //}
-    //public async Task DeleteReferenceAsync(int referenceid)
-    //{
-    //    var reference = await _context.Tbl90References.FirstOrDefaultAsync(_reference => _reference.ReferenceId == referenceid);
-    //    if (null != reference)
-    //    {
-    //        _context.Tbl90References.Remove(reference);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Reference
 
     #region RefAuthor
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRefAuthorAsync()
     // ---------------------------------------------------------                           
@@ -8550,7 +7028,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #region RefSource
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRefSourceAsync()
     // ---------------------------------------------------------                           
@@ -8663,19 +7140,9 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-    //alt----------------------
-    public ObservableCollection<Tbl90RefSource> GetRefSourceAsyncAlt()
-    {
-        var collection = new ObservableCollection<Tbl90RefSource>(_context.Tbl90RefSources
-            .OrderBy(k => k.RefSourceName));
-        return collection;
-    }
-
     #endregion
 
     #region RefExpert
-
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllRefExpertAsync()
     // ---------------------------------------------------------                           
@@ -8788,259 +7255,9 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
-
-    //-----alt----------------------
-
-
-    //public async Task<List<Tbl90RefExpert>> GetAllRefExpertsAsync()
-    //{
-    //    return await _context.Tbl90RefExperts
-    //        .AsNoTracking()
-    //        .OrderBy(a => a.RefExpertName)
-    //        .ToListAsync();
-    //}
-
-    //public async Task<List<Tbl90RefExpert>> GetRefExpertsByNameOrIdAsync(string? query)
-    //{
-    //    if (string.IsNullOrWhiteSpace(query))
-    //        return [];
-
-    //    var isId = int.TryParse(query, out int idValue);
-
-    //    var queryable = _context.Tbl90RefExperts.AsNoTracking();
-
-    //    if (isId)
-    //    {
-    //        return await queryable
-    //            .Where(f => f.RefExpertId == idValue)
-    //            .OrderBy(a => a.RefExpertName)
-    //            .ToListAsync();
-    //    }
-    //    else
-    //    {
-    //        return await queryable
-    //            .Where(f => EF.Functions.Like(f.RefExpertName, $"{query}%"))
-    //            .OrderBy(a => a.RefExpertName)
-    //            .ToListAsync();
-    //    }
-    //}
-
-    //public async Task<List<Tbl90RefExpert>> GetRefExpertsByNameAsync(string? query)
-    //{
-    //    if (string.IsNullOrWhiteSpace(query))
-    //        return [];
-
-    //    var queryable = _context.Tbl90RefExperts.AsNoTracking();
-    //    {
-    //        return await queryable
-    //            .Where(f => EF.Functions.Like(f.RefExpertName, $"{query}%"))
-    //            .OrderBy(a => a.RefExpertName)
-    //            .ToListAsync();
-    //    }
-    //}
-
-    //public async Task<bool> RefExpertExistsAsync(Tbl90RefExpert model)
-    //{
-    //    return await _context.Tbl90RefExperts.AnyAsync(c =>
-    //        c.RefExpertId != model.RefExpertId &&
-    //        c.RefExpertName == model.RefExpertName &&
-    //        c.Valid == model.Valid &&
-    //        c.ValidYear == model.ValidYear &&
-    //        c.Info == model.Info &&
-    //        c.Notes == model.Notes &&
-    //        c.Memo == model.Memo
-    //    );
-    //}
-
-    //public async Task<List<Tbl90RefExpert>> GetRefExpertAsync()
-    //{
-    //    return await _context.Tbl90RefExperts
-    //        .AsNoTracking()
-    //        .OrderBy(a => a.RefExpertName)
-    //        .ToListAsync();
-    //}
-
-    //public async Task<List<Tbl90RefExpert>> GetRefExpertAsync(int refexpertid)
-    //{
-    //    return await _context.Tbl90RefExperts
-    //        .AsNoTracking()
-    //        .Where(e => e.RefExpertId == refexpertid)
-    //        .OrderBy(k => k.RefExpertName)
-    //        .ToListAsync();
-    //}
-
-    //public async Task<Tbl90RefExpert?> GetRefExpertByIdAsync(int? refexpertid)
-    //{
-    //    return await _context.Tbl90RefExperts
-    //        .AsNoTracking()
-    //        .FirstOrDefaultAsync(e => e.RefExpertId == refexpertid);
-    //}
-
-    //public async Task<Tbl90RefExpert> UpsertRefExpertAsync(Tbl90RefExpert refexpert)
-    //{
-    //    if (refexpert.RefExpertId == 0)
-    //    {
-    //        if (refexpert.Valid != null)
-    //        {
-    //        }
-    //        else
-    //        {
-    //            refexpert.Valid = false; //Valid cannot be null. eingefügt 06.01.2025 Terppe
-    //        }
-
-    //        refexpert.CountId = RandomHelper.Randomnumber();
-    //        refexpert.Writer = Environment.UserName;
-    //        refexpert.WriterDate = DateTime.Now;
-    //        refexpert.Updater = Environment.UserName;
-    //        refexpert.UpdaterDate = DateTime.Now;
-    //        await _context.Tbl90RefExperts.AddAsync(refexpert);
-    //    }
-    //    else
-    //    {
-    //        refexpert.Updater = Environment.UserName;
-    //        refexpert.UpdaterDate = DateTime.Now;
-    //        _context.Tbl90RefExperts.Update(refexpert);
-    //    }
-
-    //    await _context.SaveChangesAsync();
-    //    return refexpert;
-    //}
-
-    //public async Task DeleteRefExpertAsync(int? refexpertid)
-    //{
-    //    if (refexpertid is null)
-    //        return;
-
-    //    var refexpert = await _context.Tbl90RefExperts
-    //        .FirstOrDefaultAsync(c => c.RefExpertId == refexpertid);
-
-    //    if (refexpert != null)
-    //    {
-    //        _context.Tbl90RefExperts.Remove(refexpert);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-    //-----------------------------------------------------
-    public ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt()
-    {
-        var collection = new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
-            .OrderBy(k => k.RefExpertName));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl90RefExpert> GetRefExpertAsyncAlt(int refexpertid)
-    {
-        var collection = new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
-            .Where(e => e.RefExpertId == refexpertid)
-            .OrderBy(k => k.RefExpertName)
-        );
-        return collection;
-    }
-
-    public async Task<ObservableCollection<Tbl90RefExpert>> GetRefExpertAsyncAlt(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
-                .Where(e => e.RefExpertId == id))
-            : new ObservableCollection<Tbl90RefExpert>(_context.Tbl90RefExperts
-                .Where(e => e.RefExpertName.StartsWith(search))
-                .OrderBy(a => a.RefExpertName)
-            );
-        await Task.CompletedTask;
-        return collection;
-    }
-
-    public async Task<Tbl90RefExpert> UpsertRefExpertAsyncAlt(Tbl90RefExpert refexpert)
-    {
-        var current =
-            await _context.Tbl90RefExperts.FirstOrDefaultAsync(_comment =>
-                _comment.RefExpertId == refexpert.RefExpertId);
-        if (null == current)
-        {
-            if (refexpert.Valid != null)
-            {
-            }
-            else
-            {
-                refexpert.Valid = false; //Valid cannot be null. eingefügt 06.01.2025 Terppe
-            }
-
-            refexpert.CountId = RandomHelper.Randomnumber();
-            refexpert.Writer = Environment.UserName;
-            refexpert.WriterDate = DateTime.Now;
-            refexpert.Updater = Environment.UserName;
-            refexpert.UpdaterDate = DateTime.Now;
-            _context.Tbl90RefExperts.Add(refexpert);
-        }
-        else
-        {
-            _context.Entry(current).CurrentValues.SetValues(refexpert);
-        }
-
-        await _context.SaveChangesAsync();
-        return refexpert;
-    }
-
-    public async Task DeleteRefExpertAsyncAlt(int refexpertid)
-    {
-        var reference =
-            await _context.Tbl90RefExperts.FirstOrDefaultAsync(_reference => _reference.RefExpertId == refexpertid);
-        if (null != reference)
-        {
-            _context.Tbl90RefExperts.Remove(reference);
-            await _context.SaveChangesAsync();
-        }
-    }
-
-    //--------------------------------------------------------
-    public ObservableCollection<Tbl90Reference>
-        GetTbl90ReferenceAuthorsCollectionOrderByInfoFromGenusIdAndRefSourceIdIsNullAndRefExpertIdIsNull(int? genusId)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Where(e => e.GenusId == genusId && e.RefSourceId == null && e.RefExpertId == null)
-                .OrderBy(k => k.Info));
-            return collection;
-        }
-
-        return null!;
-    }
-
-    public ObservableCollection<Tbl90Reference>
-        GetTbl90ReferenceSourcesCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefExpertIdIsNull(int? genusId)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Where(e => e.GenusId == genusId && e.RefAuthorId == null && e.RefExpertId == null)
-                .OrderBy(k => k.Info));
-            return collection;
-        }
-
-        return null!;
-    }
-
-    public ObservableCollection<Tbl90Reference>
-        GetTbl90ReferenceExpertsCollectionOrderByInfoFromGenusIdAndRefAuthorIdIsNullAndRefSourceIdIsNull(int? genusId)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Where(e => e.GenusId == genusId && e.RefAuthorId == null && e.RefSourceId == null)
-                .OrderBy(k => k.Info));
-            return collection;
-        }
-
-        return null!;
-    }
-    //-----------------------------------------------------------
-
     #endregion RefExpert
 
     #region Comment
-
     //--------------------------------------------------------
     public async Task<IEnumerable<Tbl93Comment>> GetAllCommentAsync()
     {
@@ -9072,9 +7289,7 @@ public partial class DataService : ObservableObject, IDataService
     {
         await using var context = _factory.CreateDbContext();
 
-        return await context.Tbl93Comments
-
-            .FirstOrDefaultAsync(x => x.CommentId == id);
+        return await context.Tbl93Comments.FirstOrDefaultAsync(x => x.CommentId == id);
     }
 
     public async Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment uiEntity)
@@ -9386,82 +7601,13 @@ public partial class DataService : ObservableObject, IDataService
         await context.SaveChangesAsync();
     }
 
-    //-----------------------------------------------------
-    //alt
-
-    public ObservableCollection<Tbl93Comment> GetCommentAsync()
-    {
-        var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-            .AsNoTracking()
-            .OrderBy(a => a.Info));
-        return collection;
-    }
-
-    public ObservableCollection<Tbl93Comment> GetCommentAsync(int commentid)
-    {
-        var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-            .AsNoTracking()
-            .Where(e => e.CommentId == commentid)
-            .OrderBy(k => k.Info)
-        );
-
-        return collection;
-    }
-
-    public async Task<ObservableCollection<Tbl93Comment>> GetCommentAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.CommentId == id))
-            : new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.Info.StartsWith(search))
-                .OrderBy(a => a.Info));
-
-        await Task.CompletedTask;
-        return collection;
-    }
-
-    //public async Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment comment)
-    //{
-    //    var current = await _context.Tbl93Comments.FirstOrDefaultAsync(_comment => _comment.CommentId == comment.CommentId);
-    //    if (null == current)
-    //    {
-    //        comment.CountId = RandomHelper.Randomnumber();
-    //        comment.Writer = Environment.UserName;
-    //        comment.WriterDate = DateTime.Now;
-    //        comment.Updater = Environment.UserName;
-    //        comment.UpdaterDate = DateTime.Now;
-    //        _context.Tbl93Comments.Add(comment);
-    //    }
-    //    else
-    //    {
-    //        comment.Updater = Environment.UserName;
-    //        comment.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(comment);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return comment;
-    //}
-
-    //public async Task DeleteCommentAsync(int commentid)
-    //{
-    //    var comment = await _context.Tbl93Comments.FirstOrDefaultAsync(_comment => _comment.CommentId == commentid);
-    //    if (null != comment)
-    //    {
-    //        _context.Tbl93Comments.Remove(comment);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
-
     #endregion Comment
 
     #region Country
 
     // ---------------------------------------------------------                  
     // GetAllCountryAsync()
-    // ---------------------------------------------------------
-
+    // // ---------------------------------------------------------
     public async Task<IEnumerable<TblCountry>> GetAllCountryAsync()
     {
         await using var context = _factory.CreateDbContext();
@@ -9600,114 +7746,10 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
-    //alt
-    public async Task<List<TblCountry>> GetAllCountriesAsync()
-    {
-        return await _context.TblCountries
-            .AsNoTracking()
-            .OrderBy(a => a.Name)
-            .ToListAsync();
-    }
-
-    public async Task<List<TblCountry>> GetCountriesByNameOrIdAsync(string? query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-            return [];
-
-        var isId = int.TryParse(query, out int idValue);
-
-        var queryable = _context.TblCountries.AsNoTracking();
-
-        if (isId)
-        {
-            return await queryable
-                .Where(f => f.CountryId == idValue)
-                .OrderBy(a => a.Name)
-                .ToListAsync();
-        }
-        else
-        {
-            return await queryable
-                .Where(f => EF.Functions.Like(f.Name, $"{query}%"))
-                .OrderBy(a => a.Name)
-                .ToListAsync();
-        }
-    }
-
-    public async Task<List<TblCountry>> GetCountriesByNameAsync(string? query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-            return [];
-
-        var queryable = _context.TblCountries.AsNoTracking();
-        {
-            return await queryable
-                .Where(f => EF.Functions.Like(f.Name, $"{query}%"))
-                .OrderBy(a => a.Name)
-                .ToListAsync();
-        }
-    }
-
-    public async Task<List<TblCountry>> GetCountryAsync()
-    {
-        return await _context.TblCountries
-            .AsNoTracking()
-            .OrderBy(a => a.Name)
-            .ToListAsync();
-    }
-
-    public async Task<List<TblCountry>> GetCountryAsync(int countryid)
-    {
-        return await _context.TblCountries
-            .AsNoTracking()
-            .Where(e => e.CountryId == countryid)
-            .OrderBy(k => k.Name)
-            .ToListAsync();
-    }
-
-    public async Task<TblCountry?> GetCountryByIdAsync(int? countryid)
-    {
-        return await _context.TblCountries
-            .AsNoTracking()
-            .FirstOrDefaultAsync(e => e.CountryId == countryid);
-    }
-
-    //public async Task<TblCountry> UpsertCountryAsync(TblCountry country)
-    //{
-    //    if (country.CountryId == 0)
-    //    {
-    //        await _context.TblCountries.AddAsync(country);
-    //    }
-    //    else
-    //    {
-    //        _context.TblCountries.Update(country);
-    //    }
-
-    //    await _context.SaveChangesAsync();
-    //    return country;
-    //}
-
-    public async Task DeleteCountryAsync(int? countryid)
-    {
-        if (countryid is null)
-            return;
-
-        var country = await _context.TblCountries
-            .FirstOrDefaultAsync(c => c.CountryId == countryid);
-
-        if (country != null)
-        {
-            _context.TblCountries.Remove(country);
-            await _context.SaveChangesAsync();
-        }
-    }
-
     #endregion Country
 
     #region UserProfile
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllUserProfileAsync()
     // ---------------------------------------------------------                           
@@ -9878,127 +7920,9 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-    //alt
-    public ObservableCollection<TblUserProfile> GetUserProfileAsync()
-    {
-        var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-            .AsNoTracking()
-            .OrderBy(a => a.Email));
-        return collection;
-    }
-
-    public ObservableCollection<TblUserProfile> GetUserProfileAsync(int userprofileid)
-    {
-        var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-            .AsNoTracking()
-            .Where(e => e.UserProfileId == userprofileid)
-            .OrderBy(k => k.Email)
-        );
-
-        return collection;
-    }
-
-
-    //alt
-    //public ObservableCollection<TblUserProfile> GetUserProfileAsync()
-    //{
-    //    var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-    //        .AsNoTracking()
-    //        .OrderBy(a => a.Email));
-    //    return collection;
-    //}
-
-
-    public ObservableCollection<TblUserProfile> GetEmailFromUserProfileAsync(string email)
-    {
-        var collection = new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-            .Where(e => e.Email == email)
-            .OrderBy(k => k.Email)
-        );
-        return collection;
-
-    }
-
-
-    public async Task<ObservableCollection<TblUserProfile>> GetUserProfileAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-                .Where(e => e.UserProfileId == id))
-            : new ObservableCollection<TblUserProfile>(_context.TblUserProfiles
-                .Where(e => e.Email.StartsWith(search))
-                .OrderBy(a => a.Email));
-
-        await Task.CompletedTask;
-        return collection;
-    }
-
-    //public async Task<TblUserProfile> UpsertUserProfileAsync(TblUserProfile userprofile)
-    //{
-    //    var current = await _context.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofile.UserProfileId);
-    //    if (null == current)
-    //    {
-    //        userprofile.CountId = RandomHelper.Randomnumber();
-    //        //  userprofile.Role = "User";
-    //        ////  userprofile.Password = Crypt.CalculateHash(Password, Email);
-    //        //  userprofile.Password = "Test";
-    //        userprofile.Writer = Environment.UserName;
-    //        userprofile.WriterDate = DateTime.Now;
-    //        userprofile.Updater = Environment.UserName;
-    //        userprofile.UpdaterDate = DateTime.Now;
-    //        _context.TblUserProfiles.Add(userprofile);
-    //    }
-    //    else
-    //    {
-    //        userprofile.Updater = Environment.UserName;
-    //        userprofile.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(userprofile);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return userprofile;
-    //}
-
-    public async Task<TblUserProfile> UpsertEmailFromUserProfileAsync(TblUserProfile userprofile)
-    {
-        var current = await _context.TblUserProfiles.FirstOrDefaultAsync(b => b.UserProfileId == userprofile.UserProfileId);
-        if (null == current)
-        {
-            //  userprofile.CountId = RandomHelper.Randomnumber();
-            //  userprofile.Role = "User";
-            ////  userprofile.Password = Crypt.CalculateHash(Password, Email);
-            //  userprofile.Password = Crypt.CalculateHash(clearTextPasswordNew, Email);
-
-            userprofile.Writer = Environment.UserName;
-            userprofile.WriterDate = DateTime.Now;
-            userprofile.Updater = Environment.UserName;
-            userprofile.UpdaterDate = DateTime.Now;
-            _context.TblUserProfiles.Add(userprofile);
-        }
-        else
-        {
-            userprofile.Updater = Environment.UserName;
-            userprofile.UpdaterDate = DateTime.Now;
-            _context.Entry(current).CurrentValues.SetValues(userprofile);
-        }
-        await _context.SaveChangesAsync();
-        return userprofile;
-    }
-
-    //public async Task DeleteUserProfileAsync(int userprofileid)
-    //{
-    //    var userprofile = await _context.TblUserProfiles.FirstOrDefaultAsync(c => c.UserProfileId == userprofileid);
-    //    if (null != userprofile)
-    //    {
-    //        _context.TblUserProfiles.Remove(userprofile);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
-
     #endregion UserProfile
 
     #region Food
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllFoodAsync()
     // ---------------------------------------------------------                           
@@ -10111,78 +8035,9 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
-
-    //alt
-    public ObservableCollection<TblFood> GetFoodAsync()
-    {
-        var collection = new ObservableCollection<TblFood>(_context.TblFoods
-            .AsNoTracking()
-            .OrderBy(a => a.FoodName));
-        return collection;
-    }
-
-    public ObservableCollection<TblFood> GetFoodAsync(int foodid)
-    {
-        var collection = new ObservableCollection<TblFood>(_context.TblFoods
-        .AsNoTracking()
-            .Where(e => e.FoodId == foodid)
-            .OrderBy(k => k.FoodName)
-        );
-
-        return collection;
-    }
-
-    public async Task<ObservableCollection<TblFood>> GetFoodAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<TblFood>(_context.TblFoods
-                .Where(e => e.FoodId == id))
-            : new ObservableCollection<TblFood>(_context.TblFoods
-                .Where(e => e.FoodName.StartsWith(search))
-                .OrderBy(a => a.FoodName));
-
-        await Task.CompletedTask;
-        return collection;
-    }
-
-    //public async Task<TblFood> UpsertFoodAsync(TblFood food)
-    //{
-    //    var current = await _context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == food.FoodId);
-    //    if (null == current)
-    //    {
-    //        food.CountId = RandomHelper.Randomnumber();
-    //        food.Writer = Environment.UserName;
-    //        food.WriterDate = DateTime.Now;
-    //        food.Updater = Environment.UserName;
-    //        food.UpdaterDate = DateTime.Now;
-
-    //        _context.TblFoods.Add(food);
-    //    }
-    //    else
-    //    {
-    //        food.Updater = Environment.UserName;
-    //        food.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(food);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return food;
-    //}
-
-    //public async Task DeleteFoodAsync(int foodid)
-    //{
-    //    var food = await _context.TblFoods.FirstOrDefaultAsync(c => c.FoodId == foodid);
-    //    if (null != food)
-    //    {
-    //        _context.TblFoods.Remove(food);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Food
 
     #region Disease
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllDiseaseAsync()
     // ---------------------------------------------------------                           
@@ -10297,77 +8152,9 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
-    //alt
-    public ObservableCollection<TblDisease> GetDiseaseAsync()
-    {
-        var collection = new ObservableCollection<TblDisease>(_context.TblDiseases
-            .AsNoTracking()
-            .OrderBy(a => a.DiseaseName));
-        return collection;
-    }
-
-    public ObservableCollection<TblDisease> GetDiseaseAsync(int diseaseid)
-    {
-        var collection = new ObservableCollection<TblDisease>(_context.TblDiseases
-        .AsNoTracking()
-            .Where(e => e.DiseaseId == diseaseid)
-            .OrderBy(k => k.DiseaseName)
-        );
-
-        return collection;
-    }
-
-    public async Task<ObservableCollection<TblDisease>> GetDiseaseAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<TblDisease>(_context.TblDiseases
-                .Where(e => e.DiseaseId == id))
-            : new ObservableCollection<TblDisease>(_context.TblDiseases
-                .Where(e => e.DiseaseName.StartsWith(search))
-                .OrderBy(a => a.DiseaseName));
-
-        await Task.CompletedTask;
-        return collection;
-    }
-
-    //public async Task<TblDisease> UpsertDiseaseAsync(TblDisease disease)
-    //{
-    //    var current = await _context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == disease.DiseaseId);
-    //    if (null == current)
-    //    {
-    //        disease.CountId = RandomHelper.Randomnumber();
-    //        disease.Writer = Environment.UserName;
-    //        disease.WriterDate = DateTime.Now;
-    //        disease.Updater = Environment.UserName;
-    //        disease.UpdaterDate = DateTime.Now;
-
-    //        _context.TblDiseases.Add(disease);
-    //    }
-    //    else
-    //    {
-    //        disease.Updater = Environment.UserName;
-    //        disease.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(disease);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return disease;
-    //}
-
-    //public async Task DeleteDiseaseAsync(int diseaseid)
-    //{
-    //    var disease = await _context.TblDiseases.FirstOrDefaultAsync(c => c.DiseaseId == diseaseid);
-    //    if (null != disease)
-    //    {
-    //        _context.TblDiseases.Remove(disease);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Disease
 
     #region Miscellaneous
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllMiscellaneousAsync()
     // ---------------------------------------------------------                           
@@ -10480,3893 +8267,469 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-    //alt
-    //---------------------------------------------------
-    public ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync()
-    {
-        var collection = new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
-            .AsNoTracking()
-            .OrderBy(a => a.MiscellaneousName));
-        return collection;
-    }
-
-    public ObservableCollection<TblMiscellaneous> GetMiscellaneousAsync(int miscellaneousid)
-    {
-        var collection = new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
-        .AsNoTracking()
-            .Where(e => e.MiscellaneousId == miscellaneousid)
-            .OrderBy(k => k.MiscellaneousName)
-        );
-
-        return collection;
-    }
-
-    public async Task<ObservableCollection<TblMiscellaneous>> GetMiscellaneousAsync(string search)
-    {
-        var collection = int.TryParse(search, out var id)
-            ? new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
-                .Where(e => e.MiscellaneousId == id))
-            : new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
-                .Where(e => e.MiscellaneousName.StartsWith(search))
-                .OrderBy(a => a.MiscellaneousName));
-
-        await Task.CompletedTask;
-        return collection;
-    }
-
-    //public async Task<TblMiscellaneous> UpsertMiscellaneousAsync(TblMiscellaneous miscellaneous)
-    //{
-    //    var current = await _context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneous.MiscellaneousId);
-    //    if (null == current)
-    //    {
-    //        miscellaneous.CountId = RandomHelper.Randomnumber();
-    //        miscellaneous.Writer = Environment.UserName;
-    //        miscellaneous.WriterDate = DateTime.Now;
-    //        miscellaneous.Updater = Environment.UserName;
-    //        miscellaneous.UpdaterDate = DateTime.Now;
-
-    //        _context.TblMiscellaneousses.Add(miscellaneous);
-    //    }
-    //    else
-    //    {
-    //        miscellaneous.Updater = Environment.UserName;
-    //        miscellaneous.UpdaterDate = DateTime.Now;
-    //        _context.Entry(current).CurrentValues.SetValues(miscellaneous);
-    //    }
-    //    await _context.SaveChangesAsync();
-    //    return miscellaneous;
-    //}
-
-    //public async Task DeleteMiscellaneousAsync(int miscellaneousid)
-    //{
-    //    var miscellaneous = await _context.TblMiscellaneousses.FirstOrDefaultAsync(c => c.MiscellaneousId == miscellaneousid);
-    //    if (null != miscellaneous)
-    //    {
-    //        _context.TblMiscellaneousses.Remove(miscellaneous);
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     #endregion Miscellaneous
 
     #endregion CRUD
 
-    #region Search
-
-    public async Task<IEnumerable<SearchResultItem>> SearchAcrossTablesAsync(string? search, string? entityType = "All")
+    #region REPORT
+    public async Task<IEnumerable<Tbl03Regnum>> SearchRegnumForReportAsync(string? search)
     {
         if (string.IsNullOrWhiteSpace(search))
-            return Enumerable.Empty<SearchResultItem>();
+            return Enumerable.Empty<Tbl03Regnum>();
 
         search = search.Trim();
-        //if (search.Length < 1)   // <- statt < 2
-        //    return Enumerable.Empty<SearchResultItem>();
-
-        var type = (entityType ?? "All").Trim();
-        var s = search.Trim(); // kein ToLower
 
         await using var context = _factory.CreateDbContext();
 
-        var results = new List<SearchResultItem>();
+        return await context.Tbl03Regnums
+            .AsNoTracking()
+            .Where(e => e.RegnumName != null && !e.RegnumName.Contains("#"))
+            .Where(e =>
+                e.RegnumName.StartsWith(search) ||
+                (e.Subregnum != null && e.Subregnum.Contains(search)) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.RegnumName)
+            .ThenBy(e => e.Subregnum)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl06Phylum>> SearchPhylumForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl06Phylum>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl06Phylums
+            .AsNoTracking()
+            .Where(e => e.PhylumName != null && !e.PhylumName.Contains("#"))
+            .Where(e =>
+                e.PhylumName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.PhylumName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl12Subphylum>> SearchSubphylumForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl12Subphylum>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl12Subphylums
+            .AsNoTracking()
+            .Where(e => e.SubphylumName != null && !e.SubphylumName.Contains("#"))
+            .Where(e =>
+                e.SubphylumName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SubphylumName)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl18Superclass>> SearchSuperclassForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl18Superclass>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl18Superclasses
+            .AsNoTracking()
+            .Where(e => e.SuperclassName != null && !e.SuperclassName.Contains("#"))
+            .Where(e =>
+                e.SuperclassName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SuperclassName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl21Class>> SearchClassForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl21Class>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl21Classes
+            .AsNoTracking()
+            .Where(e => e.ClassName != null && !e.ClassName.Contains("#"))
+            .Where(e =>
+                e.ClassName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.ClassName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl24Subclass>> SearchSubclassForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl24Subclass>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
 
-        //if (type is "All" or "Regnum")
-        //    results.AddRange(await SearchRegnumAsync(context, s, take: 30));
-
-        //if (type is "All" or "Phylum")
-        //    results.AddRange(await SearchPhylumAsync(context, s, take: 30));
-
-        //if (type is "All" or "Subphylum")
-        //    results.AddRange(await SearchSubphylumAsync(context, s, take: 30));
-
-        //if (type is "All" or "Class")
-        //    results.AddRange(await SearchClassAsync(context, s, take: 30));
-
-        return results
-            .OrderBy(x => x.Title)
-            .Take(200)
-            .ToList();
-    }
-
-    #endregion
-
-
-    #region Search_Gets
-
-    public ObservableCollection<Tbl03Regnum> GetTbl03RegnumsCollectionOrderByRegnumNameAndSubregnumFromFilterText(string filterText)
-    {
-        if (_context.Tbl03Regnums != null)
-        {
-            var collection = new ObservableCollection<Tbl03Regnum>(_context.Tbl03Regnums
-                    .Where(e => e.RegnumName.StartsWith(filterText) &&
-                                e.RegnumName.Contains(Value) == false ||
-                                e.Subregnum.Contains(filterText) ||
-                                e.EngName.Contains(filterText) ||
-                                e.GerName.Contains(filterText) ||
-                                e.FraName.Contains(filterText) ||
-                                e.PorName.Contains(filterText)
-                    )
-                    .OrderBy(e => e.RegnumName)
-                    .ThenBy(e => e.Subregnum)
-                );
-            return collection;
-
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl06Phylum> GetTbl06PhylumsCollectionOrderByPhylumNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl06Phylums != null)
-        {
-
-            var collection = new ObservableCollection<Tbl06Phylum>(_context.Tbl06Phylums
-                .Where(e => e.PhylumName.StartsWith(filterText) &&
-                            e.PhylumName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.PhylumName)
-            );
-            return collection;
-
-        }
-        return null!;
-    }
-
-
-    public ObservableCollection<Tbl12Subphylum> GetTbl12SubphylumsCollectionOrderBySubphylumNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl12Subphylums != null)
-        {
-            var collection = new ObservableCollection<Tbl12Subphylum>(_context.Tbl12Subphylums
-                .Where(e => e.SubphylumName.StartsWith(filterText) &&
-                            e.SubphylumName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SubphylumName));
-            return collection;
-        }
-        return null!;
-    }
-
-
-    public ObservableCollection<Tbl18Superclass> GetTbl18SuperclassesCollectionOrderBySuperclassNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl18Superclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl18Superclass>(_context.Tbl18Superclasses
-                .Where(e => e.SuperclassName.StartsWith(filterText) &&
-                            e.SuperclassName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SuperclassName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl21Class> GetTbl21ClassesCollectionOrderByClassNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl21Classes != null)
-        {
-            var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-                .Where(e => e.ClassName.StartsWith(filterText) &&
-                            e.ClassName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.ClassName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl24Subclass> GetTbl24SubclassesCollectionOrderBySubclassNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl24Subclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-                .Where(e => e.SubclassName.StartsWith(filterText) &&
-                            e.SubclassName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SubclassName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl27Infraclass> GetTbl27InfraclassesCollectionOrderByInfraclassNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl27Infraclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl27Infraclass>(_context.Tbl27Infraclasses
-                .Where(e => e.InfraclassName.StartsWith(filterText) &&
-                            e.InfraclassName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.InfraclassName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl30Legio> GetTbl30LegiosCollectionOrderByLegioNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl30Legios != null)
-        {
-            var collection = new ObservableCollection<Tbl30Legio>(_context.Tbl30Legios
-                .Where(e => e.LegioName.StartsWith(filterText) &&
-                            e.LegioName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.LegioName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl33Ordo> GetTbl33OrdosCollectionOrderByOrdoNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl33Ordos != null)
-        {
-            var collection = new ObservableCollection<Tbl33Ordo>(_context.Tbl33Ordos
-                .Where(e => e.OrdoName.StartsWith(filterText) &&
-                            e.OrdoName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.OrdoName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl36Subordo> GetTbl36SubordosCollectionOrderBySubordoNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl36Subordos != null)
-        {
-            var collection = new ObservableCollection<Tbl36Subordo>(_context.Tbl36Subordos
-                .Where(e => e.SubordoName.StartsWith(filterText) &&
-                            e.SubordoName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SubordoName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl39Infraordo> GetTbl39InfraordosCollectionOrderByInfraordoNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl39Infraordos != null)
-        {
-            var collection = new ObservableCollection<Tbl39Infraordo>(_context.Tbl39Infraordos
-                .Where(e => e.InfraordoName.StartsWith(filterText) &&
-                            e.InfraordoName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.InfraordoName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl42Superfamily> GetTbl42SuperfamiliesCollectionOrderBySuperfamilyNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl42Superfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl42Superfamily>(_context.Tbl42Superfamilies
-                .Where(e => e.SuperfamilyName.StartsWith(filterText) &&
-                            e.SuperfamilyName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SuperfamilyName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl45Family> GetTbl45FamiliesCollectionOrderByFamilyNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl45Families != null)
-        {
-            var collection = new ObservableCollection<Tbl45Family>(_context.Tbl45Families
-                .Where(e => e.FamilyName.StartsWith(filterText) &&
-                            e.FamilyName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.FamilyName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl48Subfamily> GetTbl48SubfamiliesCollectionOrderBySubfamilyNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl48Subfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl48Subfamily>(_context.Tbl48Subfamilies
-                .Where(e => e.SubfamilyName.StartsWith(filterText) &&
-                            e.SubfamilyName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SubfamilyName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl51Infrafamily> GetTbl51InfrafamiliesCollectionOrderByInfrafamilyNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl51Infrafamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl51Infrafamily>(_context.Tbl51Infrafamilies
-                .Where(e => e.InfrafamilyName.StartsWith(filterText) &&
-                            e.InfrafamilyName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.InfrafamilyName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl54Supertribus> GetTbl54SupertribussesCollectionOrderBySupertribusNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl54Supertribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-                .Where(e => e.SupertribusName.StartsWith(filterText) &&
-                            e.SupertribusName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SupertribusName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl57Tribus> GetTbl57TribussesCollectionOrderByTribusNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl57Tribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-                .Where(e => e.TribusName.StartsWith(filterText) &&
-                            e.TribusName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.TribusName));
-
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl60Subtribus> GetTbl60SubtribussesCollectionOrderBySubtribusNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl60Subtribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-                .Where(e => e.SubtribusName.StartsWith(filterText) &&
-                            e.SubtribusName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.SubtribusName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl63Infratribus> GetTbl63InfratribussesCollectionOrderByInfratribusNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl63Infratribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-                .Where(e => e.InfratribusName.StartsWith(filterText) &&
-                            e.InfratribusName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.InfratribusName));
-            return collection;
-        }
-        return null!;
-    }
-
-
-    public ObservableCollection<Tbl66Genus> GetTbl66GenussesCollectionOrderByGenusNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl66Genusses != null)
-        {
-            var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-                .Where(e => e.GenusName.StartsWith(filterText) &&
-                            e.GenusName.Contains(Value) == false ||
-                            e.EngName.Contains(filterText) ||
-                            e.GerName.Contains(filterText) ||
-                            e.FraName.Contains(filterText) ||
-                            e.PorName.Contains(filterText)
-                )
-                .OrderBy(a => a.GenusName));
-
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl75Species>
-        GetTbl75SpeciessesCollectionOrderByGenusNameAndSpeciesNameAndSubspeciesAndDiversFromFilterText(string filterText)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(a => a.Genus)
-                .Where(e => e.SpeciesName.StartsWith(filterText) &&
-                            e.SpeciesName.Contains(Value) == false ||
-                            e.Genus.GenusName.Contains(filterText) ||
-                            e.Subspecies.Contains(filterText) ||
-                            e.Divers.Contains(filterText) ||
-                            e.TradeName.Contains(filterText) ||
-                            e.Author.Contains(filterText)
-                )
-                .OrderBy(a => a.Genus.GenusName)        
-                .ThenBy(a => a.SpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers)
-            );
-
-            return collection;
-        }
-        return null!;
-    }
-
-
-    public ObservableCollection<Tbl78Name> GetTbl78NamesCollectionOrderByNameNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl78Names != null)
-        {
-            var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-                .Include(a => a.Species)
-                .Where(e => e.NameName.StartsWith(filterText) &&
-                            e.Species.SpeciesId == e.SpeciesId
-                )
-                .OrderBy(a => a.NameName));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl84Synonym> GetTbl84SynonymsCollectionOrderBySynonymNameFromFilterText(string filterText)
-    {
-        if (_context.Tbl84Synonyms != null)
-        {
-            var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-                .Include(a => a.Species)
-                .Where(e => e.SynonymName.StartsWith(filterText) &&
-                            e.Species.SpeciesId == e.SpeciesId
-                )
-                .OrderBy(a => a.SynonymName));
-            return collection;
-        }
-        return null!;
-    }
-
-    
-    public ObservableCollection<TblFood> GetTblFoodsCollectionOrderByFoodNameFromFilterText(string filterText)
-    {
-        if (_context.TblFoods != null)
-        {
-            var collection = new ObservableCollection<TblFood>(_context.TblFoods
-                .Where(e => e.FoodName.StartsWith(filterText))
-                .OrderBy(e => e.FoodName)
-            );
-            return collection;
-
-        }
-        return null!;
-    }
-
-    public async Task<List<TblFood>> GetFoodsByNameOrIdAsync(string query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-            return [];
-
-        // Prüfen, ob Query eine ID ist
-        var isId = int.TryParse(query, out var idValue);
-
-        using var context = new AtisDbContext();
-        var queryable = _context.TblFoods.AsQueryable();
-
-        if (isId)
-        {
-            // Nur ID-Suche
-            return await queryable
-                .Where(f => f.FoodId == idValue)
-                .Distinct()
-                .ToListAsync();
-        }
-        else
-        {
-            // Nur Namenssuche (beginnt mit)
-            return await queryable
-                .Where(f => EF.Functions.Like(f.FoodName, $"{query}%"))
-                .Distinct()
-                .ToListAsync();
-        }
-    }
-
-    public ObservableCollection<TblDisease> GetTblDiseasesCollectionOrderByDiseaseNameFromFilterText(string filterText)
-    {
-        if (_context.TblDiseases != null)
-        {
-            var collection = new ObservableCollection<TblDisease>(_context.TblDiseases
-                .Where(e => e.DiseaseName.StartsWith(filterText))
-                .OrderBy(e => e.DiseaseName)
-            );
-            return collection;
-
-        }
-        return null!;
-    }
-    public async Task<List<TblDisease>> GetDiseasesByNameOrIdAsync(string query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-            return [];
-
-        // Prüfen, ob Query eine ID ist
-        var isId = int.TryParse(query, out int idValue);
-
-        using var context = new AtisDbContext();
-        var queryable = _context.TblDiseases.AsQueryable();
-
-        if (isId)
-        {
-            // Nur ID-Suche
-            return await queryable
-                .Where(f => f.DiseaseId == idValue)
-                .Distinct()
-                .ToListAsync();
-        }
-        else
-        {
-            // Nur Namenssuche (beginnt mit)
-            return await queryable
-                .Where(f => EF.Functions.Like(f.DiseaseName, $"{query}%"))
-                .Distinct()
-                .ToListAsync();
-        }
-    }
-
-    public ObservableCollection<TblMiscellaneous> GetTblMiscellaneoussesCollectionOrderByMiscellaneousNameFromFilterText(string filterText)
-    {
-        if (_context.TblMiscellaneousses != null)
-        {
-            var collection = new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
-                .Where(e => e.MiscellaneousName.StartsWith(filterText))
-                .OrderBy(e => e.MiscellaneousName)
-            );
-            return collection;
-
-        }
-        return null!;
-    }
-
-    public async Task<List<TblMiscellaneous>> GetMiscellaneoussesByNameOrIdAsync(string query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-            return [];
-
-        // Prüfen, ob Query eine ID ist
-        var isId = int.TryParse(query, out int idValue);
-
-        using var context = new AtisDbContext();
-        var queryable = _context.TblMiscellaneousses.AsQueryable();
-
-        if (isId)
-        {
-            // Nur ID-Suche
-            return await queryable
-                .Where(f => f.MiscellaneousId == idValue)
-                .Distinct()
-                .ToListAsync();
-        }
-        else
-        {
-            // Nur Namenssuche (beginnt mit)
-            return await queryable
-                .Where(f => EF.Functions.Like(f.MiscellaneousName, $"{query}%"))
-                .Distinct()
-                .ToListAsync();
-        }
-    }
-
-    #endregion Search_Gets
-
-    #region Report_Gets
-
-    #region Regnum
-
-    public Tbl03Regnum GetRegnumSingleByRegnumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl03Regnums != null)
-        {
-            var single = context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id &&
-                                                                   a.RegnumName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-    public Tbl03Regnum GetRegnumSingleByRegnumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl03Regnums != null)
-        {
-            var single = context.Tbl03Regnums.SingleOrDefault(a => a.RegnumId == id);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl03Regnums != null)
-        {
-            var collection = new ObservableCollection<Tbl03Regnum>(context.Tbl03Regnums
-                .Where(e => e.RegnumId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl06Phylum> CollPhylumsByRegnumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl06Phylums != null)
-        {
-            var collection = new ObservableCollection<Tbl06Phylum>(context.Tbl06Phylums
-            .Where(e => e.RegnumId == id &&
-                        e.PhylumName.Contains(Value) == false)
-            .OrderBy(a => a.PhylumName));
-            return collection;
-        }
-        return null!;
-        ;
-    }
-    //References
-    public ObservableCollection<Tbl90Reference> CollExpertsByRegnumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.RegnumId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByRegnumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.RegnumId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByRegnumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.RegnumId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    //Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByRegnumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
-                .Where(e => e.RegnumId == id));
-            return collection;
-        }
-        return null!;
-    }
-#endregion Regnum
-
-    #region Phylum
-    public Tbl06Phylum GetPhylumSingleByPhylumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl06Phylums != null)
-        {
-            var single = context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id &&
-                                                                  a.PhylumName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-    public Tbl06Phylum GetPhylumSingleByPhylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl06Phylums != null)
-        {
-            var single = context.Tbl06Phylums.SingleOrDefault(a => a.PhylumId == id);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl06Phylum> CollPhylumsByPhylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl06Phylums != null)
-        {
-            var collection = new ObservableCollection<Tbl06Phylum>(context.Tbl06Phylums
-                .Where(e => e.PhylumId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl12Subphylum> CollSubphylumsByPhylumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl12Subphylums != null)
-        {
-            var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
-                .Where(e => e.PhylumId == id &&
-                            e.SubphylumName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int RegnumIdFromPhylumsCollectionSelect(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl06Phylums != null)
-        {
-            var dbset = context.Tbl06Phylums.SingleOrDefault(p => p.PhylumId == id);
-
-            if (dbset != null)
-            {
-                return (int)dbset.RegnumId;
-            }
-        }
-
-        return 0;
-    }
-    //ForeignKey
-    public ObservableCollection<Tbl03Regnum> CollRegnumsByRegnumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl03Regnums != null)
-        {
-            var collection = new ObservableCollection<Tbl03Regnum>(context.Tbl03Regnums
-                .Where(e => e.RegnumId == id &&
-                            e.RegnumName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //References
-    public ObservableCollection<Tbl90Reference> CollExpertsByPhylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.PhylumId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByPhylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.PhylumId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByPhylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.PhylumId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    //Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByPhylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
-                .Where(e => e.PhylumId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion Phylum
-
-    #region Subphylum
-    public Tbl12Subphylum GetSubphylumSingleBySubphylumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl12Subphylums != null)
-        {
-            var single = context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id &&
-                                                                     a.SubphylumName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-    public Tbl12Subphylum GetSubphylumSingleBySubphylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl12Subphylums != null)
-        {
-            var single = context.Tbl12Subphylums.SingleOrDefault(a => a.SubphylumId == id);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl12Subphylums != null)
-        {
-            var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
-                .Where(e => e.SubphylumId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl18Superclass> CollSuperclassesBySubphylumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl18Superclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl18Superclass>(context.Tbl18Superclasses
-                .Where(e => e.SubphylumId == id &&
-                            e.SuperclassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int PhylumIdFromSubphylumsCollectionSelect(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl12Subphylums != null)
-        {
-            var dbset = context.Tbl12Subphylums
-                .SingleOrDefault(p => p.SubphylumId == id);
-
-            if (dbset != null)
-            {
-                return dbset.PhylumId;
-            }
-        }
-
-        return 0;
-    }
-    //ForeignKey
-    public ObservableCollection<Tbl06Phylum> CollPhylumsByPhylumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl06Phylums != null)
-        {
-            var collection = new ObservableCollection<Tbl06Phylum>(context.Tbl06Phylums
-                .Where(e => e.PhylumId == id &&
-                            e.PhylumName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //References
-    public ObservableCollection<Tbl90Reference> CollExpertsBySubphylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SubphylumId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySubphylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SubphylumId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySubphylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SubphylumId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    //Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySubphylumId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
-                .Where(e => e.SubphylumId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion Subphylum
-
-    #region Superclass
-    public Tbl18Superclass GetSuperclassSingleBySuperclassIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl18Superclasses != null)
-        {
-            var single = context.Tbl18Superclasses.SingleOrDefault(a => a.SuperclassId == id &&
-                                                                      a.SuperclassName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-
-        return null!;
-    }
-
-    public ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl18Superclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl18Superclass>(context.Tbl18Superclasses
-                .Where(e => e.SuperclassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl21Class> CollClassesBySuperclassIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl21Classes != null)
-        {
-            var collection = new ObservableCollection<Tbl21Class>(context.Tbl21Classes
-                .Where(e => e.SuperclassId == id &&
-                            e.ClassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    //public int SubdivisionIdFromSuperclassesCollectionSelect(int id)
-    //{
-    //    if (_context.Tbl18Superclasses != null)
-    //    {
-    //        var dbset = _context.Tbl18Superclasses
-    //            .SingleOrDefault(p => p.SuperclassId == id);
-
-    //        if (dbset != null)
-    //        {
-    //            return dbset.SubdivisionId;
-    //        }
-    //    }
-
-    //    return 0;
-    //}
-    public int SubphylumIdFromSuperclassesCollectionSelect(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl18Superclasses != null)
-        {
-            var dbset = context.Tbl18Superclasses
-                .SingleOrDefault(p => p.SuperclassId == id);
-
-            if (dbset != null)
-            {
-                return dbset.SubphylumId;
-            }
-        }
-
-        return 0;
-    }
-    //ForeignKey
-    public ObservableCollection<Tbl12Subphylum> CollSubphylumsBySubphylumIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl12Subphylums != null)
-        {
-            var collection = new ObservableCollection<Tbl12Subphylum>(context.Tbl12Subphylums
-                .Where(e => e.SubphylumId == id &&
-                            e.SubphylumName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //References
-    public ObservableCollection<Tbl90Reference> CollExpertsBySuperclassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SuperclassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySuperclassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SuperclassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySuperclassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SuperclassId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    //Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySuperclassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
-                .Where(e => e.SuperclassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion Superclass
-
-    #region Class
-    public Tbl21Class GetClassSingleByClassIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl21Classes != null)
-        {
-            var single = context.Tbl21Classes.SingleOrDefault(a => a.ClassId == id &&
-                                                                 a.ClassName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-
-        return null!;
-    }
-
-    public ObservableCollection<Tbl21Class> CollClassesByClassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl21Classes != null)
-        {
-            var collection = new ObservableCollection<Tbl21Class>(context.Tbl21Classes
-                .Where(e => e.ClassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl24Subclass> CollSubclassesByClassIdAndHash(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl24Subclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl24Subclass>(context.Tbl24Subclasses
-                .Where(e => e.ClassId == id &&
-                            e.SubclassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SuperclassIdFromClassesCollectionSelect(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl21Classes != null)
-        {
-            var dbset = context.Tbl21Classes
-                .SingleOrDefault(p => p.ClassId == id);
-
-            if (dbset != null)
-            {
-                return dbset.SuperclassId;
-            }
-        }
-
-        return 0;
-    }
-    //ForeignKey
-    public ObservableCollection<Tbl18Superclass> CollSuperclassesBySuperclassIdAndHash(int id)
-    {
-         using var context = _factory.CreateDbContext();
-
-        if (context.Tbl18Superclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl18Superclass>(context.Tbl18Superclasses
-                .Where(e => e.SuperclassId == id &&
-                            e.SuperclassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //References
-    public ObservableCollection<Tbl90Reference> CollExpertsByClassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.ClassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByClassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.ClassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByClassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.ClassId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    //Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByClassId(int id)
-    {
-        using var context = _factory.CreateDbContext();
-
-        if (context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(context.Tbl93Comments
-                .Where(e => e.ClassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion Class
-
-    #region Subclass
-    public Tbl24Subclass GetSubclassSingleBySubclassIdAndHash(int id)
-    {
-        if (_context.Tbl24Subclasses != null)
-        {
-            var single = _context.Tbl24Subclasses.SingleOrDefault(a => a.SubclassId == id &&
-                                                                      a.SubclassName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl24Subclass> CollSubclassesBySubclassId(int id)
-    {
-        if (_context.Tbl24Subclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-                .Where(e => e.SubclassId == id));
-            //var collection = new ObservableCollection<Tbl24Subclass>(_uow.Tbl24Subclasses
-            //    .Find(e => e.SubclassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl27Infraclass> CollInfraclassesBySubclassIdAndHash(int id)
-    {
-        if (_context.Tbl27Infraclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl27Infraclass>(_context.Tbl27Infraclasses
-                .Where(e => e.SubclassId == id &&
-                            e.InfraclassName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl27Infraclass>(_uow.Tbl27Infraclasses
-            //    .Find(e => e.SubclassId == id &&
-            //               e.InfraclassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int ClassIdFromSubclassesCollectionSelect(int id)
-    {
-        if (_context.Tbl24Subclasses != null)
-        {
-            var dbset = _context.Tbl24Subclasses
-                .SingleOrDefault(p => p.SubclassId == id);
-
-            if (dbset != null)
-            {
-                return dbset.ClassId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl21Class> CollClassesByClassIdAndHash(int id)
-    {
-        if (_context.Tbl21Classes != null)
-        {
-            var collection = new ObservableCollection<Tbl21Class>(_context.Tbl21Classes
-                .Where(e => e.ClassId == id &&
-                            e.ClassName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl21Class>(_uow.Tbl21Classes
-            //    .Find(e => e.ClassId == id &&
-            //               e.ClassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    // References
-    public ObservableCollection<Tbl90Reference> CollExpertsBySubclassId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SubclassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySubclassId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SubclassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySubclassId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SubclassId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySubclassId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SubclassId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.SubclassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Infraclass
-    public Tbl27Infraclass GetInfraclassSingleByInfraclassIdAndHash(int id)
-    {
-        if (_context.Tbl27Infraclasses != null)
-        {
-            var single = _context.Tbl27Infraclasses.SingleOrDefault(a => a.InfraclassId == id &&
-                                                                      a.InfraclassName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl27Infraclass> CollInfraclassesByInfraclassId(int id)
-    {
-        if (_context.Tbl27Infraclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl27Infraclass>(_context.Tbl27Infraclasses
-                .Where(e => e.InfraclassId == id));
-            //var collection = new ObservableCollection<Tbl27Infraclass>(_uow.Tbl27Infraclasses
-            //    .Find(e => e.InfraclassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl30Legio> CollLegiosByInfraclassIdAndHash(int id)
-    {
-        if (_context.Tbl30Legios != null)
-        {
-            var collection = new ObservableCollection<Tbl30Legio>(_context.Tbl30Legios
-                .Where(e => e.InfraclassId == id &&
-                            e.LegioName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl30Legio>(_uow.Tbl30Legios
-            //    .Find(e => e.InfraclassId == id &&
-            //               e.LegioName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SubclassIdFromInfraclassesCollectionSelect(int id)
-    {
-        if (_context.Tbl27Infraclasses != null)
-        {
-            var dbset = _context.Tbl27Infraclasses
-                .SingleOrDefault(p => p.InfraclassId == id);
-
-            if (dbset != null)
-            {
-                return dbset.SubclassId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl24Subclass> CollSubclassesBySubclassIdAndHash(int id)
-    {
-        if (_context.Tbl24Subclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl24Subclass>(_context.Tbl24Subclasses
-                .Where(e => e.SubclassId == id &&
-                            e.SubclassName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl24Subclass>(_uow.Tbl24Subclasses
-            //    .Find(e => e.SubclassId == id &&
-            //               e.SubclassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollExpertsByInfraclassId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.InfraclassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByInfraclassId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.InfraclassId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByInfraclassId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.InfraclassId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByInfraclassId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.InfraclassId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.InfraclassId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Legio
-    public Tbl30Legio GetLegioSingleByLegioIdAndHash(int id)
-    {
-        if (_context.Tbl30Legios != null)
-        {
-            var single = _context.Tbl30Legios.SingleOrDefault(a => a.LegioId == id &&
-                                                                 a.LegioName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl30Legio> CollLegiosByLegioId(int id)
-    {
-        if (_context.Tbl30Legios != null)
-        {
-            var collection = new ObservableCollection<Tbl30Legio>(_context.Tbl30Legios
-                .Where(e => e.LegioId == id));
-            //var collection = new ObservableCollection<Tbl30Legio>(_uow.Tbl30Legios
-            //    .Find(e => e.LegioId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl33Ordo> CollOrdosByLegioIdAndHash(int id)
-    {
-        if (_context.Tbl33Ordos != null)
-        {
-            var collection = new ObservableCollection<Tbl33Ordo>(_context.Tbl33Ordos
-                .Where(e => e.LegioId == id &&
-                            e.OrdoName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl33Ordo>(_uow.Tbl33Ordos
-            //    .Find(e => e.LegioId == id &&
-            //               e.OrdoName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int InfraclassIdFromLegiosCollectionSelect(int id)
-    {
-        if (_context.Tbl30Legios != null)
-        {
-            var dbset = _context.Tbl30Legios
-                .SingleOrDefault(p => p.LegioId == id);
-
-            if (dbset != null)
-            {
-                return dbset.InfraclassId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl27Infraclass> CollInfraclassesByInfraclassIdAndHash(int id)
-    {
-        if (_context.Tbl27Infraclasses != null)
-        {
-            var collection = new ObservableCollection<Tbl27Infraclass>(_context.Tbl27Infraclasses
-                .Where(e => e.InfraclassId == id &&
-                            e.InfraclassName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl27Infraclass>(_uow.Tbl27Infraclasses
-            //    .Find(e => e.InfraclassId == id &&
-            //               e.InfraclassName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollExpertsByLegioId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.LegioId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByLegioId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.LegioId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByLegioId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.LegioId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByLegioId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.LegioId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.LegioId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Ordo
-    public Tbl33Ordo GetOrdoSingleByOrdoIdAndHash(int id)
-    {
-        if (_context.Tbl33Ordos != null)
-        {
-            var single = _context.Tbl33Ordos.SingleOrDefault(a => a.OrdoId == id &&
-                                                                a.OrdoName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl33Ordo> CollOrdosByOrdoId(int id)
-    {
-        if (_context.Tbl33Ordos != null)
-        {
-            var collection = new ObservableCollection<Tbl33Ordo>(_context.Tbl33Ordos
-                .Where(e => e.OrdoId == id));
-            //var collection = new ObservableCollection<Tbl33Ordo>(_uow.Tbl33Ordos
-            //    .Find(e => e.OrdoId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl36Subordo> CollSubordosByOrdoIdAndHash(int id)
-    {
-        if (_context.Tbl36Subordos != null)
-        {
-            var collection = new ObservableCollection<Tbl36Subordo>(_context.Tbl36Subordos
-                .Where(e => e.OrdoId == id &&
-                            e.SubordoName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl36Subordo>(_uow.Tbl36Subordos
-            //    .Find(e => e.OrdoId == id &&
-            //               e.SubordoName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int LegioIdFromOrdosCollectionSelect(int id)
-    {
-        if (_context.Tbl33Ordos != null)
-        {
-            var dbset = _context.Tbl33Ordos
-                .SingleOrDefault(p => p.OrdoId == id);
-
-            if (dbset != null)
-            {
-                return dbset.LegioId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl30Legio> CollLegiosByLegioIdAndHash(int id)
-    {
-        if (_context.Tbl30Legios != null)
-        {
-            var collection = new ObservableCollection<Tbl30Legio>(_context.Tbl30Legios
-                .Where(e => e.LegioId == id &&
-                            e.LegioName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl30Legio>(_uow.Tbl30Legios
-            //    .Find(e => e.LegioId == id &&
-            //               e.LegioName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByOrdoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.OrdoId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByOrdoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.OrdoId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByOrdoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.OrdoId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByOrdoId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.OrdoId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.OrdoId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Subordo
-    public Tbl36Subordo GetSubordoSingleBySubordoIdAndHash(int id)
-    {
-        if (_context.Tbl36Subordos != null)
-        {
-            var single = _context.Tbl36Subordos.SingleOrDefault(a => a.SubordoId == id &&
-                                                                   a.SubordoName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl36Subordo> CollSubordosBySubordoId(int id)
-    {
-        if (_context.Tbl36Subordos != null)
-        {
-            var collection = new ObservableCollection<Tbl36Subordo>(_context.Tbl36Subordos
-                .Where(e => e.SubordoId == id));
-            //var collection = new ObservableCollection<Tbl36Subordo>(_uow.Tbl36Subordos
-            //    .Find(e => e.SubordoId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl39Infraordo> CollInfraordosBySubordoIdAndHash(int id)
-    {
-        if (_context.Tbl39Infraordos != null)
-        {
-            var collection = new ObservableCollection<Tbl39Infraordo>(_context.Tbl39Infraordos
-                .Where(e => e.SubordoId == id &&
-                            e.InfraordoName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl39Infraordo>(_uow.Tbl39Infraordos
-            //    .Find(e => e.SubordoId == id &&
-            //               e.InfraordoName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int OrdoIdFromSubordosCollectionSelect(int id)
-    {
-        if (_context.Tbl36Subordos != null)
-        {
-            var dbset = _context.Tbl36Subordos
-                .SingleOrDefault(p => p.SubordoId == id);
-
-            if (dbset != null)
-            {
-                return dbset.OrdoId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl33Ordo> CollOrdosByOrdoIdAndHash(int id)
-    {
-        if (_context.Tbl33Ordos != null)
-        {
-            var collection = new ObservableCollection<Tbl33Ordo>(_context.Tbl33Ordos
-                .Where(e => e.OrdoId == id &&
-                            e.OrdoName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl33Ordo>(_uow.Tbl33Ordos
-            //    .Find(e => e.OrdoId == id &&
-            //               e.OrdoName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsBySubordoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SubordoId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySubordoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SubordoId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySubordoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SubordoId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySubordoId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SubordoId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.SubordoId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Infraordo
-    public Tbl39Infraordo GetInfraordoSingleByInfraordoIdAndHash(int id)
-    {
-        if (_context.Tbl39Infraordos != null)
-        {
-            var single = _context.Tbl39Infraordos.SingleOrDefault(a => a.InfraordoId == id &&
-                                                                     a.InfraordoName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl39Infraordo> CollInfraordosByInfraordoId(int id)
-    {
-        if (_context.Tbl39Infraordos != null)
-        {
-            var collection = new ObservableCollection<Tbl39Infraordo>(_context.Tbl39Infraordos
-                .Where(e => e.InfraordoId == id));
-            //var collection = new ObservableCollection<Tbl39Infraordo>(_uow.Tbl39Infraordos
-            //    .Find(e => e.InfraordoId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl42Superfamily> CollSuperfamiliesByInfraordoIdAndHash(int id)
-    {
-        if (_context.Tbl42Superfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl42Superfamily>(_context.Tbl42Superfamilies
-                .Where(e => e.InfraordoId == id &&
-                            e.SuperfamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl42Superfamily>(_uow.Tbl42Superfamilies
-            //    .Find(e => e.InfraordoId == id &&
-            //               e.SuperfamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SubordoIdFromInfraordosCollectionSelect(int id)
-    {
-        if (_context.Tbl39Infraordos != null)
-        {
-            var dbset = _context.Tbl39Infraordos
-                .SingleOrDefault(p => p.InfraordoId == id);
-
-            if (dbset != null)
-            {
-                return dbset.SubordoId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl36Subordo> CollSubordosBySubordoIdAndHash(int id)
-    {
-        if (_context.Tbl36Subordos != null)
-        {
-            var collection = new ObservableCollection<Tbl36Subordo>(_context.Tbl36Subordos
-                .Where(e => e.SubordoId == id &&
-                            e.SubordoName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl36Subordo>(_uow.Tbl36Subordos
-            //    .Find(e => e.SubordoId == id &&
-            //               e.SubordoName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByInfraordoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.InfraordoId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByInfraordoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.InfraordoId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByInfraordoId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.InfraordoId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByInfraordoId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.InfraordoId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.InfraordoId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Superfamily
-    public Tbl42Superfamily GetSuperfamilySingleBySuperfamilyIdAndHash(int id)
-    {
-        if (_context.Tbl42Superfamilies != null)
-        {
-            var single = _context.Tbl42Superfamilies.SingleOrDefault(a => a.SuperfamilyId == id &&
-                                                                       a.SuperfamilyName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl42Superfamily> CollSuperfamiliesBySuperfamilyId(int id)
-    {
-        if (_context.Tbl42Superfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl42Superfamily>(_context.Tbl42Superfamilies
-                .Where(e => e.SuperfamilyId == id));
-            //var collection = new ObservableCollection<Tbl42Superfamily>(_uow.Tbl42Superfamilies
-            //    .Find(e => e.SuperfamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl45Family> CollFamiliesBySuperfamilyIdAndHash(int id)
-    {
-        if (_context.Tbl45Families != null)
-        {
-            var collection = new ObservableCollection<Tbl45Family>(_context.Tbl45Families
-                .Where(e => e.SuperfamilyId == id &&
-                            e.FamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl45Family>(_uow.Tbl45Families
-            //    .Find(e => e.SuperfamilyId == id &&
-            //               e.FamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int InfraordoIdFromSuperfamiliesCollectionSelect(int id)
-    {
-        if (_context.Tbl42Superfamilies != null)
-        {
-            var dbset = _context.Tbl42Superfamilies
-                .SingleOrDefault(p => p.SuperfamilyId == id);
-
-            if (dbset != null)
-            {
-                return dbset.InfraordoId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl39Infraordo> CollInfraordosByInfraordoIdAndHash(int id)
-    {
-        if (_context.Tbl39Infraordos != null)
-        {
-            var collection = new ObservableCollection<Tbl39Infraordo>(_context.Tbl39Infraordos
-                .Where(e => e.InfraordoId == id &&
-                            e.InfraordoName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl39Infraordo>(_uow.Tbl39Infraordos
-            //    .Find(e => e.InfraordoId == id &&
-            //               e.InfraordoName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsBySuperfamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SuperfamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySuperfamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SuperfamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySuperfamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SuperfamilyId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySuperfamilyId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SuperfamilyId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.SuperfamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Family
-    public Tbl45Family GetFamilySingleByFamilyIdAndHash(int id)
-    {
-        if (_context.Tbl45Families != null)
-        {
-            var single = _context.Tbl45Families.SingleOrDefault(a => a.FamilyId == id &&
-                                                                  a.FamilyName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl45Family> CollFamiliesByFamilyId(int id)
-    {
-        if (_context.Tbl45Families != null)
-        {
-            var collection = new ObservableCollection<Tbl45Family>(_context.Tbl45Families
-                .Where(e => e.FamilyId == id));
-            //var collection = new ObservableCollection<Tbl45Family>(_uow.Tbl45Families
-            //    .Find(e => e.FamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl48Subfamily> CollSubfamiliesByFamilyIdAndHash(int id)
-    {
-        if (_context.Tbl48Subfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl48Subfamily>(_context.Tbl48Subfamilies
-                .Where(e => e.FamilyId == id &&
-                            e.SubfamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl48Subfamily>(_uow.Tbl48Subfamilies
-            //    .Find(e => e.FamilyId == id &&
-            //               e.SubfamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SuperfamilyIdFromFamiliesCollectionSelect(int id)
-    {
-        if (_context.Tbl45Families != null)
-        {
-            var dbset = _context.Tbl45Families
-                .SingleOrDefault(p => p.FamilyId == id);
-
-            if (dbset != null)
-            {
-               // return dbset.SuperfamilyId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl42Superfamily> CollSuperfamiliesBySuperfamilyIdAndHash(int id)
-    {
-        if (_context.Tbl42Superfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl42Superfamily>(_context.Tbl42Superfamilies
-                .Where(e => e.SuperfamilyId == id &&
-                            e.SuperfamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl42Superfamily>(_uow.Tbl42Superfamilies
-            //    .Find(e => e.SuperfamilyId == id &&
-            //               e.SuperfamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByFamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.FamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByFamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.FamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByFamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.FamilyId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByFamilyId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.FamilyId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.FamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Subfamily
-    public Tbl48Subfamily GetSubfamilySingleBySubfamilyIdAndHash(int id)
-    {
-        if (_context.Tbl48Subfamilies != null)
-        {
-            var single = _context.Tbl48Subfamilies.SingleOrDefault(a => a.SubfamilyId == id &&
-                                                                     a.SubfamilyName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl48Subfamily> CollSubfamiliesBySubfamilyId(int id)
-    {
-        if (_context.Tbl48Subfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl48Subfamily>(_context.Tbl48Subfamilies
-                .Where(e => e.SubfamilyId == id));
-            //var collection = new ObservableCollection<Tbl48Subfamily>(_uow.Tbl48Subfamilies
-            //    .Find(e => e.SubfamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl51Infrafamily> CollInfrafamiliesBySubfamilyIdAndHash(int id)
-    {
-        if (_context.Tbl51Infrafamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl51Infrafamily>(_context.Tbl51Infrafamilies
-                .Where(e => e.SubfamilyId == id &&
-                            e.InfrafamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl51Infrafamily>(_uow.Tbl51Infrafamilies
-            //    .Find(e => e.SubfamilyId == id &&
-            //               e.InfrafamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int FamilyIdFromSubfamiliesCollectionSelect(int id)
-    {
-        if (_context.Tbl48Subfamilies != null)
-        {
-            var dbset = _context.Tbl48Subfamilies
-                .SingleOrDefault(p => p.SubfamilyId == id);
-
-            if (dbset != null)
-            {
-                return dbset.FamilyId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl45Family> CollFamiliesByFamilyIdAndHash(int id)
-    {
-        if (_context.Tbl45Families != null)
-        {
-            var collection = new ObservableCollection<Tbl45Family>(_context.Tbl45Families
-                .Where(e => e.FamilyId == id &&
-                            e.FamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl45Family>(_uow.Tbl45Families
-            //    .Find(e => e.FamilyId == id &&
-            //               e.FamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsBySubfamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SubfamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySubfamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SubfamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySubfamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SubfamilyId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySubfamilyId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SubfamilyId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.SubfamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Infrafamily
-    public Tbl51Infrafamily GetInfrafamilySingleByInfrafamilyIdAndHash(int id)
-    {
-        if (_context.Tbl51Infrafamilies != null)
-        {
-            var single = _context.Tbl51Infrafamilies.SingleOrDefault(a => a.InfrafamilyId == id &&
-                                                                       a.InfrafamilyName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl51Infrafamily> CollInfrafamiliesByInfrafamilyId(int id)
-    {
-        if (_context.Tbl51Infrafamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl51Infrafamily>(_context.Tbl51Infrafamilies
-                .Where(e => e.InfrafamilyId == id));
-            //var collection = new ObservableCollection<Tbl51Infrafamily>(_uow.Tbl51Infrafamilies
-            //    .Find(e => e.InfrafamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl54Supertribus> CollSupertribussesByInfrafamilyIdAndHash(int id)
-    {
-        if (_context.Tbl54Supertribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-                .Where(e => e.InfrafamilyId == id &&
-                            e.SupertribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl54Supertribus>(_uow.Tbl54Supertribusses
-            //    .Find(e => e.InfrafamilyId == id &&
-            //               e.SupertribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SubfamilyIdFromInfrafamiliesCollectionSelect(int id)
-    {
-        if (_context.Tbl51Infrafamilies != null)
-        {
-            var dbset = _context.Tbl51Infrafamilies
-                .SingleOrDefault(p => p.InfrafamilyId == id);
-
-            if (dbset != null)
-            {
-              //  return dbset.SubfamilyId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl48Subfamily> CollSubfamiliesBySubfamilyIdAndHash(int id)
-    {
-        if (_context.Tbl48Subfamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl48Subfamily>(_context.Tbl48Subfamilies
-                .Where(e => e.SubfamilyId == id &&
-                            e.SubfamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl48Subfamily>(_uow.Tbl48Subfamilies
-            //    .Find(e => e.SubfamilyId == id &&
-            //               e.SubfamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByInfrafamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.InfrafamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByInfrafamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.InfrafamilyId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByInfrafamilyId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.InfrafamilyId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByInfrafamilyId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.InfrafamilyId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.InfrafamilyId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Supertribus
-    public Tbl54Supertribus GetSupertribusSingleBySupertribusIdAndHash(int id)
-    {
-        if (_context.Tbl54Supertribusses != null)
-        {
-            var single = _context.Tbl54Supertribusses.SingleOrDefault(a => a.SupertribusId == id &&
-                                                                       a.SupertribusName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl54Supertribus> CollSupertribussesBySupertribusId(int id)
-    {
-        if (_context.Tbl54Supertribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-                .Where(e => e.SupertribusId == id));
-            //var collection = new ObservableCollection<Tbl54Supertribus>(_uow.Tbl54Supertribusses
-            //    .Find(e => e.SupertribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl57Tribus> CollTribussesBySupertribusIdAndHash(int id)
-    {
-        if (_context.Tbl57Tribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-                .Where(e => e.SupertribusId == id &&
-                            e.TribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl57Tribus>(_uow.Tbl57Tribusses
-            //    .Find(e => e.SupertribusId == id &&
-            //               e.TribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int InfrafamilyIdFromSupertribussesCollectionSelect(int id)
-    {
-        if (_context.Tbl54Supertribusses != null)
-        {
-            var dbset = _context.Tbl54Supertribusses
-                .SingleOrDefault(p => p.SupertribusId == id);
-
-            if (dbset != null)
-            {
-                return dbset.InfrafamilyId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl51Infrafamily> CollInfrafamiliesByInfrafamilyIdAndHash(int id)
-    {
-        if (_context.Tbl51Infrafamilies != null)
-        {
-            var collection = new ObservableCollection<Tbl51Infrafamily>(_context.Tbl51Infrafamilies
-                .Where(e => e.InfrafamilyId == id &&
-                            e.InfrafamilyName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl51Infrafamily>(_uow.Tbl51Infrafamilies
-            //    .Find(e => e.InfrafamilyId == id &&
-            //               e.InfrafamilyName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsBySupertribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SupertribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySupertribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SupertribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySupertribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SupertribusId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySupertribusId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SupertribusId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.SupertribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Tribus
-    public Tbl57Tribus GetTribusSingleByTribusIdAndHash(int id)
-    {
-        if (_context.Tbl57Tribusses != null)
-        {
-            var single = _context.Tbl57Tribusses.SingleOrDefault(a => a.TribusId == id &&
-                                                                  a.TribusName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl57Tribus> CollTribussesByTribusId(int id)
-    {
-        if (_context.Tbl57Tribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-                .Where(e => e.TribusId == id));
-            //var collection = new ObservableCollection<Tbl57Tribus>(_uow.Tbl57Tribusses
-            //    .Find(e => e.TribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl60Subtribus> CollSubtribussesByTribusIdAndHash(int id)
-    {
-        if (_context.Tbl60Subtribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-                .Where(e => e.TribusId == id &&
-                            e.SubtribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl60Subtribus>(_uow.Tbl60Subtribusses
-            //    .Find(e => e.TribusId == id &&
-            //               e.SubtribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SupertribusIdFromTribussesCollectionSelect(int id)
-    {
-        //if (_context.Tbl57Tribusses != null)
-        //{
-        //    var dbset = _context.Tbl57Tribusses
-        //        .SingleOrDefault(p => p.TribusId == id);
-
-        //    if (dbset != null)
-        //    {
-        //        return dbset.SupertribusId;
-        //    }
-        //}
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl54Supertribus> CollSupertribussesBySupertribusIdAndHash(int id)
-    {
-        if (_context.Tbl54Supertribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl54Supertribus>(_context.Tbl54Supertribusses
-                .Where(e => e.SupertribusId == id &&
-                            e.SupertribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl54Supertribus>(_uow.Tbl54Supertribusses
-            //    .Find(e => e.SupertribusId == id &&
-            //               e.SupertribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByTribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.TribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByTribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.TribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByTribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.TribusId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByTribusId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.TribusId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.TribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Subtribus
-    public Tbl60Subtribus GetSubtribusSingleBySubtribusIdAndHash(int id)
-    {
-        if (_context.Tbl60Subtribusses != null)
-        {
-            var single = _context.Tbl60Subtribusses.SingleOrDefault(a => a.SubtribusId == id &&
-                                                                     a.SubtribusName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl60Subtribus> CollSubtribussesBySubtribusId(int id)
-    {
-        if (_context.Tbl60Subtribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-                .Where(e => e.SubtribusId == id));
-            //var collection = new ObservableCollection<Tbl60Subtribus>(_uow.Tbl60Subtribusses
-            //    .Find(e => e.SubtribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl63Infratribus> CollInfratribussesBySubtribusIdAndHash(int id)
-    {
-        if (_context.Tbl63Infratribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-                .Where(e => e.SubtribusId == id &&
-                            e.InfratribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl63Infratribus>(_uow.Tbl63Infratribusses
-            //    .Find(e => e.SubtribusId == id &&
-            //               e.InfratribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int TribusIdFromSubtribussesCollectionSelect(int id)
-    {
-        if (_context.Tbl60Subtribusses != null)
-        {
-            var dbset = _context.Tbl60Subtribusses
-                .SingleOrDefault(p => p.SubtribusId == id);
-
-            if (dbset != null)
-            {
-              //  return dbset.TribusId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl57Tribus> CollTribussesByTribusIdAndHash(int id)
-    {
-        if (_context.Tbl57Tribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl57Tribus>(_context.Tbl57Tribusses
-                .Where(e => e.TribusId == id &&
-                            e.TribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl57Tribus>(_uow.Tbl57Tribusses
-            //    .Find(e => e.TribusId == id &&
-            //               e.TribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsBySubtribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SubtribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySubtribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SubtribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySubtribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SubtribusId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySubtribusId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SubtribusId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.SubtribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Infratribus
-    public Tbl63Infratribus GetInfratribusSingleByInfratribusIdAndHash(int id)
-    {
-        if (_context.Tbl63Infratribusses != null)
-        {
-            var single = _context.Tbl63Infratribusses.SingleOrDefault(a => a.InfratribusId == id &&
-                                                                       a.InfratribusName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl63Infratribus> CollInfratribussesByInfratribusId(int id)
-    {
-        if (_context.Tbl63Infratribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-                .Where(e => e.InfratribusId == id));
-            //var collection = new ObservableCollection<Tbl63Infratribus>(_uow.Tbl63Infratribusses
-            //    .Find(e => e.InfratribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl66Genus> CollGenussesByInfratribusIdAndHash(int id)
-    {
-        if (_context.Tbl66Genusses != null)
-        {
-            var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-                .Where(e => e.InfratribusId == id &&
-                            e.GenusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl66Genus>(_uow.Tbl66Genusses
-            //    .Find(e => e.InfratribusId == id &&
-            //               e.GenusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int SubtribusIdFromInfratribussesCollectionSelect(int id)
-    {
-        if (_context.Tbl63Infratribusses != null)
-        {
-            var dbset = _context.Tbl63Infratribusses
-                .SingleOrDefault(p => p.InfratribusId == id);
-
-            if (dbset != null)
-            {
-     //           return dbset.SubtribusId;
-            }
-        }
-
-        return 0;
-    }
-    // ForeignKey
-    public ObservableCollection<Tbl60Subtribus> CollSubtribussesBySubtribusIdAndHash(int id)
-    {
-        if (_context.Tbl60Subtribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl60Subtribus>(_context.Tbl60Subtribusses
-                .Where(e => e.SubtribusId == id &&
-                            e.SubtribusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl60Subtribus>(_uow.Tbl60Subtribusses
-            //    .Find(e => e.SubtribusId == id &&
-            //               e.SubtribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsByInfratribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.InfratribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByInfratribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.InfratribusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByInfratribusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.InfratribusId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByInfratribusId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.InfratribusId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_uow.Tbl93Comments
-            //    .Find(e => e.InfratribusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion
-
-    #region Genus
-    public Tbl66Genus GetGenusSingleByGenusIdAndHash(int id)
-    {
-        if (_context.Tbl66Genusses != null)
-        {
-            var single = _context.Tbl66Genusses.SingleOrDefault(a => a.GenusId == id &&
-                                                                 a.GenusName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl66Genus> CollGenussesByGenusId(int id)
-    {
-        if (_context.Tbl66Genusses != null)
-        {
-            var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-                .Where(e => e.GenusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndHash(int id)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Where(e => e.GenusId == id &&
-                            e.SpeciesName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-
-    public ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                //        .Include(a => a.Tbl66Genusses)
-                .Where(e => e.GenusId == id &&
-                            e.Subspecies == null &&
-                            e.SpeciesName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-
-    //public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndHash(int id)
-    //{
-    //    if (_context.Tbl72PlSpeciesses != null)
-    //    {
-    //        var collection = new ObservableCollection<Tbl72PlSpecies>(_context.Tbl72PlSpeciesses
-    //            .Where(e => e.GenusId == id &&
-    //                        e.PlSpeciesName.Contains(Value) == false));
-    //        return collection;
-    //    }
-    //    return null!;
-    //}
-
-    //public ObservableCollection<Tbl72PlSpecies> CollPlSpeciessesByGenusIdAndSubspeciesIsNullAndHash(int id)
-    //{
-    //    if (_context.Tbl72PlSpeciesses != null)
-    //    {
-    //        var collection = new ObservableCollection<Tbl72PlSpecies>(_context.Tbl72PlSpeciesses
-    //            .Include(a => a.Tbl66Genusses)
-    //            .Where(e => e.GenusId == id &&
-    //                        e.Subspecies == null &&
-    //                        e.PlSpeciesName.Contains(Value) == false));
-    //        return collection;
-    //    }
-    //    return null!;
-    //}
-
-    //Function
-    public int InfratribusIdFromGenussesCollectionSelect(int id)
-    {
-        if (_context.Tbl66Genusses != null)
-        {
-            var dbset = _context.Tbl66Genusses
-                .SingleOrDefault(p => p.GenusId == id);
-
-            if (dbset != null)
-            {
-                return dbset.InfratribusId ?? 0;
-            }
-        }
-
-        return 0;
-    }
-    //ForeignKey
-    public ObservableCollection<Tbl63Infratribus> CollInfratribussesByInfratribusIdAndHash(int id)
-    {
-        if (_context.Tbl63Infratribusses != null)
-        {
-            var collection = new ObservableCollection<Tbl63Infratribus>(_context.Tbl63Infratribusses
-                .Where(e => e.InfratribusId == id &&
-                            e.InfratribusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //References
-    public ObservableCollection<Tbl90Reference> CollExpertsByGenusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.GenusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesByGenusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.GenusId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsByGenusId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.GenusId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    //Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsByGenusId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.GenusId == id));
-            //var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-            //    .Where(e => e.GenusId == id));
-            return collection;
-        }
-        return null!;
-    }
-    #endregion Genus
-
-    #region Species
-    public Tbl75Species GetSpeciesSingleBySpeciesIdAndHash(int id)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var single = _context.Tbl75Speciesses.SingleOrDefault(a => a.SpeciesId == id &&
-                                                                     a.SpeciesName.Contains(Value) == false);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-
-    public Tbl75Species GetSpeciesSingleBySpeciesId(int speciesid)
-    {
-        // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = _context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == speciesid);
-        return single;
-    }
-    public Tbl75Species GetSpeciesSingleModelBySpeciesId(int speciesid)
-    {
-        // var single = _uow.Tbl69FiSpeciesses.GetById(id);
-        var single = _context.Tbl75Speciesses.FirstOrDefault(a => a.SpeciesId == speciesid);
-        return single;
-    }
-
-    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesId(int speciesid)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Where(e => e.SpeciesId == speciesid));
-            return collection;
-        }
-        return null!;
+        return await context.Tbl24Subclasses
+            .AsNoTracking()
+            .Where(e => e.SubclassName != null && !e.SubclassName.Contains("#"))
+            .Where(e =>
+                e.SubclassName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SubclassName)
+            .ToListAsync();
     }
-    public ObservableCollection<Tbl75Species> CollSpeciesSubsBySpeciesNameandGenusId(string name, int genusId)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Genus)
-                .Where(e => e.GenusId == genusId &&
-                            e.SpeciesName == name &&
-                            e.Subspecies != null &&
-                            e.Subspecies != string.Empty)
-                .OrderBy(a => a.Genus.GenusName)
-                .ThenBy(a => a.SpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndNotEmptySubspecies(int id, string name)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Genus)
-                .Where(e => e.GenusId == id &&
-                            e.SpeciesName == name &&
-                            e.Subspecies != null &&
-                            e.Subspecies != string.Empty)
-                .OrderBy(a => a.Genus.GenusName)
-                .ThenBy(a => a.SpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
+    public async Task<IEnumerable<Tbl27Infraclass>> SearchInfraclassForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl27Infraclass>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl27Infraclasses
+            .AsNoTracking()
+            .Where(e => e.InfraclassName != null && !e.InfraclassName.Contains("#"))
+            .Where(e =>
+                e.InfraclassName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.InfraclassName)
+            .ToListAsync();
     }
-
-    //FiSpeciessesCollection = new ObservableCollection<Tbl69FiSpecies>(__context.Tbl69FiSpeciesses
-    //.Include(a => a.Tbl66Genusses)
-    //.Where(e => e.GenusId == id &&
-    //e.Subspecies == null &&
-    //e.FiSpeciesName.Contains(Value) == false));
 
-    public ObservableCollection<Tbl75Species> CollSpeciessesByGenusIdAndSpeciesNameAndEmptySubspecies(int id, string name)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Genus)
-                .Where(e => e.GenusId == id &&
-                            e.SpeciesName == name &&
-                            (e.Subspecies == null || e.Subspecies == string.Empty) &&
-                            (e.Divers == null || e.Divers == string.Empty))
-                .OrderBy(a => a.Genus.GenusName)
-                .ThenBy(a => a.SpeciesName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl75Species> CollSpeciessesBySpeciesNameAndSubspeciesAndDivers(string speciesName, string subspecies,
-        string divers)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var collection = new ObservableCollection<Tbl75Species>(_context.Tbl75Speciesses
-                .Include(d => d.Genus)
-                .Where(e => e.SpeciesName == speciesName && e.Subspecies == subspecies && e.Divers == divers)
-                .OrderBy(a => a.Genus.GenusName)
-                .ThenBy(a => a.SpeciesName)
-                .ThenBy(a => a.Subspecies)
-                .ThenBy(a => a.Divers));
-            return collection;
-        }
-        return null!;
-    }
-    //direct children
-    public ObservableCollection<Tbl78Name> CollNamesBySpeciesIdAndHash(int id)
-    {
-        if (_context.Tbl78Names != null)
-        {
-            var collection = new ObservableCollection<Tbl78Name>(_context.Tbl78Names
-                .Where(e => e.SpeciesId == id &&
-                            e.NameName.Contains(Value) == false)
-                .OrderBy(r => r.NameName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl84Synonym> CollSynonymsBySpeciesIdAndHash(int id)
-    {
-        if (_context.Tbl84Synonyms != null)
-        {
-            var collection = new ObservableCollection<Tbl84Synonym>(_context.Tbl84Synonyms
-                .Where(e => e.SpeciesId == id &&
-                            e.SynonymName.Contains(Value) == false)
-                .OrderBy(r => r.SynonymName));
-            return collection;
-        }
-        return null!;
-    }
-    //Function
-    public int GenusIdFromSpeciessesCollectionSelect(int id)
-    {
-        if (_context.Tbl75Speciesses != null)
-        {
-            var dbset = _context.Tbl75Speciesses
-                .SingleOrDefault(p => p.SpeciesId == id);
-
-            if (dbset != null)
-            {
-                return dbset.GenusId;
-            }
-        }
-
-        return 0;
-    }
-    //ForeignKey
-    public ObservableCollection<Tbl66Genus> CollGenussesByGenusIdAndHash(int id)
-    {
-        if (_context.Tbl66Genusses != null)
-        {
-            var collection = new ObservableCollection<Tbl66Genus>(_context.Tbl66Genusses
-                .Where(e => e.GenusId == id &&
-                            e.GenusName.Contains(Value) == false));
-            //var collection = new ObservableCollection<Tbl66Genus>(_uow.Tbl66Genusses
-            //    .Find(e => e.GenusId == id &&
-            //               e.GenusName.Contains(Value) == false));
-            return collection;
-        }
-        return null!;
-    }
-    //Reference
-    public ObservableCollection<Tbl90Reference> CollExpertsBySpeciesId(int id)
+    public async Task<IEnumerable<Tbl30Legio>> SearchLegioForReportAsync(string? search)
     {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefExperts)
-                .Where(e => e.RefExpertId == e.Tbl90RefExperts.RefExpertId &&
-                            e.SpeciesId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefSourceId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefExperts.RefExpertName));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollSourcesBySpeciesId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefSources)
-                .Where(e => e.RefSourceId == e.Tbl90RefSources.RefSourceId &&
-                            e.SpeciesId == id &&
-                            e.RefAuthorId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(a => a.Tbl90RefSources.RefSourceName)
-                .ThenBy(a => a.Tbl90RefSources.SourceYear));
-            return collection;
-        }
-        return null!;
-    }
-    public ObservableCollection<Tbl90Reference> CollAuthorsBySpeciesId(int id)
-    {
-        if (_context.Tbl90References != null)
-        {
-            var collection = new ObservableCollection<Tbl90Reference>(_context.Tbl90References
-                .Include(a => a.Tbl90RefAuthors)
-                .Where(e => e.RefAuthorId == e.Tbl90RefAuthors.RefAuthorId &&
-                            e.SpeciesId == id &&
-                            e.RefSourceId.HasValue == false &&
-                            e.RefExpertId.HasValue == false)
-                .OrderBy(e => e.Tbl90RefAuthors.RefAuthorName)
-                .ThenBy(e => e.Tbl90RefAuthors.ArticelTitle)
-                .ThenBy(e => e.Tbl90RefAuthors.BookName)
-                .ThenBy(e => e.Tbl90RefAuthors.Page1)
-                .ThenBy(e => e.Tbl90RefAuthors.Publisher));
-            return collection;
-        }
-        return null!;
-    }
-    // Comments
-    public ObservableCollection<Tbl93Comment> CollCommentsBySpeciesId(int id)
-    {
-        if (_context.Tbl93Comments != null)
-        {
-            var collection = new ObservableCollection<Tbl93Comment>(_context.Tbl93Comments
-                .Where(e => e.SpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //Images
-    public ObservableCollection<Tbl81Image> CollImagesBySpeciesId(int id)
-    {
-        if (_context.Tbl81Images != null)
-        {
-            var collection = new ObservableCollection<Tbl81Image>(_context.Tbl81Images
-                .Where(e => e.SpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
-    //Geographics
-    public ObservableCollection<Tbl87Geographic> CollGeographicsBySpeciesId(int id)
-    {
-        if (_context.Tbl87Geographics != null)
-        {
-            var collection = new ObservableCollection<Tbl87Geographic>(_context.Tbl87Geographics
-                .Where(e => e.SpeciesId == id));
-            return collection;
-        }
-        return null!;
-    }
-
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl30Legio>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
 
-    #endregion
-
-    #region Disease
-
-    public TblDisease GetDiseaseSingleByDiseaseId(int id)
-    {
-        if (_context.TblDiseases != null)
-        {
-            var single = _context.TblDiseases.SingleOrDefault(a => a.DiseaseId == id);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
-    }
-    public ObservableCollection<TblDisease> CollDiseasesByDiseaseId(int id)
-    {
-        if (_context.TblDiseases != null)
-        {
-            var collection = new ObservableCollection<TblDisease>(_context.TblDiseases
-                .Where(e => e.DiseaseId == id));
-            return collection;
-        }
-        return null!;
+        return await context.Tbl30Legios
+            .AsNoTracking()
+            .Where(e => e.LegioName != null && !e.LegioName.Contains("#"))
+            .Where(e =>
+                e.LegioName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.LegioName)
+            .ToListAsync();
     }
-
-
-    #endregion Disease
-
-    #region Food
+    public async Task<IEnumerable<Tbl33Ordo>> SearchOrdoForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl33Ordo>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
 
-    public ObservableCollection<TblFood> CollFoodsByFoodId(int id)
-    {
-        if (_context.TblFoods != null)
-        {
-            var collection = new ObservableCollection<TblFood>(_context.TblFoods
-                .Where(e => e.FoodId == id));
-            return collection;
-        }
-        return null!;
+        return await context.Tbl33Ordos
+            .AsNoTracking()
+            .Where(e => e.OrdoName != null && !e.OrdoName.Contains("#"))
+            .Where(e =>
+                e.OrdoName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.OrdoName)
+            .ToListAsync();
     }
-
-
-    public TblFood GetFoodSingleByFoodId(int id)
-    {
-        if (_context.TblFoods != null)
-        {
-            var single = _context.TblFoods.SingleOrDefault(a => a.FoodId == id);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
+    public async Task<IEnumerable<Tbl36Subordo>> SearchSubordoForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl36Subordo>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl36Subordos
+            .AsNoTracking()
+            .Where(e => e.SubordoName != null && !e.SubordoName.Contains("#"))
+            .Where(e =>
+                e.SubordoName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SubordoName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl39Infraordo>> SearchInfraordoForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl39Infraordo>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl39Infraordos
+            .AsNoTracking()
+            .Where(e => e.InfraordoName != null && !e.InfraordoName.Contains("#"))
+            .Where(e =>
+                e.InfraordoName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.InfraordoName)
+            .ToListAsync();
     }
 
+    public async Task<IEnumerable<Tbl42Superfamily>> SearchSuperfamilyForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl42Superfamily>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
 
-    #endregion Food
-
-    #region Miscellaneous
-
-    public ObservableCollection<TblMiscellaneous> CollMiscellaneoussesByMiscellaneousId(int id)
-    {
-        if (_context.TblMiscellaneousses != null)
-        {
-            var collection = new ObservableCollection<TblMiscellaneous>(_context.TblMiscellaneousses
-                .Where(e => e.MiscellaneousId == id));
-            return collection;
-        }
-        return null!;
+        return await context.Tbl42Superfamilies
+            .AsNoTracking()
+            .Where(e => e.SuperfamilyName != null && !e.SuperfamilyName.Contains("#"))
+            .Where(e =>
+                e.SuperfamilyName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SuperfamilyName)
+            .ToListAsync();
     }
-
-    public TblMiscellaneous GetMiscellaneousSingleByMiscellaneousId(int id)
-    {
-        if (_context.TblMiscellaneousses != null)
-        {
-            var single = _context.TblMiscellaneousses.SingleOrDefault(a => a.MiscellaneousId == id);
-            if (single != null)
-            {
-                return single;
-            }
-        }
-        return null!;
+    public async Task<IEnumerable<Tbl45Family>> SearchFamilyForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl45Family>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl45Families
+            .AsNoTracking()
+            .Where(e => e.FamilyName != null && !e.FamilyName.Contains("#"))
+            .Where(e =>
+                e.FamilyName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.FamilyName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl48Subfamily>> SearchSubfamilyForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl48Subfamily>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl48Subfamilies
+            .AsNoTracking()
+            .Where(e => e.SubfamilyName != null && !e.SubfamilyName.Contains("#"))
+            .Where(e =>
+                e.SubfamilyName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SubfamilyName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl51Infrafamily>> SearchInfrafamilyForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl51Infrafamily>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl51Infrafamilies
+            .AsNoTracking()
+            .Where(e => e.InfrafamilyName != null && !e.InfrafamilyName.Contains("#"))
+            .Where(e =>
+                e.InfrafamilyName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.InfrafamilyName)
+            .ToListAsync();
     }
-
-
-    #endregion Miscellaneous
-
-    #endregion
-
 
+    public async Task<IEnumerable<Tbl54Supertribus>> SearchSupertribusForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl54Supertribus>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl54Supertribusses
+            .AsNoTracking()
+            .Where(e => e.SupertribusName != null && !e.SupertribusName.Contains("#"))
+            .Where(e =>
+                e.SupertribusName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SupertribusName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl57Tribus>> SearchTribusForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl57Tribus>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl57Tribusses
+            .AsNoTracking()
+            .Where(e => e.TribusName != null && !e.TribusName.Contains("#"))
+            .Where(e =>
+                e.TribusName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.TribusName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl60Subtribus>> SearchSubtribusForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl60Subtribus>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl60Subtribusses
+            .AsNoTracking()
+            .Where(e => e.SubtribusName != null && !e.SubtribusName.Contains("#"))
+            .Where(e =>
+                e.SubtribusName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.SubtribusName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl63Infratribus>> SearchInfratribusForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl63Infratribus>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl63Infratribusses
+            .AsNoTracking()
+            .Where(e => e.InfratribusName != null && !e.InfratribusName.Contains("#"))
+            .Where(e =>
+                e.InfratribusName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.InfratribusName)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Tbl66Genus>> SearchGenusForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl66Genus>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl66Genusses
+            .Include(e => e.Infratribus)
+            .AsNoTracking()
+            .Where(e => e.GenusName != null && !e.GenusName.Contains("#"))
+            .Where(e =>
+                e.GenusName.StartsWith(search) ||
+                (e.EngName != null && e.EngName.Contains(search)) ||
+                (e.GerName != null && e.GerName.Contains(search)) ||
+                (e.FraName != null && e.FraName.Contains(search)) ||
+                (e.PorName != null && e.PorName.Contains(search)))
+            .OrderBy(e => e.GenusName)
+            .ToListAsync();
+    }
+    public async Task<IEnumerable<Tbl75Species>> SearchSpeciesForReportAsync(string? search)
+    {
+        if (string.IsNullOrWhiteSpace(search))
+            return Enumerable.Empty<Tbl75Species>();
+
+        search = search.Trim();
+
+        await using var context = _factory.CreateDbContext();
+
+        return await context.Tbl75Speciesses
+            .Include(e => e.Genus)
+            .Include(e => e.Speciesgroup)
+            .AsNoTracking()
+            .Where(e => e.SpeciesName != null && !e.SpeciesName.Contains("#"))
+            .Where(e =>
+                e.SpeciesName.StartsWith(search) ||
+                (e.Genus != null && e.Genus.GenusName != null &&
+                 e.Genus.GenusName.Contains(search)) ||
+                (e.Subspecies != null && e.Subspecies.Contains(search)) ||
+                (e.Divers != null && e.Divers.Contains(search)) ||
+                (e.TradeName != null && e.TradeName.Contains(search)) ||
+                (e.Author != null && e.Author.Contains(search)))
+            .OrderBy(e => e.Genus!.GenusName)
+            .ThenBy(e => e.SpeciesName)
+            .ThenBy(e => e.Subspecies)
+            .ThenBy(e => e.Divers)
+            .ToListAsync();
+    }
+
+    #endregion REPORT
 
 }

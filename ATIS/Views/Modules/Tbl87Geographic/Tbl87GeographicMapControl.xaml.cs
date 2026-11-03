@@ -91,14 +91,11 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     private readonly List<(double lat, double lon)> _editPoints = new();
     private bool _hasFallbackPoint;
     private double? _lastMarkerResolution;
-    //private bool _viewportChangedHooked;
     private bool _mapEventsHooked;
-    //private MPoint? _pointerPressedScreenPosition;
     private double? _pointerPressedX;
     private double? _pointerPressedY;
     private const double ClickTolerance = 6d;
     private Models.Tbl87Geographic? _pendingItem;
-    //public event EventHandler? MapChanged;
     #endregion
 
     #region small Helpers
