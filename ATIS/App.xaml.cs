@@ -51,6 +51,8 @@ using ATIS.Views.Settings;
 using ATIS.Views.User;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
+using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
+using VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
 
 namespace ATIS;
 
@@ -138,111 +140,120 @@ public partial class App : Application
     // Window erstellen
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+        // Sprache und Protokollierung initialisieren
+        await InitializeLocalizer();
+        ApplyCulture();
+        InitializeLogging();
 
-        var configured = DbServerSettings.DataSource
-                         ?? new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(
-                             ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString).DataSource;
+        // Startansicht für Datenbankprüfung und Dialoge anzeigen
+        MainWindow = new Window { Title = AppName };
 
-        var connected = await SqlInstanceFinder.CanConnectAsync(configured, "ATIS34");
-
-        List<string>? dbChoices = null;
-
-        if (!connected)
+        var startupRoot = new Grid();
+        startupRoot.Children.Add(new TextBlock
         {
+            Text = "SQL-Server und ATIS34 werden geprüft …",
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center
+        });
+
+        var loaded = new TaskCompletionSource();
+        startupRoot.Loaded += (_, _) => loaded.TrySetResult();
+
+        MainWindow.Content = startupRoot;
+        MainWindow.Activate();
+        await loaded.Task;
+
+        // Gespeicherten Server prüfen oder eine erreichbare Instanz einrichten
+        while (true)
+        {
+            var savedServer = DbServerSettings.DataSource;
+
+            if (!string.IsNullOrWhiteSpace(savedServer) &&
+                await SqlInstanceFinder.CanConnectAsync(savedServer, "ATIS34"))
+            {
+                break;
+            }
+
             var found = await SqlInstanceFinder.FindReachableAsync("ATIS34");
 
             if (found.Count == 1)
             {
                 DbServerSettings.Save(found[0]);
-                connected = true;
+                break;
             }
-            else if (found.Count > 1)
+
+            if (found.Count > 1)
             {
-                dbChoices = found;
+                if (await ChooseDbServerAsync(found))
+                {
+                    break;
+                }
+
+                Exit();
+                return;
+            }
+
+            var result = await new ContentDialog
+            {
+                XamlRoot = startupRoot.XamlRoot,
+                Title = "ATIS34 nicht erreichbar",
+                Content =
+                    "Bitte prüfen, ob der SQL-Server-Dienst läuft und " +
+                    "die Datenbank ATIS34 vorhanden ist. " +
+                    "Details stehen im ATIS-Protokoll.",
+                PrimaryButtonText = "Erneut prüfen",
+                CloseButtonText = "Beenden"
+            }.ShowAsync();
+
+            if (result != ContentDialogResult.Primary)
+            {
+                Exit();
+                return;
             }
         }
-        System.Diagnostics.Debug.WriteLine($"[DB] connected={connected}");
 
-        // 1. Localizer EINMAL initialisieren
-        await InitializeLocalizer();
+        // Benutzerkontext vor dem Erstellen der Hauptansicht setzen
+        var customPrincipal = new CustomPrincipal();
+        AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
 
-        // 2. Culture setzen
-        ApplyCulture();
-
-        // 3. Window erstellen
-        MainWindow = new Window { Title = AppName };
-
+        // Schließen ausschließlich über den zentralen Ablauf behandeln
         MainWindow.AppWindow.Closing += (sender, e) =>
         {
-            if (_closeConfirmed) return;
+            if (_closeConfirmed)
+            {
+                return;
+            }
+
             e.Cancel = true;
             _ = RequestCloseAsync();
         };
 
-        // 4. MainPage setzen
+        // Hauptansicht erst mit eingerichteter Datenbankverbindung laden
         MainPageInstance = new MainPage();
+        MainPageInstance.Loaded += (_, _) =>
+        {
+            UIContext.Root = MainPageInstance.XamlRoot;
+        };
+
         MainWindow.Content = MainPageInstance;
-        MainRoot = MainWindow.Content as FrameworkElement;
+        MainRoot = MainPageInstance;
 
-        // 5 ThemeService
-        if (Services != null)
-        {
-            //var themeService = Services.GetService<IThemeService>();
-            //themeService?.AutoInitialize(MainWindow);
-        }
-
-        // 6 Logging 
-        InitializeLogging();
-
-        // 7 Splash 
-        //solange entwickelt wird // danach     await ShowSplashAsync();
-
-
-        MainWindow.Activate();
-
-
-        UIContext.Root = (MainWindow.Content as FrameworkElement)?.XamlRoot;
-
-        var customPrincipal = new CustomPrincipal();
-
-        AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
-
-        //Server-Abfrage
+        // Automatische Updateprüfung nur im Release-Build
 #if !DEBUG
-        if (dbChoices != null)
-        {
-            await ChooseDbServerAsync(dbChoices);
-        }
+    _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
 #endif
-        //Update check on startup
-
-#if !DEBUG
-_ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
-#endif
-
     }
-
     // ---------------------------------------------------------
     // 2. CHOOSE SERVER
     // ---------------------------------------------------------
-    private async Task ChooseDbServerAsync(List<string> servers)
+
+    private async Task<bool> ChooseDbServerAsync(List<string> servers)
     {
-        if (MainWindow.Content is not FrameworkElement root)
+        if (MainWindow?.Content is not FrameworkElement root ||
+            root.XamlRoot is null)
         {
-            return;
-        }
-
-        if (root.XamlRoot == null)
-        {
-            var loaded = new TaskCompletionSource();
-            void OnLoaded(object s, RoutedEventArgs e)
-            {
-                root.Loaded -= OnLoaded;
-                loaded.TrySetResult();
-            }
-
-            root.Loaded += OnLoaded;
-            await loaded.Task;
+            throw new InvalidOperationException(
+                "Das Fenster für die Serverauswahl ist nicht bereit.");
         }
 
         var radios = new RadioButtons
@@ -254,29 +265,92 @@ _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
         var dialog = new ContentDialog
         {
             XamlRoot = root.XamlRoot,
-            Title = "SQL-Server auswählen",
+            Title = "SQL-Server mit ATIS34 auswählen",
             Content = radios,
-            PrimaryButtonText = "Übernehmen und neu starten",
+            PrimaryButtonText = "Übernehmen",
             CloseButtonText = "Abbrechen",
             DefaultButton = ContentDialogButton.Primary
         };
 
-        if (await dialog.ShowAsync() != ContentDialogResult.Primary || radios.SelectedItem is not string selected)
+        if (await dialog.ShowAsync() != ContentDialogResult.Primary ||
+            radios.SelectedItem is not string selected)
         {
-            return;
+            return false;
+        }
+
+        // Vor dem Speichern die ausgewählte Datenbank erneut prüfen.
+        if (!await SqlInstanceFinder.CanConnectAsync(selected, "ATIS34"))
+        {
+            await new ContentDialog
+            {
+                XamlRoot = root.XamlRoot,
+                Title = "Verbindung fehlgeschlagen",
+                Content =
+                    $"Die Datenbank ATIS34 auf {selected} ist nicht erreichbar. " +
+                    "Der Server wurde nicht gespeichert.",
+                CloseButtonText = "Beenden"
+            }.ShowAsync();
+
+            return false;
         }
 
         DbServerSettings.Save(selected);
-
-        var exePath = Environment.ProcessPath;
-        if (exePath != null)
-        {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(exePath) { UseShellExecute = true });
-        }
-
-        _closeConfirmed = true;
-        Exit();
+        return true;
     }
+
+
+    //private async Task ChooseDbServerAsync(List<string> servers)
+    //{
+    //    if (MainWindow.Content is not FrameworkElement root)
+    //    {
+    //        return;
+    //    }
+
+    //    if (root.XamlRoot == null)
+    //    {
+    //        var loaded = new TaskCompletionSource();
+    //        void OnLoaded(object s, RoutedEventArgs e)
+    //        {
+    //            root.Loaded -= OnLoaded;
+    //            loaded.TrySetResult();
+    //        }
+
+    //        root.Loaded += OnLoaded;
+    //        await loaded.Task;
+    //    }
+
+    //    var radios = new RadioButtons
+    //    {
+    //        ItemsSource = servers,
+    //        SelectedIndex = 0
+    //    };
+
+    //    var dialog = new ContentDialog
+    //    {
+    //        XamlRoot = root.XamlRoot,
+    //        Title = "SQL-Server auswählen",
+    //        Content = radios,
+    //        PrimaryButtonText = "Übernehmen und neu starten",
+    //        CloseButtonText = "Abbrechen",
+    //        DefaultButton = ContentDialogButton.Primary
+    //    };
+
+    //    if (await dialog.ShowAsync() != ContentDialogResult.Primary || radios.SelectedItem is not string selected)
+    //    {
+    //        return;
+    //    }
+
+    //    DbServerSettings.Save(selected);
+
+    //    var exePath = Environment.ProcessPath;
+    //    if (exePath != null)
+    //    {
+    //        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(exePath) { UseShellExecute = true });
+    //    }
+
+    //    _closeConfirmed = true;
+    //    Exit();
+    //}
     // ---------------------------------------------------------
     // 2. CULTURE
     // ---------------------------------------------------------
@@ -304,24 +378,6 @@ _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
     //---------------------------------------------------------
     //3. Window erstellen
     //---------------------------------------------------------
-    // Centralized app-close flow (WinUI 3)
-    // ------------------------------------
-    // Why this exists:
-    // - We had shutdown crashes (0xC000027B / 0xC0000005) caused by multiple close paths
-    //   and dialog/localization interactions during teardown.
-    // - Therefore, close handling is centralized in App.xaml.cs.
-    //
-    // Rules:
-    // 1) Exactly ONE AppWindow.Closing handler in the whole app (registered in App).
-    // 2) All user-initiated close actions (menu, commands, etc.) call App.RequestCloseAsync().
-    // 3) Do not show additional close dialogs in pages/viewmodels.
-    // 4) Use _dialogOpen to prevent re-entrant/double dialogs.
-    // 5) Use _closeConfirmed to allow the final close without re-prompt.
-    //
-    // Notes:
-    // - Window.Close() from menu may bypass the same UX path as titlebar close.
-    //   Always use RequestCloseAsync() for consistent behavior.
-    // - Keep this logic in App (not MainPage) to avoid duplicate subscriptions from Loaded events.
     public static async Task<bool> ConfirmCloseAsync()
     {
         if (_dialogOpen) return false;
@@ -548,10 +604,6 @@ _ = MainPageInstance.CheckForUpdatesAsync(showStatusMessages: false);
         return Services.GetRequiredService<T>();
     }
 
-    //public static IThemeService GetThemeService()
-    //{
-    //    return Services.GetRequiredService<IThemeService>();
-    //}
 
 }
 

@@ -36,26 +36,36 @@ public partial class AtisDbContext : DbContext
         optionsBuilder.EnableSensitiveDataLogging(true);
         // _connectionString = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
 
-        var builder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(
-            ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString);
+        //var builder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(
+        //    ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString);
 
-        var saved = DbServerSettings.DataSource;
-        if (saved != null)
+        //var saved = DbServerSettings.DataSource;
+        //if (saved != null)
+        //{
+        //    builder.DataSource = saved;
+        //}
+
+        //_connectionString = builder.ConnectionString;
+
+
+        //optionsBuilder.UseSqlServer(_connectionString,
+        //    sqlServerOptionsAction: sqlOptions =>
+        //    {
+        //        sqlOptions.EnableRetryOnFailure(
+        //            maxRetryCount: 5,
+        //            maxRetryDelay: TimeSpan.FromSeconds(30),
+        //            errorNumbersToAdd: null);
+        //    });
+
+        var connectionString = DbServerSettings.GetConnectionString();
+
+        optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
         {
-            builder.DataSource = saved;
-        }
-
-        _connectionString = builder.ConnectionString;
-
-
-        optionsBuilder.UseSqlServer(_connectionString,
-            sqlServerOptionsAction: sqlOptions =>
-            {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 5,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        });
     }
 
     //protected override void OnModelCreating(ModelBuilder modelBuilder)

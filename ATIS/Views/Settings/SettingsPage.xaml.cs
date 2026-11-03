@@ -17,7 +17,6 @@ public sealed partial class SettingsPage : Page
         ThemeBox.SelectionChanged += ThemeBox_SelectionChanged;
         TestConnectionButton.Click += TestConnectionButton_Click;
         TestConnectionButton.IsEnabled = true;
-        ServerBox.TextChanged += ServerBox_TextChanged;
         SaveServerButton.Click += SaveServerButton_Click;
     }
 
@@ -27,13 +26,15 @@ public sealed partial class SettingsPage : Page
         VersionText.Text = version is null ? "ATIS" : $"ATIS Version {version}";
 
         SelectByTag(LanguageBox, CultureInfo.CurrentUICulture.Name);
+
         var root = App.MainWindow?.Content as FrameworkElement
-                   ?? throw new InvalidOperationException("Das Hauptfenster ist nicht initialisiert.");
+                   ?? throw new InvalidOperationException(
+                       "Das Hauptfenster ist nicht initialisiert.");
 
         SelectByTag(ThemeBox, root.RequestedTheme.ToString());
-        ServerBox.Text = DbServerSettings.DataSource ?? string.Empty;
-    }
 
+        RefreshServerList();
+    }
     private void LanguageBox_SelectionChanged(
         object sender, SelectionChangedEventArgs e)
     {
@@ -87,14 +88,14 @@ public sealed partial class SettingsPage : Page
         _testedServer = null;
         SaveServerButton.IsEnabled = false;
 
-        if (string.IsNullOrWhiteSpace(ServerBox.Text))
+        if (ServerBox.SelectedItem is not string server ||
+            string.IsNullOrWhiteSpace(server))
         {
             ConnectionStatusText.Text = "Bitte einen SQL-Server eingeben.";
             ConnectionStatusText.Visibility = Visibility.Visible;
             return;
         }
 
-        var server = ServerBox.Text.Trim();
         TestConnectionButton.IsEnabled = false;
         ServerBox.IsEnabled = false;
         ConnectionStatusText.Text = "Verbindung wird getestet ...";
@@ -102,22 +103,60 @@ public sealed partial class SettingsPage : Page
 
         try
         {
-            var configured = ConfigurationManager.ConnectionStrings["MyDbConnection"]
-                             ?? throw new ConfigurationErrorsException("MyDbConnection fehlt in App.config.");
+            //var configured = ConfigurationManager.ConnectionStrings["MyDbConnection"]
+            //                 ?? throw new ConfigurationErrorsException("MyDbConnection fehlt in App.config.");
 
-            var builder = new SqlConnectionStringBuilder(configured.ConnectionString)
+            //var builder = new SqlConnectionStringBuilder(configured.ConnectionString)
+            //{
+            //    DataSource = server,
+            //    InitialCatalog = "ATIS34",
+            //    ConnectTimeout = 5
+            //};
+
+            var builder = new SqlConnectionStringBuilder(
+                DbServerSettings.GetConnectionString(server))
             {
-                DataSource = server,
                 ConnectTimeout = 5
             };
 
             await using var connection = new SqlConnection(builder.ConnectionString);
             await connection.OpenAsync();
 
+            await using var command = connection.CreateCommand();
+            command.CommandText =
+                "SELECT CONVERT(nvarchar(128), SERVERPROPERTY('ServerName')), DB_NAME();";
+            command.CommandTimeout = 5;
+
+            await using var reader = await command.ExecuteReaderAsync();
+            if (!await reader.ReadAsync())
+            {
+                throw new InvalidOperationException(
+                    "Keine Verbindungsinformationen erhalten.");
+            }
+
+            var actualServer = reader.GetString(0);
+            var actualDatabase = reader.GetString(1);
+
+            SimpleLog.Info(
+                $"Auswahl: {server}; verbunden: {actualServer}; Datenbank: {actualDatabase}");
+
+            if (!string.Equals(actualDatabase, "ATIS34",
+                    StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    $"Falsche Datenbank: {actualDatabase}");
+            }
+
             _testedServer = server;
             SaveServerButton.IsEnabled = true;
 
-            ConnectionStatusText.Text = "Verbindung zur ATIS-Datenbank erfolgreich.";
+            ConnectionStatusText.Text = $"Verbindung erfolgreich: {actualServer} / {actualDatabase}";
+        }
+        catch (SqlException ex) when (ex.Number == 4060)
+        {
+            SimpleLog.Error($"ATIS34 auf {server} nicht zugänglich: {ex.Message}");
+            ConnectionStatusText.Text =
+                "ATIS34 fehlt auf diesem SQL-Server oder die Zugriffsberechtigung fehlt.";
         }
         catch (Exception ex) when (ex is SqlException or InvalidOperationException
                                        or ArgumentException or ConfigurationErrorsException)
@@ -133,38 +172,89 @@ public sealed partial class SettingsPage : Page
         }
     }
 
-    private void ServerBox_TextChanged(object sender, TextChangedEventArgs e)
+    private void SaveServerButton_Click(object sender, RoutedEventArgs e)
+    {
+        ConnectionStatusText.Visibility = Visibility.Visible;
+
+        if (_testedServer is null ||
+            ServerBox.SelectedItem is not string selectedServer ||
+            !string.Equals(_testedServer, selectedServer,
+                StringComparison.OrdinalIgnoreCase))
+        {
+            SaveServerButton.IsEnabled = false;
+            ConnectionStatusText.Text =
+                "Bitte zuerst die ausgewählte Verbindung erfolgreich testen.";
+            return;
+        }
+
+        try
+        {
+            DbServerSettings.Save(
+                DbServerSettings.NormalizeDataSource(selectedServer));
+
+            SaveServerButton.IsEnabled = false;
+            ConnectionStatusText.Text =
+                "SQL-Server gespeichert. Bitte ATIS neu starten.";
+        }
+        catch (Exception ex) when (ex is System.IO.IOException
+                                       or UnauthorizedAccessException
+                                       or System.Security.SecurityException)
+        {
+            SimpleLog.Error($"SQL-Server konnte nicht gespeichert werden: {ex.Message}");
+            ConnectionStatusText.Text =
+                "Speichern fehlgeschlagen. Details stehen im ATIS-Protokoll.";
+        }
+    }
+    private void ServerBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         _testedServer = null;
         SaveServerButton.IsEnabled = false;
         ConnectionStatusText.Visibility = Visibility.Collapsed;
     }
 
-    private void SaveServerButton_Click(object sender, RoutedEventArgs e)
+    private void RefreshServersButton_Click(object sender, RoutedEventArgs e)
     {
-        ConnectionStatusText.Visibility = Visibility.Visible;
+        RefreshServerList();
+        SelectByTag(ServerBox, DbServerSettings.DataSource ?? string.Empty);
+    }
 
-        if (_testedServer is null ||
-            !string.Equals(_testedServer, ServerBox.Text.Trim(), StringComparison.Ordinal))
-        {
-            SaveServerButton.IsEnabled = false;
-            ConnectionStatusText.Text = "Bitte zuerst die Verbindung erfolgreich testen.";
-            return;
-        }
-
+    private void RefreshServerList()
+    {
         try
         {
-            DbServerSettings.Save(_testedServer);
-            SaveServerButton.IsEnabled = false;
-            ConnectionStatusText.Text =
-                "SQL-Server gespeichert. Bitte ATIS jetzt neu starten.";
+            var servers = DbServerSettings.GetInstalledDataSources();
+            ServerBox.ItemsSource = servers;
+
+            var savedServer = DbServerSettings.DataSource;
+
+            ServerBox.SelectedItem = string.IsNullOrWhiteSpace(savedServer)
+                ? null
+                : servers.FirstOrDefault(server =>
+                    string.Equals(
+                        DbServerSettings.NormalizeDataSource(server),
+                        DbServerSettings.NormalizeDataSource(savedServer),
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (servers.Count == 0)
+            {
+                ConnectionStatusText.Text =
+                    "Auf diesem Rechner wurden keine SQL-Server-Instanzen gefunden.";
+                ConnectionStatusText.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ConnectionStatusText.Visibility = Visibility.Collapsed;
+            }
         }
-        catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException
+        catch (Exception ex) when (ex is IOException
+                                       or UnauthorizedAccessException
                                        or System.Security.SecurityException)
         {
-            SimpleLog.Error($"SQL-Server konnte nicht gespeichert werden: {ex.Message}");
+            SimpleLog.Error(
+                $"Installierte SQL-Server konnten nicht ermittelt werden: {ex.Message}");
             ConnectionStatusText.Text =
-                "Speichern fehlgeschlagen. Details stehen im ATIS-Protokoll.";
+                "Die installierten SQL-Server konnten nicht ermittelt werden.";
+            ConnectionStatusText.Visibility = Visibility.Visible;
         }
     }
 }

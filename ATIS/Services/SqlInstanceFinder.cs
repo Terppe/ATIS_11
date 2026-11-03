@@ -7,34 +7,40 @@ namespace ATIS.Services;
 public static class SqlInstanceFinder
 {
     // Liefert lokale Instanzen als Data Source, z. B. "localhost" oder "localhost\SQLEXPRESS"
+
     public static List<string> FindLocalInstances()
     {
-        var result = new List<string>();
-
-        try
-        {
-            using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-            using var key = baseKey.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL");
-
-            if (key == null)
-            {
-                return result;
-            }
-
-            foreach (var name in key.GetValueNames())
-            {
-                result.Add(name.Equals("MSSQLSERVER", StringComparison.OrdinalIgnoreCase)
-                    ? "localhost"
-                    : $@"localhost\{name}");
-            }
-        }
-        catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException)
-        {
-            SimpleLog.Error($"SQL-Instanzsuche fehlgeschlagen: {ex.Message}");
-        }
-
-        return result;
+        return DbServerSettings.GetInstalledDataSources().ToList();
     }
+
+    //public static List<string> FindLocalInstances()
+    //{
+    //    var result = new List<string>();
+
+    //    try
+    //    {
+    //        using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+    //        using var key = baseKey.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL");
+
+    //        if (key == null)
+    //        {
+    //            return result;
+    //        }
+
+    //        foreach (var name in key.GetValueNames())
+    //        {
+    //            result.Add(name.Equals("MSSQLSERVER", StringComparison.OrdinalIgnoreCase)
+    //                ? "localhost"
+    //                : $@"localhost\{name}");
+    //        }
+    //    }
+    //    catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException)
+    //    {
+    //        SimpleLog.Error($"SQL-Instanzsuche fehlgeschlagen: {ex.Message}");
+    //    }
+
+    //    return result;
+    //}
 
     public static async Task<List<string>> FindReachableAsync(string database)
     {
@@ -48,7 +54,7 @@ public static class SqlInstanceFinder
                 InitialCatalog = database,
                 IntegratedSecurity = true,
                 TrustServerCertificate = true,
-                ConnectTimeout = 3
+                ConnectTimeout = 10
             };
 
             try
@@ -74,7 +80,7 @@ public static class SqlInstanceFinder
             InitialCatalog = database,
             IntegratedSecurity = true,
             TrustServerCertificate = true,
-            ConnectTimeout = 3
+            ConnectTimeout = 10
         };
 
         try

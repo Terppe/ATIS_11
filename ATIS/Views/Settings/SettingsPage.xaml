@@ -7,7 +7,7 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel
-            MaxWidth="850" 
+            MaxWidth="850"
             Margin="24"
             HorizontalAlignment="Left"
             Spacing="24">
@@ -41,10 +41,15 @@
 
             <StackPanel Spacing="8">
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Datenbank" />
-                <TextBox
+                <ComboBox
                     x:Name="ServerBox"
                     Header="SQL-Server"
-                    PlaceholderText="Server oder Server\Instanz" />
+                    PlaceholderText="Installierten SQL-Server auswählen"
+                    SelectionChanged="ServerBox_SelectionChanged" />
+                <Button
+                    x:Name="RefreshServersButton"
+                    Click="RefreshServersButton_Click"
+                    Content="Serverliste aktualisieren" />
                 <Button
                     x:Name="TestConnectionButton"
                     Content="Verbindung testen"
@@ -78,3 +83,87 @@
         </StackPanel>
     </ScrollViewer>
 </Page>
+<!--<Page
+x:Class="ATIS.Views.Settings.SettingsPage"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+<ScrollViewer VerticalScrollBarVisibility="Auto">
+<StackPanel
+MaxWidth="850"
+Margin="24"
+HorizontalAlignment="Left"
+Spacing="24">
+
+<TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Einstellungen" />
+
+<StackPanel Spacing="8">
+<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Sprache" />
+<ComboBox
+x:Name="LanguageBox"
+MinWidth="240"
+Header="Anwendungssprache">
+<ComboBoxItem Content="Deutsch" Tag="de-DE" />
+<ComboBoxItem Content="English" Tag="en-US" />
+<ComboBoxItem Content="Français" Tag="fr-FR" />
+<ComboBoxItem Content="Español" Tag="es-ES" />
+</ComboBox>
+</StackPanel>
+
+<StackPanel Spacing="8">
+<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Darstellung" />
+<ComboBox
+x:Name="ThemeBox"
+MinWidth="240"
+Header="App-Design">
+<ComboBoxItem Content="Systemeinstellung" Tag="Default" />
+<ComboBoxItem Content="Hell" Tag="Light" />
+<ComboBoxItem Content="Dunkel" Tag="Dark" />
+</ComboBox>
+</StackPanel>
+
+<StackPanel Spacing="8">
+<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Datenbank" />
+<ComboBox
+x:Name="ServerBox"
+Header="SQL-Server"
+PlaceholderText="Installierten SQL-Server auswählen"
+SelectionChanged="ServerBox_SelectionChanged" />
+<Button
+x:Name="RefreshServersButton"
+Content="Serverliste aktualisieren"
+Click="RefreshServersButton_Click" />
+<Button
+x:Name="TestConnectionButton"
+Content="Verbindung testen"
+IsEnabled="False" />
+
+<Button
+x:Name="SaveServerButton"
+Content="Server speichern"
+IsEnabled="False" />
+
+<TextBlock
+x:Name="ConnectionStatusText"
+TextWrapping="Wrap"
+Visibility="Collapsed" />
+</StackPanel>
+
+<StackPanel Spacing="8">
+<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Updates" />
+<ToggleSwitch
+x:Name="AutomaticUpdates"
+Header="Beim Start nach Updates suchen"
+IsEnabled="False" />
+<Button Content="Jetzt nach Updates suchen" IsEnabled="False" />
+</StackPanel>
+
+<StackPanel Spacing="8">
+<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Über ATIS" />
+<TextBlock x:Name="VersionText" Text="ATIS" />
+</StackPanel>
+
+</StackPanel>
+</ScrollViewer>
+</Page>-->
