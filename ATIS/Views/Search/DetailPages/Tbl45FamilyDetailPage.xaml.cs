@@ -96,13 +96,9 @@ public sealed partial class Tbl45FamilyDetailPage : Page
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is HyperlinkButton button)
+        if (sender is HyperlinkButton { DataContext: BreadcrumbItem item })
         {
-            var label = button.Content?.ToString();
-            var item = ViewModel.Breadcrumb.FirstOrDefault(x => x.Label == label);
-
-            if (item != null)
-                await ViewModel.NavigateBreadcrumbAsync(item);
+            await ViewModel.NavigateBreadcrumbAsync(item);
         }
     }
 

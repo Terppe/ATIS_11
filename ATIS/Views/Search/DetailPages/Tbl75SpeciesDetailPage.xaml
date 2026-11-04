@@ -73,19 +73,29 @@
                       ItemsSource="{x:Bind ViewModel.BreadcrumbReversed}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal" />
+                    <components:BreadcrumbWrapPanel />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="search:BreadcrumbItem">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="8">
-                        <HyperlinkButton Click="Breadcrumb_Click"
-                                         Content="{x:Bind Label}" />
-                        <TextBlock Margin="0,6,0,0"
+                    <Grid ColumnSpacing="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <HyperlinkButton MinWidth="0"
+                                         Padding="2,4"
+                                         Click="Breadcrumb_Click">
+                            <TextBlock Text="{x:Bind Label}"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="None" />
+                        </HyperlinkButton>
+                        <TextBlock Grid.Column="1"
+                                   Margin="0,0,4,0"
+                                   VerticalAlignment="Center"
                                    Text="&lt;" />
-                    </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

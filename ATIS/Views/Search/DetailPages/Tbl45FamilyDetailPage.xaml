@@ -68,36 +68,37 @@
         </StackPanel>
 
         <!--  Breadcrumb  -->
-        <ScrollViewer Grid.Row="1"
+        <ItemsControl Grid.Row="1"
                       HorizontalAlignment="Stretch"
-                      HorizontalScrollBarVisibility="Auto"
-                      HorizontalScrollMode="Enabled"
-                      VerticalScrollBarVisibility="Disabled"
-                      VerticalScrollMode="Disabled">
-            <ItemsControl HorizontalAlignment="Left"
-                          ItemsSource="{x:Bind ViewModel.BreadcrumbReversed}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                      ItemsSource="{x:Bind ViewModel.BreadcrumbReversed}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <components:BreadcrumbWrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="search:BreadcrumbItem">
-                        <StackPanel Orientation="Horizontal"
-                                    Spacing="8">
-                            <HyperlinkButton Click="Breadcrumb_Click">
-                                <TextBlock Text="{x:Bind Label}"
-                                           TextWrapping="NoWrap"
-                                           TextTrimming="None" />
-                            </HyperlinkButton>
-                            <TextBlock Margin="8,6,8,0"
-                                       Text="&lt;" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="search:BreadcrumbItem">
+                    <Grid ColumnSpacing="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <HyperlinkButton MinWidth="0"
+                                         Padding="2,4"
+                                         Click="Breadcrumb_Click">
+                            <TextBlock Text="{x:Bind Label}"
+                                       TextWrapping="Wrap"
+                                       TextTrimming="None" />
+                        </HyperlinkButton>
+                        <TextBlock Grid.Column="1"
+                                   Margin="0,0,4,0"
+                                   VerticalAlignment="Center"
+                                   Text="&lt;" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <!--  SCROLLBEREICH  -->
         <ScrollViewer Grid.Row="2"
