@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using ATIS.Interfaces;
+using ATIS.Models;
 using WinUI3Localizer;
 
 namespace ATIS.Views.Auth;
@@ -121,15 +122,18 @@ public partial class AuthenticationViewModel : ObservableObject
             if (user is null)
             {
                 ErrorMessage = loc.GetLocalizedString("Error_Invalid_Login_Credentials_Message");
+                SimpleLog.Warning("Anmeldeversuch mit ungültigen Zugangsdaten.");
                 return;
             }
-
             _userService.SetUser(user.Email, user.Role);
+            SimpleLog.Info("Anmeldung erfolgreich.");
             Status = loc.GetLocalizedString("Status_Login_Successful");
             LoginSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
+            SimpleLog.Error("Anmeldung fehlgeschlagen.");
+            SimpleLog.Log(ex);
             ErrorMessage = ex.Message;
         }
         finally
@@ -167,10 +171,13 @@ public partial class AuthenticationViewModel : ObservableObject
                 role: Role);
 
             Status = loc.GetLocalizedString("Status_Registration_Successful") + $" (ID: {created.UserProfileId})";
+            SimpleLog.Info("Benutzerkonto erfolgreich registriert.");
             RegisterSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
+            SimpleLog.Error("Benutzerregistrierung fehlgeschlagen.");
+            SimpleLog.Log(ex);
             ErrorMessage = ex.Message;
         }
         finally
@@ -201,14 +208,17 @@ public partial class AuthenticationViewModel : ObservableObject
             var ok = await _authService.RequestPasswordResetAsync(Email!, CancellationToken.None);
 
             if (!ok)
-                Status = loc.GetLocalizedString("Status_Reset_Code_Sent");
-            ResetCodeSent = true; // NUR hier, nach erfolgreichem Call
+                SimpleLog.Warning("Passwortzurücksetzung angefordert; kein passendes Konto gefunden.");
+
+            Status = loc.GetLocalizedString("Status_Reset_Code_Sent");
+            ResetCodeSent = true;
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine(ex);
+            SimpleLog.Error("Anforderung zur Passwortzurücksetzung fehlgeschlagen.");
+            SimpleLog.Log(ex);
             ErrorMessage = loc.GetLocalizedString("Error_Reset_Code_Failed");
-            ResetCodeSent = false; // explizit
+            ResetCodeSent = false;
         }
         finally
         {
@@ -241,10 +251,13 @@ public partial class AuthenticationViewModel : ObservableObject
             await _authService.ChangePasswordByEmailAsync(Email!, CurrentPassword!, NewPassword!);
 
             Status = loc.GetLocalizedString("Status_Password_Changed_Successfully");
+            SimpleLog.Info("Passwort erfolgreich geändert.");
             PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
+            SimpleLog.Error("Passwortänderung fehlgeschlagen.");
+            SimpleLog.Log(ex);
             ErrorMessage = ex.Message;
         }
         finally
@@ -290,10 +303,13 @@ public partial class AuthenticationViewModel : ObservableObject
             ResetCode = "";
             NewPassword = "";
             ResetCodeSent = false;
+            SimpleLog.Info("Passwort nach Codeprüfung erfolgreich zurückgesetzt.");
             PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
+            SimpleLog.Error("Passwortzurücksetzung mit Code fehlgeschlagen.");
+            SimpleLog.Log(ex);
             ErrorMessage = ex.Message;
         }
         finally

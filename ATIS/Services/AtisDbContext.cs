@@ -3,60 +3,17 @@ using System.Configuration;
 using System.Reflection;
 using ATIS.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ATIS.Services;
 
 public partial class AtisDbContext : DbContext
 {
-    private string _connectionString;
-
     public AtisDbContext() : base()
     {
-        //// Version with appsettings.json
-        //var builder = new ConfigurationBuilder();
-        //builder.SetBasePath(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location));
-        ////builder.SetBasePath(Directory.GetCurrentDirectory());
-        //builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true); //load base settings
-        //var configuration = builder.Build();
-        //_connectionString = configuration.GetConnectionString("MyDbConnection");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //// Version with appsettings.json
-        //optionsBuilder
-        //    .UseSqlServer(_connectionString)
-        //    // EF 2.0 make some warnings as error, just ignore them
-        //    // .ConfigureWarnings(w => w.Ignore(CoreEventId.IncludeIgnoredWarning))
-        //    // Allow logging sql parameters
-        //    .EnableSensitiveDataLogging();
-
-        // Version with App.Config  
-        optionsBuilder.EnableSensitiveDataLogging(true);
-        // _connectionString = ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString;
-
-        //var builder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(
-        //    ConfigurationManager.ConnectionStrings["MyDbConnection"].ConnectionString);
-
-        //var saved = DbServerSettings.DataSource;
-        //if (saved != null)
-        //{
-        //    builder.DataSource = saved;
-        //}
-
-        //_connectionString = builder.ConnectionString;
-
-
-        //optionsBuilder.UseSqlServer(_connectionString,
-        //    sqlServerOptionsAction: sqlOptions =>
-        //    {
-        //        sqlOptions.EnableRetryOnFailure(
-        //            maxRetryCount: 5,
-        //            maxRetryDelay: TimeSpan.FromSeconds(30),
-        //            errorNumbersToAdd: null);
-        //    });
-
         var connectionString = DbServerSettings.GetConnectionString();
 
         optionsBuilder.UseSqlServer(connectionString, sqlOptions =>
@@ -67,11 +24,6 @@ public partial class AtisDbContext : DbContext
                 errorNumbersToAdd: null);
         });
     }
-
-    //protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

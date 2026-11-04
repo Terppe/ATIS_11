@@ -102,7 +102,7 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
 
-    #if DEBUG
+#if DEBUG
         AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
         {
             if (e.Exception is System.Net.Sockets.SocketException)
@@ -111,26 +111,25 @@ public partial class App : Application
                     $"[FirstChance] {e.Exception.GetType().Name}: {e.Exception.Message}");
             }
         };
-    #endif
-        AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+#endif
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
         {
-            System.Diagnostics.Debug.WriteLine($"[Unhandled] {e.ExceptionObject}");
+            if (e.ExceptionObject is Exception exception)
+            {
+                LogException("Nicht behandelte Prozess-Ausnahme", exception);
+            }
+            else
+            {
+                Debug.WriteLine(
+                    $"Nicht behandelte Prozess-Ausnahme: {e.ExceptionObject}");
+            }
         };
 
-        TaskScheduler.UnobservedTaskException += (s, e) =>
+        TaskScheduler.UnobservedTaskException += (_, e) =>
         {
-            System.Diagnostics.Debug.WriteLine($"[UnobservedTask] {e.Exception}");
+            LogException("Nicht beobachtete Task-Ausnahme", e.Exception);
             e.SetObserved();
         };
-
-        UnhandledException += (s, e) =>
-        {
-            SimpleLog.Error($"UnhandledException: {e.Exception}");
-            System.Diagnostics.Debug.WriteLine($"UnhandledException: {e.Exception}");
-        };
-
-        TaskScheduler.UnobservedTaskException += (s, e) =>
-            SimpleLog.Error($"UnobservedTask: {e.Exception}");
     }
 
     // ---------------------------------------------------------
@@ -535,16 +534,6 @@ public partial class App : Application
             throw writeError;
     }
 
-    //private void InitializeLogging()
-    //{
-    //    SimpleLog.SetLogDir("C:\\Temp", true);
-    //    SimpleLog.SetLogFile(
-    //        logDir: "C:\\Temp\\LogAtis",
-    //        prefix: $"Atis_Log_{AppVersion}_",
-    //        writeText: true);
-    //    SimpleLog.Info("ATIS Application started");
-    //}
-
     // ---------------------------------------------------------
     // 7. Splash
     // ---------------------------------------------------------
@@ -562,32 +551,37 @@ public partial class App : Application
     // 9. UNHANDLED EXCEPTIONS
     // ---------------------------------------------------------
 
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private void App_UnhandledException(
+        object sender,
+        Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {
-        // Wir verhindern App-Absturz
-        e.Handled = true;
+        LogException("Nicht behandelte UI-Ausnahme", e.Exception);
 
-        // Logging
-        LogException(e.Exception);
+        // e.Handled bleibt false; der unerwartete Fehler wird nicht verschluckt.
     }
-    private void LogException(Exception ex)
-    {
-        Debug.WriteLine("========================================");
-        Debug.WriteLine($"🔥 UNHANDLED EXCEPTION [{DateTime.Now:HH:mm:ss}]");
-        Debug.WriteLine("========================================");
 
-        while (ex != null)
+    private static void LogException(string context, Exception exception)
+    {
+        try
         {
-            Debug.WriteLine($"➡ {ex.GetType().Name}: {ex.Message}");
-            Debug.WriteLine(ex.StackTrace);
-            ex = ex.InnerException;
-            if (ex != null)
-                Debug.WriteLine("---- INNER EXCEPTION ----");
+            SimpleLog.Error(context, useBackgroundTask: false);
+
+            var loggingError = SimpleLog.Log(exception, useBackgroundTask: false);
+
+            if (loggingError is not null)
+            {
+                Debug.WriteLine(
+                    $"Protokollieren fehlgeschlagen ({context}): {loggingError}");
+            }
+        }
+        catch (Exception loggingException)
+        {
+            Debug.WriteLine(
+                $"Protokollieren fehlgeschlagen ({context}): {loggingException}");
         }
 
-        Debug.WriteLine("========================================");
-    }
-    // ---------------------------------------------------------
+        Debug.WriteLine($"[{context}] {exception}");
+    }    // ---------------------------------------------------------
     // 10. Helper
     // ---------------------------------------------------------
 

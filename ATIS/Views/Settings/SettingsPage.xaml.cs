@@ -357,23 +357,31 @@ public sealed partial class SettingsPage : Page
 
         try
         {
-            if (!SimpleLog.LogFileExists(DateTime.Now))
+            SimpleLog.Flush();
+            var date = DateTime.Now;
+
+            if (!SimpleLog.LogFileExists(date))
             {
-                DiagnosticsStatusText.Text = "Für heute wurde noch keine Protokolldatei erstellt.";
+                DiagnosticsStatusText.Text =
+                    "Für heute ist keine Protokolldatei vorhanden.";
                 return;
             }
 
-            SimpleLog.ShowLogFile();
-            DiagnosticsStatusText.Text = "Das aktuelle Protokoll wurde geöffnet.";
+            SimpleLog.ShowLogFile(date);
+            DiagnosticsStatusText.Text =
+                "Das Öffnen des aktuellen Protokolls wurde angefordert.";
         }
         catch (Exception ex) when (
             ex is IOException or UnauthorizedAccessException or
                 System.Security.SecurityException or
                 System.ComponentModel.Win32Exception or InvalidOperationException)
         {
-            SimpleLog.Error($"Protokolldatei konnte nicht geöffnet werden: {ex.Message}");
+            SimpleLog.Error("Protokolldatei konnte nicht geöffnet werden.");
+            SimpleLog.Log(ex);
+
             DiagnosticsStatusText.Text =
-                "Das Protokoll konnte nicht geöffnet werden. Details stehen im ATIS-Protokoll.";
+                "Das Protokoll konnte nicht geöffnet werden. " +
+                "Bitte prüfen Sie das Standardprogramm für Protokolldateien.";
         }
     }
     private void CopyDiagnosticsButton_Click(object sender, RoutedEventArgs e)
@@ -422,10 +430,11 @@ public sealed partial class SettingsPage : Page
         }
         catch (Exception ex) when (
             ex is IOException or UnauthorizedAccessException or
-            System.Security.SecurityException or JsonException or
-            COMException or InvalidOperationException or ArgumentException)
+                System.Security.SecurityException or JsonException or
+                COMException or InvalidOperationException or ArgumentException)
         {
-            SimpleLog.Error($"Diagnoseinformationen kopieren fehlgeschlagen: {ex.Message}");
+            SimpleLog.Error("Diagnoseinformationen kopieren fehlgeschlagen.");
+            SimpleLog.Log(ex);
 
             DiagnosticsStatusText.Text =
                 "Diagnoseinformationen konnten nicht kopiert werden. Details stehen im ATIS-Protokoll.";

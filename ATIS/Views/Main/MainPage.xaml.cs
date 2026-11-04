@@ -47,12 +47,9 @@ using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
-using Windows.ApplicationModel;
-using Windows.Management.Deployment;
 using WinRT.Interop;
 using WinUI3Localizer;
 
@@ -119,10 +116,6 @@ public sealed partial class MainPage : Page
         NavView.IsPaneOpen = !NavView.IsPaneOpen;
     }
 
-    private void NavFrame_Navigated(object sender, NavigationEventArgs e)
-    {
-        AppTitleBar.IsBackButtonVisible = NavFrame.CanGoBack;
-    }
 
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
     {
@@ -131,13 +124,19 @@ public sealed partial class MainPage : Page
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        _ = args.QueryText;
-
-        App.SearchQuickString = args.QueryText;
-
-        NavFrame.Navigate(typeof(SearchPage));
+        NavFrame.Navigate(typeof(SearchPage), args.QueryText);
     }
 
+    private void NavFrame_Navigated(object sender, NavigationEventArgs e)
+    {
+        AppTitleBar.IsBackButtonVisible = NavFrame.CanGoBack;
+
+        if (e.SourcePageType == typeof(SearchPage))
+        {
+            _currentPageTag = typeof(SearchPage).FullName!;
+            NavView.SelectedItem = NavSearch;
+        }
+    }
     private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         //var viewModel = NavFrame.GetPageViewModel();

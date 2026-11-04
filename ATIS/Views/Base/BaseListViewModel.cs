@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 
 namespace ATIS.Views.Base;
@@ -35,6 +36,13 @@ public abstract class BaseListViewModel<T> : ObservableObject
         try
         {
             await action();
+        }
+        catch (Exception)
+        {
+            SimpleLog.Error(
+                $"{GetType().Name}: Datenaktion fehlgeschlagen.",
+                useBackgroundTask: false);
+            throw;
         }
         finally
         {

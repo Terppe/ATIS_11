@@ -1,32 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Page x:Class="ATIS.Views.Search.SearchPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:models="using:ATIS.Models"
-      xmlns:search="using:ATIS.Views.Search"
-      NavigationCacheMode="Required">
-
+<Page
+    x:Class="ATIS.Views.Search.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:ATIS.Models"
+    xmlns:search="using:ATIS.Views.Search"
+    NavigationCacheMode="Required">
     <Page.Resources>
-
-        <DataTemplate x:Key="RegnumTemplate"
-                      x:DataType="models:Tbl03Regnum">
-            <StackPanel Padding="8"
-                        Spacing="2">
-
+        <DataTemplate x:Key="RegnumTemplate" x:DataType="models:Tbl03Regnum">
+            <StackPanel Padding="8" Spacing="2">
                 <!--  Zeile 1  -->
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <TextBlock FontSize="16"
-                               FontWeight="SemiBold"
-                               Text="{x:Bind RegnumName}" />
-                    <TextBlock FontSize="16"
-                               FontWeight="SemiBold"
-                               Text="{x:Bind Subregnum}" />
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Bind RegnumName}" />
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Bind Subregnum}" />
                 </StackPanel>
-
                 <!--  Zeile 2  -->
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind RegnumId}" />
                     <Run Text=" - " />
@@ -34,16 +29,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="PhylumTemplate"
-                      x:DataType="models:Tbl06Phylum">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind PhylumName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="PhylumTemplate" x:DataType="models:Tbl06Phylum">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind PhylumName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind PhylumId}" />
                     <Run Text=" - " />
@@ -51,16 +43,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SubphylumTemplate"
-                      x:DataType="models:Tbl12Subphylum">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SubphylumName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SubphylumTemplate" x:DataType="models:Tbl12Subphylum">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SubphylumName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SubphylumId}" />
                     <Run Text=" - " />
@@ -68,16 +57,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SuperclassTemplate"
-                      x:DataType="models:Tbl18Superclass">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SuperclassName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SuperclassTemplate" x:DataType="models:Tbl18Superclass">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SuperclassName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SuperclassId}" />
                     <Run Text=" - " />
@@ -85,16 +71,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="ClassTemplate"
-                      x:DataType="models:Tbl21Class">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind ClassName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="ClassTemplate" x:DataType="models:Tbl21Class">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind ClassName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind ClassId}" />
                     <Run Text=" - " />
@@ -102,16 +85,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SubclassTemplate"
-                      x:DataType="models:Tbl24Subclass">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SubclassName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SubclassTemplate" x:DataType="models:Tbl24Subclass">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SubclassName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SubclassId}" />
                     <Run Text=" - " />
@@ -119,16 +99,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="InfraclassTemplate"
-                      x:DataType="models:Tbl27Infraclass">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind InfraclassName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="InfraclassTemplate" x:DataType="models:Tbl27Infraclass">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind InfraclassName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind InfraclassId}" />
                     <Run Text=" - " />
@@ -136,16 +113,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="LegioTemplate"
-                      x:DataType="models:Tbl30Legio">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind LegioName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="LegioTemplate" x:DataType="models:Tbl30Legio">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind LegioName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind LegioId}" />
                     <Run Text=" - " />
@@ -153,16 +127,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="OrdoTemplate"
-                      x:DataType="models:Tbl33Ordo">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind OrdoName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="OrdoTemplate" x:DataType="models:Tbl33Ordo">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind OrdoName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind OrdoId}" />
                     <Run Text=" - " />
@@ -170,16 +141,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SubordoTemplate"
-                      x:DataType="models:Tbl36Subordo">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SubordoName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SubordoTemplate" x:DataType="models:Tbl36Subordo">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SubordoName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SubordoId}" />
                     <Run Text=" - " />
@@ -187,16 +155,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="InfraordoTemplate"
-                      x:DataType="models:Tbl39Infraordo">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind InfraordoName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="InfraordoTemplate" x:DataType="models:Tbl39Infraordo">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind InfraordoName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind InfraordoId}" />
                     <Run Text=" - " />
@@ -204,16 +169,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SuperfamilyTemplate"
-                      x:DataType="models:Tbl42Superfamily">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SuperfamilyName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SuperfamilyTemplate" x:DataType="models:Tbl42Superfamily">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SuperfamilyName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SuperfamilyId}" />
                     <Run Text=" - " />
@@ -221,16 +183,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="FamilyTemplate"
-                      x:DataType="models:Tbl45Family">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind FamilyName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="FamilyTemplate" x:DataType="models:Tbl45Family">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind FamilyName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind FamilyId}" />
                     <Run Text=" - " />
@@ -238,16 +197,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SubfamilyTemplate"
-                      x:DataType="models:Tbl48Subfamily">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SubfamilyName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SubfamilyTemplate" x:DataType="models:Tbl48Subfamily">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SubfamilyName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SubfamilyId}" />
                     <Run Text=" - " />
@@ -255,16 +211,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="InfrafamilyTemplate"
-                      x:DataType="models:Tbl51Infrafamily">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind InfrafamilyName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="InfrafamilyTemplate" x:DataType="models:Tbl51Infrafamily">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind InfrafamilyName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind InfrafamilyId}" />
                     <Run Text=" - " />
@@ -272,16 +225,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SupertribusTemplate"
-                      x:DataType="models:Tbl54Supertribus">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SupertribusName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SupertribusTemplate" x:DataType="models:Tbl54Supertribus">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SupertribusName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SupertribusId}" />
                     <Run Text=" - " />
@@ -289,16 +239,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="TribusTemplate"
-                      x:DataType="models:Tbl57Tribus">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind TribusName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="TribusTemplate" x:DataType="models:Tbl57Tribus">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind TribusName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind TribusId}" />
                     <Run Text=" - " />
@@ -306,16 +253,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SubtribusTemplate"
-                      x:DataType="models:Tbl60Subtribus">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind SubtribusName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="SubtribusTemplate" x:DataType="models:Tbl60Subtribus">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind SubtribusName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SubtribusId}" />
                     <Run Text=" - " />
@@ -323,16 +267,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="InfratribusTemplate"
-                      x:DataType="models:Tbl63Infratribus">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind InfratribusName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="InfratribusTemplate" x:DataType="models:Tbl63Infratribus">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind InfratribusName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind InfratribusId}" />
                     <Run Text=" - " />
@@ -340,16 +281,13 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="GenusTemplate"
-                      x:DataType="models:Tbl66Genus">
-            <StackPanel Padding="8"
-                        Spacing="2">
-                <TextBlock FontSize="16"
-                           FontWeight="SemiBold"
-                           Text="{x:Bind GenusName}" />
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+        <DataTemplate x:Key="GenusTemplate" x:DataType="models:Tbl66Genus">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind GenusName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind GenusId}" />
                     <Run Text=" - " />
@@ -357,32 +295,29 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <DataTemplate x:Key="SpeciesTemplate"
-                      x:DataType="models:Tbl75Species">
-            <StackPanel Padding="8"
-                        Spacing="2">
-
+        <DataTemplate x:Key="SpeciesTemplate" x:DataType="models:Tbl75Species">
+            <StackPanel Padding="8" Spacing="2">
                 <!--  Zeile 1  -->
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <TextBlock FontSize="16"
-                               FontWeight="SemiBold"
-                               Text="{x:Bind GenusName}" />
-                    <TextBlock FontSize="16"
-                               FontWeight="SemiBold"
-                               Text="{x:Bind SpeciesName}" />
-                    <TextBlock FontSize="16"
-                               FontWeight="SemiBold"
-                               Text="{x:Bind Subspecies}" />
-                    <TextBlock FontSize="16"
-                               FontWeight="SemiBold"
-                               Text="{x:Bind Divers}" />
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Bind GenusName}" />
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Bind SpeciesName}" />
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Bind Subspecies}" />
+                    <TextBlock
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Text="{x:Bind Divers}" />
                 </StackPanel>
-
                 <!--  Zeile 2  -->
-                <TextBlock Foreground="Gray"
-                           Opacity="0.85">
+                <TextBlock Foreground="Gray" Opacity="0.85">
                     <Run Text="ID: " />
                     <Run Text="{x:Bind SpeciesId}" />
                     <Run Text=" - " />
@@ -390,66 +325,72 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-
-        <search:SearchTemplateSelector x:Key="SearchSelector"
-                                       ClassTemplate="{StaticResource ClassTemplate}"
-                                       FamilyTemplate="{StaticResource FamilyTemplate}"
-                                       GenusTemplate="{StaticResource GenusTemplate}"
-                                       InfraclassTemplate="{StaticResource InfraclassTemplate}"
-                                       InfrafamilyTemplate="{StaticResource InfrafamilyTemplate}"
-                                       InfraordoTemplate="{StaticResource InfraordoTemplate}"
-                                       InfratribusTemplate="{StaticResource InfratribusTemplate}"
-                                       LegioTemplate="{StaticResource LegioTemplate}"
-                                       OrdoTemplate="{StaticResource OrdoTemplate}"
-                                       PhylumTemplate="{StaticResource PhylumTemplate}"
-                                       RegnumTemplate="{StaticResource RegnumTemplate}"
-                                       SpeciesTemplate="{StaticResource SpeciesTemplate}"
-                                       SubclassTemplate="{StaticResource SubclassTemplate}"
-                                       SubfamilyTemplate="{StaticResource SubfamilyTemplate}"
-                                       SubordoTemplate="{StaticResource SubordoTemplate}"
-                                       SubphylumTemplate="{StaticResource SubphylumTemplate}"
-                                       SubtribusTemplate="{StaticResource SubtribusTemplate}"
-                                       SuperclassTemplate="{StaticResource SuperclassTemplate}"
-                                       SuperfamilyTemplate="{StaticResource SuperfamilyTemplate}"
-                                       SupertribusTemplate="{StaticResource SupertribusTemplate}"
-                                       TribusTemplate="{StaticResource TribusTemplate}" />
+        <search:SearchTemplateSelector
+            x:Key="SearchSelector"
+            ClassTemplate="{StaticResource ClassTemplate}"
+            FamilyTemplate="{StaticResource FamilyTemplate}"
+            GenusTemplate="{StaticResource GenusTemplate}"
+            InfraclassTemplate="{StaticResource InfraclassTemplate}"
+            InfrafamilyTemplate="{StaticResource InfrafamilyTemplate}"
+            InfraordoTemplate="{StaticResource InfraordoTemplate}"
+            InfratribusTemplate="{StaticResource InfratribusTemplate}"
+            LegioTemplate="{StaticResource LegioTemplate}"
+            OrdoTemplate="{StaticResource OrdoTemplate}"
+            PhylumTemplate="{StaticResource PhylumTemplate}"
+            RegnumTemplate="{StaticResource RegnumTemplate}"
+            SpeciesTemplate="{StaticResource SpeciesTemplate}"
+            SubclassTemplate="{StaticResource SubclassTemplate}"
+            SubfamilyTemplate="{StaticResource SubfamilyTemplate}"
+            SubordoTemplate="{StaticResource SubordoTemplate}"
+            SubphylumTemplate="{StaticResource SubphylumTemplate}"
+            SubtribusTemplate="{StaticResource SubtribusTemplate}"
+            SuperclassTemplate="{StaticResource SuperclassTemplate}"
+            SuperfamilyTemplate="{StaticResource SuperfamilyTemplate}"
+            SupertribusTemplate="{StaticResource SupertribusTemplate}"
+            TribusTemplate="{StaticResource TribusTemplate}" />
     </Page.Resources>
-
-
-    <Grid Padding="12"
-          RowDefinitions="Auto,*">
-
-        <StackPanel Padding="8"
-                    Orientation="Horizontal"
-                    Spacing="10">
-
-            <ComboBox x:Name="TableCombo"
-                      Width="150"
-                      ItemsSource="{x:Bind ViewModel.Tables}"
-                      SelectedItem="{x:Bind ViewModel.SelectedTable, Mode=TwoWay}"
-                      SelectionChanged="OnTableSelectionChanged" />
-
-            <AutoSuggestBox x:Name="SearchBox"
-                            Width="150"
-                            QuerySubmitted="OnSearchQuerySubmitted"
-                            Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" />
-
-            <Button Margin="10,0,0,0"
-                    Click="OnPrintListClick"
-                    IsEnabled="{x:Bind ViewModel.CanPrintClassList, Mode=OneWay}">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
+    <Grid Padding="12" RowDefinitions="Auto,Auto,Auto,*">
+        <StackPanel
+            Padding="8"
+            Orientation="Horizontal"
+            Spacing="10">
+            <AutoSuggestBox
+                x:Name="SearchBox"
+                Width="300"
+                PlaceholderText="Search"
+                QueryIcon="Find"
+                QuerySubmitted="OnSearchQuerySubmitted"
+                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" />
+            <Button Click="OnPrintListClick" IsEnabled="{x:Bind ViewModel.CanPrintList, Mode=OneWay}">
+                <StackPanel Orientation="Horizontal" Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
                     <TextBlock Text="PDF Liste" />
                 </StackPanel>
             </Button>
         </StackPanel>
-
+        <ScrollViewer
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto"
+            HorizontalScrollMode="Enabled"
+            VerticalScrollBarVisibility="Disabled"
+            VerticalScrollMode="Disabled">
+            <StackPanel x:Name="GroupTabsPanel" Orientation="Horizontal" />
+        </ScrollViewer>
+        <ScrollViewer
+            x:Name="TableTabsScrollViewer"
+            Grid.Row="2"
+            HorizontalScrollBarVisibility="Auto"
+            HorizontalScrollMode="Enabled"
+            VerticalScrollBarVisibility="Disabled"
+            VerticalScrollMode="Disabled">
+            <StackPanel x:Name="TableTabsPanel" Orientation="Horizontal" />
+        </ScrollViewer>
         <!--  Ergebnisliste  -->
-        <ListView x:Name="ResultList"
-                  Grid.Row="1"
-                  ItemTemplateSelector="{StaticResource SearchSelector}"
-                  ItemsSource="{x:Bind ViewModel.Results}"
-                  SelectionChanged="OnRowSelected" />
+        <ListView
+            x:Name="ResultList"
+            Grid.Row="3"
+            ItemTemplateSelector="{StaticResource SearchSelector}"
+            ItemsSource="{x:Bind ViewModel.Results}"
+            SelectionChanged="OnRowSelected" />
     </Grid>
 </Page>

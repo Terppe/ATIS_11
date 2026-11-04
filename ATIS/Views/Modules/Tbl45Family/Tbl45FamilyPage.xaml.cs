@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using ATIS.Models;
 using ATIS.Views.Modules.Tbl48Subfamily;
 using Microsoft.UI;
 using Microsoft.UI.Text;
@@ -47,6 +48,7 @@ public sealed partial class Tbl45FamilyPage : Page
         PrepareCurrentTabState();
         UpdateTabButtonStates();
         UpdateDetailContentVisibility();
+        SimpleLog.Info("Familienansicht initialisiert.");
     }
 
     // ---------------------------------------------------------                   

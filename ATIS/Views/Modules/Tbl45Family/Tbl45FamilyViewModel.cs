@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -287,7 +288,9 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
     {
         if (string.IsNullOrWhiteSpace(item.FamilyName))
         {
-            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            await Dialog.ShowErrorAsync(
+                "Error_RecordExists_Title",
+                "Error_RecordExists_Message");
             return null;
         }
 
@@ -295,11 +298,13 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Familie gespeichert. FamilyId={saved.FamilyId}.");
+
             _lookupService.InvalidateAllCaches();
         }
+
         return saved;
     }
-
     protected override Task OnBeforeReloadAfterSaveAsync(Models.Tbl45Family item)
     {
         if (_wasEmptyBeforeSave && IsBossMode)
@@ -328,6 +333,7 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         }
 
         await Data.DeleteFamilyAsync(item.FamilyId);
+        SimpleLog.Info($"Familie gelöscht. FamilyId={item.FamilyId}.");
         return true;
     }
 

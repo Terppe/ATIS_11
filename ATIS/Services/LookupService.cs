@@ -758,7 +758,8 @@ public class LookupService
         }
         catch (Exception ex)
         {
-   //         _logger.LogError(ex, "Failed loading RefExpert lookup");
+            SimpleLog.Error("Experten-Lookup konnte nicht geladen werden.");
+            SimpleLog.Log(ex);
             return new ObservableCollection<Tbl90RefExpert>();
         }
     }
@@ -777,7 +778,8 @@ public class LookupService
         }
         catch (Exception ex)
         {
-            //         _logger.LogError(ex, "Failed loading RefSource lookup");
+            SimpleLog.Error("Quellen-Lookup konnte nicht geladen werden.");
+            SimpleLog.Log(ex);
             return new ObservableCollection<Tbl90RefSource>();
         }
     }
@@ -796,7 +798,8 @@ public class LookupService
         }
         catch (Exception ex)
         {
-            //         _logger.LogError(ex, "Failed loading RefAuthor lookup");
+            SimpleLog.Error("Autoren-Lookup konnte nicht geladen werden.");
+            SimpleLog.Log(ex);
             return new ObservableCollection<Tbl90RefAuthor>();
         }
     }
@@ -812,60 +815,16 @@ public class LookupService
                 var data = CreateDataService();
                 var list = await data.GetAllCountryAsync() ?? Enumerable.Empty<TblCountry>();
                 _countryListCache = new ObservableCollection<TblCountry>(list);
-
-                System.Diagnostics.Debug.WriteLine($"[LookupService] CountryList loaded: {_countryListCache.Count}");
             }
 
             return _countryListCache;
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[LookupService.GetCountryListAsync] ERROR: {ex}");
+            SimpleLog.Error("Ländercode-Lookup konnte nicht geladen werden.");
+            SimpleLog.Log(ex);
             return new ObservableCollection<TblCountry>();
         }
     }
-
-    //public async Task<ObservableCollection<Models.Tbl90RefSource>> GetRefSourceListAsync()
-    //{
-    //    if (_refSourceListCache == null)
-    //    {
-    //        var data = CreateDataService();
-    //        var list = await data.GetAllRefSourceAsync() ?? new List<Models.Tbl90RefSource>();
-    //        _refSourceListCache = new ObservableCollection<Models.Tbl90RefSource>(list);
-    //        Debug.WriteLine($"RefSource count: {_refSourceListCache.Count}");
-    //    }
-    //    return _refSourceListCache;
-    //}
-    //public async Task<ObservableCollection<Models.Tbl90RefAuthor>> GetRefAuthorListAsync()
-    //{
-    //    if (_refAuthorListCache == null)
-    //    {
-    //        var data = CreateDataService();
-    //    var list = await data.GetAllRefAuthorAsync();
-    //    _refAuthorListCache = new ObservableCollection<Models.Tbl90RefAuthor>(list);
-    //    }
-
-    //    return _refAuthorListCache;
-    //}
-    //public async Task<ObservableCollection<Models.Tbl90RefExpert>> GetRefExpertListAsync()
-    //{
-    //    if (_refExpertListCache == null)
-    //    {
-    //        var data = CreateDataService();
-    //        var list = await data.GetAllRefExpertAsync();
-    //        _refExpertListCache = new ObservableCollection<Models.Tbl90RefExpert>(list);
-    //    }
-    //    return _refExpertListCache;
-    //}
-    //public async Task<ObservableCollection<Models.Tbl90RefSource>> GetRefSourceListAsync()
-    //{
-    //    if (_refSourceListCache == null)
-    //    {
-    //        var data = CreateDataService();
-    //        var list = await data.GetAllRefSourceAsync();
-    //        _refSourceListCache = new ObservableCollection<Models.Tbl90RefSource>(list);
-    //    }
-    //    return _refSourceListCache;
-    //}
 
 }
