@@ -44,20 +44,21 @@ public class Tbl21ClassesListDocument : IDocument
 
     private void ComposeContent(IContainer container)
     {
+        var loc = Localizer.Get();
+
         container.PaddingVertical(10).Column(column =>
         {
             column.Item().Text(text =>
             {
-                text.Span(Loc("List")).FontSize(20).SemiBold();
+                text.Span(loc.GetLocalizedString("List"))
+                    .FontSize(20).SemiBold();
                 text.Span("          ");
-                text.Span(Loc("Class")).FontSize(20).SemiBold();
-                text.Span("          ");
-                text.Span($"({VisibleItems.Count})").FontSize(14);
-
+                text.Span(loc.GetLocalizedString("Class"))
+                    .FontSize(20).SemiBold();
                 text.Span("                                                                                                       ");
-                text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
+                text.Span(DateTime.Now.ToString(
+                    CultureInfo.InstalledUICulture)).NormalPosition();
             });
-
             column.Spacing(5);
             column.Item().Element(ComposeListContent);
         });

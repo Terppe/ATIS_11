@@ -2181,6 +2181,9 @@
   <data name="Genus" xml:space="preserve">
     <value>Genus</value>
   </data>
+  <data name="Food" xml:space="preserve">
+    <value>Food</value>
+  </data>
   <data name="TextBlock_GenusId.Text" xml:space="preserve">
     <value>Genus ID</value>
   </data>
@@ -2504,6 +2507,9 @@
   </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
+  </data>
+  <data name="Miscellaneous" xml:space="preserve">
+    <value>Miscellaneous</value>
   </data>
   <data name="TextBlock_NameId.Text" xml:space="preserve">
     <value>Name ID</value>
@@ -3846,6 +3852,9 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
+  <data name="List" xml:space="preserve">
+    <value>List</value>
+  </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordo</value>
   </data>
@@ -5057,6 +5066,9 @@
   </data>
   <data name="Difficult4" xml:space="preserve">
     <value>Difficult 4</value>
+  </data>
+  <data name="Disease" xml:space="preserve">
+    <value>Disease</value>
   </data>
   <data name="Dialog_Delete_Title" xml:space="preserve">
     <value>Deleted</value>

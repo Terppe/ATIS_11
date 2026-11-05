@@ -267,6 +267,10 @@ public sealed partial class SearchPage : Page
         var document = ViewModel.CreateSearchListDocument(visibleItems);
         if (document == null)
             return;
+
+        // PDF erzeugen, bevor die Zieldatei angelegt wird.
+        var pdfBytes = document.GeneratePdf();
+
         var savePicker = new FileSavePicker();
         savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
         var tableName = string.IsNullOrWhiteSpace(ViewModel.SelectedTable)
@@ -280,6 +284,6 @@ public sealed partial class SearchPage : Page
         var file = await savePicker.PickSaveFileAsync();
         if (file == null)
             return;
-        document.GeneratePdf(file.Path);
+        await Windows.Storage.FileIO.WriteBytesAsync(file, pdfBytes);
     }
 }

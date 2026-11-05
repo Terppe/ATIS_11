@@ -530,8 +530,6 @@
 		<None Remove="Assets\splash.jpg" />
 		<None Remove="Assets\Usa.png" />
 		<None Remove="DesignSystem\Components\AtisCard.xaml" />
-		<None Remove="DesignSystem\Components\Base1List1DetailPageLayout.xaml" />
-		<None Remove="DesignSystem\Components\Base4List4DetailPageLayout.xaml" />
 		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
 		<None Remove="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml" />
 		<None Remove="DesignSystem\Layout\BaseBossPageLayout.xaml" />
@@ -1875,19 +1873,7 @@
 </ItemGroup>
 
 <ItemGroup>
-	<Page Update="DesignSystem\Components\Base4List4DetailPageLayout.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-</ItemGroup>
-
-<ItemGroup>
 	<Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourcePage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-</ItemGroup>
-
-<ItemGroup>
-	<Page Update="DesignSystem\Components\Base1List1DetailPageLayout.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 </ItemGroup>

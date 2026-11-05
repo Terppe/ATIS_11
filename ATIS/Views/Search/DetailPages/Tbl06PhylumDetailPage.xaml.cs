@@ -1,11 +1,11 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Views.Report.Pdf.Tbl06Phylums;
 using ATIS.Views.Search.DetailViewModels;
-using Microsoft.UI.Xaml.Data;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
+using WinUI3Localizer;
 
 //  Tbl06PhylumDetailPage.xaml.cs Skriptdatum:  15.06.2024  12:32     
 
@@ -66,14 +66,37 @@ public sealed partial class Tbl06PhylumDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        var document = await CreateDetailDocumentAsync();
-        if (document == null)
-            return;
+        try
+        {
+            var document = await CreateDetailDocumentAsync();
+            if (document == null)
+                return;
 
-        var phylumName = SanitizeFileNamePart(GetCurrentPhylumName());
-        var suggestedFileName = $"Phylum_Detail_{phylumName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+            var phylumName = SanitizeFileNamePart(GetCurrentPhylumName());
+            var suggestedFileName =
+                $"Phylum_Detail_{phylumName}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
-        await SaveDocumentAsPdfAsync(document, suggestedFileName);
+            await SaveDocumentAsPdfAsync(document, suggestedFileName);
+        }
+        catch (Exception ex) when (
+            ex is QuestPDF.Drawing.Exceptions.DocumentComposeException or
+                QuestPDF.Drawing.Exceptions.DocumentLayoutException or
+                IOException or UnauthorizedAccessException)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+            var loc = Localizer.Get();
+            var dialog = new ContentDialog
+            {
+                XamlRoot = XamlRoot,
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(
+                    loc.GetLocalizedString("PdfExport_Error"), ex.Message),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok")
+            };
+
+            await dialog.ShowAsync();
+        }
     }
 
     //für später andere nutzung, z.B. Drucken
@@ -96,13 +119,9 @@ public sealed partial class Tbl06PhylumDetailPage : Page
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is HyperlinkButton button)
+        if (sender is HyperlinkButton { DataContext: BreadcrumbItem item })
         {
-            var label = button.Content?.ToString();
-            var item = ViewModel.Breadcrumb.FirstOrDefault(x => x.Label == label);
-
-            if (item != null)
-                await ViewModel.NavigateBreadcrumbAsync(item);
+            await ViewModel.NavigateBreadcrumbAsync(item);
         }
     }
 

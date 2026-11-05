@@ -17,22 +17,22 @@
     <!--  3) HEADER TEMPLATE  -->
     <!--  =========================================================  -->
 
-    <DataTemplate x:Key="AtisDataGridHeaderTemplate">
-        <Grid ColumnDefinitions="*,Auto">
-            <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                FontWeight="SemiBold"
-                Foreground="{ThemeResource DataGridHeaderForegroundBrush}"
-                Text="{Binding}" />
+    <!--<DataTemplate x:Key="AtisDataGridHeaderTemplate">
+    <Grid ColumnDefinitions="*,Auto">
+    <TextBlock
+    Grid.Column="0"
+    VerticalAlignment="Center"
+    FontWeight="SemiBold"
+    Foreground="{ThemeResource DataGridHeaderForegroundBrush}"
+    Text="{Binding}" />
 
-            <ContentPresenter
-                Grid.Column="1"
-                Margin="8,0,0,0"
-                VerticalAlignment="Center"
-                ContentTemplate="{StaticResource AtisDataGridSortIndicatorTemplate}" />
-        </Grid>
-    </DataTemplate>
+    <ContentPresenter
+    Grid.Column="1"
+    Margin="8,0,0,0"
+    VerticalAlignment="Center"
+    ContentTemplate="{StaticResource AtisDataGridSortIndicatorTemplate}" />
+    </Grid>
+    </DataTemplate>-->
 
     <!--<DataTemplate x:Key="AtisDataGridHeaderTemplate">
     <Grid ColumnDefinitions="*,Auto">

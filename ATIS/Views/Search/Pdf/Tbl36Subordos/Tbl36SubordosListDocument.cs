@@ -5,6 +5,7 @@ using ATIS.Views.Report.Pdf.Tbl36Subordos;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Search.Pdf.Tbl36Subordos;
 internal class Tbl36SubordosListDocument : IDocument
@@ -46,15 +47,20 @@ internal class Tbl36SubordosListDocument : IDocument
 
     private void ComposeContent(IContainer container)
     {
+        var loc = Localizer.Get();
+
         container.PaddingVertical(10).Column(column =>
         {
             column.Item().Text(text =>
             {
-                text.Span(Strings.StringsRes.List).FontSize(20).SemiBold();
+                text.Span(loc.GetLocalizedString("List"))
+                    .FontSize(20).SemiBold();
                 text.Span("          ");
-                text.Span(Strings.StringsRes.Subordo).FontSize(20).SemiBold();
+                text.Span(loc.GetLocalizedString("Subordo"))
+                    .FontSize(20).SemiBold();
                 text.Span("                                                                                                       ");
-                text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
+                text.Span(DateTime.Now.ToString(
+                    CultureInfo.InstalledUICulture)).NormalPosition();
             });
             column.Spacing(5);
             column.Item().Element(ComposeListContent);

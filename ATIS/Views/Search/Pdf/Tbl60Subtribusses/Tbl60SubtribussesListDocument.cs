@@ -5,6 +5,7 @@ using ATIS.Views.Report.Pdf.Tbl60Subtribusses;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Search.Pdf.Tbl60Subtribusses;
 internal class Tbl60SubtribussesListDocument(
@@ -37,15 +38,20 @@ internal class Tbl60SubtribussesListDocument(
 
     private void ComposeContent(IContainer container)
     {
+        var loc = Localizer.Get();
+
         container.PaddingVertical(10).Column(column =>
         {
             column.Item().Text(text =>
             {
-                text.Span(Strings.StringsRes.List).FontSize(20).SemiBold();
+                text.Span(loc.GetLocalizedString("List"))
+                    .FontSize(20).SemiBold();
                 text.Span("          ");
-                text.Span(Strings.StringsRes.Subtribus).FontSize(20).SemiBold();
+                text.Span(loc.GetLocalizedString("Subtribus"))
+                    .FontSize(20).SemiBold();
                 text.Span("                                                                                                       ");
-                text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
+                text.Span(DateTime.Now.ToString(
+                    CultureInfo.InstalledUICulture)).NormalPosition();
             });
             column.Spacing(5);
             column.Item().Element(ComposeListContent);

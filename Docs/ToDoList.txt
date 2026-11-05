@@ -1403,3 +1403,5 @@ Delete         SimpleLog.Info($"Familie gelöscht. FamilyId={item.FamilyId}.");
 FamilyPage.cs         SimpleLog.Info("Familienansicht initialisiert.");
 ----------------------------------------
 04.11.2026 12:30 Uhr SearchPage umgebaut . Combo raus und verbindung mit MainpageSearchFeld. Lösung über tabs
+----------------------------------------
+05.11.2026 12:30 Uhr OnNavigateBreadcrumbAsync, Breadcrumb_Click, Breadcrumb Itemscontrol in allen 21 angepasst.
