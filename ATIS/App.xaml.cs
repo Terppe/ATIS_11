@@ -83,7 +83,6 @@ public partial class App : Application
     public static MainPage? MainPageInstance { get; private set; }
     public static string AppConfigFolderPath { get; private set; } = string.Empty;
     public static string StringsFolderPath { get; private set; } = string.Empty;
-    public static string? SearchQuickString { get; set; } // from MainPage filled
     public static int WindowsCounter { get; set; } = 0;// Count the created and open windows
 
     // ---------------------------------------------------------
@@ -449,4 +448,3 @@ public partial class App : Application
     //}
 
 }
-

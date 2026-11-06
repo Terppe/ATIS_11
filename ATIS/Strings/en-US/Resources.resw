@@ -5391,4 +5391,22 @@
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="TextBlock_Back.Text" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="TextBlock_Disease.Text" xml:space="preserve">
+    <value>Disease</value>
+  </data>
+  <data name="TextBox_Writer.Header" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="TextBox_WriterDate.Header" xml:space="preserve">
+    <value>Created on</value>
+  </data>
+  <data name="TextBox_Updater.Header" xml:space="preserve">
+    <value>Updated by</value>
+  </data>
+  <data name="TextBox_UpdaterDate.Header" xml:space="preserve">
+    <value>Updated on</value>
+  </data>
 </root>

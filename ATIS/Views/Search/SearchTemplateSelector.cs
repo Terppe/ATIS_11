@@ -25,6 +25,9 @@ public class SearchTemplateSelector : DataTemplateSelector
     public DataTemplate InfratribusTemplate { get; set; }
     public DataTemplate GenusTemplate { get; set; }
     public DataTemplate SpeciesTemplate { get; set; }
+    public DataTemplate DiseaseTemplate { get; set; }
+    public DataTemplate FoodTemplate { get; set; }
+    public DataTemplate MiscellaneousTemplate { get; set; }
 
 
     protected override DataTemplate SelectTemplateCore(object item)
@@ -52,6 +55,9 @@ public class SearchTemplateSelector : DataTemplateSelector
             Tbl63Infratribus => InfratribusTemplate,
             Tbl66Genus => GenusTemplate,
             Tbl75Species => SpeciesTemplate,
+            TblDisease => DiseaseTemplate,
+            TblFood => FoodTemplate,
+            TblMiscellaneous => MiscellaneousTemplate,
 
             _ => base.SelectTemplateCore(item)
         };
