@@ -137,6 +137,8 @@ public sealed partial class MainPage : Page
                 ? Visibility.Visible
                 : Visibility.Collapsed;
 
+        NavView.IsSettingsVisible = Permission.HasAccess("Administrator");
+
         ControlsSearchBox.ItemsSource = null;
     }
 
@@ -764,7 +766,7 @@ public sealed partial class MainPage : Page
 
     private static bool CanOpenPage(Type pageType)
     {
-        if (pageType == typeof(AdminAreaPage))
+        if (pageType == typeof(AdminAreaPage) || pageType == typeof(SettingsPage))
             return Permission.HasAccess("Administrator");
 
         return IsPublicPage(pageType) ||
