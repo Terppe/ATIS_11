@@ -20,9 +20,8 @@ public sealed partial class AdminAreaPage : Page
     // ---------------------------------------------------------
     public AdminAreaPage()
     {
-        InitializeComponent();
-
         ViewModel = App.GetService<TblUserProfileViewModel>();
+        InitializeComponent();
         DataContext = ViewModel;
 
         Loaded += UserProfilePage_Loaded;

@@ -18,9 +18,8 @@ public sealed partial class TblUserProfilePage : Page
     // ---------------------------------------------------------
     public TblUserProfilePage()
     {
-        InitializeComponent();
-
         ViewModel = App.GetService<TblUserProfileViewModel>();
+        InitializeComponent();
         DataContext = ViewModel;
 
         Loaded += UserProfilePage_Loaded;
@@ -146,4 +145,3 @@ public sealed partial class TblUserProfilePage : Page
 
 
 }
-

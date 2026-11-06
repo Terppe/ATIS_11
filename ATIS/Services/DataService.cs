@@ -7609,16 +7609,16 @@ public partial class DataService : ObservableObject, IDataService
     // // ---------------------------------------------------------
     public async Task<IEnumerable<TblCountry>> GetAllCountryAsync()
     {
-        await using var context = _factory.CreateDbContext();
+        var started = System.Diagnostics.Stopwatch.StartNew();
+        await using var context = await _factory.CreateDbContextAsync();
 
         var list = await context.TblCountries
             .AsNoTracking()
             .OrderBy(e => e.Name)
             .ToListAsync();
 
-        System.Diagnostics.Debug.WriteLine($"[DataService.GetAllCountryAsync] count = {list.Count}");
-        foreach (var item in list)
-            System.Diagnostics.Debug.WriteLine($"[Country] {item.CountryId} | {item.Name}");
+        System.Diagnostics.Debug.WriteLine(
+            $"[DataService.GetAllCountryAsync] count = {list.Count}, elapsed = {started.ElapsedMilliseconds} ms");
 
         return list;
     }

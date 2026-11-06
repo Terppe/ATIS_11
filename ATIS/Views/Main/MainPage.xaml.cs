@@ -281,12 +281,17 @@ public sealed partial class MainPage : Page
 
         loginView.ViewModel.LoginSucceeded += (_, _) =>
         {
+            if (NavFrame.Content is UserAreaPage userArea)
+                userArea.ViewModel.ResetProfile();
             UpdateUserAreaVisibility();
             dialog.Hide();
         };
         await dialog.ShowAsync();
 
         EnforceCurrentPagePermission();
+
+        if (NavFrame.Content is UserAreaPage userAreaPage)
+            await userAreaPage.ViewModel.LoadAsync();
 
         var userService = App.GetService<IUserService>();
         if (!string.IsNullOrWhiteSpace(userService.CurrentUser))
@@ -471,6 +476,8 @@ public sealed partial class MainPage : Page
     private Task LogOut()
     {
         App.GetService<IUserService>().Clear();
+        if (NavFrame.Content is UserAreaPage userArea)
+            userArea.ViewModel.ResetProfile();
 
         UpdateUserAreaVisibility();
         EnforceCurrentPagePermission();
@@ -804,8 +811,7 @@ public sealed partial class MainPage : Page
 
         var pageType = currentPage.GetType();
 
-        if (!App.GetService<IUserService>().IsAuthenticated &&
-            !IsPublicPage(pageType))
+        if (!CanOpenPage(pageType))
         {
             NavFrame.Navigate(typeof(HomePage));
             return;

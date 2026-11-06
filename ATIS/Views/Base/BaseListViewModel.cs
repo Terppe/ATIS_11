@@ -26,15 +26,19 @@ public abstract class BaseListViewModel<T> : ObservableObject
     // ---------------------------------------------------------
 
     protected virtual int MinimumLoadingMilliseconds => 250;
+    private int _loadingOperations;
 
     protected async Task RunWithLoadingAsync(Func<Task> action)
     {
         var started = DateTime.UtcNow;
-        IsLoading = true;
-        OnLoadingStarted();
-
         try
         {
+            if (++_loadingOperations == 1)
+            {
+                IsLoading = true;
+                OnLoadingStarted();
+            }
+
             await action();
         }
         catch (Exception)
@@ -52,8 +56,17 @@ public abstract class BaseListViewModel<T> : ObservableObject
             if (elapsed < minimum)
                 await Task.Delay(minimum - elapsed);
 
-            OnLoadingFinished();
-            IsLoading = false;
+            if (--_loadingOperations == 0)
+            {
+                try
+                {
+                    OnLoadingFinished();
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            }
         }
     }
     private bool _isLoading;

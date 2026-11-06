@@ -358,6 +358,8 @@
                                 <tbl87Geographic:Tbl87GeographicEditControl Grid.Row="1"
                                                                             Item="{Binding Item}"
                                                                             Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <components:LoadingOverlayControl Grid.RowSpan="2"
+                                                                  IsLoading="{Binding IsLoading}" />
                             </Grid>
 
                         </Grid>

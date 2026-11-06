@@ -11,6 +11,7 @@ public sealed partial class UserAreaPage : Page
         InitializeComponent();
 
         Loaded += async (_, _) => await ViewModel.LoadAsync();
+        Unloaded += (_, _) => ViewModel.ResetProfile();
     }
 
     public Models.TblUserProfile? Item => ViewModel.Item;
