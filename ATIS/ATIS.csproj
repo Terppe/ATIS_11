@@ -747,6 +747,9 @@
 		<None Remove="Views\Search\DetailPages\Tbl66GenusDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl75SpeciesDetailPage.xaml" />
 		<None Remove="Views\Search\DetailPages\Tbl75SpeciesSubDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\TblDiseaseDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\TblFoodDetailPage.xaml" />
+		<None Remove="Views\Search\DetailPages\TblMiscellaneousDetailPage.xaml" />
 		<None Remove="Views\Search\DetailWindows\DetailWindow.xaml" />
 		<None Remove="Views\Search\SearchItemTemplateTblFoodControl.xaml" />
 		<None Remove="Views\Search\SearchPage.xaml" />
@@ -796,6 +799,24 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\TblMiscellaneousDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\TblFoodDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="Views\Search\DetailPages\TblDiseaseDetailPage.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>

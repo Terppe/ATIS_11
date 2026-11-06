@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -344,6 +345,7 @@ public class Tbl78NameViewModel : BaseBossListViewModel<Models.Tbl78Name>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Name gespeichert. NameId={saved.NameId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -370,6 +372,7 @@ public class Tbl78NameViewModel : BaseBossListViewModel<Models.Tbl78Name>
             return false;
 
         await Data.DeleteNameAsync(item.NameId);
+        SimpleLog.Info($"Name gelöscht. NameId={item.NameId}.");
         return true;
     }
 

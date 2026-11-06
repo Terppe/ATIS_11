@@ -299,7 +299,6 @@ public class Tbl45FamilyViewModel : BaseBossListViewModel<Models.Tbl45Family>
         if (saved != null)
         {
             SimpleLog.Info($"Familie gespeichert. FamilyId={saved.FamilyId}.");
-
             _lookupService.InvalidateAllCaches();
         }
 

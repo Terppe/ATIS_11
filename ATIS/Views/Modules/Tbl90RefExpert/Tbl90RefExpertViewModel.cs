@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -171,6 +172,11 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
         }
 
         var saved = await Data.UpsertRefExpertAsync(item);
+        if (saved != null)
+        {
+            SimpleLog.Info($"RefExpert gespeichert. RefExpertId={saved.RefExpertId}.");
+            //   _lookupService.InvalidateAllCaches();
+        }
 
         return saved;
     }
@@ -196,6 +202,7 @@ public class Tbl90RefExpertViewModel : BaseBossListViewModel<Models.Tbl90RefExpe
             return false;
 
         await Data.DeleteRefExpertAsync(item.RefExpertId);
+        SimpleLog.Info($"RefExpert gelöscht. RefExpertId={item.RefExpertId}.");
         return true;
     }
 

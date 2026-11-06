@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -246,6 +247,7 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Country gespeichert. CountryId={saved.CountryId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -272,6 +274,7 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
             return false;
 
         await Data.DeleteCountryAsync(item.CountryId);
+        SimpleLog.Info($"Country gelöscht. CountryId={item.CountryId}.");
         return true;
     }
 

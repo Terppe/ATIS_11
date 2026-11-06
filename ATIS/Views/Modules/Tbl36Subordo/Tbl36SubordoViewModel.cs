@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Subordo gespeichert. SubordoId={saved.SubordoId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl36SubordoViewModel : BaseBossListViewModel<Models.Tbl36Subordo>
         }
 
         await Data.DeleteSubordoAsync(item.SubordoId);
+        SimpleLog.Info($"Subordo gelöscht. SubordoId={item.SubordoId}.");
         return true;
     }
 

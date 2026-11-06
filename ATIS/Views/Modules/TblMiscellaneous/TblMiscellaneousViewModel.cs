@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -285,6 +286,11 @@ public class TblMiscellaneousViewModel : BaseBossListViewModel<Models.TblMiscell
 
         var saved = await Data.UpsertMiscellaneousAsync(item);
 
+        if (saved != null)
+        {
+            SimpleLog.Info($"Miscellaneous gespeichert. MiscellaneousId={saved.MiscellaneousId}.");
+            //   _lookupService.InvalidateAllCaches();
+        }
         return saved;
     }
 
@@ -309,6 +315,7 @@ public class TblMiscellaneousViewModel : BaseBossListViewModel<Models.TblMiscell
             return false;
 
         await Data.DeleteMiscellaneousAsync(item.MiscellaneousId);
+        SimpleLog.Info($"Miscellaneous gelöscht. MiscellaneousId={item.MiscellaneousId}.");
         return true;
     }
 

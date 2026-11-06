@@ -325,8 +325,7 @@ public partial class App : Application
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
     }
 
-    public static void RaiseLanguageChanged(string lang)
-        => LanguageChanged?.Invoke(lang);
+    public static void RaiseLanguageChanged(string lang) => LanguageChanged?.Invoke(lang);
 
     public static void SetCulture(string culture)
     {

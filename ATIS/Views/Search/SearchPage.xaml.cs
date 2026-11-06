@@ -21,7 +21,10 @@ public sealed partial class SearchPage : Page
         ("Families", "Family", ["Infrafamily", "Subfamily", "Family", "Superfamily"]),
         ("Order", "Ordo", ["Infraordo", "Subordo", "Ordo", "Legio"]),
         ("Class", "Class", ["Infraclass", "Subclass", "Class", "Superclass"]),
-        ("Phylum + Regnum", "Phylum", ["Subphylum", "Phylum", "Regnum"])
+        ("Phylum + Regnum", "Phylum", ["Subphylum", "Phylum", "Regnum"]),
+        ("Disease", "Disease", ["Disease"]),
+        ("Food", "Food", ["Food"]),
+        ("Miscellaneous", "Miscellaneous", ["Miscellaneous"])
     ];
     private readonly IDataService _dataService;
     private readonly List<(Button Button, Border Underline)> _groupTabs = [];
@@ -51,8 +54,7 @@ public sealed partial class SearchPage : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        _focusSearchBox = e.NavigationMode == NavigationMode.New
-                          && e.Parameter is not string;
+        _focusSearchBox = e.NavigationMode == NavigationMode.New && e.Parameter is not string;
         if (e.NavigationMode != NavigationMode.New)
             return;
         SelectGroup(1);
@@ -247,6 +249,20 @@ public sealed partial class SearchPage : Page
                         typeof(Tbl75SpeciesDetailPage), species.SpeciesId);
                 }
                 break;
+            case TblDisease disease:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(TblDiseaseDetailPage), disease.DiseaseId);
+                break;
+
+            case TblFood food:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(TblFoodDetailPage), food.FoodId);
+                break;
+
+            case TblMiscellaneous miscellaneous:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(TblMiscellaneousDetailPage), miscellaneous.MiscellaneousId);
+                break;
         }
         System.Diagnostics.Debug.WriteLine(e.AddedItems[0]?.GetType().FullName);
         ResultList.SelectedItem = null;
@@ -267,10 +283,6 @@ public sealed partial class SearchPage : Page
         var document = ViewModel.CreateSearchListDocument(visibleItems);
         if (document == null)
             return;
-
-        // PDF erzeugen, bevor die Zieldatei angelegt wird.
-        var pdfBytes = document.GeneratePdf();
-
         var savePicker = new FileSavePicker();
         savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
         var tableName = string.IsNullOrWhiteSpace(ViewModel.SelectedTable)
@@ -284,6 +296,6 @@ public sealed partial class SearchPage : Page
         var file = await savePicker.PickSaveFileAsync();
         if (file == null)
             return;
-        await Windows.Storage.FileIO.WriteBytesAsync(file, pdfBytes);
+        document.GeneratePdf(file.Path);
     }
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -284,6 +285,11 @@ public class TblFoodViewModel : BaseBossListViewModel<Models.TblFood>
 
         var saved = await Data.UpsertFoodAsync(item);
 
+        if (saved != null)
+        {
+            SimpleLog.Info($"Food gespeichert. FoodId={saved.FoodId}.");
+            //   _lookupService.InvalidateAllCaches();
+        }
         return saved;
     }
 
@@ -308,6 +314,7 @@ public class TblFoodViewModel : BaseBossListViewModel<Models.TblFood>
             return false;
 
         await Data.DeleteFoodAsync(item.FoodId);
+        SimpleLog.Info($"Food gelöscht. FoodId={item.FoodId}.");
         return true;
     }
 

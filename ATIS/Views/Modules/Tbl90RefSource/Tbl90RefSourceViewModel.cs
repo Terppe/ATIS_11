@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -174,6 +175,12 @@ public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSour
 
         var saved = await Data.UpsertRefSourceAsync(item);
 
+        if (saved != null)
+        {
+            SimpleLog.Info($"RefSource gespeichert. RefSourceId={saved.RefSourceId}.");
+            //   _lookupService.InvalidateAllCaches();
+        }
+
         return saved;
     }
 
@@ -197,6 +204,7 @@ public class Tbl90RefSourceViewModel : BaseBossListViewModel<Models.Tbl90RefSour
             return false;
 
         await Data.DeleteRefSourceAsync(item.RefSourceId);
+        SimpleLog.Info($"RefSource gelöscht. RefSourceId={item.RefSourceId}.");
         return true;
     }
 

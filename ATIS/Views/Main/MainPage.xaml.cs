@@ -69,7 +69,8 @@ public sealed partial class MainPage : Page
         dialog = App.GetService<IDialogService>();
 
         InitializeComponent();
-        System.Diagnostics.Debug.WriteLine($"DataContext ({this.GetType().Name}): {this.DataContext?.GetType().Name}");
+        NavFrame.Navigating += NavFrame_Navigating;
+        UpdateUserAreaVisibility();
 
         NavFrame.Navigate(typeof(HomePage)); // ← garantiert sofort sichtbar
 
@@ -103,6 +104,42 @@ public sealed partial class MainPage : Page
         //Version
         TbVersion.Text = BuildInfo.Text;
     }
+
+    private static bool IsPublicPage(Type pageType)
+    {
+        return pageType == typeof(HomePage) ||
+               pageType == typeof(SearchPage) ||
+               pageType.Namespace ==
+               typeof(ATIS.Views.Search.DetailPages.TblDiseaseDetailPage).Namespace;
+    }
+
+    private async void NavFrame_Navigating(
+        object sender, NavigatingCancelEventArgs e)
+    {
+        if (CanOpenPage(e.SourcePageType))
+            return;
+
+        e.Cancel = true;
+
+        await dialog.ShowErrorAsync(
+            "Error_NoPermission_Title",
+            "Error_NoPermission_Message");
+    }
+    private void UpdateUserAreaVisibility()
+    {
+        NavUser_Area.Visibility =
+            App.GetService<IUserService>().IsAuthenticated
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+        NavAdmin_Area.Visibility =
+            Permission.HasAccess("Administrator")
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+        ControlsSearchBox.ItemsSource = null;
+    }
+
     private void AppTitleBar_OnBackRequested(Microsoft.UI.Xaml.Controls.TitleBar sender, object args)
     {
         if (NavFrame.CanGoBack)
@@ -242,8 +279,11 @@ public sealed partial class MainPage : Page
             CloseButtonText = loc.GetLocalizedString("Close")
         };
 
-        loginView.ViewModel.LoginSucceeded += (_, _) => dialog.Hide();
-
+        loginView.ViewModel.LoginSucceeded += (_, _) =>
+        {
+            UpdateUserAreaVisibility();
+            dialog.Hide();
+        };
         await dialog.ShowAsync();
 
         EnforceCurrentPagePermission();
@@ -431,9 +471,11 @@ public sealed partial class MainPage : Page
     private Task LogOut()
     {
         App.GetService<IUserService>().Clear();
-        TbUser.Text = "keiner angemeldet";
 
+        UpdateUserAreaVisibility();
         EnforceCurrentPagePermission();
+
+        TbUser.Text = "keiner angemeldet";
 
         return Task.CompletedTask;
     }
@@ -713,6 +755,15 @@ public sealed partial class MainPage : Page
         "Administrator", "Developer", "Zoologist", "Biologist"
     };
 
+    private static bool CanOpenPage(Type pageType)
+    {
+        if (pageType == typeof(AdminAreaPage))
+            return Permission.HasAccess("Administrator");
+
+        return IsPublicPage(pageType) ||
+               App.GetService<IUserService>().IsAuthenticated;
+    }
+
     private async void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
         if (args.IsSettingsInvoked)
@@ -752,6 +803,14 @@ public sealed partial class MainPage : Page
         if (NavFrame.Content is not Page currentPage) return;
 
         var pageType = currentPage.GetType();
+
+        if (!App.GetService<IUserService>().IsAuthenticated &&
+            !IsPublicPage(pageType))
+        {
+            NavFrame.Navigate(typeof(HomePage));
+            return;
+        }
+
         var fullName = pageType.FullName ?? string.Empty;
 
         var isModulePage = fullName.Contains(".Views.Modules.", StringComparison.OrdinalIgnoreCase);
@@ -761,10 +820,10 @@ public sealed partial class MainPage : Page
             ? roles
             : DefaultModuleRoles;
 
-        if (!Permission.HasAccess(allowedRoles))
+        if (!CanOpenPage(pageType))
         {
-            // sichere Zielseite ohne Spezialrechte:
-            NavFrame.Navigate(typeof(HomePage)); // oder StartPage/Dashboard
+            NavFrame.Navigate(typeof(HomePage));
+            return;
         }
     }
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ATIS.Views.Search.DetailPages.TblMiscellaneousDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:loc="using:WinUI3Localizer">
+    <Grid
+        Padding="12"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="8">
+        <StackPanel Orientation="Horizontal" Spacing="10">
+            <TextBlock loc:Uids.Uid="TextBlock_Preview" Style="{ThemeResource TitleTextBlockStyle}" />
+            <Button Click="BackButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <FontIcon Glyph="&#xE72B;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_Back" />
+                </StackPanel>
+            </Button>
+            <Button
+                x:Name="ExportPdfButton"
+                Click="ExportPdfButton_Click"
+                IsEnabled="False">
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <FontIcon Glyph="&#xE749;" />
+                    <TextBlock loc:Uids.Uid="TextBlock_Pdf" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <ProgressRing
+            x:Name="LoadingRing"
+            Grid.Row="1"
+            IsActive="False"
+            Visibility="Collapsed" />
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Spacing="8">
+                <TextBlock loc:Uids.Uid="TextBlock_Miscellaneous" Style="{ThemeResource SubtitleTextBlockStyle}" />
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <TextBox
+                        loc:Uids.Uid="TextBox_MiscellaneousId"
+                        IsReadOnly="True"
+                        Text="{Binding MiscellaneousId}" />
+                    <CheckBox
+                        Grid.Column="1"
+                        loc:Uids.Uid="CheckBox_Valid"
+                        IsChecked="{Binding Valid, Mode=OneWay}"
+                        IsEnabled="False"
+                        IsThreeState="True" />
+                    <TextBox
+                        Grid.Column="2"
+                        loc:Uids.Uid="TextBox_ValidYear"
+                        IsReadOnly="True"
+                        Text="{Binding ValidYear}" />
+                </Grid>
+                <TextBox
+                    loc:Uids.Uid="TextBox_MiscellaneousName"
+                    IsReadOnly="True"
+                    Text="{Binding MiscellaneousName}" />
+                <TextBlock loc:Uids.Uid="TextBlock_CountId" />
+                <TextBox IsReadOnly="True" Text="{Binding CountId}" />
+                <TextBox
+                    loc:Uids.Uid="TextBox_ShortInfo"
+                    IsReadOnly="True"
+                    Text="{Binding ShortInfo}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    loc:Uids.Uid="TextBox_Thema1"
+                    AcceptsReturn="True"
+                    IsReadOnly="True"
+                    Text="{Binding Thema1}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    loc:Uids.Uid="TextBox_Thema2"
+                    AcceptsReturn="True"
+                    IsReadOnly="True"
+                    Text="{Binding Thema2}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    loc:Uids.Uid="TextBox_Info"
+                    AcceptsReturn="True"
+                    IsReadOnly="True"
+                    Text="{Binding Info}"
+                    TextWrapping="Wrap" />
+                <TextBox
+                    loc:Uids.Uid="TextBox_Memo"
+                    AcceptsReturn="True"
+                    IsReadOnly="True"
+                    Text="{Binding Memo}"
+                    TextWrapping="Wrap" />
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="8"
+                    RowDefinitions="Auto,Auto"
+                    RowSpacing="8">
+                    <TextBox
+                        loc:Uids.Uid="TextBox_Writer"
+                        IsReadOnly="True"
+                        Text="{Binding Writer}" />
+                    <TextBox
+                        Grid.Column="1"
+                        loc:Uids.Uid="TextBox_WriterDate"
+                        IsReadOnly="True"
+                        Text="{Binding WriterDate}" />
+                    <TextBox
+                        Grid.Row="1"
+                        loc:Uids.Uid="TextBox_Updater"
+                        IsReadOnly="True"
+                        Text="{Binding Updater}" />
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        loc:Uids.Uid="TextBox_UpdaterDate"
+                        IsReadOnly="True"
+                        Text="{Binding UpdaterDate}" />
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

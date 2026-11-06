@@ -657,6 +657,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Image gespeichert. ImageId={saved.ImageId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -682,6 +683,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             return false;
 
         await Data.DeleteImageAsync(item.ImageId);
+        SimpleLog.Info($"Image gelöscht. ImageId={item.ImageId}.");
         return true;
     }
 

@@ -89,20 +89,12 @@
             </StackPanel>
 
             <StackPanel Spacing="8">
-                <TextBlock
-                    Style="{StaticResource SubtitleTextBlockStyle}"
-                    Text="Diagnose und Support" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Diagnose und Support" />
 
-                <Button
-                    Content="Aktuelles Protokoll anzeigen"
-                    Click="ShowLogFileButton_Click" />
-                <Button
-                    Content="Diagnoseinformationen kopieren"
-                    Click="CopyDiagnosticsButton_Click" />
+                <Button Click="ShowLogFileButton_Click" Content="Aktuelles Protokoll anzeigen" />
+                <Button Click="CopyDiagnosticsButton_Click" Content="Diagnoseinformationen kopieren" />
 
-                <TextBlock
-                    Text="Die Diagnose enthält Versions- und Serverangaben, aber keine Passwörter oder Protokollinhalte."
-                    TextWrapping="Wrap" />
+                <TextBlock Text="Die Diagnose enthält Versions- und Serverangaben, aber keine Passwörter oder Protokollinhalte." TextWrapping="Wrap" />
 
                 <TextBlock
                     x:Name="DiagnosticsStatusText"
@@ -113,6 +105,7 @@
             <StackPanel Spacing="8">
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Über ATIS" />
                 <TextBlock x:Name="VersionText" Text="ATIS" />
+                <TextBlock x:Name="Info" Text="Informationen über ATIS" TextWrapping="Wrap" />
             </StackPanel>
 
         </StackPanel>

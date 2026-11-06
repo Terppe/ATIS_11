@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -168,11 +169,19 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
     {
         if (string.IsNullOrWhiteSpace(item.RefAuthorName))
         {
-            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            await Dialog.ShowErrorAsync(
+                "Error_RecordExists_Title",
+                "Error_RecordExists_Message");
             return null;
         }
 
         var saved = await Data.UpsertRefAuthorAsync(item);
+
+        if (saved != null)
+        {
+            SimpleLog.Info($"RefAuthor gespeichert. RefAuthorId={saved.RefAuthorId}.");
+         //   _lookupService.InvalidateAllCaches();
+        }
 
         return saved;
     }
@@ -197,6 +206,7 @@ public class Tbl90RefAuthorViewModel : BaseBossListViewModel<Models.Tbl90RefAuth
             return false;
 
         await Data.DeleteRefAuthorAsync(item.RefAuthorId);
+        SimpleLog.Info($"RefAuthor gelöscht. RefAuthorId={item.RefAuthorId}.");
         return true;
     }
 

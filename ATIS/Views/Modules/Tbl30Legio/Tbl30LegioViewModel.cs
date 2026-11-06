@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Legio gespeichert. LegioId={saved.LegioId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl30LegioViewModel : BaseBossListViewModel<Models.Tbl30Legio>
         }
 
         await Data.DeleteLegioAsync(item.LegioId);
+        SimpleLog.Info($"Legio gelöscht. LegioId={item.LegioId}.");
         return true;
     }
 

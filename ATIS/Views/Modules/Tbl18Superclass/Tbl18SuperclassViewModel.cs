@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
 
         if (saved != null)
         {
+            SimpleLog.Info($"Superclass gespeichert. SuperclassId={saved.SuperclassId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl18SuperclassViewModel : BaseBossListViewModel<Models.Tbl18Superc
         }
 
         await Data.DeleteSuperclassAsync(item.SuperclassId);
+        SimpleLog.Info($"Superclass gelöscht. SuperclassId={item.SuperclassId}.");
         return true;
     }
 

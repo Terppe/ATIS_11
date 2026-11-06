@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -391,6 +392,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Species gespeichert. SpeciesId={saved.SpeciesId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -427,6 +429,7 @@ public class Tbl75SpeciesViewModel : BaseBossListViewModel<Models.Tbl75Species>
         }
 
         await Data.DeleteSpeciesAsync(item.SpeciesId);
+        SimpleLog.Info($"Species gelöscht. SpeciesId={item.SpeciesId}.");
         return true;
     }
 

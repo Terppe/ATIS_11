@@ -3,11 +3,14 @@ using System.Globalization;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ATIS.Views.Report.Pdf.TblDisease;
 public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
 {
     private TblDiseasesPdfModel Model { get; } = model;
+    private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
     private static int _tabLeftRel;
     private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
@@ -19,6 +22,23 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
     private const int TextHight = 12;
 
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
+
+    private static string FormatValidity(bool? valid, string? validYear)
+    {
+        string status = valid switch
+        {
+            true => Loc("Valid"),
+            false => Loc("Invalid"),
+            null => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(status))
+            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+
+        return string.IsNullOrWhiteSpace(validYear)
+            ? status
+            : $"{status} {Loc("Since")} {validYear}";
+    }
 
     public void Compose(IDocumentContainer container)
     {
@@ -51,11 +71,14 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.Atis).FontSize(18).SemiBold();
-                    text.Span("  ");
-                    text.Span(Strings.StringsRes.AtisHeader).FontSize(TextHight).SemiBold();
-                    text.Span("                     ");
-                    text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
+                    column.Item().Text(text =>
+                    {
+                        text.Span(Loc("Atis")).FontSize(18).SemiBold();
+                        text.Span("  ");
+                        text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
+                        text.Span("                                   ");
+                        text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
+                    });
 
                 });
                 column.Item().Text(text =>
@@ -72,13 +95,13 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
     {
         container.PaddingVertical(10).Column(column =>
         {
-            column.Item().Element(ComposeHeaderFood);
+            column.Item().Element(ComposeHeaderDisease);
             column.Spacing(5);
-            column.Item().Element(ComposeFoodContent);
+            column.Item().Element(ComposeDiseaseContent);
         });
     }
 
-    private void ComposeHeaderFood(IContainer container)
+    private void ComposeHeaderDisease(IContainer container)
     {
         container.Row(row =>
         {
@@ -86,14 +109,13 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.ReportTaxonomicId);
                     text.Span($"{Model.CountId}");
                 });
             });
         });
     }
 
-    private void ComposeFoodContent(IContainer container)
+    private void ComposeDiseaseContent(IContainer container)
     {
         container.Row(row =>
         {
@@ -108,7 +130,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Disease);
+                    table.Cell().Text(Loc("Disease"));
                     table.Cell().Text($@"{Model.DiseaseTree?.DiseaseName}");
                 });
                 column.Item().Table(table =>
@@ -120,7 +142,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportCurrentStand);
+                    table.Cell().Text(Loc("CurrentStanding"));
                     table.Cell().Text($"{Model.Valid} {Model.ValidYear}");
                 });
                 column.Item().Table(table =>
@@ -132,7 +154,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordUpdate);
+                    table.Cell().Text(Loc("RecordUpdate"));
                     table.Cell().Text($"{Model.UpdaterDate:d}");
                 });
                 column.Item().Table(table =>
@@ -144,7 +166,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ShortInfo);
+                    table.Cell().Text(Loc("ShortInfo"));
                     table.Cell().Text($"{Model.ShortInfo}");
                 });
                 column.Item().Table(table =>
@@ -156,7 +178,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Symptom);
+                    table.Cell().Text(Loc("Symptom"));
                     table.Cell().Text($"{Model.Symptom}");
                 });
                 column.Item().Table(table =>
@@ -168,7 +190,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Reason);
+                    table.Cell().Text(Loc("Reason"));
                     table.Cell().Text($"{Model.Reason}");
                 });
                 column.Item().Table(table =>
@@ -180,7 +202,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Therapie);
+                    table.Cell().Text(Loc("Therapie"));
                     table.Cell().Text($"{Model.Therapie}");
                 });
                 column.Item().Table(table =>
@@ -192,7 +214,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Information);
+                    table.Cell().Text(Loc("Info"));
                     table.Cell().Text($"{Model.Info}");
                 });
                 column.Item().Table(table =>
@@ -204,7 +226,7 @@ public class TblDiseasesDocument(TblDiseasesPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Memo);
+                    table.Cell().Text(Loc("Memo"));
                     table.Cell().Text($"{Model.Memo}");
                 });
             });

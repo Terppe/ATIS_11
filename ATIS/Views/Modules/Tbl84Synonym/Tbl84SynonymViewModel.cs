@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -311,6 +312,7 @@ public class Tbl84SynonymViewModel : BaseBossListViewModel<Models.Tbl84Synonym>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Synonym gespeichert. SynonymId={saved.SynonymId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -337,6 +339,7 @@ public class Tbl84SynonymViewModel : BaseBossListViewModel<Models.Tbl84Synonym>
             return false;
 
         await Data.DeleteSynonymAsync(item.SynonymId);
+        SimpleLog.Info($"Synonym gelöscht. SynonymId={item.SynonymId}.");
         return true;
     }
 

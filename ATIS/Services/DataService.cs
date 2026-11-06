@@ -1999,7 +1999,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetLegioByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl30Legio?> GetLegioByIdAsync(int id)
+    public async Task<Tbl30Legio> GetLegioByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -2183,7 +2183,6 @@ public partial class DataService : ObservableObject, IDataService
 
     #region Ordo
 
-    // ---------------------------------------------------------   
     // ---------------------------------------------------------                  
     // GetAllOrdoAsync()
     // ---------------------------------------------------------                           
@@ -2264,7 +2263,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetOrdoByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl33Ordo?> GetOrdoByIdAsync(int id)
+    public async Task<Tbl33Ordo> GetOrdoByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -2792,7 +2791,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetInfraordoByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl39Infraordo?> GetInfraordoByIdAsync(int id)
+    public async Task<Tbl39Infraordo> GetInfraordoByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -3320,7 +3319,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetFamilyByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl45Family?> GetFamilyByIdAsync(int id)
+    public async Task<Tbl45Family> GetFamilyByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -3848,7 +3847,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetInfrafamilyByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl51Infrafamily?> GetInfrafamilyByIdAsync(int id)
+    public async Task<Tbl51Infrafamily> GetInfrafamilyByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -5172,7 +5171,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetGenusByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl66Genus?> GetGenusByIdAsync(int id)
+    public async Task<Tbl66Genus> GetGenusByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -5621,7 +5620,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetSpeciesByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl75Species?> GetSpeciesByIdAsync(int id)
+    public async Task<Tbl75Species> GetSpeciesByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -5633,7 +5632,7 @@ public partial class DataService : ObservableObject, IDataService
     // GetSpeciesWithGenusAndSpeciesgroupByIdAsync(int id)
     // ---------------------------------------------------------                 
 
-    public async Task<Tbl75Species?> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(int id)
+    public async Task<Tbl75Species> GetSpeciesWithGenusAndSpeciesgroupByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -6910,7 +6909,7 @@ public partial class DataService : ObservableObject, IDataService
     }
 
     // ---------------------------------------------------------                  
-    // SearchRefAuthorWithNULLAsync(string? search)
+    // SearchRefAuthorAsync(string? search)
     // ---------------------------------------------------------                 
     public async Task<IEnumerable<Tbl90RefAuthor>> SearchRefAuthorAsync(string? search)
     {
@@ -6975,7 +6974,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetRefAuthorByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl90RefAuthor?> GetRefAuthorByIdAsync(int id)
+    public async Task<Tbl90RefAuthor> GetRefAuthorByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -7099,7 +7098,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetRefSourceByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl90RefSource?> GetRefSourceByIdAsync(int id)
+    public async Task<Tbl90RefSource> GetRefSourceByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -7214,7 +7213,7 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetRefExpertByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl90RefExpert?> GetRefExpertByIdAsync(int id)
+    public async Task<Tbl90RefExpert> GetRefExpertByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 

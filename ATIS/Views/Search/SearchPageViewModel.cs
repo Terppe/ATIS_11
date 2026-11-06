@@ -18,7 +18,7 @@ public sealed class SearchPageViewModel : ObservableObject
         {
             "Species", "Genus", "Infratribus", "Subtribus", "Tribus", "Supertribus", "Infrafamily",
             "Subfamily", "Family", "Superfamily", "Infraordo", "Subordo", "Ordo", "Legio", "Infraclass", "Subclass", "Class",
-            "Superclass", "Subphylum", "Phylum", "Regnum"
+            "Superclass", "Subphylum", "Phylum", "Regnum", "Disease", "Food", "Miscellaneous"
         };
         // nur Default, wenn wirklich noch nichts gesetzt
         SelectedTable ??= "Genus";
@@ -264,6 +264,36 @@ public sealed class SearchPageViewModel : ObservableObject
                     }
                     break;
                 }
+            case "Disease":
+                {
+                    var items = await _dataService.SearchDiseaseAsync(searchText);
+                    foreach (var item in items)
+                    {
+                        if (item.DiseaseName?.Contains('#') == true) continue;
+                        results.Add(item);
+                    }
+                    break;
+                }
+            case "Food":
+                {
+                    var items = await _dataService.SearchFoodAsync(searchText);
+                    foreach (var item in items)
+                    {
+                        if (item.FoodName?.Contains('#') == true) continue;
+                        results.Add(item);
+                    }
+                    break;
+                }
+            case "Miscellaneous":
+                {
+                    var items = await _dataService.SearchMiscellaneousAsync(searchText);
+                    foreach (var item in items)
+                    {
+                        if (item.MiscellaneousName?.Contains('#') == true) continue;
+                        results.Add(item);
+                    }
+                    break;
+                }
         }
         if (searchVersion != _searchVersion)
             return;
@@ -319,6 +349,12 @@ public sealed class SearchPageViewModel : ObservableObject
                 new SearchPdf.Tbl66Genusses.Tbl66GenussesListDocument(new ReportPdf.Tbl66Genusses.Tbl66GenussesPdfModel(), items)),
             "Species" => CreateListDocument<Tbl75Species>(visibleItems, items =>
                 new SearchPdf.Tbl75Speciesses.Tbl75SpeciessesListDocument(new ReportPdf.Tbl75Speciesses.Tbl75SpeciessesPdfModel(), items)),
+            "Disease" => CreateListDocument<TblDisease>(visibleItems, items =>
+                new SearchPdf.TblDisease.TblDiseasesListDocument(new ReportPdf.TblDisease.TblDiseasesPdfModel(), items)),
+            "Food" => CreateListDocument<TblFood>(visibleItems, items =>
+                new SearchPdf.TblFoods.TblFoodsListDocument(new ReportPdf.TblFoods.TblFoodsPdfModel(), items)),
+            "Miscellaneous" => CreateListDocument<TblMiscellaneous>(visibleItems, items =>
+                new SearchPdf.TblMiscellaneous.TblMiscellaneoussesListDocument(new ReportPdf.TblMiscellaneous.TblMiscellaneoussesPdfModel(), items)),
             _ => throw new InvalidOperationException($"Unsupported search table: {SelectedTable}")
         };
     }

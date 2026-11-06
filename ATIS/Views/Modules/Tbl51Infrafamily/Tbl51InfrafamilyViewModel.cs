@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
 
         if (saved != null)
         {
+            SimpleLog.Info($"Infrafamily gespeichert. InfrafamilyId={saved.InfrafamilyId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl51InfrafamilyViewModel : BaseBossListViewModel<Models.Tbl51Infra
         }
 
         await Data.DeleteInfrafamilyAsync(item.InfrafamilyId);
+        SimpleLog.Info($"Infrafamily gelöscht. InfrafamilyId={item.InfrafamilyId}.");
         return true;
     }
 

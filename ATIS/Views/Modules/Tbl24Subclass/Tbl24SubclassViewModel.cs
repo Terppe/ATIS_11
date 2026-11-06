@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
 
         if (saved != null)
         {
+            SimpleLog.Info($"Subclass gespeichert. SubclassId={saved.SubclassId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl24SubclassViewModel : BaseBossListViewModel<Models.Tbl24Subclass
         }
 
         await Data.DeleteSubclassAsync(item.SubclassId);
+        SimpleLog.Info($"Subclass gelöscht. SubclassId={item.SubclassId}.");
         return true;
     }
 

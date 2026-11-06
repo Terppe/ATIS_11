@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
 
         if (saved != null)
         {
+            SimpleLog.Info($"Subtribus gespeichert. SubtribusId={saved.SubtribusId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl60SubtribusViewModel : BaseBossListViewModel<Models.Tbl60Subtrib
         }
 
         await Data.DeleteSubtribusAsync(item.SubtribusId);
+        SimpleLog.Info($"Subtribus gelöscht. SubtribusId={item.SubtribusId}.");
         return true;
     }
 

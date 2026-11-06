@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfami
 
         if (saved != null)
         {
+            SimpleLog.Info($"Subfamily gespeichert. SubfamilyId={saved.SubfamilyId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl48SubfamilyViewModel : BaseBossListViewModel<Models.Tbl48Subfami
         }
 
         await Data.DeleteSubfamilyAsync(item.SubfamilyId);
+        SimpleLog.Info($"Subfamily gelöscht. SubfamilyId={item.SubfamilyId}.");
         return true;
     }
 

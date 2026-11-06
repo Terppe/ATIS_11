@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -520,6 +521,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
 
         if (saved != null)
         {
+            SimpleLog.Info($"Geographic gespeichert. GeographicId={saved.GeographicId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -545,6 +547,7 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
             return false;
 
         await Data.DeleteGeographicAsync(item.GeographicId);
+        SimpleLog.Info($"Geographic gelöscht. GeographicId={item.GeographicId}.");
         return true;
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -163,11 +164,19 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
     {
         if (string.IsNullOrWhiteSpace(item.SpeciesgroupName))
         {
-            await Dialog.ShowErrorAsync("Error_RecordExists_Title", "Error_RecordExists_Message");
+            await Dialog.ShowErrorAsync(
+                "Error_RecordExists_Title",
+                "Error_RecordExists_Message");
             return null;
         }
 
         var saved = await Data.UpsertSpeciesgroupAsync(item);
+
+        if (saved != null)
+        {
+            SimpleLog.Info($"Speciesgroup gespeichert. SpeciesgroupId={saved.SpeciesgroupId}.");
+         //   _lookupService.InvalidateAllCaches();
+        }
 
         return saved;
     }
@@ -191,7 +200,14 @@ public class Tbl68SpeciesgroupViewModel : BaseBossListViewModel<Models.Tbl68Spec
         if (item.SpeciesgroupId == 0)
             return false;
 
+        if (await Data.SpeciesgroupHasSpeciesAsync(item.SpeciesgroupId))
+        {
+            await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
+            return false;
+        }
+
         await Data.DeleteSpeciesgroupAsync(item.SpeciesgroupId);
+        SimpleLog.Info($"Speciesgroup gelöscht. SpeciesgroupId={item.SpeciesgroupId}.");
         return true;
     }
 

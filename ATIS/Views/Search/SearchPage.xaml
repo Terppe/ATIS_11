@@ -325,16 +325,61 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="DiseaseTemplate" x:DataType="models:TblDisease">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind DiseaseName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
+                    <Run Text="ID: " />
+                    <Run Text="{x:Bind DiseaseId}" />
+                    <Run Text=" - " />
+                    <Run Text="{x:Bind ShortInfo}" />
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="FoodTemplate" x:DataType="models:TblFood">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind FoodName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
+                    <Run Text="ID: " />
+                    <Run Text="{x:Bind FoodId}" />
+                    <Run Text=" - " />
+                    <Run Text="{x:Bind ShortInfo}" />
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="MiscellaneousTemplate" x:DataType="models:TblMiscellaneous">
+            <StackPanel Padding="8" Spacing="2">
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="{x:Bind MiscellaneousName}" />
+                <TextBlock Foreground="Gray" Opacity="0.85">
+                    <Run Text="ID: " />
+                    <Run Text="{x:Bind MiscellaneousId}" />
+                    <Run Text=" - " />
+                    <Run Text="{x:Bind ShortInfo}" />
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
         <search:SearchTemplateSelector
             x:Key="SearchSelector"
             ClassTemplate="{StaticResource ClassTemplate}"
+            DiseaseTemplate="{StaticResource DiseaseTemplate}"
             FamilyTemplate="{StaticResource FamilyTemplate}"
+            FoodTemplate="{StaticResource FoodTemplate}"
             GenusTemplate="{StaticResource GenusTemplate}"
             InfraclassTemplate="{StaticResource InfraclassTemplate}"
             InfrafamilyTemplate="{StaticResource InfrafamilyTemplate}"
             InfraordoTemplate="{StaticResource InfraordoTemplate}"
             InfratribusTemplate="{StaticResource InfratribusTemplate}"
             LegioTemplate="{StaticResource LegioTemplate}"
+            MiscellaneousTemplate="{StaticResource MiscellaneousTemplate}"
             OrdoTemplate="{StaticResource OrdoTemplate}"
             PhylumTemplate="{StaticResource PhylumTemplate}"
             RegnumTemplate="{StaticResource RegnumTemplate}"

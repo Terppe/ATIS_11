@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -298,6 +299,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Genus gespeichert. GenusId={saved.GenusId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -331,6 +333,7 @@ public class Tbl66GenusViewModel : BaseBossListViewModel<Models.Tbl66Genus>
         }
 
         await Data.DeleteGenusAsync(item.GenusId);
+        SimpleLog.Info($"Genus gelöscht. GenusId={item.GenusId}.");
         return true;
     }
 

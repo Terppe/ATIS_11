@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -278,6 +279,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Regnum gespeichert. RegnumId={saved.RegnumId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -311,6 +313,7 @@ public class Tbl03RegnumViewModel : BaseBossListViewModel<Models.Tbl03Regnum>
         }
 
         await Data.DeleteRegnumAsync(item.RegnumId);
+        SimpleLog.Info($"Regnum gelöscht. RegnumId={item.RegnumId}.");
         return true;
     }
 

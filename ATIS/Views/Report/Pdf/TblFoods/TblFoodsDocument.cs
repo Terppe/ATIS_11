@@ -3,6 +3,7 @@ using System.Globalization;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using WinUI3Localizer;
 
 
 namespace ATIS.Views.Report.Pdf.TblFoods;
@@ -10,6 +11,7 @@ namespace ATIS.Views.Report.Pdf.TblFoods;
 public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
 {
     private TblFoodsPdfModel Model { get; } = model;
+    private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
     private static int _tabLeftRel;
     private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
@@ -21,6 +23,23 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
     private const int TextHight = 12;
 
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
+
+    private static string FormatValidity(bool? valid, string? validYear)
+    {
+        string status = valid switch
+        {
+            true => Loc("Valid"),
+            false => Loc("Invalid"),
+            null => string.Empty
+        };
+
+        if (string.IsNullOrWhiteSpace(status))
+            return string.IsNullOrWhiteSpace(validYear) ? string.Empty : validYear;
+
+        return string.IsNullOrWhiteSpace(validYear)
+            ? status
+            : $"{status} {Loc("Since")} {validYear}";
+    }
 
     public void Compose(IDocumentContainer container)
     {
@@ -53,10 +72,10 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.Atis).FontSize(18).SemiBold();
+                    text.Span(Loc("Atis")).FontSize(18).SemiBold();
                     text.Span("  ");
-                    text.Span(Strings.StringsRes.AtisHeader).FontSize(TextHight).SemiBold();
-                    text.Span("                     ");
+                    text.Span(Loc("AtisHeader")).FontSize(TextHight).SemiBold();
+                    text.Span("                                   ");
                     text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
 
                 });
@@ -88,7 +107,6 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
             {
                 column.Item().Text(text =>
                 {
-                    text.Span(Strings.StringsRes.ReportTaxonomicId);
                     text.Span($"{Model.CountId}");
                 });
             });
@@ -110,7 +128,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Food);
+                    table.Cell().Text(Loc("Food"));
                     table.Cell().Text($@"{Model.FoodTree?.FoodName}");
                 });
                 column.Item().Table(table =>
@@ -122,7 +140,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportCurrentStand);
+                    table.Cell().Text(Loc("CurrentStanding"));
                     table.Cell().Text($"{Model.Valid} {Model.ValidYear}");
                 });
                 column.Item().Table(table =>
@@ -134,7 +152,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ReportRecordUpdate);
+                    table.Cell().Text(Loc("RecordUpdate"));
                     table.Cell().Text($"{Model.UpdaterDate:d}");
                 });
                 column.Item().Table(table =>
@@ -146,7 +164,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.ShortInfo);
+                    table.Cell().Text(Loc("ShortInfo"));
                     table.Cell().Text($"{Model.ShortInfo}");
                 });
                 column.Item().Table(table =>
@@ -158,7 +176,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Symptom);
+                    table.Cell().Text(Loc("Symptom"));
                     table.Cell().Text($"{Model.Symptom}");
                 });
                 column.Item().Table(table =>
@@ -170,7 +188,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.FoodVolume);
+                    table.Cell().Text(Loc("FoodVolume"));
                     table.Cell().Text($"{Model.FoodVolume}");
                 });
                 column.Item().Table(table =>
@@ -182,7 +200,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Information);
+                    table.Cell().Text(Loc("Info"));
                     table.Cell().Text($"{Model.Info}");
                 });
                 column.Item().Table(table =>
@@ -194,7 +212,7 @@ public class TblFoodsDocument(TblFoodsPdfModel model) : IDocument
                         columns.RelativeColumn();
                     });
                     table.Cell().Text("");
-                    table.Cell().Text(Strings.StringsRes.Memo);
+                    table.Cell().Text(Loc("Memo"));
                     table.Cell().Text($"{Model.Memo}");
                 });
             });

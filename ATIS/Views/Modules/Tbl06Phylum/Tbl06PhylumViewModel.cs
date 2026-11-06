@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
 
         if (saved != null)
         {
+            SimpleLog.Info($"Phylum gespeichert. PhylumId={saved.PhylumId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl06PhylumViewModel : BaseBossListViewModel<Models.Tbl06Phylum>
         }
 
         await Data.DeletePhylumAsync(item.PhylumId);
+        SimpleLog.Info($"Phylum gelöscht. PhylumId={item.PhylumId}.");
         return true;
     }
 

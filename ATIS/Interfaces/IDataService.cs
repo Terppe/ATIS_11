@@ -1,8 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using ATIS.Models;
-using ATIS.Services;
-using ATIS.Views.Search;
-using static ATIS.Views.Report.PdfModels;
+﻿using ATIS.Models;
 
 namespace ATIS.Interfaces;
 

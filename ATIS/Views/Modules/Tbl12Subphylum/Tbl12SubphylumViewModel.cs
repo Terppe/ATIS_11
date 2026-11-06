@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -295,6 +296,7 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
 
         if (saved != null)
         {
+            SimpleLog.Info($"Subphylum gespeichert. SubphylumId={saved.SubphylumId}.");
             _lookupService.InvalidateAllCaches();
         }
         return saved;
@@ -328,6 +330,7 @@ public class Tbl12SubphylumViewModel : BaseBossListViewModel<Models.Tbl12Subphyl
         }
 
         await Data.DeleteSubphylumAsync(item.SubphylumId);
+        SimpleLog.Info($"Subphylum gelöscht. SubphylumId={item.SubphylumId}.");
         return true;
     }
 

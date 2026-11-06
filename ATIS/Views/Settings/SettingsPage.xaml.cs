@@ -1,20 +1,23 @@
-﻿using System.Globalization;
-using ATIS.Services;
-using System.Configuration;
-using ATIS.Models;
-using Microsoft.Data.SqlClient;
-using System.Text.Json;
+﻿using System.Configuration;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.Json;
+using ATIS.Helpers;
+using ATIS.Models;
+using ATIS.Services;
+using Mapsui.Utilities;
+using Microsoft.Data.SqlClient;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage;
-using Windows.System;
 
 namespace ATIS.Views.Settings;
 
 public sealed partial class SettingsPage : Page
 {
     private string? _testedServer;
+    private bool _savedAutomaticUpdates;
+    private bool _restoringUpdateSetting;
+
     public SettingsPage()
     {
         InitializeComponent();
@@ -30,7 +33,22 @@ public sealed partial class SettingsPage : Page
     private void LoadCurrentValues()
     {
         var version = typeof(App).Assembly.GetName().Version;
-        VersionText.Text = version is null ? "ATIS" : $"ATIS Version {version}";
+      //  VersionText.Text = version is null ? "ATIS" : $"ATIS Version {version}";
+        VersionText.Text = $"ATIS Version " + BuildInfo.Text;
+        Info.Text = $"ATIS = Aquaristik Taxonomie Information System mit Bildern und  Videos in 4 Sprachen.\r\n       " +
+                    $"Auf der Main Page soll ein Suchfeld sein, in dem man suchen  kann ohne angemeldet zu sein.\r\n  " +
+                    $"Um Eingaben in der vorhandenen Datenbank ATIS34, oder Einstellungen zu machen,\r\n              " +
+                    $"muss man sich einloggen als Administrator, Developer, Zoologe oder Biologe.\r\n                 " +
+                    $"MSSQLSERVER 2025 Als User kann man sich auch anmelden,\r\n                           " +
+                    $"kann aber nicht auf die wichtigen Bereiche zugreifen.\r\n                           " +
+                    $"Das Ergebnis der Suche holt Daten aus fast allen Tabellen der Datenbank und zeigt sie mit   " +
+                    $"Bildern und Videos an.\r\n                           " +
+                    $"Dies kann in PDF ausgedruckt werden. Entwurfsmuster MVVM zur Trennung von " +
+                    $"Darstellung und Logik der UI (aber nicht generell)\r\n                           " +
+                    $"Weitere Informationen und Links anzeigen über alles Wissenswerte rund um Lebewesen und    " +
+                    $"Aquaristik.\r\n                           Moderne Oberfläche ähnlich WinUi3 wie Fluent. " +
+                    $"Bilder und Videos werden im Ordner DB_FS_ATIS34 als File stream gespeichert.\r\n                 " +
+                    $"  http://www.terppe.com  "  ;
 
         SelectByTag(LanguageBox, CultureInfo.CurrentUICulture.Name);
 
@@ -110,16 +128,6 @@ public sealed partial class SettingsPage : Page
 
         try
         {
-            //var configured = ConfigurationManager.ConnectionStrings["MyDbConnection"]
-            //                 ?? throw new ConfigurationErrorsException("MyDbConnection fehlt in App.config.");
-
-            //var builder = new SqlConnectionStringBuilder(configured.ConnectionString)
-            //{
-            //    DataSource = server,
-            //    InitialCatalog = "ATIS34",
-            //    ConnectTimeout = 5
-            //};
-
             var builder = new SqlConnectionStringBuilder(
                 DbServerSettings.GetConnectionString(server))
             {
@@ -273,10 +281,6 @@ public sealed partial class SettingsPage : Page
             ConnectionStatusText.Visibility = Visibility.Visible;
         }
     }
-
-    private bool _savedAutomaticUpdates;
-    private bool _restoringUpdateSetting;
-
     private void LoadUpdateSettings()
     {
         try

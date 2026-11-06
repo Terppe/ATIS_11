@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -312,6 +313,7 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
 
         if (saved != null)
         {
+            SimpleLog.Info($"UserProfile gespeichert. UserProfileId={saved.UserProfileId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -337,15 +339,8 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
         if (item.UserProfileId == 0)
             return false;
 
-        //if (await Data.UserProfileHasNULLAsync(item.UserProfileId) ||
-        //    await Data.UserProfileHasReferenceAsync(item.UserProfileId) ||
-        //    await Data.UserProfileHasCommentAsync(item.UserProfileId))
-        //{
-        //    await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
-        //    return false;
-        //}
-
         await Data.DeleteUserProfileAsync(item.UserProfileId);
+        SimpleLog.Info($"UserProfile gelöscht. UserProfileId={item.UserProfileId}.");
         return true;
     }
 

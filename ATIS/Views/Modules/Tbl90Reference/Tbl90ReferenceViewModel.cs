@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -679,6 +680,7 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
 
         if (saved != null)
         {
+            SimpleLog.Info($"RefReference gespeichert. ReferenceId={saved.ReferenceId}.");
             _lookupService.InvalidateAllCaches();
         }
 
@@ -704,6 +706,7 @@ public class Tbl90ReferenceViewModel : BaseBossListViewModel<Models.Tbl90Referen
             return false;
 
         await Data.DeleteReferenceAsync(item.ReferenceId);
+        SimpleLog.Info($"RefReference gelöscht. ReferenceId={item.ReferenceId}.");
         return true;
     }
 

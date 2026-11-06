@@ -77,6 +77,18 @@
         <dataTemplates:SearchItemTemplateTbl75SpeciesControl />
     </DataTemplate>
 
+    <DataTemplate x:Key="SearchItemTemplateTblDisease">
+        <dataTemplates:SearchItemTemplateTblDiseaseControl />
+    </DataTemplate>
+
+    <DataTemplate x:Key="SearchItemTemplateTblFood">
+        <dataTemplates:SearchItemTemplateTblFoodControl />
+    </DataTemplate>
+
+    <DataTemplate x:Key="SearchItemTemplateTblMiscellaneous">
+        <dataTemplates:SearchItemTemplateTblMiscellaneousControl />
+    </DataTemplate>
+
 
     <Style x:Key="NoSpacesListViewItemStyle" TargetType="ListViewItem">
         <Setter Property="MinHeight" Value="24" />
@@ -84,8 +96,8 @@
 
 
     <!--
-        Report.Listviews
-        Header
+    Report.Listviews
+    Header
     -->
 
     <DataTemplate x:Key="ReportItemTemplateHeaderRegnum">

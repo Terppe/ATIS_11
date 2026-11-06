@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
@@ -661,7 +662,8 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
 
         if (saved != null)
         {
-            _lookupService.InvalidateAllCaches();  // Nötig??
+            SimpleLog.Info($"Comment gespeichert. CommentId={saved.CommentId}.");
+            _lookupService.InvalidateAllCaches();
         }
 
         if (_activeLoader != null)
@@ -687,6 +689,7 @@ public class Tbl93CommentViewModel : BaseBossListViewModel<Models.Tbl93Comment>
             return false;
 
         await Data.DeleteCommentAsync(item.CommentId);
+        SimpleLog.Info($"Comment gelöscht. CommentId={item.CommentId}.");
         return true;
     }
     #endregion
