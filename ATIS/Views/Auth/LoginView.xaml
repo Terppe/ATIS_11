@@ -15,7 +15,11 @@
         <StackPanel Spacing="12">
 
             <TextBlock loc:Uids.Uid="TextBlock_Email" />
-            <TextBox Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                InputScope="EmailSmtpAddress"
+                IsSpellCheckEnabled="False"
+                IsTextPredictionEnabled="False"
+                Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Password" />
             <PasswordBox x:Name="PwdBox" />
