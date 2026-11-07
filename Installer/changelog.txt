@@ -1,6 +1,12 @@
 ﻿
 Updateinformationen zum Aquaristik Taxonomie Informationssystem
 
+-------------------------------- Startkorrektur nach 11.0.2.1 --------------------------
+Fehlerbehebung:
+• SQL-Server-Einstellungen und automatische Update-Einstellungen verwenden
+  generierte JSON-Metadaten. Lesen und Speichern funktionieren dadurch auch
+  im Release-Build mit deaktivierter Reflection-Serialisierung.
+
 -------------------------------- 11.0.0.7 --------------------------
 28.10.2026
 Aktualisieren auf diese Version:
@@ -138,5 +144,4 @@ Fehlerbehebungen:
 •	neue QR-Code-Generierung für die Zwei-Faktor-Authentisierung (2FA)
 
 ------------------------------------------------------------------
-
 

@@ -29,7 +29,7 @@ public static class DbServerSettings
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "ATIS", "dbserver.json");
 
-    private sealed record Data(string? DataSource);
+    internal sealed record Data(string? DataSource);
 
     // Gespeicherter Server für den nächsten Start; null = noch kein Server gespeichert.
 
@@ -43,7 +43,7 @@ public static class DbServerSettings
             }
 
             var data = JsonSerializer.Deserialize<Data>(
-                File.ReadAllText(FilePath));
+                File.ReadAllText(FilePath), SettingsJsonContext.Default.Data);
 
             if (string.IsNullOrWhiteSpace(data?.DataSource))
             {
@@ -69,7 +69,7 @@ public static class DbServerSettings
 
             File.WriteAllText(
                 FilePath,
-                JsonSerializer.Serialize(new Data(server)));
+                JsonSerializer.Serialize(new Data(server), SettingsJsonContext.Default.Data));
         }
     }
     private const string SqlInstancesRegistryPath = @"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL";

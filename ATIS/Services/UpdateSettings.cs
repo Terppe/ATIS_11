@@ -12,12 +12,12 @@ public static class UpdateSettings
     public static bool Load()
     {
         return !File.Exists(FilePath) ||
-               JsonSerializer.Deserialize<bool>(File.ReadAllText(FilePath));
+               JsonSerializer.Deserialize<bool>(File.ReadAllText(FilePath), SettingsJsonContext.Default.Boolean);
     }
 
     public static void Save(bool enabled)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
-        File.WriteAllText(FilePath, JsonSerializer.Serialize(enabled));
+        File.WriteAllText(FilePath, JsonSerializer.Serialize(enabled, SettingsJsonContext.Default.Boolean));
     }
 }
