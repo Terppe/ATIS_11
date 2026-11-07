@@ -1406,4 +1406,7 @@ FamilyPage.cs         SimpleLog.Info("Familienansicht initialisiert.");
 ----------------------------------------
 05.11.2026 12:30 Uhr OnNavigateBreadcrumbAsync, Breadcrumb_Click, Breadcrumb Itemscontrol in allen 21 angepasst.
 ----------------------------------------
-06.11.2026 13:30 Uhr SearchPage erweitert um Disease, Food, Miscellaneous. UserArea und AdminArea mit Permission ergänzt
+06.11.2026 13:30 Uhr SearchPage erweitert um Disease, Food, Miscellaneous. UserArea und AdminArea mit Permission ergänzt.
+Version 11.0.2.1 erzegt als exe. Lässt sich leider nicht starten
+----------------------------------------
+07.11.2026 13:30 Uhr 

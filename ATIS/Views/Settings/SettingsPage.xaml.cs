@@ -6,7 +6,6 @@ using System.Text.Json;
 using ATIS.Helpers;
 using ATIS.Models;
 using ATIS.Services;
-using Mapsui.Utilities;
 using Microsoft.Data.SqlClient;
 using Windows.ApplicationModel.DataTransfer;
 
@@ -35,19 +34,19 @@ public sealed partial class SettingsPage : Page
         var version = typeof(App).Assembly.GetName().Version;
       //  VersionText.Text = version is null ? "ATIS" : $"ATIS Version {version}";
         VersionText.Text = $"ATIS Version " + BuildInfo.Text;
-        Info.Text = $"ATIS = Aquaristik Taxonomie Information System mit Bildern und  Videos in 4 Sprachen.\r\n       " +
-                    $"Auf der Main Page soll ein Suchfeld sein, in dem man suchen  kann ohne angemeldet zu sein.\r\n  " +
-                    $"Um Eingaben in der vorhandenen Datenbank ATIS34, oder Einstellungen zu machen,\r\n              " +
-                    $"muss man sich einloggen als Administrator, Developer, Zoologe oder Biologe.\r\n                 " +
-                    $"MSSQLSERVER 2025 Als User kann man sich auch anmelden,\r\n                           " +
-                    $"kann aber nicht auf die wichtigen Bereiche zugreifen.\r\n                           " +
-                    $"Das Ergebnis der Suche holt Daten aus fast allen Tabellen der Datenbank und zeigt sie mit   " +
-                    $"Bildern und Videos an.\r\n                           " +
+        Info.Text = $"ATIS = Aquaristik Taxonomie Information System mit Bildern und  Videos in 4 Sprachen.\r\n " +
+                    $"Auf der Main Page soll ein Suchfeld sein, in dem man suchen  kann ohne angemeldet zu sein.\r\n " +
+                    $"Um Eingaben in der vorhandenen Datenbank ATIS34, oder Einstellungen zu machen,\r\n " +
+                    $"muss man sich einloggen als Administrator, Developer, Zoologe oder Biologe.\r\n " +
+                    $"MSSQLSERVER 2025 Als User kann man sich auch anmelden,\r\n " +
+                    $"kann aber nicht auf die wichtigen Bereiche zugreifen.\r\n " +
+                    $"Das Ergebnis der Suche holt Daten aus fast allen Tabellen der Datenbank und zeigt sie mit " +
+                    $"Bildern und Videos an.\r\n " +
                     $"Dies kann in PDF ausgedruckt werden. Entwurfsmuster MVVM zur Trennung von " +
-                    $"Darstellung und Logik der UI (aber nicht generell)\r\n                           " +
-                    $"Weitere Informationen und Links anzeigen über alles Wissenswerte rund um Lebewesen und    " +
+                    $"Darstellung und Logik der UI (aber nicht generell)\r\n " +
+                    $"Weitere Informationen und Links anzeigen über alles Wissenswerte rund um Lebewesen und " +
                     $"Aquaristik.\r\n                           Moderne Oberfläche ähnlich WinUi3 wie Fluent. " +
-                    $"Bilder und Videos werden im Ordner DB_FS_ATIS34 als File stream gespeichert.\r\n                 " +
+                    $"Bilder und Videos werden im Ordner DB_FS_ATIS34 als File stream gespeichert.\r\n " +
                     $"  http://www.terppe.com  "  ;
 
         SelectByTag(LanguageBox, CultureInfo.CurrentUICulture.Name);

@@ -321,8 +321,11 @@ public partial class App : Application
     {
         Cult = ConfigurationManager.AppSettings.Get("Culture");
 
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
+        if (Cult != null)
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
+        }
     }
 
     public static void RaiseLanguageChanged(string lang) => LanguageChanged?.Invoke(lang);
@@ -405,14 +408,6 @@ public partial class App : Application
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();
         services.AddTransient<AuthenticationViewModel>();
-
-        services.AddTransient<SpeciesViewModel>();
-        services.AddTransient<UtilityViewModel>();
-        services.AddTransient<GeneralSettingViewModel>();
-        services.AddTransient<ThemeSettingViewModel>();
-        services.AddTransient<AppUpdateSettingViewModel>();
-        services.AddTransient<GitUpdateSettingViewModel>();
-        services.AddTransient<AboutUsSettingViewModel>();
 
         services.AddTransient<Tbl03RegnumViewModel>();
         services.AddTransient<Tbl06PhylumViewModel>();
@@ -587,7 +582,11 @@ public partial class App : Application
 
     public static T GetService<T>() where T : class
     {
-        return Services.GetRequiredService<T>();
+        if (Services != null)
+        {
+            return Services.GetRequiredService<T>();
+        }
+        return null;
     }
 
 

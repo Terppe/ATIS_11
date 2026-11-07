@@ -2527,11 +2527,10 @@ public partial class DataService : ObservableObject, IDataService
     // ---------------------------------------------------------                  
     // GetSubordoByIdAsync(int id)
     // ---------------------------------------------------------                 
-    public async Task<Tbl36Subordo?> GetSubordoByIdAsync(int id)
+    public async Task<Tbl36Subordo> GetSubordoByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
-
-        return await context.Tbl36Subordos
+                return await context.Tbl36Subordos
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.SubordoId == id);
     }
