@@ -9,7 +9,13 @@ using Microsoft.UI.Xaml.Media;
 using QuestPDF.Fluent;
 using WinRT.Interop;
 using Windows.Storage.Pickers;
+
 namespace ATIS.Views.Search;
+
+
+public sealed record SearchPageNavigationRequest(
+    string Table,
+    string? SearchText = null);
 
 public sealed partial class SearchPage : Page
 {
@@ -51,17 +57,65 @@ public sealed partial class SearchPage : Page
         else
             _groupTabs[_selectedGroupIndex].Button.Focus(FocusState.Keyboard);
     }
+
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        _focusSearchBox = e.NavigationMode == NavigationMode.New && e.Parameter is not string;
+
+        var request = e.Parameter as SearchPageNavigationRequest;
+
+        _focusSearchBox = e.NavigationMode == NavigationMode.New &&
+                          (request is not null
+                              ? string.IsNullOrWhiteSpace(request.SearchText)
+                              : e.Parameter is not string);
+
+        // Beim Zurücknavigieren bleiben Suchgruppe und Ergebnisse erhalten.
         if (e.NavigationMode != NavigationMode.New)
             return;
-        SelectGroup(1);
-        if (e.Parameter is string searchText)
+
+        var selectedGroupIndex = request is null
+            ? 1
+            : Array.FindIndex(TableGroups, group =>
+                group.Tables.Contains(
+                    request.Table,
+                    StringComparer.OrdinalIgnoreCase));
+
+        if (selectedGroupIndex < 0)
+            selectedGroupIndex = 1;
+
+        SelectGroup(selectedGroupIndex);
+
+        if (request is not null)
+        {
+            ViewModel.SelectedTable =
+                TableGroups[selectedGroupIndex].Tables.FirstOrDefault(table =>
+                    string.Equals(
+                        table,
+                        request.Table,
+                        StringComparison.OrdinalIgnoreCase))
+                ?? TableGroups[selectedGroupIndex].DefaultTable;
+
+            ViewModel.SearchText = request.SearchText ?? string.Empty;
+            UpdateTableTabStates();
+        }
+        else if (e.Parameter is string searchText)
+        {
             ViewModel.SearchText = searchText;
+        }
+
         await SearchSelectedTableAsync();
     }
+    //protected override async void OnNavigatedTo(NavigationEventArgs e)
+    //{
+    //    base.OnNavigatedTo(e);
+    //    _focusSearchBox = e.NavigationMode == NavigationMode.New && e.Parameter is not string;
+    //    if (e.NavigationMode != NavigationMode.New)
+    //        return;
+    //    SelectGroup(1);
+    //    if (e.Parameter is string searchText)
+    //        ViewModel.SearchText = searchText;
+    //    await SearchSelectedTableAsync();
+    //}
     private (Button Button, Border Underline) CreateTab(string header, string tag, RoutedEventHandler onClick)
     {
         var underline = new Border

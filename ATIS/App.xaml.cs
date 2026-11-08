@@ -193,6 +193,19 @@ public partial class App : Application
                 return;
             }
 
+            var localInstances = SqlInstanceFinder.FindLocalInstances();
+
+            if (localInstances.Count > 0)
+            {
+                if (await ChooseDbServerAsync(localInstances))
+                {
+                    break;
+                }
+
+                Exit();
+                return;
+            }
+
             var result = await new ContentDialog
             {
                 XamlRoot = startupRoot.XamlRoot,
@@ -266,6 +279,7 @@ public partial class App : Application
     // 2. CHOOSE SERVER
     // ---------------------------------------------------------
 
+
     private async Task<bool> ChooseDbServerAsync(List<string> servers)
     {
         if (MainWindow?.Content is not FrameworkElement root ||
@@ -275,47 +289,98 @@ public partial class App : Application
                 "Das Fenster für die Serverauswahl ist nicht bereit.");
         }
 
-        var radios = new RadioButtons
+        while (true)
         {
-            ItemsSource = servers,
-            SelectedIndex = 0
-        };
+            var radios = new RadioButtons
+            {
+                ItemsSource = servers,
+                SelectedIndex = 0
+            };
 
-        var dialog = new ContentDialog
-        {
-            XamlRoot = root.XamlRoot,
-            Title = "SQL-Server mit ATIS34 auswählen",
-            Content = radios,
-            PrimaryButtonText = "Übernehmen",
-            CloseButtonText = "Abbrechen",
-            DefaultButton = ContentDialogButton.Primary
-        };
+            var dialog = new ContentDialog
+            {
+                XamlRoot = root.XamlRoot,
+                Title = "SQL-Server mit ATIS34 auswählen",
+                Content = radios,
+                PrimaryButtonText = "Verbindung testen",
+                CloseButtonText = "Abbrechen",
+                DefaultButton = ContentDialogButton.Primary
+            };
 
-        if (await dialog.ShowAsync() != ContentDialogResult.Primary ||
-            radios.SelectedItem is not string selected)
-        {
-            return false;
-        }
+            if (await dialog.ShowAsync() != ContentDialogResult.Primary ||
+                radios.SelectedItem is not string selected)
+            {
+                return false;
+            }
 
-        // Vor dem Speichern die ausgewählte Datenbank erneut prüfen.
-        if (!await SqlInstanceFinder.CanConnectAsync(selected, "ATIS34"))
-        {
+            if (await SqlInstanceFinder.CanConnectAsync(selected, "ATIS34"))
+            {
+                DbServerSettings.Save(selected);
+                return true;
+            }
+
             await new ContentDialog
             {
                 XamlRoot = root.XamlRoot,
                 Title = "Verbindung fehlgeschlagen",
                 Content =
-                    $"Die Datenbank ATIS34 auf {selected} ist nicht erreichbar. " +
-                    "Der Server wurde nicht gespeichert.",
-                CloseButtonText = "Beenden"
+                    $"ATIS34 auf „{selected}“ ist nicht erreichbar. " +
+                    "Bitte prüfen Sie den SQL-Server-Dienst und die Berechtigungen.",
+                CloseButtonText = "Zurück zur Auswahl"
             }.ShowAsync();
-
-            return false;
         }
-
-        DbServerSettings.Save(selected);
-        return true;
     }
+
+    //private async Task<bool> ChooseDbServerAsync(List<string> servers)
+    //{
+    //    if (MainWindow?.Content is not FrameworkElement root ||
+    //        root.XamlRoot is null)
+    //    {
+    //        throw new InvalidOperationException(
+    //            "Das Fenster für die Serverauswahl ist nicht bereit.");
+    //    }
+
+    //    var radios = new RadioButtons
+    //    {
+    //        ItemsSource = servers,
+    //        SelectedIndex = 0
+    //    };
+
+    //    var dialog = new ContentDialog
+    //    {
+    //        XamlRoot = root.XamlRoot,
+    //        Title = "SQL-Server mit ATIS34 auswählen",
+    //        Content = radios,
+    //        PrimaryButtonText = "Übernehmen",
+    //        CloseButtonText = "Abbrechen",
+    //        DefaultButton = ContentDialogButton.Primary
+    //    };
+
+    //    if (await dialog.ShowAsync() != ContentDialogResult.Primary ||
+    //        radios.SelectedItem is not string selected)
+    //    {
+    //        return false;
+    //    }
+
+    //    // Vor dem Speichern die ausgewählte Datenbank erneut prüfen.
+    //    if (!await SqlInstanceFinder.CanConnectAsync(selected, "ATIS34"))
+    //    {
+    //        await new ContentDialog
+    //        {
+    //            XamlRoot = root.XamlRoot,
+    //            Title = "Verbindung fehlgeschlagen",
+    //            Content =
+    //                $"Die Datenbank ATIS34 auf {selected} ist nicht erreichbar. " +
+    //                "Der Server wurde nicht gespeichert.",
+    //            CloseButtonText = "Beenden"
+    //        }.ShowAsync();
+
+    //        return false;
+    //    }
+
+    //    DbServerSettings.Save(selected);
+    //    return true;
+    //}
 
     private void ApplyCulture()
     {
@@ -530,20 +595,7 @@ public partial class App : Application
     }
 
     // ---------------------------------------------------------
-    // 7. Splash
-    // ---------------------------------------------------------
-    private async Task ShowSplashAsync()
-    {
-        splash = new SplashWindow();
-     //   splash.CenterOnScreen();
-     //   splash.IsAlwaysOnTop = true;
-        splash.Activate();
-        await Task.Delay(5000);
-        splash.Close();
-    }
-
-    // ---------------------------------------------------------
-    // 9. UNHANDLED EXCEPTIONS
+    // 8. UNHANDLED EXCEPTIONS
     // ---------------------------------------------------------
 
     private void App_UnhandledException(
@@ -576,8 +628,10 @@ public partial class App : Application
         }
 
         Debug.WriteLine($"[{context}] {exception}");
-    }    // ---------------------------------------------------------
-    // 10. Helper
+    }
+
+    // ---------------------------------------------------------
+    // 9. Helper
     // ---------------------------------------------------------
 
     public static T GetService<T>() where T : class
@@ -588,7 +642,5 @@ public partial class App : Application
         }
         return null;
     }
-
-
 }
 

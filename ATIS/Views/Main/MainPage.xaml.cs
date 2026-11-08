@@ -155,12 +155,6 @@ public sealed partial class MainPage : Page
         NavView.IsPaneOpen = !NavView.IsPaneOpen;
     }
 
-
-    private void ThemeButton_Click(object sender, RoutedEventArgs e)
-    {
-        //ThemeService.ChangeThemeWithoutSave(App.MainWindow);
-    }
-
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
         NavFrame.Navigate(typeof(SearchPage), args.QueryText);
@@ -178,11 +172,6 @@ public sealed partial class MainPage : Page
     }
     private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        //var viewModel = NavFrame.GetPageViewModel();
-   //     if (viewModel != null && viewModel is ITitleBarAutoSuggestBoxAware titleBarAutoSuggestBoxAware)
-        //{
-        //    titleBarAutoSuggestBoxAware.OnAutoSuggestBoxTextChanged(sender, args);
-        //}
     }
 
     private void SearchSearchBox_OnLoaded(object sender, RoutedEventArgs e)

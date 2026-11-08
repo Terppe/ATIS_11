@@ -1,17 +1,36 @@
 ﻿using System.Configuration;
 using System.Reflection;
-using Mapsui.Utilities;
+using ATIS.Views.Search;
 
 namespace ATIS.Views.Main;
 
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
+
 public sealed partial class HomePage : Page
 {
     public string AppInfo { get; set; }
     public HomeViewModel ViewModel { get; }
     public string? WinAppSdkVersion { get; set; } = ConfigurationManager.AppSettings.Get("WinAppSDK");
+
+    private void HomeSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+    {
+        NavigateToSearch(args.QueryText);
+    }
+
+    private void HomeSearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        NavigateToSearch(HomeSearchBox.Text);
+    }
+
+    private void CategoryCard_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: string table })
+            Frame.Navigate(typeof(SearchPage), new SearchPageNavigationRequest(table));
+    }
+
+    private void NavigateToSearch(string? query)
+    {
+        Frame.Navigate(typeof(SearchPage), query);
+    }
 
     public HomePage()
     {
@@ -22,11 +41,11 @@ public sealed partial class HomePage : Page
         var info = asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "unknown";
 
         string buildType;
-        #if DEBUG
-            buildType = "Debug";
-        #else
+#if DEBUG
+        buildType = "Debug";
+#else
             buildType = info.EndsWith("-local", StringComparison.OrdinalIgnoreCase) ? "Release lokal" : "CI";
-        #endif
+#endif
 
         LbVersion.Text = $"{App.Current.Copyright} " +
                          " | SDK Version: " + WinAppSdkVersion +
@@ -34,6 +53,4 @@ public sealed partial class HomePage : Page
                          " + OS-Version " + Environment.OSVersion +
                          " | ATIS-Version " + $"v{info}";
     }
-
-
 }
