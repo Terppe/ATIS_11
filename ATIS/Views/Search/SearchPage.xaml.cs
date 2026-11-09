@@ -3,50 +3,174 @@ using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Search.DetailPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Media;
 
 namespace ATIS.Views.Search;
 
 public sealed partial class SearchPage : Page
 {
+    private static readonly (string Header, string DefaultTable, string[] Tables)[] TableGroups =
+    [
+        ("Species", "Species", ["Species"]),
+        ("Genus", "Genus", ["Genus"]),
+        ("Tribus", "Tribus", ["Infratribus", "Subtribus", "Tribus", "Supertribus"]),
+        ("Families", "Family", ["Infrafamily", "Subfamily", "Family", "Superfamily"]),
+        ("Order", "Ordo", ["Infraordo", "Subordo", "Ordo", "Legio"]),
+        ("Class", "Class", ["Infraclass", "Subclass", "Class", "Superclass"]),
+        ("Phylum + Regnum", "Phylum", ["Subphylum", "Phylum", "Regnum"]),
+        ("Disease", "Disease", ["Disease"]),
+        ("Food", "Food", ["Food"]),
+        ("Miscellaneous", "Miscellaneous", ["Miscellaneous"])
+    ];
+
     private readonly IDataService _dataService;
+    private readonly List<(Button Button, Border Underline)> _groupTabs = [];
+    private readonly List<(Button Button, Border Underline)> _tableTabs = [];
+    private int _selectedGroupIndex = 1;
+    private bool _focusSearchBox;
 
     public SearchPageViewModel ViewModel { get; }
 
     public SearchPage()
     {
-        InitializeComponent();
-        DataContext = this;
-
         var factory = App.Services.GetRequiredService<IDbContextFactory<AtisDbContext>>();
         var user = App.Services.GetRequiredService<IUserService>();
         _dataService = new DataService(factory, user);
-
-        // ⭐ WICHTIG: ViewModel erzeugen und DataService übergeben
         ViewModel = new SearchPageViewModel(_dataService);
+
+        InitializeComponent();
+        DataContext = this;
+        CreateGroupTabs();
+        SelectGroup(_selectedGroupIndex);
         Loaded += SearchPage_Loaded;
-
     }
-    private bool _isLoaded;
 
-    private async void SearchPage_Loaded(object sender, RoutedEventArgs e)
+    private void SearchPage_Loaded(object sender, RoutedEventArgs e)
     {
-        _isLoaded = true;
-        await Task.Delay(50);
-        TableCombo.Focus(FocusState.Keyboard);
+        if (_focusSearchBox)
+            SearchBox.Focus(FocusState.Programmatic);
+        else
+            _groupTabs[_selectedGroupIndex].Button.Focus(FocusState.Keyboard);
     }
 
-    private void OnTableSelectionChanged(object sender, SelectionChangedEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
-        // alte Trefferliste löschen, damit z.B. Subclass -> Phylum sauber ist
-        ViewModel.Results?.Clear();
+        base.OnNavigatedTo(e);
+        _focusSearchBox = e.NavigationMode == NavigationMode.New && e.Parameter is not string;
 
-        // optional: Suchfeld leeren
-        // ViewModel.SearchText = string.Empty;
+        if (e.NavigationMode != NavigationMode.New)
+            return;
 
-        SearchBox.Focus(FocusState.Programmatic);
+        SelectGroup(1);
+        if (e.Parameter is string searchText)
+            ViewModel.SearchText = searchText;
+
+        await SearchSelectedTableAsync();
     }
+
+    private (Button Button, Border Underline) CreateTab(string header, string tag, RoutedEventHandler onClick)
+    {
+        var underline = new Border
+        {
+            Height = 2,
+            Background = new SolidColorBrush(Colors.Transparent)
+        };
+        var content = new StackPanel { Spacing = 4 };
+        content.Children.Add(new TextBlock
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Text = header
+        });
+        content.Children.Add(underline);
+
+        var button = new Button
+        {
+            Content = content,
+            Style = (Style)Application.Current.Resources["TabButtonStyle"],
+            Tag = tag
+        };
+        button.Click += onClick;
+        return (button, underline);
+    }
+
+    private void CreateGroupTabs()
+    {
+        foreach (var group in TableGroups)
+        {
+            var tab = CreateTab(group.Header, group.Header, OnGroupTabClick);
+            _groupTabs.Add(tab);
+            GroupTabsPanel.Children.Add(tab.Button);
+        }
+    }
+
+    private void SelectGroup(int index)
+    {
+        _selectedGroupIndex = index;
+        var group = TableGroups[index];
+        ViewModel.ClearResults();
+        ViewModel.SelectedTable = group.DefaultTable;
+
+        _tableTabs.Clear();
+        TableTabsPanel.Children.Clear();
+        TableTabsScrollViewer.Visibility = group.Tables.Length > 1 ? Visibility.Visible : Visibility.Collapsed;
+        foreach (var table in group.Tables)
+        {
+            var tab = CreateTab(table, table, OnTableTabClick);
+            _tableTabs.Add(tab);
+            TableTabsPanel.Children.Add(tab.Button);
+        }
+
+        UpdateTableTabStates();
+    }
+
+    private async void OnGroupTabClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: string header })
+            return;
+
+        SelectGroup(Array.FindIndex(TableGroups, group => group.Header == header));
+        await SearchSelectedTableAsync();
+    }
+
+    private async void OnTableTabClick(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { Tag: string table })
+            return;
+
+        ViewModel.ClearResults();
+        ViewModel.SelectedTable = table;
+        UpdateTableTabStates();
+
+        await SearchSelectedTableAsync();
+    }
+
+    private void UpdateTableTabStates()
+    {
+        foreach (var (button, underline) in _groupTabs)
+            SetTabButtonStyle(button, underline, Equals(button.Tag, TableGroups[_selectedGroupIndex].Header));
+
+        foreach (var (button, underline) in _tableTabs)
+            SetTabButtonStyle(button, underline, Equals(button.Tag, ViewModel.SelectedTable));
+    }
+
+    private static void SetTabButtonStyle(Button button, Border underline, bool isSelected)
+    {
+        button.Background = new SolidColorBrush(Colors.Transparent);
+        button.FontWeight = isSelected ? FontWeights.SemiBold : FontWeights.Normal;
+        underline.Background = new SolidColorBrush(isSelected ? Colors.DodgerBlue : Colors.Transparent);
+    }
+
+    private async Task SearchSelectedTableAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(ViewModel.SearchText))
+            await ViewModel.SearchCommand.ExecuteAsync(null);
+    }
+
     private async void OnSearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        ViewModel.SearchText = args.QueryText;
         await ViewModel.SearchCommand.ExecuteAsync(null);
     }
 
@@ -59,6 +183,21 @@ public sealed partial class SearchPage : Page
 
         switch (item)
         {
+            case TblDisease disease:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(TblDiseaseDetailPage), disease.DiseaseId);
+                break;
+
+            case TblFood food:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(TblFoodDetailPage), food.FoodId);
+                break;
+
+            case TblMiscellaneous miscellaneous:
+                App.MainPageInstance.NavFrame.Navigate(
+                    typeof(TblMiscellaneousDetailPage), miscellaneous.MiscellaneousId);
+                break;
+
             case Tbl03Regnum regnum:
                 App.MainPageInstance.NavFrame.Navigate(
                     typeof(Tbl03RegnumDetailPage), regnum.RegnumId);
