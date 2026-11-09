@@ -2,8 +2,6 @@
 using System.Windows.Input;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Services;
-using log4net;
 
 namespace ATIS.Views.Report;
 

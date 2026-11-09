@@ -1409,4 +1409,6 @@ FamilyPage.cs         SimpleLog.Info("Familienansicht initialisiert.");
 06.11.2026 13:30 Uhr SearchPage erweitert um Disease, Food, Miscellaneous. UserArea und AdminArea mit Permission ergänzt.
 Version 11.0.2.1 erzegt als exe. Lässt sich leider nicht starten
 ----------------------------------------
-07.11.2026 13:30 Uhr Entwurf Homepage. Weitere Anpassung in Disease, Food und MissounuesPage. MainPage
+07.11.2026 13:30 Uhr Entwurf Homepage. Weitere Anpassung in Disease, Food und MissounuesPage. MainPage. Version 11.0.2.2 Release
+----------------------------------------
+09.11.2026 13:30 Uhr 

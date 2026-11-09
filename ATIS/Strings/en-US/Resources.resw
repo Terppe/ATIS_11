@@ -2220,6 +2220,9 @@
   <data name="TextBlock_HomePageUrl.Text" xml:space="preserve">
     <value>Url</value>
   </data>
+  <data name="TextBlock_Home_Eyebrow.Text" xml:space="preserve">
+    <value>Header (Augenbraue)</value>
+  </data>
   <data name="TextBlock_Http.Text" xml:space="preserve">
     <value>Http</value>
   </data>
@@ -2366,6 +2369,15 @@
   </data>
   <data name="TextBlock_Latitude.Text" xml:space="preserve">
     <value>Latitude</value>
+  </data>
+  <data name="TextBlock_Home_Title.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="TextBlock_Home_SearchButton.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TextBlock_Home_Subtitle.Text" xml:space="preserve">
+    <value>Subtitle</value>
   </data>
   <data name="TextBlock_Latitude_Longitude.Text" xml:space="preserve">
     <value>Latitude/Longitude</value>
@@ -4503,6 +4515,9 @@
   <data name="AutoSuggestBox_Search_Species.PlaceholderText" xml:space="preserve">
     <value>Search Genusname or SpeciesID</value>
   </data>
+  <data name="AutoSuggestBox_Home_Search.Header" xml:space="preserve">
+    <value>Search Genusname or SpeciesID</value>
+  </data>
   <data name="MenuFlyout_Select.Text" xml:space="preserve">
     <value>Select Dataset</value>
   </data>
@@ -4901,6 +4916,9 @@
   </data>
   <data name="TextBlock_Email.Text" xml:space="preserve">
     <value>E-Mail</value>
+  </data>
+  <data name="TextBlock_Employment.Text" xml:space="preserve">
+    <value>Employment</value>
   </data>
   <data name="Expert" xml:space="preserve">
     <value>Expert:</value>

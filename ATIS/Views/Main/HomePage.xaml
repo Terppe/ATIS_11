@@ -14,13 +14,13 @@
         VerticalScrollBarVisibility="Auto">
         <Grid
             MaxWidth="1120"
-            Padding="32,28,32,20"
+            Padding="32,18,32,10"
             HorizontalAlignment="Center">
             <StackPanel Spacing="24">
 
                 <Border
                     MinHeight="280"
-                    Padding="32"
+                    Padding="24"
                     CornerRadius="22">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -39,26 +39,26 @@
                                 FontWeight="SemiBold"
                                 Foreground="#A7F3D0"
                                 CharacterSpacing="120"
-                                loc:Uids.Uid="Home_Eyebrow" />
+                                loc:Uids.Uid="TextBlock_Home_Eyebrow.Text" />
                             <TextBlock
                                 FontSize="36"
                                 FontWeight="SemiBold"
                                 Foreground="White"
                                 TextWrapping="Wrap"
-                                loc:Uids.Uid="Home_Title" />
+                                loc:Uids.Uid="TextBlock_Home_Title.Text" />
                             <TextBlock
                                 MaxWidth="600"
                                 FontSize="16"
                                 Foreground="#E0F2F1"
                                 TextWrapping="Wrap"
-                                loc:Uids.Uid="Home_Subtitle" />
+                                loc:Uids.Uid="TextBlock_Home_Subtitle.Text" />
 
                             <Grid
                                 MaxWidth="640"
                                 Margin="0,8,0,0"
                                 ColumnDefinitions="*,Auto"
                                 ColumnSpacing="10">
-                                <AutoSuggestBox
+                                <AutoSuggestBox 
                                     x:Name="HomeSearchBox"
                                     Grid.Column="0"
                                     MinHeight="46"
@@ -67,7 +67,7 @@
                                     PlaceholderText="Search"
                                     QueryIcon="Find"
                                     QuerySubmitted="HomeSearchBox_QuerySubmitted"
-                                    loc:Uids.Uid="Home_Search" />
+                                    loc:Uids.Uid="AutoSuggestBox_Home_Search.Header" />
                                 <Button
                                     Grid.Column="1"
                                     MinHeight="46"
@@ -79,7 +79,7 @@
                                     Foreground="#073B4C">
                                     <TextBlock
                                         FontWeight="SemiBold"
-                                        loc:Uids.Uid="Home_SearchButton" />
+                                        loc:Uids.Uid="TextBlock_Home_SearchButton.Text" />
                                 </Button>
                             </Grid>
                         </StackPanel>
@@ -131,9 +131,9 @@
 
                 <Grid
                     ColumnDefinitions="*,*"
-                    ColumnSpacing="16"
+                    ColumnSpacing="8"
                     RowDefinitions="Auto,Auto"
-                    RowSpacing="16">
+                    RowSpacing="8">
                     <Button
                         Grid.Row="0"
                         Grid.Column="0"
@@ -304,7 +304,7 @@
                 </Grid>
 
                 <Border
-                    Padding="20,16"
+                    Padding="20,8"
                     Background="{ThemeResource AtisCardBackgroundBrush}"
                     BorderBrush="{ThemeResource AtisCardBorderBrush}"
                     BorderThickness="1"

@@ -3,6 +3,7 @@
     x:Class="ATIS.Views.Settings.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:loc="using:WinUI3Localizer"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -12,10 +13,10 @@
             HorizontalAlignment="Left"
             Spacing="24">
 
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Einstellungen" />
+            <TextBlock loc:Uids.Uid="TextBlock_Employment.Text" Style="{StaticResource TitleTextBlockStyle}" />
 
             <StackPanel Spacing="8">
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Sprache" />
+                <TextBlock loc:Uids.Uid="TextBlock_Language.Text" Style="{StaticResource SubtitleTextBlockStyle}" />
                 <ComboBox
                     x:Name="LanguageBox"
                     MinWidth="240"
@@ -105,7 +106,10 @@
             <StackPanel Spacing="8">
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Über ATIS" />
                 <TextBlock x:Name="VersionText" Text="ATIS" />
-                <TextBlock x:Name="Info" Text="Informationen über ATIS" TextWrapping="Wrap" />
+                <TextBlock
+                    x:Name="Info"
+                    Text="Informationen über ATIS"
+                    TextWrapping="Wrap" />
             </StackPanel>
 
         </StackPanel>
