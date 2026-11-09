@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Services;
 
 namespace ATIS.Views.Search;
 
 using ATIS.Models;
 using ATIS.Views.Search.Pdf.Tbl21Classes;
 using CommunityToolkit.Mvvm.Input;
-using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
 
 public sealed class SearchPageViewModel : ObservableObject
 {
@@ -289,35 +290,14 @@ public sealed class SearchPageViewModel : ObservableObject
         if (classItems.Count == 0)
             return;
 
-        var document = new Tbl21ClassesListDocument(
-            new ObservableCollection<Tbl21Class>(classItems));
+        var tableName = PdfExportService.SanitizeFileNamePart(SelectedTable, "Search");
+        var searchText = PdfExportService.SanitizeFileNamePart(SearchText, "All");
+        var suggestedFileName = $"{tableName}_List_{searchText}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
-        var fileName = $"ClassSearchList_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-        var filePath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-            fileName);
-
-        document.GeneratePdf(filePath);
-
-        await Task.CompletedTask;
-
-        // Hier euren PDF-Export / Save / Open / Print anschließen
+        await App.GetService<IPdfExportService>().ExportAsync(
+            () => Task.FromResult<IDocument?>(new Tbl21ClassesListDocument(
+                new ObservableCollection<Tbl21Class>(classItems))),
+            suggestedFileName);
     }
 
-    public Tbl21ClassesListDocument? CreateSearchListDocument(IList<object> visibleItems)
-    {
-        if (visibleItems == null || visibleItems.Count == 0)
-            return null;
-
-        if (SelectedTable != "Class")
-            return null;
-
-        var classItems = visibleItems.OfType<Tbl21Class>().ToList();
-
-        if (classItems.Count == 0)
-            return null;
-
-        return new Tbl21ClassesListDocument(
-            new ObservableCollection<Tbl21Class>(classItems));
-    }
 }

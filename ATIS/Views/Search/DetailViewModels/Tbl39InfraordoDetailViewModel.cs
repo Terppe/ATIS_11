@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl39Infraordos;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using QuestPDF.Fluent;
-using WinUI3Localizer;
 
 
 //    Tbl39InfraordoDetailViewModel Skriptdatum:  15.06.2024  10:32    
@@ -602,67 +601,17 @@ public sealed class Tbl39InfraordoDetailViewModel : ObservableObject
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        if (InfraordoSelected == null || InfraordoSelected.InfraordoId == 0)
+        var selected = InfraordoSelected;
+        if (selected == null || selected.InfraordoId == 0)
             return;
 
-        try
+        var name = PdfExportService.SanitizeFileNamePart(selected.InfraordoName);
+        var suggestedFileName = $"Infraordo_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
-            var model = await Tbl39InfraordosDocumentDataSource.GetInfraordoDetailsAsync(InfraordoSelected.InfraordoId);
-
-            if (model == null)
-            {
-                var loc = Localizer.Get();
-
-                var infoDialog = new ContentDialog
-                {
-                    Title = loc.GetLocalizedString("Dialog_Info"),
-                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
-                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                    XamlRoot = App.MainPageInstance.Content.XamlRoot
-                };
-
-                await infoDialog.ShowAsync();
-                return;
-            }
-
-            var document = new Tbl39InfraordosDocument(model);
-
-            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            var safeTitle = string.IsNullOrWhiteSpace(InfraordoSelected.InfraordoName)
-                ? $"Infraordo_{InfraordoSelected.InfraordoId}"
-                : string.Concat(InfraordoSelected.InfraordoName.Split(Path.GetInvalidFileNameChars()));
-
-            var fileName = $"{safeTitle}_{InfraordoSelected.InfraordoId}.pdf";
-            var filePath = Path.Combine(desktopPath, fileName);
-
-            document.GeneratePdf(filePath);
-
-            var loc1 = Localizer.Get();
-
-            var successDialog = new ContentDialog
-            {
-                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
-                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
-                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
-                XamlRoot = App.MainPageInstance.Content.XamlRoot
-            };
-
-            await successDialog.ShowAsync();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
-            var loc = Localizer.Get();
-
-            var errorDialog = new ContentDialog
-            {
-                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
-                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
-                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                XamlRoot = App.MainPageInstance.Content.XamlRoot
-            };
-
-            await errorDialog.ShowAsync();
-        }
+            var model = await Tbl39InfraordosDocumentDataSource.GetInfraordoDetailsAsync(selected.InfraordoId);
+            return model == null ? null : new Tbl39InfraordosDocument(model);
+        }, suggestedFileName);
     }
 }

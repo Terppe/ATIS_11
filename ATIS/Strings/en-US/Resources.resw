@@ -2563,10 +2563,10 @@
     <value>PdfExport Hidden</value>
   </data>
   <data name="PdfExport_Success" xml:space="preserve">
-    <value>Pdf Export Successfull</value>
+    <value>PDF exported successfully: {0}</value>
   </data>
   <data name="PdfExport_Error" xml:space="preserve">
-    <value>Pdf Export Error</value>
+    <value>PDF export failed: {0}</value>
   </data>
   <data name="PdfImage_Error" xml:space="preserve">
     <value>Pdf Export Error create Image</value>

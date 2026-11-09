@@ -267,6 +267,7 @@ public partial class App : Application
 
         // DIALOG SYSTEM SERVICES
         services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<IPdfExportService, PdfExportService>();
 
         // LOOKUP SERVICES
         services.AddScoped<LookupService>();
@@ -449,4 +450,3 @@ public partial class App : Application
     //}
 
 }
-

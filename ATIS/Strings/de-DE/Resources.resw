@@ -2563,10 +2563,10 @@
     <value>Keine PDF Datei</value>
   </data>
   <data name="PdfExport_Success" xml:space="preserve">
-    <value>PDF Datei erfolgreich exportiert</value>
+    <value>PDF Datei erfolgreich exportiert: {0}</value>
   </data>
   <data name="PdfExport_Error" xml:space="preserve">
-    <value>PDF Datei Fehler beim Export</value>
+    <value>PDF Datei Fehler beim Export: {0}</value>
   </data>
   <data name="PdfImage_Error" xml:space="preserve">
     <value>PDF Datei Fehler beim Image erzeugen</value>
