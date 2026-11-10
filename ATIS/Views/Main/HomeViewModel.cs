@@ -16,7 +16,7 @@ public partial class HomeViewModel : ObservableObject
 
     public HomeViewModel ViewModel { get; }
  //   private readonly IDataService _dataService;
-    private readonly LookupService _lookupService;
+ //   private readonly LookupService _lookupService;
 
     // =========================================================
     #endregion [Private Data Members]
@@ -31,16 +31,11 @@ public partial class HomeViewModel : ObservableObject
         IDbContextFactory<AtisDbContext> factory,
         IDialogService dialog,
         HierarchyCoordinator coordinator,
-        LookupService lookup,
         IUserService user)
-       // : base(new DataService(factory, user), dialog, coordinator)
     {
-        //Child1ViewModel = new TblYYListViewModel(factory, user, dialog);
-        //Child2ViewModel = new TblZZListViewModel(factory, user, dialog);
-        //...
-        //IsDetailVisible = false;
-        //IsEditVisible = false;
-    }    // =========================================================
+    }
+
+    // =========================================================
     #endregion [Constructor]
     // =========================================================
 

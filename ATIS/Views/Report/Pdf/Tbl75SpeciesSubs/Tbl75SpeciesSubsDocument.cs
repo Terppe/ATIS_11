@@ -15,8 +15,8 @@ public class Tbl75SpeciesSubsDocument : IDocument
     private Tbl75SpeciesSubsPdfModel Model { get; }
     private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
-    private static int _tabLeftRel;
-    private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
+  //  private static int _tabLeftRel;
+    private static readonly int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
     private const int TabLeftRel4 = 4;
     private const int TabLeftRel8 = 8;
     private static int _tabLeftLastRel;

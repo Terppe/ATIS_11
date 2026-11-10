@@ -1,32 +1,34 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
-using ATIS.Models;
-using ATIS.Services;
-using static ATIS.Views.Report.PdfModels;
 
 namespace ATIS.Views.Report.Pdf.TblDisease;
+
+
 public abstract class TblDiseasesDocumentDataSource : ObservableObject
 {
     #region [Private Data Members]
-
     private static Models.TblDisease _diseaseSingle = new();
 
     #endregion [Private Data Members]      
 
-    //    Part 1 
-    public static TblDiseasesPdfModel GetDiseaseDetails(int diseaseId)
+    //    Part 1
+    public static async Task<TblDiseasesPdfModel?> GetDiseaseDetailsAsync(int diseaseId)
     {
         #region [Private Data Members]
 
         var dataService = App.GetService<IDataService>();
 
-        #endregion [Private Data Members]
-
         ClearAllCollections();
 
-      //  DiseasesCollection = dataService.GetDiseaseByIdAsync(diseaseId);
+        var diseaseSingle = await dataService.GetDiseaseByIdAsync(diseaseId);
 
-        var diseaseSingle =  dataService.GetDiseaseByIdAsync(diseaseId);
+        if (diseaseSingle == null)
+            return null;
+
+        _diseaseSingle = diseaseSingle;
+
+        #endregion [Private Data Members]
+
 
         return new TblDiseasesPdfModel
         {
@@ -49,7 +51,7 @@ public abstract class TblDiseasesDocumentDataSource : ObservableObject
 
     #region "Collections"
 
-    private static ObservableCollection<Models.TblDisease> DiseasesCollection { get; set; } = null!;
+    private static ObservableCollection<Models.TblDisease> DiseasesCollection { get; set; } = new();
 
     #endregion "Collections"
 

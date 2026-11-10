@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Models;
 using QuestPDF.Infrastructure;
 using ReportPdf = ATIS.Views.Report.Pdf;
@@ -11,47 +12,60 @@ public sealed class SearchPageViewModel : ObservableObject
 {
     private readonly IDataService _dataService;
     private int _searchVersion;
+
     public SearchPageViewModel(IDataService dataService)
     {
         _dataService = dataService;
+
         Tables = new()
         {
             "Species", "Genus", "Infratribus", "Subtribus", "Tribus", "Supertribus", "Infrafamily",
             "Subfamily", "Family", "Superfamily", "Infraordo", "Subordo", "Ordo", "Legio", "Infraclass", "Subclass", "Class",
             "Superclass", "Subphylum", "Phylum", "Regnum", "Disease", "Food", "Miscellaneous"
         };
+
         // nur Default, wenn wirklich noch nichts gesetzt
         SelectedTable ??= "Genus";
+
         SearchCommand = new AsyncRelayCommand(ExecuteSearchAsync);
         Results.CollectionChanged += (_, _) => OnPropertyChanged(nameof(CanPrintList));
     }
+
     private string? _selectedTable;
     public string? SelectedTable
     {
         get => _selectedTable;
         set => SetProperty(ref _selectedTable, value);
     }
+
     public bool CanPrintList => Results.Count > 0;
+
     public List<string> Tables { get; }
+
     private string _searchText = string.Empty;
     public string SearchText
     {
         get => _searchText;
         set => SetProperty(ref _searchText, value);
     }
+
     public ObservableCollection<object> Results { get; } = new();
+
     public IAsyncRelayCommand SearchCommand { get; }
+
     public void ClearResults()
     {
         _searchVersion++;
         Results.Clear();
     }
+
     private async Task ExecuteSearchAsync()
     {
         ClearResults();
         var searchVersion = _searchVersion;
         var searchText = SearchText;
         var results = new List<object>();
+
         switch (SelectedTable)
         {
             case "Regnum":
@@ -295,17 +309,43 @@ public sealed class SearchPageViewModel : ObservableObject
                     break;
                 }
         }
+
         if (searchVersion != _searchVersion)
             return;
+
         foreach (var item in results)
             Results.Add(item);
     }
+
+    public async Task PrintListAsync(IList<object> visibleItems)
+    {
+        ArgumentNullException.ThrowIfNull(visibleItems);
+        if (visibleItems.Count == 0)
+            return;
+
+        var items = visibleItems.ToList();
+        var selectedTable = SelectedTable;
+        var tableName = PdfExportService.SanitizeFileNamePart(SelectedTable, "Search");
+        var searchText = PdfExportService.SanitizeFileNamePart(SearchText, "All");
+        var suggestedFileName = $"{tableName}_List_{searchText}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await App.GetService<IPdfExportService>().ExportAsync(
+            () => Task.FromResult(CreateSearchListDocument(items, selectedTable)),
+            suggestedFileName);
+    }
+
     public IDocument? CreateSearchListDocument(IList<object> visibleItems)
+        => CreateSearchListDocument(visibleItems, SelectedTable);
+
+    private static IDocument? CreateSearchListDocument(
+        IList<object> visibleItems,
+        string? selectedTable)
     {
         ArgumentNullException.ThrowIfNull(visibleItems);
         if (visibleItems.Count == 0)
             return null;
-        return SelectedTable switch
+
+        return selectedTable switch
         {
             "Regnum" => CreateListDocument<Tbl03Regnum>(visibleItems, items =>
                 new SearchPdf.Tbl03Regnums.Tbl03RegnumsListDocument(new ReportPdf.Tbl03Regnums.Tbl03RegnumsPdfModel(), items)),
@@ -355,9 +395,10 @@ public sealed class SearchPageViewModel : ObservableObject
                 new SearchPdf.TblFoods.TblFoodsListDocument(new ReportPdf.TblFoods.TblFoodsPdfModel(), items)),
             "Miscellaneous" => CreateListDocument<TblMiscellaneous>(visibleItems, items =>
                 new SearchPdf.TblMiscellaneous.TblMiscellaneoussesListDocument(new ReportPdf.TblMiscellaneous.TblMiscellaneoussesPdfModel(), items)),
-            _ => throw new InvalidOperationException($"Unsupported search table: {SelectedTable}")
+            _ => throw new InvalidOperationException($"Unsupported search table: {selectedTable}")
         };
     }
+
     private static IDocument CreateListDocument<T>(
         IEnumerable<object> visibleItems,
         Func<ObservableCollection<T>, IDocument> createDocument)

@@ -150,17 +150,8 @@
   <data name="Save_Title" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="Server_Connect_Title" xml:space="preserve">
-    <value>Serverconnection</value>
-  </data>
-  <data name="Server_Exist_Title" xml:space="preserve">
-    <value>Server exist</value>
-  </data>
-  <data name="Server_Exist_Question" xml:space="preserve">
-    <value>Server exist ?</value>
-  </data>
-  <data name="Server_Connect_Message" xml:space="preserve">
-    <value>Server connected</value>
+  <data name="ShortInfo" xml:space="preserve">
+    <value>Short Info</value>
   </data>
   <data name="Save_Message" xml:space="preserve">
     <value>The record has been saved successfully.</value>
@@ -440,6 +431,9 @@
   </data>
   <data name="Country_Regex" xml:space="preserve">
     <value>Regex</value>
+  </data>
+  <data name="CountId" xml:space="preserve">
+    <value>Count ID</value>
   </data>
   <data name="Country_Name" xml:space="preserve">
     <value>Name</value>
@@ -866,9 +860,6 @@
   </data>
   <data name="MenuFlyout_Add.Text" xml:space="preserve">
     <value>Add</value>
-  </data>
-  <data name="MenuFlyoutItemUpdate.Text" xml:space="preserve">
-    <value>Update</value>
   </data>
   <data name="MenuFlyout_Add_Family.Text" xml:space="preserve">
     <value>Add Family</value>
@@ -1998,9 +1989,6 @@
   <data name="ClassTab" xml:space="preserve">
     <value>Class</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
   <data name="TextBlock_Classes.Text" xml:space="preserve">
     <value>Classes</value>
   </data>
@@ -2042,9 +2030,6 @@
   </data>
   <data name="TextBlock_Continent.Text" xml:space="preserve">
     <value>Continent</value>
-  </data>
-  <data name="TextBlock_Confirm_Password.Text" xml:space="preserve">
-    <value>Confirm pPassword</value>
   </data>
   <data name="Continent" xml:space="preserve">
     <value>Continent</value>
@@ -2139,6 +2124,9 @@
   <data name="TextBlock_LastName.Text" xml:space="preserve">
     <value>Last Name</value>
   </data>
+  <data name="TextBlock_LastUpdated.Text" xml:space="preserve">
+    <value>Last Updated</value>
+  </data>
   <data name="TextBlock_FiSpeciesId.Text" xml:space="preserve">
     <value>Species ID</value>
   </data>
@@ -2181,9 +2169,6 @@
   <data name="Genus" xml:space="preserve">
     <value>Genus</value>
   </data>
-  <data name="Food" xml:space="preserve">
-    <value>Food</value>
-  </data>
   <data name="TextBlock_GenusId.Text" xml:space="preserve">
     <value>Genus ID</value>
   </data>
@@ -2219,9 +2204,6 @@
   </data>
   <data name="TextBlock_HomePageUrl.Text" xml:space="preserve">
     <value>Url</value>
-  </data>
-  <data name="TextBlock_Home_Eyebrow.Text" xml:space="preserve">
-    <value>Header (Augenbraue)</value>
   </data>
   <data name="TextBlock_Http.Text" xml:space="preserve">
     <value>Http</value>
@@ -2370,15 +2352,6 @@
   <data name="TextBlock_Latitude.Text" xml:space="preserve">
     <value>Latitude</value>
   </data>
-  <data name="TextBlock_Home_Title.Text" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="TextBlock_Home_SearchButton.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
-  <data name="TextBlock_Home_Subtitle.Text" xml:space="preserve">
-    <value>Subtitle</value>
-  </data>
   <data name="TextBlock_Latitude_Longitude.Text" xml:space="preserve">
     <value>Latitude/Longitude</value>
   </data>
@@ -2402,9 +2375,6 @@
   </data>
   <data name="TextBlock_Longitude.Text" xml:space="preserve">
     <value>Longitude</value>
-  </data>
-  <data name="TextBlock_Login.Text" xml:space="preserve">
-    <value>LOGIN</value>
   </data>
   <data name="TextBlock_LoadFromClipboard.Text" xml:space="preserve">
     <value>Load from Clipboard</value>
@@ -2520,9 +2490,6 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="Miscellaneous" xml:space="preserve">
-    <value>Miscellaneous</value>
-  </data>
   <data name="TextBlock_NameId.Text" xml:space="preserve">
     <value>Name ID</value>
   </data>
@@ -2592,9 +2559,6 @@
   <data name="CarboHardness12" xml:space="preserve">
     <value>Carbo Hardness 1 / Carbo Hardness 2</value>
   </data>
-  <data name="ChangePassword" xml:space="preserve">
-    <value>Change Password</value>
-  </data>
   <data name="TextBlock_Phylum.Text" xml:space="preserve">
     <value>Phylum</value>
   </data>
@@ -2607,14 +2571,14 @@
   <data name="PdfExport_Hidden" xml:space="preserve">
     <value>PdfExport Hidden</value>
   </data>
-  <data name="PdfExport_Success" xml:space="preserve">
-    <value>Pdf Export Successfull</value>
+  <data name="PdfExport_Success_Message" xml:space="preserve">
+    <value>Pdf Export Successfull: {0}</value>
   </data>
   <data name="PdfExport_Error" xml:space="preserve">
     <value>Pdf Export Error</value>
   </data>
-  <data name="PdfImage_Error" xml:space="preserve">
-    <value>Pdf Export Error create Image</value>
+  <data name="PdfImage_Error_Message" xml:space="preserve">
+    <value>Pdf Export Error create Image: {0}</value>
   </data>
   <data name="PdfExport_Success_Title" xml:space="preserve">
     <value>Pdf Export</value>
@@ -2720,9 +2684,6 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
-  </data>
-  <data name="TextBlock_Register.Text" xml:space="preserve">
-    <value>REGISTER</value>
   </data>
   <data name="RegionTop" xml:space="preserve">
     <value>Region Top</value>
@@ -2946,6 +2907,9 @@
   <data name="Synonym" xml:space="preserve">
     <value>Synonym</value>
   </data>
+  <data name="Symptom" xml:space="preserve">
+    <value>Symptom</value>
+  </data>
   <data name="TextBlock_Technik.Text" xml:space="preserve">
     <value>Technik</value>
   </data>
@@ -2954,6 +2918,12 @@
   </data>
   <data name="TextBlock_Temp.Text" xml:space="preserve">
     <value>Temperature</value>
+  </data>
+  <data name="TextBlock_Thema1.Text" xml:space="preserve">
+    <value>Theme 1</value>
+  </data>
+  <data name="TextBlock_Thema2.Text" xml:space="preserve">
+    <value>Theme 2</value>
   </data>
   <data name="TextBlock_Therapie.Text" xml:space="preserve">
     <value>Therapy</value>
@@ -2975,6 +2945,15 @@
   </data>
   <data name="TradeName" xml:space="preserve">
     <value>Tradename</value>
+  </data>
+  <data name="Thema1" xml:space="preserve">
+    <value>Thema 1</value>
+  </data>
+  <data name="Thema2" xml:space="preserve">
+    <value>Thema 2</value>
+  </data>
+  <data name="Therapie" xml:space="preserve">
+    <value>Therapie</value>
   </data>
   <data name="Tooltip_LoadFromClipboard.Content" xml:space="preserve">
     <value>Image, Video or Audio-Data from Clipboard</value>
@@ -3702,6 +3681,9 @@
   <data name="TextBlock_Diseases.Text" xml:space="preserve">
     <value>Diseases</value>
   </data>
+  <data name="TextBlock_Disease.Text" xml:space="preserve">
+    <value>Disease</value>
+  </data>
   <data name="TextBlock_Experts.Text" xml:space="preserve">
     <value>Expert(s):</value>
   </data>
@@ -3737,9 +3719,6 @@
   </data>
   <data name="SQL_Server_Ok" xml:space="preserve">
     <value>SQL - Server running</value>
-  </data>
-  <data name="SQL_Server_Not_Connected" xml:space="preserve">
-    <value>SQL - Server not connected</value>
   </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Species</value>
@@ -3801,8 +3780,8 @@
   <data name="Regnum" xml:space="preserve">
     <value>Regnum</value>
   </data>
-  <data name="Register" xml:space="preserve">
-    <value>Register</value>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
   </data>
   <data name="ShotDate" xml:space="preserve">
     <value>Shotdate</value>
@@ -3812,30 +3791,6 @@
   </data>
   <data name="Subclass" xml:space="preserve">
     <value>Subclass</value>
-  </data>
-  <data name="Status_Login_Successful" xml:space="preserve">
-    <value>Login successful</value>
-  </data>
-  <data name="Status_Login_User_Successful" xml:space="preserve">
-    <value>logged</value>
-  </data>
-  <data name="Status_Registration_Successful" xml:space="preserve">
-    <value>Registration successful</value>
-  </data>
-  <data name="Status_Reset_Code_Sent" xml:space="preserve">
-    <value>Reset_Code_Sent</value>
-  </data>
-  <data name="Status_No_User_Logged_In" xml:space="preserve">
-    <value>No User logged in</value>
-  </data>
-  <data name="Status_Password_Changed_Successfully" xml:space="preserve">
-    <value>Password changed successfully</value>
-  </data>
-  <data name="Error_Reset_Code_Failed" xml:space="preserve">
-    <value>Reset Code failed</value>
-  </data>
-  <data name="Error_Reset_Code_Required_Message" xml:space="preserve">
-    <value>Reset Code required</value>
   </data>
   <data name="TextBlock_Subdivision.Text" xml:space="preserve">
     <value>Subdivision</value>
@@ -3860,12 +3815,6 @@
   </data>
   <data name="LoggedIn" xml:space="preserve">
     <value>is logged</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="List" xml:space="preserve">
-    <value>List</value>
   </data>
   <data name="TextBlock_Infraordo.Text" xml:space="preserve">
     <value>Infraordo</value>
@@ -4019,9 +3968,6 @@
   </data>
   <data name="TextBlock_NewPhylum.Text" xml:space="preserve">
     <value>New Phylum</value>
-  </data>
-  <data name="TextBlock_New_Password.Text" xml:space="preserve">
-    <value>New Password</value>
   </data>
   <data name="TextBlock_NewRegnum.Text" xml:space="preserve">
     <value>New Regnum</value>
@@ -4515,29 +4461,17 @@
   <data name="AutoSuggestBox_Search_Species.PlaceholderText" xml:space="preserve">
     <value>Search Genusname or SpeciesID</value>
   </data>
-  <data name="AutoSuggestBox_Home_Search.Header" xml:space="preserve">
-    <value>Search Genusname or SpeciesID</value>
-  </data>
   <data name="MenuFlyout_Select.Text" xml:space="preserve">
     <value>Select Dataset</value>
   </data>
   <data name="Button_PrintPdf.Content" xml:space="preserve">
     <value>Print Pdf</value>
   </data>
-  <data name="Button_Request_Code.Content" xml:space="preserve">
-    <value>Request Code</value>
-  </data>
-  <data name="Button_Reset_Password.Content" xml:space="preserve">
-    <value>Reset Password</value>
-  </data>
   <data name="Button_Add" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="Button_Refresh" xml:space="preserve">
     <value>Refresh</value>
-  </data>
-  <data name="Button_Register.Content" xml:space="preserve">
-    <value>Register</value>
   </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>Delete</value>
@@ -4556,9 +4490,6 @@
   </data>
   <data name="Button_Cancel" xml:space="preserve">
     <value>Cancel</value>
-  </data>
-  <data name="Button_Change_Password.Content" xml:space="preserve">
-    <value>Change Password</value>
   </data>
   <data name="MenuFlyout_Print.Text" xml:space="preserve">
     <value>Print Dataset</value>
@@ -4604,9 +4535,6 @@
   </data>
   <data name="Button_Close.Content" xml:space="preserve">
     <value>Close</value>
-  </data>
-  <data name="Button_Login.Content" xml:space="preserve">
-    <value>Log In</value>
   </data>
   <data name="SearchBox_Search.PlaceholderText" xml:space="preserve">
     <value>Search</value>
@@ -4776,9 +4704,6 @@
   <data name="TextBlock_CurrentStanding.Text" xml:space="preserve">
     <value>Current Standing:</value>
   </data>
-  <data name="TextBlock_Current_Password.Text" xml:space="preserve">
-    <value>Current Password</value>
-  </data>
   <data name="CurrentStanding" xml:space="preserve">
     <value>Current Standing:</value>
   </data>
@@ -4867,7 +4792,7 @@
     <value>Shot Date</value>
   </data>
   <data name="TextBlock_ShortInfo.Text" xml:space="preserve">
-    <value>Short Symptom</value>
+    <value>Short Info</value>
   </data>
   <data name="TextBlock_Size.Text" xml:space="preserve">
     <value>Sizes</value>
@@ -4913,12 +4838,6 @@
   </data>
   <data name="TextBlock_Expert.Text" xml:space="preserve">
     <value>Expert:</value>
-  </data>
-  <data name="TextBlock_Email.Text" xml:space="preserve">
-    <value>E-Mail</value>
-  </data>
-  <data name="TextBlock_Employment.Text" xml:space="preserve">
-    <value>Employment</value>
   </data>
   <data name="Expert" xml:space="preserve">
     <value>Expert:</value>
@@ -5010,14 +4929,8 @@
   <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
     <value>Media not loaded</value>
   </data>
-  <data name="Error_LoadingData_Title" xml:space="preserve">
-    <value>Data not loaded</value>
-  </data>
   <data name="Error_LoadMediaFromUrl_Message" xml:space="preserve">
     <value>Media not saved or loaded</value>
-  </data>
-  <data name="Error_LoadingData_Message" xml:space="preserve">
-    <value>Data not loaded</value>
   </data>
   <data name="Error_MissingInfo_Message" xml:space="preserve">
     <value>info missing</value>
@@ -5030,15 +4943,6 @@
   </data>
   <data name="Error_NoFile_Message" xml:space="preserve">
     <value>No filestrem exist</value>
-  </data>
-  <data name="Error_Email_Format_Message" xml:space="preserve">
-    <value>Email must have Format name@domain.tld</value>
-  </data>
-  <data name="Error_Current_And_New_Password_Required_Message" xml:space="preserve">
-    <value>Current and new Password required</value>
-  </data>
-  <data name="Error_Email_Required_Message" xml:space="preserve">
-    <value>Email_required</value>
   </data>
   <data name="Error_NoPermission_Message" xml:space="preserve">
     <value>No permission exist</value>
@@ -5085,9 +4989,6 @@
   <data name="Difficult4" xml:space="preserve">
     <value>Difficult 4</value>
   </data>
-  <data name="Disease" xml:space="preserve">
-    <value>Disease</value>
-  </data>
   <data name="Dialog_Delete_Title" xml:space="preserve">
     <value>Deleted</value>
   </data>
@@ -5133,6 +5034,9 @@
   <data name="Dialog_Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="Dialog_Info_Title" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="Dialog_Error_DeleteFailed" xml:space="preserve">
     <value>Deletion failed.</value>
   </data>
@@ -5141,9 +5045,6 @@
   </data>
   <data name="Error_Name_Required" xml:space="preserve">
     <value>Name must be between {0} and {1} characters.</value>
-  </data>
-  <data name="Error_New_Password_Required_Message" xml:space="preserve">
-    <value>New Password required</value>
   </data>
   <data name="Error_PublicationYear_Length" xml:space="preserve">
     <value>Publication year must be exactly 4 characters.</value>
@@ -5177,9 +5078,6 @@
   </data>
   <data name="Error_PlantLength_Positive" xml:space="preserve">
     <value>The Plantlength must be Positive</value>
-  </data>
-  <data name="Error_Password_Required_Message" xml:space="preserve">
-    <value>Password Required</value>
   </data>
   <data name="Error_BasinHeight_Positive" xml:space="preserve">
     <value>The Basinheight must be Positive</value>
@@ -5237,9 +5135,6 @@
   </data>
   <data name="Error_InvalidUrl_Message" xml:space="preserve">
     <value>URL is invalid or incomplete</value>
-  </data>
-  <data name="Error_Invalid_Login_Credentials_Message" xml:space="preserve">
-    <value>Login is invalid or incomplete</value>
   </data>
   <data name="Error_MissInfo_Message" xml:space="preserve">
     <value>Miss Info</value>
@@ -5531,6 +5426,150 @@
   </data>
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Add</value>
+  </data>
+  <data name="Server_Connect_Title" xml:space="preserve">
+    <value>Serverconnection</value>
+  </data>
+  <data name="Server_Exist_Title" xml:space="preserve">
+    <value>Server exist</value>
+  </data>
+  <data name="Server_Exist_Question" xml:space="preserve">
+    <value>Server exist ?</value>
+  </data>
+  <data name="Server_Connect_Message" xml:space="preserve">
+    <value>Server connected</value>
+  </data>
+  <data name="MenuFlyoutItemUpdate.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TextBlock_Confirm_Password.Text" xml:space="preserve">
+    <value>Confirm pPassword</value>
+  </data>
+  <data name="Food" xml:space="preserve">
+    <value>Food</value>
+  </data>
+  <data name="FoodVolume" xml:space="preserve">
+    <value>Food Volume</value>
+  </data>
+  <data name="TextBlock_Home_Eyebrow.Text" xml:space="preserve">
+    <value>ATIS</value>
+  </data>
+  <data name="TextBlock_Home_Title.Text" xml:space="preserve">
+    <value>Aquaristic Taxnomic Informationssystem</value>
+  </data>
+  <data name="TextBlock_Home_SearchButton.Text" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="TextBlock_Home_Subtitle.Text" xml:space="preserve">
+    <value>Rudolf Terppé</value>
+  </data>
+  <data name="TextBlock_Login.Text" xml:space="preserve">
+    <value>LOGIN</value>
+  </data>
+  <data name="Miscellaneous" xml:space="preserve">
+    <value>Miscellaneous</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="TextBlock_Register.Text" xml:space="preserve">
+    <value>REGISTER</value>
+  </data>
+  <data name="SQL_Server_Not_Connected" xml:space="preserve">
+    <value>SQL - Server not connected</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Status_Login_Successful" xml:space="preserve">
+    <value>Login successful</value>
+  </data>
+  <data name="Status_Login_User_Successful" xml:space="preserve">
+    <value>logged</value>
+  </data>
+  <data name="Status_Registration_Successful" xml:space="preserve">
+    <value>Registration successful</value>
+  </data>
+  <data name="Status_Reset_Code_Sent" xml:space="preserve">
+    <value>Reset_Code_Sent</value>
+  </data>
+  <data name="Status_No_User_Logged_In" xml:space="preserve">
+    <value>No User logged in</value>
+  </data>
+  <data name="Status_Password_Changed_Successfully" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="Error_Reset_Code_Failed" xml:space="preserve">
+    <value>Reset Code failed</value>
+  </data>
+  <data name="Error_Reset_Code_Required_Message" xml:space="preserve">
+    <value>Reset Code required</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="TextBlock_New_Password.Text" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="AutoSuggestBox_Home_Search.Header" xml:space="preserve">
+    <value>Search Genusname or SpeciesID</value>
+  </data>
+  <data name="Button_Request_Code.Content" xml:space="preserve">
+    <value>Request Code</value>
+  </data>
+  <data name="Button_Reset_Password.Content" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Button_Register.Content" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Button_Change_Password.Content" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="Button_Login.Content" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="TextBlock_Current_Password.Text" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="TextBlock_Email.Text" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="TextBlock_Employment.Text" xml:space="preserve">
+    <value>Employment</value>
+  </data>
+  <data name="Error_LoadingData_Title" xml:space="preserve">
+    <value>Data not loaded</value>
+  </data>
+  <data name="Error_LoadingData_Message" xml:space="preserve">
+    <value>Data not loaded</value>
+  </data>
+  <data name="Error_Email_Format_Message" xml:space="preserve">
+    <value>Email must have Format name@domain.tld</value>
+  </data>
+  <data name="Error_Current_And_New_Password_Required_Message" xml:space="preserve">
+    <value>Current and new Password required</value>
+  </data>
+  <data name="Error_Email_Required_Message" xml:space="preserve">
+    <value>Email_required</value>
+  </data>
+  <data name="Disease" xml:space="preserve">
+    <value>Disease</value>
+  </data>
+  <data name="Error_New_Password_Required_Message" xml:space="preserve">
+    <value>New Password required</value>
+  </data>
+  <data name="Error_Password_Required_Message" xml:space="preserve">
+    <value>Password Required</value>
+  </data>
+  <data name="Error_Invalid_Login_Credentials_Message" xml:space="preserve">
+    <value>Login is invalid or incomplete</value>
   </data>
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot Password</value>

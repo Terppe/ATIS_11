@@ -6,12 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
-using QuestPDF.Fluent;
-using WinRT.Interop;
-using Windows.Storage.Pickers;
 
 namespace ATIS.Views.Search;
-
 
 public sealed record SearchPageNavigationRequest(
     string Table,
@@ -105,17 +101,7 @@ public sealed partial class SearchPage : Page
 
         await SearchSelectedTableAsync();
     }
-    //protected override async void OnNavigatedTo(NavigationEventArgs e)
-    //{
-    //    base.OnNavigatedTo(e);
-    //    _focusSearchBox = e.NavigationMode == NavigationMode.New && e.Parameter is not string;
-    //    if (e.NavigationMode != NavigationMode.New)
-    //        return;
-    //    SelectGroup(1);
-    //    if (e.Parameter is string searchText)
-    //        ViewModel.SearchText = searchText;
-    //    await SearchSelectedTableAsync();
-    //}
+
     private (Button Button, Border Underline) CreateTab(string header, string tag, RoutedEventHandler onClick)
     {
         var underline = new Border
@@ -334,22 +320,7 @@ public sealed partial class SearchPage : Page
     private async void OnPrintListClick(object sender, RoutedEventArgs e)
     {
         var visibleItems = ResultList.Items.Cast<object>().ToList();
-        var document = ViewModel.CreateSearchListDocument(visibleItems);
-        if (document == null)
-            return;
-        var savePicker = new FileSavePicker();
-        savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-        var tableName = string.IsNullOrWhiteSpace(ViewModel.SelectedTable)
-            ? "Search"
-            : ViewModel.SelectedTable;
-        var searchText = SanitizeFileNamePart(ViewModel.SearchText);
-        savePicker.SuggestedFileName = $"{tableName}_List_{searchText}_{DateTime.Now:yyyyMMdd_HHmmss}";
-        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
-        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-        InitializeWithWindow.Initialize(savePicker, hwnd);
-        var file = await savePicker.PickSaveFileAsync();
-        if (file == null)
-            return;
-        document.GeneratePdf(file.Path);
+
+        await ViewModel.PrintListAsync(visibleItems);
     }
 }

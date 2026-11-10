@@ -1,12 +1,5 @@
 ﻿using ATIS.Interfaces;
-using ATIS.Views.Report.Pdf.Tbl12Subphylums;
 using ATIS.Views.Search.DetailViewModels;
-using Microsoft.UI.Xaml.Data;
-using QuestPDF.Fluent;
-using QuestPDF.Infrastructure;
-using Windows.Storage.Pickers;
-using WinRT.Interop;
-using WinUI3Localizer;
 
 //  Tbl12SubphylumDetailPage.xaml.cs Skriptdatum:  15.06.2024  12:32     
 
@@ -64,59 +57,10 @@ public sealed partial class Tbl12SubphylumDetailPage : Page
     {
         return ViewModel.NavigateBreadcrumbAsync(item);
     }
-
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            var document = await CreateDetailDocumentAsync();
-            if (document == null)
-                return;
-
-            var subphylumName = SanitizeFileNamePart(GetCurrentSubphylumName());
-            var suggestedFileName =
-                $"Subphylum_Detail_{subphylumName}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-            await SaveDocumentAsPdfAsync(document, suggestedFileName);
-        }
-        catch (Exception ex) when (
-            ex is QuestPDF.Drawing.Exceptions.DocumentComposeException or
-                QuestPDF.Drawing.Exceptions.DocumentLayoutException or
-                IOException or UnauthorizedAccessException)
-        {
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
-
-            var loc = Localizer.Get();
-            var dialog = new ContentDialog
-            {
-                XamlRoot = XamlRoot,
-                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
-                Content = string.Format(
-                    loc.GetLocalizedString("PdfExport_Error"), ex.Message),
-                CloseButtonText = loc.GetLocalizedString("Dialog_Ok")
-            };
-
-            await dialog.ShowAsync();
-        }
+        await ViewModel.ExportPdfCommand.ExecuteAsync(null);
     }
-
-    //für später andere nutzung, z.B. Drucken
-    //private async void PrintButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    await PrintCurrentReviewAsync();
-    //}
-
-    //private async Task PrintCurrentReviewAsync()
-    //{
-    //    var document = await CreateDetailDocumentAsync();
-    //    if (document == null)
-    //        return;
-
-    //    var subphylumName = SanitizeFileNamePart(GetCurrentSubphylumName());
-    //    var suggestedFileName = $"Subphylum_Detail_{subphylumName}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-    //    await SaveDocumentAsPdfAsync(document, suggestedFileName);
-    //}
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
@@ -126,53 +70,4 @@ public sealed partial class Tbl12SubphylumDetailPage : Page
         }
     }
 
-    private async Task<IDocument?> CreateDetailDocumentAsync()
-    {
-        if (ViewModel?.SubphylumSelected == null)
-            return null;
-
-        var pdfModel = await Tbl12SubphylumsDocumentDataSource.GetSubphylumDetailsAsync(ViewModel.SubphylumSelected.SubphylumId);
-        if (pdfModel == null)
-            return null;
-
-        return new Tbl12SubphylumsDocument(pdfModel);
-    }
-
-    private string? GetCurrentSubphylumName()
-    {
-        return ViewModel?.SubphylumSelected?.SubphylumName;
-    }
-
-    private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)
-    {
-        var savePicker = new FileSavePicker
-        {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
-            SuggestedFileName = suggestedFileName
-        };
-
-        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
-
-        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-        InitializeWithWindow.Initialize(savePicker, hwnd);
-
-        var file = await savePicker.PickSaveFileAsync();
-        if (file == null)
-            return;
-
-        document.GeneratePdf(file.Path);
-    }
-
-    private static string SanitizeFileNamePart(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            return "Unknown";
-
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var cleaned = new string(value
-            .Where(c => !invalidChars.Contains(c))
-            .ToArray());
-
-        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
-    }
 }

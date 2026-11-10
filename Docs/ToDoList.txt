@@ -1411,4 +1411,7 @@ Version 11.0.2.1 erzegt als exe. Lässt sich leider nicht starten
 ----------------------------------------
 07.11.2026 13:30 Uhr Entwurf Homepage. Weitere Anpassung in Disease, Food und MissounuesPage. MainPage. Version 11.0.2.2 Release
 ----------------------------------------
-09.11.2026 13:30 Uhr 
+09.11.2026 13:30 Uhr Zentralen PrintService eingerichte und DetailPages und DetailVms geändert.Food, Disease und MiscellaneousPage noch nicht ok
+----------------------------------------
+10.11.2026 08:30 Uhr Food, Disease und MiscellaneousPage funktion ist da jetzt müssen die pages und Dokumente überarbeitet werden.
+Homepage angefangen höhe verändern

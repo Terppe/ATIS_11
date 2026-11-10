@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 using ATIS.Views.Report.Pdf.Tbl36Subordos;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using QuestPDF.Fluent;
-using WinUI3Localizer;
 
 
 //    Tbl36SubordoDetailViewModel Skriptdatum:  15.06.2024  10:32    
@@ -568,67 +567,17 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        if (SubordoSelected == null || SubordoSelected.SubordoId == 0)
+        var selected = SubordoSelected;
+        if (selected == null || selected.SubordoId == 0)
             return;
 
-        try
+        var name = PdfExportService.SanitizeFileNamePart(selected.SubordoName);
+        var suggestedFileName = $"Subordo_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
-            var model = await Tbl36SubordosDocumentDataSource.GetSubordoDetailsAsync(SubordoSelected.SubordoId);
-
-            if (model == null)
-            {
-                var loc = Localizer.Get();
-
-                var infoDialog = new ContentDialog
-                {
-                    Title = loc.GetLocalizedString("Dialog_Info"),
-                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
-                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                    XamlRoot = App.MainPageInstance.Content.XamlRoot
-                };
-
-                await infoDialog.ShowAsync();
-                return;
-            }
-
-            var document = new Tbl36SubordosDocument(model);
-
-            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            var safeTitle = string.IsNullOrWhiteSpace(SubordoSelected.SubordoName)
-                ? $"Subordo_{SubordoSelected.SubordoId}"
-                : string.Concat(SubordoSelected.SubordoName.Split(Path.GetInvalidFileNameChars()));
-
-            var fileName = $"{safeTitle}_{SubordoSelected.SubordoId}.pdf";
-            var filePath = Path.Combine(desktopPath, fileName);
-
-            document.GeneratePdf(filePath);
-
-            var loc1 = Localizer.Get();
-
-            var successDialog = new ContentDialog
-            {
-                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
-                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
-                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
-                XamlRoot = App.MainPageInstance.Content.XamlRoot
-            };
-
-            await successDialog.ShowAsync();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
-            var loc = Localizer.Get();
-
-            var errorDialog = new ContentDialog
-            {
-                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
-                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
-                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                XamlRoot = App.MainPageInstance.Content.XamlRoot
-            };
-
-            await errorDialog.ShowAsync();
-        }
+            var model = await Tbl36SubordosDocumentDataSource.GetSubordoDetailsAsync(selected.SubordoId);
+            return model == null ? null : new Tbl36SubordosDocument(model);
+        }, suggestedFileName);
     }
 }

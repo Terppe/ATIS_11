@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Globalization;
+using ATIS.Helpers;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
@@ -11,12 +12,12 @@ public class TblMiscellaneoussesDocument(TblMiscellaneoussesPdfModel model) : ID
     private TblMiscellaneoussesPdfModel Model { get; } = model;
     private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
-    private static int _tabLeftRel;
-    private static int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
-    private const int TabLeftRel4 = 4;
+  //  private static int _tabLeftRel;
+    private static readonly int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
+  //  private const int TabLeftRel4 = 4;
     private const int TabLeftRel8 = 8;
-    private static int _tabLeftLastRel;
-    private static int _tabRightLastRel;
+ //   private static int _tabLeftLastRel;
+ //   private static int _tabRightLastRel;
     private static readonly int TabRightRel8 = _tabRightRel - 8;
     private const int TextHight = 12;
 
@@ -81,7 +82,7 @@ public class TblMiscellaneoussesDocument(TblMiscellaneoussesPdfModel model) : ID
                 {
                     text.Span("  ");
                     text.Span("  ");
-                    text.Span($"{Model.MiscellaneousName}").FontSize(TextHight).SemiBold().Italic();
+                    text.Span(Model.MiscellaneousName ?? string.Empty).FontSize(TextHight).SemiBold().Italic();
                 });
             });
         });
@@ -105,6 +106,7 @@ public class TblMiscellaneoussesDocument(TblMiscellaneoussesPdfModel model) : ID
             {
                 column.Item().Text(text =>
                 {
+                    text.Span(Loc("CountId"));
                     text.Span($"{Model.CountId}");
                 });
             });
@@ -139,7 +141,7 @@ public class TblMiscellaneoussesDocument(TblMiscellaneoussesPdfModel model) : ID
                     });
                     table.Cell().Text("");
                     table.Cell().Text(Loc("CurrentStanding"));
-                    table.Cell().Text($"{Model.Valid} {Model.ValidYear}");
+                    table.Cell().Text(ValidityFormatter.Format(Model.Valid, Model.ValidYear));
                 });
                 column.Item().Table(table =>
                 {

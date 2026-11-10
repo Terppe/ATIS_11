@@ -4,12 +4,20 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:loc="using:WinUI3Localizer">
+
     <Grid
         Padding="12"
         RowDefinitions="Auto,Auto,*"
         RowSpacing="8">
-        <StackPanel Orientation="Horizontal" Spacing="10">
+
+        <!--  BUTTON-LEISTE  -->
+        <StackPanel
+            Grid.Row="0"
+            Orientation="Horizontal"
+            Spacing="10">
+
             <TextBlock loc:Uids.Uid="TextBlock_Preview" Style="{ThemeResource TitleTextBlockStyle}" />
+
             <Button Click="BackButton_Click">
                 <StackPanel Orientation="Horizontal" Spacing="6">
                     <FontIcon Glyph="&#xE72B;" />
@@ -26,93 +34,111 @@
                 </StackPanel>
             </Button>
         </StackPanel>
+
         <ProgressRing
             x:Name="LoadingRing"
             Grid.Row="1"
             IsActive="False"
             Visibility="Collapsed" />
-        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel Spacing="8">
-                <TextBlock loc:Uids.Uid="TextBlock_Food" Style="{ThemeResource SubtitleTextBlockStyle}" />
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                    <TextBox
-                        loc:Uids.Uid="TextBox_FoodId"
-                        IsReadOnly="True"
-                        Text="{Binding FoodId}" />
+
+        <!--  SCROLLBEREICH  -->
+        <ScrollViewer
+            Grid.Row="2"
+            HorizontalAlignment="Stretch"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollMode="Enabled">
+
+            <Grid
+                Margin="4,8,0,0"
+                ColumnDefinitions="160,*"
+                ColumnSpacing="8"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                RowSpacing="8">
+
+                <Grid.Resources>
+                    <Style x:Key="DetailValueStyle" TargetType="TextBlock">
+                        <Setter Property="TextWrapping" Value="Wrap" />
+                    </Style>
+                </Grid.Resources>
+
+                <TextBlock
+                    Grid.Row="0"
+                    loc:Uids.Uid="TextBlock_Food"
+                    FontSize="18"
+                    FontWeight="Bold" />
+                <TextBlock
+                    Grid.Column="1"
+                    Style="{StaticResource DetailValueStyle}"
+                    Text="{Binding FoodName}" />
+
+                <TextBlock Grid.Row="1" loc:Uids.Uid="TextBlock_CountId" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="{Binding CountId}" />
+
+                <TextBlock Grid.Row="2" loc:Uids.Uid="TextBlock_LastUpdated" />
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="{Binding UpdaterDate}" />
+
+                <TextBlock Grid.Row="3" Text="ID" />
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Text="{Binding FoodId}" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    VerticalAlignment="Center"
+                    loc:Uids.Uid="TextBlock_Valid_Year" />
+                <StackPanel
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="8">
                     <CheckBox
-                        Grid.Column="1"
-                        loc:Uids.Uid="CheckBox_Valid"
                         IsChecked="{Binding Valid, Mode=OneWay}"
                         IsEnabled="False"
                         IsThreeState="True" />
-                    <TextBox
-                        Grid.Column="2"
-                        loc:Uids.Uid="TextBox_ValidYear"
-                        IsReadOnly="True"
-                        Text="{Binding ValidYear}" />
-                </Grid>
-                <TextBox
-                    loc:Uids.Uid="TextBox_FoodName"
-                    IsReadOnly="True"
-                    Text="{Binding FoodName}" />
-                <TextBlock loc:Uids.Uid="TextBlock_CountId" />
-                <TextBox IsReadOnly="True" Text="{Binding CountId}" />
-                <TextBox
-                    loc:Uids.Uid="TextBox_ShortInfo"
-                    IsReadOnly="True"
-                    Text="{Binding ShortInfo}"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    loc:Uids.Uid="TextBox_FoodVolume"
-                    AcceptsReturn="True"
-                    IsReadOnly="True"
-                    Text="{Binding FoodVolume}"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    loc:Uids.Uid="TextBox_Symptom"
-                    AcceptsReturn="True"
-                    IsReadOnly="True"
-                    Text="{Binding Symptom}"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    loc:Uids.Uid="TextBox_Info"
-                    AcceptsReturn="True"
-                    IsReadOnly="True"
-                    Text="{Binding Info}"
-                    TextWrapping="Wrap" />
-                <TextBox
-                    loc:Uids.Uid="TextBox_Memo"
-                    AcceptsReturn="True"
-                    IsReadOnly="True"
-                    Text="{Binding Memo}"
-                    TextWrapping="Wrap" />
-                <Grid
-                    ColumnDefinitions="*,*"
-                    ColumnSpacing="8"
-                    RowDefinitions="Auto,Auto"
-                    RowSpacing="8">
-                    <TextBox
-                        loc:Uids.Uid="TextBox_Writer"
-                        IsReadOnly="True"
-                        Text="{Binding Writer}" />
-                    <TextBox
-                        Grid.Column="1"
-                        loc:Uids.Uid="TextBox_WriterDate"
-                        IsReadOnly="True"
-                        Text="{Binding WriterDate}" />
-                    <TextBox
-                        Grid.Row="1"
-                        loc:Uids.Uid="TextBox_Updater"
-                        IsReadOnly="True"
-                        Text="{Binding Updater}" />
-                    <TextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        loc:Uids.Uid="TextBox_UpdaterDate"
-                        IsReadOnly="True"
-                        Text="{Binding UpdaterDate}" />
-                </Grid>
-            </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ValidYear}" />
+                </StackPanel>
+
+                <TextBlock Grid.Row="5" loc:Uids.Uid="TextBlock_ShortInfo" />
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Text="{Binding ShortInfo}" />
+
+                <TextBlock Grid.Row="6" loc:Uids.Uid="TextBlock_FoodVolume" />
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Style="{StaticResource DetailValueStyle}"
+                    Text="{Binding FoodVolume}" />
+
+                <TextBlock Grid.Row="7" loc:Uids.Uid="TextBlock_Symptom" />
+                <TextBlock
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Style="{StaticResource DetailValueStyle}"
+                    Text="{Binding Symptom}" />
+
+                <TextBlock Grid.Row="8" loc:Uids.Uid="TextBlock_Info" />
+                <TextBlock
+                    Grid.Row="8"
+                    Grid.Column="1"
+                    Style="{StaticResource DetailValueStyle}"
+                    Text="{Binding Info}" />
+
+                <TextBlock Grid.Row="9" loc:Uids.Uid="TextBlock_Memo" />
+                <TextBlock
+                    Grid.Row="9"
+                    Grid.Column="1"
+                    Style="{StaticResource DetailValueStyle}"
+                    Text="{Binding Memo}" />
+            </Grid>
         </ScrollViewer>
     </Grid>
 </Page>

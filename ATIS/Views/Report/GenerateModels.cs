@@ -573,54 +573,6 @@ public abstract class GenrateModels
             };
         }
     }
-    //public class GenPlSpeciesses
-    //{
-    //    public static PdfModels.PlSpecies GeneratePlSpeciesses(Tbl75Species single)
-    //    {
-    //        if (single == null)
-    //        {
-    //            return null!;
-    //        }
-
-    //        return new PdfModels.PlSpecies
-    //        {
-    //            Tbl66Genusses = single.Tbl66Genusses,
-    //            PlSpeciesName = single.SpeciesName,
-    //            Subspecies = single.Subspecies,
-    //            Divers = single.Divers,
-    //            GenusId = single.GenusId,
-    //            SpeciesgroupId = single.SpeciesgroupId,
-    //            Valid = single.Valid,
-    //            ValidYear = single.ValidYear,
-    //            MemoSpecies = single.MemoSpecies,
-    //            TradeName = single.TradeName,
-    //            Author = single.Author,
-    //            AuthorYear = single.AuthorYear,
-    //            Importer = single.Importer,
-    //            ImportingYear = single.ImportingYear,
-    //            BasinHeight = single.BasinHeight,
-    //            PlantLength = single.PlantLength,
-    //            Difficult1 = single.Difficult1,
-    //            Difficult2 = single.Difficult2,
-    //            Difficult3 = single.Difficult3,
-    //            Difficult4 = single.Difficult4,
-    //            MemoTech = single.MemoTech,
-    //            Ph1 = single.Ph1,
-    //            Ph2 = single.Ph2,
-    //            Temp1 = single.Temp1,
-    //            Temp2 = single.Temp2,
-    //            Hardness1 = single.Hardness1,
-    //            Hardness2 = single.Hardness2,
-    //            CarboHardness1 = single.CarboHardness1,
-    //            CarboHardness2 = single.CarboHardness2,
-    //            MemoBuilt = single.MemoBuilt,
-    //            MemoColor = single.MemoColor,
-    //            MemoReproduction = single.MemoReproduction,
-    //            MemoCulture = single.MemoCulture,
-    //            MemoGlobal = single.MemoGlobal
-    //        };
-    //    }
-    //}
 
     public class GenSynonyms
     {
@@ -680,7 +632,7 @@ public abstract class GenrateModels
                 Symptom = single.Symptom,
                 Reason = single.Reason,
                 Therapie = single.Therapie,
-                Valid = (bool)single.Valid,
+                Valid = single.Valid ?? false,
                 ValidYear = single.ValidYear,
                 Info = single.Info,
                 Memo = single.Memo
@@ -700,13 +652,13 @@ public abstract class GenrateModels
             return new PdfModels.Food
             {
                 FoodName = single.FoodName,
-                FoodVolume = single.FoodVolume,
                 ShortInfo = single.ShortInfo,
-                Valid = (bool)single.Valid,
+                FoodVolume = single.FoodVolume,
+                Symptom = single.Symptom,
+                Valid = single.Valid ?? false,
                 ValidYear = single.ValidYear,
                 Info = single.Info,
-                Memo = single.Memo,
-                Symptom = single.Symptom
+                Memo = single.Memo
             };
         }
     }
@@ -725,7 +677,7 @@ public abstract class GenrateModels
                 ShortInfo = single.ShortInfo,
                 Thema1 = single.Thema1,
                 Thema2 = single.Thema2,
-                Valid = (bool)single.Valid,
+                Valid = single.Valid ?? false,
                 ValidYear = single.ValidYear,
                 Info = single.Info,
                 Memo = single.Memo,

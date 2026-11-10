@@ -56,16 +56,6 @@
                     <TextBlock loc:Uids.Uid="TextBlock_Pdf" />
                 </StackPanel>
             </Button>
-
-            <!--<Button Margin="10,5,0,5"
-                    HorizontalAlignment="Right"
-                    Click="PrintButton_Click">
-                <StackPanel Orientation="Horizontal"
-                            Spacing="6">
-                    <FontIcon Glyph="&#xE749;" />
-                    <TextBlock loc:Uids.Uid="TextBlock_Print" />
-                </StackPanel>
-            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->
@@ -119,7 +109,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--  ALLE ROWS WIE IM ALTEN WINDOW  -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />

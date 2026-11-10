@@ -1,10 +1,7 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Views.Report;
-using ATIS.Views.Report.Pdf.TblFoods;
-using QuestPDF.Fluent;
-using Windows.Storage.Pickers;
-using WinRT.Interop;
+using ATIS.Views.Search.DetailViewModels;
+
 namespace ATIS.Views.Search.DetailPages;
 
 public sealed partial class TblFoodDetailPage : Page
@@ -15,7 +12,11 @@ public sealed partial class TblFoodDetailPage : Page
     {
         _dataService = App.GetService<IDataService>();
         InitializeComponent();
+        ViewModel = new TblFoodDetailViewModel(default, _dataService);
+        DataContext = ViewModel;
     }
+    public TblFoodDetailViewModel ViewModel { get; private set; }
+
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
@@ -30,6 +31,9 @@ public sealed partial class TblFoodDetailPage : Page
         {
             _item = await _dataService.GetFoodByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Food {id} was not found.");
+
+            ViewModel = new TblFoodDetailViewModel(_item, _dataService);
+
             DataContext = _item;
             ExportPdfButton.IsEnabled = true;
         }
@@ -46,41 +50,6 @@ public sealed partial class TblFoodDetailPage : Page
     }
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        var item = _item ?? throw new InvalidOperationException("No Food is loaded.");
-        var document = new TblFoodsDocument(new TblFoodsPdfModel
-        {
-            FoodName = item.FoodName ?? string.Empty,
-            CountId = item.CountId,
-            Valid = item.Valid,
-            ValidYear = item.ValidYear ?? string.Empty,
-            ShortInfo = item.ShortInfo ?? string.Empty,
-            FoodVolume = item.FoodVolume ?? string.Empty,
-            Symptom = item.Symptom ?? string.Empty,
-            Info = item.Info ?? string.Empty,
-            Memo = item.Memo ?? string.Empty,
-            Writer = item.Writer ?? string.Empty,
-            WriterDate = item.WriterDate,
-            Updater = item.Updater ?? string.Empty,
-            UpdaterDate = item.UpdaterDate,
-            FoodTree = new PdfModels.Food { FoodName = item.FoodName ?? string.Empty }
-        });
-        var savePicker = new FileSavePicker
-        {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
-            SuggestedFileName = $"Food_Detail_{SanitizeFileNamePart(item.FoodName)}_{DateTime.Now:yyyyMMdd_HHmmss}"
-        };
-        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
-        InitializeWithWindow.Initialize(savePicker, WindowNative.GetWindowHandle(App.MainWindow));
-        var file = await savePicker.PickSaveFileAsync();
-        if (file != null)
-            document.GeneratePdf(file.Path);
-    }
-    private static string SanitizeFileNamePart(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            return "Unknown";
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var cleaned = new string(value.Where(c => !invalidChars.Contains(c)).ToArray()).Trim();
-        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned;
+        await ViewModel.ExportPdfCommand.ExecuteAsync(null);
     }
 }

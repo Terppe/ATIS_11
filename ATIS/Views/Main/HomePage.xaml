@@ -14,9 +14,9 @@
         VerticalScrollBarVisibility="Auto">
         <Grid
             MaxWidth="1120"
-            Padding="32,18,32,10"
+            Padding="32,18,32,0"
             HorizontalAlignment="Center">
-            <StackPanel Spacing="24">
+            <StackPanel Spacing="12">
 
                 <Border
                     MinHeight="280"
@@ -58,7 +58,7 @@
                                 Margin="0,8,0,0"
                                 ColumnDefinitions="*,Auto"
                                 ColumnSpacing="10">
-                                <AutoSuggestBox 
+                                <AutoSuggestBox
                                     x:Name="HomeSearchBox"
                                     Grid.Column="0"
                                     MinHeight="46"
@@ -118,16 +118,16 @@
                     </Grid>
                 </Border>
 
-                <StackPanel Spacing="4">
-                    <TextBlock
-                        FontSize="23"
-                        FontWeight="SemiBold"
-                        loc:Uids.Uid="Home_ExploreTitle" />
-                    <TextBlock
-                        Foreground="{ThemeResource AtisTextCaptionBrush}"
-                        TextWrapping="Wrap"
-                        loc:Uids.Uid="Home_ExploreSubtitle" />
-                </StackPanel>
+                <!--<StackPanel Spacing="4">
+                <TextBlock
+                FontSize="23"
+                FontWeight="SemiBold"
+                loc:Uids.Uid="Home_ExploreTitle" />
+                <TextBlock
+                Foreground="{ThemeResource AtisTextCaptionBrush}"
+                TextWrapping="Wrap"
+                loc:Uids.Uid="Home_ExploreSubtitle" />
+                </StackPanel>-->
 
                 <Grid
                     ColumnDefinitions="*,*"
