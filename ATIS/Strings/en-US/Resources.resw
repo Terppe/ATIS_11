@@ -5409,4 +5409,13 @@
   <data name="TextBox_UpdaterDate.Header" xml:space="preserve">
     <value>Updated on</value>
   </data>
+  <data name="Home_WebsiteSettings_Title" xml:space="preserve">
+    <value>Website settings</value>
+  </data>
+  <data name="Home_WebsiteSettings_Invalid" xml:space="preserve">
+    <value>These invalid website entries were skipped:&#10;{0}&#10;&#10;File: {1}</value>
+  </data>
+  <data name="Home_WebsiteSettings_LoadError" xml:space="preserve">
+    <value>Website links could not be loaded.&#10;{0}&#10;&#10;File: {1}</value>
+  </data>
 </root>

@@ -6,11 +6,42 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock x:Name="LbVersion"
-                       Margin="20,50,20,10" />
-        </StackPanel>
+    <Grid RowDefinitions="*,Auto">
+        <ScrollViewer
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <Border
+                Margin="20"
+                Padding="20,12"
+                HorizontalAlignment="Center"
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <ScrollViewer
+                    HorizontalScrollBarVisibility="Auto"
+                    HorizontalScrollMode="Enabled"
+                    VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{x:Bind ExternalLinks, Mode=OneWay}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" Spacing="8" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <HyperlinkButton
+                                    Content="{Binding Name, Mode=OneWay}"
+                                    NavigateUri="{Binding Uri, Mode=OneWay}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </ScrollViewer>
 
+        <TextBlock
+            x:Name="LbVersion"
+            Grid.Row="1"
+            Margin="20,0,20,10"
+            VerticalAlignment="Bottom"
+            TextWrapping="Wrap" />
     </Grid>
 </Page>

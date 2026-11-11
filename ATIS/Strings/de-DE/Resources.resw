@@ -5409,4 +5409,13 @@
   <data name="TextBox_UpdaterDate.Header" xml:space="preserve">
     <value>Geändert am</value>
   </data>
+  <data name="Home_WebsiteSettings_Title" xml:space="preserve">
+    <value>Webseiten-Einstellungen</value>
+  </data>
+  <data name="Home_WebsiteSettings_Invalid" xml:space="preserve">
+    <value>Diese ungültigen Webseiten-Einträge wurden übersprungen:&#10;{0}&#10;&#10;Datei: {1}</value>
+  </data>
+  <data name="Home_WebsiteSettings_LoadError" xml:space="preserve">
+    <value>Die Webseiten konnten nicht geladen werden.&#10;{0}&#10;&#10;Datei: {1}</value>
+  </data>
 </root>
