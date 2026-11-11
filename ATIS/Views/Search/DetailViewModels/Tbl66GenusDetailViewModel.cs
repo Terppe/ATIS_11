@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
+using ATIS.Services;
 using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl66Genusses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using QuestPDF.Fluent;
-using WinUI3Localizer;
 using static ATIS.Views.Report.PdfModels;
 
 
@@ -911,67 +910,17 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        if (GenusSelected == null || GenusSelected.GenusId == 0)
+        var selected = GenusSelected;
+        if (selected == null || selected.GenusId == 0)
             return;
 
-        try
+        var name = PdfExportService.SanitizeFileNamePart(selected.GenusName);
+        var suggestedFileName = $"Genus_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
-            var model = await Tbl66GenussesDocumentDataSource.GetGenusDetailsAsync(GenusSelected.GenusId);
-
-            if (model == null)
-            {
-                var loc = Localizer.Get();
-
-                var infoDialog = new ContentDialog
-                {
-                    Title = loc.GetLocalizedString("Dialog_Info"),
-                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
-                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                    XamlRoot = App.MainPageInstance.Content.XamlRoot
-                };
-
-                await infoDialog.ShowAsync();
-                return;
-            }
-
-            var document = new Tbl66GenussesDocument(model);
-
-            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            var safeTitle = string.IsNullOrWhiteSpace(GenusSelected.GenusName)
-                ? $"Genus_{GenusSelected.GenusId}"
-                : string.Concat(GenusSelected.GenusName.Split(Path.GetInvalidFileNameChars()));
-
-            var fileName = $"{safeTitle}_{GenusSelected.GenusId}.pdf";
-            var filePath = Path.Combine(desktopPath, fileName);
-
-            document.GeneratePdf(filePath);
-
-            var loc1 = Localizer.Get();
-
-            var successDialog = new ContentDialog
-            {
-                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
-                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
-                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
-                XamlRoot = App.MainPageInstance.Content.XamlRoot
-            };
-
-            await successDialog.ShowAsync();
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine(ex.ToString());
-            var loc = Localizer.Get();
-
-            var errorDialog = new ContentDialog
-            {
-                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
-                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
-                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                XamlRoot = App.MainPageInstance.Content.XamlRoot
-            };
-
-            await errorDialog.ShowAsync();
-        }
+            var model = await Tbl66GenussesDocumentDataSource.GetGenusDetailsAsync(selected.GenusId);
+            return model == null ? null : new Tbl66GenussesDocument(model);
+        }, suggestedFileName);
     }
 }

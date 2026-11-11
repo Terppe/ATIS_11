@@ -2563,10 +2563,10 @@
     <value>Keine PDF Datei</value>
   </data>
   <data name="PdfExport_Success" xml:space="preserve">
-    <value>PDF Datei erfolgreich exportiert</value>
+    <value>PDF Datei erfolgreich exportiert: {0}</value>
   </data>
   <data name="PdfExport_Error" xml:space="preserve">
-    <value>PDF Datei Fehler beim Export</value>
+    <value>PDF Datei Fehler beim Export: {0}</value>
   </data>
   <data name="PdfImage_Error" xml:space="preserve">
     <value>PDF Datei Fehler beim Image erzeugen</value>
@@ -5390,5 +5390,32 @@
   </data>
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Neu</value>
+  </data>
+  <data name="TextBlock_Back.Text" xml:space="preserve">
+    <value>Zurück</value>
+  </data>
+  <data name="TextBlock_Disease.Text" xml:space="preserve">
+    <value>Krankheit</value>
+  </data>
+  <data name="TextBox_Writer.Header" xml:space="preserve">
+    <value>Erstellt von</value>
+  </data>
+  <data name="TextBox_WriterDate.Header" xml:space="preserve">
+    <value>Erstellt am</value>
+  </data>
+  <data name="TextBox_Updater.Header" xml:space="preserve">
+    <value>Geändert von</value>
+  </data>
+  <data name="TextBox_UpdaterDate.Header" xml:space="preserve">
+    <value>Geändert am</value>
+  </data>
+  <data name="Home_WebsiteSettings_Title" xml:space="preserve">
+    <value>Webseiten-Einstellungen</value>
+  </data>
+  <data name="Home_WebsiteSettings_Invalid" xml:space="preserve">
+    <value>Diese ungültigen Webseiten-Einträge wurden übersprungen:&#10;{0}&#10;&#10;Datei: {1}</value>
+  </data>
+  <data name="Home_WebsiteSettings_LoadError" xml:space="preserve">
+    <value>Die Webseiten konnten nicht geladen werden.&#10;{0}&#10;&#10;Datei: {1}</value>
   </data>
 </root>

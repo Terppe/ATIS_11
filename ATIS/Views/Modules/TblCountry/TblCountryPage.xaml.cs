@@ -18,9 +18,8 @@ public sealed partial class TblCountryPage : Page
     // ---------------------------------------------------------
     public TblCountryPage()
     {
-        InitializeComponent();
-
         ViewModel = App.GetService<TblCountryViewModel>();
+        InitializeComponent();
         DataContext = ViewModel;
 
         Loaded += CountryPage_Loaded;
@@ -153,4 +152,3 @@ public sealed partial class TblCountryPage : Page
 
 
 }
-

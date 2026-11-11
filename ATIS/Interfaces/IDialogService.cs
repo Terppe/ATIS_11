@@ -3,6 +3,7 @@ namespace ATIS.Interfaces;
 
 public interface IDialogService
 {
+    Task ShowOkDialogAsync(string titleKey, string messageKey, params object[] formatArgs);
     Task ShowInfoAsync(string titleKey, string messageKey);
     Task ShowErrorAsync(string titleKey, string messageKey);
     Task<bool> ShowYesNoAsync(string titleKey, string messageKey);

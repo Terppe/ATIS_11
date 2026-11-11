@@ -1,11 +1,6 @@
 ﻿using ATIS.Interfaces;
-using ATIS.Views.Report.Pdf.Tbl48Subfamilies;
 using ATIS.Views.Search.DetailViewModels;
 using Microsoft.UI.Xaml.Data;
-using QuestPDF.Fluent;
-using QuestPDF.Infrastructure;
-using Windows.Storage.Pickers;
-using WinRT.Interop;
 
 //  Tbl48SubfamilyDetailPage.xaml.cs Skriptdatum:  18.08.2026  10:32     
 
@@ -66,33 +61,8 @@ public sealed partial class Tbl48SubfamilyDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        var document = await CreateDetailDocumentAsync();
-        if (document == null)
-            return;
-
-        var subfamilyName = SanitizeFileNamePart(GetCurrentSubfamilyName());
-        var suggestedFileName = $"Subfamily_Detail_{subfamilyName}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-        await SaveDocumentAsPdfAsync(document, suggestedFileName);
+        await ViewModel.ExportPdfCommand.ExecuteAsync(null);
     }
-
-    //für später andere nutzung, z.B. Drucken
-    //private async void PrintButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    await PrintCurrentReviewAsync();
-    //}
-
-    //private async Task PrintCurrentReviewAsync()
-    //{
-    //    var document = await CreateDetailDocumentAsync();
-    //    if (document == null)
-    //        return;
-
-    //    var subfamilyName = SanitizeFileNamePart(GetCurrentSubfamilyName());
-    //    var suggestedFileName = $"Subfamily_Detail_{subfamilyName}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-    //    await SaveDocumentAsPdfAsync(document, suggestedFileName);
-    //}
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
@@ -104,55 +74,5 @@ public sealed partial class Tbl48SubfamilyDetailPage : Page
             if (item != null)
                 await ViewModel.NavigateBreadcrumbAsync(item);
         }
-    }
-
-    private async Task<IDocument?> CreateDetailDocumentAsync()
-    {
-        if (ViewModel?.SubfamilySelected == null)
-            return null;
-
-        var pdfModel = await Tbl48SubfamiliesDocumentDataSource.GetSubfamilyDetailsAsync(ViewModel.SubfamilySelected.SubfamilyId);
-        if (pdfModel == null)
-            return null;
-
-        return new Tbl48SubfamiliesDocument(pdfModel);
-    }
-
-    private string? GetCurrentSubfamilyName()
-    {
-        return ViewModel?.SubfamilySelected?.SubfamilyName;
-    }
-
-    private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)
-    {
-        var savePicker = new FileSavePicker
-        {
-            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
-            SuggestedFileName = suggestedFileName
-        };
-
-        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
-
-        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
-        InitializeWithWindow.Initialize(savePicker, hwnd);
-
-        var file = await savePicker.PickSaveFileAsync();
-        if (file == null)
-            return;
-
-        document.GeneratePdf(file.Path);
-    }
-
-    private static string SanitizeFileNamePart(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            return "Unknown";
-
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var cleaned = new string(value
-            .Where(c => !invalidChars.Contains(c))
-            .ToArray());
-
-        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
     }
 }

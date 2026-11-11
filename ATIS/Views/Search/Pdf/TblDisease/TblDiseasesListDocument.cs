@@ -50,7 +50,7 @@ internal class TblDiseasesListDocument(
             {
                 text.Span(Strings.StringsRes.List).FontSize(20).SemiBold();
                 text.Span("          ");
-                text.Span(Strings.StringsRes.Food).FontSize(20).SemiBold();
+                text.Span(Strings.StringsRes.Disease).FontSize(20).SemiBold();
                 text.Span("                                                                                                       ");
                 text.Span(DateTime.Now.ToString(CultureInfo.InstalledUICulture)).NormalPosition();
             });
