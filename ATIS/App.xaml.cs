@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Text.Json;
+using ATIS.Common;
 using ATIS.Infrastructure;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
-using System.Text.Json;
 using ATIS.Views.Admin;
 using ATIS.Views.Auth;
 using ATIS.Views.Main;
@@ -48,9 +49,10 @@ using ATIS.Views.Modules.TblFood;
 using ATIS.Views.Modules.TblMiscellaneous;
 using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Report;
-using ATIS.Views.Settings;
 using ATIS.Views.User;
+using Microsoft.UI.Windowing;
 using QuestPDF.Infrastructure;
+using Windows.Graphics;
 using WinUI3Localizer;
 using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
 using VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
@@ -76,11 +78,9 @@ public partial class App : Application
     public string? AppName { get; set; } = ConfigurationManager.AppSettings.Get("ApplicationName");
     public string? Copyright { get; set; } = ConfigurationManager.AppSettings.Get("Copyright");
     public static string? Cult = "";
-    private SplashWindow splash;
     public static event Action<string>? LanguageChanged;
     private static bool _closeConfirmed;
     private static bool _dialogOpen;
-
     public static MainPage? MainPageInstance { get; private set; }
     public static string AppConfigFolderPath { get; private set; } = string.Empty;
     public static string StringsFolderPath { get; private set; } = string.Empty;
@@ -147,11 +147,15 @@ public partial class App : Application
 
         // Startansicht für Datenbankprüfung und Dialoge anzeigen
         MainWindow = new Window { Title = AppName };
+        InitializeMainWindowBounds();
+        //MainWindow.AppWindow.Resize(
+        //    new Windows.Graphics.SizeInt32(Convert.ToInt32(ConfigurationManager.AppSettings.Get("MainWidth")),
+        //        Convert.ToInt32(ConfigurationManager.AppSettings.Get("MainHeight"))));
 
         var startupRoot = new Grid();
         startupRoot.Children.Add(new TextBlock
         {
-            Text = "SQL-Server und ATIS34 werden geprüft …",
+            Text = Localizer.Get().GetLocalizedString("Check_SqlServerAndDb"),
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         });
@@ -279,7 +283,6 @@ public partial class App : Application
     // 2. CHOOSE SERVER
     // ---------------------------------------------------------
 
-
     private async Task<bool> ChooseDbServerAsync(List<string> servers)
     {
         if (MainWindow?.Content is not FrameworkElement root ||
@@ -331,57 +334,6 @@ public partial class App : Application
         }
     }
 
-    //private async Task<bool> ChooseDbServerAsync(List<string> servers)
-    //{
-    //    if (MainWindow?.Content is not FrameworkElement root ||
-    //        root.XamlRoot is null)
-    //    {
-    //        throw new InvalidOperationException(
-    //            "Das Fenster für die Serverauswahl ist nicht bereit.");
-    //    }
-
-    //    var radios = new RadioButtons
-    //    {
-    //        ItemsSource = servers,
-    //        SelectedIndex = 0
-    //    };
-
-    //    var dialog = new ContentDialog
-    //    {
-    //        XamlRoot = root.XamlRoot,
-    //        Title = "SQL-Server mit ATIS34 auswählen",
-    //        Content = radios,
-    //        PrimaryButtonText = "Übernehmen",
-    //        CloseButtonText = "Abbrechen",
-    //        DefaultButton = ContentDialogButton.Primary
-    //    };
-
-    //    if (await dialog.ShowAsync() != ContentDialogResult.Primary ||
-    //        radios.SelectedItem is not string selected)
-    //    {
-    //        return false;
-    //    }
-
-    //    // Vor dem Speichern die ausgewählte Datenbank erneut prüfen.
-    //    if (!await SqlInstanceFinder.CanConnectAsync(selected, "ATIS34"))
-    //    {
-    //        await new ContentDialog
-    //        {
-    //            XamlRoot = root.XamlRoot,
-    //            Title = "Verbindung fehlgeschlagen",
-    //            Content =
-    //                $"Die Datenbank ATIS34 auf {selected} ist nicht erreichbar. " +
-    //                "Der Server wurde nicht gespeichert.",
-    //            CloseButtonText = "Beenden"
-    //        }.ShowAsync();
-
-    //        return false;
-    //    }
-
-    //    DbServerSettings.Save(selected);
-    //    return true;
-    //}
-
     private void ApplyCulture()
     {
         Cult = ConfigurationManager.AppSettings.Get("Culture");
@@ -429,6 +381,101 @@ public partial class App : Application
         {
             _dialogOpen = false;
         }
+    }
+
+    private void InitializeMainWindowBounds()
+    {
+        var window = MainWindow
+            ?? throw new InvalidOperationException("MainWindow wurde noch nicht erstellt.");
+
+        var appWindow = window.AppWindow;
+        var settings = AppHelper.Settings;
+
+        var hasSavedBounds =
+            settings.MainWindowX.HasValue &&
+            settings.MainWindowY.HasValue &&
+            settings.MainWindowWidth is > 0 &&
+            settings.MainWindowHeight is > 0;
+
+        var width = hasSavedBounds
+            ? settings.MainWindowWidth!.Value
+            : Convert.ToInt32(ConfigurationManager.AppSettings["MainWidth"]);
+
+        var height = hasSavedBounds
+            ? settings.MainWindowHeight!.Value
+            : Convert.ToInt32(ConfigurationManager.AppSettings["MainHeight"]);
+
+        if (width <= 0 || height <= 0)
+            throw new InvalidOperationException(
+                "MainWidth und MainHeight müssen größer als 0 sein.");
+
+        var bounds = new RectInt32(
+            hasSavedBounds ? settings.MainWindowX!.Value : 0,
+            hasSavedBounds ? settings.MainWindowY!.Value : 0,
+            width,
+            height);
+
+        var display = hasSavedBounds
+            ? DisplayArea.GetFromRect(bounds, DisplayAreaFallback.Nearest)
+            : DisplayArea.Primary;
+
+        var workArea = display.WorkArea;
+
+        // Gespeicherte Maße können für den aktuellen Monitor zu groß sein.
+        bounds.Width = Math.Min(bounds.Width, workArea.Width);
+        bounds.Height = Math.Min(bounds.Height, workArea.Height);
+
+        if (!hasSavedBounds)
+        {
+            bounds.X = workArea.X + (workArea.Width - bounds.Width) / 2;
+            bounds.Y = workArea.Y + (workArea.Height - bounds.Height) / 2;
+        }
+
+        // Auch nach Entfernen eines Monitors bleibt das Fenster erreichbar.
+        bounds.X = Math.Clamp(
+            bounds.X,
+            workArea.X,
+            workArea.X + workArea.Width - bounds.Width);
+
+        bounds.Y = Math.Clamp(
+            bounds.Y,
+            workArea.Y,
+            workArea.Y + workArea.Height - bounds.Height);
+
+        appWindow.MoveAndResize(bounds);
+
+        var normalBounds = bounds;
+
+        appWindow.Changed += (_, args) =>
+        {
+            if (!args.DidPositionChange && !args.DidSizeChange)
+                return;
+
+            if (appWindow.Presenter is not OverlappedPresenter
+                {
+                    State: OverlappedPresenterState.Restored
+                })
+                return;
+
+            var position = appWindow.Position;
+            var size = appWindow.Size;
+
+            if (size.Width <= 0 || size.Height <= 0)
+                return;
+
+            normalBounds = new RectInt32(
+                position.X, position.Y, size.Width, size.Height);
+        };
+
+        window.Closed += (_, _) =>
+        {
+            settings.MainWindowX = normalBounds.X;
+            settings.MainWindowY = normalBounds.Y;
+            settings.MainWindowWidth = normalBounds.Width;
+            settings.MainWindowHeight = normalBounds.Height;
+
+            settings.Save();
+        };
     }
 
     public static async Task RequestCloseAsync()
@@ -538,7 +585,6 @@ public partial class App : Application
     // ---------------------------------------------------------
     // 5. LOCALIZATION
     // ---------------------------------------------------------
-
     private static async Task InitializeLocalizer()
     {
         // Initialize a "Strings" folder in the executables folder.

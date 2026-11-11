@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ATIS.Interfaces;
+﻿using ATIS.Interfaces;
 using ATIS.Services;
 using ATIS.Views.Modules.Hierarchy;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +12,6 @@ public partial class HomeViewModel : ObservableObject
     // =========================================================
 
     public HomeViewModel ViewModel { get; }
- //   private readonly IDataService _dataService;
- //   private readonly LookupService _lookupService;
 
     // =========================================================
     #endregion [Private Data Members]
@@ -37,15 +32,6 @@ public partial class HomeViewModel : ObservableObject
 
     // =========================================================
     #endregion [Constructor]
-    // =========================================================
-
-
-    // =========================================================
-    #region [Methods Home]
-    // =========================================================
-
-    // =========================================================
-    #endregion [Methods Home]
     // =========================================================
 
     // =========================================================

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 	<OutputType>WinExe</OutputType>
-	<TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
+	<TargetFramework>net11.0-windows10.0.26100.0</TargetFramework>
 	<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 	<RootNamespace>ATIS</RootNamespace>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
@@ -48,21 +48,21 @@
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="log4net" Version="3.5.0" />
-		<PackageReference Include="MailKit" Version="4.18.2" />
+		<PackageReference Include="MailKit" Version="5.0.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.14" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.14" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.14" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.14" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="11.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="11.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2957" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="2.6.5" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
-		<PackageReference Include="MimeKit" Version="4.18.2" />
+		<PackageReference Include="MimeKit" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
 		<PackageReference Include="QuestPDF" Version="2026.9.1" />
-		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 	</ItemGroup>
 
@@ -476,10 +476,6 @@
 	</None>
 	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Remove="Strings\StringsRes.Designer.cs" />
-	</ItemGroup>
-
 
 	<ItemGroup>
 		<Content Remove="Assets\flagge_D.gif" />
@@ -491,14 +487,6 @@
 		<Content Remove="Assets\Fluent\folder.png" />
 		<Content Remove="Assets\Fluent\icons8-first-flag-of-the-usa-96.png" />
 		<Content Remove="Assets\Store\SplashScreen.png" />
-	</ItemGroup>
-
-
-	<ItemGroup>
-		<EmbeddedResource Remove="Strings\StringsRes.de-DE.resx" />
-		<EmbeddedResource Remove="Strings\StringsRes.es-ES.resx" />
-		<EmbeddedResource Remove="Strings\StringsRes.fr-FR.resx" />
-		<EmbeddedResource Remove="Strings\StringsRes.resx" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -767,13 +755,6 @@
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 	<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
-	<ItemGroup>
-		<None Include="Strings\StringsRes.de-DE.resx" />
-		<None Include="Strings\StringsRes.Designer.cs" />
-		<None Include="Strings\StringsRes.es-ES.resx" />
-		<None Include="Strings\StringsRes.fr-FR.resx" />
-		<None Include="Strings\StringsRes.resx" />
-	</ItemGroup>
 
 <ItemGroup>
 	<Content Update="Strings\de-DE\Resources.resw">

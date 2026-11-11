@@ -1415,3 +1415,8 @@ Version 11.0.2.1 erzegt als exe. Lässt sich leider nicht starten
 ----------------------------------------
 10.11.2026 08:30 Uhr Food, Disease und MiscellaneousPage funktion ist da jetzt müssen die pages und Dokumente überarbeitet werden.
 Homepage angefangen höhe verändern
+----------------------------------------
+11.11.2026 08:30 Uhr Nuget 7 Updates eingefügt. NET. 11.Strings raus und Homepage weiter entwickelt. App.config nur noch für Standard-Werte.
+websites.json neu machen.  Fensterwerte bleiben in settings.json, Datenbankkonfiguration in dbserver.json. Bestehende Werte erhalten; fehlende Werte zunächst aus App.config übernehmen.
+----------------------------------------
+11.11.2026 18:30 Uhr websites.json anfangen mit Webseiten

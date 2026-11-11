@@ -1986,6 +1986,9 @@
   <data name="Class" xml:space="preserve">
     <value>Klasse</value>
   </data>
+  <data name="Check_SqlServerAndDb" xml:space="preserve">
+    <value>SQL-Server und Datenbank ATIS34 werden geprüft …</value>
+  </data>
   <data name="ClassTab" xml:space="preserve">
     <value>Klasse</value>
   </data>
@@ -2205,8 +2208,26 @@
   <data name="TextBlock_HomePageUrl.Text" xml:space="preserve">
     <value>Url</value>
   </data>
+  <data name="TextBlock_Home_DiseaseTitle.Text" xml:space="preserve">
+    <value>Krankheiten</value>
+  </data>
+  <data name="TextBlock_Home_DiseaseSubtitle.Text" xml:space="preserve">
+    <value>(Lebewesen)</value>
+  </data>
   <data name="TextBlock_Http.Text" xml:space="preserve">
     <value>Http</value>
+  </data>
+  <data name="TextBlock_Home_InfoTitle.Text" xml:space="preserve">
+    <value>Informationen</value>
+  </data>
+  <data name="TextBlock_Home_InfoBody.Text" xml:space="preserve">
+    <value>Informationen von A-Z</value>
+  </data>
+  <data name="TextBlock_Home_CreatureTitle.Text" xml:space="preserve">
+    <value>Lebewesen</value>
+  </data>
+  <data name="TextBlock_Home_CreatureSubtitle.Text" xml:space="preserve">
+    <value>(Gattung)</value>
   </data>
   <data name="Http" xml:space="preserve">
     <value>Http</value>
@@ -4537,7 +4558,7 @@
     <value>Schliessen</value>
   </data>
   <data name="SearchBox_Search.PlaceholderText" xml:space="preserve">
-    <value>Suchen</value>
+    <value>Suchen...</value>
   </data>
   <data name="Search_Placeholder" xml:space="preserve">
     <value>Suchen…</value>
@@ -4784,6 +4805,18 @@
   </data>
   <data name="TextBlock_Foods.Text" xml:space="preserve">
     <value>Nahrung</value>
+  </data>
+  <data name="TextBlock_Home_FoodTitle.Text" xml:space="preserve">
+    <value>Nahrung</value>
+  </data>
+  <data name="TextBlock_Home_MiscellaneousTitle.Text" xml:space="preserve">
+    <value>Verschiedenes</value>
+  </data>
+  <data name="TextBlock_Home_MiscellaneousSubtitle.Text" xml:space="preserve">
+    <value>(Lexikon)</value>
+  </data>
+  <data name="TextBlock_Home_FoodSubtitle.Text" xml:space="preserve">
+    <value>(Animal)</value>
   </data>
   <data name="TextBlock_FoodVolume.Text" xml:space="preserve">
     <value>Beschreibung</value>
@@ -5561,6 +5594,9 @@
   </data>
   <data name="Disease" xml:space="preserve">
     <value>Krankheit</value>
+  </data>
+  <data name="EnterText" xml:space="preserve">
+    <value>BestätigenText</value>
   </data>
   <data name="Error_New_Password_Required_Message" xml:space="preserve">
     <value>Neues Passwort ist erforderlich.</value>

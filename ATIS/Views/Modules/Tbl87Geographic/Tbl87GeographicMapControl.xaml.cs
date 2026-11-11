@@ -64,13 +64,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         const double longitude = 0;
         const double zoomLevel = 3;
 
-        //if (Item != null)
-        //{
-        //    Item.Latitude = latitude;
-        //    Item.Longitude = longitude;
-        //    Item.ZoomLevel = zoomLevel;
-        //}
-
         CenterMap(latitude, longitude, zoomLevel);
     }
     #endregion

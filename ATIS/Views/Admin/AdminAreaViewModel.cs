@@ -1,23 +1,11 @@
 ﻿using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows.Input;
-using ATIS.Helpers;
-using ATIS.Infrastructure;
 using ATIS.Interfaces;
-using ATIS.Models;
 using ATIS.Services;
-using ATIS.Strings;
 using ATIS.Views.Base;
 using ATIS.Views.Modules.Hierarchy;
-using log4net;
-using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Windows.System;
 using WinUI3Localizer;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static WinUI3Localizer.LanguageDictionary;
-using RelayCommand = CommunityToolkit.Mvvm.Input.RelayCommand;
 
 namespace ATIS.Views.Admin;
 

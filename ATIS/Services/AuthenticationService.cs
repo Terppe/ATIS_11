@@ -110,8 +110,10 @@ public class AuthenticationService : IAuthenticationService
         using var smtp = new MailKit.Net.Smtp.SmtpClient();
         await smtp.ConnectAsync(smtpHost, smtpPort, MailKit.Security.SecureSocketOptions.StartTls, ct);
         await smtp.AuthenticateAsync(sender, mailPassword, ct);
-        await smtp.SendAsync(message, ct);
-        await smtp.DisconnectAsync(true, ct);
+        await smtp.SendAsync(
+            MimeKit.FormatOptions.Default,
+            new MailKit.SendRequest(message),
+            ct); await smtp.DisconnectAsync(true, ct);
 
         return true;
     }

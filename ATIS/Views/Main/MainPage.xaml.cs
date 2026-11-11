@@ -5,7 +5,6 @@ using System.Text.Json;
 using ATIS.Helpers;
 using ATIS.Interfaces;
 using ATIS.Models;
-using ATIS.Strings;
 using ATIS.Views.Admin;
 using ATIS.Views.Auth;
 using ATIS.Views.Modules.Tbl03Regnum;
@@ -251,7 +250,7 @@ public sealed partial class MainPage : Page
         if (name != "")
         {
             TbUser.Foreground = new SolidColorBrush(Colors.Green);
-            TbUser.Text = name + " " + StringsRes.LoggedIn;
+            TbUser.Text = name + " " + Localizer.Get().GetLocalizedString("LoggedIn");
         }
     }
 
