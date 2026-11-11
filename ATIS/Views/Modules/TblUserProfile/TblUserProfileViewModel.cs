@@ -67,11 +67,29 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
     public Dictionary<int, string?> CountryLookup { get; private set; } = new();
     public async Task LoadCountryLookupAsync()
     {
-        var list = await _lookupService.GetCountryListAsync();
-        CountryList = new ObservableCollection<Models.TblCountry>(list);
-        CountryLookup = list.ToDictionary(x => x.CountryId, x => x.Name);
-        OnPropertyChanged(nameof(CountryLookup));
-        OnPropertyChanged(nameof(CountryList));
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("[VM] LoadCountryLookupAsync START");
+
+            var list = await _lookupService.GetCountryListAsync();
+            var lookup = await _lookupService.GetCountryLookupAsync();
+
+
+            CountryList.Clear();
+            foreach (var item in list)
+                CountryList.Add(item);
+
+            CountryLookup = lookup;
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
+        catch (Exception ex)
+        {
+            CountryList.Clear();
+            CountryLookup = new Dictionary<int, string?>();
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
     }
     // ---------------------------------------------------------                  
     // SORTING HEADERS
@@ -144,23 +162,38 @@ public class TblUserProfileViewModel : BaseBossListViewModel<Models.TblUserProfi
     // ---------------------------------------------------------                  
     public async Task LoadAsync()
     {
+
+        // Boss-Start: Parent-Kontext löschen
         _activeLoader = null;
         _currentParentId = 0;
+
+        // Für Simple-Page sinnvoll: Boss-Modus aktiv
         IsInParentMode = false;
 
+        // Lookup nur versuchen, Fehler darf UI nicht stoppen
         try
         {
-            await RunWithLoadingAsync(async () =>
-            {
-                await LoadCountryLookupAsync();
-                Items = new ObservableCollection<Models.TblUserProfile>();
-                OnPropertyChanged(nameof(HasItems));
-                await ReloadCoreAsync();
-            });
+
+            await LoadCountryLookupAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> LoadCountryLookupAsync] {ex}");
+            // absichtlich weiterlaufen
+        }
+
+        Items = new ObservableCollection<Models.TblUserProfile>();
+        OnPropertyChanged(nameof(HasItems));
+
+        // Hauptdaten trotzdem laden
+        try
+        {
+            await ReloadAsync();
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
+            // optional: Dialog zeigen
             await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
         }
     }

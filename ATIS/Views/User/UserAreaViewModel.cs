@@ -35,7 +35,7 @@ public partial class UserAreaViewModel : ObservableObject
         DeleteCommand = new AsyncRelayCommand(DeleteAsync, () => Item != null && !IsBusy);
     }
 
-    public ObservableCollection<Models.TblCountry> CountryList { get; private set; } = new();
+    public ObservableCollection<Models.TblCountry> CountryList { get; } = new();
 
     public IAsyncRelayCommand SaveCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
@@ -45,9 +45,9 @@ public partial class UserAreaViewModel : ObservableObject
         {
             IsBusy = true;
 
-            CountryList = new ObservableCollection<Models.TblCountry>(
-                await _lookupService.GetCountryListAsync());
-            OnPropertyChanged(nameof(CountryList));
+            CountryList.Clear();
+            foreach (var c in await _lookupService.GetCountryListAsync())
+                CountryList.Add(c);
 
             var email = _userService.CurrentUser;
             if (string.IsNullOrWhiteSpace(email)) return;

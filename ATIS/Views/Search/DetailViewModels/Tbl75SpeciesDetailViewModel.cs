@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
-using ATIS.Services;
 using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 //    Tbl75SpeciesDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
@@ -1033,17 +1034,67 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        var selected = SpeciesSelected;
-        if (selected == null || selected.SpeciesId == 0)
+        if (SpeciesSelected == null || SpeciesSelected.SpeciesId == 0)
             return;
 
-        var name = PdfExportService.SanitizeFileNamePart(selected.SpeciesName);
-        var suggestedFileName = $"Species_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-        await App.GetService<IPdfExportService>().ExportAsync(async () =>
+        try
         {
-            var model = await Tbl75SpeciessesDocumentDataSource.GetSpeciesDetailsAsync(selected.SpeciesId);
-            return model == null ? null : new Tbl75SpeciessesDocument(model);
-        }, suggestedFileName);
+            var model = await Tbl75SpeciessesDocumentDataSource.GetSpeciesDetailsAsync(SpeciesSelected.SpeciesId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl75SpeciessesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SpeciesSelected.SpeciesName)
+                ? $"Species_{SpeciesSelected.SpeciesId}"
+                : string.Concat(SpeciesSelected.SpeciesName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SpeciesSelected.SpeciesId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
+
 }

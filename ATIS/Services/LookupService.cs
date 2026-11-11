@@ -47,8 +47,7 @@ public class LookupService
     private Dictionary<int, string?>? _refExpertLookupCache;
     private Dictionary<int, string?>? _refSourceLookupCache;
 
-    private readonly object _countryCacheLock = new();
-    private Task<ObservableCollection<TblCountry>>? _countryListTask;
+    private Dictionary<int, string?>? _countryLookupCache;
 
     //--------------------------------------------------------------------
     private ObservableCollection<Models.Tbl03Regnum>? _regnumListCache;
@@ -77,6 +76,8 @@ public class LookupService
     private ObservableCollection<Models.Tbl90RefAuthor>? _refAuthorListCache;
     private ObservableCollection<Models.Tbl90RefExpert>? _refExpertListCache;
     private ObservableCollection<Models.Tbl90RefSource>? _refSourceListCache;
+
+    private ObservableCollection<Models.TblCountry>? _countryListCache;
 
     //--------------------------------------------------------------------
     public void InvalidateRegnumCache()
@@ -209,8 +210,8 @@ public class LookupService
 
     public void InvalidateCountryCache()
     {
-        lock (_countryCacheLock)
-            _countryListTask = null;
+        _countryLookupCache = null;
+        _countryListCache = null;
     }
 
     //--------------------------------------------------------------------
@@ -502,8 +503,24 @@ public class LookupService
     //--------------------------------------------------------------------
     public async Task<Dictionary<int, string?>> GetCountryLookupAsync()
     {
-        var list = await GetCountryListAsync();
-        return list.ToDictionary(x => x.CountryId, x => x.Name);
+        try
+        {
+            if (_countryLookupCache == null)
+            {
+                var data = CreateDataService();
+                var list = await data.GetAllCountryAsync();
+                _countryLookupCache = list.ToDictionary(x => x.CountryId, x => x.Name);
+
+                System.Diagnostics.Debug.WriteLine($"[LookupService] CountryLookup loaded: {_countryLookupCache.Count}");
+            }
+
+            return _countryLookupCache;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LookupService.GetCountryLookupAsync] ERROR: {ex}");
+            return new Dictionary<int, string?>();
+        }
     }
     //--------------------------------------------------------------------
     public async Task<ObservableCollection<Models.Tbl03Regnum>> GetRegnumListAsync()
@@ -786,21 +803,26 @@ public class LookupService
 
     //--------------------------------------------------------------------
 
-    public Task<ObservableCollection<TblCountry>> GetCountryListAsync()
+    public async Task<ObservableCollection<TblCountry>> GetCountryListAsync()
     {
-        lock (_countryCacheLock)
+        try
         {
-            if (_countryListTask == null || _countryListTask.IsFaulted || _countryListTask.IsCanceled)
-                _countryListTask = LoadCountryListAsync();
+            if (_countryListCache == null)
+            {
+                var data = CreateDataService();
+                var list = await data.GetAllCountryAsync() ?? Enumerable.Empty<TblCountry>();
+                _countryListCache = new ObservableCollection<TblCountry>(list);
 
-            return _countryListTask;
+                System.Diagnostics.Debug.WriteLine($"[LookupService] CountryList loaded: {_countryListCache.Count}");
+            }
+
+            return _countryListCache;
         }
-    }
-
-    private async Task<ObservableCollection<TblCountry>> LoadCountryListAsync()
-    {
-        var list = await CreateDataService().GetAllCountryAsync();
-        return new ObservableCollection<TblCountry>(list);
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LookupService.GetCountryListAsync] ERROR: {ex}");
+            return new ObservableCollection<TblCountry>();
+        }
     }
 
     //public async Task<ObservableCollection<Models.Tbl90RefSource>> GetRefSourceListAsync()

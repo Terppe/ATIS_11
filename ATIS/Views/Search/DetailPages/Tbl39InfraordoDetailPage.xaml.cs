@@ -1,6 +1,11 @@
 ﻿using ATIS.Interfaces;
+using ATIS.Views.Report.Pdf.Tbl39Infraordos;
 using ATIS.Views.Search.DetailViewModels;
 using Microsoft.UI.Xaml.Data;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 //  Tbl39InfraordoDetailPage.xaml.cs Skriptdatum:  15.06.2024  10:32     
 
@@ -61,8 +66,33 @@ public sealed partial class Tbl39InfraordoDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.ExportPdfCommand.ExecuteAsync(null);
+        var document = await CreateDetailDocumentAsync();
+        if (document == null)
+            return;
+
+        var infraordoName = SanitizeFileNamePart(GetCurrentInfraordoName());
+        var suggestedFileName = $"Infraordo_Detail_{infraordoName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await SaveDocumentAsPdfAsync(document, suggestedFileName);
     }
+
+    //für später andere nutzung, z.B. Drucken
+    //private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    //{
+    //    await PrintCurrentReviewAsync();
+    //}
+
+    //private async Task PrintCurrentReviewAsync()
+    //{
+    //    var document = await CreateDetailDocumentAsync();
+    //    if (document == null)
+    //        return;
+
+    //    var infraordoName = SanitizeFileNamePart(GetCurrentInfraordoName());
+    //    var suggestedFileName = $"Infraordo_Detail_{infraordoName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+    //    await SaveDocumentAsPdfAsync(document, suggestedFileName);
+    //}
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
@@ -74,5 +104,55 @@ public sealed partial class Tbl39InfraordoDetailPage : Page
             if (item != null)
                 await ViewModel.NavigateBreadcrumbAsync(item);
         }
+    }
+
+    private async Task<IDocument?> CreateDetailDocumentAsync()
+    {
+        if (ViewModel?.InfraordoSelected == null)
+            return null;
+
+        var pdfModel = await Tbl39InfraordosDocumentDataSource.GetInfraordoDetailsAsync(ViewModel.InfraordoSelected.InfraordoId);
+        if (pdfModel == null)
+            return null;
+
+        return new Tbl39InfraordosDocument(pdfModel);
+    }
+
+    private string? GetCurrentInfraordoName()
+    {
+        return ViewModel?.InfraordoSelected?.InfraordoName;
+    }
+
+    private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)
+    {
+        var savePicker = new FileSavePicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = suggestedFileName
+        };
+
+        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
+
+        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(savePicker, hwnd);
+
+        var file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+            return;
+
+        document.GeneratePdf(file.Path);
+    }
+
+    private static string SanitizeFileNamePart(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "Unknown";
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var cleaned = new string(value
+            .Where(c => !invalidChars.Contains(c))
+            .ToArray());
+
+        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
-using ATIS.Services;
 using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl30Legios;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 
 //    Tbl30LegioDetailViewModel Skriptdatum:  15.06.2024  10:32    
@@ -499,17 +500,67 @@ public sealed class Tbl30LegioDetailViewModel : ObservableObject
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        var selected = LegioSelected;
-        if (selected == null || selected.LegioId == 0)
+        if (LegioSelected == null || LegioSelected.LegioId == 0)
             return;
 
-        var name = PdfExportService.SanitizeFileNamePart(selected.LegioName);
-        var suggestedFileName = $"Legio_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-        await App.GetService<IPdfExportService>().ExportAsync(async () =>
+        try
         {
-            var model = await Tbl30LegiosDocumentDataSource.GetLegioDetailsAsync(selected.LegioId);
-            return model == null ? null : new Tbl30LegiosDocument(model);
-        }, suggestedFileName);
+            var model = await Tbl30LegiosDocumentDataSource.GetLegioDetailsAsync(LegioSelected.LegioId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl30LegiosDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(LegioSelected.LegioName)
+                ? $"Legio_{LegioSelected.LegioId}"
+                : string.Concat(LegioSelected.LegioName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{LegioSelected.LegioId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
 }

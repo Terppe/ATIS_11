@@ -67,8 +67,6 @@ public sealed partial class MainPage : Page
         dialog = App.GetService<IDialogService>();
 
         InitializeComponent();
-        NavFrame.Navigating += NavFrame_Navigating;
-        UpdateUserAreaVisibility();
         System.Diagnostics.Debug.WriteLine($"DataContext ({this.GetType().Name}): {this.DataContext?.GetType().Name}");
 
         NavFrame.Navigate(typeof(HomePage)); // ← garantiert sofort sichtbar
@@ -114,55 +112,9 @@ public sealed partial class MainPage : Page
     }
 
 
-    private async void NavFrame_Navigating(object sender, NavigatingCancelEventArgs e)
-    {
-        if (CanOpenPage(e.SourcePageType))
-            return;
-
-        e.Cancel = true;
-        await dialog.ShowErrorAsync("Error_NoPermission_Title", "Error_NoPermission_Message");
-    }
-
-    private static bool IsPublicPage(Type pageType)
-    {
-        return pageType == typeof(HomePage) ||
-               pageType == typeof(SearchPage) ||
-               pageType.Namespace == typeof(ATIS.Views.Search.DetailPages.TblDiseaseDetailPage).Namespace;
-    }
-
-    private static bool CanOpenPage(Type pageType)
-    {
-        if (pageType == typeof(AdminAreaPage))
-            return Permission.HasAccess("Administrator");
-
-        return IsPublicPage(pageType) ||
-               App.GetService<IUserService>().IsAuthenticated;
-    }
-
-    private void UpdateUserAreaVisibility()
-    {
-        NavUser_Area.Visibility = App.GetService<IUserService>().IsAuthenticated
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-        NavAdmin_Area.Visibility = Permission.HasAccess("Administrator")
-            ? Visibility.Visible
-            : Visibility.Collapsed;
-        ControlsSearchBox.ItemsSource = null;
-    }
-
     private void NavFrame_Navigated(object sender, NavigationEventArgs e)
     {
         AppTitleBar.IsBackButtonVisible = NavFrame.CanGoBack;
-        if (e.SourcePageType == typeof(SearchPage))
-        {
-            _currentPageTag = typeof(SearchPage).FullName!;
-            NavView.SelectedItem = NavSearch;
-        }
-        else if (e.SourcePageType == typeof(HomePage))
-        {
-            _currentPageTag = typeof(HomePage).FullName!;
-            NavView.SelectedItem = NavHome;
-        }
     }
 
     private void ThemeButton_Click(object sender, RoutedEventArgs e)
@@ -172,7 +124,11 @@ public sealed partial class MainPage : Page
 
     private void AutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        NavFrame.Navigate(typeof(SearchPage), args.QueryText);
+        _ = args.QueryText;
+
+        App.SearchQuickString = args.QueryText;
+
+        NavFrame.Navigate(typeof(SearchPage));
     }
 
     private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -281,11 +237,7 @@ public sealed partial class MainPage : Page
             CloseButtonText = "Schließen"
         };
 
-        loginView.ViewModel.LoginSucceeded += (_, _) =>
-        {
-            UpdateUserAreaVisibility();
-            dialog.Hide();
-        };
+        loginView.ViewModel.LoginSucceeded += (_, _) => dialog.Hide();
 
         await dialog.ShowAsync();
 
@@ -381,7 +333,6 @@ public sealed partial class MainPage : Page
     private Task LogOut()
     {
         App.GetService<IUserService>().Clear();
-        UpdateUserAreaVisibility();
         TbUser.Text = "keiner angemeldet";
 
         EnforceCurrentPagePermission();
@@ -700,15 +651,9 @@ public sealed partial class MainPage : Page
 
     private void EnforceCurrentPagePermission()
     {
-        UpdateUserAreaVisibility();
         if (NavFrame.Content is not Page currentPage) return;
 
         var pageType = currentPage.GetType();
-        if (!CanOpenPage(pageType))
-        {
-            NavFrame.Navigate(typeof(HomePage));
-            return;
-        }
         var fullName = pageType.FullName ?? string.Empty;
 
         var isModulePage = fullName.Contains(".Views.Modules.", StringComparison.OrdinalIgnoreCase);
@@ -761,8 +706,6 @@ public sealed partial class MainPage : Page
             {
                 // get first level item
                 var viewItem = item as NavigationViewItem;
-                if (viewItem?.Visibility == Visibility.Collapsed)
-                    continue;
 
                 //check if contains second level items
                 if (viewItem != null)

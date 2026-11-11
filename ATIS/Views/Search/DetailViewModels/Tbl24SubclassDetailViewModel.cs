@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
-using ATIS.Services;
 using ATIS.Models;
 using ATIS.Views.Report.Pdf.Tbl24Subclasses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using QuestPDF.Fluent;
+using WinUI3Localizer;
 
 
 //    Tbl24SubclassDetailViewModel Skriptdatum:  15.08.2026  18:32    
@@ -432,17 +433,67 @@ public sealed class Tbl24SubclassDetailViewModel : ObservableObject
     // -----------------------------
     private async Task ExportPdfAsync()
     {
-        var selected = SubclassSelected;
-        if (selected == null || selected.SubclassId == 0)
+        if (SubclassSelected == null || SubclassSelected.SubclassId == 0)
             return;
 
-        var name = PdfExportService.SanitizeFileNamePart(selected.SubclassName);
-        var suggestedFileName = $"Subclass_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
-        await App.GetService<IPdfExportService>().ExportAsync(async () =>
+        try
         {
-            var model = await Tbl24SubclassesDocumentDataSource.GetSubclassDetailsAsync(selected.SubclassId);
-            return model == null ? null : new Tbl24SubclassesDocument(model);
-        }, suggestedFileName);
+            var model = await Tbl24SubclassesDocumentDataSource.GetSubclassDetailsAsync(SubclassSelected.SubclassId);
+
+            if (model == null)
+            {
+                var loc = Localizer.Get();
+
+                var infoDialog = new ContentDialog
+                {
+                    Title = loc.GetLocalizedString("Dialog_Info"),
+                    Content = loc.GetLocalizedString("PdfExport_Hidden"),
+                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                };
+
+                await infoDialog.ShowAsync();
+                return;
+            }
+
+            var document = new Tbl24SubclassesDocument(model);
+
+            var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            var safeTitle = string.IsNullOrWhiteSpace(SubclassSelected.SubclassName)
+                ? $"Subclass_{SubclassSelected.SubclassId}"
+                : string.Concat(SubclassSelected.SubclassName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"{safeTitle}_{SubclassSelected.SubclassId}.pdf";
+            var filePath = Path.Combine(desktopPath, fileName);
+
+            document.GeneratePdf(filePath);
+
+            var loc1 = Localizer.Get();
+
+            var successDialog = new ContentDialog
+            {
+                Title = loc1.GetLocalizedString("PdfExport_Success_Title"),
+                Content = string.Format(loc1.GetLocalizedString("PdfExport_Success"), filePath),
+                CloseButtonText = loc1.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await successDialog.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            var loc = Localizer.Get();
+
+            var errorDialog = new ContentDialog
+            {
+                Title = loc.GetLocalizedString("PdfExport_Error_Title"),
+                Content = string.Format(loc.GetLocalizedString("PdfExport_Error"), ex.ToString()),
+                CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
+                XamlRoot = App.MainPageInstance.Content.XamlRoot
+            };
+
+            await errorDialog.ShowAsync();
+        }
     }
 }
