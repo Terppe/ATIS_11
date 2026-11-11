@@ -14,16 +14,14 @@ public class DialogService() : IDialogService
         _xamlRoot = xamlRoot ?? throw new ArgumentNullException(nameof(xamlRoot));
     }
 
-    public async Task ShowOkDialogAsync(string titleKey, string messageKey, params object[] formatArgs)
+    public async Task ShowOkDialogAsync(string titleKey, string messageKey)
     {
         var loc = Localizer.Get();
 
         var dialog = new ContentDialog
         {
             Title = loc.GetLocalizedString(titleKey),
-            Content = formatArgs.Length == 0
-                ? loc.GetLocalizedString(messageKey)
-                : string.Format(loc.GetLocalizedString(messageKey), formatArgs),
+            Content = loc.GetLocalizedString(messageKey),
             CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
             XamlRoot = App.MainWindow.Content.XamlRoot
         };

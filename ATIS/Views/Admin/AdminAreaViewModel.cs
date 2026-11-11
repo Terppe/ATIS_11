@@ -17,37 +17,21 @@ public partial class AdminAreaViewModel : ObservableObject
     private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
     //private static readonly AtisDbContext Context = new();
     private readonly IDataService _dataService;
-    private readonly LookupService _lookupService;
-    private readonly IDialogService _dialog;
     public ObservableCollection<TblUserProfile> UserProfileItems { get; } = [];
 
     #endregion [Private Data Members]           
 
     #region [Constructor]
-    public AdminAreaViewModel(IDataService dataService, LookupService lookupService, IDialogService dialog)
+    public AdminAreaViewModel(IDataService dataService)
     {
         _dataService = dataService;
-        _lookupService = lookupService;
-        _dialog = dialog;
+        GetAllCollections();
     }
 
-    public async Task LoadAsync()
+    private void GetAllCollections()
     {
-        IsLoading = true;
-        try
-        {
-            TblCountriesAllList = new ObservableCollection<TblCountry>(
-                await _lookupService.GetCountryListAsync());
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[AdminArea LoadAsync] {ex}");
-            await _dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
-        }
-        finally
-        {
-            IsLoading = false;
-        }
+        TblCountriesAllList ??= [];
+        TblCountriesAllList = new ObservableCollection<TblCountry>(_dataService.GetCountryAsync().GetAwaiter().GetResult());
     }
 
     public AdminAreaViewModel()
@@ -341,7 +325,7 @@ public partial class AdminAreaViewModel : ObservableObject
             _tblUserProfilesList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<TblCountry> _tblCountriesAllList = new();
+    private ObservableCollection<TblCountry> _tblCountriesAllList;
     public ObservableCollection<TblCountry> TblCountriesAllList
     {
         get => _tblCountriesAllList;

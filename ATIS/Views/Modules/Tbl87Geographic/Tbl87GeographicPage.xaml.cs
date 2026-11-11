@@ -13,8 +13,9 @@ public sealed partial class Tbl87GeographicPage : Page
     // ---------------------------------------------------------
     public Tbl87GeographicPage()
     {
-        ViewModel = App.GetService<Tbl87GeographicViewModel>();
         InitializeComponent();
+
+        ViewModel = App.GetService<Tbl87GeographicViewModel>();
         DataContext = ViewModel;
 
         Loaded += GeographicPage_Loaded;
@@ -47,3 +48,4 @@ public sealed partial class Tbl87GeographicPage : Page
 
 
 }
+

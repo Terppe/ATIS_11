@@ -45,9 +45,7 @@ public sealed partial class AdminAreaPage : Page
 
         if (role == "Administrator")
         {
-            ViewModel = App.GetService<AdminAreaViewModel>();
             InitializeComponent();
-            DataContext = ViewModel;
             Loaded += OnLoaded;
 
         }
@@ -57,9 +55,9 @@ public sealed partial class AdminAreaPage : Page
         }
     }
 
-    private async void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        await ViewModel.LoadAsync();
+        ViewModel = App.GetService<AdminAreaViewModel>();
     }
 
     #endregion [Constructor]

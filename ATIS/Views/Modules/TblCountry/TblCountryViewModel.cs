@@ -33,7 +33,7 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
         : base(new DataService(factory, user), dialog, coordinator)
     {
 
-        _lookupService = lookupService;
+     //   _lookupService = lookupService;
 
         SortCommand = new CommunityToolkit.Mvvm.Input.RelayCommand<string>(SortBy);
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -259,7 +259,7 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
 
         if (saved != null)
         {
-            _lookupService.InvalidateCountryCache();
+            _lookupService.InvalidateAllCaches();
         }
 
         return saved;
@@ -285,7 +285,6 @@ public class TblCountryViewModel : BaseBossListViewModel<Models.TblCountry>
             return false;
 
         await Data.DeleteCountryAsync(item.CountryId);
-        _lookupService.InvalidateCountryCache();
         return true;
     }
 

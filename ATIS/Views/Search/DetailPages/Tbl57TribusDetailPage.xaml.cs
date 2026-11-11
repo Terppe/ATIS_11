@@ -1,6 +1,11 @@
 ﻿using ATIS.Interfaces;
+using ATIS.Views.Report.Pdf.Tbl57Tribusses;
 using ATIS.Views.Search.DetailViewModels;
 using Microsoft.UI.Xaml.Data;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 //  Tbl57TribusDetailPage.xaml.cs Skriptdatum:  18.08.2026  10:32     
 
@@ -61,8 +66,33 @@ public sealed partial class Tbl57TribusDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.ExportPdfCommand.ExecuteAsync(null);
+        var document = await CreateDetailDocumentAsync();
+        if (document == null)
+            return;
+
+        var tribusName = SanitizeFileNamePart(GetCurrentTribusName());
+        var suggestedFileName = $"Tribus_Detail_{tribusName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await SaveDocumentAsPdfAsync(document, suggestedFileName);
     }
+
+    //für später andere nutzung, z.B. Drucken
+    //private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    //{
+    //    await PrintCurrentReviewAsync();
+    //}
+
+    //private async Task PrintCurrentReviewAsync()
+    //{
+    //    var document = await CreateDetailDocumentAsync();
+    //    if (document == null)
+    //        return;
+
+    //    var tribusName = SanitizeFileNamePart(GetCurrentTribusName());
+    //    var suggestedFileName = $"Tribus_Detail_{tribusName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+    //    await SaveDocumentAsPdfAsync(document, suggestedFileName);
+    //}
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
@@ -74,5 +104,55 @@ public sealed partial class Tbl57TribusDetailPage : Page
             if (item != null)
                 await ViewModel.NavigateBreadcrumbAsync(item);
         }
+    }
+
+    private async Task<IDocument?> CreateDetailDocumentAsync()
+    {
+        if (ViewModel?.TribusSelected == null)
+            return null;
+
+        var pdfModel = await Tbl57TribussesDocumentDataSource.GetTribusDetailsAsync(ViewModel.TribusSelected.TribusId);
+        if (pdfModel == null)
+            return null;
+
+        return new Tbl57TribussesDocument(pdfModel);
+    }
+
+    private string? GetCurrentTribusName()
+    {
+        return ViewModel?.TribusSelected?.TribusName;
+    }
+
+    private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)
+    {
+        var savePicker = new FileSavePicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = suggestedFileName
+        };
+
+        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
+
+        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(savePicker, hwnd);
+
+        var file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+            return;
+
+        document.GeneratePdf(file.Path);
+    }
+
+    private static string SanitizeFileNamePart(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "Unknown";
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var cleaned = new string(value
+            .Where(c => !invalidChars.Contains(c))
+            .ToArray());
+
+        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
     }
 }

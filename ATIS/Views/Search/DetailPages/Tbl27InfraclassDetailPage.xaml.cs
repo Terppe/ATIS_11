@@ -1,5 +1,10 @@
 ﻿using ATIS.Interfaces;
+using ATIS.Views.Report.Pdf.Tbl27Infraclasses;
 using ATIS.Views.Search.DetailViewModels;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 //  Tbl27InfraclassDetailPage.xaml.cs Skriptdatum:  15.06.2024  18:32     
 
@@ -60,8 +65,33 @@ public sealed partial class Tbl27InfraclassDetailPage : Page
 
     private async void ExportPdfButton_Click(object sender, RoutedEventArgs e)
     {
-        await ViewModel.ExportPdfCommand.ExecuteAsync(null);
+        var document = await CreateDetailDocumentAsync();
+        if (document == null)
+            return;
+
+        var infraclassName = SanitizeFileNamePart(GetCurrentInfraclassName());
+        var suggestedFileName = $"Infraclass_Detail_{infraclassName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+        await SaveDocumentAsPdfAsync(document, suggestedFileName);
     }
+
+    //für später andere nutzung, z.B. Drucken
+    //private async void PrintButton_Click(object sender, RoutedEventArgs e)
+    //{
+    //    await PrintCurrentReviewAsync();
+    //}
+
+    //private async Task PrintCurrentReviewAsync()
+    //{
+    //    var document = await CreateDetailDocumentAsync();
+    //    if (document == null)
+    //        return;
+
+    //    var infraclassName = SanitizeFileNamePart(GetCurrentInfraclassName());
+    //    var suggestedFileName = $"Infraclass_Detail_{infraclassName}_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+    //    await SaveDocumentAsPdfAsync(document, suggestedFileName);
+    //}
 
     private async void Breadcrumb_Click(object sender, RoutedEventArgs e)
     {
@@ -73,5 +103,55 @@ public sealed partial class Tbl27InfraclassDetailPage : Page
             if (item != null)
                 await ViewModel.NavigateBreadcrumbAsync(item);
         }
+    }
+
+    private async Task<IDocument?> CreateDetailDocumentAsync()
+    {
+        if (ViewModel?.InfraclassSelected == null)
+            return null;
+
+        var pdfModel = await Tbl27InfraclassesDocumentDataSource.GetInfraclassDetailsAsync(ViewModel.InfraclassSelected.InfraclassId);
+        if (pdfModel == null)
+            return null;
+
+        return new Tbl27InfraclassesDocument(pdfModel);
+    }
+
+    private string? GetCurrentInfraclassName()
+    {
+        return ViewModel?.InfraclassSelected?.InfraclassName;
+    }
+
+    private async Task SaveDocumentAsPdfAsync(IDocument document, string suggestedFileName)
+    {
+        var savePicker = new FileSavePicker
+        {
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = suggestedFileName
+        };
+
+        savePicker.FileTypeChoices.Add("PDF Document", new List<string> { ".pdf" });
+
+        var hwnd = WindowNative.GetWindowHandle(App.MainWindow);
+        InitializeWithWindow.Initialize(savePicker, hwnd);
+
+        var file = await savePicker.PickSaveFileAsync();
+        if (file == null)
+            return;
+
+        document.GeneratePdf(file.Path);
+    }
+
+    private static string SanitizeFileNamePart(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "Unknown";
+
+        var invalidChars = Path.GetInvalidFileNameChars();
+        var cleaned = new string(value
+            .Where(c => !invalidChars.Contains(c))
+            .ToArray());
+
+        return string.IsNullOrWhiteSpace(cleaned) ? "Unknown" : cleaned.Trim();
     }
 }

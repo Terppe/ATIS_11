@@ -89,12 +89,29 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     }
     public async Task LoadCountryLookupAsync()
     {
-        var list = await _lookupService.GetCountryListAsync();
-        CountryList = new ObservableCollection<Models.TblCountry>(list);
-        CountryLookup = list.ToDictionary(x => x.CountryId, x => x.Name);
-        OnPropertyChanged(nameof(CountryLookup));
-        OnPropertyChanged(nameof(CountryList));
-        _countryLookupLoaded = true;
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("[VM] LoadCountryLookupAsync START");
+
+            var list = await _lookupService.GetCountryListAsync();
+            var lookup = await _lookupService.GetCountryLookupAsync();
+
+
+            CountryList.Clear();
+            foreach (var item in list)
+                CountryList.Add(item);
+
+            CountryLookup = lookup;
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
+        catch (Exception ex)
+        {
+            CountryList.Clear();
+            CountryLookup = new Dictionary<int, string?>();
+            OnPropertyChanged(nameof(CountryLookup));
+            OnPropertyChanged(nameof(CountryList));
+        }
     }
 
     public static class ContinentLookup
@@ -183,14 +200,21 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
 
         try
         {
-            await RunWithLoadingAsync(async () =>
-            {
-                await LoadSpeciesLookupAsync();
-                await LoadCountryLookupAsync();
-                Items = new ObservableCollection<Models.Tbl87Geographic>();
-                OnPropertyChanged(nameof(HasItems));
-                await ReloadCoreAsync();
-            });
+            await LoadSpeciesLookupAsync();
+
+            await LoadCountryLookupAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> Lookup] {ex}");
+        }
+
+        Items = new ObservableCollection<Models.Tbl87Geographic>();
+        OnPropertyChanged(nameof(HasItems));
+
+        try
+        {
+            await ReloadAsync();
         }
         catch (Exception ex)
         {
@@ -213,27 +237,15 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
     {
         _currentParentId = parentId;
         _activeLoader = loader;
+
+        var items = await loader(parentId);
+        Items = new ObservableCollection<Models.Tbl87Geographic>(items);
+        OnPropertyChanged(nameof(HasItems));
+
+        DataSetCount = Items.Count;
+        // Liste anzeigen, Editor erst nach Auswahl eines Eintrags.
         SelectedItem = null;
         Item = null;
-        Items = new ObservableCollection<Models.Tbl87Geographic>();
-
-        try
-        {
-            await RunWithLoadingAsync(async () =>
-            {
-                await LoadCountryLookupAsync();
-                var items = await loader(parentId);
-                Items = new ObservableCollection<Models.Tbl87Geographic>(items);
-                OnPropertyChanged(nameof(HasItems));
-
-                DataSetCount = Items.Count;
-            });
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[Geographic parent load] {ex}");
-            await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
-        }
     }
 
     // ---------------------------------------------------------
@@ -259,24 +271,12 @@ public class Tbl87GeographicViewModel : BaseBossListViewModel<Models.Tbl87Geogra
         var selected = SelectedItem;
         Item = null;
 
-        try
+        if (selected != null)
         {
-            if (selected != null)
-            {
-                if (CountryList.Count == 0)
-                    await RunWithLoadingAsync(EnsureCountryLookupLoadedAsync);
-                else
-                    await EnsureCountryLookupLoadedAsync();
-            }
+            await EnsureCountryLookupLoadedAsync();
+        }
 
-            if (ReferenceEquals(selected, SelectedItem))
-                Item = selected;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[Geographic selection] {ex}");
-            await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
-        }
+        Item = selected;
     }
 
     private bool _countryLookupLoaded;
