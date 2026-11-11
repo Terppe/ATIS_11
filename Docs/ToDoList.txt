@@ -1420,3 +1420,14 @@ Homepage angefangen höhe verändern
 websites.json neu machen.  Fensterwerte bleiben in settings.json, Datenbankkonfiguration in dbserver.json. Bestehende Werte erhalten; fehlende Werte zunächst aus App.config übernehmen.
 ----------------------------------------
 11.11.2026 18:30 Uhr websites.json anfangen mit Webseiten
+Die Begriffe sind:
+
+Begriff	Bedeutung
+ATIS_11	Dein Repository – das gesamte Projekt mit seiner Historie
+master	Ein Branch darin, üblicherweise der gemeinsame Hauptstand
+copilot/…	Weitere Branches mit vorgeschlagenen Änderungen
+Commit	Änderungen lokal als nachvollziehbaren Stand speichern
+Push	Diese Commits auf denselben Branch bei GitHub übertragen
+Pull	Änderungen von GitHub auf deinen lokalen Branch holen
+Merge	Änderungen eines Branches in einen anderen übernehmen
+Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise im Branch ATIS_11 arbeitest, aktualisiert Push normalerweise den GitHub-Branch ATIS_11 – nicht master.
