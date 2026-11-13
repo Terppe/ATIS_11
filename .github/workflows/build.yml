@@ -37,6 +37,9 @@ jobs:
       - name: Check culture settings
         run: dotnet run --project Tests/CultureSettings/CultureSettingsChecks.csproj
 
+      - name: Check mail credentials with Windows DPAPI
+        run: dotnet run --project Tests/MailCredentials/MailCredentialChecks.csproj
+
       - name: Restore
         run: dotnet restore ATIS/ATIS.csproj -p:Platform=x64 --force
 

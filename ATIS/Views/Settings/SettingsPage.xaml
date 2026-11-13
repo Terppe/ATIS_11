@@ -74,6 +74,22 @@
             </StackPanel>
 
             <StackPanel Spacing="8">
+                <TextBlock loc:Uids.Uid="MailCredentials_Title" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <TextBlock loc:Uids.Uid="MailCredentials_Description" TextWrapping="Wrap" />
+                <PasswordBox
+                    x:Name="MailPasswordBox"
+                    loc:Uids.Uid="MailCredentials_Password"
+                    MinWidth="240"
+                    MaxWidth="400"
+                    HorizontalAlignment="Left"
+                    PasswordRevealMode="Hidden" />
+                <Button
+                    loc:Uids.Uid="MailCredentials_Save"
+                    Click="SaveMailPasswordButton_Click" />
+                <TextBlock x:Name="MailCredentialStatusText" TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel Spacing="8">
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Updates" />
 
                 <ToggleSwitch x:Name="AutomaticUpdates" Header="Beim Start nach Updates suchen" />

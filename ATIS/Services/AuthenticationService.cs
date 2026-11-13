@@ -74,6 +74,8 @@ public class AuthenticationService : IAuthenticationService
         var user = await db.TblUserProfiles.FirstOrDefaultAsync(u => u.Email == email, ct);
         if (user is null) return false;
 
+        var mailPassword = new MailCredentialStore().LoadPassword();
+
         // 8-stelliger Code
         var code = RandomNumberGenerator.GetInt32(0, 100_000_000).ToString("D8");
 
@@ -85,18 +87,14 @@ public class AuthenticationService : IAuthenticationService
         var smtpHost = ConfigurationManager.AppSettings["SmtpHost"];
         var smtpPortText = ConfigurationManager.AppSettings["SmtpPort"];
         var sender = ConfigurationManager.AppSettings["Sender"];
-        var encryptedMailPwd = ConfigurationManager.AppSettings["EncryptMailAccountPassword"];
 
         if (string.IsNullOrWhiteSpace(smtpHost) ||
             string.IsNullOrWhiteSpace(smtpPortText) ||
-            string.IsNullOrWhiteSpace(sender) ||
-            string.IsNullOrWhiteSpace(encryptedMailPwd))
+            string.IsNullOrWhiteSpace(sender))
             throw new InvalidOperationException("SMTP-Konfiguration ist unvollständig.");
 
         if (!int.TryParse(smtpPortText, out var smtpPort))
             throw new InvalidOperationException("SMTP-Port ist ungültig.");
-
-        var mailPassword = Crypt.DecryptString(encryptedMailPwd);
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("ATIS Support", sender));
