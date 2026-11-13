@@ -356,6 +356,11 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </ScrollViewer>
+                            <TextBlock
+                                x:Name="WebsiteSettingsError"
+                                Foreground="{ThemeResource AtisTextCaptionBrush}"
+                                TextWrapping="Wrap"
+                                Visibility="Collapsed" />
                         </StackPanel>
                     </Border>
                 </StackPanel>
@@ -372,4 +377,3 @@
             TextWrapping="Wrap" />
     </Grid>
 </Page>
-

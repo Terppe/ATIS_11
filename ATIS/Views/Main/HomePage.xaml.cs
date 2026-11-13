@@ -2,7 +2,9 @@
 using System.Reflection;
 using ATIS.Views.Search;
 using System.Collections.ObjectModel;
-using System.Configuration;
+using System.Text.Json;
+using ATIS.Services;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Main;
 
@@ -17,7 +19,7 @@ public sealed partial class HomePage : Page
         ViewModel = App.GetService<HomeViewModel>();
         InitializeComponent();
 
-        LoadExternalLinks();
+        Loaded += HomePage_Loaded;
 
         var asm = typeof(App).Assembly;
         var info = asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "unknown";
@@ -36,6 +38,23 @@ public sealed partial class HomePage : Page
                          " | ATIS-Version " + $"v{info}";
     }
     public ObservableCollection<ExternalLink> ExternalLinks { get; } = new();
+    private bool _loadingExternalLinks;
+
+    private async void HomePage_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (_loadingExternalLinks)
+            return;
+
+        _loadingExternalLinks = true;
+        try
+        {
+            await LoadExternalLinksAsync();
+        }
+        finally
+        {
+            _loadingExternalLinks = false;
+        }
+    }
 
     private void HomeSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
@@ -70,29 +89,36 @@ public sealed partial class HomePage : Page
         public Uri Uri { get; set; }
     }
 
-    private void LoadExternalLinks()
+    private async Task LoadExternalLinksAsync()
     {
-        ExternalLinks.Clear();
-
-        AddExternalLink("ITIS USA", "ItisUSA");
-        AddExternalLink("ITIS Canada", "ItisCanada");
-        AddExternalLink("Catalogue of Life", "CoLife");
-        AddExternalLink("EOL", "EOL");
-        AddExternalLink("Mexico", "Mexico");
-        AddExternalLink("GBIF", "GlobalBio");
-    }
-
-    private void AddExternalLink(string name, string configKey)
-    {
-        var value = ConfigurationManager.AppSettings[configKey];
-
-        if (!Uri.TryCreate(value, UriKind.Absolute, out var uri) ||
-            (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps))
+        var localizer = Localizer.Get();
+        try
         {
-            throw new InvalidOperationException(
-                $"Die Adresse für '{configKey}' in der App.config fehlt oder ist ungültig.");
-        }
+            var result = await WebsiteSettings.LoadAsync(
+                WebsiteSettings.FilePath, WebsiteSettings.DefaultFilePath);
 
-        ExternalLinks.Add(new ExternalLink(name, uri));
+            ExternalLinks.Clear();
+            foreach (var link in result.Links)
+                ExternalLinks.Add(new ExternalLink(link.Name, link.Uri));
+
+            WebsiteSettingsError.Text = result.InvalidEntries.Count == 0
+                ? string.Empty
+                : string.Format(
+                    localizer.GetLocalizedString("Home_Websites_Invalid"),
+                    string.Join(", ", result.InvalidEntries),
+                    WebsiteSettings.FilePath);
+            WebsiteSettingsError.Visibility = result.InvalidEntries.Count == 0
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
+        {
+            System.Diagnostics.Debug.WriteLine(ex);
+            ExternalLinks.Clear();
+            WebsiteSettingsError.Text = string.Format(
+                localizer.GetLocalizedString("Home_Websites_LoadError"),
+                WebsiteSettings.FilePath, ex.Message);
+            WebsiteSettingsError.Visibility = Visibility.Visible;
+        }
     }
 }
