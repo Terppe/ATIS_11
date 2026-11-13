@@ -59,7 +59,7 @@ public sealed partial class SettingsPage : Page
 
         RefreshServerList();
     }
-    private void LanguageBox_SelectionChanged(
+    private async void LanguageBox_SelectionChanged(
         object sender, SelectionChangedEventArgs e)
     {
         if (LanguageBox.SelectedItem is not ComboBoxItem item ||
@@ -70,7 +70,11 @@ public sealed partial class SettingsPage : Page
             return;
         }
 
-        App.SetCulture(language);
+        if (!await App.SetCultureAsync(language))
+        {
+            SelectByTag(LanguageBox, CultureInfo.CurrentUICulture.Name);
+            return;
+        }
         App.RaiseLanguageChanged(language);
     }
     private static void SelectByTag(ComboBox box, string tag)
