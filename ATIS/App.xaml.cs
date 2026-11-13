@@ -141,9 +141,9 @@ public partial class App : Application
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         // Sprache und Protokollierung initialisieren
-        await InitializeLocalizer();
-        ApplyCulture();
         InitializeLogging();
+        ApplyCulture();
+        await InitializeLocalizer();
 
         // Startansicht für Datenbankprüfung und Dialoge anzeigen
         MainWindow = new Window { Title = AppName };
@@ -336,25 +336,45 @@ public partial class App : Application
 
     private void ApplyCulture()
     {
-        Cult = ConfigurationManager.AppSettings.Get("Culture");
-
-        if (Cult != null)
-        {
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
-        }
+        Cult = CultureSettings.LoadOrMigrate(
+            AppHelper.Settings, ConfigurationManager.AppSettings.Get("Culture"));
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
     }
 
     public static void RaiseLanguageChanged(string lang) => LanguageChanged?.Invoke(lang);
 
-    public static void SetCulture(string culture)
+    public static async Task<bool> SetCultureAsync(string culture)
     {
-        Cult = culture;
+        try
+        {
+            CultureSettings.Save(AppHelper.Settings, culture);
+        }
+        catch (Nucs.JsonSettings.JsonSettingsException ex)
+        {
+            SimpleLog.Error($"Spracheinstellung konnte nicht gespeichert werden: {ex.Message}");
+            var root = MainWindow?.Content as FrameworkElement
+                ?? throw new InvalidOperationException("Das Hauptfenster ist nicht initialisiert.", ex);
+            await new ContentDialog
+            {
+                XamlRoot = root.XamlRoot,
+                Title = "Spracheinstellung",
+                Content = "Die Sprache konnte nicht gespeichert werden. Bitte prüfen Sie den Zugriff auf settings.json.",
+                CloseButtonText = "OK"
+            }.ShowAsync();
+            return false;
+        }
+        Cult = AppHelper.Settings.Culture!;
 
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(culture);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(Cult);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cult);
 
-        Localizer.Get().SetLanguage(culture);
+        var localizer = Localizer.Get();
+        if (localizer.GetAvailableLanguages().Contains(Cult, StringComparer.OrdinalIgnoreCase))
+            await localizer.SetLanguage(Cult);
+        else
+            SimpleLog.Warning($"Keine Übersetzungen für '{Cult}' vorhanden; die bisherige Anzeigesprache bleibt erhalten.");
+        return true;
     }
 
     //---------------------------------------------------------
@@ -597,16 +617,20 @@ public partial class App : Application
             return;
         }
 
-        await new LocalizerBuilder()
+        var localizer = await new LocalizerBuilder()
             .AddStringResourcesFolderForLanguageDictionaries(StringsFolderPath)
 
             .SetOptions(options =>
             {
-                //    options.DefaultLanguage = "de-DE";
-                options.DefaultLanguage = ConfigurationManager.AppSettings.Get("Culture")!;
+                options.DefaultLanguage = "de-DE";
 
             })
             .Build();
+
+        if (localizer.GetAvailableLanguages().Contains(Cult!, StringComparer.OrdinalIgnoreCase))
+            await localizer.SetLanguage(Cult!);
+        else
+            SimpleLog.Warning($"Keine Übersetzungen für '{Cult}' vorhanden; Deutsch wird angezeigt.");
     }
 
     // ---------------------------------------------------------
@@ -690,4 +714,3 @@ public partial class App : Application
         return null;
     }
 }
-

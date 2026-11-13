@@ -26,4 +26,5 @@ public class AppConfig : JsonSettings, IVersionable
     public virtual int? MainWindowY { get; set; }
     public virtual int? MainWindowWidth { get; set; }
     public virtual int? MainWindowHeight { get; set; }
+    public virtual string? Culture { get; set; }
 }

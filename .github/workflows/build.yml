@@ -34,6 +34,9 @@ jobs:
         run: |
           Write-Host "ATIS_VERSION=$env:ATIS_VERSION"
 
+      - name: Check culture settings
+        run: dotnet run --project Tests/CultureSettings/CultureSettingsChecks.csproj
+
       - name: Restore
         run: dotnet restore ATIS/ATIS.csproj -p:Platform=x64 --force
 
