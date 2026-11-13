@@ -1,5 +1,42 @@
 # ATIS - V7.8
 
+## Mail-Zugangsdaten
+
+Das SMTP-Passwort für „Passwort vergessen“ wird unter
+`%LOCALAPPDATA%\ATIS\Credentials\smtp-password.dpapi` mit Windows-DPAPI
+(`CurrentUser`) verschlüsselt gespeichert, nicht in JSON oder `App.config`.
+Als ATIS-Administrator kann man unter **Einstellungen > Mail-Zugangsdaten**
+ein neues SMTP-Passwort eingeben und speichern. Es wird nicht wieder angezeigt.
+`SmtpHost`, `SmtpPort` und `Sender` bleiben vorerst in `App.config`.
+
+Bei vorhandenen alten Einträgen übernimmt ATIS beim Start
+`EncryptMailAccountPassword` einmalig in den lokalen DPAPI-Speicher.
+`CryptMailPassword` wird im aktuellen Code nicht verwendet; sein bisheriger Wert
+wird unverändert zusätzlich DPAPI-verschlüsselt als `legacy-mail-password.dpapi`
+gesichert, nicht als SMTP-Passwort interpretiert. Existierende DPAPI-Dateien haben
+Vorrang und werden bei der Übernahme nicht überschrieben. Defekte oder für den
+aktuellen Windows-Benutzer unlesbare Dateien werden gemeldet, nicht durch alte
+Config-Werte ersetzt. Das SMTP-Passwort kann in den Einstellungen neu gespeichert
+werden.
+
+Nach bestätigter Übernahme müssen die beiden alten Passworteinträge manuell aus
+der lokalen Quell-`App.config` sowie aus vorhandenen Build-, Publish- und
+Installationskopien entfernt werden. ATIS ändert keine Installationsdateien.
+Danach neu bauen und für künftige Installationen ausschließlich die bereinigte
+Konfiguration verwenden. Bereits veröffentlichte Zugangsdaten beim Mailanbieter
+ändern; Entfernen aus einer Datei entfernt sie nicht aus der Git-Historie.
+
+Die DPAPI-Dateien nicht ins Repository übernehmen oder mit dem Installer
+verteilen. Sie sind an das Windows-Benutzerprofil gebunden; auf einem anderen
+Rechner oder unter einem anderen Benutzer das SMTP-Passwort neu einrichten.
+DPAPI schützt nicht vor Programmen, die bereits als derselbe Windows-Benutzer
+laufen. Ein kundenseitig gespeichertes gemeinsames SMTP-Passwort kann deshalb
+nicht gegenüber diesem Kunden geheim gehalten werden.
+
+Die DPAPI-Prüfungen laufen unter Windows mit
+`dotnet run --project Tests/MailCredentials/MailCredentialChecks.csproj`
+und im Windows-CI-Build. Unter Linux wird nur kompiliert; DPAPI benötigt Windows.
+
 ## Spracheinstellung
 
 ATIS speichert die im Menü oder in den Einstellungen gewählte Sprache für den
