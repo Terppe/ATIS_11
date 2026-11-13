@@ -5610,4 +5610,10 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Passwort vergessen</value>
   </data>
+  <data name="Home_Websites_Invalid" xml:space="preserve">
+    <value>Ungültige Webseiten-Einträge: {0}. Bitte die Datei {1} prüfen.</value>
+  </data>
+  <data name="Home_Websites_LoadError" xml:space="preserve">
+    <value>Webseiten konnten nicht geladen werden. Datei: {0}. Fehler: {1}</value>
+  </data>
 </root>
