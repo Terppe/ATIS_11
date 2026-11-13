@@ -234,16 +234,15 @@ public sealed partial class MainPage : Page
     }
     private void ChangeLanguageLoginReset()
     {
-        if (Thread.CurrentPrincipal is not CustomPrincipal customPrincipal)
-        {
-            return;
-        }
-
-        var name = customPrincipal.Identity.Email;
-        if (name != "")
+        var name = App.GetService<IUserService>().CurrentUser;
+        if (!string.IsNullOrWhiteSpace(name))
         {
             TbUser.Foreground = new SolidColorBrush(Colors.Green);
             TbUser.Text = name + " " + Localizer.Get().GetLocalizedString("LoggedIn");
+        }
+        else
+        {
+            SetLoggedOutStatus();
         }
     }
 
@@ -284,7 +283,7 @@ public sealed partial class MainPage : Page
         }
         else
         {
-            TbUser.Text = loc.GetLocalizedString("Status_No_User_Logged_In");
+            SetLoggedOutStatus();
         }
     }
     private async Task Register()
@@ -465,9 +464,15 @@ public sealed partial class MainPage : Page
         UpdateUserAreaVisibility();
         EnforceCurrentPagePermission();
 
-        TbUser.Text = "keiner angemeldet";
+        SetLoggedOutStatus();
 
         return Task.CompletedTask;
+    }
+
+    private void SetLoggedOutStatus()
+    {
+        TbUser.Foreground = new SolidColorBrush(Colors.Red);
+        TbUser.Text = Localizer.Get().GetLocalizedString("Status_No_User_Logged_In");
     }
 
     private void ControlsSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
