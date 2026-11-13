@@ -1,5 +1,15 @@
 # ATIS - V7.8
 
+## Bereinigte App.config
+
+Die ungenutzten Schlüssel `HomeHeight`, `Language`, `ImapHost`, `ImapPort`,
+`BackgroundBrush`, `Database`, `PdfPath`, `Updated` und `CheckedUpdate` wurden
+entfernt. Der Datenbankname ist derzeit im Verbindungscode fest als `ATIS34`
+eingetragen; der entfernte Config-Wert hat ihn nicht gesteuert.
+`ReportWidth` und `ReportHeight` bleiben erhalten, weil der vorhandene
+Screen-Helper sie noch liest, auch wenn aktuell kein Aufrufer gefunden wurde.
+Aktive SMTP-, PDF-, Anzeige- und Fensterstandardwerte bleiben unverändert.
+
 ## Mail-Zugangsdaten
 
 Das SMTP-Passwort für „Passwort vergessen“ wird unter
@@ -80,10 +90,11 @@ Ungültige Einträge werden auf der HomePage gemeldet und übersprungen; eine
 ungültige JSON-Datei wird gemeldet und nicht ersetzt. Nach dem Bearbeiten die
 HomePage erneut öffnen oder ATIS neu starten.
 
-Die bisherigen Website-Einträge in `App.config` bleiben vorläufig als alte
-Standardwerte erhalten, werden von der HomePage aber nicht mehr gelesen.
-Individuell angepasste Adressen daraus müssen einmal in die Benutzerdatei
-übernommen werden.
+Die bisherigen Website-Einträge wurden aus `App.config` entfernt, da die
+HomePage ausschließlich `websites.json` liest. Vorhandene Benutzerdateien
+werden dadurch nicht verändert. Individuell angepasste alte Adressen müssen
+bei Bedarf aus einer bisherigen Konfiguration in die Benutzerdatei übernommen
+werden.
 
 Die dateibasierten Prüfungen können mit
 `dotnet run --project Tests/WebsiteSettings/WebsiteSettingsChecks.csproj`
