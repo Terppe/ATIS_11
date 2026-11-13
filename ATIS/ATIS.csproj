@@ -63,6 +63,7 @@
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
 		<PackageReference Include="QuestPDF" Version="2026.9.1" />
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="11.0.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
 	</ItemGroup>
 

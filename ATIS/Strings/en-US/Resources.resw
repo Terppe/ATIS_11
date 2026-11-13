@@ -5616,4 +5616,31 @@
   <data name="Home_Websites_LoadError" xml:space="preserve">
     <value>Websites could not be loaded. File: {0}. Error: {1}</value>
   </data>
+  <data name="MailCredentials_Title.Text" xml:space="preserve">
+    <value>Mail credentials</value>
+  </data>
+  <data name="MailCredentials_Description.Text" xml:space="preserve">
+    <value>SMTP password for password resets. Windows DPAPI protects it for this Windows user on this computer. The stored password is never displayed.</value>
+  </data>
+  <data name="MailCredentials_Password.Header" xml:space="preserve">
+    <value>New SMTP password</value>
+  </data>
+  <data name="MailCredentials_Save.Content" xml:space="preserve">
+    <value>Save password securely</value>
+  </data>
+  <data name="MailCredentials_Missing" xml:space="preserve">
+    <value>No SMTP password stored. Sending password reset emails is not configured yet.</value>
+  </data>
+  <data name="MailCredentials_Ready" xml:space="preserve">
+    <value>SMTP password stored locally using Windows DPAPI.</value>
+  </data>
+  <data name="MailCredentials_ReadyLegacy" xml:space="preserve">
+    <value>SMTP password stored locally using Windows DPAPI. Old mail password entries remain in App.config; remove them there and from local build/publish copies.</value>
+  </data>
+  <data name="MailCredentials_Empty" xml:space="preserve">
+    <value>Please enter a non-empty SMTP password.</value>
+  </data>
+  <data name="MailCredentials_Error" xml:space="preserve">
+    <value>Mail credentials could not be loaded or saved. Check file access and the Windows user, or save a new SMTP password.</value>
+  </data>
 </root>

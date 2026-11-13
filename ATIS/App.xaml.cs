@@ -142,6 +142,7 @@ public partial class App : Application
     {
         // Sprache und Protokollierung initialisieren
         InitializeLogging();
+        InitializeMailCredentials();
         ApplyCulture();
         await InitializeLocalizer();
 
@@ -331,6 +332,25 @@ public partial class App : Application
                     "Bitte prüfen Sie den SQL-Server-Dienst und die Berechtigungen.",
                 CloseButtonText = "Zurück zur Auswahl"
             }.ShowAsync();
+        }
+    }
+
+    private static void InitializeMailCredentials()
+    {
+        try
+        {
+            var migrated = new MailCredentialStore().MigrateLegacyValues(
+                ConfigurationManager.AppSettings["EncryptMailAccountPassword"],
+                ConfigurationManager.AppSettings["CryptMailPassword"]);
+            if (migrated)
+                SimpleLog.Info("Mail-Zugangsdaten wurden lokal mit Windows-DPAPI gesichert. Alte Einträge bitte aus App.config entfernen.");
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
+                                       or System.Security.SecurityException
+                                       or System.Security.Cryptography.CryptographicException
+                                       or FormatException or InvalidOperationException)
+        {
+            SimpleLog.Error("Mail-Zugangsdaten konnten nicht geladen oder übernommen werden. Bitte das SMTP-Passwort in den Einstellungen neu speichern.");
         }
     }
 

@@ -8,6 +8,7 @@ using ATIS.Models;
 using ATIS.Services;
 using Microsoft.Data.SqlClient;
 using Windows.ApplicationModel.DataTransfer;
+using WinUI3Localizer;
 
 namespace ATIS.Views.Settings;
 
@@ -27,6 +28,77 @@ public sealed partial class SettingsPage : Page
         TestConnectionButton.IsEnabled = true;
         SaveServerButton.Click += SaveServerButton_Click;
         LoadUpdateSettings();
+        LoadMailCredentialStatus();
+    }
+
+    private void LoadMailCredentialStatus()
+    {
+        try
+        {
+            var store = new MailCredentialStore();
+            store.MigrateLegacyValues(
+                ConfigurationManager.AppSettings["EncryptMailAccountPassword"],
+                ConfigurationManager.AppSettings["CryptMailPassword"]);
+            if (store.HasPassword)
+            {
+                _ = store.LoadPassword();
+                ShowMailCredentialStatus();
+            }
+            else
+            {
+                MailCredentialStatusText.Text =
+                    Localizer.Get().GetLocalizedString("MailCredentials_Missing");
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
+                                       or System.Security.SecurityException
+                                       or System.Security.Cryptography.CryptographicException
+                                       or FormatException or InvalidOperationException)
+        {
+            SimpleLog.Error("Mail-Zugangsdaten nicht verfügbar. Bitte das SMTP-Passwort in den Einstellungen neu speichern.");
+            MailCredentialStatusText.Text =
+                Localizer.Get().GetLocalizedString("MailCredentials_Error");
+        }
+    }
+
+    private void SaveMailPasswordButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (!Permission.HasAccess("Administrator"))
+            throw new UnauthorizedAccessException("Nur Administratoren dürfen das SMTP-Passwort ändern.");
+
+        if (string.IsNullOrWhiteSpace(MailPasswordBox.Password))
+        {
+            MailCredentialStatusText.Text =
+                Localizer.Get().GetLocalizedString("MailCredentials_Empty");
+            return;
+        }
+
+        try
+        {
+            new MailCredentialStore().SavePassword(MailPasswordBox.Password);
+            LoadMailCredentialStatus();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException
+                                       or System.Security.SecurityException
+                                       or System.Security.Cryptography.CryptographicException)
+        {
+            SimpleLog.Error("SMTP-Passwort konnte nicht gespeichert werden.");
+            MailCredentialStatusText.Text =
+                Localizer.Get().GetLocalizedString("MailCredentials_Error");
+        }
+        finally
+        {
+            MailPasswordBox.Password = string.Empty;
+        }
+    }
+
+    private void ShowMailCredentialStatus()
+    {
+        var hasLegacyValues =
+            !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["EncryptMailAccountPassword"]) ||
+            !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["CryptMailPassword"]);
+        MailCredentialStatusText.Text = Localizer.Get().GetLocalizedString(
+            hasLegacyValues ? "MailCredentials_ReadyLegacy" : "MailCredentials_Ready");
     }
 
     private void LoadCurrentValues()

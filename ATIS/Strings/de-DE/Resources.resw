@@ -5616,4 +5616,31 @@
   <data name="Home_Websites_LoadError" xml:space="preserve">
     <value>Webseiten konnten nicht geladen werden. Datei: {0}. Fehler: {1}</value>
   </data>
+  <data name="MailCredentials_Title.Text" xml:space="preserve">
+    <value>Mail-Zugangsdaten</value>
+  </data>
+  <data name="MailCredentials_Description.Text" xml:space="preserve">
+    <value>SMTP-Passwort für „Passwort vergessen“. Windows-DPAPI schützt es für diesen Windows-Benutzer auf diesem Rechner. Das gespeicherte Passwort wird nicht angezeigt.</value>
+  </data>
+  <data name="MailCredentials_Password.Header" xml:space="preserve">
+    <value>Neues SMTP-Passwort</value>
+  </data>
+  <data name="MailCredentials_Save.Content" xml:space="preserve">
+    <value>Passwort sicher speichern</value>
+  </data>
+  <data name="MailCredentials_Missing" xml:space="preserve">
+    <value>Kein SMTP-Passwort gespeichert. Der Versand zum Zurücksetzen von Passwörtern ist noch nicht eingerichtet.</value>
+  </data>
+  <data name="MailCredentials_Ready" xml:space="preserve">
+    <value>SMTP-Passwort lokal mit Windows-DPAPI gespeichert.</value>
+  </data>
+  <data name="MailCredentials_ReadyLegacy" xml:space="preserve">
+    <value>SMTP-Passwort lokal mit Windows-DPAPI gespeichert. Alte Mail-Passworteinträge sind noch in App.config vorhanden und müssen dort sowie in lokalen Build-/Publish-Kopien entfernt werden.</value>
+  </data>
+  <data name="MailCredentials_Empty" xml:space="preserve">
+    <value>Bitte ein nicht leeres SMTP-Passwort eingeben.</value>
+  </data>
+  <data name="MailCredentials_Error" xml:space="preserve">
+    <value>Mail-Zugangsdaten konnten nicht geladen oder gespeichert werden. Bitte Dateizugriff und Windows-Benutzer prüfen oder ein neues SMTP-Passwort speichern.</value>
+  </data>
 </root>
