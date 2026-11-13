@@ -1431,3 +1431,5 @@ Push	Diese Commits auf denselben Branch bei GitHub übertragen
 Pull	Änderungen von GitHub auf deinen lokalen Branch holen
 Merge	Änderungen eines Branches in einen anderen übernehmen
 Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise im Branch ATIS_11 arbeitest, aktualisiert Push normalerweise den GitHub-Branch ATIS_11 – nicht master.
+----------------------------------------
+13.11.2026 11:30 Uhr websites.json anfangen
