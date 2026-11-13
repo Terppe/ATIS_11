@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using ATIS.Helpers;
@@ -217,23 +216,17 @@ public sealed partial class MainPage : Page
 
 
     //--------------------------------------------------------------------
-    private void MenuFlyoutLanguage_Click(object sender, RoutedEventArgs e)
+    private async void MenuFlyoutLanguage_Click(object sender, RoutedEventArgs e)
     {
         if (sender is MenuFlyoutItem item && item.Tag is string languageCode)
         {
-            ReloadLanguage(languageCode);
+            await ReloadLanguage(languageCode);
         }
     }
-    private void ReloadLanguage(string languageOverride)
+    private async Task ReloadLanguage(string languageOverride)
     {
-        // 1. Globale Culture setzen
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(languageOverride);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(languageOverride);
-
-        // 2. Dein Localizer
-        Localizer.Get().SetLanguage(languageOverride);
-        App.Cult = languageOverride;
-
+        if (!await App.SetCultureAsync(languageOverride))
+            return;
         App.RaiseLanguageChanged(languageOverride); // alle VMs informieren
 
         // 3. UI neu laden color in header
@@ -476,15 +469,6 @@ public sealed partial class MainPage : Page
 
         return Task.CompletedTask;
     }
-
-    private static void SaveCulture(string cult)
-    {
-        var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-        config.AppSettings.Settings["Culture"].Value = CultureInfo.GetCultureInfoByIetfLanguageTag(cult).ToString();
-        config.Save(ConfigurationSaveMode.Modified);
-        ConfigurationManager.RefreshSection("AppSettings");
-    }
-
 
     private void ControlsSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {

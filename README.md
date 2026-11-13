@@ -1,5 +1,26 @@
 # ATIS - V7.8
 
+## Spracheinstellung
+
+ATIS speichert die im Menü oder in den Einstellungen gewählte Sprache für den
+Windows-Benutzer in `%LOCALAPPDATA%\ATIS\settings.json` unter `Culture`. Die
+Wahl bleibt beim Neustart erhalten. Bestehende Fenstereinstellungen bleiben
+in derselben Datei erhalten.
+
+Fehlt `Culture` in der JSON-Datei, übernimmt ATIS beim ersten Start einmal den
+bisherigen Wert aus `App.config`. Fehlt auch dieser, wird `de-DE` verwendet.
+Danach hat der JSON-Wert Vorrang. Die Datei kann bei geschlossenem ATIS
+bearbeitet werden, z. B. `"Culture": "en-US"`; vorhandene Einträge und eine
+gültige JSON-Struktur müssen erhalten bleiben.
+Derzeit enthält ATIS Übersetzungsdateien für Deutsch und Englisch. Für andere
+eingestellte Kulturen bleiben beim Wechsel zunächst die bisherigen Texte
+sichtbar; beim Neustart werden deutsche Texte angezeigt. Die fehlenden
+Übersetzungen werden im Protokoll vermerkt.
+
+Die dateibasierten Prüfungen können mit
+`dotnet run --project Tests/CultureSettings/CultureSettingsChecks.csproj`
+ausgeführt werden.
+
 ## Webseiten auf der HomePage
 
 Beim ersten Laden der HomePage kopiert ATIS die mitgelieferte Vorlage

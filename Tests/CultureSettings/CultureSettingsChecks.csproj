@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework Condition="'$(TestTargetFramework)' == ''">net11.0</TargetFramework>
+    <TargetFramework Condition="'$(TestTargetFramework)' != ''">$(TestTargetFramework)</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
+    <Compile Include="../../ATIS/Common/AppConfig.cs" Link="AppConfig.cs" />
+    <Compile Include="../../ATIS/Common/CultureSettings.cs" Link="CultureSettings.cs" />
+  </ItemGroup>
+</Project>
