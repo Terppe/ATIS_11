@@ -22,7 +22,7 @@
                 Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Password" />
-            <PasswordBox x:Name="PwdBox" />
+            <PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />
 
             <Button
                 loc:Uids.Uid="Button_Login"

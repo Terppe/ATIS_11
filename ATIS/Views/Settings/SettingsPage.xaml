@@ -79,6 +79,7 @@
                 <PasswordBox
                     x:Name="MailPasswordBox"
                     loc:Uids.Uid="MailCredentials_Password"
+                    Style="{StaticResource AtisPasswordBox}"
                     MinWidth="240"
                     MaxWidth="400"
                     HorizontalAlignment="Left"
