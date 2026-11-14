@@ -130,9 +130,10 @@
     <!--  Secondary Button  -->
     <!--  =========================================================  -->
 
-    <Style  x:Key="AtisSecondaryButton"
-            BasedOn="{StaticResource AtisSecondaryBase}"
-            TargetType="Button">
+    <Style
+        x:Key="AtisSecondaryButton"
+        BasedOn="{StaticResource AtisSecondaryBase}"
+        TargetType="Button">
 
         <Setter Property="Background" Value="{ThemeResource AtisToggleBackgroundBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource AtisToggleForegroundBrush}" />
@@ -196,9 +197,10 @@
     <!--  Secondary Button Focus  -->
     <!--  =========================================================  -->
 
-    <Style x:Key="AtisSecondaryButtonFocus"
-           BasedOn="{StaticResource AtisSecondaryButton}"
-           TargetType="Button">
+    <Style
+        x:Key="AtisSecondaryButtonFocus"
+        BasedOn="{StaticResource AtisSecondaryButton}"
+        TargetType="Button">
         <Setter Property="UseSystemFocusVisuals" Value="False" />
         <Setter Property="Template">
             <Setter.Value>

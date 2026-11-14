@@ -95,8 +95,7 @@
                     loc:Uids.Uid="MailCredentials_Password"
                     Style="{StaticResource AtisPasswordBox}" />
 
-                <Button loc:Uids.Uid="MailCredentials_Save"
-                        Click="SaveMailPasswordButton_Click" />
+                <Button loc:Uids.Uid="MailCredentials_Save" Click="SaveMailPasswordButton_Click" />
                 <TextBlock x:Name="MailCredentialStatusText" TextWrapping="Wrap" />
             </StackPanel>
 

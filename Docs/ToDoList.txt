@@ -1433,3 +1433,5 @@ Merge	Änderungen eines Branches in einen anderen übernehmen
 Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise im Branch ATIS_11 arbeitest, aktualisiert Push normalerweise den GitHub-Branch ATIS_11 – nicht master.
 ----------------------------------------
 13.11.2026 11:30 Uhr websites.json anfangen
+----------------------------------------
+14.11.2026 11:30 Uhr Letzten texte in Resources.resw und PasswordBox und Button mit Fokus.
