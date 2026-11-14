@@ -8,6 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/PasswordBoxFocusResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid
         Width="420"
         MinHeight="320"
@@ -22,7 +30,7 @@
                 Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Password" />
-            <PasswordBox x:Name="PwdBox" />
+            <PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />
 
             <Button
                 loc:Uids.Uid="Button_Login"

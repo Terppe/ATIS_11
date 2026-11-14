@@ -5,6 +5,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:loc="using:WinUI3Localizer">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/PasswordBoxFocusResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid
         Width="420"
         MinHeight="380"
@@ -19,10 +27,10 @@
                 Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Password" />
-            <PasswordBox x:Name="PwdBox" />
+            <PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Confirm_Password" />
-            <PasswordBox x:Name="ConfirmPwdBox" />
+            <PasswordBox x:Name="ConfirmPwdBox" Style="{StaticResource AtisPasswordBox}" />
 
             <Button
                 loc:Uids.Uid="Button_Register"

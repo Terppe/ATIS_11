@@ -6,6 +6,14 @@
     xmlns:loc="using:WinUI3Localizer"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/PasswordBoxFocusResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel
             MaxWidth="850"
@@ -79,10 +87,10 @@
                 <PasswordBox
                     x:Name="MailPasswordBox"
                     loc:Uids.Uid="MailCredentials_Password"
+                    Style="{StaticResource AtisPasswordBox}"
                     MinWidth="240"
                     MaxWidth="400"
-                    HorizontalAlignment="Left"
-                    PasswordRevealMode="Hidden" />
+                    HorizontalAlignment="Left" />
                 <Button
                     loc:Uids.Uid="MailCredentials_Save"
                     Click="SaveMailPasswordButton_Click" />
