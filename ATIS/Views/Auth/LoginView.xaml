@@ -30,6 +30,8 @@
                 FocusVisualPrimaryBrush="{ThemeResource LoginButtonFocusBrush}"
                 FocusVisualPrimaryThickness="2"
                 FocusVisualSecondaryThickness="0"
+                UseSystemFocusVisuals="True"
+                Style="{StaticResource AtisSecondaryButton}"
                 IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}">
                 <Button.Resources>
                     <ResourceDictionary>
