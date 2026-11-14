@@ -90,8 +90,7 @@
                     Style="{StaticResource AtisPasswordBox}"
                     MinWidth="240"
                     MaxWidth="400"
-                    HorizontalAlignment="Left"
-                    PasswordRevealMode="Hidden" />
+                    HorizontalAlignment="Left" />
                 <Button
                     loc:Uids.Uid="MailCredentials_Save"
                     Click="SaveMailPasswordButton_Click" />

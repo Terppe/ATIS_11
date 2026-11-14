@@ -155,6 +155,7 @@
         <Setter Property="MinHeight" Value="32" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="PasswordRevealMode" Value="Hidden" />
     </Style>
 
     <Style
@@ -712,4 +713,3 @@
     </Style>-->
 
 </ResourceDictionary>
-
