@@ -11,10 +11,7 @@ namespace ATIS.Views.Search.Pdf.Tbl03Regnums;
 
 public class Tbl03RegnumsListDocument : IDocument
 {
-    public Tbl03RegnumsPdfModel Model
-    {
-        get;
-    }
+    public Tbl03RegnumsPdfModel Model { get; }
 
     public ObservableCollection<Tbl03Regnum> ViewModelRegnumsCollection { get; }
 

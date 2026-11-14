@@ -55,21 +55,19 @@ public sealed partial class SettingsPage : Page
                                        or System.Security.Cryptography.CryptographicException
                                        or FormatException or InvalidOperationException)
         {
-            SimpleLog.Error("Mail-Zugangsdaten nicht verfügbar. Bitte das SMTP-Passwort in den Einstellungen neu speichern.");
-            MailCredentialStatusText.Text =
-                Localizer.Get().GetLocalizedString("MailCredentials_Error");
+            SimpleLog.Error("mail-data to open not available. Please save the SMTP password in the settings.");
+            MailCredentialStatusText.Text = Localizer.Get().GetLocalizedString("MailCredentials_Error");
         }
     }
 
     private void SaveMailPasswordButton_Click(object sender, RoutedEventArgs e)
     {
         if (!Permission.HasAccess("Administrator"))
-            throw new UnauthorizedAccessException("Nur Administratoren dürfen das SMTP-Passwort ändern.");
+            throw new UnauthorizedAccessException("Only administrators are allowed to change the SMTP password.");
 
         if (string.IsNullOrWhiteSpace(MailPasswordBox.Password))
         {
-            MailCredentialStatusText.Text =
-                Localizer.Get().GetLocalizedString("MailCredentials_Empty");
+            MailCredentialStatusText.Text = Localizer.Get().GetLocalizedString("MailCredentials_Empty");
             return;
         }
 
@@ -82,9 +80,8 @@ public sealed partial class SettingsPage : Page
                                        or System.Security.SecurityException
                                        or System.Security.Cryptography.CryptographicException)
         {
-            SimpleLog.Error("SMTP-Passwort konnte nicht gespeichert werden.");
-            MailCredentialStatusText.Text =
-                Localizer.Get().GetLocalizedString("MailCredentials_Error");
+            SimpleLog.Error("SMTP password could not be saved.");
+            MailCredentialStatusText.Text = Localizer.Get().GetLocalizedString("MailCredentials_Error");
         }
         finally
         {
@@ -124,8 +121,7 @@ public sealed partial class SettingsPage : Page
         SelectByTag(LanguageBox, CultureInfo.CurrentUICulture.Name);
 
         var root = App.MainWindow?.Content as FrameworkElement
-                   ?? throw new InvalidOperationException(
-                       "Das Hauptfenster ist nicht initialisiert.");
+                   ?? throw new InvalidOperationException("The main window is not initialized.");
 
         SelectByTag(ThemeBox, root.RequestedTheme.ToString());
 
@@ -172,14 +168,14 @@ public sealed partial class SettingsPage : Page
         }
 
         var root = App.MainWindow?.Content as FrameworkElement
-                   ?? throw new InvalidOperationException("Das Hauptfenster ist nicht initialisiert.");
+                   ?? throw new InvalidOperationException("The main window is not initialized.");
 
         root.RequestedTheme = theme switch
         {
             "Default" => ElementTheme.Default,
             "Light" => ElementTheme.Light,
             "Dark" => ElementTheme.Dark,
-            _ => throw new InvalidOperationException($"Unbekanntes App-Design: {theme}")
+            _ => throw new InvalidOperationException($"Unknown app theme: {theme}")
         };
     }
 
@@ -191,14 +187,14 @@ public sealed partial class SettingsPage : Page
         if (ServerBox.SelectedItem is not string server ||
             string.IsNullOrWhiteSpace(server))
         {
-            ConnectionStatusText.Text = "Bitte einen SQL-Server eingeben.";
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("Select_Server");
             ConnectionStatusText.Visibility = Visibility.Visible;
             return;
         }
 
         TestConnectionButton.IsEnabled = false;
         ServerBox.IsEnabled = false;
-        ConnectionStatusText.Text = "Verbindung wird getestet ...";
+        ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("Testing_Connection");
         ConnectionStatusText.Visibility = Visibility.Visible;
 
         try
@@ -213,47 +209,41 @@ public sealed partial class SettingsPage : Page
             await connection.OpenAsync();
 
             await using var command = connection.CreateCommand();
-            command.CommandText =
-                "SELECT CONVERT(nvarchar(128), SERVERPROPERTY('ServerName')), DB_NAME();";
+            command.CommandText = "SELECT CONVERT(nvarchar(128), SERVERPROPERTY('ServerName')), DB_NAME();";
             command.CommandTimeout = 5;
 
             await using var reader = await command.ExecuteReaderAsync();
             if (!await reader.ReadAsync())
             {
-                throw new InvalidOperationException(
-                    "Keine Verbindungsinformationen erhalten.");
+                throw new InvalidOperationException("No connection information received.");
             }
 
             var actualServer = reader.GetString(0);
             var actualDatabase = reader.GetString(1);
 
-            SimpleLog.Info(
-                $"Auswahl: {server}; verbunden: {actualServer}; Datenbank: {actualDatabase}");
+            SimpleLog.Info($"Selection: {server}; connected: {actualServer}; Database: {actualDatabase}");
 
             if (!string.Equals(actualDatabase, "ATIS34",
                     StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException(
-                    $"Falsche Datenbank: {actualDatabase}");
+                throw new InvalidOperationException($"Wrong database: {actualDatabase}");
             }
 
             _testedServer = server;
             SaveServerButton.IsEnabled = true;
 
-            ConnectionStatusText.Text = $"Verbindung erfolgreich: {actualServer} / {actualDatabase}";
+            ConnectionStatusText.Text = $"Connection successful: {actualServer} / {actualDatabase}";
         }
         catch (SqlException ex) when (ex.Number == 4060)
         {
-            SimpleLog.Error($"ATIS34 auf {server} nicht zugänglich: {ex.Message}");
-            ConnectionStatusText.Text =
-                "ATIS34 fehlt auf diesem SQL-Server oder die Zugriffsberechtigung fehlt.";
+            SimpleLog.Error($"ATIS34 on {server} not accessible: {ex.Message}");
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("ATIS34_Not_Accessible");
         }
         catch (Exception ex) when (ex is SqlException or InvalidOperationException
                                        or ArgumentException or ConfigurationErrorsException)
         {
-            SimpleLog.Error($"SQL-Verbindungstest fehlgeschlagen: {ex.Message}");
-            ConnectionStatusText.Text =
-                "Verbindung fehlgeschlagen. Details stehen im ATIS-Protokoll.";
+            SimpleLog.Error($"SQL connection test failed: {ex.Message}");
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("Connection_Failed");
         }
         finally
         {
@@ -272,8 +262,7 @@ public sealed partial class SettingsPage : Page
                 StringComparison.OrdinalIgnoreCase))
         {
             SaveServerButton.IsEnabled = false;
-            ConnectionStatusText.Text =
-                "Bitte zuerst die ausgewählte Verbindung erfolgreich testen.";
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("Please_Test_Connection_First");
             return;
         }
 
@@ -286,16 +275,15 @@ public sealed partial class SettingsPage : Page
             RefreshRestartNotice();
 
             SaveServerButton.IsEnabled = false;
-            ConnectionStatusText.Text = "SQL-Server gespeichert.";
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("SQL_Server_Saved");
             ConnectionStatusText.Visibility = Visibility.Visible;
         }
         catch (Exception ex) when (ex is System.IO.IOException
                                        or UnauthorizedAccessException
                                        or System.Security.SecurityException)
         {
-            SimpleLog.Error($"SQL-Server konnte nicht gespeichert werden: {ex.Message}");
-            ConnectionStatusText.Text =
-                "Speichern fehlgeschlagen. Details stehen im ATIS-Protokoll.";
+            SimpleLog.Error($"SQL-Server could not be saved: {ex.Message}");
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("SQL_Server_Save_Failed");
         }
     }
     private void ServerBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -333,11 +321,9 @@ public sealed partial class SettingsPage : Page
                         DbServerSettings.NormalizeDataSource(server),
                         DbServerSettings.NormalizeDataSource(savedServer),
                         StringComparison.OrdinalIgnoreCase));
-
             if (servers.Count == 0)
             {
-                ConnectionStatusText.Text =
-                    "Auf diesem Rechner wurden keine SQL-Server-Instanzen gefunden.";
+                ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("No_SQL_Server_Instances_Found");
                 ConnectionStatusText.Visibility = Visibility.Visible;
             }
             else
@@ -349,10 +335,8 @@ public sealed partial class SettingsPage : Page
                                        or UnauthorizedAccessException
                                        or System.Security.SecurityException)
         {
-            SimpleLog.Error(
-                $"Installierte SQL-Server konnten nicht ermittelt werden: {ex.Message}");
-            ConnectionStatusText.Text =
-                "Die installierten SQL-Server konnten nicht ermittelt werden.";
+            SimpleLog.Error($"Installed SQL Server instances could not be determined: {ex.Message}");
+            ConnectionStatusText.Text = Localizer.Get().GetLocalizedString("Installed_SQL_Server_Instances_Could_Not_Be_Determined");
             ConnectionStatusText.Visibility = Visibility.Visible;
         }
     }
@@ -370,9 +354,8 @@ public sealed partial class SettingsPage : Page
                                        or JsonException)
         {
             AutomaticUpdates.IsEnabled = false;
-            SimpleLog.Error($"Update-Einstellungen nicht lesbar: {ex.Message}");
-            UpdateStatusText.Text =
-                "Update-Einstellungen konnten nicht geladen werden.";
+            SimpleLog.Error($"Update settings could not be read: {ex.Message}");
+            UpdateStatusText.Text = Localizer.Get().GetLocalizedString("Update_Settings_Could_Not_Be_Loaded");
             UpdateStatusText.Visibility = Visibility.Visible;
         }
     }
@@ -402,9 +385,8 @@ public sealed partial class SettingsPage : Page
                 _restoringUpdateSetting = false;
             }
 
-            SimpleLog.Error($"Update-Einstellungen nicht gespeichert: {ex.Message}");
-            UpdateStatusText.Text =
-                "Die Einstellung konnte nicht gespeichert werden.";
+            SimpleLog.Error($"Update settings could not be saved: {ex.Message}");
+            UpdateStatusText.Text = Localizer.Get().GetLocalizedString("Update_Settings_Could_Not_Be_Saved");
             UpdateStatusText.Visibility = Visibility.Visible;
         }
     }
@@ -413,7 +395,7 @@ public sealed partial class SettingsPage : Page
     {
         if (App.MainPageInstance is not { } mainPage)
         {
-            UpdateStatusText.Text = "Die Hauptansicht ist nicht verfügbar.";
+            UpdateStatusText.Text = Localizer.Get().GetLocalizedString("Main_View_Is_Not_Available");
             UpdateStatusText.Visibility = Visibility.Visible;
             return;
         }
@@ -441,26 +423,22 @@ public sealed partial class SettingsPage : Page
 
             if (!SimpleLog.LogFileExists(date))
             {
-                DiagnosticsStatusText.Text =
-                    "Für heute ist keine Protokolldatei vorhanden.";
+                DiagnosticsStatusText.Text = Localizer.Get().GetLocalizedString("No_Log_File_Is_Available_For_Today");
                 return;
             }
 
             SimpleLog.ShowLogFile(date);
-            DiagnosticsStatusText.Text =
-                "Das Öffnen des aktuellen Protokolls wurde angefordert.";
+            DiagnosticsStatusText.Text = Localizer.Get().GetLocalizedString("Open_Log_File_Requested");
         }
         catch (Exception ex) when (
             ex is IOException or UnauthorizedAccessException or
                 System.Security.SecurityException or
                 System.ComponentModel.Win32Exception or InvalidOperationException)
         {
-            SimpleLog.Error("Protokolldatei konnte nicht geöffnet werden.");
+            SimpleLog.Error("The log file could not be opened.");
             SimpleLog.Log(ex);
 
-            DiagnosticsStatusText.Text =
-                "Das Protokoll konnte nicht geöffnet werden. " +
-                "Bitte prüfen Sie das Standardprogramm für Protokolldateien.";
+            DiagnosticsStatusText.Text = Localizer.Get().GetLocalizedString("Log_File_Could_Not_Be_Opened");
         }
     }
     private void CopyDiagnosticsButton_Click(object sender, RoutedEventArgs e)
@@ -487,36 +465,33 @@ public sealed partial class SettingsPage : Page
 
             var text = string.Join(Environment.NewLine, new[]
             {
-            "ATIS – Diagnoseinformationen",
-            $"Zeitpunkt: {DateTimeOffset.Now:yyyy-MM-dd HH:mm:ss zzz}",
-            $"ATIS-Version: {version}",
-            $"Betriebssystem: {RuntimeInformation.OSDescription}",
-            $"Prozessarchitektur: {RuntimeInformation.ProcessArchitecture}",
+            "ATIS – Diagnostic Information",
+            $"Timestamp: {DateTimeOffset.Now:yyyy-MM-dd HH:mm:ss zzz}",
+            $"ATIS Version: {version}",
+            $"Operating System: {RuntimeInformation.OSDescription}",
+            $"Process Architecture: {RuntimeInformation.ProcessArchitecture}",
             $".NET: {RuntimeInformation.FrameworkDescription}",
-            $"Aktiver SQL-Server: {activeServer ?? "Nicht festgelegt"}",
-            $"Gespeicherter SQL-Server: {savedServer ?? "Nicht festgelegt"}",
-            "Datenbank: ATIS34",
-            $"Serverwechsel nach Neustart: {(restartRequired ? "Ja" : "Nein")}",
-            "Verbindungsstatus: Nicht geprüft"
+            $"Active SQL Server: {activeServer ?? "Not specified"}",
+            $"Saved SQL Server: {savedServer ?? "Not specified"}",
+            "Database: ATIS34",
+            $"Server switch after restart: {(restartRequired ? "Yes" : "No")}",
+            "Connection status: Not checked"
         });
-
             var package = new DataPackage();
             package.SetText(text);
             Clipboard.SetContent(package);
 
-            DiagnosticsStatusText.Text =
-                "Diagnoseinformationen kopiert. Sie können diese jetzt beispielsweise in eine E-Mail einfügen.";
+            DiagnosticsStatusText.Text = Localizer.Get().GetLocalizedString("Diagnostic_Information_Copied");
         }
         catch (Exception ex) when (
             ex is IOException or UnauthorizedAccessException or
                 System.Security.SecurityException or JsonException or
                 COMException or InvalidOperationException or ArgumentException)
         {
-            SimpleLog.Error("Diagnoseinformationen kopieren fehlgeschlagen.");
+            SimpleLog.Error("Failed to copy diagnostic information.");
             SimpleLog.Log(ex);
 
-            DiagnosticsStatusText.Text =
-                "Diagnoseinformationen konnten nicht kopiert werden. Details stehen im ATIS-Protokoll.";
+            DiagnosticsStatusText.Text = Localizer.Get().GetLocalizedString("Diagnostic_Information_Could_Not_Be_Copied");
         }
     }
 }

@@ -8,6 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/PasswordBoxFocusResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid
         Width="420"
         MinHeight="320"
@@ -19,15 +27,43 @@
                 InputScope="EmailSmtpAddress"
                 IsSpellCheckEnabled="False"
                 IsTextPredictionEnabled="False"
+                Style="{StaticResource AtisTextBox}"
                 Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Password" />
-            <PasswordBox x:Name="PwdBox" />
+            <!--<PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />-->
+
+            <!--<PasswordBox
+            x:Name="PwdBox"
+            Style="{StaticResource AtisPasswordBox}">
+
+            <PasswordBox.Resources>
+            <SolidColorBrush
+            x:Key="TextControlBackgroundFocused"
+            Color="{ThemeResource SolidBackgroundFillColorSecondary}" />
+            </PasswordBox.Resources>
+            </PasswordBox>-->
+
+            <PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />
 
             <Button
                 loc:Uids.Uid="Button_Login"
                 Click="LoginButton_Click"
-                IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}" />
+                IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+                Style="{StaticResource AtisSecondaryButtonFocus}" />
+
+            <!--<Button
+            loc:Uids.Uid="Button_Login"
+            Click="LoginButton_Click"
+            IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+            Style="{StaticResource AtisSecondaryButton}"
+            UseSystemFocusVisuals="True"
+            FocusVisualPrimaryThickness="2"
+            FocusVisualSecondaryThickness="0">
+            <Button.FocusVisualPrimaryBrush>
+            <SolidColorBrush Color="#0067C0" />
+            </Button.FocusVisualPrimaryBrush>
+            </Button>-->
 
             <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 

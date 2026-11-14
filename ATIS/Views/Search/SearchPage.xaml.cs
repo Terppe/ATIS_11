@@ -23,7 +23,8 @@ public sealed partial class SearchPage : Page
         ("Families", "Family", ["Infrafamily", "Subfamily", "Family", "Superfamily"]),
         ("Order", "Ordo", ["Infraordo", "Subordo", "Ordo", "Legio"]),
         ("Class", "Class", ["Infraclass", "Subclass", "Class", "Superclass"]),
-        ("Phylum + Regnum", "Phylum", ["Subphylum", "Phylum", "Regnum"]),
+        ("Phylum", "Phylum", ["Subphylum", "Phylum"]),
+        ("Regnum", "Regnum", ["Regnum"]),
         ("Disease", "Disease", ["Disease"]),
         ("Food", "Food", ["Food"]),
         ("Miscellaneous", "Miscellaneous", ["Miscellaneous"])
@@ -307,16 +308,7 @@ public sealed partial class SearchPage : Page
         System.Diagnostics.Debug.WriteLine(e.AddedItems[0]?.GetType().FullName);
         ResultList.SelectedItem = null;
     }
-    private static string SanitizeFileNamePart(string? value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-            return "All";
-        var invalidChars = Path.GetInvalidFileNameChars();
-        var cleaned = new string(value
-            .Where(c => !invalidChars.Contains(c))
-            .ToArray());
-        return string.IsNullOrWhiteSpace(cleaned) ? "All" : cleaned.Trim();
-    }
+
     private async void OnPrintListClick(object sender, RoutedEventArgs e)
     {
         var visibleItems = ResultList.Items.Cast<object>().ToList();

@@ -139,9 +139,9 @@ public partial class MainViewModel : ObservableObject
     public async Task InitAsync()
     {
         IsLoading = true;
-        SimpleLog.Info("Prüfe Verbindung zu SQL-Server und Datenbank ATIS34.");
+        SimpleLog.Info("Checking connection to SQL Server and database ATIS34.");
         await CheckSql_DbAsync();
-        SimpleLog.Info("Datenbankprüfung abgeschlossen.");
+        SimpleLog.Info("Check database completed.");
         IsLoading = false;
     }
 
@@ -186,21 +186,21 @@ public partial class MainViewModel : ObservableObject
                     "Server_Exist_Question");
 
                 SimpleLog.Error(
-                    $"Datenbank nicht erreichbar: Server='{db}', Datenbank=ATIS34.");
+                    $"Database not reachable: Server='{db}', Database=ATIS34.");
 
-                DbExist_SQLActiv = $"Datenbank nicht erreichbar: {db}";
+                DbExist_SQLActiv = $"Database not reachable: {db}";
 
                 return false;
             }
             //noch bearbeiten
             var loc1 = Localizer.Get();
             DbExist_SQLActiv = loc1.GetLocalizedString("SQL_Server_Ok") + $" {db}";
-            SimpleLog.Info($"Datenbank erreichbar: Server='{db}', Datenbank=ATIS34.");
+            SimpleLog.Info($"Database reachable: Server='{db}', Database=ATIS34.");
             return true;
         }
         catch (SqlException ex)
         {
-            SimpleLog.Error($"SQL-Verbindungsfehler: Server='{db}', Datenbank=ATIS34.");
+            SimpleLog.Error($"SQL connection error: Server='{db}', Database=ATIS34.");
             SimpleLog.Log(ex);
 
             var loc2 = Localizer.Get();
@@ -238,12 +238,6 @@ public partial class MainViewModel : ObservableObject
         }
         catch (SqlException e)
         {
-            _ = //AllDialogs.ErrorMessageDialogAsync(e.ToString());
-
-            _ = //AllDialogs.NoServerConnectWarnMessageDialogAsync();
-            //MessageBox.Show(CultRes.StringsRes.NoConnectServer, e.Message,
-            //    MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
-
             SimpleLog.Error("Server not connected" + e.Message);
 
             return false;

@@ -117,17 +117,6 @@
                         </Grid>
                     </Border>
 
-                    <!--<StackPanel Spacing="4">
-                    <TextBlock
-                    loc:Uids.Uid="Home_ExploreTitle"
-                    FontSize="23"
-                    FontWeight="SemiBold" />
-                    <TextBlock
-                    loc:Uids.Uid="Home_ExploreSubtitle"
-                    Foreground="{ThemeResource AtisTextCaptionBrush}"
-                    TextWrapping="Wrap" />
-                    </StackPanel>-->
-
                     <Grid
                         ColumnDefinitions="*,*"
                         ColumnSpacing="8"

@@ -5,8 +5,6 @@ using ATIS.Services;
 using ATIS.Views.Report.Pdf.Tbl03Regnums;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using QuestPDF.Fluent;
-using WinUI3Localizer;
 
 //    Tbl03RegnumDetailViewModel Skriptdatum:  24.08.2026  12:32      
 

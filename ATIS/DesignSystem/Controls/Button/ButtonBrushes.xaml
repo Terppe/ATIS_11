@@ -5,6 +5,13 @@
 
     <ResourceDictionary.ThemeDictionaries>
 
+        <!--<ResourceDictionary x:Key="Default">
+        <SolidColorBrush x:Key="AtisButtonFocusBrush" Color="#0067C0" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+        <SolidColorBrush x:Key="AtisButtonFocusBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+        </ResourceDictionary>-->
+
         <!--  =========================================================  -->
         <!--  LIGHT MODE  -->
         <!--  =========================================================  -->
@@ -34,6 +41,8 @@
             <SolidColorBrush x:Key="AtisSubtlePressedBrush" Color="#E5E7EB" />
             <SolidColorBrush x:Key="AtisSubtleDisabledForegroundBrush" Color="#9CA3AF" />
             <SolidColorBrush x:Key="AtisNeutralForegroundBrush" Color="#333333" />
+
+            <SolidColorBrush x:Key="AtisButtonFocusBrush" Color="#0067C0" />
 
         </ResourceDictionary>
 
@@ -65,9 +74,11 @@
             <SolidColorBrush x:Key="AtisSubtlePressedBrush" Color="#374151" />
             <SolidColorBrush x:Key="AtisSubtleDisabledForegroundBrush" Color="#6B7280" />
 
-
-
             <SolidColorBrush x:Key="AtisNeutralForegroundBrush" Color="#E6E6E6" />
+
+
+            <SolidColorBrush x:Key="AtisButtonFocusBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

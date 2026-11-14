@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace ATIS.Services;
 
@@ -35,7 +35,8 @@ public static class WebsiteSettings
                 }
                 catch (IOException) when (File.Exists(filePath))
                 {
-                    // Another process created the file first; never replace it.
+                    throw new ArgumentException("Another process created the file first; never replace it.");
+
                 }
             }
             finally

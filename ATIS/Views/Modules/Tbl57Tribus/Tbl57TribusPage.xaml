@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Page x:Class="ATIS.Views.Modules.Tbl57Tribus.Tbl57TribusPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:components="using:ATIS.DesignSystem.Components"
-      xmlns:layout="using:ATIS.DesignSystem.Layout"
-      xmlns:loc="using:WinUI3Localizer"
-      xmlns:tbl57Tribus="using:ATIS.Views.Modules.Tbl57Tribus"
-      xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
-      xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
-      xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
-      x:Name="RootPage">
+<Page
+    x:Class="ATIS.Views.Modules.Tbl57Tribus.Tbl57TribusPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:components="using:ATIS.DesignSystem.Components"
+    xmlns:layout="using:ATIS.DesignSystem.Layout"
+    xmlns:loc="using:WinUI3Localizer"
+    xmlns:tbl57Tribus="using:ATIS.Views.Modules.Tbl57Tribus"
+    xmlns:tbl60Subtribus="using:ATIS.Views.Modules.Tbl60Subtribus"
+    xmlns:tbl90Reference="using:ATIS.Views.Modules.Tbl90Reference"
+    xmlns:tbl93Comment="using:ATIS.Views.Modules.Tbl93Comment"
+    x:Name="RootPage">
 
     <!--  Tbl57TribusPage Skriptdatum:  18.08.2026  10:32  -->
 
@@ -20,21 +21,25 @@
 
                 <!--  HEADER LEFT  -->
                 <layout:BaseBossPageLayout.Header>
-                    <StackPanel Margin="8,0,0,8"
-                                Orientation="Horizontal"
-                                Spacing="10">
+                    <StackPanel
+                        Margin="8,0,0,8"
+                        Orientation="Horizontal"
+                        Spacing="10">
 
-                        <TextBlock Margin="0,4,0,0"
-                                   loc:Uids.Uid="TextBlock_Tribusses"
-                                   Style="{StaticResource AtisSectionTitleTextStyle}" />
+                        <TextBlock
+                            Margin="0,4,0,0"
+                            loc:Uids.Uid="TextBlock_Tribusses"
+                            Style="{StaticResource AtisSectionTitleTextStyle}" />
 
-                        <TextBlock Margin="0,12,0,0"
-                                   loc:Uids.Uid="TextBlock_DataSetCount"
-                                   Style="{StaticResource AtisBodyTextStyle}" />
+                        <TextBlock
+                            Margin="0,12,0,0"
+                            loc:Uids.Uid="TextBlock_DataSetCount"
+                            Style="{StaticResource AtisBodyTextStyle}" />
 
-                        <TextBlock Margin="0,12,0,0"
-                                   Style="{StaticResource AtisBodyTextStyle}"
-                                   Text="{Binding DataSetCount}" />
+                        <TextBlock
+                            Margin="0,12,0,0"
+                            Style="{StaticResource AtisBodyTextStyle}"
+                            Text="{Binding DataSetCount}" />
                     </StackPanel>
                 </layout:BaseBossPageLayout.Header>
 
@@ -47,28 +52,29 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0"
-                                    Margin="8"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
+                        <StackPanel
+                            Grid.Column="0"
+                            Margin="8"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
 
-                            <Button Margin="5,0,5,0"
-                                    Command="{Binding NewCommand}"
-                                    IsEnabled="{Binding IsEditMode, Converter={StaticResource InverseBoolConverter}}"
-                                    Style="{StaticResource AtisPrimaryButton}">
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="6">
+                            <Button
+                                Margin="5,0,5,0"
+                                Command="{Binding NewCommand}"
+                                IsEnabled="{Binding IsEditMode, Converter={StaticResource InverseBoolConverter}}"
+                                Style="{StaticResource AtisPrimaryButton}">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon Glyph="&#xE710;" />
                                     <TextBlock loc:Uids.Uid="TextBlock_Add" />
                                 </StackPanel>
                             </Button>
 
-                            <Button Margin="5,0,5,0"
-                                    Command="{Binding RefreshCommand}"
-                                    IsEnabled="{Binding HasItems}"
-                                    Style="{StaticResource AtisSecondaryButton}">
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="6">
+                            <Button
+                                Margin="5,0,5,0"
+                                Command="{Binding RefreshCommand}"
+                                IsEnabled="{Binding HasItems}"
+                                Style="{StaticResource AtisSecondaryButton}">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon Glyph="&#xE72C;" />
                                     <TextBlock loc:Uids.Uid="TextBlock_Refresh" />
                                 </StackPanel>
@@ -77,17 +83,18 @@
                         </StackPanel>
 
                         <!--  SEARCH  -->
-                        <AutoSuggestBox x:Name="SearchBox"
-                                        Grid.Column="1"
-                                        Width="260"
-                                        Height="32"
-                                        Margin="12,0"
-                                        VerticalAlignment="Center"
-                                        IsEnabled="{Binding IsInParentMode, Converter={StaticResource InverseBoolConverter}}"
-                                        PlaceholderText="Suchen..."
-                                        QueryIcon="Find"
-                                        QuerySubmitted="SearchBox_OnQuerySubmitted"
-                                        Text="{Binding SearchText, Mode=TwoWay}" />
+                        <AutoSuggestBox
+                            x:Name="SearchBox"
+                            Grid.Column="1"
+                            Width="260"
+                            Height="32"
+                            Margin="12,0"
+                            VerticalAlignment="Center"
+                            loc:Uids.Uid="AutoSuggestBox_Search"
+                            IsEnabled="{Binding IsInParentMode, Converter={StaticResource InverseBoolConverter}}"
+                            QueryIcon="Find"
+                            QuerySubmitted="SearchBox_OnQuerySubmitted"
+                            Text="{Binding SearchText, Mode=TwoWay}" />
                     </Grid>
                 </layout:BaseBossPageLayout.AppBar>
 
@@ -98,95 +105,102 @@
 
                 <!--  DETAIL CONTENT  -->
                 <layout:BaseBossPageLayout.DetailContent>
-                    <Grid RowDefinitions="Auto,*"
-                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid RowDefinitions="Auto,*" Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}">
 
                         <!--  Headerleiste  -->
-                        <ScrollViewer Grid.Row="0"
-                                      HorizontalScrollBarVisibility="Hidden"
-                                      HorizontalScrollMode="Auto"
-                                      VerticalScrollBarVisibility="Disabled"
-                                      VerticalScrollMode="Disabled"
-                                      ZoomMode="Disabled">
-                            <StackPanel Margin="0,10,0,10"
-                                        Orientation="Horizontal"
-                                        Spacing="4">
+                        <ScrollViewer
+                            Grid.Row="0"
+                            HorizontalScrollBarVisibility="Hidden"
+                            HorizontalScrollMode="Auto"
+                            VerticalScrollBarVisibility="Disabled"
+                            VerticalScrollMode="Disabled"
+                            ZoomMode="Disabled">
+                            <StackPanel
+                                Margin="0,10,0,10"
+                                Orientation="Horizontal"
+                                Spacing="4">
 
-                                <Button x:Name="EditTribusTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="0">
+                                <Button
+                                    x:Name="EditTribusTab"
+                                    Click="DetailTabButton_Click"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Tag="0">
                                     <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Edit_Tribus" />
-                                        <Border x:Name="EditTribusTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
+                                        <TextBlock HorizontalAlignment="Center" loc:Uids.Uid="TextBlock_Edit_Tribus" />
+                                        <Border
+                                            x:Name="EditTribusTabUnderline"
+                                            Height="2"
+                                            Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="CommentsTribusTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="1">
+                                <Button
+                                    x:Name="CommentsTribusTab"
+                                    Click="DetailTabButton_Click"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Tag="1">
                                     <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Comments" />
-                                        <Border x:Name="CommentsTribusTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
+                                        <TextBlock HorizontalAlignment="Center" loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border
+                                            x:Name="CommentsTribusTabUnderline"
+                                            Height="2"
+                                            Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="ReferencesTribusTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="2">
+                                <Button
+                                    x:Name="ReferencesTribusTab"
+                                    Click="DetailTabButton_Click"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Tag="2">
                                     <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_References" />
-                                        <Border x:Name="ReferencesTribusTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
+                                        <TextBlock HorizontalAlignment="Center" loc:Uids.Uid="TextBlock_References" />
+                                        <Border
+                                            x:Name="ReferencesTribusTabUnderline"
+                                            Height="2"
+                                            Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="SubtribusTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="3">
+                                <Button
+                                    x:Name="SubtribusTab"
+                                    Click="DetailTabButton_Click"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Tag="3">
                                     <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Subtribus" />
-                                        <Border x:Name="SubtribusTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
+                                        <TextBlock HorizontalAlignment="Center" loc:Uids.Uid="TextBlock_Subtribus" />
+                                        <Border
+                                            x:Name="SubtribusTabUnderline"
+                                            Height="2"
+                                            Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="CommentsSubtribusTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="4">
+                                <Button
+                                    x:Name="CommentsSubtribusTab"
+                                    Click="DetailTabButton_Click"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Tag="4">
                                     <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Comments" />
-                                        <Border x:Name="CommentsSubtribusTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
+                                        <TextBlock HorizontalAlignment="Center" loc:Uids.Uid="TextBlock_Comments" />
+                                        <Border
+                                            x:Name="CommentsSubtribusTabUnderline"
+                                            Height="2"
+                                            Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
-                                <Button x:Name="ReferencesSubtribusTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="5">
+                                <Button
+                                    x:Name="ReferencesSubtribusTab"
+                                    Click="DetailTabButton_Click"
+                                    Style="{StaticResource TabButtonStyle}"
+                                    Tag="5">
                                     <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_References" />
-                                        <Border x:Name="ReferencesSubtribusTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
+                                        <TextBlock HorizontalAlignment="Center" loc:Uids.Uid="TextBlock_References" />
+                                        <Border
+                                            x:Name="ReferencesSubtribusTabUnderline"
+                                            Height="2"
+                                            Background="Transparent" />
                                     </StackPanel>
                                 </Button>
 
@@ -196,58 +210,65 @@
                         <!--  Inhalte  -->
                         <Grid Grid.Row="1">
 
-                            <ScrollViewer x:Name="EditTribusContent"
-                                          Padding="1">
+                            <ScrollViewer x:Name="EditTribusContent" Padding="1">
                                 <tbl57Tribus:Tbl57TribusEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
                             </ScrollViewer>
 
-                            <Grid x:Name="CommentsTribusContent"
-                                  DataContext="{Binding TribusCommentViewModel}"
-                                  RowDefinitions="Auto,*">
+                            <Grid
+                                x:Name="CommentsTribusContent"
+                                DataContext="{Binding TribusCommentViewModel}"
+                                RowDefinitions="Auto,*">
                                 <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                      Item="{Binding Item}"
-                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <tbl93Comment:Tbl93CommentEditControl
+                                    Grid.Row="1"
+                                    Item="{Binding Item}"
+                                    Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
 
-                            <Grid x:Name="ReferencesTribusContent"
-                                  DataContext="{Binding TribusReferenceViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                            Grid.Row="0" />
+                            <Grid
+                                x:Name="ReferencesTribusContent"
+                                DataContext="{Binding TribusReferenceViewModel}"
+                                RowDefinitions="Auto,*">
+                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl" Grid.Row="0" />
 
-                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                          Item="{Binding Item}"
-                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <tbl90Reference:Tbl90ReferenceEditControl
+                                    Grid.Row="1"
+                                    Item="{Binding Item}"
+                                    Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
 
-                            <Grid x:Name="SubtribusContent"
-                                  DataContext="{Binding SubtribusViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl60Subtribus:Tbl60SubtribusParentControl x:Name="SubtribusParentControl"
-                                                                            Grid.Row="0" />
-                                <tbl60Subtribus:Tbl60SubtribusEditControl Grid.Row="1"
-                                                                          Item="{Binding SelectedItem}"
-                                                                          Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            <Grid
+                                x:Name="SubtribusContent"
+                                DataContext="{Binding SubtribusViewModel}"
+                                RowDefinitions="Auto,*">
+                                <tbl60Subtribus:Tbl60SubtribusParentControl x:Name="SubtribusParentControl" Grid.Row="0" />
+                                <tbl60Subtribus:Tbl60SubtribusEditControl
+                                    Grid.Row="1"
+                                    Item="{Binding SelectedItem}"
+                                    Visibility="{Binding IsDetailVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
 
-                            <Grid x:Name="CommentsSubtribusContent"
-                                  DataContext="{Binding SubtribusViewModel.SubtribusCommentViewModel}"
-                                  RowDefinitions="Auto,*">
+                            <Grid
+                                x:Name="CommentsSubtribusContent"
+                                DataContext="{Binding SubtribusViewModel.SubtribusCommentViewModel}"
+                                RowDefinitions="Auto,*">
                                 <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                      Item="{Binding Item}"
-                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <tbl93Comment:Tbl93CommentEditControl
+                                    Grid.Row="1"
+                                    Item="{Binding Item}"
+                                    Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
 
-                            <Grid x:Name="ReferencesSubtribusContent"
-                                  DataContext="{Binding SubtribusViewModel.SubtribusReferenceViewModel}"
-                                  RowDefinitions="Auto,*">
+                            <Grid
+                                x:Name="ReferencesSubtribusContent"
+                                DataContext="{Binding SubtribusViewModel.SubtribusReferenceViewModel}"
+                                RowDefinitions="Auto,*">
                                 <tbl90Reference:Tbl90ReferenceParentControl Grid.Row="0" />
 
-                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                          Item="{Binding Item}"
-                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <tbl90Reference:Tbl90ReferenceEditControl
+                                    Grid.Row="1"
+                                    Item="{Binding Item}"
+                                    Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -258,8 +279,7 @@
         </ScrollViewer>
 
         <!--  2. 🔥 Modernes Lade Overlay  -->
-        <components:LoadingOverlayControl Grid.RowSpan="1"
-                                          IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        <components:LoadingOverlayControl Grid.RowSpan="1" IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
 
     </Grid>
 </Page>

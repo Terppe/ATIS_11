@@ -6,6 +6,16 @@
     xmlns:loc="using:WinUI3Localizer"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///DesignSystem/Controls/TextBox/PasswordBoxFocusResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel
             MaxWidth="850"
@@ -76,16 +86,17 @@
             <StackPanel Spacing="8">
                 <TextBlock loc:Uids.Uid="MailCredentials_Title" Style="{StaticResource SubtitleTextBlockStyle}" />
                 <TextBlock loc:Uids.Uid="MailCredentials_Description" TextWrapping="Wrap" />
+
                 <PasswordBox
                     x:Name="MailPasswordBox"
-                    loc:Uids.Uid="MailCredentials_Password"
                     MinWidth="240"
                     MaxWidth="400"
                     HorizontalAlignment="Left"
-                    PasswordRevealMode="Hidden" />
-                <Button
-                    loc:Uids.Uid="MailCredentials_Save"
-                    Click="SaveMailPasswordButton_Click" />
+                    loc:Uids.Uid="MailCredentials_Password"
+                    Style="{StaticResource AtisPasswordBox}" />
+
+                <Button loc:Uids.Uid="MailCredentials_Save"
+                        Click="SaveMailPasswordButton_Click" />
                 <TextBlock x:Name="MailCredentialStatusText" TextWrapping="Wrap" />
             </StackPanel>
 

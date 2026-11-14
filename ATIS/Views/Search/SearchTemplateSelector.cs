@@ -3,31 +3,31 @@ namespace ATIS.Views.Search;
 
 public class SearchTemplateSelector : DataTemplateSelector
 {
-    public DataTemplate RegnumTemplate { get; set; }
-    public DataTemplate PhylumTemplate { get; set; }
-    public DataTemplate SubphylumTemplate { get; set; }
-    public DataTemplate SuperclassTemplate { get; set; }
-    public DataTemplate ClassTemplate { get; set; }
-    public DataTemplate SubclassTemplate { get; set; }
-    public DataTemplate InfraclassTemplate { get; set; }
-    public DataTemplate LegioTemplate { get; set; }
-    public DataTemplate OrdoTemplate { get; set; }
-    public DataTemplate SubordoTemplate { get; set; }
-    public DataTemplate InfraordoTemplate { get; set; }
-    public DataTemplate SuperfamilyTemplate { get; set; }
-    public DataTemplate FamilyTemplate { get; set; }
-    public DataTemplate SubfamilyTemplate { get; set; }
-    public DataTemplate InfrafamilyTemplate { get; set; }
-    public DataTemplate SupertribusTemplate { get; set; }
-    public DataTemplate TribusTemplate { get; set; }
-    public DataTemplate SubtribusTemplate { get; set; }
-    public DataTemplate InfratribusTemplate { get; set; }
-    public DataTemplate GenusTemplate { get; set; }
-    public DataTemplate SpeciesTemplate { get; set; }
-    public DataTemplate DiseaseTemplate { get; set; }
-    public DataTemplate FoodTemplate { get; set; }
-    public DataTemplate MiscellaneousTemplate { get; set; }
-    protected override DataTemplate SelectTemplateCore(object item)
+    public DataTemplate? RegnumTemplate { get; set; }
+    public DataTemplate? PhylumTemplate { get; set; }
+    public DataTemplate? SubphylumTemplate { get; set; }
+    public DataTemplate? SuperclassTemplate { get; set; }
+    public DataTemplate? ClassTemplate { get; set; }
+    public DataTemplate? SubclassTemplate { get; set; }
+    public DataTemplate? InfraclassTemplate { get; set; }
+    public DataTemplate? LegioTemplate { get; set; }
+    public DataTemplate? OrdoTemplate { get; set; }
+    public DataTemplate? SubordoTemplate { get; set; }
+    public DataTemplate? InfraordoTemplate { get; set; }
+    public DataTemplate? SuperfamilyTemplate { get; set; }
+    public DataTemplate? FamilyTemplate { get; set; }
+    public DataTemplate? SubfamilyTemplate { get; set; }
+    public DataTemplate? InfrafamilyTemplate { get; set; }
+    public DataTemplate? SupertribusTemplate { get; set; }
+    public DataTemplate? TribusTemplate { get; set; }
+    public DataTemplate? SubtribusTemplate { get; set; }
+    public DataTemplate? InfratribusTemplate { get; set; }
+    public DataTemplate? GenusTemplate { get; set; }
+    public DataTemplate? SpeciesTemplate { get; set; }
+    public DataTemplate? DiseaseTemplate { get; set; }
+    public DataTemplate? FoodTemplate { get; set; }
+    public DataTemplate? MiscellaneousTemplate { get; set; }
+    protected override DataTemplate? SelectTemplateCore(object item)
     {
         return item switch
         {

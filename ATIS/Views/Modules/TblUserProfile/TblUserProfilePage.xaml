@@ -87,8 +87,8 @@
                             Height="32"
                             Margin="12,0"
                             VerticalAlignment="Center"
+                            loc:Uids.Uid="AutoSuggestBox_Search"
                             IsEnabled="{Binding IsInParentMode, Converter={StaticResource InverseBoolConverter}}"
-                            PlaceholderText="Suchen..."
                             QueryIcon="Find"
                             QuerySubmitted="SearchBox_OnQuerySubmitted"
                             Text="{Binding SearchText, Mode=TwoWay}" />

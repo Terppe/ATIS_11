@@ -11,7 +11,6 @@ using static ATIS.Interfaces.IDataService;
 using static ATIS.Views.Report.PdfModels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static SkiaSharp.HarfBuzz.SKShaper;
-//https://www.reddit.com/r/reactjs/comments/m4mhp7/how_to_update_state_in_useeffect_when_getting/
 
 namespace ATIS.Services;
 

@@ -302,6 +302,22 @@
     </Style>
 
 
+    <Style
+        x:Key="AtisPasswordBox"
+        BasedOn="{x:Null}"
+        TargetType="PasswordBox">
+        <Setter Property="Background" Value="{ThemeResource SolidBackgroundFillColorSecondaryBrush}" />
+        <Setter Property="Foreground" Value="{ThemeResource AtisTextBoxForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource AtisTextBoxBorderBrush}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="PasswordRevealMode" Value="Hidden" />
+        <Setter Property="MinHeight" Value="32" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
 
     <!--  Gemeinsame Basis  -->
     <!--<Style x:Key="AtisTextBoxBase"

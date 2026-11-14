@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using ATIS.Interfaces;
 using ATIS.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ public class LookupService
     private IDataService CreateDataService()
         => new DataService(_factory, _user);
 
-    private Dictionary<int, string> _regnumLookupCache;
+    private Dictionary<int, string?>? _regnumLookupCache;
     private Dictionary<int, string?>? _phylumLookupCache;
     private Dictionary<int, string?>? _subphylumLookupCache;
     private Dictionary<int, string?>? _superclassLookupCache;

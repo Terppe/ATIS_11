@@ -48,12 +48,12 @@ public class AuthenticationService : IAuthenticationService
         CancellationToken ct = default)
     {
         email = (email ?? string.Empty).Trim();
-        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("E-Mail ist erforderlich.", nameof(email));
-        if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Passwort ist erforderlich.", nameof(password));
+        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("E-Mail required.", nameof(email));
+        if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Password is required.", nameof(password));
 
         await using var db = await _factory.CreateDbContextAsync(ct);
         if (await db.TblUserProfiles.AnyAsync(u => u.Email == email, ct))
-            throw new InvalidOperationException("E-Mail ist bereits registriert.");
+            throw new InvalidOperationException("E-Mail is already registered.");
 
         var profile = new TblUserProfile
         {
@@ -91,18 +91,18 @@ public class AuthenticationService : IAuthenticationService
         if (string.IsNullOrWhiteSpace(smtpHost) ||
             string.IsNullOrWhiteSpace(smtpPortText) ||
             string.IsNullOrWhiteSpace(sender))
-            throw new InvalidOperationException("SMTP-Konfiguration ist unvollständig.");
+            throw new InvalidOperationException("SMTP-Configuration is incomplete.");
 
         if (!int.TryParse(smtpPortText, out var smtpPort))
-            throw new InvalidOperationException("SMTP-Port ist ungültig.");
+            throw new InvalidOperationException("SMTP-Port is invalid.");
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("ATIS Support", sender));
         message.To.Add(MailboxAddress.Parse(user.Email));
-        message.Subject = "Passwort zurücksetzen";
+        message.Subject = "Reset Password";
         message.Body = new TextPart("plain")
         {
-            Text = $"Ihr Code zum Zurücksetzen lautet: {code}\n\nGültig für 30 Minuten."
+            Text = $"Your reset code is: {code}\n\nValid for 30 minutes."
         };
 
         using var smtp = new MailKit.Net.Smtp.SmtpClient();
@@ -122,9 +122,9 @@ public class AuthenticationService : IAuthenticationService
         code = (code ?? string.Empty).Trim();
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(code))
-            throw new InvalidOperationException("E-Mail und Code sind erforderlich.");
+            throw new InvalidOperationException("Email and code are required.");
         if (string.IsNullOrWhiteSpace(newPassword))
-            throw new ArgumentException("Neues Passwort ist erforderlich.", nameof(newPassword));
+            throw new ArgumentException("New password is required.", nameof(newPassword));
 
         await using var db = await _factory.CreateDbContextAsync(ct);
         var user = await db.TblUserProfiles.FirstOrDefaultAsync(u => u.Email == email, ct);
@@ -136,7 +136,7 @@ public class AuthenticationService : IAuthenticationService
                 Encoding.UTF8.GetBytes(user.PasswordResetToken),
                 Encoding.UTF8.GetBytes(HashToken(code))))
         {
-            throw new InvalidOperationException("Code ungültig oder abgelaufen.");
+            throw new InvalidOperationException("Code is invalid or expired.");
         }
 
         user.Password = Crypt.CalculateHash(newPassword, user.Email);
@@ -148,22 +148,22 @@ public class AuthenticationService : IAuthenticationService
     private static string HashToken(string token)
         => Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
 
-    private static string GeneratePassword(int length)
-    {
-        const string chars = "abcdefghijklmnopqrstuvwxyz@#$&ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var random = new Random();
-        return new string(Enumerable.Range(0, length).Select(_ => chars[random.Next(chars.Length)]).ToArray());
-    }
+    //private static string GeneratePassword(int length)
+    //{
+    //    const string chars = "abcdefghijklmnopqrstuvwxyz@#$&ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    //    var random = new Random();
+    //    return new string(Enumerable.Range(0, length).Select(_ => chars[random.Next(chars.Length)]).ToArray());
+    //}
     public async Task ChangePasswordAsync(int userProfileId, string currentPassword, string newPassword, CancellationToken ct = default)
     {
         if (userProfileId <= 0)
-            throw new ArgumentException("Ungültige UserProfileId.", nameof(userProfileId));
+            throw new ArgumentException("Invalid UserProfileId.", nameof(userProfileId));
 
         if (string.IsNullOrWhiteSpace(currentPassword))
-            throw new ArgumentException("Aktuelles Passwort ist erforderlich.", nameof(currentPassword));
+            throw new ArgumentException("Current password is required.", nameof(currentPassword));
 
         if (string.IsNullOrWhiteSpace(newPassword))
-            throw new ArgumentException("Neues Passwort ist erforderlich.", nameof(newPassword));
+            throw new ArgumentException("New password is required.", nameof(newPassword));
 
         await using var db = await _factory.CreateDbContextAsync(ct);
 
@@ -172,10 +172,10 @@ public class AuthenticationService : IAuthenticationService
             .FirstOrDefaultAsync(x => x.UserProfileId == userProfileId, ct);
 
         if (user is null)
-            throw new InvalidOperationException("Benutzer nicht gefunden.");
+            throw new InvalidOperationException("User not found.");
 
         if (user.Password != Crypt.CalculateHash(currentPassword, user.Email))
-            throw new InvalidOperationException("Aktuelles Passwort ist falsch.");
+            throw new InvalidOperationException("Current password is incorrect.");
 
         user.Password = Crypt.CalculateHash(newPassword, user.Email);
 
@@ -187,13 +187,13 @@ public class AuthenticationService : IAuthenticationService
         email = (email ?? string.Empty).Trim();
 
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("E-Mail ist erforderlich.", nameof(email));
+            throw new ArgumentException("Email is required.", nameof(email));
 
         if (string.IsNullOrWhiteSpace(currentPassword))
-            throw new ArgumentException("Aktuelles Passwort ist erforderlich.", nameof(currentPassword));
+            throw new ArgumentException("Current password is required.", nameof(currentPassword));
 
         if (string.IsNullOrWhiteSpace(newPassword))
-            throw new ArgumentException("Neues Passwort ist erforderlich.", nameof(newPassword));
+            throw new ArgumentException("New password is required.", nameof(newPassword));
 
         await using var db = await _factory.CreateDbContextAsync(ct);
 
@@ -202,10 +202,10 @@ public class AuthenticationService : IAuthenticationService
             .FirstOrDefaultAsync(x => x.Email == email, ct);
 
         if (user is null)
-            throw new InvalidOperationException("Benutzer nicht gefunden.");
+            throw new InvalidOperationException("User not found.");
 
         if (user.Password != Crypt.CalculateHash(currentPassword, user.Email))
-            throw new InvalidOperationException("Aktuelles Passwort ist falsch.");
+            throw new InvalidOperationException("Current password is incorrect.");
 
         user.Password = Crypt.CalculateHash(newPassword, user.Email);
 
@@ -217,19 +217,19 @@ public class AuthenticationService : IAuthenticationService
         email = (email ?? string.Empty).Trim();
 
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("E-Mail ist erforderlich.", nameof(email));
+            throw new ArgumentException("Email is required.", nameof(email));
         if (string.IsNullOrWhiteSpace(currentPassword))
-            throw new ArgumentException("Aktuelles Passwort ist erforderlich.", nameof(currentPassword));
+            throw new ArgumentException("Current password is required.", nameof(currentPassword));
 
         await using var db = await _factory.CreateDbContextAsync(ct);
         var user = await db.TblUserProfiles.FirstOrDefaultAsync(x => x.Email == email, ct);
 
         if (user is null)
-            throw new InvalidOperationException("Benutzer nicht gefunden.");
+            throw new InvalidOperationException("User not found.");
 
         var hash = Crypt.CalculateHash(currentPassword, user.Email);
         if (user.Password != hash)
-            throw new InvalidOperationException("Passwort ist falsch.");
+            throw new InvalidOperationException("Current password is incorrect.");
 
         db.TblUserProfiles.Remove(user);
         await db.SaveChangesAsync(ct);

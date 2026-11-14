@@ -1,5 +1,4 @@
 ﻿using ATIS.Models;
-using Microsoft.Win32;
 
 namespace ATIS.Services;
 
@@ -12,35 +11,6 @@ public static class SqlInstanceFinder
     {
         return DbServerSettings.GetInstalledDataSources().ToList();
     }
-
-    //public static List<string> FindLocalInstances()
-    //{
-    //    var result = new List<string>();
-
-    //    try
-    //    {
-    //        using var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-    //        using var key = baseKey.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL");
-
-    //        if (key == null)
-    //        {
-    //            return result;
-    //        }
-
-    //        foreach (var name in key.GetValueNames())
-    //        {
-    //            result.Add(name.Equals("MSSQLSERVER", StringComparison.OrdinalIgnoreCase)
-    //                ? "localhost"
-    //                : $@"localhost\{name}");
-    //        }
-    //    }
-    //    catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException)
-    //    {
-    //        SimpleLog.Error($"SQL-Instanzsuche fehlgeschlagen: {ex.Message}");
-    //    }
-
-    //    return result;
-    //}
 
     public static async Task<List<string>> FindReachableAsync(string database)
     {
@@ -65,7 +35,7 @@ public static class SqlInstanceFinder
             }
             catch (Exception ex) when (ex is Microsoft.Data.SqlClient.SqlException or InvalidOperationException)
             {
-                SimpleLog.Error($"{source} hat keine erreichbare Datenbank {database}: {ex.Message}");
+                SimpleLog.Error($"{source} has no reachable database {database}: {ex.Message}");
             }
         }
 

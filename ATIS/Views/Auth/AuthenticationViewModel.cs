@@ -208,14 +208,14 @@ public partial class AuthenticationViewModel : ObservableObject
             var ok = await _authService.RequestPasswordResetAsync(Email!, CancellationToken.None);
 
             if (!ok)
-                SimpleLog.Warning("Passwortzurücksetzung angefordert; kein passendes Konto gefunden.");
+                SimpleLog.Warning("Password reset requested; no matching account found.");
 
             Status = loc.GetLocalizedString("Status_Reset_Code_Sent");
             ResetCodeSent = true;
         }
         catch (Exception ex)
         {
-            SimpleLog.Error("Anforderung zur Passwortzurücksetzung fehlgeschlagen.");
+            SimpleLog.Error("Password reset request failed.");
             SimpleLog.Log(ex);
             ErrorMessage = loc.GetLocalizedString("Error_Reset_Code_Failed");
             ResetCodeSent = false;
@@ -251,12 +251,12 @@ public partial class AuthenticationViewModel : ObservableObject
             await _authService.ChangePasswordByEmailAsync(Email!, CurrentPassword!, NewPassword!);
 
             Status = loc.GetLocalizedString("Status_Password_Changed_Successfully");
-            SimpleLog.Info("Passwort erfolgreich geändert.");
+            SimpleLog.Info("Password successfully changed.");
             PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
-            SimpleLog.Error("Passwortänderung fehlgeschlagen.");
+            SimpleLog.Error("Password change failed.");
             SimpleLog.Log(ex);
             ErrorMessage = ex.Message;
         }
@@ -303,12 +303,12 @@ public partial class AuthenticationViewModel : ObservableObject
             ResetCode = "";
             NewPassword = "";
             ResetCodeSent = false;
-            SimpleLog.Info("Passwort nach Codeprüfung erfolgreich zurückgesetzt.");
+            SimpleLog.Info("Password successfully reset after code verification.");
             PasswordChangedSucceeded?.Invoke(this, EventArgs.Empty);
         }
         catch (Exception ex)
         {
-            SimpleLog.Error("Passwortzurücksetzung mit Code fehlgeschlagen.");
+            SimpleLog.Error("Password reset with code failed.");
             SimpleLog.Log(ex);
             ErrorMessage = ex.Message;
         }

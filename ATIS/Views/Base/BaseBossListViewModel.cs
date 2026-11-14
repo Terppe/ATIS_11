@@ -8,16 +8,12 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     where TModel : class
 {
     protected readonly HierarchyCoordinator Coordinator;
-    //protected readonly IDataService Data;
-    //protected readonly IDialogService Dialog;
-    //public event EventHandler? ScrollRequested;
 
     #region MODUS: Boss / Parent
     // ---------------------------------------------------------
 
     public bool IsBossMode { get; private set; } = true;
     public bool IsParentMode => !IsBossMode;
-
     public void SetBossMode() => IsBossMode = true;
     public void SetParentMode() => IsBossMode = false;
     #endregion
@@ -31,8 +27,6 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         HierarchyCoordinator coordinator)
         : base(data, dialog)
     {
-        //Data = data;
-        //Dialog = dialog;
         Coordinator = coordinator;
 
         // EINHEITLICHE COMMANDS
@@ -114,16 +108,6 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
         SelectedItem = null;
     }
     #endregion
-
-    //#region SCROLL REQUESTED EVENT
-    //// ---------------------------------------------------------
-
-    //public virtual void OnScrollRequested()
-    //{
-    //    ScrollRequested?.Invoke(this, EventArgs.Empty);
-    //}
-    //#endregion
-
 
     #region SAVE
     // ---------------------------------------------------------

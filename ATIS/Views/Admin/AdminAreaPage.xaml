@@ -131,31 +131,6 @@
                                     </StackPanel>
                                 </Button>
 
-                                <!--<Button x:Name="CommentsUserProfileTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="1">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_Comments" />
-                                        <Border x:Name="CommentsUserProfileTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
-
-                                <!--<Button x:Name="ReferencesUserProfileTab"
-                                        Click="DetailTabButton_Click"
-                                        Style="{StaticResource TabButtonStyle}"
-                                        Tag="2">
-                                    <StackPanel Spacing="4">
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   loc:Uids.Uid="TextBlock_References" />
-                                        <Border x:Name="ReferencesUserProfileTabUnderline"
-                                                Height="2"
-                                                Background="Transparent" />
-                                    </StackPanel>
-                                </Button>-->
 
                             </StackPanel>
                         </ScrollViewer>
@@ -166,26 +141,6 @@
                             <ScrollViewer x:Name="EditUserProfileContent" Padding="1">
                                 <tbluserprofile:TblUserProfileEditControl Item="{Binding SelectedItem, Mode=TwoWay}" />
                             </ScrollViewer>
-
-                            <!--<Grid x:Name="CommentsUserProfileContent"
-                                  DataContext="{Binding UserProfileCommentViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl93Comment:Tbl93CommentParentControl Grid.Row="0" />
-                                <tbl93Comment:Tbl93CommentEditControl Grid.Row="1"
-                                                                      Item="{Binding Item}"
-                                                                      Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
-
-                            <!--<Grid x:Name="ReferencesUserProfileContent"
-                                  DataContext="{Binding UserProfileReferenceViewModel}"
-                                  RowDefinitions="Auto,*">
-                                <tbl90Reference:Tbl90ReferenceParentControl x:Name="ReferenceParentControl"
-                                                                            Grid.Row="0" />
-
-                                <tbl90Reference:Tbl90ReferenceEditControl Grid.Row="1"
-                                                                          Item="{Binding Item}"
-                                                                          Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                            </Grid>-->
 
                         </Grid>
                     </Grid>

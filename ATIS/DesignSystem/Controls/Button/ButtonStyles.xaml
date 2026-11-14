@@ -130,11 +130,9 @@
     <!--  Secondary Button  -->
     <!--  =========================================================  -->
 
-
-    <Style
-        x:Key="AtisSecondaryButton"
-        BasedOn="{StaticResource AtisSecondaryBase}"
-        TargetType="Button">
+    <Style  x:Key="AtisSecondaryButton"
+            BasedOn="{StaticResource AtisSecondaryBase}"
+            TargetType="Button">
 
         <Setter Property="Background" Value="{ThemeResource AtisToggleBackgroundBrush}" />
         <Setter Property="Foreground" Value="{ThemeResource AtisToggleForegroundBrush}" />
@@ -192,6 +190,76 @@
         </Setter>
 
     </Style>
+
+
+    <!--  =========================================================  -->
+    <!--  Secondary Button Focus  -->
+    <!--  =========================================================  -->
+
+    <Style x:Key="AtisSecondaryButtonFocus"
+           BasedOn="{StaticResource AtisSecondaryButton}"
+           TargetType="Button">
+        <Setter Property="UseSystemFocusVisuals" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border
+                            x:Name="Root"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.Background" Value="{ThemeResource AtisToggleHoverBackgroundBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.Background" Value="{ThemeResource AtisTogglePressedBackgroundBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.Background" Value="{ThemeResource AtisToggleDisabledBackgroundBrush}" />
+                                        <Setter Target="Root.BorderBrush" Value="{ThemeResource AtisToggleDisabledForegroundBrush}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="Focused">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.BorderBrush" Value="{ThemeResource AtisButtonFocusBrush}" />
+                                        <Setter Target="Root.BorderThickness" Value="2" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="PointerFocused">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.BorderBrush" Value="{ThemeResource AtisButtonFocusBrush}" />
+                                        <Setter Target="Root.BorderThickness" Value="2" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+
+
+
 
     <Style x:Key="AtisButtonSecondary" TargetType="Button">
         <Setter Property="Background" Value="{ThemeResource AtisSecondaryBackgroundBrush}" />

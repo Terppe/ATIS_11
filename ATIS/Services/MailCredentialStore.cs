@@ -1,4 +1,4 @@
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text;
 using ATIS.Helpers;
@@ -26,7 +26,7 @@ public sealed class MailCredentialStore
     {
         if (!HasPassword)
             throw new InvalidOperationException(
-                "Kein SMTP-Passwort gespeichert. Bitte in den Einstellungen einrichten.");
+                "No SMTP password stored. Please set it up in the settings.");
 
         return ReadProtected(_passwordPath);
     }
@@ -34,7 +34,7 @@ public sealed class MailCredentialStore
     public void SavePassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
-            throw new ArgumentException("Das SMTP-Passwort darf nicht leer sein.", nameof(password));
+            throw new ArgumentException("The SMTP password cannot be empty.", nameof(password));
 
         WriteProtected(_passwordPath, password, overwrite: true);
     }
@@ -50,7 +50,7 @@ public sealed class MailCredentialStore
         {
             var password = Crypt.DecryptString(encryptedMailAccountPassword);
             if (string.IsNullOrWhiteSpace(password))
-                throw new InvalidOperationException("Das bisherige SMTP-Passwort ist leer.");
+                throw new InvalidOperationException("The previous SMTP password is empty.");
 
             WriteProtected(_passwordPath, password, overwrite: false);
             _ = LoadPassword();

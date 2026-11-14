@@ -1,7 +1,5 @@
 ﻿using ATIS.Interfaces;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using WinUI3Localizer;
-using static MailKit.Net.Imap.ImapEvent;
 
 namespace ATIS.Services;
 

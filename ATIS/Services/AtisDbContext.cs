@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Configuration;
 using System.Reflection;
 using ATIS.Models;
 using Microsoft.EntityFrameworkCore;

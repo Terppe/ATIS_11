@@ -44,10 +44,10 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
         ApplyHeaders();
     }
 
-    public async Task LoadReferenceLookupsAsync()
-    {
-        //await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
-    }
+    //public async Task LoadReferenceLookupsAsync()
+    //{
+    //    //await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
+    //}
 
     // ---------------------------------------------------------
     // CHILD-VMs
@@ -65,8 +65,6 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
     {
         try
         {
-            System.Diagnostics.Debug.WriteLine("[VM] LoadCountryLookupAsync START");
-
             var list = await _lookupService.GetCountryListAsync();
             var lookup = await _lookupService.GetCountryLookupAsync();
 
@@ -123,9 +121,6 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
         // Tab 0 = Boss-Modus
         IsInParentMode = SelectedDetailTabIndex != 0;
 
-        //if (SelectedDetailTabIndex == 2)
-        //    await UserProfileReferenceViewModel.LoadReferenceLookupsAsync();
-
         UpdateRefreshState();
 
         NewCommand.NotifyCanExecuteChanged();
@@ -177,7 +172,6 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
             // optional: Dialog zeigen
             await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
         }
@@ -228,12 +222,6 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
             return;
         }
 
-        // 2. Parent-Modus → Kinder laden, aber KEIN UI-Rebuild
-        //if (IsInParentMode)
-        //{
-        //    await LoadChildrenAsync(GetId(SelectedItem));
-        //    return;
-        //}
 
         // 3. Boss-Modus → volle Detail-Logik
         OnPropertyChanged(nameof(IsDetailVisible));
@@ -245,32 +233,7 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
     // ---------------------------------------------------------
     protected override async Task LoadChildrenAsync(int entityId)
     {
-        //await UserProfileCommentViewModel.LoadForUserProfileAsync(entityId);
-        //await UserProfileReferenceViewModel.LoadForUserProfileAsync(entityId);
-
-        //await NULLViewModel.LoadUserProfileLookupAsync();
-        //await NULLViewModel.LoadForUserProfileAsync(entityId);
-
-
-        //// ⭐ HIER MUSS DER MODUS GESETZT WERDEN
-        //NULLViewModel.IsInParentMode = true;
     }
-
-    //protected override Task ClearChildCollectionsAsync()
-    //{
-    //    UserProfileCommentViewModel.Items?.Clear();
-    //    UserProfileReferenceViewModel.Items?.Clear();
-    //  //  NULLViewModel.Items?.Clear();
-
-    //    if (IsBossMode)
-    //    {
-    //        UserProfileCommentViewModel.SelectedItem = null;
-    //        UserProfileReferenceViewModel.SelectedItem = null;
-    //   //     NULLViewModel.SelectedItem = null;
-    //    }
-
-    //    return Task.CompletedTask;
-    //}
 
     // ---------------------------------------------------------
     // SORTING
@@ -342,14 +305,6 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
         if (item.UserProfileId == 0)
             return false;
 
-        //if (await Data.UserProfileHasNULLAsync(item.UserProfileId) ||
-        //    await Data.UserProfileHasReferenceAsync(item.UserProfileId) ||
-        //    await Data.UserProfileHasCommentAsync(item.UserProfileId))
-        //{
-        //    await Dialog.ShowErrorAsync("Error_DeleteNotAllowed_Title", "Error_DeleteNotAllowed_Message");
-        //    return false;
-        //}
-
         await Data.DeleteUserProfileAsync(item.UserProfileId);
         return true;
     }
@@ -363,7 +318,4 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
     protected override int GetId(Models.TblUserProfile item)
         => item.UserProfileId;
 
-    // ---------------------------------------------------------
-    // BACK
-    // ---------------------------------------------------------
 }

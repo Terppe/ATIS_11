@@ -6,6 +6,7 @@
     xmlns:models="using:ATIS.Models"
     xmlns:search="using:ATIS.Views.Search"
     NavigationCacheMode="Required">
+
     <Page.Resources>
         <DataTemplate x:Key="RegnumTemplate" x:DataType="models:Tbl03Regnum">
             <StackPanel Padding="8" Spacing="2">

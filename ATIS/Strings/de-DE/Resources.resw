@@ -147,6 +147,9 @@
   <data name="Settings_Theme_Light.Content" xml:space="preserve">
     <value>Hell</value>
   </data>
+  <data name="Update_Settings_Could_Not_Be_Saved" xml:space="preserve">
+    <value>Update Settings konnten nicht gesichert werden</value>
+  </data>
   <data name="Save_Title" xml:space="preserve">
     <value>Speichern</value>
   </data>
@@ -192,6 +195,9 @@
   <data name="Atis" xml:space="preserve">
     <value>ATIS</value>
   </data>
+  <data name="ATIS34_Not_Accessible" xml:space="preserve">
+    <value>ATIS34 fehlt auf diesem SQL-Server oder Berechtigung fehlt.</value>
+  </data>
   <data name="AtisHeader" xml:space="preserve">
     <value>Aquaristik Taxonomie Informations System</value>
   </data>
@@ -218,6 +224,9 @@
   </data>
   <data name="AutoSuggestBox_Search.PlaceholderText" xml:space="preserve">
     <value>Suchen Name oder ID</value>
+  </data>
+  <data name="AutoSuggestBox_Main_Search.PlaceholderText" xml:space="preserve">
+    <value>Suchen...</value>
   </data>
   <data name="CheckBox_Difficult1.Content" xml:space="preserve">
     <value>Art für Anfänger</value>
@@ -2037,6 +2046,9 @@
   <data name="Continent" xml:space="preserve">
     <value>Erdteil</value>
   </data>
+  <data name="Connection_Failed" xml:space="preserve">
+    <value>Test-verbindung mit SQL-Server fehlgeschlagen.</value>
+  </data>
   <data name="TextBlock_Country.Text" xml:space="preserve">
     <value>Land</value>
   </data>
@@ -2286,6 +2298,9 @@
   <data name="Info" xml:space="preserve">
     <value>Information</value>
   </data>
+  <data name="Installed_SQL_Server_Instances_Could_Not_Be_Determined" xml:space="preserve">
+    <value>Der installierete SQL-Server konnte nicht ermittelt werden</value>
+  </data>
   <data name="TextBlock_Infraclass.Text" xml:space="preserve">
     <value>Infraklasse</value>
   </data>
@@ -2412,6 +2427,9 @@
   <data name="Memo" xml:space="preserve">
     <value>Memo</value>
   </data>
+  <data name="Main_View_Is_Not_Available" xml:space="preserve">
+    <value>Mainpage nicht erreichbar</value>
+  </data>
   <data name="MemoFood" xml:space="preserve">
     <value>Memo Futter</value>
   </data>
@@ -2535,6 +2553,12 @@
   <data name="Notes" xml:space="preserve">
     <value>Notizen</value>
   </data>
+  <data name="No_Log_File_Is_Available_For_Today" xml:space="preserve">
+    <value>Kein Logfile heute erreichbar</value>
+  </data>
+  <data name="No_SQL_Server_Instances_Found" xml:space="preserve">
+    <value>Keine SQL-Server Instanz auf diesem Computer gefunden.</value>
+  </data>
   <data name="TextBlock_Ordo.Text" xml:space="preserve">
     <value>Ordnung</value>
   </data>
@@ -2612,6 +2636,9 @@
   </data>
   <data name="TestKey" xml:space="preserve">
     <value>Hallo</value>
+  </data>
+  <data name="Testing_Connection" xml:space="preserve">
+    <value>Verbindung testen</value>
   </data>
   <data name="TextBlock_PhylumId.Text" xml:space="preserve">
     <value>Stamm ID</value>
@@ -2999,6 +3026,9 @@
   </data>
   <data name="Useful" xml:space="preserve">
     <value>Sinnvoll</value>
+  </data>
+  <data name="Update_Settings_Could_Not_Be_Loaded" xml:space="preserve">
+    <value>Update konnte nicht geladen werden.</value>
   </data>
   <data name="Valid" xml:space="preserve">
     <value>gültig</value>
@@ -3740,6 +3770,12 @@
   </data>
   <data name="SQL_Server_Ok" xml:space="preserve">
     <value>SQL-Server läuft</value>
+  </data>
+  <data name="SQL_Server_Saved" xml:space="preserve">
+    <value>SQL-Server gesichert</value>
+  </data>
+  <data name="SQL_Server_Save_Failed" xml:space="preserve">
+    <value>SQL-Server konnte nicht gesichert werden</value>
   </data>
   <data name="TextBlock_Species.Text" xml:space="preserve">
     <value>Art</value>
@@ -4563,6 +4599,9 @@
   <data name="Search_Placeholder" xml:space="preserve">
     <value>Suchen…</value>
   </data>
+  <data name="Select_Server" xml:space="preserve">
+    <value>Bitte einen SQL-Server auswählen.</value>
+  </data>
   <data name="SearchName" xml:space="preserve">
     <value>Suchname</value>
   </data>
@@ -4686,6 +4725,9 @@
   <data name="PlantLength" xml:space="preserve">
     <value>Pflanzenhöhe (cm)</value>
   </data>
+  <data name="Please_Test_Connection_First" xml:space="preserve">
+    <value>Bitte die ausgewählte Verbindung zuerst testen.</value>
+  </data>
   <data name="TextBlock_BasinHeight.Text" xml:space="preserve">
     <value>Beckenhöhe (cm)</value>
   </data>
@@ -4766,6 +4808,9 @@
   </data>
   <data name="Omnivore" xml:space="preserve">
     <value>Omnivore</value>
+  </data>
+  <data name="Open_Log_File_Requested" xml:space="preserve">
+    <value>das öffnen des aktuellen Logfiles wird erwartet.</value>
   </data>
   <data name="TextBlock_MemoRegion.Text" xml:space="preserve">
     <value>Memo Region</value>
@@ -5013,6 +5058,9 @@
   <data name="Difficult1" xml:space="preserve">
     <value>Schwierigkeit 1</value>
   </data>
+  <data name="Diagnostic_Information_Copied" xml:space="preserve">
+    <value>Diagnostik Informationen copiert. evtl. copieren in eine Email.</value>
+  </data>
   <data name="Difficult2" xml:space="preserve">
     <value>Schwierigkeit 2</value>
   </data>
@@ -5030,6 +5078,9 @@
   </data>
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
+  </data>
+  <data name="Diagnostic_Information_Could_Not_Copied" xml:space="preserve">
+    <value>Diagnostik Informationen konnten nicht kopiert weren. Details vorhanden in ATIS-Log.</value>
   </data>
   <data name="Dialog_Close" xml:space="preserve">
     <value>Schliessen</value>
@@ -5544,6 +5595,9 @@
   <data name="Login" xml:space="preserve">
     <value>Anmelden</value>
   </data>
+  <data name="Log_File_Could_Not_Be_Opened" xml:space="preserve">
+    <value>Logfile konnte nicht geöffnet werden. Bitte das nach Logfiles suchen.</value>
+  </data>
   <data name="List" xml:space="preserve">
     <value>Liste</value>
   </data>
@@ -5551,7 +5605,7 @@
     <value>Neues Passwort</value>
   </data>
   <data name="AutoSuggestBox_Home_Search.Header" xml:space="preserve">
-    <value>Suchen</value>
+    <value>Suchen...</value>
   </data>
   <data name="Button_Request_Code.Content" xml:space="preserve">
     <value>Code anfordern</value>

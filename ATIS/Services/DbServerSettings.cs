@@ -48,7 +48,7 @@ public static class DbServerSettings
             if (string.IsNullOrWhiteSpace(data?.DataSource))
             {
                 throw new InvalidDataException(
-                    $"Kein SQL-Server in {FilePath} gespeichert.");
+                    $"No SQL-Server stored in {FilePath}.");
             }
 
             return NormalizeDataSource(data.DataSource);
@@ -122,7 +122,7 @@ public static class DbServerSettings
         if (string.IsNullOrWhiteSpace(server))
         {
             throw new InvalidOperationException(
-                "Bitte zuerst einen SQL-Server auswählen, testen und speichern.");
+                "Please select, test, and save a SQL Server first.");
         }
 
         return new SqlConnectionStringBuilder

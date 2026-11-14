@@ -73,7 +73,7 @@ public partial class UserAreaViewModel : ObservableObject
                 return;
 
             if (profile == null)
-                throw new InvalidOperationException("Das angemeldete Benutzerprofil wurde nicht gefunden.");
+                throw new InvalidOperationException("The logged-in user profile was not found.");
 
             CountryList = new ObservableCollection<Models.TblCountry>(countries);
             OnPropertyChanged(nameof(CountryList));
@@ -81,7 +81,7 @@ public partial class UserAreaViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            SimpleLog.Error("Benutzerprofil konnte nicht geladen werden.");
+            SimpleLog.Error("Not able to load user profile.");
             SimpleLog.Log(ex);
             if (IsCurrentLoad(version, email))
                 await _dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
@@ -155,7 +155,7 @@ public partial class UserAreaViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            SimpleLog.Error("Benutzerprofil konnte nicht gespeichert werden.");
+            SimpleLog.Error("Not able to save user profile.");
             SimpleLog.Log(ex);
             if (IsCurrentLoad(version, email))
                 await _dialog.ShowErrorAsync("Error_Save_Title", "Error_Save_Message");
@@ -198,7 +198,7 @@ public partial class UserAreaViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            SimpleLog.Error("Benutzerprofil konnte nicht gelöscht werden.");
+            SimpleLog.Error("Not able to delete user profile.");
             SimpleLog.Log(ex);
             await _dialog.ShowErrorAsync("Error_Delete_Title", "Error_Delete_Message");
         }

@@ -95,8 +95,8 @@
                             Height="32"
                             Margin="12,0"
                             VerticalAlignment="Center"
+                            loc:Uids.Uid="AutoSuggestBox_Search_Species"
                             IsEnabled="{Binding IsInParentMode, Converter={StaticResource InverseBoolConverter}}"
-                            PlaceholderText="Suchen..."
                             QueryIcon="Find"
                             QuerySubmitted="SearchBox_OnQuerySubmitted"
                             Text="{Binding SearchText, Mode=TwoWay}" />
@@ -344,8 +344,7 @@
                                     Grid.Row="1"
                                     Item="{Binding Item}"
                                     Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />
-                                <components:LoadingOverlayControl Grid.RowSpan="2"
-                                                                  IsLoading="{Binding IsLoading}" />
+                                <components:LoadingOverlayControl Grid.RowSpan="2" IsLoading="{Binding IsLoading}" />
                             </Grid>
 
                         </Grid>

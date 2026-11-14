@@ -813,7 +813,6 @@ public sealed partial class MainPage : Page
     }
     private void NavigationView_Loaded(object sender, RoutedEventArgs e)
     {
-        //  NavFrame.Navigate(typeof(HomePage));
         // NICHT navigieren!
         NavView.SelectedItem = NavHome;
     }
@@ -840,7 +839,7 @@ public sealed partial class MainPage : Page
         }
     }
 
-    public static List<string> CheckItems(List<object> sourceList, List<string> resultList, string searchText)
+    public static List<string?> CheckItems(List<object> sourceList, List<string?> resultList, string searchText)
     {
         foreach (var item in sourceList)
         {

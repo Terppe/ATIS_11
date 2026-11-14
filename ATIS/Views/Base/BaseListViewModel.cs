@@ -44,7 +44,7 @@ public abstract class BaseListViewModel<T> : ObservableObject
         catch (Exception)
         {
             SimpleLog.Error(
-                $"{GetType().Name}: Datenaktion fehlgeschlagen.",
+                $"{GetType().Name}: dataaction failed.",
                 useBackgroundTask: false);
             throw;
         }

@@ -7,8 +7,6 @@ using WinRT.Interop;
 
 namespace ATIS.Services;
 
-
-
 public sealed class PdfExportService(IDialogService dialogService) : IPdfExportService
 {
     private readonly SemaphoreSlim _exportLock = new(1, 1);

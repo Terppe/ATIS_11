@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ATIS.Core.Taxonomy;
+﻿using ATIS.Core.Taxonomy;
 
 namespace ATIS.Views.Search.DirectChildren;
 

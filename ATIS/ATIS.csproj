@@ -47,7 +47,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="log4net" Version="3.5.0" />
+		<PackageReference Include="log4net" Version="3.6.0" />
 		<PackageReference Include="MailKit" Version="5.0.0" />
 		<PackageReference Include="Mapsui.WinUI" Version="5.1.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="11.0.0" />
@@ -61,7 +61,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
-		<PackageReference Include="QuestPDF" Version="2026.9.1" />
+		<PackageReference Include="QuestPDF" Version="2026.9.2" />
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
 		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="11.0.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
@@ -204,57 +204,7 @@
 	<Page Update="DesignSystem\Controls\DataGrid\DataGridStyles.xaml">
 		<SubType>Designer</SubType>
 	</Page>
-	<Page Update="Themes\Colors\Colors.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="Themes\Controls\Controls.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="Themes\Styles\AtisTheme.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-	<Page Update="Themes\Styles\PageLayout.xaml">
-		<SubType>Designer</SubType>
-	</Page>
-<!---->		<Page Update="Themes\AppTheme.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Colors\DataGridColors.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Controls\BorderBase.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Controls\TabViews.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Controls\ListGridViews.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Controls\InfoBars.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Controls\NavigationViews.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Controls\TextBoxes.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Typography.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Theme.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Brushes.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\Border.xaml">
-			<SubType>Designer</SubType>
-		</Page>
-		<Page Update="Themes\ATISTheme.xaml">
-			<SubType>Designer</SubType>
-		</Page>
+<!---->
 	<Page Update="Views\Search\SearchItemTemplateTblFoodControl.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
@@ -265,9 +215,6 @@
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\Main\FoodPage.xaml">
-		<Generator>MSBuild:Compile</Generator>
-	</Page>
-	<Page Update="Views\Main\SplashWindow.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
 	<Page Update="Views\User\UserAreaPage.xaml">
@@ -482,6 +429,13 @@
 	</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Remove="DesignSystem\Themes\**" />
+	  <EmbeddedResource Remove="DesignSystem\Themes\**" />
+	  <None Remove="DesignSystem\Themes\**" />
+	  <Page Remove="DesignSystem\Themes\**" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<Content Remove="Assets\flagge_D.gif" />
@@ -511,6 +465,7 @@
 		<None Remove="DesignSystem\Components\AtisCard.xaml" />
 		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
 		<None Remove="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml" />
+		<None Remove="DesignSystem\Controls\TextBox\PasswordBoxFocusResources.xaml" />
 		<None Remove="DesignSystem\Layout\BaseBossPageLayout.xaml" />
 		<None Remove="DesignSystem\UserControls\AtisPageLayout.xaml" />
 		<None Remove="Views\Admin\AdminAreaPage.xaml" />
@@ -522,7 +477,6 @@
 		<None Remove="Views\Main\FoodPage.xaml" />
 		<None Remove="Views\Main\HomePage.xaml" />
 		<None Remove="Views\Main\MiscellaneousPage.xaml" />
-		<None Remove="Views\Main\SplashWindow.xaml" />
 		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumBossControl.xaml" />
 		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumEditControl.xaml" />
 		<None Remove="Views\Modules\Tbl03Regnum\Tbl03RegnumPage.xaml" />
@@ -734,10 +688,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	<Folder Include="DesignSystem\Themes\" />
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
-	<Folder Include="Themes\Templates\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -766,6 +718,12 @@
 	<Content Update="Strings\de-DE\Resources.resw">
 		<Generator></Generator>
 	</Content>
+</ItemGroup>
+
+<ItemGroup>
+  <Page Update="DesignSystem\Controls\TextBox\PasswordBoxFocusResources.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
 </ItemGroup>
 
 <ItemGroup>
@@ -1894,6 +1852,10 @@
 	<Page Update="Views\Main\HomePage.xaml">
 		<Generator>MSBuild:Compile</Generator>
 	</Page>
+</ItemGroup>
+
+<ItemGroup>
+  <PRIResource Remove="DesignSystem\Themes\**" />
 </ItemGroup>
 
 
