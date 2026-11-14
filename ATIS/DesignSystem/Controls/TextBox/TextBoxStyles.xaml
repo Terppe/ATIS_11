@@ -155,113 +155,6 @@
         <Setter Property="MinHeight" Value="32" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="PasswordBox">
-                    <Grid
-                        x:Name="RootGrid"
-                        ColumnDefinitions="*,Auto"
-                        RowDefinitions="Auto,Auto,Auto">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal" />
-                                <VisualState x:Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource AtisTextBoxHoverBorderBrush}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="Focused">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.BorderBrush" Value="#0067C0" />
-                                        <Setter Target="BorderElement.BorderThickness" Value="2" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="Disabled">
-                                    <VisualState.Setters>
-                                        <Setter Target="BorderElement.Background" Value="{ThemeResource TextControlBackgroundDisabled}" />
-                                        <Setter Target="BorderElement.BorderBrush" Value="{ThemeResource TextControlBorderBrushDisabled}" />
-                                        <Setter Target="ContentElement.Foreground" Value="{ThemeResource TextControlForegroundDisabled}" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                            <VisualStateGroup x:Name="ButtonStates">
-                                <VisualState x:Name="ButtonVisible">
-                                    <VisualState.Setters>
-                                        <Setter Target="RevealButton.Visibility" Value="Visible" />
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState x:Name="ButtonCollapsed" />
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-
-                        <ContentPresenter
-                            x:Name="HeaderContentPresenter"
-                            Grid.Row="0"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,0,4"
-                            Content="{TemplateBinding Header}"
-                            ContentTemplate="{TemplateBinding HeaderTemplate}"
-                            Foreground="{ThemeResource TextControlHeaderForeground}"
-                            TextWrapping="Wrap"
-                            Visibility="Collapsed" />
-                        <Border
-                            x:Name="BorderElement"
-                            Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            MinHeight="{TemplateBinding MinHeight}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{TemplateBinding CornerRadius}" />
-                        <ScrollViewer
-                            x:Name="ContentElement"
-                            Grid.Row="1"
-                            Foreground="{TemplateBinding Foreground}"
-                            HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
-                            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                            VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
-                            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
-                            Margin="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            IsTabStop="False"
-                            ZoomMode="Disabled"
-                            AutomationProperties.AccessibilityView="Raw" />
-                        <TextBlock
-                            x:Name="PlaceholderTextContentPresenter"
-                            Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            Margin="{TemplateBinding BorderThickness}"
-                            Padding="{TemplateBinding Padding}"
-                            Foreground="{ThemeResource TextControlPlaceholderForeground}"
-                            Text="{TemplateBinding PlaceholderText}"
-                            IsHitTestVisible="False" />
-                        <ToggleButton
-                            x:Name="RevealButton"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Width="30"
-                            Padding="0"
-                            Background="Transparent"
-                            BorderBrush="Transparent"
-                            IsTabStop="False"
-                            Visibility="Collapsed"
-                            VerticalAlignment="Stretch">
-                            <FontIcon
-                                Glyph="&#xF78D;"
-                                FontSize="12"
-                                Foreground="{TemplateBinding Foreground}" />
-                        </ToggleButton>
-                        <ContentPresenter
-                            x:Name="DescriptionPresenter"
-                            Grid.Row="2"
-                            Grid.ColumnSpan="2"
-                            Content="{TemplateBinding Description}"
-                            Foreground="{ThemeResource SystemControlDescriptionTextForegroundBrush}"
-                            AutomationProperties.AccessibilityView="Raw" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style
@@ -819,5 +712,4 @@
     </Style>-->
 
 </ResourceDictionary>
-
 
