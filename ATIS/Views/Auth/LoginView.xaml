@@ -27,7 +27,23 @@
             <Button
                 loc:Uids.Uid="Button_Login"
                 Click="LoginButton_Click"
-                IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}" />
+                FocusVisualPrimaryBrush="{ThemeResource LoginButtonFocusBrush}"
+                FocusVisualPrimaryThickness="2"
+                FocusVisualSecondaryThickness="0"
+                IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}">
+                <Button.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.ThemeDictionaries>
+                            <ResourceDictionary x:Key="Default">
+                                <SolidColorBrush x:Key="LoginButtonFocusBrush" Color="#0067C0" />
+                            </ResourceDictionary>
+                            <ResourceDictionary x:Key="HighContrast">
+                                <SolidColorBrush x:Key="LoginButtonFocusBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+                            </ResourceDictionary>
+                        </ResourceDictionary.ThemeDictionaries>
+                    </ResourceDictionary>
+                </Button.Resources>
+            </Button>
 
             <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 
