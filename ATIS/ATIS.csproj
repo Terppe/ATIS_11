@@ -438,30 +438,17 @@
 
 
 	<ItemGroup>
-		<Content Remove="Assets\flagge_D.gif" />
-		<Content Remove="Assets\flagge_FR.jpg" />
-		<Content Remove="Assets\flagge_PT.png" />
-		<Content Remove="Assets\flagge_SP.png" />
-		<Content Remove="Assets\flagge_USA.jpg" />
 		<Content Remove="Assets\Fluent\country.png" />
 		<Content Remove="Assets\Fluent\folder.png" />
-		<Content Remove="Assets\Fluent\icons8-first-flag-of-the-usa-96.png" />
 		<Content Remove="Assets\Store\SplashScreen.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Assets\Bio.png" />
-		<None Remove="Assets\Canada.png" />
-		<None Remove="Assets\Eol.png" />
 		<None Remove="Assets\Fluent\france.png" />
 		<None Remove="Assets\Fluent\germany.png" />
 		<None Remove="Assets\Fluent\log.png" />
 		<None Remove="Assets\Fluent\spain.png" />
 		<None Remove="Assets\Fluent\usa.png" />
-		<None Remove="Assets\Life.png" />
-		<None Remove="Assets\Mexico.png" />
-		<None Remove="Assets\splash.jpg" />
-		<None Remove="Assets\Usa.png" />
 		<None Remove="DesignSystem\Components\AtisCard.xaml" />
 		<None Remove="DesignSystem\Components\LoadingOverlayControl.xaml" />
 		<None Remove="DesignSystem\Controls\ListHeader\TwoColumnHeaderControl.xaml" />
