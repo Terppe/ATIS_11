@@ -18,5 +18,6 @@
     <converters:ImageSourceConverter x:Key="ImageSourceConverter" />
     <converters:DateConverter x:Key="DateConverter" />
     <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 </ResourceDictionary>
 
