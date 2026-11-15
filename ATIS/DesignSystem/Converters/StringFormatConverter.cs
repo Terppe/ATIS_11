@@ -2,7 +2,7 @@
 using Microsoft.UI.Xaml.Data;
 using static SkiaSharp.HarfBuzz.SKShaper;
 
-namespace ATIS.Helpers.Converters;
+namespace ATIS.DesignSystem.Converters;
 
 class StringFormatConverter : IValueConverter
 {

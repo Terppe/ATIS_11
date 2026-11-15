@@ -1,13 +1,16 @@
 ﻿using Microsoft.UI.Xaml.Data;
 
-namespace ATIS.Helpers.Converters;
+namespace ATIS.DesignSystem.Converters;
 
-
-public class InvertBoolConverter : IValueConverter
+public class NotNullToBoolConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
-        => value is bool b ? !b : value;
+    {
+        return value != null;
+    }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
-        => throw new NotImplementedException();
+    {
+        throw new NotImplementedException();
+    }
 }

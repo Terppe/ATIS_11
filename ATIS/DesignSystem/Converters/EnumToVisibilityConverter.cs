@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.UI.Xaml.Data;
 
-namespace ATIS.Helpers.Converters;
+namespace ATIS.DesignSystem.Converters;
 
-public class NullToVisibilityConverter : IValueConverter
+public class EnumToVisibilityConverter : IValueConverter
 {
+    public bool Invert { get; set; }
+
     public object Convert(object value, Type targetType, object parameter, string language)
-        => value == null ? Visibility.Collapsed : Visibility.Visible;
+    {
+        bool match = value?.ToString() == parameter?.ToString();
+        if (Invert) match = !match;
+        return match ? Visibility.Visible : Visibility.Collapsed;
+    }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
         => throw new NotImplementedException();

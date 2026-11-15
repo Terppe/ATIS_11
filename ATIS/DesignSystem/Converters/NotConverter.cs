@@ -1,4 +1,4 @@
-﻿namespace ATIS.Helpers.Converters;
+﻿namespace ATIS.DesignSystem.Converters;
 /// <summary>
 /// Provides static methods for use in x:Bind function binding to convert bound values to the required value.
 /// </summary>

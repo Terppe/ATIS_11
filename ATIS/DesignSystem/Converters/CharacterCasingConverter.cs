@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Markup;
 
-namespace ATIS.Helpers.Converters;
+namespace ATIS.DesignSystem.Converters;
 
 //[ValueConversion(typeof(string), typeof(string))]
 public class CharacterCasingConverter : MarkupExtension, IValueConverter

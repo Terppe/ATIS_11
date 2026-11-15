@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Data;
 
-namespace ATIS.Helpers.Converters;
+namespace ATIS.DesignSystem.Converters;
 public class VisibleWhenZeroConverter : IValueConverter
 {
     public object Convert(object v, Type t, object p, string l) =>

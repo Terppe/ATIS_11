@@ -1,16 +1,12 @@
 ﻿using Microsoft.UI.Xaml.Data;
 
-namespace ATIS.Helpers.Converters;
+namespace ATIS.DesignSystem.Converters;
 
-public class NotNullToBoolConverter : IValueConverter
+public class NotNullToCollapsedConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
-    {
-        return value != null;
-    }
+        => value != null ? Visibility.Collapsed : Visibility.Visible;
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
-    {
-        throw new NotImplementedException();
-    }
+        => throw new NotImplementedException();
 }
