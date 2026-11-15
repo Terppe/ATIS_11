@@ -1438,4 +1438,6 @@ Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise 
 ----------------------------------------
 15.11.2026 11:30 Uhr Converter überprüfen ob benötigt. 
 ----------------------------------------
-15.11.2026 14:30 Uhr Ordner Helpers bereinigt
+15.11.2026 14:30 Uhr Ordner Helpers + Assets bereinigt
+----------------------------------------
+15.11.2026 16:30 Uhr Resources-Dateien
