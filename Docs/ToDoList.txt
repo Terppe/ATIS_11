@@ -1435,3 +1435,5 @@ Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise 
 13.11.2026 11:30 Uhr websites.json anfangen
 ----------------------------------------
 14.11.2026 11:30 Uhr Letzten texte in Resources.resw und PasswordBox und Button mit Fokus.
+----------------------------------------
+15.11.2026 11:30 Uhr Converter überprüfen ob benötigt. 
