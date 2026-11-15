@@ -6,7 +6,7 @@ using ATIS.Views.Report.Pdf.TblDisease;
 
 public sealed class TblDiseaseDetailViewModel : ObservableObject
 {
-    private readonly IDataService _dataService;
+    private readonly IDataService? _dataService;
 
     // -----------------------------
     //  SELECTED Disease

@@ -4,7 +4,7 @@ namespace ATIS.DesignSystem.Converters;
 
 public class DoubleToStringConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, string language)
+    public object? Convert(object value, Type targetType, object parameter, string language)
     {
         //if (value is double doubleValue)
         //{

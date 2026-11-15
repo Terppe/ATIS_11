@@ -2,7 +2,7 @@
 
 internal class GetIcons
 {
-    private static IconElement GetIcon(string imagePath)
+    private static IconElement? GetIcon(string imagePath)
     {
         return string.IsNullOrEmpty(imagePath)
             ? null

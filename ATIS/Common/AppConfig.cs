@@ -20,7 +20,7 @@ public class AppConfig : JsonSettings, IVersionable
 
         return Path.Combine(folder, "settings.json");
     }
-    public Version? Version { get; set; }
+    public Version Version { get; set; }
 
     public virtual int? MainWindowX { get; set; }
     public virtual int? MainWindowY { get; set; }
