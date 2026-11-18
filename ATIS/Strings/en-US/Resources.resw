@@ -1521,6 +1521,9 @@
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="New_Version" xml:space="preserve">
+    <value>New Version</value>
+  </data>
   <data name="No_Log_File_Is_Available_For_Today" xml:space="preserve">
     <value>No logfile vailable today</value>
   </data>
@@ -1532,6 +1535,9 @@
   </data>
   <data name="Ordo" xml:space="preserve">
     <value>Ordo</value>
+  </data>
+  <data name="Open_Release" xml:space="preserve">
+    <value>Open Release</value>
   </data>
   <data name="OrdoTab" xml:space="preserve">
     <value>Ordo</value>
@@ -1973,6 +1979,9 @@
   </data>
   <data name="Useful" xml:space="preserve">
     <value>Useful</value>
+  </data>
+  <data name="Update_Available" xml:space="preserve">
+    <value>Update available</value>
   </data>
   <data name="Update_Settings_Could_Not_Be_Loaded" xml:space="preserve">
     <value>Update_Settings_Could_Not_Be_Loaded</value>
@@ -3203,6 +3212,9 @@
   </data>
   <data name="Karnivore" xml:space="preserve">
     <value>Karnivore</value>
+  </data>
+  <data name="Later" xml:space="preserve">
+    <value>Later</value>
   </data>
   <data name="Herbivore" xml:space="preserve">
     <value>Herbivore</value>

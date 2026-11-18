@@ -65,8 +65,6 @@
                                         MinHeight="46"
                                         VerticalContentAlignment="Center"
                                         loc:Uids.Uid="SearchBox_Search"
-                                        Background="White"
-                                        Foreground="#15333A"
                                         QueryIcon="Find"
                                         QuerySubmitted="HomeSearchBox_QuerySubmitted" />
                                     <Button

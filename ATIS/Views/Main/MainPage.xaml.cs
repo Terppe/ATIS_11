@@ -45,6 +45,7 @@ using ATIS.Views.Modules.TblUserProfile;
 using ATIS.Views.Search;
 using ATIS.Views.Settings;
 using ATIS.Views.User;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml.Media;
@@ -277,6 +278,7 @@ public sealed partial class MainPage : Page
         {
             XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("Login"),
+            RequestedTheme = App.MainRoot!.ActualTheme,
             Content = loginView,
             CloseButtonText = loc.GetLocalizedString("Close")
         };
@@ -315,6 +317,7 @@ public sealed partial class MainPage : Page
         {
             XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("Register"),
+            RequestedTheme = App.MainRoot!.ActualTheme,
             Content = registerView,
             CloseButtonText = loc.GetLocalizedString("Close")
         };
@@ -332,6 +335,7 @@ public sealed partial class MainPage : Page
         var dialog = new ContentDialog
         {
             XamlRoot = XamlRoot,
+            RequestedTheme = App.MainRoot!.ActualTheme,
             Title = loc.GetLocalizedString("ForgotPassword"),
             Content = view,
             CloseButtonText = loc.GetLocalizedString("Close")
@@ -349,6 +353,7 @@ public sealed partial class MainPage : Page
         {
             XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("ChangePassword"),
+            RequestedTheme = App.MainRoot!.ActualTheme,
             Content = view,
             CloseButtonText = loc.GetLocalizedString("Close")
         };
@@ -365,6 +370,7 @@ public sealed partial class MainPage : Page
 
     public async Task CheckForUpdatesAsync(bool showStatusMessages = true)
     {
+        var loc = Localizer.Get();
         if (XamlRoot == null)
         {
             var loaded = new TaskCompletionSource();
@@ -391,9 +397,10 @@ public sealed partial class MainPage : Page
                 var dialog = new ContentDialog
                 {
                     XamlRoot = XamlRoot,
+                    RequestedTheme = App.MainRoot!.ActualTheme,
                     Title = title,
                     Content = message,
-                    CloseButtonText = "Schließen"
+                    CloseButtonText = loc.GetLocalizedString("Close")
                 };
 
                 await dialog.ShowAsync();
@@ -450,10 +457,11 @@ public sealed partial class MainPage : Page
             var updateDialog = new ContentDialog
             {
                 XamlRoot = XamlRoot,
-                Title = "Update verfügbar",
-                Content = $"Neue Version: {tag}",
-                PrimaryButtonText = "Release öffnen",
-                CloseButtonText = "Später"
+                Title = loc.GetLocalizedString("Update_Available"),
+                RequestedTheme = App.MainRoot!.ActualTheme,
+                Content = $"{loc.GetLocalizedString("New_Version")}: {tag}",
+                PrimaryButtonText = loc.GetLocalizedString("Open_Release"),
+                CloseButtonText = loc.GetLocalizedString("Later")
             };
 
             try
@@ -859,7 +867,7 @@ public sealed partial class MainPage : Page
         }
     }
 
-    public static List<string?> CheckItems(List<object> sourceList, List<string> resultList, string searchText)
+    public static List<string?> CheckItems(List<object> sourceList, List<string?> resultList, string searchText)
     {
         foreach (var item in sourceList)
         {
