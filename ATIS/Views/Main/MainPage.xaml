@@ -174,8 +174,7 @@
                         loc:Uids.Uid="AutoSuggestBox_Main_Search"
                         Loaded="SearchSearchBox_OnLoaded"
                         QueryIcon="Find"
-                        QuerySubmitted="AutoSuggestBox_QuerySubmitted"
-                        TextChanged="AutoSuggestBox_TextChanged" />
+                        QuerySubmitted="AutoSuggestBox_QuerySubmitted" />
 
                     <TextBlock
                         x:Name="TbUser"

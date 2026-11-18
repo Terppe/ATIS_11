@@ -18,7 +18,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // SpeciesName (Pflicht)
     // ---------------------------------------------------------
-    [StringLength(100)] private string? _speciesName;
+    [StringLength(100)]
+    private string? _speciesName;
 
     public string? SpeciesName
     {
@@ -36,7 +37,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Subspecies
     // ---------------------------------------------------------
-    [StringLength(100)] private string? _subspecies;
+    [StringLength(100)]
+    private string? _subspecies;
 
     public string? Subspecies
     {
@@ -54,7 +56,8 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Divers
     // ---------------------------------------------------------
-    [StringLength(100)] private string? _divers;
+    [StringLength(100)]
+    private string? _divers;
 
     public string? Divers
     {
@@ -611,7 +614,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         ClearErrors(nameof(GenusId));
         var loc = Localizer.Get();
 
-        if (GenusId == null || GenusId <= 0)
+        if (GenusId <= 0)
             AddError(nameof(GenusId), loc.GetLocalizedString("Error_GenusId_Required"));
 
         UpdateErrorProperty(nameof(GenusId));

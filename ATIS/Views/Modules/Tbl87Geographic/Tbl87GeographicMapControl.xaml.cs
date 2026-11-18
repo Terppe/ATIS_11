@@ -43,7 +43,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
             ["North America/Caribbean"] = (40, -100, 4.4)
         };
 
-    private void GetContinentDefaults(string? continent, out double latitude, out double longitude, out double zoomLevel)
+    private static void GetContinentDefaults(string? continent, out double latitude, out double longitude, out double zoomLevel)
     {
         if (!string.IsNullOrWhiteSpace(continent) && _continentDefaults.TryGetValue(continent, out var value))
         {
@@ -72,12 +72,12 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     // ---------------------------------------------------------
     private bool _isInitializingCombos;
     private bool _isApplyingItem;
+    private bool _addPointMode;
     private bool _isRefreshingView;
     private bool _mapInitialized;
     private ILayer? _markerLayer;
     private ILayer? _lineLayer;
-    private bool _addPointMode = false;
-    private bool _replacePointMode = false;
+    private bool _replacePointMode;
     private int _selectedPointIndex = -1;
     private int _contextPointIndex = -1;
     private (double lat, double lon)? _contextWorldPosition = null;
@@ -94,13 +94,13 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     #region small Helpers
 
     [System.Diagnostics.Conditional("DEBUG")]
-    private void LogDebug(string message)
+    private static void LogDebug(string message)
     {
         System.Diagnostics.Debug.WriteLine(message);
     }
 
     [System.Diagnostics.Conditional("DEBUG")]
-    private void LogGuard(string source, string reason)
+    private static void LogGuard(string source, string reason)
     {
         System.Diagnostics.Debug.WriteLine($"{source}: skip ({reason})");
     }
@@ -360,7 +360,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
     #region Rendering
     // ---------------------------------------------------------
-    private List<Coordinate> OrderCoordinatesForPolygon(List<Coordinate> coordinates)
+    private static List<Coordinate> OrderCoordinatesForPolygon(List<Coordinate> coordinates)
     {
         if (coordinates == null || coordinates.Count < 3)
             return coordinates ?? new List<Coordinate>();
@@ -541,7 +541,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         UpdatePoints();
         MyMap.Refresh();
     }
-    private Polygon CreateCircle(double centerX, double centerY, double radius, int segments = 40)
+    private static Polygon CreateCircle(double centerX, double centerY, double radius, int segments = 40)
     {
         var coordinates = new Coordinate[segments + 1];
 
@@ -1114,7 +1114,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
     #region Legacy/compat helpers (nur wenn wirklich noch benutzt)
     // ---------------------------------------------------------
-    private double ConvertLegacyZoomToResolution(double zoomLevel)
+    private static double ConvertLegacyZoomToResolution(double zoomLevel)
     {
         if (zoomLevel <= 0 || double.IsNaN(zoomLevel) || double.IsInfinity(zoomLevel))
             return 8000;
@@ -1127,7 +1127,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
         return resolution;
     }
-    private double ConvertResolutionToLegacyZoom(double resolution)
+    private static double ConvertResolutionToLegacyZoom(double resolution)
     {
         if (resolution <= 0 || double.IsNaN(resolution) || double.IsInfinity(resolution))
             return 5.0;
@@ -1163,7 +1163,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         var control = (Tbl87GeographicMapControl)d;
         var item = e.NewValue as Models.Tbl87Geographic;
 
-        control.LogDebug($"OnItemChanged: oldId={(e.OldValue as Models.Tbl87Geographic)?.GeographicId}, newId={item?.GeographicId}");
+        LogDebug($"OnItemChanged: oldId={(e.OldValue as Models.Tbl87Geographic)?.GeographicId}, newId={item?.GeographicId}");
 
         control.ApplyItem(item);
     }

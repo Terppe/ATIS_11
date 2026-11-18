@@ -13,7 +13,7 @@ namespace ATIS.Views.Modules.Tbl87Geographic
 
         public Tbl87GeographicMapWindow(Models.Tbl87Geographic item)
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             MapControl.Item = item;
             MapControl.CloseRequested += MapControl_CloseRequested;
@@ -36,7 +36,7 @@ namespace ATIS.Views.Modules.Tbl87Geographic
             if (_hasMapChanges)
                 MapStateCommitted?.Invoke(this, EventArgs.Empty);
 
-            this.Close();
+            Close();
         }
 
 

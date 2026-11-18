@@ -31,7 +31,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
     public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
     private static string FormatValidity(bool? valid, string? validYear)
     {
-        string status = valid switch
+        var status = valid switch
         {
             true => Loc("Valid"),
             false => Loc("Invalid"),
@@ -872,7 +872,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                                     Title = loc.GetLocalizedString("PdfImage_Error_Title"),
                                     Content = string.Format(loc.GetLocalizedString("PdfImage_Error"), ex.ToString()),
                                     CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                                    XamlRoot = App.MainPageInstance.Content.XamlRoot
+                                    XamlRoot = App.MainPageInstance?.Content.XamlRoot
                                 };
 
                                 errorDialog.ShowAsync();

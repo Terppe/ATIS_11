@@ -24,6 +24,7 @@
 
             <TextBlock loc:Uids.Uid="TextBlock_Email" />
             <TextBox
+                Margin="0,-20,0,0"
                 InputScope="EmailSmtpAddress"
                 IsSpellCheckEnabled="False"
                 IsTextPredictionEnabled="False"
@@ -31,18 +32,6 @@
                 Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBlock loc:Uids.Uid="TextBlock_Password" />
-            <!--<PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />-->
-
-            <!--<PasswordBox
-            x:Name="PwdBox"
-            Style="{StaticResource AtisPasswordBox}">
-
-            <PasswordBox.Resources>
-            <SolidColorBrush
-            x:Key="TextControlBackgroundFocused"
-            Color="{ThemeResource SolidBackgroundFillColorSecondary}" />
-            </PasswordBox.Resources>
-            </PasswordBox>-->
 
             <PasswordBox x:Name="PwdBox" Style="{StaticResource AtisPasswordBox}" />
 
@@ -51,19 +40,6 @@
                 Click="LoginButton_Click"
                 IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
                 Style="{StaticResource AtisSecondaryButtonFocus}" />
-
-            <!--<Button
-            loc:Uids.Uid="Button_Login"
-            Click="LoginButton_Click"
-            IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
-            Style="{StaticResource AtisSecondaryButton}"
-            UseSystemFocusVisuals="True"
-            FocusVisualPrimaryThickness="2"
-            FocusVisualSecondaryThickness="0">
-            <Button.FocusVisualPrimaryBrush>
-            <SolidColorBrush Color="#0067C0" />
-            </Button.FocusVisualPrimaryBrush>
-            </Button>-->
 
             <ProgressRing IsActive="{x:Bind ViewModel.IsBusy, Mode=OneWay}" />
 

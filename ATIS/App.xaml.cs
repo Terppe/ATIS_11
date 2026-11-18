@@ -284,7 +284,7 @@ public partial class App : Application
     // 2. CHOOSE SERVER
     // ---------------------------------------------------------
 
-    private async Task<bool> ChooseDbServerAsync(List<string> servers)
+    private static async Task<bool> ChooseDbServerAsync(List<string> servers)
     {
         if (MainWindow?.Content is not FrameworkElement root ||
             root.XamlRoot is null)
@@ -354,7 +354,7 @@ public partial class App : Application
         }
     }
 
-    private void ApplyCulture()
+    private static void ApplyCulture()
     {
         Cult = CultureSettings.LoadOrMigrate(
             AppHelper.Settings, ConfigurationManager.AppSettings.Get("Culture"));
@@ -423,7 +423,7 @@ public partial class App : Application
         }
     }
 
-    private void InitializeMainWindowBounds()
+    private static void InitializeMainWindowBounds()
     {
         var window = MainWindow
             ?? throw new InvalidOperationException("MainWindow wurde noch nicht erstellt.");

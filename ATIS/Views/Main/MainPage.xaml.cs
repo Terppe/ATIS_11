@@ -168,9 +168,9 @@ public sealed partial class MainPage : Page
             NavView.SelectedItem = NavSearch;
         }
     }
-    private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    {
-    }
+    //private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    //{
+    //}
 
     private void SearchSearchBox_OnLoaded(object sender, RoutedEventArgs e)
     {
@@ -255,7 +255,7 @@ public sealed partial class MainPage : Page
         var loginView = new LoginView();
         var dialog = new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
+            XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("Login"),
             Content = loginView,
             CloseButtonText = loc.GetLocalizedString("Close")
@@ -293,7 +293,7 @@ public sealed partial class MainPage : Page
         var registerView = new RegisterView();
         var dialog = new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
+            XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("Register"),
             Content = registerView,
             CloseButtonText = loc.GetLocalizedString("Close")
@@ -311,7 +311,7 @@ public sealed partial class MainPage : Page
         var view = new ForgotPasswordView();
         var dialog = new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
+            XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("ForgotPassword"),
             Content = view,
             CloseButtonText = loc.GetLocalizedString("Close")
@@ -327,7 +327,7 @@ public sealed partial class MainPage : Page
         var view = new ChangePasswordView();
         var dialog = new ContentDialog
         {
-            XamlRoot = this.XamlRoot,
+            XamlRoot = XamlRoot,
             Title = loc.GetLocalizedString("ChangePassword"),
             Content = view,
             CloseButtonText = loc.GetLocalizedString("Close")
@@ -839,7 +839,7 @@ public sealed partial class MainPage : Page
         }
     }
 
-    public static List<string?> CheckItems(List<object> sourceList, List<string?> resultList, string searchText)
+    public static List<string?> CheckItems(List<object> sourceList, List<string> resultList, string searchText)
     {
         foreach (var item in sourceList)
         {

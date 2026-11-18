@@ -1428,7 +1428,7 @@ master	Ein Branch darin, üblicherweise der gemeinsame Hauptstand
 copilot/…	Weitere Branches mit vorgeschlagenen Änderungen
 Commit	Änderungen lokal als nachvollziehbaren Stand speichern
 Push	Diese Commits auf denselben Branch bei GitHub übertragen
-Pull	Änderungen von GitHub auf deinen lokalen Branch holen
+Pull	Änderungen von GitHub auf deinen lokalen Branch holen *****
 Merge	Änderungen eines Branches in einen anderen übernehmen
 Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise im Branch ATIS_11 arbeitest, aktualisiert Push normalerweise den GitHub-Branch ATIS_11 – nicht master.
 ----------------------------------------
@@ -1440,4 +1440,10 @@ Push allein aktualisiert nicht automatisch master. Wenn du lokal beispielsweise 
 ----------------------------------------
 15.11.2026 14:30 Uhr Ordner Helpers + Assets bereinigt
 ----------------------------------------
-15.11.2026 16:30 Uhr Resources-Dateien
+15.11.2026 16:30 Uhr Resources-Dateien von hand gelöscht. jetzt neue listen für French und spanish
+----------------------------------------
+16.11.2026 16:30 Uhr Resources-Dateien fra, sp neu. Frankreich fertig. Fehlt noch Spanien
+----------------------------------------
+17.11.2026 14:30 Uhr Resources-Dateien Rest Fra, dann Spain übersetzung. Bis PDF fertig
+----------------------------------------
+18.11.2026 10:30 Uhr Nuget. SDK 2.7.0. Resources-Dateien Spain

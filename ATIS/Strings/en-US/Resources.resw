@@ -133,7 +133,7 @@
     <value>Select an item from the list.</value>
   </data>
   <data name="Shell_ListDetails.Content" xml:space="preserve">
-    <value>ListDetails</value>
+    <value>Listdetails</value>
   </data>
   <data name="Shell_DataGrid.Content" xml:space="preserve">
     <value>DataGrid</value>
@@ -175,7 +175,7 @@
     <value>Privacy Statement</value>
   </data>
   <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
-    <value>https://YourPrivacyUrlGoesHere/</value>
+    <value>https://Terppe/</value>
   </data>
   <data name="Atis" xml:space="preserve">
     <value>ATIS</value>
@@ -495,69 +495,6 @@
   <data name="MenuFlyout_Add_Tribus.Text" xml:space="preserve">
     <value>Add Tribus</value>
   </data>
-  <data name="MenuFlyout_Copy_Class.Text" xml:space="preserve">
-    <value>Copy Class</value>
-  </data>
-  <data name="MenuFlyout_Copy_Comment.Text" xml:space="preserve">
-    <value>Copy Comment</value>
-  </data>
-  <data name="MenuFlyout_Copy_Family.Text" xml:space="preserve">
-    <value>Copy Family</value>
-  </data>
-  <data name="MenuFlyout_Copy_FiSpecies.Text" xml:space="preserve">
-    <value>Copy FiSpecies</value>
-  </data>
-  <data name="MenuFlyout_Copy_Genus.Text" xml:space="preserve">
-    <value>Copy Genus</value>
-  </data>
-  <data name="MenuFlyout_Copy_Infraclass.Text" xml:space="preserve">
-    <value>Copy Infraclass</value>
-  </data>
-  <data name="MenuFlyout_Copy_Infrafamily.Text" xml:space="preserve">
-    <value>Copy Infrafamily</value>
-  </data>
-  <data name="MenuFlyout_Copy_Infraordo.Text" xml:space="preserve">
-    <value>Copy Infraordo</value>
-  </data>
-  <data name="MenuFlyout_Copy_Infratribus.Text" xml:space="preserve">
-    <value>Copy Infratribus</value>
-  </data>
-  <data name="MenuFlyout_Copy_Legio.Text" xml:space="preserve">
-    <value>Copy Legio</value>
-  </data>
-  <data name="MenuFlyout_Copy_Ordo.Text" xml:space="preserve">
-    <value>Copy Ordo</value>
-  </data>
-  <data name="MenuFlyout_Copy_Reference_Author.Text" xml:space="preserve">
-    <value>Copy Reference Puplication</value>
-  </data>
-  <data name="MenuFlyout_Copy_Reference_Expert.Text" xml:space="preserve">
-    <value>Copy Reference Expert</value>
-  </data>
-  <data name="MenuFlyout_Copy_Reference_Source.Text" xml:space="preserve">
-    <value>Copy Reference Source</value>
-  </data>
-  <data name="MenuFlyout_Copy_Subclass.Text" xml:space="preserve">
-    <value>Copy Subclass</value>
-  </data>
-  <data name="MenuFlyout_Copy_Subfamily.Text" xml:space="preserve">
-    <value>Copy Subfamily</value>
-  </data>
-  <data name="MenuFlyout_Copy_Subordo.Text" xml:space="preserve">
-    <value>Copy Subordo</value>
-  </data>
-  <data name="MenuFlyout_Copy_Subtribus.Text" xml:space="preserve">
-    <value>Copy Subtribus</value>
-  </data>
-  <data name="MenuFlyout_Copy_Superfamily.Text" xml:space="preserve">
-    <value>Copy Superfamily</value>
-  </data>
-  <data name="MenuFlyout_Copy_Supertribus.Text" xml:space="preserve">
-    <value>Copy Supertribus</value>
-  </data>
-  <data name="MenuFlyout_Copy_Tribus.Text" xml:space="preserve">
-    <value>Copy Tribus</value>
-  </data>
   <data name="MenuFlyout_Delete_Class.Text" xml:space="preserve">
     <value>Delete Class</value>
   </data>
@@ -642,9 +579,6 @@
   <data name="MenuFlyout_Refresh_Family.Text" xml:space="preserve">
     <value>Refresh Family</value>
   </data>
-  <data name="MenuFlyout_Refresh_FiSpecies.Text" xml:space="preserve">
-    <value>Refresh FiSpecies</value>
-  </data>
   <data name="MenuFlyout_Refresh_Infraclass.Text" xml:space="preserve">
     <value>Refresh Infraclass</value>
   </data>
@@ -682,7 +616,7 @@
     <value>Refresh Subordo</value>
   </data>
   <data name="MenuFlyout_Refresh_Subtribus.Text" xml:space="preserve">
-    <value>Refresh_Subtribus</value>
+    <value>Refresh Subtribus</value>
   </data>
   <data name="MenuFlyout_Refresh_Superclass.Text" xml:space="preserve">
     <value>Refresh Superclass</value>
@@ -710,9 +644,6 @@
   </data>
   <data name="MenuFlyout_Save_Food.Text" xml:space="preserve">
     <value>Save Food</value>
-  </data>
-  <data name="MenuFlyout_Save_FiSpecies.Text" xml:space="preserve">
-    <value>Save FiSpecies</value>
   </data>
   <data name="MenuFlyout_Save_Genus.Text" xml:space="preserve">
     <value>Save Genus</value>
@@ -775,7 +706,7 @@
     <value>About</value>
   </data>
   <data name="Nav_Admin_Area.Content" xml:space="preserve">
-    <value>Admin_Area</value>
+    <value>Admin Area</value>
   </data>
   <data name="Nav_Authentication.Content" xml:space="preserve">
     <value>Authentication</value>
@@ -809,12 +740,6 @@
   </data>
   <data name="Nav_Database.Content" xml:space="preserve">
     <value>Database</value>
-  </data>
-  <data name="Nav_Division.Content" xml:space="preserve">
-    <value>Division</value>
-  </data>
-  <data name="Nav_Divisions.Content" xml:space="preserve">
-    <value>Divisions</value>
   </data>
   <data name="Nav_Experts.Content" xml:space="preserve">
     <value>Experts</value>
@@ -856,7 +781,7 @@
     <value>Image Resizer</value>
   </data>
   <data name="Nav_Images.Content" xml:space="preserve">
-    <value>Images/Videos</value>
+    <value>Images/Videos/Audios</value>
   </data>
   <data name="Nav_Infraclass.Content" xml:space="preserve">
     <value>Infraclass</value>
@@ -900,15 +825,6 @@
   <data name="Nav_Phylums.Content" xml:space="preserve">
     <value>Phylums</value>
   </data>
-  <data name="Nav_PlSpecies.Content" xml:space="preserve">
-    <value>Species</value>
-  </data>
-  <data name="Nav_PowerRename.Content" xml:space="preserve">
-    <value>Power Rename</value>
-  </data>
-  <data name="Nav_PowerToysRun.Content" xml:space="preserve">
-    <value>PowerToys Run</value>
-  </data>
   <data name="Nav_RefAuthors.Content" xml:space="preserve">
     <value>Ref Puplications</value>
   </data>
@@ -948,17 +864,11 @@
   <data name="Nav_Subclass.Content" xml:space="preserve">
     <value>Subclass</value>
   </data>
-  <data name="Nav_Subdivision.Content" xml:space="preserve">
-    <value>Subdivision</value>
-  </data>
   <data name="Nav_Subfamily.Content" xml:space="preserve">
     <value>Subfamily</value>
   </data>
   <data name="Nav_Subordo.Content" xml:space="preserve">
     <value>Suborder</value>
-  </data>
-  <data name="Nav_Subphylum.Content" xml:space="preserve">
-    <value>Sub-Phylum/-Division</value>
   </data>
   <data name="Nav_Subtribus.Content" xml:space="preserve">
     <value>Subtribus</value>
@@ -985,97 +895,7 @@
     <value>UserProfiles</value>
   </data>
   <data name="Nav_User_Area.Content" xml:space="preserve">
-    <value>User_Area</value>
-  </data>
-  <data name="TextBlock_Edit_Infratribus.Text" xml:space="preserve">
-    <value>Edit Infratribus</value>
-  </data>
-  <data name="TextBlock_Edit_Infrafamily.Text" xml:space="preserve">
-    <value>Edit Infrafamily</value>
-  </data>
-  <data name="TextBlock_Edit_Infraordo.Text" xml:space="preserve">
-    <value>Edit Infraordo</value>
-  </data>
-  <data name="TextBlock_Edit_Infraclass.Text" xml:space="preserve">
-    <value>Edit Infraclass</value>
-  </data>
-  <data name="TextBlock_Edit_Subtribus.Text" xml:space="preserve">
-    <value>Edit Subtribus</value>
-  </data>
-  <data name="TextBlock_Edit_Tribus.Text" xml:space="preserve">
-    <value>Edit Tribus</value>
-  </data>
-  <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
-    <value>Edit Supertribus</value>
-  </data>
-  <data name="TextBlock_Edit_Speciesgroup.Text" xml:space="preserve">
-    <value>Edit Speciesgroup</value>
-  </data>
-  <data name="TextBlock_Edit_Synonym.Text" xml:space="preserve">
-    <value>Edit Synonym</value>
-  </data>
-  <data name="TextBlock_Edit_Superclass.Text" xml:space="preserve">
-    <value>Edit Superclass</value>
-  </data>
-  <data name="TextBlock_Edit_Superfamily.Text" xml:space="preserve">
-    <value>Edit Superfamily</value>
-  </data>
-  <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
-    <value>Edit Genus</value>
-  </data>
-  <data name="TextBlock_Edit_Geographic.Text" xml:space="preserve">
-    <value>Edit Geographic</value>
-  </data>
-  <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
-    <value>Edit Class</value>
-  </data>
-  <data name="TextBlock_Edit_Disease.Text" xml:space="preserve">
-    <value>Edit Disease</value>
-  </data>
-  <data name="TextBlock_Edit_Miscellaneous.Text" xml:space="preserve">
-    <value>Edit Miscellaneous</value>
-  </data>
-  <data name="TextBlock_Edit_Regnum.Text" xml:space="preserve">
-    <value>Edit Regnum</value>
-  </data>
-  <data name="TextBlock_Edit_Species.Text" xml:space="preserve">
-    <value>Edit Species</value>
-  </data>
-  <data name="TextBlock_Edit_Phylum.Text" xml:space="preserve">
-    <value>Edit Phylum</value>
-  </data>
-  <data name="TextBlock_Edit_Ordo.Text" xml:space="preserve">
-    <value>Edit Ordo</value>
-  </data>
-  <data name="TextBlock_Edit_Name.Text" xml:space="preserve">
-    <value>Edit Name</value>
-  </data>
-  <data name="TextBlock_Edit_Family.Text" xml:space="preserve">
-    <value>Edit Family</value>
-  </data>
-  <data name="TextBlock_Edit_Food.Text" xml:space="preserve">
-    <value>Edit Food</value>
-  </data>
-  <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
-    <value>Edit Legio</value>
-  </data>
-  <data name="TextBlock_Edit_Image.Text" xml:space="preserve">
-    <value>Edit Image/Video</value>
-  </data>
-  <data name="TextBlock_Edit_Subphylum.Text" xml:space="preserve">
-    <value>Edit Subphylum</value>
-  </data>
-  <data name="TextBlock_Edit_Subclass.Text" xml:space="preserve">
-    <value>Edit Subclass</value>
-  </data>
-  <data name="TextBlock_Edit_Subfamily.Text" xml:space="preserve">
-    <value>Edit Subfamily</value>
-  </data>
-  <data name="TextBlock_Edit_Subspecies.Text" xml:space="preserve">
-    <value>Edit Subspecies</value>
-  </data>
-  <data name="TextBlock_Edit_Subordo.Text" xml:space="preserve">
-    <value>Edit Subordo</value>
+    <value>User Area</value>
   </data>
   <data name="TextBlock_Address.Text" xml:space="preserve">
     <value>Address</value>
@@ -1083,17 +903,11 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
-  <data name="Account_Delete_Done_Title" xml:space="preserve">
-    <value>Account Delete</value>
-  </data>
   <data name="Account_Delete_Password_Title" xml:space="preserve">
     <value>Passwort insert</value>
   </data>
   <data name="Account_Delete_Password_Message" xml:space="preserve">
     <value>Passwort insert to delete the Account</value>
-  </data>
-  <data name="Account_Delete_Done_Message" xml:space="preserve">
-    <value>Account Delete done </value>
   </data>
   <data name="TextBlock_Add.Text" xml:space="preserve">
     <value>New</value>
@@ -1115,9 +929,6 @@
   </data>
   <data name="TextBlock_Sync.Text" xml:space="preserve">
     <value>Refresh</value>
-  </data>
-  <data name="TextBlock_Edit.Text" xml:space="preserve">
-    <value>Edit</value>
   </data>
   <data name="TextBlock_ArticelTitle.Text" xml:space="preserve">
     <value>Articel/Chapter Title</value>
@@ -1183,7 +994,7 @@
     <value>Class/Superclasses</value>
   </data>
   <data name="TextBlock_Colour.Text" xml:space="preserve">
-    <value>Colour</value>
+    <value>Color</value>
   </data>
   <data name="TextBlock_Close.Text" xml:space="preserve">
     <value>Close</value>
@@ -1192,7 +1003,7 @@
     <value>Count ID</value>
   </data>
   <data name="TextBlock_Combo.Text" xml:space="preserve">
-    <value>Comboboxen</value>
+    <value>Combobox</value>
   </data>
   <data name="TextBlock_Comboboxes.Text" xml:space="preserve">
     <value>Comboboxes</value>
@@ -1259,18 +1070,6 @@
   </data>
   <data name="TextBlock_Divers.Text" xml:space="preserve">
     <value>Diverse</value>
-  </data>
-  <data name="TextBlock_Division.Text" xml:space="preserve">
-    <value>Subdivision Division Regnum</value>
-  </data>
-  <data name="TextBlock_DivisionId.Text" xml:space="preserve">
-    <value>Division ID</value>
-  </data>
-  <data name="TextBlock_DivisionName.Text" xml:space="preserve">
-    <value>Division Name</value>
-  </data>
-  <data name="TextBlock_DivisionName_Regnums.Text" xml:space="preserve">
-    <value>Division/Regnums</value>
   </data>
   <data name="TextBlock_EnglishName.Text" xml:space="preserve">
     <value>English Name</value>
@@ -1363,13 +1162,13 @@
     <value>Genus/Infratribus</value>
   </data>
   <data name="TextBlock_GenusName_Infratribusses.Text" xml:space="preserve">
-    <value>Genus/Infratribusses</value>
+    <value>Genusses/Infratribusses</value>
   </data>
   <data name="TextBlock_Genusses.Text" xml:space="preserve">
     <value>Genusses</value>
   </data>
   <data name="TextBlock_Genusses_Speciesgroups.Text" xml:space="preserve">
-    <value>Genusses/Sp-Groups</value>
+    <value>Genusses/Species-Groups</value>
   </data>
   <data name="TextBlock_GeographicId.Text" xml:space="preserve">
     <value>Geographic ID</value>
@@ -1459,7 +1258,7 @@
     <value>Import</value>
   </data>
   <data name="TextBlock_ImportingYear.Text" xml:space="preserve">
-    <value>ImportingYear</value>
+    <value>Importing Year</value>
   </data>
   <data name="TextBlock_Info.Text" xml:space="preserve">
     <value>Information</value>
@@ -1507,7 +1306,7 @@
     <value>Infrafamily/Subfamilies</value>
   </data>
   <data name="TextBlock_InfraordoId.Text" xml:space="preserve">
-    <value>Infraordo ID                </value>
+    <value>Infraordo ID       </value>
   </data>
   <data name="TextBlock_InfraordoName.Text" xml:space="preserve">
     <value>Infraordo Name                </value>
@@ -1690,7 +1489,7 @@
     <value>Memo Technic</value>
   </data>
   <data name="TextBlock_MimeType.Text" xml:space="preserve">
-    <value>MimeType</value>
+    <value>Mime Type</value>
   </data>
   <data name="TextBlock_Name.Text" xml:space="preserve">
     <value>Name</value>
@@ -1783,7 +1582,7 @@
     <value>Phylum / Regnum</value>
   </data>
   <data name="PdfExport_Hidden" xml:space="preserve">
-    <value>PdfExport Hidden</value>
+    <value>Pdf Export Hidden</value>
   </data>
   <data name="PdfExport_Success_Message" xml:space="preserve">
     <value>Pdf Export Successfull: {0}</value>
@@ -1827,15 +1626,6 @@
   <data name="TextBlock_Print.Text" xml:space="preserve">
     <value>PRINT</value>
   </data>
-  <data name="TextBlock_PlSpeciesId.Text" xml:space="preserve">
-    <value>PlSpecies ID</value>
-  </data>
-  <data name="TextBlock_PlSpeciesName.Text" xml:space="preserve">
-    <value>PlSpecies Name</value>
-  </data>
-  <data name="TextBlock_PlSpeciesses.Text" xml:space="preserve">
-    <value>PlSpeciesses</value>
-  </data>
   <data name="TextBlock_PublicationPlace.Text" xml:space="preserve">
     <value>Publication Place</value>
   </data>
@@ -1852,7 +1642,7 @@
     <value>Publisher Place</value>
   </data>
   <data name="TextBlock_Publisher_Place.Text" xml:space="preserve">
-    <value>Publisher/Place</value>
+    <value>Publisher/Town</value>
   </data>
   <data name="TextBlock_Publisher_Year.Text" xml:space="preserve">
     <value>Publisher/Year</value>
@@ -1980,15 +1770,6 @@
   <data name="TextBlock_SubclassName_Classes.Text" xml:space="preserve">
     <value>Subclass/Classes</value>
   </data>
-  <data name="TextBlock_SubdivisionId.Text" xml:space="preserve">
-    <value>Subdivision ID</value>
-  </data>
-  <data name="TextBlock_SubdivisionName.Text" xml:space="preserve">
-    <value>Subdivision Name</value>
-  </data>
-  <data name="TextBlock_SubdivisionName_Divisions.Text" xml:space="preserve">
-    <value>Subdivision/Divisions</value>
-  </data>
   <data name="TextBlock_Subfamilies.Text" xml:space="preserve">
     <value>Subfamilies</value>
   </data>
@@ -2033,9 +1814,6 @@
   </data>
   <data name="TextBlock_SubphylumName_Phylums.Text" xml:space="preserve">
     <value>Subphylum/Phylums</value>
-  </data>
-  <data name="TextBlock_Subphylums_Subdivisions.Text" xml:space="preserve">
-    <value>Subphylums/divisions</value>
   </data>
   <data name="TextBlock_Subregnum.Text" xml:space="preserve">
     <value>Subregnum</value>
@@ -2146,7 +1924,7 @@
     <value>Therapy</value>
   </data>
   <data name="TextBlock_TradeName.Text" xml:space="preserve">
-    <value>TradeName</value>
+    <value>Trade Name</value>
   </data>
   <data name="TextBlock_Tribus.Text" xml:space="preserve">
     <value>Tribus</value>
@@ -2272,10 +2050,10 @@
     <value>Business</value>
   </data>
   <data name="TextBox_CarboHardness1.Header" xml:space="preserve">
-    <value>CarboHardness1</value>
+    <value>CarboHardness 1</value>
   </data>
   <data name="TextBox_CarboHardness2.Header" xml:space="preserve">
-    <value>CarboHardness2</value>
+    <value>CarboHardness 2</value>
   </data>
   <data name="TextBox_City.Header" xml:space="preserve">
     <value>City</value>
@@ -2294,9 +2072,6 @@
   </data>
   <data name="TextBox_Divers.Header" xml:space="preserve">
     <value>Divers</value>
-  </data>
-  <data name="TextBox_DivisionName.Header" xml:space="preserve">
-    <value>Division Name</value>
   </data>
   <data name="TextBox_Email.Header" xml:space="preserve">
     <value>Email</value>
@@ -2332,7 +2107,7 @@
     <value>Filestream ID</value>
   </data>
   <data name="TextBox_FirstName.Header" xml:space="preserve">
-    <value>FirstName</value>
+    <value>Firstname</value>
   </data>
   <data name="TextBox_FishLength.Header" xml:space="preserve">
     <value>Fish Length</value>
@@ -2350,16 +2125,16 @@
     <value>German Name</value>
   </data>
   <data name="TextBox_Hardness1.Header" xml:space="preserve">
-    <value>Hardness1</value>
+    <value>Hardness 1</value>
   </data>
   <data name="TextBox_MemoHelpFood.Header" xml:space="preserve">
     <value>Help</value>
   </data>
   <data name="TextBox_Hardness2.Header" xml:space="preserve">
-    <value>Hardness2</value>
+    <value>Hardness 2</value>
   </data>
   <data name="TextBox_HomePageUrl.Header" xml:space="preserve">
-    <value>HomePageUrl</value>
+    <value>Homepage Url</value>
   </data>
   <data name="TextBox_Http.Header" xml:space="preserve">
     <value>Http</value>
@@ -2374,7 +2149,7 @@
     <value>Year</value>
   </data>
   <data name="TextBox_Info.Header" xml:space="preserve">
-    <value>Info</value>
+    <value>Information</value>
   </data>
   <data name="TextBox_InfraclassName.Header" xml:space="preserve">
     <value>Infraclass Name</value>
@@ -2398,7 +2173,7 @@
     <value>Kind</value>
   </data>
   <data name="TextBox_LastName.Header" xml:space="preserve">
-    <value>LastName</value>
+    <value>Lastname</value>
   </data>
   <data name="TextBox_Latitude1.Header" xml:space="preserve">
     <value>Latitude 1</value>
@@ -2563,7 +2338,7 @@
     <value>Publication Place</value>
   </data>
   <data name="TextBox_PublicationYear.Header" xml:space="preserve">
-    <value>Publicationyear</value>
+    <value>Publication Year</value>
   </data>
   <data name="TextBox_Publisher.Header" xml:space="preserve">
     <value>Publisher</value>
@@ -2677,13 +2452,13 @@
     <value>Year</value>
   </data>
   <data name="TextBox_FoodVolume.Header" xml:space="preserve">
-    <value>Not Short</value>
+    <value>Not Short Information</value>
   </data>
   <data name="TextBox_ZoomLevel.Header" xml:space="preserve">
-    <value>ZoomLevel</value>
+    <value>Zoomlevel</value>
   </data>
   <data name="NumberBox_ZoomLevel.Header" xml:space="preserve">
-    <value>ZoomLevel</value>
+    <value>Zoom Level</value>
   </data>
   <data name="NumberBox_Latitude1.Header" xml:space="preserve">
     <value>Latitude 1</value>
@@ -2718,9 +2493,6 @@
   <data name="MenuFlyout_Add_Regnum.Text" xml:space="preserve">
     <value>Add Regnum</value>
   </data>
-  <data name="MenuFlyout_Copy_Regnum.Text" xml:space="preserve">
-    <value>Copy Regnum</value>
-  </data>
   <data name="MenuFlyout_Delete_Regnum.Text" xml:space="preserve">
     <value>Delete Regnum</value>
   </data>
@@ -2747,9 +2519,6 @@
   </data>
   <data name="TextBox_RegnumId.Header" xml:space="preserve">
     <value>Regnum ID</value>
-  </data>
-  <data name="TextBox_DivisionId.Header" xml:space="preserve">
-    <value>Division ID</value>
   </data>
   <data name="TextBox_PhylumId.Header" xml:space="preserve">
     <value>Phylum ID</value>
@@ -3006,9 +2775,6 @@
   <data name="Subclass" xml:space="preserve">
     <value>Subclass</value>
   </data>
-  <data name="TextBlock_Subdivision.Text" xml:space="preserve">
-    <value>Subdivision</value>
-  </data>
   <data name="TextBlock_Subphylum.Text" xml:space="preserve">
     <value>Subphylum</value>
   </data>
@@ -3066,9 +2832,6 @@
   <data name="TextBlock_Class1.Text" xml:space="preserve">
     <value>Class</value>
   </data>
-  <data name="TextBlock_Division1.Text" xml:space="preserve">
-    <value>Division</value>
-  </data>
   <data name="TextBlock_Phylum1.Text" xml:space="preserve">
     <value>Phylum</value>
   </data>
@@ -3080,9 +2843,6 @@
   </data>
   <data name="es-ES.Text" xml:space="preserve">
     <value>Español</value>
-  </data>
-  <data name="ja" xml:space="preserve">
-    <value>日本語</value>
   </data>
   <data name="MainPage_Title.Text" xml:space="preserve">
     <value>Home</value>
@@ -3150,71 +2910,20 @@
   <data name="MenuFlyout_Add_Superclass.Text" xml:space="preserve">
     <value>Add Superclass</value>
   </data>
-  <data name="MenuFlyout_View_Details_Class.Text" xml:space="preserve">
-    <value>View Details Class</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Division.Text" xml:space="preserve">
-    <value>View Details Division</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Phylum.Text" xml:space="preserve">
-    <value>View Details Phylum</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Regnum.Text" xml:space="preserve">
-    <value>View Details Regnum</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Subdivision.Text" xml:space="preserve">
-    <value>View Details Subdivision</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Subphylum.Text" xml:space="preserve">
-    <value>View Details Subphylum</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Superclass.Text" xml:space="preserve">
-    <value>View Details Superclass</value>
-  </data>
-  <data name="TextBlock_Divisions.Text" xml:space="preserve">
-    <value>Divisions</value>
-  </data>
-  <data name="TextBlock_Subdivisions.Text" xml:space="preserve">
-    <value>Subdivisions</value>
-  </data>
   <data name="MenuFlyout_Add_Division.Text" xml:space="preserve">
     <value>Add Division</value>
   </data>
   <data name="MenuFlyout_Add_Disease.Text" xml:space="preserve">
     <value>Add Disease</value>
   </data>
-  <data name="MenuFlyout_Add_Subdivision.Text" xml:space="preserve">
-    <value>Add Subdivision</value>
-  </data>
-  <data name="MenuFlyout_Delete_Division.Text" xml:space="preserve">
-    <value>Delete Division</value>
-  </data>
   <data name="MenuFlyout_Delete_Disease.Text" xml:space="preserve">
     <value>Delete Disease</value>
-  </data>
-  <data name="MenuFlyout_Delete_Subdivision.Text" xml:space="preserve">
-    <value>Delete Subdivision</value>
   </data>
   <data name="MenuFlyout_Delete_Superclass.Text" xml:space="preserve">
     <value>Delete Superclass</value>
   </data>
-  <data name="MenuFlyout_View_Details_Infraclass.Text" xml:space="preserve">
-    <value>View Details Infraclass</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Reference.Text" xml:space="preserve">
-    <value>View Details Reference</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Subclass.Text" xml:space="preserve">
-    <value>View Details Subclass</value>
-  </data>
-  <data name="MenuFlyout_Add_Subphylum.Text" xml:space="preserve">
-    <value>Add Sub-Phylum/Division</value>
-  </data>
   <data name="MenuFlyout_Delete_Subphylum.Text" xml:space="preserve">
     <value>Delete Subphylum</value>
-  </data>
-  <data name="MenuFlyout_Add_Phylum.Text" xml:space="preserve">
-    <value>Add Phylum/Division</value>
   </data>
   <data name="MenuFlyout_Add_Point.Text" xml:space="preserve">
     <value>Add Point</value>
@@ -3225,26 +2934,11 @@
   <data name="MenuFlyout_Delete_Point.Text" xml:space="preserve">
     <value>Delete Point</value>
   </data>
-  <data name="MenuFlyout_View_Details_Comment.Text" xml:space="preserve">
-    <value>View Details Comment</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Infraordo.Text" xml:space="preserve">
-    <value>View Details Infraordo</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Legio.Text" xml:space="preserve">
-    <value>View Details Legio</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Ordo.Text" xml:space="preserve">
-    <value>View Details Ordo</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Subordo.Text" xml:space="preserve">
-    <value>View Details Subordo</value>
-  </data>
   <data name="MenuFlyout_Add_Geographic.Text" xml:space="preserve">
     <value>Add Geographic</value>
   </data>
   <data name="MenuFlyout_Add_Image.Text" xml:space="preserve">
-    <value>Add Image/Video</value>
+    <value>Add Image/Video/Audio</value>
   </data>
   <data name="MenuFlyout_Add_Name.Text" xml:space="preserve">
     <value>Add Name</value>
@@ -3258,39 +2952,6 @@
   <data name="MenuFlyout_Delete_PlSpecies.Text" xml:space="preserve">
     <value>Delete Plant Species</value>
   </data>
-  <data name="MenuFlyout_View_Details_FiSpecies.Text" xml:space="preserve">
-    <value>View Details Fish Species</value>
-  </data>
-  <data name="MenuFlyout_View_Details_PlSpecies.Text" xml:space="preserve">
-    <value>View Details Plant Species</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Family.Text" xml:space="preserve">
-    <value>View Details Family</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Genus.Text" xml:space="preserve">
-    <value>View Details Genus</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Infrafamily.Text" xml:space="preserve">
-    <value>View Details Infrafamily</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Infratribus.Text" xml:space="preserve">
-    <value>View Details Infratribus</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Subfamily.Text" xml:space="preserve">
-    <value>View Details Subfamily</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Subtribus.Text" xml:space="preserve">
-    <value>View Details Subtribus</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Superfamily.Text" xml:space="preserve">
-    <value>View Details Superfamily</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Supertribus.Text" xml:space="preserve">
-    <value>View Details Supertribus</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Tribus.Text" xml:space="preserve">
-    <value>View Details Tribus</value>
-  </data>
   <data name="TextBlock_Global.Text" xml:space="preserve">
     <value>Global</value>
   </data>
@@ -3303,17 +2964,11 @@
   <data name="MenuFlyout_Delete_Speciesgroup.Text" xml:space="preserve">
     <value>Delete Speciesgroup</value>
   </data>
-  <data name="MenuFlyout_View_Details_Name.Text" xml:space="preserve">
-    <value>View Details Name</value>
-  </data>
-  <data name="MenuFlyout_View_Details_Speciesgroup.Text" xml:space="preserve">
-    <value>View Details Speciesgroup</value>
-  </data>
   <data name="MenuFlyout_Delete_Geographic.Text" xml:space="preserve">
     <value>Delete Geographic</value>
   </data>
   <data name="MenuFlyout_Delete_Image.Text" xml:space="preserve">
-    <value>Delete Image/Video</value>
+    <value>Delete Image/Video/Audio</value>
   </data>
   <data name="MenuFlyout_Delete_Synonym.Text" xml:space="preserve">
     <value>Delete Synonym</value>
@@ -3405,9 +3060,6 @@
   <data name="MenuFlyout_Delete_Phylum.Text" xml:space="preserve">
     <value>Delete Phylum</value>
   </data>
-  <data name="MenuFlyout_Save_Division.Text" xml:space="preserve">
-    <value>Save Division</value>
-  </data>
   <data name="MenuFlyout_Save_Disease.Text" xml:space="preserve">
     <value>Save Disease</value>
   </data>
@@ -3431,9 +3083,6 @@
   </data>
   <data name="MainLanding_Header.HeaderText" xml:space="preserve">
     <value>Aquaristic Taxonomic Information System</value>
-  </data>
-  <data name="MainLandingsPageHeaderSubtitleText" xml:space="preserve">
-    <value>Based On WinAppSDK 1.7</value>
   </data>
   <data name="TextBlock_Important.Text" xml:space="preserve">
     <value>Important</value>
@@ -3490,7 +3139,7 @@
     <value>File</value>
   </data>
   <data name="MenuBarItemAuth.Title" xml:space="preserve">
-    <value>Auth0</value>
+    <value>Auth</value>
   </data>
   <data name="MenuBarItemHelp.Title" xml:space="preserve">
     <value>Help</value>
@@ -3575,9 +3224,6 @@
   </data>
   <data name="LNumberLOrigin" xml:space="preserve">
     <value>LDA-Nummer/Original</value>
-  </data>
-  <data name="TextBlock_PlSpecies.Text" xml:space="preserve">
-    <value>Plant Species</value>
   </data>
   <data name="TextBlock_Preview.Text" xml:space="preserve">
     <value>Preview</value>
@@ -3724,7 +3370,7 @@
     <value>Short-Info</value>
   </data>
   <data name="Error_LoadMediaFromUrl_Title" xml:space="preserve">
-    <value>Media not loaded</value>
+    <value>Media loaded</value>
   </data>
   <data name="Error_LoadMediaFromUrl_Message" xml:space="preserve">
     <value>Media not saved or loaded</value>
@@ -3736,10 +3382,10 @@
     <value>Short-Info missing</value>
   </data>
   <data name="Error_NoFile_Title" xml:space="preserve">
-    <value>filestrem</value>
+    <value>filestream</value>
   </data>
   <data name="Error_NoFile_Message" xml:space="preserve">
-    <value>No filestrem exist</value>
+    <value>No filestream exist</value>
   </data>
   <data name="Error_NoPermission_Message" xml:space="preserve">
     <value>No permission exist</value>
@@ -3940,7 +3586,7 @@
     <value>URL is invalid or incomplete</value>
   </data>
   <data name="Error_MissInfo_Message" xml:space="preserve">
-    <value>Miss Info</value>
+    <value>Missing Info</value>
   </data>
   <data name="Error_RefAuthorName_Empty" xml:space="preserve">
     <value>Author name must not be empty.</value>
@@ -3961,7 +3607,7 @@
     <value>Name must not be empty.</value>
   </data>
   <data name="Error_ValidYear_Length" xml:space="preserve">
-    <value>Year must have 4 Numbers</value>
+    <value>Year must have 4 Caracters</value>
   </data>
   <data name="Error_SourceYear_Length" xml:space="preserve">
     <value>Year must have 4 Numbers</value>
@@ -4183,7 +3829,7 @@
     <value>Spanisch</value>
   </data>
   <data name="TextBlock_DeveleoperName.Text" xml:space="preserve">
-    <value>Rudolf Terppé 2000 - 2025</value>
+    <value>Rudolf Terppé 2000 - 2026</value>
   </data>
   <data name="TextBlock_Status.Text" xml:space="preserve">
     <value>Loading...</value>
@@ -4219,7 +3865,7 @@
     <value>Close</value>
   </data>
   <data name="TextBlock_Confirm_Password.Text" xml:space="preserve">
-    <value>Confirm pPassword</value>
+    <value>Confirm Password</value>
   </data>
   <data name="Food" xml:space="preserve">
     <value>Food</value>
@@ -4267,7 +3913,7 @@
     <value>Registration successful</value>
   </data>
   <data name="Status_Reset_Code_Sent" xml:space="preserve">
-    <value>Reset_Code_Sent</value>
+    <value>Reset Code_Sent</value>
   </data>
   <data name="Status_No_User_Logged_In" xml:space="preserve">
     <value>No User logged in</value>
@@ -4321,10 +3967,10 @@
     <value>Employment</value>
   </data>
   <data name="Error_LoadingData_Title" xml:space="preserve">
-    <value>Data not loaded</value>
+    <value>Data loaded</value>
   </data>
   <data name="Error_LoadingData_Message" xml:space="preserve">
-    <value>Data not loaded</value>
+    <value>It was not possible to load Data</value>
   </data>
   <data name="Error_Email_Format_Message" xml:space="preserve">
     <value>Email must have Format name@domain.tld</value>
@@ -4333,7 +3979,7 @@
     <value>Current and new Password required</value>
   </data>
   <data name="Error_Email_Required_Message" xml:space="preserve">
-    <value>Email_required</value>
+    <value>Email required</value>
   </data>
   <data name="Disease" xml:space="preserve">
     <value>Disease</value>
@@ -4385,5 +4031,98 @@
   </data>
   <data name="MailCredentials_Error" xml:space="preserve">
     <value>Mail credentials could not be loaded or saved. Check file access and the Windows user, or save a new SMTP password.</value>
+  </data>
+  <data name="TextBlock_Edit.Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="TextBlock_Edit_Class.Text" xml:space="preserve">
+    <value>Edit Class</value>
+  </data>
+  <data name="TextBlock_Edit_Disease.Text" xml:space="preserve">
+    <value>Edit Disease</value>
+  </data>
+  <data name="TextBlock_Edit_Family.Text" xml:space="preserve">
+    <value>Edit Family</value>
+  </data>
+  <data name="TextBlock_Edit_Food.Text" xml:space="preserve">
+    <value>Edit Food</value>
+  </data>
+  <data name="TextBlock_Edit_Genus.Text" xml:space="preserve">
+    <value>Edit Genus</value>
+  </data>
+  <data name="TextBlock_Edit_Geographic.Text" xml:space="preserve">
+    <value>Edit Geographic</value>
+  </data>
+  <data name="TextBlock_Edit_Image.Text" xml:space="preserve">
+    <value>Edit Image/Video</value>
+  </data>
+  <data name="TextBlock_Edit_Infraclass.Text" xml:space="preserve">
+    <value>Edit Infraclass</value>
+  </data>
+  <data name="TextBlock_Edit_Infrafamily.Text" xml:space="preserve">
+    <value>Edit Infrafamily</value>
+  </data>
+  <data name="TextBlock_Edit_Infraordo.Text" xml:space="preserve">
+    <value>Edit Infraordo</value>
+  </data>
+  <data name="TextBlock_Edit_Infratribus.Text" xml:space="preserve">
+    <value>Edit Infratribus</value>
+  </data>
+  <data name="TextBlock_Edit_Legio.Text" xml:space="preserve">
+    <value>Edit Legio</value>
+  </data>
+  <data name="TextBlock_Edit_Miscellaneous.Text" xml:space="preserve">
+    <value>Edit Miscellaneous</value>
+  </data>
+  <data name="TextBlock_Edit_Name.Text" xml:space="preserve">
+    <value>Edit Name</value>
+  </data>
+  <data name="TextBlock_Edit_Ordo.Text" xml:space="preserve">
+    <value>Edit Ordo</value>
+  </data>
+  <data name="TextBlock_Edit_Phylum.Text" xml:space="preserve">
+    <value>Edit Phylum</value>
+  </data>
+  <data name="TextBlock_Edit_Regnum.Text" xml:space="preserve">
+    <value>Edit Regnum</value>
+  </data>
+  <data name="TextBlock_Edit_Species.Text" xml:space="preserve">
+    <value>Edit Species</value>
+  </data>
+  <data name="TextBlock_Edit_Speciesgroup.Text" xml:space="preserve">
+    <value>Edit Speciesgroup</value>
+  </data>
+  <data name="TextBlock_Edit_Subclass.Text" xml:space="preserve">
+    <value>Edit Subclass</value>
+  </data>
+  <data name="TextBlock_Edit_Subfamily.Text" xml:space="preserve">
+    <value>Edit Subfamily</value>
+  </data>
+  <data name="TextBlock_Edit_Subordo.Text" xml:space="preserve">
+    <value>Edit Subordo</value>
+  </data>
+  <data name="TextBlock_Edit_Subphylum.Text" xml:space="preserve">
+    <value>Edit Subphylum</value>
+  </data>
+  <data name="TextBlock_Edit_Subspecies.Text" xml:space="preserve">
+    <value>Edit Subspecies</value>
+  </data>
+  <data name="TextBlock_Edit_Subtribus.Text" xml:space="preserve">
+    <value>Edit Subtribus</value>
+  </data>
+  <data name="TextBlock_Edit_Superclass.Text" xml:space="preserve">
+    <value>Edit Superclass</value>
+  </data>
+  <data name="TextBlock_Edit_Superfamily.Text" xml:space="preserve">
+    <value>Edit Superfamily</value>
+  </data>
+  <data name="TextBlock_Edit_Supertribus.Text" xml:space="preserve">
+    <value>Edit Supertribus</value>
+  </data>
+  <data name="TextBlock_Edit_Synonym.Text" xml:space="preserve">
+    <value>Edit Synonym</value>
+  </data>
+  <data name="TextBlock_Edit_Tribus.Text" xml:space="preserve">
+    <value>Edit Tribus</value>
   </data>
 </root>
