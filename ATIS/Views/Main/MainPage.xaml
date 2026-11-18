@@ -62,6 +62,20 @@
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
                         </MenuBarItem>
+                        <MenuBarItem loc:Uids.Uid="MenuBarItemDesign">
+                            <MenuFlyoutItem
+                                loc:Uids.Uid="MenuFlyoutItemLight"
+                                Click="MenuFlyoutTheme_Click"
+                                Tag="Light" />
+                            <MenuFlyoutItem
+                                loc:Uids.Uid="MenuFlyoutItemDark"
+                                Click="MenuFlyoutTheme_Click"
+                                Tag="Dark" />
+                            <MenuFlyoutItem
+                                loc:Uids.Uid="MenuFlyoutItemDefault"
+                                Click="MenuFlyoutTheme_Click"
+                                Tag="Default" />
+                        </MenuBarItem>
                         <MenuBarItem loc:Uids.Uid="MenuBarItemAuth">
                             <MenuFlyoutItem
                                 loc:Uids.Uid="MenuFlyoutItemLogin"

@@ -168,9 +168,6 @@ public sealed partial class MainPage : Page
             NavView.SelectedItem = NavSearch;
         }
     }
-    //private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
-    //{
-    //}
 
     private void SearchSearchBox_OnLoaded(object sender, RoutedEventArgs e)
     {
@@ -245,7 +242,30 @@ public sealed partial class MainPage : Page
             SetLoggedOutStatus();
         }
     }
+    //----------------------------------------------------
 
+    private async void MenuFlyoutTheme_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not MenuFlyoutItem { Tag: string theme })
+            return;
+
+        try
+        {
+            App.SaveTheme(theme);
+        }
+        catch (Nucs.JsonSettings.JsonSettingsException ex)
+        {
+            SimpleLog.Error($"App-Design konnte nicht gespeichert werden: {ex.Message}");
+
+            await new ContentDialog
+            {
+                XamlRoot = this.XamlRoot,
+                Title = "App-Design",
+                Content = "Das Design konnte nicht gespeichert werden. Bitte prüfen Sie den Zugriff auf settings.json.",
+                CloseButtonText = "OK"
+            }.ShowAsync();
+        }
+    }
     //----------------------------------------------------
 
     private async Task LogIn()

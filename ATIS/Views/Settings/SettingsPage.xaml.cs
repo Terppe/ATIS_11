@@ -158,7 +158,7 @@ public sealed partial class SettingsPage : Page
         }
     }
 
-    private void ThemeBox_SelectionChanged(
+    private async void ThemeBox_SelectionChanged(
         object sender, SelectionChangedEventArgs e)
     {
         if (ThemeBox.SelectedItem is not ComboBoxItem item ||
@@ -167,18 +167,37 @@ public sealed partial class SettingsPage : Page
             return;
         }
 
-        var root = App.MainWindow?.Content as FrameworkElement
-                   ?? throw new InvalidOperationException("The main window is not initialized.");
-
-        root.RequestedTheme = theme switch
+        try
         {
-            "Default" => ElementTheme.Default,
-            "Light" => ElementTheme.Light,
-            "Dark" => ElementTheme.Dark,
-            _ => throw new InvalidOperationException($"Unknown app theme: {theme}")
-        };
-    }
+            App.SaveTheme(theme);
+        }
+        catch (Nucs.JsonSettings.JsonSettingsException ex)
+        {
+            SimpleLog.Error($"App-Design konnte nicht gespeichert werden: {ex.Message}");
 
+            var root = App.MainWindow?.Content as FrameworkElement
+                       ?? throw new InvalidOperationException(
+                           "Das Hauptfenster ist nicht initialisiert.", ex);
+
+            ThemeBox.SelectionChanged -= ThemeBox_SelectionChanged;
+            try
+            {
+                SelectByTag(ThemeBox, root.RequestedTheme.ToString());
+            }
+            finally
+            {
+                ThemeBox.SelectionChanged += ThemeBox_SelectionChanged;
+            }
+
+            await new ContentDialog
+            {
+                XamlRoot = root.XamlRoot,
+                Title = "App-Design",
+                Content = "Das Design konnte nicht gespeichert werden. Bitte prüfen Sie den Zugriff auf settings.json.",
+                CloseButtonText = "OK"
+            }.ShowAsync();
+        }
+    }
     private async void TestConnectionButton_Click(object sender, RoutedEventArgs e)
     {
         _testedServer = null;

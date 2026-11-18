@@ -2817,6 +2817,12 @@
   <data name="MenuFlyoutItemClose.Text" xml:space="preserve">
     <value>Schliessen</value>
   </data>
+  <data name="MenuFlyoutItemDark.Text" xml:space="preserve">
+    <value>Dunkel</value>
+  </data>
+  <data name="MenuFlyoutItemDefault.Text" xml:space="preserve">
+    <value>Systemeinstellung</value>
+  </data>
   <data name="MenuFlyoutItemForgotPw.Text" xml:space="preserve">
     <value>Pw vergessen</value>
   </data>
@@ -3141,6 +3147,9 @@
   <data name="MenuBarItemAuth.Title" xml:space="preserve">
     <value>Auth0</value>
   </data>
+  <data name="MenuBarItemDesign.Title" xml:space="preserve">
+    <value>Design</value>
+  </data>
   <data name="MenuBarItemHelp.Title" xml:space="preserve">
     <value>Hilfe</value>
   </data>
@@ -3338,6 +3347,9 @@
   </data>
   <data name="MenuFlyoutItemLog.Text" xml:space="preserve">
     <value>Log-File anzeigen</value>
+  </data>
+  <data name="MenuFlyoutItemLight.Text" xml:space="preserve">
+    <value>Hell</value>
   </data>
   <data name="de-DE.Text" xml:space="preserve">
     <value>Deutsch</value>

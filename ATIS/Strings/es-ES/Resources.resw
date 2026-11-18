@@ -2817,6 +2817,12 @@
   <data name="MenuFlyoutItemClose.Text" xml:space="preserve">
     <value>Cerrar</value>
   </data>
+  <data name="MenuFlyoutItemDark.Text" xml:space="preserve">
+    <value>Oscuro</value>
+  </data>
+  <data name="MenuFlyoutItemDefault.Text" xml:space="preserve">
+    <value>Usar la configuración del sistema</value>
+  </data>
   <data name="MenuFlyoutItemForgotPw.Text" xml:space="preserve">
     <value>Olvidé la contraseña</value>
   </data>
@@ -3141,6 +3147,9 @@
   <data name="MenuBarItemAuth.Title" xml:space="preserve">
     <value>Autenticación</value>
   </data>
+  <data name="MenuBarItemDesign.Title" xml:space="preserve">
+    <value>Tema</value>
+  </data>
   <data name="MenuBarItemHelp.Title" xml:space="preserve">
     <value>Ayuda</value>
   </data>
@@ -3338,6 +3347,9 @@
   </data>
   <data name="MenuFlyoutItemLog.Text" xml:space="preserve">
     <value>Mostrar archivo de registro</value>
+  </data>
+  <data name="MenuFlyoutItemLight.Text" xml:space="preserve">
+    <value>Claro</value>
   </data>
   <data name="de-DE.Text" xml:space="preserve">
     <value>Alemán</value>

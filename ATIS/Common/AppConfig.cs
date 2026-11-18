@@ -7,6 +7,8 @@ public class AppConfig : JsonSettings, IVersionable
 
     public virtual string? LastUpdateCheck { get; set; }
 
+    public virtual string Theme { get; set; } = "Light";
+
     // Docs: https://github.com/Nucs/JsonSettings
     public override string FileName { get; set; } = CreateSettingsPath();
 

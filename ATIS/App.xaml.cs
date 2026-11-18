@@ -56,7 +56,6 @@ using Windows.Graphics;
 using WinUI3Localizer;
 using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
 using VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
-
 namespace ATIS;
 
 public partial class App : Application
@@ -153,7 +152,11 @@ public partial class App : Application
         //    new Windows.Graphics.SizeInt32(Convert.ToInt32(ConfigurationManager.AppSettings.Get("MainWidth")),
         //        Convert.ToInt32(ConfigurationManager.AppSettings.Get("MainHeight"))));
 
-        var startupRoot = new Grid();
+        //     var startupRoot = new Grid();
+        var startupRoot = new Grid
+        {
+            RequestedTheme = GetSavedTheme()
+        };
         startupRoot.Children.Add(new TextBlock
         {
             Text = Localizer.Get().GetLocalizedString("Check_SqlServerAndDb"),
@@ -248,6 +251,7 @@ public partial class App : Application
 
         // Hauptansicht erst mit eingerichteter Datenbankverbindung laden
         MainPageInstance = new MainPage();
+        MainPageInstance.RequestedTheme = GetSavedTheme();
         MainPageInstance.Loaded += (_, _) =>
         {
             UIContext.Root = MainPageInstance.XamlRoot;
@@ -255,6 +259,8 @@ public partial class App : Application
 
         MainWindow.Content = MainPageInstance;
         MainRoot = MainPageInstance;
+
+
 
         // Automatische Updateprüfung nur im Release-Build
 #if !DEBUG
@@ -732,5 +738,50 @@ public partial class App : Application
             return Services.GetRequiredService<T>();
         }
         return null;
+    }
+
+    // ---------------------------------------------------------
+    // 10. Theme
+    // ---------------------------------------------------------
+
+    public static ElementTheme GetSavedTheme()
+    {
+        return AppHelper.Settings.Theme switch
+        {
+            "Default" => ElementTheme.Default,
+            "Light" => ElementTheme.Light,
+            "Dark" => ElementTheme.Dark,
+            var theme => throw new InvalidOperationException(
+                $"Unbekanntes gespeichertes App-Design: {theme}")
+        };
+    }
+
+    public static void SaveTheme(string theme)
+    {
+        var requestedTheme = theme switch
+        {
+            "Default" => ElementTheme.Default,
+            "Light" => ElementTheme.Light,
+            "Dark" => ElementTheme.Dark,
+            _ => throw new InvalidOperationException($"Unbekanntes App-Design: {theme}")
+        };
+
+        var root = MainWindow?.Content as FrameworkElement
+                   ?? throw new InvalidOperationException("Das Hauptfenster ist nicht initialisiert.");
+
+        var previous = AppHelper.Settings.Theme;
+        AppHelper.Settings.Theme = theme;
+
+        try
+        {
+            AppHelper.Settings.Save();
+        }
+        catch
+        {
+            AppHelper.Settings.Theme = previous;
+            throw;
+        }
+
+        root.RequestedTheme = requestedTheme;
     }
 }
