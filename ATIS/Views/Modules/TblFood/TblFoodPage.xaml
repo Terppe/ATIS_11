@@ -175,6 +175,7 @@
                                 Item="{Binding Item}"
                                 Visibility="{Binding HasActiveItem, Converter={StaticResource BoolToVisibilityConverter}}" />-->
                             </Grid>
+
                             <Grid
                                 x:Name="ImageContentLoadingOverlay"
                                 Background="#66000000"

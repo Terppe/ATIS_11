@@ -4,12 +4,12 @@ using Nucs.JsonSettings.Modulation;
 namespace ATIS.Common;
 public class AppConfig : JsonSettings, IVersionable
 {
+    // Docs: https://github.com/Nucs/JsonSettings
 
     public virtual string? LastUpdateCheck { get; set; }
 
     public virtual string Theme { get; set; } = "Light";
 
-    // Docs: https://github.com/Nucs/JsonSettings
     public override string FileName { get; set; } = CreateSettingsPath();
 
     private static string CreateSettingsPath()

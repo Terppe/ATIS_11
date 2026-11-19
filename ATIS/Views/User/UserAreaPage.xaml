@@ -89,82 +89,84 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!--  Title  -->
-                <ComboBox
-                    x:Name="TitleCombo"
-                    MinWidth="75"
-                    VerticalAlignment="Center"
-                    loc:Uids.Uid="ComboBox_Title"
-                    PlaceholderText="Select"
-                    SelectedValue="{Binding Item.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionChanged="TitleCombo_OnSelectionChanged"
-                    Style="{StaticResource AtisComboBox}"
-                    TabIndex="2">
-                    <x:String>Dr.</x:String>
-                    <x:String>Prof.</x:String>
-                    <x:String>Dipl.-Ing.</x:String>
-                    <x:String>Ing. grad</x:String>
-                    <x:String>Dr. Ing</x:String>
-                </ComboBox>
+                <StackPanel Orientation="Horizontal" Spacing="4">
 
-                <!--  FirstName  -->
-                <StackPanel
-                    MinWidth="150"
-                    VerticalAlignment="Top"
-                    Spacing="2">
-                    <TextBox
-                        x:Name="FirstNameBox"
-                        loc:Uids.Uid="TextBox_FirstName"
-                        Loaded="FirstNameBox_OnLoaded"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        TextChanged="FirstNameBox_OnTextChanged" />
-                    <TextBlock
-                        Height="18"
-                        FontSize="10"
-                        Foreground="Red"
-                        Text="{Binding Item.FirstNameError}"
-                        Visibility="{Binding Item.FirstNameError, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <!--  Title  -->
+                    <ComboBox
+                        x:Name="TitleCombo"
+                        MinWidth="75"
+                        VerticalAlignment="Center"
+                        loc:Uids.Uid="ComboBox_Title"
+                        PlaceholderText="Select"
+                        SelectedValue="{Binding Item.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionChanged="TitleCombo_OnSelectionChanged"
+                        Style="{StaticResource AtisComboBox}"
+                        TabIndex="2">
+                        <x:String>Dr.</x:String>
+                        <x:String>Prof.</x:String>
+                        <x:String>Dipl.-Ing.</x:String>
+                        <x:String>Ing. grad</x:String>
+                        <x:String>Dr. Ing</x:String>
+                    </ComboBox>
+
+                    <!--  FirstName  -->
+                    <StackPanel
+                        MinWidth="150"
+                        VerticalAlignment="Top"
+                        Spacing="2">
+                        <TextBox
+                            x:Name="FirstNameBox"
+                            loc:Uids.Uid="TextBox_FirstName"
+                            Loaded="FirstNameBox_OnLoaded"
+                            Style="{StaticResource AtisTextBox}"
+                            Text="{Binding Item.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="FirstNameBox_OnTextChanged" />
+                        <TextBlock
+                            Height="18"
+                            FontSize="10"
+                            Foreground="Red"
+                            Text="{Binding Item.FirstNameError}"
+                            Visibility="{Binding Item.FirstNameError, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
+
+                    <!--  Lastname  -->
+                    <StackPanel
+                        MinWidth="150"
+                        VerticalAlignment="Top"
+                        Spacing="2">
+                        <TextBox
+                            x:Name="LastNameBox"
+                            loc:Uids.Uid="TextBox_LastName"
+                            Loaded="LastNameBox_OnLoaded"
+                            Style="{StaticResource AtisTextBox}"
+                            Text="{Binding Item.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextChanged="LastNameBox_OnTextChanged" />
+                        <TextBlock
+                            Height="18"
+                            FontSize="10"
+                            Foreground="Red"
+                            Text="{Binding Item.LastNameError}"
+                            Visibility="{Binding Item.LastNameError, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    </StackPanel>
+                    <!--  Role  -->
+                    <ComboBox
+                        x:Name="RoleCombo"
+                        MinWidth="120"
+                        VerticalAlignment="Center"
+                        loc:Uids.Uid="ComboBox_Role"
+                        PlaceholderText="Select"
+                        SelectedValue="{Binding Item.Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionChanged="RoleCombo_OnSelectionChanged"
+                        Style="{StaticResource AtisComboBox}"
+                        TabIndex="2">
+                        <!--<x:String>Administrator</x:String>-->
+                        <!--<x:String>Developer</x:String>-->
+                        <x:String>Biologist</x:String>
+                        <x:String>Zoologist</x:String>
+                        <x:String>User</x:String>
+                    </ComboBox>
+
                 </StackPanel>
-
-                <!--  Lastname  -->
-                <StackPanel
-                    MinWidth="150"
-                    VerticalAlignment="Top"
-                    Spacing="2">
-                    <TextBox
-                        x:Name="LastNameBox"
-                        loc:Uids.Uid="TextBox_LastName"
-                        Loaded="LastNameBox_OnLoaded"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        TextChanged="LastNameBox_OnTextChanged" />
-                    <TextBlock
-                        Height="18"
-                        FontSize="10"
-                        Foreground="Red"
-                        Text="{Binding Item.LastNameError}"
-                        Visibility="{Binding Item.LastNameError, Converter={StaticResource BoolToVisibilityConverter}}" />
-                </StackPanel>
-
-                <!--  Role  -->
-                <ComboBox
-                    x:Name="RoleCombo"
-                    MinWidth="120"
-                    VerticalAlignment="Center"
-                    loc:Uids.Uid="ComboBox_Role"
-                    PlaceholderText="Select"
-                    SelectedValue="{Binding Item.Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionChanged="RoleCombo_OnSelectionChanged"
-                    Style="{StaticResource AtisComboBox}"
-                    TabIndex="2">
-                    <!--<x:String>Administrator</x:String>-->
-                    <!--<x:String>Developer</x:String>-->
-                    <x:String>Biologist</x:String>
-                    <x:String>Zoologist</x:String>
-                    <x:String>User</x:String>
-                </ComboBox>
-
 
                 <StackPanel Orientation="Horizontal" Spacing="4">
 
@@ -211,31 +213,9 @@
                         IsChecked="{Binding Item.MailNewsletter, Mode=TwoWay}"
                         Style="{StaticResource AtisCheckBox}" />
 
-                    <!--  Colour  -->
-                    <TextBox
-                        loc:Uids.Uid="TextBox_Colour"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.Colour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Spacing="4">
-
-                    <!--  Password  -->
-                    <!--<TextBox loc:Uids.Uid="TextBox_Password"
-                    Style="{StaticResource AtisTextBox}"
-                    Text="{Binding Item.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
-
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Spacing="4">
-
-                    <!--  Postcode  -->
-                    <TextBox
-                        loc:Uids.Uid="TextBox_Postcode"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.Postcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-
 
                     <!--  Country Combo  -->
                     <StackPanel
@@ -259,14 +239,22 @@
 
                     </StackPanel>
 
+                    <!--  Postcode  -->
+                    <TextBox
+                        loc:Uids.Uid="TextBox_Postcode"
+                        Style="{StaticResource AtisTextBox}"
+                        Text="{Binding Item.Postcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                     <!--  City  -->
                     <TextBox
+                        MinWidth="150"
                         loc:Uids.Uid="TextBox_City"
                         Style="{StaticResource AtisTextBox}"
                         Text="{Binding Item.City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <!--  Street1  -->
                     <TextBox
+                        MinWidth="150"
                         loc:Uids.Uid="TextBox_Street1"
                         Style="{StaticResource AtisTextBox}"
                         Text="{Binding Item.Street1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -277,23 +265,6 @@
                         Style="{StaticResource AtisTextBox}"
                         Text="{Binding Item.Street2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <!--  Tel  -->
-                    <TextBox
-                        loc:Uids.Uid="TextBox_Tel"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.Tel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                    <!--  Mobil  -->
-                    <TextBox
-                        loc:Uids.Uid="TextBox_Mobil"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.Mobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                    <!--  Fax  -->
-                    <TextBox
-                        loc:Uids.Uid="TextBox_Fax"
-                        Style="{StaticResource AtisTextBox}"
-                        Text="{Binding Item.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 </StackPanel>
 
@@ -313,12 +284,41 @@
                         Style="{StaticResource AtisTextBox}"
                         Text="{Binding Item.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                    <!--  Tel  -->
+                    <TextBox MinWidth="100"
+                             loc:Uids.Uid="TextBox_Tel"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Tel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!--  Mobil  -->
+                    <TextBox MinWidth="100"
+                             loc:Uids.Uid="TextBox_Mobil"
+                             Style="{StaticResource AtisTextBox}"
+                             Text="{Binding Item.Mobil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!--  Fax  -->
+                    <!--<TextBox
+                    loc:Uids.Uid="TextBox_Fax"
+                    Style="{StaticResource AtisTextBox}"
+                    Text="{Binding Item.Fax, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+
                     <!--  Signature  -->
                     <TextBox
                         MinWidth="100"
                         loc:Uids.Uid="TextBox_Signature"
                         Style="{StaticResource AtisTextBox}"
                         Text="{Binding Item.Signature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Spacing="4">
+
+                    <!--  Color  -->
+                    <TextBox
+                        MinWidth="100"
+                        loc:Uids.Uid="TextBox_Colour"
+                        Style="{StaticResource AtisTextBox}"
+                        Text="{Binding Item.Colour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <!--  ImageMimeType  -->
                     <ComboBox
@@ -373,8 +373,8 @@
                 <!--  Memo  -->
                 <TextBox
                     MinWidth="200"
-                    MinHeight="75"
-                    MaxHeight="150"
+                    MinHeight="175"
+                    MaxHeight="250"
                     loc:Uids.Uid="TextBox_Memo"
                     Style="{StaticResource AtisTextBoxWrap}"
                     Text="{Binding Item.Memo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
