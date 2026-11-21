@@ -563,6 +563,9 @@ public partial class App : Application
         // AUTHENTICATION SERVICES
         services.AddTransient<ATIS.Interfaces.IAuthenticationService, ATIS.Services.AuthenticationService>();
 
+        // TRANSLATION SERVICES
+        services.AddSingleton<OfflineTranslationService>();
+
         // VIEWMODELS
         services.AddTransient<MainViewModel>();
         services.AddTransient<HomeViewModel>();

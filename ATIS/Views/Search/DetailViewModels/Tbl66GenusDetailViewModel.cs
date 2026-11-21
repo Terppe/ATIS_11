@@ -13,8 +13,8 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl66GenusDetailViewModel : ObservableObject
 {
-
     private readonly IDataService _dataService;
+    //private readonly ITranslationService _translationService;
 
     // -----------------------------
     //  TITLE
@@ -119,6 +119,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
 
+    public IAsyncRelayCommand TranslateCommand { get; }
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
@@ -131,7 +132,10 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
+
     }
+
+
     private bool _isInitialized;
     private bool _isInitializing;
     public async Task InitializeAsync()
@@ -140,11 +144,28 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         _isInitializing = true;
         try
         {
+
+
             await LoadTaxonomy();
             LoadDirectChildren();
             LoadReferences();
             LoadComments();
             BuildBreadcrumb();
+
+
+            const int testGenusId = 1021;
+
+            if (GenusSelected is { } genus &&
+                genus.GenusId == testGenusId &&
+                genus.Info is string info &&
+                !string.IsNullOrWhiteSpace(info))
+            {
+                genus.TranslatedInfo = await Task.Run(() =>
+                    App.GetService<OfflineTranslationService>()
+                        .Translate(new[] { info })[0]);
+            }
+
+
             _isInitialized = true;
         }
         finally
@@ -922,4 +943,8 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
             return model == null ? null : new Tbl66GenussesDocument(model);
         }, suggestedFileName);
     }
+
+    // -----------------------------              
+    //  Übersetzung von Texten
+    // -----------------------------
 }

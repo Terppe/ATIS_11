@@ -24,10 +24,10 @@
 		<IsAotCompatible>False</IsAotCompatible>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
 
-    <!-- 🔥 HIER: XAML-Debug-Break deaktivieren -->
-    <DefineConstants>DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
+		<!-- 🔥 HIER: XAML-Debug-Break deaktivieren -->
+		<DefineConstants>DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION</DefineConstants>
 
-    <!--Remove git hash from assembly informational version in .NET >= 8, Example: false = 1.0.0, true = 1.0.0+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
+		<!--Remove git hash from assembly informational version in .NET >= 8, Example: false = 1.0.0, true = 1.0.0+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-->
 	<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 
 	<PublishSingleFile>true</PublishSingleFile>
@@ -45,6 +45,7 @@
 	</Target>
 
 	<ItemGroup>
+		<PackageReference Include="BergamotTranslatorSharp" Version="0.7.0" />
 		<PackageReference Include="CommunityToolkit.Common" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="log4net" Version="3.6.0" />
@@ -65,18 +66,18 @@
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
 		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="11.0.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
-	</ItemGroup>
+  </ItemGroup>
 
-  <PropertyGroup>
-    <VersionPrefix>11.0.0</VersionPrefix>
-    <Version Condition="'$(ATIS_VERSION)' != ''">$(ATIS_VERSION)</Version>
-    <Version Condition="'$(ATIS_VERSION)' == ''">$(VersionPrefix).0</Version>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <FileVersion>$(Version)</FileVersion>
-    <InformationalVersion Condition="'$(ATIS_VERSION)' != ''">$(Version)</InformationalVersion>
-    <InformationalVersion Condition="'$(ATIS_VERSION)' == '' and '$(Configuration)' == 'Debug'">$(VersionPrefix)-dev</InformationalVersion>
-    <InformationalVersion Condition="'$(ATIS_VERSION)' == '' and '$(Configuration)' != 'Debug'">$(VersionPrefix)-local</InformationalVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<VersionPrefix>11.0.0</VersionPrefix>
+		<Version Condition="'$(ATIS_VERSION)' != ''">$(ATIS_VERSION)</Version>
+		<Version Condition="'$(ATIS_VERSION)' == ''">$(VersionPrefix).0</Version>
+		<AssemblyVersion>$(Version)</AssemblyVersion>
+		<FileVersion>$(Version)</FileVersion>
+		<InformationalVersion Condition="'$(ATIS_VERSION)' != ''">$(Version)</InformationalVersion>
+		<InformationalVersion Condition="'$(ATIS_VERSION)' == '' and '$(Configuration)' == 'Debug'">$(VersionPrefix)-dev</InformationalVersion>
+		<InformationalVersion Condition="'$(ATIS_VERSION)' == '' and '$(Configuration)' != 'Debug'">$(VersionPrefix)-local</InformationalVersion>
+	</PropertyGroup>
 
 	<PropertyGroup Label="Globals">
 		<WebView2EnableCsWinRTProjection>False</WebView2EnableCsWinRTProjection>
@@ -90,16 +91,15 @@
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" ExcludeAssets="buildTransitive" />
 	</ItemGroup>
 
-	<!--<PropertyGroup>
-		--><!-- Unterdrückt Obsolete-Warnungen global NICHT, nur für generierte Dateien --><!--
-		<NoWarn>$(NoWarn)</NoWarn>
-	</PropertyGroup>-->
-
-	<!--<PropertyGroup Condition="'$(Configuration)'=='Debug'">
-			--><!--Debug: keine Filter, alles sichtbar--><!-- 
-		 <NoWarn>$(NoWarn)</NoWarn>
-	</PropertyGroup>-->
-
+<ItemGroup>
+  <Content Include="TranslationModels\en-de\**\*">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+  </Content>
+</ItemGroup>
+  
+  
 	<ItemGroup>
 		 <!-- WinUI generierte XAML TypeInfo-Dateien -->
 		 <Compile Update="obj\**\XamlTypeInfo.g.cs">
@@ -154,25 +154,25 @@
 		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\DatePicker\DatePickerStyles.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\Flyout\MenuFlyoutStyles.xaml">
 		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ListView\ListViewBrushes.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ListView\ListViewStyles.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\TabView\TabView.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\TabView\TabViewStyles.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\TabView\TabViewBrushes.xaml">
-	  <SubType>Designer</SubType>
+		<SubType>Designer</SubType>
 	</Page>
 	<Page Update="DesignSystem\Controls\ToggleButton.xaml">
 		<SubType>Designer</SubType>
@@ -430,10 +430,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="DesignSystem\Themes\**" />
-	  <EmbeddedResource Remove="DesignSystem\Themes\**" />
-	  <None Remove="DesignSystem\Themes\**" />
-	  <Page Remove="DesignSystem\Themes\**" />
+		<Compile Remove="DesignSystem\Themes\**" />
+		<EmbeddedResource Remove="DesignSystem\Themes\**" />
+		<None Remove="DesignSystem\Themes\**" />
+		<Page Remove="DesignSystem\Themes\**" />
 	</ItemGroup>
 
 
@@ -677,6 +677,7 @@
 	<ItemGroup>
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
+	<Folder Include="TranslationModels\en-de\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -708,1047 +709,1047 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Controls\TextBox\PasswordBoxFocusResources.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="DesignSystem\Controls\TextBox\PasswordBoxFocusResources.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\TblMiscellaneousDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\TblMiscellaneousDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\TblFoodDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\TblFoodDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\TblDiseaseDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\TblDiseaseDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Auth\ForgotPasswordView.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Auth\ForgotPasswordView.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Auth\ChangePasswordView.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Auth\ChangePasswordView.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Auth\RegisterView.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Auth\RegisterView.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Auth\LoginView.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Auth\LoginView.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90Reference\Tbl90ReferencePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90Reference\Tbl90ReferencePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl93Comment\Tbl93CommentPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl93Comment\Tbl93CommentBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl93Comment\Tbl93CommentBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblMiscellaneous\TblMiscellaneousBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblDisease\TblDiseasePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblDisease\TblDiseasePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblDisease\TblDiseaseEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblDisease\TblDiseaseEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblDisease\TblDiseaseBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblDisease\TblDiseaseBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblFood\TblFoodPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblFood\TblFoodPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblFood\TblFoodEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblFood\TblFoodEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblFood\TblFoodBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblFood\TblFoodBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicMapWindow.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicMapWindow.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicMapControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicMapControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl81Image\Tbl81ImagePreviewControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl81Image\Tbl81ImagePreviewControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl81Image\Tbl81ImagePreviewWindow.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl81Image\Tbl81ImagePreviewWindow.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblUserProfile\TblUserProfileBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblUserProfile\TblUserProfileBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblUserProfile\TblUserProfileEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblUserProfile\TblUserProfileEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblUserProfile\TblUserProfilePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblUserProfile\TblUserProfilePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblCountry\TblCountryEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblCountry\TblCountryEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblCountry\TblCountryParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblCountry\TblCountryParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblCountry\TblCountryBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblCountry\TblCountryBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\TblCountry\TblCountryPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\TblCountry\TblCountryPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl87Geographic\Tbl87GeographicPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl81Image\Tbl81ImageParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl81Image\Tbl81ImageParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl81Image\Tbl81ImageBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl81Image\Tbl81ImageBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl81Image\Tbl81ImageEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl81Image\Tbl81ImageEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl81Image\Tbl81ImagePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl81Image\Tbl81ImagePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl84Synonym\Tbl84SynonymPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl78Name\Tbl78NameParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl78Name\Tbl78NameParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl78Name\Tbl78NameEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl78Name\Tbl78NameEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl78Name\Tbl78NameBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl78Name\Tbl78NameBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl78Name\Tbl78NamePage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl78Name\Tbl78NamePage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl68Speciesgroup\Tbl68SpeciesgroupBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesNamesControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSynonymsControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSynonymsControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSubTaxoNomenHeaderControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\DataTemplateHeaderTaxoNomen\TemplateTbl75SpeciesSubTaxoNomenHeaderControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl75SpeciesSubDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl75SpeciesSubDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl75SpeciesDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl75SpeciesDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl60SubtribusDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl60SubtribusDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl57TribusDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl57TribusDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl54SupertribusDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl54SupertribusDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl51InfrafamilyDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl51InfrafamilyDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl48SubfamilyDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl48SubfamilyDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl45FamilyDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl45FamilyDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl42SuperfamilyDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl42SuperfamilyDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl39InfraordoDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl39InfraordoDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl63InfratribusDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl63InfratribusDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl66GenusDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl66GenusDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl57TribusWithOptionalHyperlinkControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl36SubordoDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl36SubordoDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl36SubordoWithOptionalHyperlinkControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\DataTemplateHyperlink\TemplateTbl30LegioWithOptionalHyperlinkControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl33OrdoDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl33OrdoDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl30LegioDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl30LegioDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl27InfraclassDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl27InfraclassDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl24SubclassDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl24SubclassDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl18SuperclassDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl18SuperclassDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Report\ReportResources.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Report\ReportResources.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailWindows\DetailWindow.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailWindows\DetailWindow.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl21ClassDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl21ClassDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\DetailPages\Tbl03RegnumDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\DetailPages\Tbl03RegnumDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\Tbl12SubphylumDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\Tbl12SubphylumDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\Tbl06PhylumDetailPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\Tbl06PhylumDetailPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Search\SearchPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Search\SearchPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl51Infrafamily\Tbl51InfrafamilyPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl48Subfamily\Tbl48SubfamilyPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl45Family\Tbl45FamilyEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl45Family\Tbl45FamilyParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl45Family\Tbl45FamilyBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl45Family\Tbl45FamilyPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl45Family\Tbl45FamilyPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl42Superfamily\Tbl42SuperfamilyPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl39Infraordo\Tbl39InfraordoPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl36Subordo\Tbl36SubordoPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl33Ordo\Tbl33OrdoPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl30Legio\Tbl30LegioEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl30Legio\Tbl30LegioParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl30Legio\Tbl30LegioBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl30Legio\Tbl30LegioPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl30Legio\Tbl30LegioPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl27Infraclass\Tbl27InfraclassPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl24Subclass\Tbl24SubclassPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl21Class\Tbl21ClassEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl21Class\Tbl21ClassParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl21Class\Tbl21ClassBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl21Class\Tbl21ClassPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl21Class\Tbl21ClassPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl18Superclass\Tbl18SuperclassPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl12Subphylum\Tbl12SubphylumPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl06Phylum\Tbl06PhylumPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl03Regnum\Tbl03RegnumPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl54Supertribus\Tbl54SupertribusPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefSource\Tbl90RefSourceEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefExpert\Tbl90RefExpertBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90RefAuthor\Tbl90RefAuthorPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl57Tribus\Tbl57TribusBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl60Subtribus\Tbl60SubtribusParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl75Species\Tbl75SpeciesParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusPage.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl66Genus\Tbl66GenusPage.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusBossControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl66Genus\Tbl66GenusBossControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl66Genus\Tbl66GenusParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl66Genus\Tbl66GenusEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl66Genus\Tbl66GenusEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl63Infratribus\Tbl63InfratribusParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceParentControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceParentControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceEditControl.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="Views\Modules\Tbl90Reference\Tbl90ReferenceEditControl.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
-  <Page Update="DesignSystem\Layout\BaseBossPageLayout.xaml">
-    <Generator>MSBuild:Compile</Generator>
-  </Page>
+	<Page Update="DesignSystem\Layout\BaseBossPageLayout.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
 </ItemGroup>
 
 <ItemGroup>
@@ -1842,7 +1843,7 @@
 </ItemGroup>
 
 <ItemGroup>
-  <PRIResource Remove="DesignSystem\Themes\**" />
+	<PRIResource Remove="DesignSystem\Themes\**" />
 </ItemGroup>
 
 

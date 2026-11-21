@@ -188,17 +188,6 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         set => SetProperty(ref _hasAuthorYearError, value);
     }
 
-    // ---------------------------------------------------------
-    // Info
-    // ---------------------------------------------------------
-
-    [StringLength(1000)]
-    private string? _info;
-    public string? Info
-    {
-        get => _info;
-        set => SetProperty(ref _info, value);
-    }
 
     // ---------------------------------------------------------
     // EngName
@@ -287,6 +276,32 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
     }
 
     // ---------------------------------------------------------
+    // Info
+    // ---------------------------------------------------------
+
+    [StringLength(100)]
+    private string? _info;
+    public string? Info
+    {
+        get => _info;
+        set => SetProperty(ref _info, value);
+    }
+
+    private string? _translatedInfo;
+    [NotMapped]
+    public string? TranslatedInfo
+    {
+        get => _translatedInfo;
+        set
+        {
+            if (SetProperty(ref _translatedInfo, value))
+                OnPropertyChanged(nameof(InfoForDisplay));
+        }
+    }
+    [NotMapped]
+    public string? InfoForDisplay => TranslatedInfo ?? Info;
+
+    // ---------------------------------------------------------
     // Memo
     // ---------------------------------------------------------
 
@@ -297,6 +312,22 @@ public class Tbl66Genus : ObservableObject, IDataService.IAuditable, IHierarchic
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+
+
+    private string? _translatedMemo;
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
 
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION

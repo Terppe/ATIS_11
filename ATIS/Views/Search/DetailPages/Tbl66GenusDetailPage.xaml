@@ -56,6 +56,17 @@
                     <TextBlock loc:Uids.Uid="TextBlock_Pdf" />
                 </StackPanel>
             </Button>
+
+            <!--<Button
+            Margin="20,5,0,5"
+            HorizontalAlignment="Right"
+            Command="{x:Bind ViewModel.TranslateCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+            <FontIcon Glyph="&#xE72B;" />
+            <TextBlock Text="Übersetzen" />
+            </StackPanel>
+            </Button>-->
+
         </StackPanel>
 
         <!--  Breadcrumb  -->

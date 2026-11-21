@@ -173,7 +173,28 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // MemoSpecies
     // ---------------------------------------------------------
-    [StringLength(1000)] public string? MemoSpecies { get; set; }
+    [StringLength(1000)]
+    private string? _memospecies;
+    public string? MemoSpecies
+    {
+        get => _memospecies;
+        set => SetProperty(ref _memospecies, value);
+    }
+
+    private string? _translatedMemoSpecies;
+    [NotMapped]
+    public string? TranslatedMemoSpecies
+    {
+        get => _translatedMemoSpecies;
+        set
+        {
+            if (SetProperty(ref _translatedMemoSpecies, value))
+                OnPropertyChanged(nameof(MemoSpeciesForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoSpeciesForDisplay => TranslatedMemoSpecies ?? MemoSpecies;
 
     // ---------------------------------------------------------
     // TradeName
@@ -355,8 +376,28 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // MemoFoods
     // ---------------------------------------------------------
+
     [StringLength(1000)]
-    public string? MemoFoods { get; set; }
+    private string? _memofoods;
+    public string? MemoFoods
+    {
+        get => _memofoods;
+        set => SetProperty(ref _memofoods, value);
+    }
+    private string? _translatedMemoFoods;
+    [NotMapped]
+    public string? TranslatedMemoFoods
+    {
+        get => _translatedMemoFoods;
+        set
+        {
+            if (SetProperty(ref _translatedMemoFoods, value))
+                OnPropertyChanged(nameof(MemoFoodsForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoFoodsForDisplay => TranslatedMemoFoods ?? MemoFoods;
 
     // ---------------------------------------------------------
     // Difficult1–4
@@ -373,9 +414,51 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     public bool? RegionMiddle { get; set; }
     public bool? RegionBottom { get; set; }
 
-    [StringLength(1000)] public string? MemoRegion { get; set; }
+    [StringLength(1000)]
+    private string? _memoRegion;
+    public string? MemoRegion
+    {
+        get => _memoRegion;
+        set => SetProperty(ref _memoRegion, value);
+    }
+    private string? _translatedMemoRegion;
+    [NotMapped]
+    public string? TranslatedMemoRegion
+    {
+        get => _translatedMemoRegion;
+        set
+        {
+            if (SetProperty(ref _translatedMemoRegion, value))
+                OnPropertyChanged(nameof(MemoRegionForDisplay));
+        }
+    }
 
-    [StringLength(1000)] public string? MemoTech { get; set; }
+    [NotMapped]
+    public string? MemoRegionForDisplay => TranslatedMemoRegion ?? MemoRegion;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoTech;
+    public string? MemoTech
+    {
+        get => _memoTech;
+        set => SetProperty(ref _memoTech, value);
+    }
+    private string? _translatedMemoTech;
+    [NotMapped]
+    public string? TranslatedMemoTech
+    {
+        get => _translatedMemoTech;
+        set
+        {
+            if (SetProperty(ref _translatedMemoTech, value))
+                OnPropertyChanged(nameof(MemoTechForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoTechForDisplay => TranslatedMemoTech ?? MemoTech;
 
     // ---------------------------------------------------------
     // Wasserwerte (Range)
@@ -434,20 +517,247 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // ---------------------------------------------------------
     // Memo-Felder
     // ---------------------------------------------------------
-    [StringLength(1000)] public string? MemoHusbandry { get; set; }
-    [StringLength(1000)] public string? MemoBreeding { get; set; }
-    [StringLength(1000)] public string? MemoBuilt { get; set; }
-    [StringLength(1000)] public string? MemoColor { get; set; }
-    [StringLength(1000)] public string? MemoSozial { get; set; }
-    [StringLength(1000)] public string? MemoDomorphism { get; set; }
-    [StringLength(1000)] public string? MemoSpecial { get; set; }
+    [StringLength(1000)]
 
+    private string? _memoHusbandry;
+    public string? MemoHusbandry
+    {
+        get => _memoHusbandry;
+        set => SetProperty(ref _memoHusbandry, value);
+    }
+    private string? _translatedMemoHusbandry;
+    [NotMapped]
+    public string? TranslatedMemoHusbandry
+    {
+        get => _translatedMemoHusbandry;
+        set
+        {
+            if (SetProperty(ref _translatedMemoHusbandry, value))
+                OnPropertyChanged(nameof(MemoHusbandryForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoHusbandryForDisplay => TranslatedMemoHusbandry ?? MemoHusbandry;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoBreeding;
+    public string? MemoBreeding
+    {
+        get => _memoBreeding;
+        set => SetProperty(ref _memoBreeding, value);
+    }
+    private string? _translatedMemoBreeding;
+    [NotMapped]
+    public string? TranslatedMemoBreeding
+    {
+        get => _translatedMemoBreeding;
+        set
+        {
+            if (SetProperty(ref _translatedMemoBreeding, value))
+                OnPropertyChanged(nameof(MemoBreedingForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoBreedingForDisplay => TranslatedMemoBreeding ?? MemoBreeding;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoBuilt;
+    public string? MemoBuilt
+    {
+        get => _memoBuilt;
+        set => SetProperty(ref _memoBuilt, value);
+    }
+    private string? _translatedMemoBuilt;
+    [NotMapped]
+    public string? TranslatedMemoBuilt
+    {
+        get => _translatedMemoBuilt;
+        set
+        {
+            if (SetProperty(ref _translatedMemoBuilt, value))
+                OnPropertyChanged(nameof(MemoBuiltForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoBuiltForDisplay => TranslatedMemoBuilt ?? MemoBuilt;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoColor;
+    public string? MemoColor
+    {
+        get => _memoColor;
+        set => SetProperty(ref _memoColor, value);
+    }
+    private string? _translatedMemoColor;
+    [NotMapped]
+    public string? TranslatedMemoColor
+    {
+        get => _translatedMemoColor;
+        set
+        {
+            if (SetProperty(ref _translatedMemoColor, value))
+                OnPropertyChanged(nameof(MemoColorForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoColorForDisplay => TranslatedMemoColor ?? MemoColor;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoSozial;
+    public string? MemoSozial
+    {
+        get => _memoSozial;
+        set => SetProperty(ref _memoSozial, value);
+    }
+    private string? _translatedMemoSozial;
+    [NotMapped]
+    public string? TranslatedMemoSozial
+    {
+        get => _translatedMemoSozial;
+        set
+        {
+            if (SetProperty(ref _translatedMemoSozial, value))
+                OnPropertyChanged(nameof(MemoSozialForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoSozialForDisplay => TranslatedMemoSozial ?? MemoSozial;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoDomorphism;
+    public string? MemoDomorphism
+    {
+        get => _memoDomorphism;
+        set => SetProperty(ref _memoDomorphism, value);
+    }
+    private string? _translatedMemoDomorphism;
+    [NotMapped]
+    public string? TranslatedMemoDomorphism
+    {
+        get => _translatedMemoDomorphism;
+        set
+        {
+            if (SetProperty(ref _translatedMemoDomorphism, value))
+                OnPropertyChanged(nameof(MemoDomorphismForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoDomorphismForDisplay => TranslatedMemoDomorphism ?? MemoDomorphism;
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoSpecial;
+    public string? MemoSpecial
+    {
+        get => _memoSpecial;
+        set => SetProperty(ref _memoSpecial, value);
+    }
+    private string? _translatedMemoSpecial;
+    [NotMapped]
+    public string? TranslatedMemoSpecial
+    {
+        get => _translatedMemoSpecial;
+        set
+        {
+            if (SetProperty(ref _translatedMemoSpecial, value))
+                OnPropertyChanged(nameof(MemoSpecialForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoSpecialForDisplay => TranslatedMemoSpecial ?? MemoSpecial;
+
+    // ---------------------------------------------------------
     public int? BasinHeight { get; set; }
     public decimal? PlantLength { get; set; }
+    // ---------------------------------------------------------
+    [StringLength(1000)]
 
-    [StringLength(1000)] public string? MemoReproduction { get; set; }
-    [StringLength(1000)] public string? MemoCulture { get; set; }
-    [StringLength(1000)] public string? MemoGlobal { get; set; }
+    private string? _memoReproduction;
+    public string? MemoReproduction
+    {
+        get => _memoReproduction;
+        set => SetProperty(ref _memoReproduction, value);
+    }
+    private string? _translatedMemoReproduction;
+    [NotMapped]
+    public string? TranslatedMemoReproduction
+    {
+        get => _translatedMemoReproduction;
+        set
+        {
+            if (SetProperty(ref _translatedMemoReproduction, value))
+                OnPropertyChanged(nameof(MemoReproductionForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoReproductionForDisplay => TranslatedMemoReproduction ?? MemoReproduction;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoCulture;
+    public string? MemoCulture
+    {
+        get => _memoCulture;
+        set => SetProperty(ref _memoCulture, value);
+    }
+    private string? _translatedMemoCulture;
+    [NotMapped]
+    public string? TranslatedMemoCulture
+    {
+        get => _translatedMemoCulture;
+        set
+        {
+            if (SetProperty(ref _translatedMemoCulture, value))
+                OnPropertyChanged(nameof(MemoCultureForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoCultureForDisplay => TranslatedMemoCulture ?? MemoCulture;
+
+    // ---------------------------------------------------------
+    [StringLength(1000)]
+
+    private string? _memoGlobal;
+    public string? MemoGlobal
+    {
+        get => _memoGlobal;
+        set => SetProperty(ref _memoGlobal, value);
+    }
+    private string? _translatedMemoGlobal;
+    [NotMapped]
+    public string? TranslatedMemoGlobal
+    {
+        get => _translatedMemoGlobal;
+        set
+        {
+            if (SetProperty(ref _translatedMemoGlobal, value))
+                OnPropertyChanged(nameof(MemoGlobalForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoGlobalForDisplay => TranslatedMemoGlobal ?? MemoGlobal;
+
 
     // ---------------------------------------------------------
     // Creature (Pflicht)

@@ -39,12 +39,16 @@ public sealed partial class Tbl66GenusDetailPage : Page
             if (selected == null)
                 return;
 
-            ViewModel = new Tbl66GenusDetailViewModel(selected, _dataService);
+            ViewModel = new Tbl66GenusDetailViewModel(
+                selected,
+                _dataService);
+
             DataContext = ViewModel;
 
             ViewModel.IsLoading = true;
             await ViewModel.InitializeAsync();
             Bindings.Update();
+
         }
         finally
         {

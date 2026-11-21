@@ -322,7 +322,7 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
 
     protected abstract object? GetSortKey(TModel item, string column);
 
-    protected void SortBy(string column)
+    protected void SortBy(string? column)
     {
         if (Items is null || Items.Count == 0) return;
 

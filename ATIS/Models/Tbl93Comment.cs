@@ -98,19 +98,31 @@ public class Tbl93Comment : ObservableObject,  IDataService.IAuditable, IHierarc
     }
 
     // ---------------------------------------------------------
-    // Info (optional)
+    // Info
     // ---------------------------------------------------------
+
     [StringLength(100)]
     private string? _info;
     public string? Info
     {
         get => _info;
+        set => SetProperty(ref _info, value);
+    }
+
+    private string? _translatedInfo;
+    [NotMapped]
+    public string? TranslatedInfo
+    {
+        get => _translatedInfo;
         set
         {
-            SetProperty(ref _info, value);
-            ValidateInfo();
+            if (SetProperty(ref _translatedInfo, value))
+                OnPropertyChanged(nameof(InfoForDisplay));
         }
     }
+    [NotMapped]
+    public string? InfoForDisplay => TranslatedInfo ?? Info;
+
     private string? _infoError;
     [NotMapped]
     public string? InfoError
@@ -170,8 +182,9 @@ public class Tbl93Comment : ObservableObject,  IDataService.IAuditable, IHierarc
     }
 
     // ---------------------------------------------------------
-    // Memo (optional)
+    // Memo
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _memo;
     public string? Memo
@@ -179,6 +192,22 @@ public class Tbl93Comment : ObservableObject,  IDataService.IAuditable, IHierarc
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+
+
+    private string? _translatedMemo;
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
 
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION
