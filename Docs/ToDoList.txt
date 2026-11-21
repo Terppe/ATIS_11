@@ -1459,3 +1459,7 @@ Comment Info/Memo. Namen und bibliografische Angaben bleiben unverändert. Detai
 Die bisherige Übersetzungsfunktion liegt lokal, nicht auf GitHub.
 ----------------------------------------
 20.11.2026 17:30 Uhr Offline-Übersetzung ohne Docker, Server oder Datenbankänderung
+----------------------------------------
+21.11.2026 17:30 Uhr Offline-Übersetzung mit BergamotTranslatorSharp. Bereits getestet. Genus Info und Memo. Reference.Source Info und Memo,
+Comment Info und Memo.
+

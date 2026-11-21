@@ -24,14 +24,14 @@
         <StackPanel Grid.Row="0"
                     Grid.Column="1">
             <TextBlock Width="Auto"
-                       Text="{Binding Info}"
+                       Text="{Binding InfoForDisplay}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <TextBlock Grid.Row="1"
                    Grid.Column="1"
                    Width="Auto"
                    Margin="0,0,0,10"
-                   Text="{Binding Memo}"
+                   Text="{Binding MemoForDisplay}"
                    TextWrapping="Wrap" />
     </Grid>
 </UserControl>

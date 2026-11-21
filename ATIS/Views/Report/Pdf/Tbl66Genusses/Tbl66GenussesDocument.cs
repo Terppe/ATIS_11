@@ -549,7 +549,7 @@ public class Tbl66GenussesDocument : IDocument
 
             foreach (var item in Tbl66GenussesDocumentDataSource.SourcesCollection)
             {
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < 6; i++)
                 {
                     if (i == 0)
                     {
@@ -567,15 +567,21 @@ public class Tbl66GenussesDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Notes"));
-                        table.Cell().Text(item.Tbl90RefSources?.Notes ?? string.Empty);
+                        table.Cell().Text(item.Tbl90RefSources?.NotesForDisplay ?? string.Empty);
                     }
                     if (i == 3)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Loc("Referencefor"));
-                        table.Cell().Text(item.Info ?? string.Empty);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 4)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.InfoForDisplay ?? string.Empty);
+                    }
+                    if (i == 5)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -711,13 +717,13 @@ public class Tbl66GenussesDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Info"));
-                        table.Cell().Text(item.Info ?? string.Empty);
+                        table.Cell().Text(item.InfoForDisplay ?? string.Empty);
                     }
                     if (i == 1)
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Memo"));
-                        table.Cell().Text(item.Memo ?? string.Empty);
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 2)
                     {

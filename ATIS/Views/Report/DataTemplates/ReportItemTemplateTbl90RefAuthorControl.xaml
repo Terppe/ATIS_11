@@ -125,7 +125,7 @@
         <StackPanel Grid.Row="8"
                     Grid.Column="1">
             <TextBlock Width="Auto"
-                       Text="{Binding Tbl90RefAuthors.Notes}"
+                       Text="{Binding Tbl90RefAuthors.NotesForDisplay}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="9"
@@ -138,7 +138,7 @@
                     Grid.Column="1">
             <TextBlock Width="Auto"
                        Margin="0,0,0,5"
-                       Text="{Binding Info}"
+                       Text="{Binding InfoForDisplay}"
                        TextWrapping="Wrap" />
         </StackPanel>
     </Grid>
