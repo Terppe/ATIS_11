@@ -1,0 +1,9 @@
+{
+  "modelName": "Spanish-English base-memory",
+  "shortName": "es-en-base-memory",
+  "type": "base-memory",
+  "src": "Spanish",
+  "trg": "English",
+  "version": 1.0,
+  "API": 1.0
+}

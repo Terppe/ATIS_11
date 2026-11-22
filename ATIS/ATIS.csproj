@@ -60,13 +60,14 @@
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.1" />
 		<PackageReference Include="MimeKit" Version="5.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="NTextCat" Version="0.3.65" />
 		<PackageReference Include="nucs.JsonSettings" Version="2.3.2" />
 		<PackageReference Include="nucs.JsonSettings.Autosave" Version="2.3.2" />
 		<PackageReference Include="QuestPDF" Version="2026.9.2" />
 		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
 		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="11.0.0" />
 		<PackageReference Include="WinUI3Localizer" Version="2.3.0" />
-  </ItemGroup>
+	</ItemGroup>
 
 	<PropertyGroup>
 		<VersionPrefix>11.0.0</VersionPrefix>
@@ -92,14 +93,14 @@
 	</ItemGroup>
 
 <ItemGroup>
-  <Content Include="TranslationModels\en-de\**\*">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-  </Content>
+	<Content Include="TranslationModels\**\*">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	</Content>
 </ItemGroup>
-  
-  
+	
+	
 	<ItemGroup>
 		 <!-- WinUI generierte XAML TypeInfo-Dateien -->
 		 <Compile Update="obj\**\XamlTypeInfo.g.cs">
@@ -678,6 +679,11 @@
 	<Folder Include="Strings\fr-FR\" />
 	<Folder Include="Strings\es-ES\" />
 	<Folder Include="TranslationModels\en-de\" />
+	<Folder Include="TranslationModels\de-en\" />
+	<Folder Include="TranslationModels\en-fr\" />
+	<Folder Include="TranslationModels\fr-en\" />
+	<Folder Include="TranslationModels\en-es\" />
+	<Folder Include="TranslationModels\es-en\" />
 	</ItemGroup>
 
 	<ItemGroup>

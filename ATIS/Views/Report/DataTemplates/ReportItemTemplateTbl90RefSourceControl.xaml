@@ -76,8 +76,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="0,0,0,5"
-                Text="{Binding InfoForDisplay}"
-                TextWrapping="Wrap" />
+                Text="{Binding InfoForDisplay}" />
         </StackPanel>
 
     </Grid>

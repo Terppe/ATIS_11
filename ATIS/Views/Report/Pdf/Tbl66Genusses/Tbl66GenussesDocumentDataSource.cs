@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl66GenussesDocumentDataSourceSkriptdatum:  18.08.2026  10:32    
@@ -123,6 +124,15 @@ public abstract class Tbl66GenussesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByGenusIdAsync(genusId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            _genusSingle,
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
+
 
         return new Tbl66GenussesPdfModel
         {

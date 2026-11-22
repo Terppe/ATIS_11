@@ -495,7 +495,7 @@ public class Tbl66GenussesDocument : IDocument
 
             foreach (var item in Tbl66GenussesDocumentDataSource.ExpertsCollection)
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
                     {
@@ -512,10 +512,16 @@ public class Tbl66GenussesDocument : IDocument
                     if (i == 2)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Loc("Referencefor"));
-                        table.Cell().Text(item.Info ?? string.Empty);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 3)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.InfoForDisplay ?? string.Empty);
+                    }
+                    if (i == 4)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -615,7 +621,7 @@ public class Tbl66GenussesDocument : IDocument
 
             foreach (var item in Tbl66GenussesDocumentDataSource.AuthorsCollection)
             {
-                for (var i = 0; i < 11; i++)
+                for (var i = 0; i < 12; i++)
                 {
                     if (i == 0)
                     {
@@ -674,10 +680,16 @@ public class Tbl66GenussesDocument : IDocument
                     if (i == 9)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Loc("Referencefor"));
-                        table.Cell().Text(item.Info ?? string.Empty);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 10)
+                    {
+                        table.Cell().Text("");
+                        table.Cell().Text(Loc("Referencefor"));
+                        table.Cell().Text(item.InfoForDisplay ?? string.Empty);
+                    }
+                    if (i == 11)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");

@@ -1462,4 +1462,7 @@ Die bisherige Übersetzungsfunktion liegt lokal, nicht auf GitHub.
 ----------------------------------------
 21.11.2026 17:30 Uhr Offline-Übersetzung mit BergamotTranslatorSharp. Bereits getestet. Genus Info und Memo. Reference.Source Info und Memo,
 Comment Info und Memo.
-
+----------------------------------------
+22.11.2026 13:30 Uhr Offline-Übersetzung mit BergamotTranslatorSharpweiter test abgeschlossen mit ID 1021 von Genus. jetzt nur englisch-deutsch
+----------------------------------------
+22.11.2026 15:30 Uhr jetzt für 6 Modelle TranslationModels eingefügt. Test erfolgreich.

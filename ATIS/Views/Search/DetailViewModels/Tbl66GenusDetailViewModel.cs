@@ -145,38 +145,20 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         _isInitializing = true;
         try
         {
-
-
             await LoadTaxonomy();
             LoadDirectChildren();
-            LoadReferences();
-            LoadComments();
+            await LoadReferencesAsync();
+            await LoadCommentsAsync();
+
+            await OfflineTranslationFields.TranslateAsync(
+                App.GetService<OfflineTranslationService>(),
+                GenusSelected!,
+                ReferenceExpertItems,
+                ReferenceSourceItems,
+                ReferenceAuthorItems,
+                CommentItems);
+
             BuildBreadcrumb();
-
-
-            const int testGenusId = 1021;
-
-            if (GenusSelected is { } genus &&
-                genus.GenusId == testGenusId &&
-                genus.Info is string info &&
-                !string.IsNullOrWhiteSpace(info))
-            {
-                genus.TranslatedInfo = await Task.Run(() =>
-                    App.GetService<OfflineTranslationService>()
-                        .Translate(new[] { info })[0]);
-            }
-
-
-            if (GenusSelected is { } memoGenus &&
-                memoGenus.GenusId == testGenusId &&
-                memoGenus.Memo is string memo &&
-                !string.IsNullOrWhiteSpace(memo))
-            {
-                memoGenus.TranslatedMemo = await Task.Run(() =>
-                    App.GetService<OfflineTranslationService>()
-                        .Translate(new[] { memo })[0]);
-            }
-
             _isInitialized = true;
         }
         finally
@@ -899,10 +881,11 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
 
         HasDirectChildren = true;
     }
+
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async void LoadReferences()
+    private async Task LoadReferencesAsync()
     {
         // -------------------------
         // EXPERT REFERENCES
@@ -916,59 +899,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         // -------------------------
         var sources = await _dataService.GetSourceReferencesByGenusIdAsync(GenusSelected.GenusId);
 
-        if (GenusSelected.GenusId == 1021)
-        {
-            foreach (var reference in sources.Where(item =>
-                         item.ReferenceId == 12608 || item.ReferenceId == 12609))
-            {
-                if (reference.Info is string info &&
-                    !string.IsNullOrWhiteSpace(info))
-                {
-                    try
-                    {
-                        reference.TranslatedInfo = await Task.Run(() =>
-                            App.GetService<OfflineTranslationService>()
-                                .Translate(new[] { info })[0]);
-                    }
-                    catch (Exception ex)
-                    {
-                        ATIS.Models.SimpleLog.Error(
-                            $"Reference.Info konnte nicht übersetzt werden: {ex.Message}");
-                    }
-                }
-
-                if (reference.Memo is string memo &&
-                    !string.IsNullOrWhiteSpace(memo))
-                {
-                    try
-                    {
-                        reference.TranslatedMemo = await Task.Run(() =>
-                            App.GetService<OfflineTranslationService>()
-                                .Translate(new[] { memo })[0]);
-                    }
-                    catch (Exception ex)
-                    {
-                        ATIS.Models.SimpleLog.Error(
-                            $"Reference.Memo konnte nicht übersetzt werden: {ex.Message}");
-                    }
-                }
-                //if (reference.Tbl90RefSources?.Notes is string notes &&
-                //    !string.IsNullOrWhiteSpace(notes))
-                //{
-                //    try
-                //    {
-                //        reference.Tbl90RefSources.TranslatedNotes = await Task.Run(() =>
-                //            App.GetService<OfflineTranslationService>()
-                //                .Translate(new[] { notes })[0]);
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        ATIS.Models.SimpleLog.Error(
-                //            $"Source.Notes konnte nicht übersetzt werden: {ex.Message}");
-                //    }
-                //}
-            }
-        }
         foreach (var item in sources)
             ReferenceSourceItems.Add(item);
 
@@ -983,63 +913,9 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async void LoadComments()
+    private async Task LoadCommentsAsync()
     {
         var comments = await _dataService.GetCommentsByGenusIdAsync(GenusSelected.GenusId);
-        if (GenusSelected.GenusId == 1021)
-        {
-            foreach (var comment in comments.Where(item =>
-                         item.CommentId == 1463 ))
-            {
-                if (comment.Info is string info &&
-                    !string.IsNullOrWhiteSpace(info))
-                {
-                    try
-                    {
-                        comment.TranslatedInfo = await Task.Run(() =>
-                            App.GetService<OfflineTranslationService>()
-                                .Translate(new[] { info })[0]);
-                    }
-                    catch (Exception ex)
-                    {
-                        ATIS.Models.SimpleLog.Error(
-                            $"Comment.Info konnte nicht übersetzt werden: {ex.Message}");
-                    }
-                }
-
-                if (comment.Memo is string memo &&
-                    !string.IsNullOrWhiteSpace(memo))
-                {
-                    try
-                    {
-                        comment.TranslatedMemo = await Task.Run(() =>
-                            App.GetService<OfflineTranslationService>()
-                                .Translate(new[] { memo })[0]);
-                    }
-                    catch (Exception ex)
-                    {
-                        ATIS.Models.SimpleLog.Error(
-                            $"Comment.Memo konnte nicht übersetzt werden: {ex.Message}");
-                    }
-                }
-                //if (reference.Tbl90RefSources?.Notes is string notes &&
-                //    !string.IsNullOrWhiteSpace(notes))
-                //{
-                //    try
-                //    {
-                //        reference.Tbl90RefSources.TranslatedNotes = await Task.Run(() =>
-                //            App.GetService<OfflineTranslationService>()
-                //                .Translate(new[] { notes })[0]);
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        ATIS.Models.SimpleLog.Error(
-                //            $"Source.Notes konnte nicht übersetzt werden: {ex.Message}");
-                //    }
-                //}
-            }
-        }
-
         foreach (var item in comments)
             CommentItems.Add(item);
     }
@@ -1060,61 +936,14 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         {
             var model = await Tbl66GenussesDocumentDataSource.GetGenusDetailsAsync(selected.GenusId);
 
-            if (model != null && selected.GenusId == 1021)
-            {
-                model.Info = selected.InfoForDisplay;
-                model.Memo = selected.MemoForDisplay;
+            if (model is null)
+                return null;
 
-                foreach (var pdfReference in Tbl66GenussesDocumentDataSource.SourcesCollection)
-                {
-                    if (pdfReference.ReferenceId != 12608 &&
-                        pdfReference.ReferenceId != 12609)
-                        continue;
+            model.Info = selected.InfoForDisplay;
+            model.Memo = selected.MemoForDisplay;
 
-                    var displayedReference = ReferenceSourceItems.FirstOrDefault(
-                        item => item.ReferenceId == pdfReference.ReferenceId);
-
-                    if (displayedReference != null)
-                    {
-                        pdfReference.TranslatedInfo = displayedReference.InfoForDisplay;
-                        pdfReference.TranslatedMemo = displayedReference.MemoForDisplay;
-                    }
-                    //if (pdfReference.Tbl90RefSources != null)
-                    //{
-                    //    pdfReference.Tbl90RefSources.TranslatedNotes =
-                    //        displayedReference.Tbl90RefSources?.NotesForDisplay;
-                    //}
-                }
-
-                foreach (var pdfComment in Tbl66GenussesDocumentDataSource.CommentsCollection)
-                {
-                    if (pdfComment.CommentId != 1463)
-                        continue;
-
-                    var displayedComment = CommentItems.FirstOrDefault(
-                        item => item.CommentId == pdfComment.CommentId);
-
-                    if (displayedComment != null)
-                    {
-                        pdfComment.TranslatedInfo = displayedComment.InfoForDisplay;
-                        pdfComment.TranslatedMemo = displayedComment.MemoForDisplay;
-                    }
-                    //if (pdfComment.Tbl90RefSources != null)
-                    //{
-                    //    pdfComment.Tbl90RefSources.TranslatedNotes =
-                    //        displayedComment.Tbl90RefSources?.NotesForDisplay;
-                    //}
-                }
-
-            }
             return model == null ? null : new Tbl66GenussesDocument(model);
 
-            //var model = await Tbl66GenussesDocumentDataSource.GetGenusDetailsAsync(selected.GenusId);
-            //return model == null ? null : new Tbl66GenussesDocument(model);
         }, suggestedFileName);
     }
-
-    // -----------------------------              
-    //  Übersetzung von Texten
-    // -----------------------------
 }
