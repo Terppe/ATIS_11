@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loca="using:WinUI3Localizer"
+    xmlns:loc="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -30,7 +30,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_AuthorEditor" />
+                loc:Uids.Uid="TextBlock_AuthorEditor" />
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1">
             <TextBlock
@@ -42,7 +42,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_PublicationDate" />
+                loc:Uids.Uid="TextBlock_PublicationDate" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Width="Auto" Text="{Binding Tbl90RefAuthors.PublicationYear}" />
@@ -51,7 +51,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_ArticelTitle" />
+                loc:Uids.Uid="TextBlock_ArticelTitle" />
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1">
             <TextBlock
@@ -63,7 +63,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_BookName_Journal" />
+                loc:Uids.Uid="TextBlock_BookName_Journal" />
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1">
             <TextBlock
@@ -78,7 +78,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_Pages" />
+                loc:Uids.Uid="TextBlock_Pages" />
         </StackPanel>
         <StackPanel Grid.Row="4" Grid.Column="1">
             <TextBlock Width="Auto" Text="{Binding Tbl90RefAuthors.Page1}" />
@@ -87,7 +87,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_Publisher1" />
+                loc:Uids.Uid="TextBlock_Publisher1" />
         </StackPanel>
         <StackPanel Grid.Row="5" Grid.Column="1">
             <TextBlock Width="Auto" Text="{Binding Tbl90RefAuthors.Publisher}" />
@@ -96,7 +96,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_PublisherPlace1" />
+                loc:Uids.Uid="TextBlock_PublisherPlace1" />
         </StackPanel>
         <StackPanel Grid.Row="6" Grid.Column="1">
             <TextBlock
@@ -108,7 +108,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_Isbn1" />
+                loc:Uids.Uid="TextBlock_Isbn1" />
         </StackPanel>
         <StackPanel Grid.Row="7" Grid.Column="1">
             <TextBlock Width="Auto" Text="{Binding Tbl90RefAuthors.ISBN}" />
@@ -117,7 +117,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_Notes1" />
+                loc:Uids.Uid="TextBlock_Notes1" />
         </StackPanel>
         <StackPanel Grid.Row="8" Grid.Column="1">
             <TextBlock
@@ -129,7 +129,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,5"
-                loca:Uids.Uid="TextBlock_Memo" />
+                loc:Uids.Uid="TextBlock_Memo" />
         </StackPanel>
         <StackPanel Grid.Row="9" Grid.Column="1">
             <TextBlock
@@ -142,7 +142,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,5"
-                loca:Uids.Uid="TextBlock_Referencefor" />
+                loc:Uids.Uid="TextBlock_Referencefor" />
         </StackPanel>
         <StackPanel Grid.Row="10" Grid.Column="1">
             <TextBlock

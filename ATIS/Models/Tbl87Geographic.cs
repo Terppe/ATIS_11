@@ -250,7 +250,21 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
                 ValidateMemo();
         }
     }
+    private string? _translatedMemo;
 
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
     private string? _http;
     [StringLength(100)]
     public string? Http

@@ -138,7 +138,21 @@ public class Tbl81Image : ObservableObject, IDataService.IAuditable, IHierarchic
                 ValidateMemo();
         }
     }
+    private string? _translatedMemo;
 
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
     public byte[]? ImageData { get; set; }
 
     [StringLength(50)]

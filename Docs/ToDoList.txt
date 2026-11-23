@@ -1465,4 +1465,8 @@ Comment Info und Memo.
 ----------------------------------------
 22.11.2026 13:30 Uhr Offline-Übersetzung mit BergamotTranslatorSharpweiter test abgeschlossen mit ID 1021 von Genus. jetzt nur englisch-deutsch
 ----------------------------------------
-22.11.2026 15:30 Uhr jetzt für 6 Modelle TranslationModels eingefügt. Test erfolgreich.
+22.11.2026 15:30 Uhr jetzt für 6 Modelle TranslationModels eingefügt. Test erfolgreich. Push bis hier
+----------------------------------------
+23.11.2026 10:30 Uhr reference.Info in allen drei Schleifen
+expert.Info, source.Info, author.Info
+comment.Info rausgenommen bei OfflineTranslationFields

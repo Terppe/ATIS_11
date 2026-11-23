@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters1="using:ATIS.DesignSystem.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loca="using:WinUI3Localizer"
+    xmlns:loc="using:WinUI3Localizer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
@@ -31,7 +31,7 @@
             <TextBlock
                 Width="Auto"
                 Margin="8,0,0,0"
-                loca:Uids.Uid="TextBlock_Name" />
+                loc:Uids.Uid="TextBlock_Name" />
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="1">
@@ -50,7 +50,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="0">
-            <TextBlock Margin="8,0,0,0" loca:Uids.Uid="TextBlock_ShotDate" />
+            <TextBlock Margin="8,0,0,0" loc:Uids.Uid="TextBlock_ShotDate" />
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="1">
@@ -58,7 +58,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3" Grid.Column="0">
-            <TextBlock Margin="8,0,0,0" loca:Uids.Uid="TextBlock_ImageMimeType" />
+            <TextBlock Margin="8,0,0,0" loc:Uids.Uid="TextBlock_ImageMimeType" />
         </StackPanel>
 
         <StackPanel Grid.Row="3" Grid.Column="1">
@@ -66,7 +66,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="4" Grid.Column="0">
-            <TextBlock Margin="8,0,0,0" loca:Uids.Uid="TextBlock_Info" />
+            <TextBlock Margin="8,0,0,0" loc:Uids.Uid="TextBlock_Info" />
         </StackPanel>
 
         <StackPanel Grid.Row="4" Grid.Column="1">
@@ -74,13 +74,13 @@
         </StackPanel>
 
         <StackPanel Grid.Row="5" Grid.Column="0">
-            <TextBlock Margin="8,0,0,0" loca:Uids.Uid="TextBlock_Notes" />
+            <TextBlock Margin="8,0,0,0" loc:Uids.Uid="TextBlock_Memo" />
         </StackPanel>
 
         <StackPanel Grid.Row="5" Grid.Column="1">
             <TextBlock
                 Width="Auto"
-                Text="{Binding Memo}"
+                Text="{Binding MemoForDisplay}"
                 TextWrapping="Wrap" />
         </StackPanel>
     </Grid>

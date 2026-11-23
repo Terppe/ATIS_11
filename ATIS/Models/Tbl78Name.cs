@@ -123,6 +123,21 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
         }
     }
 
+    private string? _translatedMemo;
+
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
     [StringLength(50)]
     public string Writer { get; set; } = string.Empty;
     public DateTime WriterDate { get; set; }

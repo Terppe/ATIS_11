@@ -19,43 +19,43 @@ public static class OfflineTranslationFields
 
         foreach (var reference in experts)
         {
-            Add(reference.Info, value => reference.TranslatedInfo = value);
+            //Add(reference.Info, value => reference.TranslatedInfo = value);
             Add(reference.Memo, value => reference.TranslatedMemo = value);
 
             if (reference.Tbl90RefExperts is { } expert)
             {
-                Add(expert.Info, value => expert.TranslatedInfo = value);
+                //Add(expert.Info, value => expert.TranslatedInfo = value);
                 Add(expert.Memo, value => expert.TranslatedMemo = value);
             }
         }
 
         foreach (var reference in sources)
         {
-            Add(reference.Info, value => reference.TranslatedInfo = value);
+            //Add(reference.Info, value => reference.TranslatedInfo = value);
             Add(reference.Memo, value => reference.TranslatedMemo = value);
 
             if (reference.Tbl90RefSources is { } source)
             {
-                Add(source.Info, value => source.TranslatedInfo = value);
+                //Add(source.Info, value => source.TranslatedInfo = value);
                 Add(source.Memo, value => source.TranslatedMemo = value);
             }
         }
 
         foreach (var reference in authors)
         {
-            Add(reference.Info, value => reference.TranslatedInfo = value);
+            //Add(reference.Info, value => reference.TranslatedInfo = value);
             Add(reference.Memo, value => reference.TranslatedMemo = value);
 
             if (reference.Tbl90RefAuthors is { } author)
             {
-                Add(author.Info, value => author.TranslatedInfo = value);
+                //Add(author.Info, value => author.TranslatedInfo = value);
                 Add(author.Memo, value => author.TranslatedMemo = value);
             }
         }
 
         foreach (var comment in comments)
         {
-            Add(comment.Info, value => comment.TranslatedInfo = value);
+            //Add(comment.Info, value => comment.TranslatedInfo = value);
             Add(comment.Memo, value => comment.TranslatedMemo = value);
         }
 

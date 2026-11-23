@@ -59,6 +59,8 @@ public sealed partial class TemplateTbl75SpeciesNamesControl : UserControl
             Environment.NewLine,
             names
                 .Where(x => !string.IsNullOrWhiteSpace(x.NameName))
-                .Select(x => x.NameName));
+                .Select(x => string.IsNullOrWhiteSpace(x.Language)
+                    ? x.NameName
+                    : $"{x.NameName} [{x.Language}]"));
     }
 }

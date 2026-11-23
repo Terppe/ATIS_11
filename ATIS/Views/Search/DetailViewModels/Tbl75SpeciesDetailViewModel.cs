@@ -5,6 +5,7 @@ using ATIS.Services;
 using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using static ATIS.Views.Report.PdfModels;
 
 //    Tbl75SpeciesDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
@@ -174,6 +175,9 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
             LoadGeographics();
             LoadComments();
             BuildBreadcrumb();
+
+            await TranslateSpeciesMemosAsync();
+
             _isInitialized = true;
         }
         finally
@@ -182,6 +186,57 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         }
     }
 
+    // -----------------------------
+    //  TranslateSpeciesMemosAsync
+    // -----------------------------
+
+    private async Task TranslateSpeciesMemosAsync()
+    {
+        if (SpeciesSelected is not { } species)
+            return;
+
+        var fields = new List<(string Text, Action<string?> Set)>();
+
+        void Add(string? text, Action<string?> set)
+        {
+            if (!string.IsNullOrWhiteSpace(text))
+                fields.Add((text, set));
+        }
+
+        Add(species.MemoSpecies, value => species.TranslatedMemoSpecies = value);
+        Add(species.MemoFoods, value => species.TranslatedMemoFoods = value);
+        Add(species.MemoRegion, value => species.TranslatedMemoRegion = value);
+        Add(species.MemoTech, value => species.TranslatedMemoTech = value);
+        Add(species.MemoHusbandry, value => species.TranslatedMemoHusbandry = value);
+        Add(species.MemoBreeding, value => species.TranslatedMemoBreeding = value);
+        Add(species.MemoBuilt, value => species.TranslatedMemoBuilt = value);
+        Add(species.MemoColor, value => species.TranslatedMemoColor = value);
+        Add(species.MemoSozial, value => species.TranslatedMemoSozial = value);
+        Add(species.MemoDomorphism, value => species.TranslatedMemoDomorphism = value);
+        Add(species.MemoSpecial, value => species.TranslatedMemoSpecial = value);
+        Add(species.MemoReproduction, value => species.TranslatedMemoReproduction = value);
+        Add(species.MemoCulture, value => species.TranslatedMemoCulture = value);
+        Add(species.MemoGlobal, value => species.TranslatedMemoGlobal = value);
+
+        if (fields.Count == 0)
+            return;
+
+        try
+        {
+            var translated = await Task.Run(() =>
+                App.GetService<OfflineTranslationService>()
+                    .TranslateForDisplay(fields.Select(field => field.Text).ToArray()));
+
+            for (var i = 0; i < fields.Count; i++)
+                fields[i].Set(translated[i]);
+        }
+        catch (Exception ex)
+        {
+            ATIS.Models.SimpleLog.Error(
+                $"Species-Memos konnten nicht übersetzt werden: {ex.Message}");
+            ATIS.Models.SimpleLog.Log(ex);
+        }
+    }
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
@@ -989,8 +1044,11 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     {
         var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
         NameItems.Clear();
+
         foreach (var item in names)
+        {
             NameItems.Add(item);
+        }
     }
 
     // -----------------------------
@@ -1001,8 +1059,27 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         var images = await _dataService.GetImagesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
 
         ImageItems.Clear();
-        foreach (var image in images)
-            ImageItems.Add(image);
+
+        foreach (var item in images)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Memo))
+            {
+                try
+                {
+                    var memo = item.Memo;
+                    item.TranslatedMemo = await Task.Run(() =>
+                        App.GetService<OfflineTranslationService>()
+                            .TranslateForDisplay(new[] { memo })[0]);
+                }
+                catch (Exception ex)
+                {
+                    ATIS.Models.SimpleLog.Error(
+                        $"Geographic.Memo konnte nicht übersetzt werden: {ex.Message}");
+                }
+            }
+
+            ImageItems.Add(item);
+        }
     }
 
     // -----------------------------
@@ -1012,8 +1089,11 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     {
         var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
         SynonymItems.Clear();
+
         foreach (var item in synonyms)
+        {
             SynonymItems.Add(item);
+        }
     }
 
     // -----------------------------
@@ -1024,8 +1104,27 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
 
         GeographicItems.Clear();
+
         foreach (var item in geographics)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Memo))
+            {
+                try
+                {
+                    var memo = item.Memo;
+                    item.TranslatedMemo = await Task.Run(() =>
+                        App.GetService<OfflineTranslationService>()
+                            .TranslateForDisplay(new[] { memo })[0]);
+                }
+                catch (Exception ex)
+                {
+                    ATIS.Models.SimpleLog.Error(
+                        $"Geographic.Memo konnte nicht übersetzt werden: {ex.Message}");
+                }
+            }
+
             GeographicItems.Add(item);
+        }
     }
 
     // -----------------------------              
@@ -1043,7 +1142,53 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl75SpeciessesDocumentDataSource.GetSpeciesDetailsAsync(selected.SpeciesId);
-            return model == null ? null : new Tbl75SpeciessesDocument(model);
+
+            if (model is null)
+                return null;
+
+            model.MemoSpecies = selected.MemoSpeciesForDisplay;
+            model.MemoFoods = selected.MemoFoodsForDisplay;
+            model.MemoRegion = selected.MemoRegionForDisplay;
+            model.MemoTech = selected.MemoTechForDisplay;
+            model.MemoHusbandry = selected.MemoHusbandryForDisplay;
+            model.MemoBreeding = selected.MemoBreedingForDisplay;
+            model.MemoBuilt = selected.MemoBuiltForDisplay;
+            model.MemoColor = selected.MemoColorForDisplay;
+            model.MemoSozial = selected.MemoSozialForDisplay;
+            model.MemoDomorphism = selected.MemoDomorphismForDisplay;
+            model.MemoSpecial = selected.MemoSpecialForDisplay;
+            model.MemoReproduction = selected.MemoReproductionForDisplay;
+            model.MemoCulture = selected.MemoCultureForDisplay;
+            model.MemoGlobal = selected.MemoGlobalForDisplay;
+
+
+            foreach (var pdfImage in
+                     Tbl75SpeciessesDocumentDataSource.ImagesCollection)
+            {
+                var displayedImage = ImageItems.FirstOrDefault(
+                    item => item.ImageId == pdfImage.ImageId);
+
+                if (displayedImage is not null)
+                {
+                    pdfImage.TranslatedMemo =
+                        displayedImage.MemoForDisplay;
+                }
+            }
+
+            foreach (var pdfGeographic in
+                     Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
+            {
+                var displayedGeographic = GeographicItems.FirstOrDefault(
+                    item => item.GeographicId == pdfGeographic.GeographicId);
+
+                if (displayedGeographic is not null)
+                {
+                    pdfGeographic.TranslatedMemo =
+                        displayedGeographic.MemoForDisplay;
+                }
+            }
+
+            return new Tbl75SpeciessesDocument(model);
         }, suggestedFileName);
     }
 }

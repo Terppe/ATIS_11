@@ -143,7 +143,21 @@ public class Tbl84Synonym : ObservableObject, IDataService.IAuditable, IHierarch
                 ValidateMemo();
         }
     }
+    private string? _translatedMemo;
 
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
     // ---------------------------------------------------------
     // NAVIGATION
     // ---------------------------------------------------------

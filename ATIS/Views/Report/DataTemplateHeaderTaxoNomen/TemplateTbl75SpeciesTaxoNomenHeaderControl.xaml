@@ -118,7 +118,7 @@
         </StackPanel>
         <StackPanel Grid.Row="9"
                     Grid.Column="1">
-            <TextBlock Text="{Binding Item.MemoSpecies}"
+            <TextBlock Text="{Binding Item.MemoSpeciesForDisplay}"
                        TextWrapping="Wrap" />
         </StackPanel>
         <StackPanel Grid.Row="10"

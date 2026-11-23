@@ -851,7 +851,7 @@ public class Tbl75SpeciessesDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Memo"));
-                        table.Cell().Text(item.Memo);
+                        table.Cell().Text(item.MemoForDisplay);
                     }
                     if (i == 9)
                     {
@@ -934,8 +934,8 @@ public class Tbl75SpeciessesDocument : IDocument
                     if (i == 4)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Loc("Notes"));
-                        table.Cell().Text(item.Memo ?? string.Empty);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 5)
                     {

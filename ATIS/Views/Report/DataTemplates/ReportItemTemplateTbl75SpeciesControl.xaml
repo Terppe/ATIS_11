@@ -93,7 +93,7 @@
         <TextBlock Grid.Row="6"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoDomorphism}"
+                   Text="{Binding Item.MemoDomorphismForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="7"
                    Grid.Column="0"
@@ -109,7 +109,7 @@
         <TextBlock Grid.Row="8"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoSozial}"
+                   Text="{Binding Item.MemoSozialForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="9"
                    Grid.Column="0"
@@ -125,7 +125,7 @@
         <TextBlock Grid.Row="10"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoHusbandry}"
+                   Text="{Binding Item.MemoHusbandryForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="11"
                    Grid.Column="0"
@@ -141,7 +141,7 @@
         <TextBlock Grid.Row="12"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoBreeding}"
+                   Text="{Binding Item.MemoBreedingForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="13"
                    Grid.Column="0"
@@ -157,7 +157,7 @@
         <TextBlock Grid.Row="14"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoFoods}"
+                   Text="{Binding Item.MemoFoodsForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="17"
                    Grid.Column="0"
@@ -173,7 +173,7 @@
         <TextBlock Grid.Row="18"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoReproduction}"
+                   Text="{Binding Item.MemoReproductionForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="19"
                    Grid.Column="0"
@@ -189,7 +189,7 @@
         <TextBlock Grid.Row="20"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoCulture}"
+                   Text="{Binding Item.MemoCultureForDisplay}"
                    TextWrapping="Wrap" />
         <TextBlock Grid.Row="21"
                    Grid.Column="0"
@@ -205,7 +205,7 @@
         <TextBlock Grid.Row="22"
                    Grid.Column="1"
                    Width="Auto"
-                   Text="{Binding Item.MemoGlobal}"
+                   Text="{Binding Item.MemoGlobalForDisplay}"
                    TextWrapping="Wrap" />
     </Grid>
 </UserControl>
