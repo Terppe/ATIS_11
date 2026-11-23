@@ -115,6 +115,9 @@ public abstract class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
             (await dataService.GetNamesBySpeciesIdAsync(speciesId))
             .Where(x => IsVisibleTaxonName(x.NameName)));
 
+        ImagesCollection = new ObservableCollection<Tbl81Image>(
+            await dataService.GetImagesBySpeciesIdAsync(speciesId));
+
         //ImagesCollection = new ObservableCollection<Tbl81Image>(
         //    (await dataService.GetImagesBySpeciesIdAsync(speciesId))
         //    .Where(x => IsVisibleTaxonName(x.Info)));
@@ -122,6 +125,9 @@ public abstract class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
         SynonymsCollection = new ObservableCollection<Tbl84Synonym>(
             (await dataService.GetSynonymsBySpeciesIdAsync(speciesId))
             .Where(x => IsVisibleTaxonName(x.SynonymName)));
+
+        GeographicsCollection = new ObservableCollection<Tbl87Geographic>(
+            await dataService.GetGeographicsBySpeciesIdAsync(speciesId));
 
         //GeographicsCollection = new ObservableCollection<Tbl87Geographic>(
         //    (await dataService.GetGeographicsBySpeciesIdAsync(speciesId))

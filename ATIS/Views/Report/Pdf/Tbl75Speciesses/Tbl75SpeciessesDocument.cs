@@ -585,7 +585,7 @@ public class Tbl75SpeciessesDocument : IDocument
 
             foreach (var item in Tbl75SpeciessesDocumentDataSource.ExpertsCollection)
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
                     {
@@ -602,10 +602,17 @@ public class Tbl75SpeciessesDocument : IDocument
                     if (i == 2)
                     {
                         table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
+                    }
+
+                    if (i == 3)
+                    {
+                        table.Cell().Text("");
                         table.Cell().Text(Loc("Referencefor"));
                         table.Cell().Text(item.Info ?? string.Empty);
                     }
-                    if (i == 3)
+                    if (i == 4)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -640,7 +647,7 @@ public class Tbl75SpeciessesDocument : IDocument
 
             foreach (var item in Tbl75SpeciessesDocumentDataSource.SourcesCollection)
             {
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < 6; i++)
                 {
                     if (i == 0)
                     {
@@ -663,10 +670,17 @@ public class Tbl75SpeciessesDocument : IDocument
                     if (i == 3)
                     {
                         table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
+                    }
+
+                    if (i == 4)
+                    {
+                        table.Cell().Text("");
                         table.Cell().Text(Loc("Referencefor"));
                         table.Cell().Text(item.Info ?? string.Empty);
                     }
-                    if (i == 4)
+                    if (i == 5)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -701,7 +715,7 @@ public class Tbl75SpeciessesDocument : IDocument
 
             foreach (var item in Tbl75SpeciessesDocumentDataSource.AuthorsCollection)
             {
-                for (var i = 0; i < 11; i++)
+                for (var i = 0; i < 12; i++)
                 {
                     if (i == 0)
                     {
@@ -760,10 +774,17 @@ public class Tbl75SpeciessesDocument : IDocument
                     if (i == 9)
                     {
                         table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
+                    }
+
+                    if (i == 10)
+                    {
+                        table.Cell().Text("");
                         table.Cell().Text(Loc("Referencefor"));
                         table.Cell().Text(item.Info ?? string.Empty);
                     }
-                    if (i == 10)
+                    if (i == 11)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -983,7 +1004,7 @@ public class Tbl75SpeciessesDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Memo"));
-                        table.Cell().Text(item.Memo ?? string.Empty);
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 2)
                     {

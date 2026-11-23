@@ -50,22 +50,14 @@
             <Button
                 Margin="10,5,0,5"
                 HorizontalAlignment="Right"
-                Click="ExportPdfButton_Click">
+                Click="ExportPdfButton_Click"
+                IsEnabled="{x:Bind ViewModel.IsReady, Mode=OneWay}">
                 <StackPanel Orientation="Horizontal" Spacing="6">
                     <FontIcon Glyph="&#xE749;" />
                     <TextBlock loc:Uids.Uid="TextBlock_Pdf" />
                 </StackPanel>
             </Button>
 
-            <!--<Button Margin="10,5,0,5"
-            HorizontalAlignment="Right"
-            Click="PrintButton_Click">
-            <StackPanel Orientation="Horizontal"
-            Spacing="6">
-            <FontIcon Glyph="&#xE749;" />
-            <TextBlock loc:Uids.Uid="TextBlock_Print" />
-            </StackPanel>
-            </Button>-->
         </StackPanel>
 
         <!--  Breadcrumb  -->

@@ -545,7 +545,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
 
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.ExpertsCollection)
             {
-                for (var i = 0; i < 4; i++)
+                for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
                     {
@@ -562,10 +562,17 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     if (i == 2)
                     {
                         table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
+                    }
+
+                    if (i == 3)
+                    {
+                        table.Cell().Text("");
                         table.Cell().Text(Loc("Referencefor"));
                         table.Cell().Text(item.Info ?? string.Empty);
                     }
-                    if (i == 3)
+                    if (i == 4)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -600,7 +607,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
 
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.SourcesCollection)
             {
-                for (var i = 0; i < 5; i++)
+                for (var i = 0; i < 6; i++)
                 {
                     if (i == 0)
                     {
@@ -623,10 +630,17 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     if (i == 3)
                     {
                         table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
+                    }
+
+                    if (i == 4)
+                    {
+                        table.Cell().Text("");
                         table.Cell().Text(Loc("Referencefor"));
                         table.Cell().Text(item.Info ?? string.Empty);
                     }
-                    if (i == 4)
+                    if (i == 5)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -661,7 +675,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
 
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.AuthorsCollection)
             {
-                for (var i = 0; i < 11; i++)
+                for (var i = 0; i < 12; i++)
                 {
                     if (i == 0)
                     {
@@ -720,10 +734,17 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     if (i == 9)
                     {
                         table.Cell().Text("");
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
+                    }
+
+                    if (i == 10)
+                    {
+                        table.Cell().Text("");
                         table.Cell().Text(Loc("Referencefor"));
                         table.Cell().Text(item.Info ?? string.Empty);
                     }
-                    if (i == 10)
+                    if (i == 11)
                     {
                         table.Cell().Text(" ");
                         table.Cell().Text(" ");
@@ -832,7 +853,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
 
     private void ComposeImages(IContainer container)
     {
-        if (Tbl75SpeciessesDocumentDataSource.ImagesCollection.Count == 0)
+        if (Tbl75SpeciesSubsDocumentDataSource.ImagesCollection.Count == 0)
         {
             return;
         }
@@ -846,7 +867,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl75SpeciessesDocumentDataSource.ImagesCollection)
+            foreach (var item in Tbl75SpeciesSubsDocumentDataSource.ImagesCollection)
             {
                 for (var i = 0; i < 6; i++)
                 {
@@ -854,30 +875,25 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text("");
-                        if (item.Filestream != null)
+                        var imageCell = table.Cell();
+
+                        var type = item.ImageMimeType?.Trim().TrimStart('.').ToLowerInvariant();
+
+                        var mediaLabel = type switch
                         {
-                            try
-                            {
-                                using var ms = new MemoryStream(item.Filestream);
-                                using var img = Image.FromStream(ms); // Test: ist es ein echtes Bild?
+                            "mp4" or "avi" or "mov" or "mpg" or "wmv" or "flv" or "swf"
+                                => $"Video (.{type})",
+                            "mp3" or "wav" or "m4a"
+                                => $"Audio (.{type})",
+                            _ => null
+                        };
 
-                                table.Cell().Image(item.Filestream).FitArea();
-                            }
-                            catch (Exception ex)
-                            {
-                                var loc = Localizer.Get();
-
-                                var errorDialog = new ContentDialog
-                                {
-                                    Title = loc.GetLocalizedString("PdfImage_Error_Title"),
-                                    Content = string.Format(loc.GetLocalizedString("PdfImage_Error"), ex.ToString()),
-                                    CloseButtonText = loc.GetLocalizedString("Dialog_Ok"),
-                                    XamlRoot = App.MainPageInstance?.Content.XamlRoot
-                                };
-
-                                errorDialog.ShowAsync();
-                            }
-                        }
+                        if (mediaLabel != null)
+                            imageCell.Text(mediaLabel);
+                        else if (item.Filestream is { Length: > 0 })
+                            imageCell.Image(item.Filestream).FitArea();
+                        else
+                            imageCell.Text(string.Empty);
                     }
                     if (i == 1)
                     {
@@ -900,8 +916,8 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     if (i == 4)
                     {
                         table.Cell().Text("");
-                        table.Cell().Text(Loc("Notes"));
-                        table.Cell().Text(item.Memo ?? string.Empty);
+                        table.Cell().Text(Loc("Memo"));
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 5)
                     {
@@ -912,7 +928,6 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 }
             }
         });
-
     }
 
 
@@ -951,7 +966,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Memo"));
-                        table.Cell().Text(item.Memo ?? string.Empty);
+                        table.Cell().Text(item.MemoForDisplay ?? string.Empty);
                     }
                     if (i == 2)
                     {

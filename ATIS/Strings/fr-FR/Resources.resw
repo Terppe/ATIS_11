@@ -933,7 +933,7 @@
   <data name="TextBlock_ArticelTitle.Text" xml:space="preserve">
     <value>Titre d’article/chapitre</value>
   </data>
-  <data name="ArticelTitle" xml:space="preserve">
+  <data name="ArticleTitle" xml:space="preserve">
     <value>Titre de l'article/du chapitre</value>
   </data>
   <data name="TextBlock_Author.Text" xml:space="preserve">

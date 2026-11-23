@@ -2,6 +2,7 @@
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
@@ -165,12 +166,12 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-            LoadReferences();
+            await LoadReferencesAsync();
             LoadNames();
-            LoadImages();
+            await LoadImagesAsync();
             LoadSynonyms();
-            LoadGeographics();
-            LoadComments();
+            await LoadGeographicsAsync();
+            await LoadCommentsAsync();
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -917,43 +918,88 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
 
     }
 
+    // -----------------------------
+    //  TranslateRelatedMemoAsync
+    // -----------------------------
+    private async Task<string?> TranslateRelatedMemoAsync(string? memo)
+    {
+        if (string.IsNullOrWhiteSpace(memo))
+            return null;
+
+        try
+        {
+            return await Task.Run(() =>
+                App.GetService<OfflineTranslationService>()
+                    .TranslateForDisplay(new[] { memo })[0]);
+        }
+        catch (Exception ex)
+        {
+            ATIS.Models.SimpleLog.Error(
+                $"Memo konnte nicht übersetzt werden: {ex.Message}");
+            ATIS.Models.SimpleLog.Log(ex);
+            return null;
+        }
+    }
+
     // -------------------------
     // LOAD REFERENCES
     // -------------------------
-    private async void LoadReferences()
+    private async Task LoadReferencesAsync()
     {
         // -------------------------
         // EXPERT REFERENCES
         // -------------------------
         var experts = await _dataService.GetExpertReferencesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         foreach (var item in experts)
-            ReferenceExpertItems.Add(item);
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
 
+            if (item.Tbl90RefExperts is { } expert)
+                expert.TranslatedMemo = await TranslateRelatedMemoAsync(expert.Memo);
+
+            ReferenceExpertItems.Add(item);
+        }
         // -------------------------
         // SOURCE REFERENCES
         // -------------------------
         var sources = await _dataService.GetSourceReferencesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         foreach (var item in sources)
-            ReferenceSourceItems.Add(item);
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
 
+            if (item.Tbl90RefSources is { } source)
+                source.TranslatedMemo = await TranslateRelatedMemoAsync(source.Memo);
+
+            ReferenceSourceItems.Add(item);
+        }
         // -------------------------
         // AUTHOR REFERENCES
         // -------------------------
         var authors = await _dataService.GetAuthorReferencesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         foreach (var item in authors)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+
+            if (item.Tbl90RefAuthors is { } author)
+                author.TranslatedMemo = await TranslateRelatedMemoAsync(author.Memo);
+
             ReferenceAuthorItems.Add(item);
+        }
     }
 
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async void LoadComments()
+    private async Task LoadCommentsAsync()
     {
         var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
-        foreach (var item in comments)
-            CommentItems.Add(item);
-    }
 
+        foreach (var item in comments)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+            CommentItems.Add(item);
+        }
+    }
     // -----------------------------
     //  LOAD NAMES
     // -----------------------------
@@ -968,15 +1014,18 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD IMAGES
     // -----------------------------
-    private async void LoadImages()
+    private async Task LoadImagesAsync()
     {
         var images = await _dataService.GetImagesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
 
         ImageItems.Clear();
-        foreach (var image in images)
-            ImageItems.Add(image);
-    }
 
+        foreach (var item in images)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+            ImageItems.Add(item);
+        }
+    }
     // -----------------------------
     //  LOAD SYNONYMS
     // -----------------------------
@@ -991,7 +1040,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD GEOGRAPHICS
     // -----------------------------
-    private async void LoadGeographics()
+    private async Task LoadGeographicsAsync()
     {
         var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         GeographicItems.Clear();
@@ -1014,7 +1063,72 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl75SpeciesSubsDocumentDataSource.GetSpeciesSubDetailsAsync(selected.SpeciesId);
-            return model == null ? null : new Tbl75SpeciesSubsDocument(model);
+
+            if (model is null)
+                return null;
+
+            //Images
+            foreach (var pdfImage in Tbl75SpeciesSubsDocumentDataSource.ImagesCollection)
+            {
+                var displayedImage = ImageItems.FirstOrDefault(
+                    item => item.ImageId == pdfImage.ImageId);
+
+                if (displayedImage != null)
+                    pdfImage.TranslatedMemo = displayedImage.MemoForDisplay;
+            }
+            //references
+            foreach (var pdfReference in Tbl75SpeciesSubsDocumentDataSource.ExpertsCollection)
+            {
+                var displayed = ReferenceExpertItems.FirstOrDefault(
+                    item => item.ReferenceId == pdfReference.ReferenceId);
+
+                if (displayed is null)
+                    continue;
+
+                pdfReference.TranslatedMemo = displayed.MemoForDisplay;
+
+                if (pdfReference.Tbl90RefExperts is { } expert)
+                    expert.TranslatedMemo = displayed.Tbl90RefExperts?.MemoForDisplay;
+            }
+            foreach (var pdfReference in Tbl75SpeciesSubsDocumentDataSource.SourcesCollection)
+            {
+                var displayed = ReferenceSourceItems.FirstOrDefault(
+                    item => item.ReferenceId == pdfReference.ReferenceId);
+
+                if (displayed is null)
+                    continue;
+
+                pdfReference.TranslatedMemo = displayed.MemoForDisplay;
+
+                if (pdfReference.Tbl90RefSources is { } source)
+                    source.TranslatedMemo = displayed.Tbl90RefSources?.MemoForDisplay;
+            }
+            foreach (var pdfReference in Tbl75SpeciesSubsDocumentDataSource.AuthorsCollection)
+            {
+                var displayed = ReferenceAuthorItems.FirstOrDefault(
+                    item => item.ReferenceId == pdfReference.ReferenceId);
+
+                if (displayed is null)
+                    continue;
+
+                pdfReference.TranslatedMemo = displayed.MemoForDisplay;
+
+                if (pdfReference.Tbl90RefAuthors is { } author)
+                    author.TranslatedMemo = displayed.Tbl90RefAuthors?.MemoForDisplay;
+            }
+
+            //comments
+            foreach (var pdfComment in Tbl75SpeciesSubsDocumentDataSource.CommentsCollection)
+            {
+                var displayedComment = CommentItems.FirstOrDefault(
+                    item => item.CommentId == pdfComment.CommentId);
+
+                if (displayedComment != null)
+                    pdfComment.TranslatedMemo = displayedComment.MemoForDisplay;
+            }
+
+            return new Tbl75SpeciesSubsDocument(model);
+
         }, suggestedFileName);
     }
 }

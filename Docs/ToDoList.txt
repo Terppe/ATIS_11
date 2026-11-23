@@ -1469,4 +1469,4 @@ Comment Info und Memo.
 ----------------------------------------
 23.11.2026 10:30 Uhr reference.Info in allen drei Schleifen
 expert.Info, source.Info, author.Info
-comment.Info rausgenommen bei OfflineTranslationFields
+comment.Info rausgenommen bei OfflineTranslationFields Species mit übersetzungen fertig

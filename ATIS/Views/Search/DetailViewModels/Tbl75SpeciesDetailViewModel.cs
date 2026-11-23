@@ -5,7 +5,6 @@ using ATIS.Services;
 using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
-using static ATIS.Views.Report.PdfModels;
 
 //    Tbl75SpeciesDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
@@ -154,8 +153,6 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         _dataService = dataService;
 
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
-
-        // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
     private bool _isInitialized;
@@ -168,17 +165,18 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         {
             await LoadTaxonomy();
             LoadDirectChildren();  // SpeciesSub
-            LoadReferences();
+            await LoadReferencesAsync();
             LoadNames();
-            LoadImages();
+            await LoadImagesAsync();
             LoadSynonyms();
-            LoadGeographics();
-            LoadComments();
+            await LoadGeographicsAsync();
+            await LoadCommentsAsync();
             BuildBreadcrumb();
 
             await TranslateSpeciesMemosAsync();
 
             _isInitialized = true;
+            OnPropertyChanged(nameof(IsReady));
         }
         finally
         {
@@ -247,6 +245,8 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    public bool IsReady => _isInitialized;
     // -----------------------------
     //  BREADCRUMB
     // -----------------------------
@@ -1001,42 +1001,85 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     }
 
     // -----------------------------
-    //  LOAD REFERENCES
+    //  TranslateRelatedMemoAsync
     // -----------------------------
-    private async void LoadReferences()
+    private async Task<string?> TranslateRelatedMemoAsync(string? memo)
     {
-        // -------------------------
-        // EXPERT REFERENCES
-        // -------------------------
-        var experts = await _dataService.GetExpertReferencesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
-        foreach (var item in experts)
-            ReferenceExpertItems.Add(item);
+        if (string.IsNullOrWhiteSpace(memo))
+            return null;
 
-        // -------------------------
-        // SOURCE REFERENCES
-        // -------------------------
-        var sources = await _dataService.GetSourceReferencesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
-        foreach (var item in sources)
-            ReferenceSourceItems.Add(item);
-
-        // -------------------------
-        // AUTHOR REFERENCES
-        // -------------------------
-        var authors = await _dataService.GetAuthorReferencesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
-        foreach (var item in authors)
-            ReferenceAuthorItems.Add(item);
+        try
+        {
+            return await Task.Run(() =>
+                App.GetService<OfflineTranslationService>()
+                    .TranslateForDisplay(new[] { memo })[0]);
+        }
+        catch (Exception ex)
+        {
+            ATIS.Models.SimpleLog.Error(
+                $"Memo konnte nicht übersetzt werden: {ex.Message}");
+            ATIS.Models.SimpleLog.Log(ex);
+            return null;
+        }
     }
 
+    // -----------------------------
+    //  LOAD REFERENCES
+    // -----------------------------
+    private async Task LoadReferencesAsync()
+    {
+        var experts = await _dataService.GetExpertReferencesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
+
+        foreach (var item in experts)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+
+            if (item.Tbl90RefExperts is { } expert)
+                expert.TranslatedMemo = await TranslateRelatedMemoAsync(expert.Memo);
+
+            ReferenceExpertItems.Add(item);
+        }
+
+        var sources = await _dataService.GetSourceReferencesBySpeciesIdAsync(
+            SpeciesSelected.SpeciesId);
+
+        foreach (var item in sources)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+
+            if (item.Tbl90RefSources is { } source)
+                source.TranslatedMemo = await TranslateRelatedMemoAsync(source.Memo);
+
+            ReferenceSourceItems.Add(item);
+        }
+
+        var authors = await _dataService.GetAuthorReferencesBySpeciesIdAsync(
+            SpeciesSelected.SpeciesId);
+
+        foreach (var item in authors)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+
+            if (item.Tbl90RefAuthors is { } author)
+                author.TranslatedMemo = await TranslateRelatedMemoAsync(author.Memo);
+
+            ReferenceAuthorItems.Add(item);
+        }
+    }
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async void LoadComments()
+    private async Task LoadCommentsAsync()
     {
-        var comments = await _dataService.GetCommentsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
-        foreach (var item in comments)
-            CommentItems.Add(item);
-    }
+        var comments = await _dataService.GetCommentsBySpeciesIdAsync(
+            SpeciesSelected.SpeciesId);
 
+        foreach (var item in comments)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+            CommentItems.Add(item);
+        }
+    }
     // -----------------------------
     //  LOAD NAMES
     // -----------------------------
@@ -1054,7 +1097,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD IMAGES
     // -----------------------------
-    private async void LoadImages()
+    private async Task LoadImagesAsync()
     {
         var images = await _dataService.GetImagesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
 
@@ -1074,7 +1117,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
                 catch (Exception ex)
                 {
                     ATIS.Models.SimpleLog.Error(
-                        $"Geographic.Memo konnte nicht übersetzt werden: {ex.Message}");
+                        $"Image.Memo konnte nicht übersetzt werden: {ex.Message}");
                 }
             }
 
@@ -1099,7 +1142,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD GEOGRAPHICS
     // -----------------------------
-    private async void LoadGeographics()
+    private async Task LoadGeographicsAsync()
     {
         var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
 
@@ -1161,7 +1204,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
             model.MemoCulture = selected.MemoCultureForDisplay;
             model.MemoGlobal = selected.MemoGlobalForDisplay;
 
-
+            //Images
             foreach (var pdfImage in
                      Tbl75SpeciessesDocumentDataSource.ImagesCollection)
             {
@@ -1175,6 +1218,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
                 }
             }
 
+            //Geographics
             foreach (var pdfGeographic in
                      Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
             {
@@ -1186,6 +1230,58 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
                     pdfGeographic.TranslatedMemo =
                         displayedGeographic.MemoForDisplay;
                 }
+            }
+
+            //References
+            foreach (var pdfReference in Tbl75SpeciessesDocumentDataSource.ExpertsCollection)
+            {
+                var displayed = ReferenceExpertItems.FirstOrDefault(
+                    item => item.ReferenceId == pdfReference.ReferenceId);
+
+                if (displayed is null)
+                    continue;
+
+                pdfReference.TranslatedMemo = displayed.MemoForDisplay;
+
+                if (pdfReference.Tbl90RefExperts is { } expert)
+                    expert.TranslatedMemo = displayed.Tbl90RefExperts?.MemoForDisplay;
+            }
+
+            foreach (var pdfReference in Tbl75SpeciessesDocumentDataSource.SourcesCollection)
+            {
+                var displayed = ReferenceSourceItems.FirstOrDefault(
+                    item => item.ReferenceId == pdfReference.ReferenceId);
+
+                if (displayed is null)
+                    continue;
+
+                pdfReference.TranslatedMemo = displayed.MemoForDisplay;
+
+                if (pdfReference.Tbl90RefSources is { } source)
+                    source.TranslatedMemo = displayed.Tbl90RefSources?.MemoForDisplay;
+            }
+
+            foreach (var pdfReference in Tbl75SpeciessesDocumentDataSource.AuthorsCollection)
+            {
+                var displayed = ReferenceAuthorItems.FirstOrDefault(
+                    item => item.ReferenceId == pdfReference.ReferenceId);
+
+                if (displayed is null)
+                    continue;
+
+                pdfReference.TranslatedMemo = displayed.MemoForDisplay;
+
+                if (pdfReference.Tbl90RefAuthors is { } author)
+                    author.TranslatedMemo = displayed.Tbl90RefAuthors?.MemoForDisplay;
+            }
+            //comments
+            foreach (var pdfComment in Tbl75SpeciessesDocumentDataSource.CommentsCollection)
+            {
+                var displayedComment = CommentItems.FirstOrDefault(
+                    item => item.CommentId == pdfComment.CommentId);
+
+                if (displayedComment != null)
+                    pdfComment.TranslatedMemo = displayedComment.MemoForDisplay;
             }
 
             return new Tbl75SpeciessesDocument(model);
