@@ -2,7 +2,6 @@
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
-using ATIS.Views.Report.Pdf.Tbl75Speciesses;
 using ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
@@ -165,15 +164,17 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         _isInitializing = true;
         try
         {
+            await TranslateSpeciesMemosAsync();
             await LoadTaxonomy();
             await LoadReferencesAsync();
-            LoadNames();
+            await LoadNamesAsync();
             await LoadImagesAsync();
-            LoadSynonyms();
+            await LoadSynonymsAsync();
             await LoadGeographicsAsync();
             await LoadCommentsAsync();
             BuildBreadcrumb();
             _isInitialized = true;
+            OnPropertyChanged(nameof(IsReady));
         }
         finally
         {
@@ -191,6 +192,8 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
+
+    public bool IsReady => _isInitialized;
     // -----------------------------
     //  BREADCRUMB
     // -----------------------------
@@ -919,6 +922,58 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     }
 
     // -----------------------------
+    //  TranslateSpeciesMemosAsync
+    // -----------------------------
+
+    private async Task TranslateSpeciesMemosAsync()
+    {
+        if (SpeciesSubSelected is not { } species)
+            return;
+
+        var fields = new List<(string Text, Action<string?> Set)>();
+
+        void Add(string? text, Action<string?> set)
+        {
+            if (!string.IsNullOrWhiteSpace(text))
+                fields.Add((text, set));
+        }
+
+        Add(species.MemoSpecies, value => species.TranslatedMemoSpecies = value);
+        Add(species.MemoFoods, value => species.TranslatedMemoFoods = value);
+        Add(species.MemoRegion, value => species.TranslatedMemoRegion = value);
+        Add(species.MemoTech, value => species.TranslatedMemoTech = value);
+        Add(species.MemoHusbandry, value => species.TranslatedMemoHusbandry = value);
+        Add(species.MemoBreeding, value => species.TranslatedMemoBreeding = value);
+        Add(species.MemoBuilt, value => species.TranslatedMemoBuilt = value);
+        Add(species.MemoColor, value => species.TranslatedMemoColor = value);
+        Add(species.MemoSozial, value => species.TranslatedMemoSozial = value);
+        Add(species.MemoDomorphism, value => species.TranslatedMemoDomorphism = value);
+        Add(species.MemoSpecial, value => species.TranslatedMemoSpecial = value);
+        Add(species.MemoReproduction, value => species.TranslatedMemoReproduction = value);
+        Add(species.MemoCulture, value => species.TranslatedMemoCulture = value);
+        Add(species.MemoGlobal, value => species.TranslatedMemoGlobal = value);
+
+        if (fields.Count == 0)
+            return;
+
+        try
+        {
+            var translated = await Task.Run(() =>
+                App.GetService<OfflineTranslationService>()
+                    .TranslateForDisplay(fields.Select(field => field.Text).ToArray()));
+
+            for (var i = 0; i < fields.Count; i++)
+                fields[i].Set(translated[i]);
+        }
+        catch (Exception ex)
+        {
+            ATIS.Models.SimpleLog.Error(
+                $"Species-Memos konnten nicht übersetzt werden: {ex.Message}");
+            ATIS.Models.SimpleLog.Log(ex);
+        }
+    }
+
+    // -----------------------------
     //  TranslateRelatedMemoAsync
     // -----------------------------
     private async Task<string?> TranslateRelatedMemoAsync(string? memo)
@@ -1003,7 +1058,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD NAMES
     // -----------------------------
-    private async void LoadNames()
+    private async Task LoadNamesAsync()
     {
         var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         NameItems.Clear();
@@ -1029,7 +1084,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD SYNONYMS
     // -----------------------------
-    private async void LoadSynonyms()
+    private async Task LoadSynonymsAsync()
     {
         var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
         SynonymItems.Clear();
@@ -1043,11 +1098,15 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
     private async Task LoadGeographicsAsync()
     {
         var geographics = await _dataService.GetGeographicsBySpeciesIdAsync(SpeciesSubSelected.SpeciesId);
-        GeographicItems.Clear();
-        foreach (var item in geographics)
-            GeographicItems.Add(item);
-    }
 
+        GeographicItems.Clear();
+
+        foreach (var item in geographics)
+        {
+            item.TranslatedMemo = await TranslateRelatedMemoAsync(item.Memo);
+            GeographicItems.Add(item);
+        }
+    }
     // -----------------------------              
     //  PDF EXPORT
     // -----------------------------
@@ -1067,6 +1126,22 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
             if (model is null)
                 return null;
 
+            model.MemoSpecies = selected.MemoSpeciesForDisplay;
+            model.MemoFoods = selected.MemoFoodsForDisplay;
+            model.MemoRegion = selected.MemoRegionForDisplay;
+            model.MemoTech = selected.MemoTechForDisplay;
+            model.MemoHusbandry = selected.MemoHusbandryForDisplay;
+            model.MemoBreeding = selected.MemoBreedingForDisplay;
+            model.MemoBuilt = selected.MemoBuiltForDisplay;
+            model.MemoColor = selected.MemoColorForDisplay;
+            model.MemoSozial = selected.MemoSozialForDisplay;
+            model.MemoDomorphism = selected.MemoDomorphismForDisplay;
+            model.MemoSpecial = selected.MemoSpecialForDisplay;
+            model.MemoReproduction = selected.MemoReproductionForDisplay;
+            model.MemoCulture = selected.MemoCultureForDisplay;
+            model.MemoGlobal = selected.MemoGlobalForDisplay;
+
+
             //Images
             foreach (var pdfImage in Tbl75SpeciesSubsDocumentDataSource.ImagesCollection)
             {
@@ -1076,6 +1151,20 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
                 if (displayedImage != null)
                     pdfImage.TranslatedMemo = displayedImage.MemoForDisplay;
             }
+
+            //Geographics
+            foreach (var pdfGeographic in Tbl75SpeciesSubsDocumentDataSource.GeographicsCollection)
+            {
+                var displayedGeographic = GeographicItems.FirstOrDefault(
+                    item => item.GeographicId == pdfGeographic.GeographicId);
+
+                if (displayedGeographic is not null)
+                {
+                    pdfGeographic.TranslatedMemo =
+                        displayedGeographic.MemoForDisplay;
+                }
+            }
+
             //references
             foreach (var pdfReference in Tbl75SpeciesSubsDocumentDataSource.ExpertsCollection)
             {

@@ -11,6 +11,8 @@
     <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
     <converters:BoolToRowBackgroundConverter x:Key="BoolToRowBackgroundConverter" />
     <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
+    <converters:NullableIntToStringConverter x:Key="NullableIntToStringConverter" />
+    <converters:NullableDecimalToStringConverter x:Key="NullableDecimalToStringConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />

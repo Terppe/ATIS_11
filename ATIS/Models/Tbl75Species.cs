@@ -769,6 +769,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         get => _creature;
         set { SetProperty(ref _creature, value); ValidateCreature(); }
     }
+    [NotMapped] public bool IsPlant => Creature == "Plantae";
     [NotMapped] public string? CreatureError { get; set; }
     [NotMapped] public bool HasCreatureError { get; set; }
 

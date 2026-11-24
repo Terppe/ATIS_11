@@ -163,17 +163,16 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         _isInitializing = true;
         try
         {
+            await TranslateSpeciesMemosAsync();
             await LoadTaxonomy();
-            LoadDirectChildren();  // SpeciesSub
+            await LoadDirectChildrenAsync();  // SpeciesSub
             await LoadReferencesAsync();
-            LoadNames();
+            await LoadNamesAsync();
             await LoadImagesAsync();
-            LoadSynonyms();
+            await LoadSynonymsAsync();
             await LoadGeographicsAsync();
             await LoadCommentsAsync();
             BuildBreadcrumb();
-
-            await TranslateSpeciesMemosAsync();
 
             _isInitialized = true;
             OnPropertyChanged(nameof(IsReady));
@@ -959,7 +958,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async void LoadDirectChildren()
+    private async Task LoadDirectChildrenAsync()
     {
         SpeciesSubItems.Clear();
         HasDirectChildren = false;
@@ -1083,7 +1082,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD NAMES
     // -----------------------------
-    private async void LoadNames()
+    private async Task LoadNamesAsync()
     {
         var names = await _dataService.GetNamesBySpeciesIdAsync(SpeciesSelected.SpeciesId);
         NameItems.Clear();
@@ -1128,7 +1127,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD SYNONYMS
     // -----------------------------
-    private async void LoadSynonyms()
+    private async Task LoadSynonymsAsync()
     {
         var synonyms = await _dataService.GetSynonymsBySpeciesIdAsync(SpeciesSelected.SpeciesId);
         SynonymItems.Clear();
@@ -1205,8 +1204,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
             model.MemoGlobal = selected.MemoGlobalForDisplay;
 
             //Images
-            foreach (var pdfImage in
-                     Tbl75SpeciessesDocumentDataSource.ImagesCollection)
+            foreach (var pdfImage in Tbl75SpeciessesDocumentDataSource.ImagesCollection)
             {
                 var displayedImage = ImageItems.FirstOrDefault(
                     item => item.ImageId == pdfImage.ImageId);
@@ -1219,8 +1217,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
             }
 
             //Geographics
-            foreach (var pdfGeographic in
-                     Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
+            foreach (var pdfGeographic in Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
             {
                 var displayedGeographic = GeographicItems.FirstOrDefault(
                     item => item.GeographicId == pdfGeographic.GeographicId);
@@ -1274,6 +1271,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
                 if (pdfReference.Tbl90RefAuthors is { } author)
                     author.TranslatedMemo = displayed.Tbl90RefAuthors?.MemoForDisplay;
             }
+
             //comments
             foreach (var pdfComment in Tbl75SpeciessesDocumentDataSource.CommentsCollection)
             {

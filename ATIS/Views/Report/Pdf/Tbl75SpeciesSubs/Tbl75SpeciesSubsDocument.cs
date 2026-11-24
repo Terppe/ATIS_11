@@ -508,7 +508,6 @@ public class Tbl75SpeciesSubsDocument : IDocument
     }
 
 
-
     private void ComposeHeaderReferences(IContainer container)
     {
         var hasExperts = Tbl75SpeciesSubsDocumentDataSource.ExpertsCollection?.Count > 0;
@@ -762,7 +761,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
 
     private void ComposeGeographics(IContainer container)
     {
-        if (Tbl75SpeciessesDocumentDataSource.GeographicsCollection.Count == 0)
+        if (Tbl75SpeciesSubsDocumentDataSource.GeographicsCollection.Count == 0)
         {
             return;
         }
@@ -776,7 +775,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 columns.RelativeColumn();
             });
 
-            foreach (var item in Tbl75SpeciessesDocumentDataSource.GeographicsCollection)
+            foreach (var item in Tbl75SpeciesSubsDocumentDataSource.GeographicsCollection)
             {
 
                 for (var i = 0; i < 10; i++)
@@ -833,7 +832,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     {
                         table.Cell().Text("");
                         table.Cell().Text(Loc("Memo"));
-                        table.Cell().Text(item.Memo);
+                        table.Cell().Text(item.MemoForDisplay);
                     }
                     if (i == 9)
                     {
@@ -929,8 +928,6 @@ public class Tbl75SpeciesSubsDocument : IDocument
             }
         });
     }
-
-
     private void ComposeHeaderComments(IContainer container)
     {
         if (Tbl75SpeciesSubsDocumentDataSource.CommentsCollection?.Count is not > 0)

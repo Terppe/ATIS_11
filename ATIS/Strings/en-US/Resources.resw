@@ -1486,7 +1486,10 @@
     <value>Memo Symptom</value>
   </data>
   <data name="TextBlock_MemoTech.Text" xml:space="preserve">
-    <value>Memo Technic</value>
+    <value>Technical memo</value>
+  </data>
+  <data name="TextBlock_MemoTechnic.Text" xml:space="preserve">
+    <value>Technical memo</value>
   </data>
   <data name="TextBlock_MimeType.Text" xml:space="preserve">
     <value>Mime Type</value>
@@ -1697,6 +1700,15 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Regex</value>
+  </data>
+  <data name="TextBlock_RegionTop.Text" xml:space="preserve">
+    <value>Upper region</value>
+  </data>
+  <data name="TextBlock_RegionBottom.Text" xml:space="preserve">
+    <value>Lower region</value>
+  </data>
+  <data name="TextBlock_RegionMiddle.Text" xml:space="preserve">
+    <value>Middle region</value>
   </data>
   <data name="RegionTop" xml:space="preserve">
     <value>Region Top</value>

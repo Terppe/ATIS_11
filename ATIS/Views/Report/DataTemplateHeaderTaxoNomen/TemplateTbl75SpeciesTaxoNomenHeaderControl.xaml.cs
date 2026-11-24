@@ -1,9 +1,4 @@
-﻿
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
-using ATIS.Helpers;
+﻿using ATIS.Helpers;
 using WinUI3Localizer;
 
 namespace ATIS.Views.Report.DataTemplateHeaderTaxoNomen;
@@ -48,19 +43,13 @@ public sealed partial class TemplateTbl75SpeciesTaxoNomenHeaderControl : UserCon
         if (item == null)
         {
             ValidityTextBlock.Text = string.Empty;
-      //      NamesTextBlock.Text = string.Empty;
             return;
         }
 
         var valid = item.GetType().GetProperty("Valid")?.GetValue(item) as bool?;
         var validYear = item.GetType().GetProperty("ValidYear")?.GetValue(item)?.ToString();
-        //var engName = item.GetType().GetProperty("EngName")?.GetValue(item)?.ToString();
-        //var gerName = item.GetType().GetProperty("GerName")?.GetValue(item)?.ToString();
-        //var fraName = item.GetType().GetProperty("FraName")?.GetValue(item)?.ToString();
-        //var porName = item.GetType().GetProperty("PorName")?.GetValue(item)?.ToString();
 
         ValidityTextBlock.Text = ValidityFormatter.Format(valid, validYear);
-      //  NamesTextBlock.Text = NamesFormatter.Format(engName, gerName, fraName, porName);
     }
 
 }

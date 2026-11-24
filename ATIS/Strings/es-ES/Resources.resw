@@ -1486,7 +1486,10 @@
     <value>Nota de síntomas</value>
   </data>
   <data name="TextBlock_MemoTech.Text" xml:space="preserve">
-    <value>Nota técnica</value>
+    <value>Mémo technique</value>
+  </data>
+  <data name="TextBlock_MemoTechnic.Text" xml:space="preserve">
+    <value>Mémo technique</value>
   </data>
   <data name="TextBlock_MimeType.Text" xml:space="preserve">
     <value>Tipo MIME</value>
@@ -1697,6 +1700,15 @@
   </data>
   <data name="TextBlock_Regex.Text" xml:space="preserve">
     <value>Expresión regular</value>
+  </data>
+  <data name="TextBlock_RegionTop.Text" xml:space="preserve">
+    <value>Région supérieure</value>
+  </data>
+  <data name="TextBlock_RegionBottom.Text" xml:space="preserve">
+    <value>Région inférieure</value>
+  </data>
+  <data name="TextBlock_RegionMiddle.Text" xml:space="preserve">
+    <value>Région médiane</value>
   </data>
   <data name="RegionTop" xml:space="preserve">
     <value>Zona superior</value>
