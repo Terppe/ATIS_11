@@ -7,6 +7,7 @@ public static class OfflineTranslationFields
     public static async Task TranslateAsync(
         OfflineTranslationService translator,
         Tbl66Genus genus,
+        Tbl63Infratribus infratribus,
         IEnumerable<Tbl90Reference> experts,
         IEnumerable<Tbl90Reference> sources,
         IEnumerable<Tbl90Reference> authors,
@@ -16,6 +17,8 @@ public static class OfflineTranslationFields
 
         Add(genus.Info, value => genus.TranslatedInfo = value);
         Add(genus.Memo, value => genus.TranslatedMemo = value);
+        Add(infratribus.Info, value => infratribus.TranslatedInfo = value);
+        Add(infratribus.Memo, value => infratribus.TranslatedMemo = value);
 
         foreach (var reference in experts)
         {

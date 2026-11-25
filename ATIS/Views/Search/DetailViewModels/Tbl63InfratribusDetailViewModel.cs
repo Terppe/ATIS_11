@@ -144,6 +144,7 @@ public sealed class Tbl63InfratribusDetailViewModel : ObservableObject
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
                 GenusSelected!,
+                InfratribusSelected!,
                 ReferenceExpertItems,
                 ReferenceSourceItems,
                 ReferenceAuthorItems,
