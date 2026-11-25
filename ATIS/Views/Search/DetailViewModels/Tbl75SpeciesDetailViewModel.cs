@@ -165,7 +165,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         {
             await TranslateSpeciesMemosAsync();
             await LoadTaxonomy();
-            await LoadDirectChildrenAsync();  // SpeciesSub
+            await LoadDirectChildrenAsync();  
             await LoadReferencesAsync();
             await LoadNamesAsync();
             await LoadImagesAsync();

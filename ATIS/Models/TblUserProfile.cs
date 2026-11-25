@@ -411,9 +411,12 @@ public class TblUserProfile : ObservableObject, IDataService.IAuditable, IHierar
         get => _updaterDate;
         set => SetProperty(ref _updaterDate, value);
     }
+
+
     // ---------------------------------------------------------
     // Memo
     // ---------------------------------------------------------
+
     [StringLength(1000)]
     private string? _memo;
     public string? Memo
@@ -421,6 +424,23 @@ public class TblUserProfile : ObservableObject, IDataService.IAuditable, IHierar
         get => _memo;
         set => SetProperty(ref _memo, value);
     }
+
+
+    private string? _translatedMemo;
+    [NotMapped]
+    public string? TranslatedMemo
+    {
+        get => _translatedMemo;
+        set
+        {
+            if (SetProperty(ref _translatedMemo, value))
+                OnPropertyChanged(nameof(MemoForDisplay));
+        }
+    }
+
+    [NotMapped]
+    public string? MemoForDisplay => TranslatedMemo ?? Memo;
+
     // ---------------------------------------------------------
     // Filestream
     // ---------------------------------------------------------

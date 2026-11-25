@@ -150,46 +150,6 @@ public class TblCountry : ObservableObject, IHierarchicalEntity
     public double Latitude { get; set; }
     public double Longitude { get; set; }
 
- 
-    //// ---------------------------------------------------------
-    //// Writer
-    //// ---------------------------------------------------------
-
-    //[StringLength(50)]
-    //private string? _writer;
-    //public string? Writer
-    //{
-    //    get => _writer;
-    //    set => SetProperty(ref _writer, value);
-    //}
-
-    //private DateTime _writerDate;
-    //public DateTime WriterDate
-    //{
-    //    get => _writerDate;
-    //    set => SetProperty(ref _writerDate, value);
-    //}
-
-    //// ---------------------------------------------------------
-    //// Updater
-    //// ---------------------------------------------------------
-
-    //[StringLength(50)]
-    //private string? _updater;
-    //public string? Updater
-    //{
-    //    get => _updater;
-    //    set => SetProperty(ref _updater, value);
-    //}
-
-    //private DateTime _updaterDate;
-    //public DateTime UpdaterDate
-    //{
-    //    get => _updaterDate;
-    //    set => SetProperty(ref _updaterDate, value);
-    //}
-
-
     // ---------------------------------------------------------
     // IHierarchicalEntity IMPLEMENTATION
     // ---------------------------------------------------------
@@ -236,8 +196,6 @@ public class TblCountry : ObservableObject, IHierarchicalEntity
         OnPropertyChanged($"{propertyName}Error");
         OnPropertyChanged($"Has{propertyName}Error");
     }
-
-    // ---------------------------------------------------------
 
     // ---------------------------------------------------------
     // Validate Name

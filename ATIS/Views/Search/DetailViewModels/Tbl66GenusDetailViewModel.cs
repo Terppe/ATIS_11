@@ -14,7 +14,6 @@ namespace ATIS.Views.Search.DetailViewModels;
 public sealed class Tbl66GenusDetailViewModel : ObservableObject
 {
     private readonly IDataService _dataService;
-    //private readonly ITranslationService _translationService;
 
     // -----------------------------
     //  TITLE
@@ -104,12 +103,16 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceExpertItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
-    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
 
     // -----------------------------
     //  COMMENTS
     // -----------------------------
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = new();
+
+    // -----------------------------
+    //  BREADCRUMP
+    // -----------------------------
+    public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
 
     // -----------------------------
     //  COMMANDS
@@ -119,7 +122,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
 
-    public IAsyncRelayCommand TranslateCommand { get; }
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
@@ -144,7 +146,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-            LoadDirectChildren();
+            await LoadDirectChildrenAsync();
             await LoadReferencesAsync();
             await LoadCommentsAsync();
 
@@ -848,7 +850,7 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async void LoadDirectChildren()
+    private async Task LoadDirectChildrenAsync()
     {
         SpeciesItems.Clear();
         HasDirectChildren = false;

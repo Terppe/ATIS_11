@@ -138,6 +138,7 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
 
     [NotMapped]
     public string? MemoForDisplay => TranslatedMemo ?? Memo;
+    // ---------------------------------------------------------
     [StringLength(50)]
     public string Writer { get; set; } = string.Empty;
     public DateTime WriterDate { get; set; }
