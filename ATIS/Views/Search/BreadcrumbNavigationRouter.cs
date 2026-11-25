@@ -137,6 +137,10 @@ public static class BreadcrumbNavigationRouter
             return;
         }
 
-        // ...weitere Seiten hier zentral ergänzen
+        if (content is Tbl75SpeciesSubDetailPage speciesSubPage && speciesSubPage.ViewModel != null)
+        {
+            await speciesSubPage.ViewModel.NavigateBreadcrumbAsync(crumb);
+            return;
+        }
     }
 }

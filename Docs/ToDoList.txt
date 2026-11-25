@@ -1470,3 +1470,7 @@ Comment Info und Memo.
 23.11.2026 10:30 Uhr reference.Info in allen drei Schleifen
 expert.Info, source.Info, author.Info
 comment.Info rausgenommen bei OfflineTranslationFields Species mit übersetzungen fertig
+----------------------------------------
+25.11.2026 10:30 Uhr Fehler bei SpeciesSub. In Taxonomie fehlt zeile Species. alles behoben
+----------------------------------------
+25.11.2026 15:30 Uhr Tbl63 bis Tbl03, schrittweise nach dem bereits funktionierenden Genus-Muster

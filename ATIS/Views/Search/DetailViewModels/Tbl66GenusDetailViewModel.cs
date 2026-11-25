@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using AspectInjector.Broker;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
@@ -133,7 +132,6 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
-
     }
 
 

@@ -424,7 +424,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
 
             Breadcrumb.Add(new BreadcrumbItem
             {
-                Label = SpeciesSelected.SpeciesName,
+                Label = SpeciesSelected.GenusSpeciesName,
                 EntityType = "Species",
                 EntityId = SpeciesSelected.SpeciesId
             });
@@ -676,6 +676,33 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         if (phylum?.RegnumId != 0)
             regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
 
+        //Er sucht nach gleichem Artnamen ohne Unterart und ohne Divers.
+        if (!string.IsNullOrWhiteSpace(SpeciesSubSelected.SpeciesName))
+        {
+            var candidates = await _dataService.GetSpeciessesByGenusIdAsync(
+                SpeciesSubSelected.GenusId);
+
+            var matches = candidates.Where(item =>
+                    !item.IsSubspecies &&
+                    string.IsNullOrWhiteSpace(item.Divers) &&
+                    string.Equals(item.SpeciesName?.Trim(),
+                        SpeciesSubSelected.SpeciesName.Trim(),
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (matches.Count == 1)
+            {
+                species = matches[0];
+                species.Genus = genus;
+            }
+            else
+            {
+                ATIS.Models.SimpleLog.Error(
+                    $"Art für SpeciesId {SpeciesSubSelected.SpeciesId}: " +
+                    $"{matches.Count} passende Datensätze gefunden.");
+            }
+        }
+
         // sichtbare Reihenfolge aufbauen
         int visibleIndex = 0;
 
@@ -756,7 +783,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
             });
         }
 
-
         if (legio != null && IsVisibleTaxonName(legio.LegioName))
         {
             LegioSelected = legio;
@@ -789,7 +815,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
 
         if (infraordo != null && IsVisibleTaxonName(infraordo.InfraordoName))
         {
@@ -918,7 +943,6 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
-
     }
 
     // -----------------------------
@@ -1116,7 +1140,7 @@ public sealed class Tbl75SpeciesSubDetailViewModel : ObservableObject
         if (selected == null || selected.SpeciesId == 0)
             return;
 
-        var name = PdfExportService.SanitizeFileNamePart(selected.SpeciesName);
+        var name = PdfExportService.SanitizeFileNamePart(selected.GenusSpeciesFullName.Replace(' ', '_'));
         var suggestedFileName = $"Species_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
         await App.GetService<IPdfExportService>().ExportAsync(async () =>

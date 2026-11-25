@@ -99,6 +99,8 @@ public sealed partial class TemplateTbl75SpeciesWithOptionalHyperlinkControl : U
 
         var test = line.Item.GenusSpeciesFullName;
 
+        TbSpecies.Text = line.Item.GenusSpeciesFullName;
+
         TbAuthorDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedParts(
             " - ",
             line.Item.Author,
@@ -121,52 +123,6 @@ public sealed partial class TemplateTbl75SpeciesWithOptionalHyperlinkControl : U
         TbSpeciesLine.Text = string.Join(" - ", parts);
     }
 
-    //{
-    //    if (TbAuthorDisplay == null || TbLanguageNamesDisplay == null || TbSpeciesLine == null)
-    //        return;
-
-    //    if (DataContext is not TaxonomyLine<Tbl75Species> line || line.Item == null)
-    //    {
-    //        TbAuthorDisplay.Text = string.Empty;
-    //        TbLanguageNamesDisplay.Text = string.Empty;
-    //        TbSpeciesLine.Text = string.Empty;
-    //        return;
-    //    }
-
-    //    TbAuthorDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedParts(
-    //        " - ",
-    //        line.Item.Author,
-    //        line.Item.AuthorYear);
-
-    //    //TbLanguageNamesDisplay.Text = TaxonomyDisplayFormatter.BuildPrefixedList(
-    //    //    " - ",
-    //    //    line.Item.EngName,
-    //    //    line.Item.GerName,
-    //    //    line.Item.FraName,
-    //    //    line.Item.PorName);
-
-    //    var parts = new List<string>();
-
-    //    if (!string.IsNullOrWhiteSpace(line.Item.SpeciesName))
-    //        parts.Add(line.Item.SpeciesName);
-
-    //    var authorPart = string.Join(" ",
-    //        new[] { line.Item.Author, line.Item.AuthorYear }
-    //            .Where(x => !string.IsNullOrWhiteSpace(x)));
-
-    //    if (!string.IsNullOrWhiteSpace(authorPart))
-    //        parts.Add(authorPart);
-
-    //    //var languagePart = string.Join(", ",
-    //    //    new[] { line.Item.EngName, line.Item.GerName, line.Item.FraName, line.Item.PorName }
-    //    //        .Where(x => !string.IsNullOrWhiteSpace(x)));
-
-    //    //if (!string.IsNullOrWhiteSpace(languagePart))
-    //    //    parts.Add(languagePart);
-
-    //    TbSpeciesLine.Text = string.Join(" - ", parts);
-    //}
-
     private void UpdateContentMode()
     {
         if (HyperlinkPanel == null || TbSpeciesLine == null)
@@ -180,7 +136,6 @@ public sealed partial class TemplateTbl75SpeciesWithOptionalHyperlinkControl : U
             ? Visibility.Collapsed
             : Visibility.Visible;
     }
-
 
     private async void TextBlock_Tapped(object sender, TappedRoutedEventArgs e)
     {

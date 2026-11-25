@@ -1178,7 +1178,7 @@ public sealed class Tbl75SpeciesDetailViewModel : ObservableObject
         if (selected == null || selected.SpeciesId == 0)
             return;
 
-        var name = PdfExportService.SanitizeFileNamePart(selected.SpeciesName);
+        var name = PdfExportService.SanitizeFileNamePart(selected.GenusSpeciesName.Replace(' ', '_'));
         var suggestedFileName = $"Species_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
 
         await App.GetService<IPdfExportService>().ExportAsync(async () =>

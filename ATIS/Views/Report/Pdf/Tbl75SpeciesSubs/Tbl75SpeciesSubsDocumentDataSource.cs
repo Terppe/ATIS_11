@@ -52,7 +52,11 @@ public abstract class Tbl75SpeciesSubsDocumentDataSource : ObservableObject
         _speciesSingle = speciesSingle;
 
         if (_speciesSingle.GenusId != 0)
+        {
             _genusSingle = await dataService.GetGenusByIdAsync(_speciesSingle.GenusId) ?? new Tbl66Genus();
+
+            _speciesSingle.Genus = _genusSingle;
+        }
 
         if (_genusSingle.InfratribusId != 0)
             _infratribusSingle = await dataService.GetInfratribusByIdAsync(_genusSingle.InfratribusId) ?? new Tbl63Infratribus();

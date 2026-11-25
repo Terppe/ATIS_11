@@ -275,7 +275,7 @@ public class Tbl75SpeciesSubsDocument : IDocument
                     });
                     table.Cell().Text("");
                     table.Cell().Text(Loc("TaxonomicRank"));
-                    table.Cell().Text(Loc("Species"));
+                    table.Cell().Text(Loc("Subspecies"));
                 });
 
             });
