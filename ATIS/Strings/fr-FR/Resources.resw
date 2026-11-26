@@ -3333,6 +3333,9 @@
   <data name="TextBlock_Notes1.Text" xml:space="preserve">
     <value>Notes:</value>
   </data>
+  <data name="TextBlock_NoSearchResults.Text" xml:space="preserve">
+    <value>Aucun enregistrement trouvé</value>
+  </data>
   <data name="TextBlock_Referencefor.Text" xml:space="preserve">
     <value>Référence pour:</value>
   </data>

@@ -441,8 +441,12 @@ public class Tbl27InfraclassesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl27InfraclassesDocumentDataSource.ExpertsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 4; i++)
                 {
                     if (i == 0)
@@ -495,8 +499,12 @@ public class Tbl27InfraclassesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl27InfraclassesDocumentDataSource.SourcesCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
@@ -555,8 +563,12 @@ public class Tbl27InfraclassesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl27InfraclassesDocumentDataSource.AuthorsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 11; i++)
                 {
                     if (i == 0)
@@ -651,8 +663,12 @@ public class Tbl27InfraclassesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl27InfraclassesDocumentDataSource.CommentsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 3; i++)
                 {
                     if (i == 0)

@@ -6,7 +6,6 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using WinUI3Localizer;
-using Image = QuestPDF.Infrastructure.Image;
 
 namespace ATIS.Views.Report.Pdf.Tbl75SpeciesSubs;
 
@@ -14,8 +13,6 @@ public class Tbl75SpeciesSubsDocument : IDocument
 {
     private Tbl75SpeciesSubsPdfModel Model { get; }
     private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
-
-  //  private static int _tabLeftRel;
     private static readonly int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
     private const int TabLeftRel4 = 4;
     private const int TabLeftRel8 = 8;
@@ -542,8 +539,12 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.ExpertsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
@@ -604,8 +605,12 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.SourcesCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 6; i++)
                 {
                     if (i == 0)
@@ -672,8 +677,12 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.AuthorsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 12; i++)
                 {
                     if (i == 0)
@@ -949,8 +958,12 @@ public class Tbl75SpeciesSubsDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl75SpeciesSubsDocumentDataSource.CommentsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 3; i++)
                 {
                     if (i == 0)

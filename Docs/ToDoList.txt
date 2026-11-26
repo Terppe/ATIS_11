@@ -1493,9 +1493,9 @@ DetailVm             await OfflineTranslationFields.TranslateAsync(
 ----------------------------------------
 26.11.2026 15:30 Uhr In DetailVm eingefügt
 				if (model is null)
-                return null;
+				return null;
 
-            model.Info = selected.InfoForDisplay;
-            model.Memo = selected.MemoForDisplay;
+			model.Info = selected.InfoForDisplay;
+			model.Memo = selected.MemoForDisplay;
 
 

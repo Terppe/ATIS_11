@@ -70,9 +70,9 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
     #region Fields / state
     // ---------------------------------------------------------
-    private bool _isInitializingCombos;
-    private bool _isApplyingItem;
-    private bool _addPointMode;
+    //private bool _isInitializingCombos;
+    //private bool _isApplyingItem;
+    //private bool _addPointMode;
     private bool _isRefreshingView;
     private bool _mapInitialized;
     private ILayer? _markerLayer;
@@ -608,7 +608,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
         _selectedPointIndex = -1;
         _replacePointMode = false;
-        _addPointMode = false;
+      //  _addPointMode = false;
 
         SyncItemBeforeSave();
         UpdateMapGeometry();
@@ -639,7 +639,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
             _hasFallbackPoint = false;
             _replacePointMode = false;
-            _addPointMode = false;
+          //  _addPointMode = false;
 
             SyncItemBeforeSave();
             UpdateMapGeometry();
@@ -706,7 +706,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
             _hasFallbackPoint = false;
             _replacePointMode = false;
-            _addPointMode = false;
+         //   _addPointMode = false;
 
             SyncItemBeforeSave();
             UpdateMapGeometry();
@@ -799,7 +799,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         var p = _contextWorldPosition.Value;
         AddPointAt(p.lat, p.lon);
 
-        _addPointMode = false;
+     //   _addPointMode = false;
         _replacePointMode = false;
         _selectedPointIndex = -1;
 
@@ -823,7 +823,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
             return;
 
         _selectedPointIndex = _contextPointIndex;
-        _addPointMode = false;
+      //  _addPointMode = false;
         _replacePointMode = true;
 
         _contextPointIndex = -1;
@@ -891,117 +891,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
         return points;
     }
-    //private void ContinentCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (_isInitializingCombos)
-    //    {
-    //        LogGuard(nameof(ContinentCombo_OnSelectionChanged), "initializing");
-    //        return;
-    //    }
-
-    //    if (_isApplyingItem)
-    //    {
-    //        LogGuard(nameof(ContinentCombo_OnSelectionChanged), "applying item");
-    //        return;
-    //    }
-
-    //    if (!_mapInitialized)
-    //    {
-    //        LogGuard(nameof(ContinentCombo_OnSelectionChanged), "map not initialized");
-    //        return;
-    //    }
-
-    //    if (_pendingItem != null)
-    //    {
-    //        LogGuard(nameof(ContinentCombo_OnSelectionChanged), "pending item exists");
-    //        return;
-    //    }
-
-    //    if (ViewModel == null || Item == null)
-    //    {
-    //        LogGuard(nameof(ContinentCombo_OnSelectionChanged), "view model or item is null");
-    //        return;
-    //    }
-
-    //    // Wenn bereits echte Punkte bearbeitet wurden, nichts mehr automatisch verschieben
-    //    if (HasRealEditPoints())
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "real edit points already exist");
-    //        return;
-    //    }
-    //    var continent = (sender as ComboBox)?.SelectedItem as string;
-
-    //    if (string.IsNullOrWhiteSpace(continent))
-    //    {
-    //        CenterMapToBestLocation();
-    //        return;
-    //    }
-
-    //    GetContinentDefaults(continent, out var latitude, out var longitude, out var zoomLevel);
-
-    //    Item.Continent = continent;
-    //    Item.Latitude = latitude;
-    //    Item.Longitude = longitude;
-    //    Item.ZoomLevel = zoomLevel;
-
-    //    SetSingleFallbackPoint(latitude, longitude);
-    //    CenterMap(latitude, longitude, zoomLevel);
-    //}
-    //private void CountryCombo_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (_isInitializingCombos)
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "initializing");
-    //        return;
-    //    }
-
-    //    if (_isApplyingItem)
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "applying item");
-    //        return;
-    //    }
-
-    //    if (!_mapInitialized)
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "map not initialized");
-    //        return;
-    //    }
-
-    //    if (_pendingItem != null)
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "pending item exists");
-    //        return;
-    //    }
-
-    //    if (ViewModel == null || Item == null)
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "view model or item is null");
-    //        return;
-    //    }
-
-    //    if (HasRealEditPoints())
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "real edit points already exist");
-    //        return;
-    //    }
-    //    var selectedCountry = (sender as ComboBox)?.SelectedItem as Models.TblCountry;
-
-    //    if (selectedCountry == null)
-    //    {
-    //        LogGuard(nameof(CountryCombo_OnSelectionChanged), "selected country is null");
-    //        return;
-    //    }
-
-    //    Item.Country = selectedCountry.Name;
-    //    Item.Latitude = selectedCountry.Latitude;
-    //    Item.Longitude = selectedCountry.Longitude;
-    //    Item.ZoomLevel = selectedCountry.ZoomLevel.HasValue && selectedCountry.ZoomLevel.Value > 0
-    //        ? selectedCountry.ZoomLevel.Value
-    //        : 5;
-
-    //    SetSingleFallbackPoint(Item.Latitude, Item.Longitude);
-    //    CenterMap(Item.Latitude, Item.Longitude, Item.ZoomLevel);
-    //}
 
     #endregion
 
@@ -1191,19 +1080,21 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
             return;
         }
 
-        _isApplyingItem = true;
-        _isInitializingCombos = true;
+        //_isApplyingItem = true;
+        //_isInitializingCombos = true;
 
-        try
-        {
-            _pendingItem = null;
-            await RefreshViewFromCurrentItemAsync();
-        }
-        finally
-        {
-            _isInitializingCombos = false;
-            _isApplyingItem = false;
-        }
+        //try
+        //{
+        //    _pendingItem = null;
+        //    await RefreshViewFromCurrentItemAsync();
+        //}
+        //finally
+        //{
+        //    _isInitializingCombos = false;
+        //     _isApplyingItem = false;
+        // }
+        _pendingItem = null;
+        await RefreshViewFromCurrentItemAsync();
     }
     #endregion
 
@@ -1283,7 +1174,7 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     {
         _selectedPointIndex = -1;
         _replacePointMode = false;
-        _addPointMode = false;
+   //     _addPointMode = false;
         UpdateMapGeometry();
         MyMap.Refresh();
     }

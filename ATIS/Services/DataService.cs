@@ -18,12 +18,11 @@ public partial class DataService : ObservableObject, IDataService
 {
     private const string Value = "#";
     private readonly IUserService _user;
-    private readonly AtisDbContext? _context;
-    private readonly IDbContextFactory<AtisDbContext>? _factory;
+    private readonly IDbContextFactory<AtisDbContext> _factory;
 
     public DataService(IDbContextFactory<AtisDbContext> factory, IUserService user)
     {
-        _factory = factory;
+        _factory = factory ?? throw new ArgumentNullException(nameof(factory));
         _user = user;
     }
 
@@ -7014,13 +7013,6 @@ public partial class DataService : ObservableObject, IDataService
     }
 
 
-    public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsyncAlt()
-    {
-        var collection = new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-            .OrderBy(k => k.RefAuthorName));
-        return collection;
-    }
-
     #endregion RefAuthor
 
     #region RefSource
@@ -8280,14 +8272,13 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl03Regnums
             .AsNoTracking()
-            .Where(e => e.RegnumName != null && !e.RegnumName.Contains("#"))
-            .Where(e =>
-                e.RegnumName.StartsWith(search) ||
-                (e.Subregnum != null && e.Subregnum.Contains(search)) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.RegnumName != null && !e.RegnumName.Contains("#") &&
+                        (e.RegnumName.StartsWith(search) ||
+                         (e.Subregnum != null && e.Subregnum.Contains(search)) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.RegnumName)
             .ThenBy(e => e.Subregnum)
             .ToListAsync();
@@ -8304,13 +8295,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl06Phylums
             .AsNoTracking()
-            .Where(e => e.PhylumName != null && !e.PhylumName.Contains("#"))
-            .Where(e =>
-                e.PhylumName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.PhylumName != null && !e.PhylumName.Contains("#") &&
+                        (e.PhylumName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.PhylumName)
             .ToListAsync();
     }
@@ -8325,13 +8315,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl12Subphylums
             .AsNoTracking()
-            .Where(e => e.SubphylumName != null && !e.SubphylumName.Contains("#"))
-            .Where(e =>
-                e.SubphylumName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SubphylumName != null && !e.SubphylumName.Contains("#") &&
+                        (e.SubphylumName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SubphylumName)
             .ToListAsync();
     }
@@ -8347,13 +8336,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl18Superclasses
             .AsNoTracking()
-            .Where(e => e.SuperclassName != null && !e.SuperclassName.Contains("#"))
-            .Where(e =>
-                e.SuperclassName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SuperclassName != null && !e.SuperclassName.Contains("#") &&
+                        (e.SuperclassName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SuperclassName)
             .ToListAsync();
     }
@@ -8368,13 +8356,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl21Classes
             .AsNoTracking()
-            .Where(e => e.ClassName != null && !e.ClassName.Contains("#"))
-            .Where(e =>
-                e.ClassName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.ClassName != null && !e.ClassName.Contains("#") &&
+                        (e.ClassName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.ClassName)
             .ToListAsync();
     }
@@ -8389,13 +8376,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl24Subclasses
             .AsNoTracking()
-            .Where(e => e.SubclassName != null && !e.SubclassName.Contains("#"))
-            .Where(e =>
-                e.SubclassName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SubclassName != null && !e.SubclassName.Contains("#") &&
+                        (e.SubclassName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SubclassName)
             .ToListAsync();
     }
@@ -8410,13 +8396,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl27Infraclasses
             .AsNoTracking()
-            .Where(e => e.InfraclassName != null && !e.InfraclassName.Contains("#"))
-            .Where(e =>
-                e.InfraclassName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.InfraclassName != null && !e.InfraclassName.Contains("#") &&
+                        (e.InfraclassName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.InfraclassName)
             .ToListAsync();
     }
@@ -8432,13 +8417,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl30Legios
             .AsNoTracking()
-            .Where(e => e.LegioName != null && !e.LegioName.Contains("#"))
-            .Where(e =>
-                e.LegioName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.LegioName != null && !e.LegioName.Contains("#") &&
+                        (e.LegioName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.LegioName)
             .ToListAsync();
     }
@@ -8453,13 +8437,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl33Ordos
             .AsNoTracking()
-            .Where(e => e.OrdoName != null && !e.OrdoName.Contains("#"))
-            .Where(e =>
-                e.OrdoName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.OrdoName != null && !e.OrdoName.Contains("#") &&
+                        (e.OrdoName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.OrdoName)
             .ToListAsync();
     }
@@ -8474,13 +8457,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl36Subordos
             .AsNoTracking()
-            .Where(e => e.SubordoName != null && !e.SubordoName.Contains("#"))
-            .Where(e =>
-                e.SubordoName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SubordoName != null && !e.SubordoName.Contains("#") &&
+                        (e.SubordoName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SubordoName)
             .ToListAsync();
     }
@@ -8495,13 +8477,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl39Infraordos
             .AsNoTracking()
-            .Where(e => e.InfraordoName != null && !e.InfraordoName.Contains("#"))
-            .Where(e =>
-                e.InfraordoName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.InfraordoName != null && !e.InfraordoName.Contains("#") &&
+                        (e.InfraordoName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.InfraordoName)
             .ToListAsync();
     }
@@ -8517,13 +8498,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl42Superfamilies
             .AsNoTracking()
-            .Where(e => e.SuperfamilyName != null && !e.SuperfamilyName.Contains("#"))
-            .Where(e =>
-                e.SuperfamilyName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SuperfamilyName != null && !e.SuperfamilyName.Contains("#") &&
+                        (e.SuperfamilyName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SuperfamilyName)
             .ToListAsync();
     }
@@ -8538,13 +8518,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl45Families
             .AsNoTracking()
-            .Where(e => e.FamilyName != null && !e.FamilyName.Contains("#"))
-            .Where(e =>
-                e.FamilyName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.FamilyName != null && !e.FamilyName.Contains("#") &&
+                        (e.FamilyName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.FamilyName)
             .ToListAsync();
     }
@@ -8559,13 +8538,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl48Subfamilies
             .AsNoTracking()
-            .Where(e => e.SubfamilyName != null && !e.SubfamilyName.Contains("#"))
-            .Where(e =>
-                e.SubfamilyName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SubfamilyName != null && !e.SubfamilyName.Contains("#") &&
+                        (e.SubfamilyName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SubfamilyName)
             .ToListAsync();
     }
@@ -8580,13 +8558,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl51Infrafamilies
             .AsNoTracking()
-            .Where(e => e.InfrafamilyName != null && !e.InfrafamilyName.Contains("#"))
-            .Where(e =>
-                e.InfrafamilyName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.InfrafamilyName != null && !e.InfrafamilyName.Contains("#") &&
+                        (e.InfrafamilyName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.InfrafamilyName)
             .ToListAsync();
     }
@@ -8602,13 +8579,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl54Supertribusses
             .AsNoTracking()
-            .Where(e => e.SupertribusName != null && !e.SupertribusName.Contains("#"))
-            .Where(e =>
-                e.SupertribusName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SupertribusName != null && !e.SupertribusName.Contains("#") &&
+                        (e.SupertribusName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SupertribusName)
             .ToListAsync();
     }
@@ -8623,13 +8599,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl57Tribusses
             .AsNoTracking()
-            .Where(e => e.TribusName != null && !e.TribusName.Contains("#"))
-            .Where(e =>
-                e.TribusName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.TribusName != null && !e.TribusName.Contains("#") &&
+                        (e.TribusName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.TribusName)
             .ToListAsync();
     }
@@ -8644,13 +8619,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl60Subtribusses
             .AsNoTracking()
-            .Where(e => e.SubtribusName != null && !e.SubtribusName.Contains("#"))
-            .Where(e =>
-                e.SubtribusName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.SubtribusName != null && !e.SubtribusName.Contains("#") &&
+                        (e.SubtribusName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
@@ -8665,13 +8639,12 @@ public partial class DataService : ObservableObject, IDataService
 
         return await context.Tbl63Infratribusses
             .AsNoTracking()
-            .Where(e => e.InfratribusName != null && !e.InfratribusName.Contains("#"))
-            .Where(e =>
-                e.InfratribusName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.InfratribusName != null && !e.InfratribusName.Contains("#") &&
+                        (e.InfratribusName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.InfratribusName)
             .ToListAsync();
     }
@@ -8688,13 +8661,12 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl66Genusses
             .Include(e => e.Infratribus)
             .AsNoTracking()
-            .Where(e => e.GenusName != null && !e.GenusName.Contains("#"))
-            .Where(e =>
-                e.GenusName.StartsWith(search) ||
-                (e.EngName != null && e.EngName.Contains(search)) ||
-                (e.GerName != null && e.GerName.Contains(search)) ||
-                (e.FraName != null && e.FraName.Contains(search)) ||
-                (e.PorName != null && e.PorName.Contains(search)))
+            .Where(e => e.GenusName != null && !e.GenusName.Contains("#") &&
+                        (e.GenusName.StartsWith(search) ||
+                         (e.EngName != null && e.EngName.Contains(search)) ||
+                         (e.GerName != null && e.GerName.Contains(search)) ||
+                         (e.FraName != null && e.FraName.Contains(search)) ||
+                         (e.PorName != null && e.PorName.Contains(search))))
             .OrderBy(e => e.GenusName)
             .ToListAsync();
     }
@@ -8711,15 +8683,14 @@ public partial class DataService : ObservableObject, IDataService
             .Include(e => e.Genus)
             .Include(e => e.Speciesgroup)
             .AsNoTracking()
-            .Where(e => e.SpeciesName != null && !e.SpeciesName.Contains("#"))
-            .Where(e =>
-                e.SpeciesName.StartsWith(search) ||
-                (e.Genus != null && e.Genus.GenusName != null &&
-                 e.Genus.GenusName.Contains(search)) ||
-                (e.Subspecies != null && e.Subspecies.Contains(search)) ||
-                (e.Divers != null && e.Divers.Contains(search)) ||
-                (e.TradeName != null && e.TradeName.Contains(search)) ||
-                (e.Author != null && e.Author.Contains(search)))
+            .Where(e => e.SpeciesName != null && !e.SpeciesName.Contains("#") &&
+                        (e.SpeciesName.StartsWith(search) ||
+                         (e.Genus != null && e.Genus.GenusName != null &&
+                          e.Genus.GenusName.Contains(search)) ||
+                         (e.Subspecies != null && e.Subspecies.Contains(search)) ||
+                         (e.Divers != null && e.Divers.Contains(search)) ||
+                         (e.TradeName != null && e.TradeName.Contains(search)) ||
+                         (e.Author != null && e.Author.Contains(search))))
             .OrderBy(e => e.Genus!.GenusName)
             .ThenBy(e => e.SpeciesName)
             .ThenBy(e => e.Subspecies)

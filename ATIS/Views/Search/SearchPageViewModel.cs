@@ -59,8 +59,19 @@ public sealed class SearchPageViewModel : ObservableObject
         Results.Clear();
     }
 
+    private bool _hasNoResults;
+    public bool HasNoResults
+    {
+        get => _hasNoResults;
+        private set => SetProperty(ref _hasNoResults, value);
+    }
+
+    public void ClearNoResults() => HasNoResults = false;
     private async Task ExecuteSearchAsync()
     {
+        HasNoResults = false;
+        var searchedTable = SelectedTable;
+
         ClearResults();
         var searchVersion = _searchVersion;
         var searchText = SearchText;
@@ -315,6 +326,8 @@ public sealed class SearchPageViewModel : ObservableObject
 
         foreach (var item in results)
             Results.Add(item);
+
+        HasNoResults = SelectedTable == searchedTable && Results.Count == 0;
     }
 
     public async Task PrintListAsync(IList<object> visibleItems)

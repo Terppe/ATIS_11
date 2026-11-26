@@ -164,6 +164,9 @@ public sealed partial class SearchPage : Page
         if (sender is not Button { Tag: string table })
             return;
         ViewModel.ClearResults();
+
+        ViewModel.ClearNoResults();
+
         ViewModel.SelectedTable = table;
         UpdateTableTabStates();
         await SearchSelectedTableAsync();

@@ -9,12 +9,13 @@ namespace ATIS.Views.Modules.Tbl87Geographic
     public sealed partial class Tbl87GeographicMapWindow : Window
     {
         public event EventHandler? MapStateCommitted;
-        private bool _hasMapChanges;
-
+        //  private bool _hasMapChanges;
+        private readonly (double, double, double, double, double, double, double, double, double) _initialMapState;
         public Tbl87GeographicMapWindow(Models.Tbl87Geographic item)
         {
             InitializeComponent();
 
+            _initialMapState = GetMapState(item);
             MapControl.Item = item;
             MapControl.CloseRequested += MapControl_CloseRequested;
 
@@ -33,12 +34,18 @@ namespace ATIS.Views.Modules.Tbl87Geographic
         {
             MapControl.FlushMapStateToItem();
 
-            if (_hasMapChanges)
+            //    if (_hasMapChanges)
+            if (MapControl.Item is { } item && GetMapState(item) != _initialMapState)
                 MapStateCommitted?.Invoke(this, EventArgs.Empty);
 
             Close();
         }
 
-
+        private static (double, double, double, double, double, double, double, double, double) GetMapState(Models.Tbl87Geographic item)
+            => (item.Latitude, item.Longitude,
+                item.Latitude1, item.Longitude1,
+                item.Latitude2, item.Longitude2,
+                item.Latitude3, item.Longitude3,
+                item.ZoomLevel);
     }
 }

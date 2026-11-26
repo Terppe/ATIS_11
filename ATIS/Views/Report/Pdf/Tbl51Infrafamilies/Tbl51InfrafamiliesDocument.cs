@@ -14,7 +14,6 @@ public class Tbl51InfrafamiliesDocument : IDocument
     private Tbl51InfrafamiliesPdfModel Model { get; }
     private static string Loc(string key) => Localizer.Get().GetLocalizedString(key);
 
-  //  private static int _tabLeftRel;
     private static readonly int _tabRightRel = Convert.ToInt32(ConfigurationManager.AppSettings.Get("ReportPdfRightTab")); //150
     private const int TabLeftRel4 = 4;
     private const int TabLeftRel8 = 8;
@@ -473,8 +472,12 @@ public class Tbl51InfrafamiliesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl51InfrafamiliesDocumentDataSource.ExpertsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 4; i++)
                 {
                     if (i == 0)
@@ -527,8 +530,12 @@ public class Tbl51InfrafamiliesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl51InfrafamiliesDocumentDataSource.SourcesCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 5; i++)
                 {
                     if (i == 0)
@@ -587,8 +594,12 @@ public class Tbl51InfrafamiliesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl51InfrafamiliesDocumentDataSource.AuthorsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 11; i++)
                 {
                     if (i == 0)
@@ -683,8 +694,12 @@ public class Tbl51InfrafamiliesDocument : IDocument
                 columns.RelativeColumn();
             });
 
+            var firstRecord = true;
             foreach (var item in Tbl51InfrafamiliesDocumentDataSource.CommentsCollection)
             {
+                if (!firstRecord)
+                    table.Cell().ColumnSpan(3).PaddingLeft(TabLeftRel8).PaddingBottom(4).LineHorizontal(0.5f).LineColor(Colors.Grey.Lighten2);
+                firstRecord = false;
                 for (var i = 0; i < 3; i++)
                 {
                     if (i == 0)
