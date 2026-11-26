@@ -111,9 +111,19 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-            LoadDirectChildren();
-            LoadReferences();
-            LoadComments();
+            await LoadDirectChildrenAsync();
+            await LoadReferencesAsync();
+            await LoadCommentsAsync();
+
+            await OfflineTranslationFields.TranslateAsync(
+                App.GetService<OfflineTranslationService>(),
+                new ITranslatableTaxon?[] { SubordoSelected, OrdoSelected }
+                    .OfType<ITranslatableTaxon>(),
+                ReferenceExpertItems,
+                ReferenceSourceItems,
+                ReferenceAuthorItems,
+                CommentItems);
+
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -495,7 +505,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async void LoadDirectChildren()
+    private async Task LoadDirectChildrenAsync()
     {
         InfraordoItems.Clear();
         HasDirectChildren = false;
@@ -528,7 +538,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async void LoadReferences()
+    private async Task LoadReferencesAsync()
     {
         // -------------------------
         // EXPERT REFERENCES
@@ -555,7 +565,7 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async void LoadComments()
+    private async Task LoadCommentsAsync()
     {
         var comments = await _dataService.GetCommentsBySubordoIdAsync(SubordoSelected.SubordoId);
         foreach (var item in comments)
@@ -577,6 +587,13 @@ public sealed class Tbl36SubordoDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl36SubordosDocumentDataSource.GetSubordoDetailsAsync(selected.SubordoId);
+
+            if (model is null)
+                return null;
+
+            model.Info = selected.InfoForDisplay;
+            model.Memo = selected.MemoForDisplay;
+
             return model == null ? null : new Tbl36SubordosDocument(model);
         }, suggestedFileName);
     }

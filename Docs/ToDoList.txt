@@ -1482,7 +1482,7 @@ datasource         await OfflineTranslationFields.TranslateAsync(
 			AuthorsCollection,
 			CommentsCollection);
 
-Vm             await OfflineTranslationFields.TranslateAsync(
+DetailVm             await OfflineTranslationFields.TranslateAsync(
 				App.GetService<OfflineTranslationService>(),
 				new ITranslatableTaxon?[] { InfratribusSelected, SubtribusSelected }
 					.OfType<ITranslatableTaxon>(),
@@ -1490,4 +1490,12 @@ Vm             await OfflineTranslationFields.TranslateAsync(
 				ReferenceSourceItems,
 				ReferenceAuthorItems,
 				CommentItems);
+----------------------------------------
+26.11.2026 15:30 Uhr In DetailVm eingefügt
+				if (model is null)
+                return null;
+
+            model.Info = selected.InfoForDisplay;
+            model.Memo = selected.MemoForDisplay;
+
 

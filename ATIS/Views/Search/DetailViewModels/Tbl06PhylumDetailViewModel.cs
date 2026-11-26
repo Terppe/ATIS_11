@@ -87,9 +87,19 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-            LoadDirectChildren();
-            LoadReferences();
-            LoadComments();
+            await LoadDirectChildrenAsync();
+            await LoadReferencesAsync();
+            await LoadCommentsAsync();
+
+            await OfflineTranslationFields.TranslateAsync(
+                App.GetService<OfflineTranslationService>(),
+                new ITranslatableTaxon?[] { PhylumSelected, RegnumSelected }
+                    .OfType<ITranslatableTaxon>(),
+                ReferenceExpertItems,
+                ReferenceSourceItems,
+                ReferenceAuthorItems,
+                CommentItems);
+
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -228,7 +238,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async void LoadDirectChildren()
+    private async Task LoadDirectChildrenAsync()
     {
         SubphylumItems.Clear();
         HasDirectChildren = false;
@@ -261,7 +271,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async void LoadReferences()
+    private async Task LoadReferencesAsync()
     {
         // -------------------------
         // EXPERT REFERENCES
@@ -288,7 +298,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async void LoadComments()
+    private async Task LoadCommentsAsync()
     {
         var comments = await _dataService.GetCommentsByPhylumIdAsync(PhylumSelected.PhylumId);
         foreach (var item in comments)
@@ -310,6 +320,13 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl06PhylumsDocumentDataSource.GetPhylumDetailsAsync(selected.PhylumId);
+
+            if (model is null)
+                return null;
+
+            model.Info = selected.InfoForDisplay;
+            model.Memo = selected.MemoForDisplay;
+
             return model == null ? null : new Tbl06PhylumsDocument(model);
         }, suggestedFileName);
     }

@@ -135,9 +135,19 @@ public sealed class Tbl60SubtribusDetailViewModel : ObservableObject
         try
         {
             await LoadTaxonomy();
-            LoadDirectChildren();
-            LoadReferences();
-            LoadComments();
+            await LoadDirectChildrenAsync();
+            await LoadReferencesAsync();
+            await LoadCommentsAsync();
+
+            await OfflineTranslationFields.TranslateAsync(
+                App.GetService<OfflineTranslationService>(),
+                new ITranslatableTaxon?[] { SubtribusSelected, TribusSelected }
+                    .OfType<ITranslatableTaxon>(),
+                ReferenceExpertItems,
+                ReferenceSourceItems,
+                ReferenceAuthorItems,
+                CommentItems);
+
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -768,7 +778,7 @@ public sealed class Tbl60SubtribusDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async void LoadDirectChildren()
+    private async Task LoadDirectChildrenAsync()
     {
         InfratribusItems.Clear();
         HasDirectChildren = false;
@@ -801,7 +811,7 @@ public sealed class Tbl60SubtribusDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async void LoadReferences()
+    private async Task LoadReferencesAsync()
     {
         // -------------------------
         // EXPERT REFERENCES
@@ -828,7 +838,7 @@ public sealed class Tbl60SubtribusDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async void LoadComments()
+    private async Task LoadCommentsAsync()
     {
         var comments = await _dataService.GetCommentsBySubtribusIdAsync(SubtribusSelected.SubtribusId);
         foreach (var item in comments)
@@ -850,6 +860,13 @@ public sealed class Tbl60SubtribusDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl60SubtribussesDocumentDataSource.GetSubtribusDetailsAsync(selected.SubtribusId);
+
+            if (model is null)
+                return null;
+
+            model.Info = selected.InfoForDisplay;
+            model.Memo = selected.MemoForDisplay;
+
             return model == null ? null : new Tbl60SubtribussesDocument(model);
         }, suggestedFileName);
     }
