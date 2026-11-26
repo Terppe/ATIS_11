@@ -7268,13 +7268,13 @@ public partial class DataService : ObservableObject, IDataService
         return await context.Tbl93Comments
             .AsNoTracking()
             .Where(e =>
-                e.Info.StartsWith(search) ||
+                (e.Info != null && e.Info.StartsWith(search)) ||
                 e.CommentId.ToString() == search)
             .OrderBy(e => e.Info)
             .ToListAsync();
     }
 
-    public async Task<Tbl93Comment> GetCommentByIdAsync(int id)
+    public async Task<Tbl93Comment?> GetCommentByIdAsync(int id)
     {
         await using var context = _factory.CreateDbContext();
 
@@ -7630,13 +7630,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.CountryId == id || e.Name.StartsWith(search))
+                .Where(e => e.CountryId == id || (e.Name != null && e.Name.StartsWith(search)))
                 .OrderBy(e => e.Name)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.Name.StartsWith(search))
+            .Where(e => e.Name != null && e.Name.StartsWith(search))
             .OrderBy(e => e.Name)
             .ToListAsync();
 
@@ -7770,13 +7770,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.UserProfileId == id || e.Email.StartsWith(search))
+                .Where(e => e.UserProfileId == id || (e.Email != null && e.Email.StartsWith(search)))
                 .OrderBy(e => e.Email)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.Email.StartsWith(search))
+            .Where(e => e.Email != null && e.Email.StartsWith(search))
             .OrderBy(e => e.Email)
             .ToListAsync();
     }
@@ -7942,13 +7942,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.FoodId == id || e.FoodName.StartsWith(search))
+                .Where(e => e.FoodId == id || (e.FoodName != null && e.FoodName.StartsWith(search)))
                 .OrderBy(e => e.FoodName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.FoodName.StartsWith(search))
+            .Where(e => e.FoodName != null && e.FoodName.StartsWith(search))
             .OrderBy(e => e.FoodName)
             .ToListAsync();
     }
@@ -8057,13 +8057,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.DiseaseId == id || e.DiseaseName.StartsWith(search))
+                .Where(e => e.DiseaseId == id || (e.DiseaseName != null && e.DiseaseName.StartsWith(search)))
                 .OrderBy(e => e.DiseaseName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.DiseaseName.StartsWith(search))
+            .Where(e => e.DiseaseName != null && e.DiseaseName.StartsWith(search))
             .OrderBy(e => e.DiseaseName)
             .ToListAsync();
     }
@@ -8174,13 +8174,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.MiscellaneousId == id || e.MiscellaneousName.StartsWith(search))
+                .Where(e => e.MiscellaneousId == id || (e.MiscellaneousName != null && e.MiscellaneousName.StartsWith(search)))
                 .OrderBy(e => e.MiscellaneousName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.MiscellaneousName.StartsWith(search))
+            .Where(e => e.MiscellaneousName != null && e.MiscellaneousName.StartsWith(search))
             .OrderBy(e => e.MiscellaneousName)
             .ToListAsync();
     }
