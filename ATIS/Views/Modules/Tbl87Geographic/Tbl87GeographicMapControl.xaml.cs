@@ -70,9 +70,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
     #region Fields / state
     // ---------------------------------------------------------
-    private bool _isInitializingCombos;
-    private bool _isApplyingItem;
-    private bool _addPointMode;
     private bool _isRefreshingView;
     private bool _mapInitialized;
     private ILayer? _markerLayer;
@@ -608,7 +605,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
         _selectedPointIndex = -1;
         _replacePointMode = false;
-        _addPointMode = false;
 
         SyncItemBeforeSave();
         UpdateMapGeometry();
@@ -639,7 +635,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
             _hasFallbackPoint = false;
             _replacePointMode = false;
-            _addPointMode = false;
 
             SyncItemBeforeSave();
             UpdateMapGeometry();
@@ -706,7 +701,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
 
             _hasFallbackPoint = false;
             _replacePointMode = false;
-            _addPointMode = false;
 
             SyncItemBeforeSave();
             UpdateMapGeometry();
@@ -799,7 +793,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
         var p = _contextWorldPosition.Value;
         AddPointAt(p.lat, p.lon);
 
-        _addPointMode = false;
         _replacePointMode = false;
         _selectedPointIndex = -1;
 
@@ -823,7 +816,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
             return;
 
         _selectedPointIndex = _contextPointIndex;
-        _addPointMode = false;
         _replacePointMode = true;
 
         _contextPointIndex = -1;
@@ -1191,19 +1183,8 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
             return;
         }
 
-        _isApplyingItem = true;
-        _isInitializingCombos = true;
-
-        try
-        {
-            _pendingItem = null;
-            await RefreshViewFromCurrentItemAsync();
-        }
-        finally
-        {
-            _isInitializingCombos = false;
-            _isApplyingItem = false;
-        }
+        _pendingItem = null;
+        await RefreshViewFromCurrentItemAsync();
     }
     #endregion
 
@@ -1283,7 +1264,6 @@ public sealed partial class Tbl87GeographicMapControl : UserControl
     {
         _selectedPointIndex = -1;
         _replacePointMode = false;
-        _addPointMode = false;
         UpdateMapGeometry();
         MyMap.Refresh();
     }
