@@ -335,16 +335,24 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ReportItemTemplateTbl90RefExpert">
-        <dataTemplates1:ReportItemTemplateTbl90RefExpertControl />
+        <Border Margin="8,4,0,4" Padding="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+            <dataTemplates1:ReportItemTemplateTbl90RefExpertControl />
+        </Border>
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateTbl90RefSource">
-        <dataTemplates1:ReportItemTemplateTbl90RefSourceControl />
+        <Border Margin="8,4,0,4" Padding="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+            <dataTemplates1:ReportItemTemplateTbl90RefSourceControl />
+        </Border>
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateTbl90RefAuthor">
-        <dataTemplates1:ReportItemTemplateTbl90RefAuthorControl />
+        <Border Margin="8,4,0,4" Padding="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+            <dataTemplates1:ReportItemTemplateTbl90RefAuthorControl />
+        </Border>
     </DataTemplate>
     <DataTemplate x:Key="ReportItemTemplateTbl93Comment">
-        <dataTemplates1:ReportItemTemplateTbl93CommentControl />
+        <Border Margin="8,4,0,4" Padding="8" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4">
+            <dataTemplates1:ReportItemTemplateTbl93CommentControl />
+        </Border>
     </DataTemplate>
 
 </ResourceDictionary>
