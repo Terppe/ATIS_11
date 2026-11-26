@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ATIS.Interfaces;
 using ATIS.Views.Base;
@@ -7,7 +6,7 @@ using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl90RefAuthor : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
+public class Tbl90RefAuthor : ObservableObject, IDataService.IAuditable, IHierarchicalEntity, ITranslatableTaxon
 {
     private Dictionary<string, List<string>> _errors = new();
 

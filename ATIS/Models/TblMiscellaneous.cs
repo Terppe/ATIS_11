@@ -6,7 +6,7 @@ using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class TblMiscellaneous : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
+public class TblMiscellaneous : ObservableObject, IDataService.IAuditable, IHierarchicalEntity, ITranslatableTaxon
 {
     private Dictionary<string, List<string>> _errors = new();
 

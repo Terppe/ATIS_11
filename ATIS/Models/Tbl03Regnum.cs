@@ -9,7 +9,7 @@ using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl03Regnum : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
+public class Tbl03Regnum : ObservableObject, IDataService.IAuditable, IHierarchicalEntity, ITranslatableTaxon
 {
     private Dictionary<string, List<string>> _errors = new();
 

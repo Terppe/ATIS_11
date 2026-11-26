@@ -6,7 +6,7 @@ using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl90Reference : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
+public class Tbl90Reference : ObservableObject, IDataService.IAuditable, IHierarchicalEntity, ITranslatableTaxon
 {
     private readonly Dictionary<string, List<string>> _errors = new();
     // ---------------------------------------------------------

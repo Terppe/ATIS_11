@@ -1,4 +1,5 @@
-﻿using ATIS.Models;
+﻿using ATIS.Interfaces;
+using ATIS.Models;
 
 namespace ATIS.Services;
 
@@ -6,8 +7,7 @@ public static class OfflineTranslationFields
 {
     public static async Task TranslateAsync(
         OfflineTranslationService translator,
-        Tbl66Genus genus,
-        Tbl63Infratribus infratribus,
+        IEnumerable<ITranslatableTaxon> taxa,
         IEnumerable<Tbl90Reference> experts,
         IEnumerable<Tbl90Reference> sources,
         IEnumerable<Tbl90Reference> authors,
@@ -15,10 +15,11 @@ public static class OfflineTranslationFields
     {
         var fields = new List<(string Text, Action<string?> Set)>();
 
-        Add(genus.Info, value => genus.TranslatedInfo = value);
-        Add(genus.Memo, value => genus.TranslatedMemo = value);
-        Add(infratribus.Info, value => infratribus.TranslatedInfo = value);
-        Add(infratribus.Memo, value => infratribus.TranslatedMemo = value);
+        foreach (var taxon in taxa)
+        {
+            Add(taxon.Info, value => taxon.TranslatedInfo = value);
+            Add(taxon.Memo, value => taxon.TranslatedMemo = value);
+        }
 
         foreach (var reference in experts)
         {

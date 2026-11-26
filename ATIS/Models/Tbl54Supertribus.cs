@@ -6,7 +6,7 @@ using WinUI3Localizer;
 
 namespace ATIS.Models;
 
-public class Tbl54Supertribus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity
+public class Tbl54Supertribus : ObservableObject, IDataService.IAuditable, IHierarchicalEntity, ITranslatableTaxon
 {
     private Dictionary<string, List<string>> _errors = new();
 

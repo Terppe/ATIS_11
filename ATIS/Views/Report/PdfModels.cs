@@ -859,10 +859,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool? Valid
-        {
-            get; set;
-        }
+        public bool? Valid { get; set; }
         public string ValidYear
         {
             get; set;
@@ -907,10 +904,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool Valid
-        {
-            get; set;
-        }
+        public bool? Valid { get; set; }
         public string ValidYear
         {
             get; set;
@@ -955,10 +949,7 @@ public class PdfModels
         {
             get; set;
         }
-        public bool? Valid
-        {
-            get; set;
-        }
+        public bool? Valid { get; set; }
         public string ValidYear
         {
             get; set;

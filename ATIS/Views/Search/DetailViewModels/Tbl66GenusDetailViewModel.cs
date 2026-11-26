@@ -152,8 +152,8 @@ public sealed class Tbl66GenusDetailViewModel : ObservableObject
 
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
-                GenusSelected!,
-                InfratribusSelected!,
+                new ITranslatableTaxon[] { GenusSelected, InfratribusSelected }
+                    .OfType<ITranslatableTaxon>(),
                 ReferenceExpertItems,
                 ReferenceSourceItems,
                 ReferenceAuthorItems,

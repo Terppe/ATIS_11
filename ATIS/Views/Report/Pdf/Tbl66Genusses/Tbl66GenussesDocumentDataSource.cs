@@ -127,8 +127,7 @@ public abstract class Tbl66GenussesDocumentDataSource : ObservableObject
 
         await OfflineTranslationFields.TranslateAsync(
             App.GetService<OfflineTranslationService>(),
-            _genusSingle,
-            _infratribusSingle,
+            new ITranslatableTaxon[] { _genusSingle, _infratribusSingle },
             ExpertsCollection,
             SourcesCollection,
             AuthorsCollection,
