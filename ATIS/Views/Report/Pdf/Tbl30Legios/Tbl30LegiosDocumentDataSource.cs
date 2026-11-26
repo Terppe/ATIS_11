@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl30LegiosDocumentDataSourceSkriptdatum:  15.06.2024  10:32    
@@ -75,6 +76,14 @@ public abstract class Tbl30LegiosDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByLegioIdAsync(legioId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _legioSingle, _infraclassSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl30LegiosPdfModel
         {

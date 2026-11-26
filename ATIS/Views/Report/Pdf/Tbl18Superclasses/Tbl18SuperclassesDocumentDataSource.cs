@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl18SuperclassesDocumentDataSourceSkriptdatum:  15.06.2024  12:32    
@@ -59,6 +60,14 @@ public abstract class Tbl18SuperclassesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsBySuperclassIdAsync(superclassId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _superclassSingle, _subphylumSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl18SuperclassesPdfModel
         {

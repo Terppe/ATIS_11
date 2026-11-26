@@ -129,7 +129,6 @@ public abstract class Tbl63InfratribussesDocumentDataSource : ObservableObject
             AuthorsCollection,
             CommentsCollection);
 
-
         return new Tbl63InfratribussesPdfModel
         {
             InfratribusName = _infratribusSingle.InfratribusName,

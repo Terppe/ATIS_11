@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
-
+using ATIS.Services;
 
 //    Tbl21ClassesDocumentDataSourceSkriptdatum:  26.08.2026   18:32    
 
@@ -9,16 +9,13 @@ namespace ATIS.Views.Report.Pdf.Tbl21Classes;
 
 public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
 {
-
     private static Tbl03Regnum _regnumSingle = new();
     private static Tbl06Phylum _phylumSingle = new();
     private static Tbl12Subphylum _subphylumSingle = new();
     private static Tbl18Superclass _superclassSingle = new();
     private static Tbl21Class _classSingle = new();
 
-
     //    Part 1    
-
 
     private static bool IsVisibleTaxonName(string? name)
     {
@@ -63,6 +60,14 @@ public abstract class Tbl21ClassesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByClassIdAsync(classId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _classSingle, _superclassSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl21ClassesPdfModel
         {

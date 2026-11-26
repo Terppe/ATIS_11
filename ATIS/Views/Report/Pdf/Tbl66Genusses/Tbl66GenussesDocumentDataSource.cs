@@ -133,7 +133,6 @@ public abstract class Tbl66GenussesDocumentDataSource : ObservableObject
             AuthorsCollection,
             CommentsCollection);
 
-
         return new Tbl66GenussesPdfModel
         {
             GenusName = _genusSingle.GenusName,

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl12SubphylumsDocumentDataSourceSkriptdatum:  15.06.2024  12:32    
@@ -55,6 +56,14 @@ public abstract class Tbl12SubphylumsDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsBySubphylumIdAsync(subphylumId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _subphylumSingle, _phylumSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl12SubphylumsPdfModel
         {

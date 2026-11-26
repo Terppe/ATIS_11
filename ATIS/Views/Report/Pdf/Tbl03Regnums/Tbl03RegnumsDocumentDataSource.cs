@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 //    Tbl03RegnumsDocumentDataSourceSkriptdatum:  24.08.2026  12:32      
 
@@ -8,12 +9,9 @@ namespace ATIS.Views.Report.Pdf.Tbl03Regnums;
 
 public abstract class Tbl03RegnumsDocumentDataSource : ObservableObject
 {
-
     private static Tbl03Regnum _regnumSingle = new();
 
-
     //    Part 1    
-
 
     private static bool IsVisibleTaxonName(string? name)
     {
@@ -48,6 +46,14 @@ public abstract class Tbl03RegnumsDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByRegnumIdAsync(regnumId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _regnumSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
 
         return new Tbl03RegnumsPdfModel

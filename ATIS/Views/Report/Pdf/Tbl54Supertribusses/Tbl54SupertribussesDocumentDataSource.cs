@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl54SupertribussesDocumentDataSourceSkriptdatum:  18.18.2026  10:32    
@@ -107,6 +108,14 @@ public abstract class Tbl54SupertribussesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsBySupertribusIdAsync(supertribusId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _supertribusSingle, _infrafamilySingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl54SupertribussesPdfModel
         {

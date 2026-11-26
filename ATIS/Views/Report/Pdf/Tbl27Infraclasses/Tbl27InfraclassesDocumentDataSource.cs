@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl27InfraclassesDocumentDataSourceSkriptdatum:  15.06.2024  18:32    
@@ -71,6 +72,14 @@ public abstract class Tbl27InfraclassesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsByInfraclassIdAsync(infraclassId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _infraclassSingle, _subclassSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl27InfraclassesPdfModel
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using ATIS.Interfaces;
 using ATIS.Models;
+using ATIS.Services;
 
 
 //    Tbl42SuperfamiliesDocumentDataSourceSkriptdatum:  18.08.2026  10:32    
@@ -91,6 +92,14 @@ public abstract class Tbl42SuperfamiliesDocumentDataSource : ObservableObject
 
         CommentsCollection = new ObservableCollection<Tbl93Comment>(
             await dataService.GetCommentsBySuperfamilyIdAsync(superfamilyId));
+
+        await OfflineTranslationFields.TranslateAsync(
+            App.GetService<OfflineTranslationService>(),
+            new ITranslatableTaxon[] { _superfamilySingle, _infraordoSingle },
+            ExpertsCollection,
+            SourcesCollection,
+            AuthorsCollection,
+            CommentsCollection);
 
         return new Tbl42SuperfamiliesPdfModel
         {
