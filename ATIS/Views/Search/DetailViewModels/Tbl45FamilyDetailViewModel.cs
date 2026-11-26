@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
@@ -43,22 +44,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     public Tbl39Infraordo? InfraordoSelected { get; private set; }
     public Tbl42Superfamily? SuperfamilySelected { get; private set; }
     public Tbl48Subfamily? SubfamilySelected { get; private set; }
-    // -----------------------------
-    //  Breadcrumb
-    // -----------------------------
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToLegioCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToOrdoCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubordoCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraordoCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperfamilyCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToFamilyCommand { get; }
+
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -101,10 +87,10 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
-    public Tbl45FamilyDetailViewModel(Tbl45Family selectedFamily, IDataService? dataService)
+    public Tbl45FamilyDetailViewModel(Tbl45Family? selectedFamily, IDataService dataService)
     {
         FamilySelected = selectedFamily;
-        _dataService = dataService;
+        _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
 
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
@@ -115,14 +101,14 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     private bool _isInitializing;
     public async Task InitializeAsync()
     {
-        if (_isInitialized || _isInitializing) return;
+        if (FamilySelected is not { } selected || _isInitialized || _isInitializing) return;
         _isInitializing = true;
         try
         {
-            await LoadTaxonomy();
-            await LoadDirectChildrenAsync();
-            await LoadReferencesAsync();
-            await LoadCommentsAsync();
+            await LoadTaxonomy(selected);
+            await LoadDirectChildrenAsync(selected);
+            await LoadReferencesAsync(selected);
+            await LoadCommentsAsync(selected);
 
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
@@ -161,7 +147,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     {
         Breadcrumb.Clear();
 
-        if (RegnumSelected != null)
+        if (RegnumSelected != null && IsVisibleTaxonName(RegnumSelected.RegnumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -171,7 +157,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (PhylumSelected != null)
+        if (PhylumSelected != null && IsVisibleTaxonName(PhylumSelected.PhylumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -181,7 +167,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (SubphylumSelected != null)
+        if (SubphylumSelected != null && IsVisibleTaxonName(SubphylumSelected.SubphylumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -191,7 +177,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (SuperclassSelected != null)
+        if (SuperclassSelected != null && IsVisibleTaxonName(SuperclassSelected.SuperclassName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -201,7 +187,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (ClassSelected != null)
+        if (ClassSelected != null && IsVisibleTaxonName(ClassSelected.ClassName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -211,7 +197,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (SubclassSelected != null)
+        if (SubclassSelected != null && IsVisibleTaxonName(SubclassSelected.SubclassName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -222,7 +208,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (InfraclassSelected != null)
+        if (InfraclassSelected != null && IsVisibleTaxonName(InfraclassSelected.InfraclassName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -233,7 +219,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (LegioSelected != null)
+        if (LegioSelected != null && IsVisibleTaxonName(LegioSelected.LegioName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -244,7 +230,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (OrdoSelected != null)
+        if (OrdoSelected != null && IsVisibleTaxonName(OrdoSelected.OrdoName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -255,7 +241,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (SubordoSelected != null)
+        if (SubordoSelected != null && IsVisibleTaxonName(SubordoSelected.SubordoName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -266,7 +252,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (InfraordoSelected != null)
+        if (InfraordoSelected != null && IsVisibleTaxonName(InfraordoSelected.InfraordoName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -277,7 +263,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             });
         }
 
-        if (SuperfamilySelected != null)
+        if (SuperfamilySelected != null && IsVisibleTaxonName(SuperfamilySelected.SuperfamilyName))
         {
 
             Breadcrumb.Add(new BreadcrumbItem
@@ -287,80 +273,69 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
                 EntityId = SuperfamilySelected.SuperfamilyId
             });
         }
-        Breadcrumb.Add(new BreadcrumbItem
-        {
-            Label = FamilySelected.FamilyName,
-            EntityType = "Family",
-            EntityId = FamilySelected.FamilyId
-        });
-
-        // <<< HIER: aktuellen Knoten entfernen
-        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
-        {
-            var x = Breadcrumb[i];
-            if (x.EntityType == "Family" && x.EntityId == FamilySelected.FamilyId)
-                Breadcrumb.RemoveAt(i);
-        }
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
     {
+        var frame = App.MainPageInstance?.NavFrame
+                    ?? throw new InvalidOperationException("Navigation frame is not available.");
+
         switch (item.EntityType)
         {
             case "Regnum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
 
             case "Phylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
                 break;
 
             case "Subphylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
                 break;
 
             case "Superclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
                 break;
 
             case "Class":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
                 break;
 
             case "Subclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
                 break;
 
             case "Infraclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
                 break;
 
             case "Legio":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl30LegioDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl30LegioDetailPage), item.EntityId);
                 break;
 
             case "Ordo":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl33OrdoDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl33OrdoDetailPage), item.EntityId);
                 break;
 
             case "Subordo":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl36SubordoDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl36SubordoDetailPage), item.EntityId);
                 break;
 
             case "Infraordo":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl39InfraordoDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl39InfraordoDetailPage), item.EntityId);
                 break;
 
             case "Superfamily":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl42SuperfamilyDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl42SuperfamilyDetailPage), item.EntityId);
                 break;
 
             case "Family":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl45FamilyDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl45FamilyDetailPage), item.EntityId);
                 break;
 
             case "Subfamily":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl48SubfamilyDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl48SubfamilyDetailPage), item.EntityId);
                 break;
         }
     }
@@ -375,7 +350,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             frame.GoBack();
     }
 
-    private static bool IsVisibleTaxonName(string? name)
+    private static bool IsVisibleTaxonName([NotNullWhen(true)] string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
     }
@@ -388,7 +363,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD TAXONOMY
     // -----------------------------
-    private async Task LoadTaxonomy()
+    private async Task LoadTaxonomy(Tbl45Family selected)
     {
         RegnumItems.Clear();
         PhylumItems.Clear();
@@ -418,40 +393,40 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (FamilySelected.SuperfamilyId != 0)
-            superfamily = await _dataService.GetSuperfamilyByIdAsync(FamilySelected.SuperfamilyId);
+        if (selected.SuperfamilyId is int superfamilyId && superfamilyId != 0)
+            superfamily = await _dataService.GetSuperfamilyByIdAsync(superfamilyId);
 
-        if (superfamily.InfraordoId != 0)
+        if (superfamily != null && superfamily.InfraordoId != 0)
             infraordo = await _dataService.GetInfraordoByIdAsync(superfamily.InfraordoId);
 
-        if (infraordo.SubordoId != 0)
+        if (infraordo != null && infraordo.SubordoId != 0)
             subordo = await _dataService.GetSubordoByIdAsync(infraordo.SubordoId);
 
-        if (subordo.OrdoId != 0)
+        if (subordo != null && subordo.OrdoId != 0)
             ordo = await _dataService.GetOrdoByIdAsync(subordo.OrdoId);
 
-        if (ordo.LegioId != 0)
+        if (ordo != null && ordo.LegioId != 0)
             legio = await _dataService.GetLegioByIdAsync(ordo.LegioId);
 
-        if (legio.InfraclassId != 0)
+        if (legio != null && legio.InfraclassId != 0)
             infraclass = await _dataService.GetInfraclassByIdAsync(legio.InfraclassId);
 
-        if (infraclass.SubclassId != 0)
+        if (infraclass != null && infraclass.SubclassId != 0)
             subclass = await _dataService.GetSubclassByIdAsync(infraclass.SubclassId);
 
-        if (subclass.ClassId != 0)
+        if (subclass != null && subclass.ClassId != 0)
             classe = await _dataService.GetClassByIdAsync(subclass.ClassId);
 
-        if (classe?.SuperclassId != 0)
+        if (classe != null && classe.SuperclassId != 0)
             superclass = await _dataService.GetSuperclassByIdAsync(classe.SuperclassId);
 
-        if (superclass?.SubphylumId != 0)
+        if (superclass != null && superclass.SubphylumId != 0)
             subphylum = await _dataService.GetSubphylumByIdAsync(superclass.SubphylumId);
 
-        if (subphylum?.PhylumId != 0)
+        if (subphylum != null && subphylum.PhylumId != 0)
             phylum = await _dataService.GetPhylumByIdAsync(subphylum.PhylumId);
 
-        if (phylum?.RegnumId != 0)
+        if (phylum != null && phylum.RegnumId != 0)
             regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
 
         // sichtbare Reihenfolge aufbauen
@@ -592,7 +567,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
 
         FamilyItems.Add(new TaxonomyLine<Tbl45Family>
         {
-            Item = FamilySelected,
+            Item = selected,
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
@@ -607,12 +582,12 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async Task LoadDirectChildrenAsync()
+    private async Task LoadDirectChildrenAsync(Tbl45Family selected)
     {
         SubfamilyItems.Clear();
         HasDirectChildren = false;
 
-        var subfamily = await _dataService.GetSubfamiliesByFamilyIdAsync(FamilySelected.FamilyId);
+        var subfamily = await _dataService.GetSubfamiliesByFamilyIdAsync(selected.FamilyId);
 
         var visibleItems = subfamily
             .Where(x => IsVisibleTaxonName(x.SubfamilyName))
@@ -640,26 +615,26 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async Task LoadReferencesAsync()
+    private async Task LoadReferencesAsync(Tbl45Family selected)
     {
         // -------------------------
         // EXPERT REFERENCES
         // -------------------------
-        var experts = await _dataService.GetExpertReferencesByFamilyIdAsync(FamilySelected.FamilyId);
+        var experts = await _dataService.GetExpertReferencesByFamilyIdAsync(selected.FamilyId);
         foreach (var item in experts)
             ReferenceExpertItems.Add(item);
 
         // -------------------------
         // SOURCE REFERENCES
         // -------------------------
-        var sources = await _dataService.GetSourceReferencesByFamilyIdAsync(FamilySelected.FamilyId);
+        var sources = await _dataService.GetSourceReferencesByFamilyIdAsync(selected.FamilyId);
         foreach (var item in sources)
             ReferenceSourceItems.Add(item);
 
         // -------------------------
         // AUTHOR REFERENCES
         // -------------------------
-        var authors = await _dataService.GetAuthorReferencesByFamilyIdAsync(FamilySelected.FamilyId);
+        var authors = await _dataService.GetAuthorReferencesByFamilyIdAsync(selected.FamilyId);
         foreach (var item in authors)
             ReferenceAuthorItems.Add(item);
     }
@@ -667,9 +642,9 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async Task LoadCommentsAsync()
+    private async Task LoadCommentsAsync(Tbl45Family selected)
     {
-        var comments = await _dataService.GetCommentsByFamilyIdAsync(FamilySelected.FamilyId);
+        var comments = await _dataService.GetCommentsByFamilyIdAsync(selected.FamilyId);
         foreach (var item in comments)
             CommentItems.Add(item);
     }

@@ -1497,5 +1497,5 @@ DetailVm             await OfflineTranslationFields.TranslateAsync(
 
 			model.Info = selected.InfoForDisplay;
 			model.Memo = selected.MemoForDisplay;
-
-
+		***********wichtig	git push origin ATIS_11 ist übertragen zu github  **********************
+		größere Änderung in DetailViewModels Family und Superfamily steht bevor.
