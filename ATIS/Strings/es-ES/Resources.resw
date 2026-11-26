@@ -5332,4 +5332,7 @@
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Agregar</value>
   </data>
+  <data name="TextBlock_NoSearchResults.Text" xml:space="preserve">
+    <value>No se encontró ningún registro</value>
+  </data>
 </root>

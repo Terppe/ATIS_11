@@ -5391,4 +5391,7 @@
   <data name="AppBarButtonAdd.Label1" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="TextBlock_NoSearchResults.Text" xml:space="preserve">
+    <value>No record found</value>
+  </data>
 </root>
