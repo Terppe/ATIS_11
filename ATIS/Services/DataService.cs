@@ -18,7 +18,6 @@ public partial class DataService : ObservableObject, IDataService
 {
     private const string Value = "#";
     private readonly IUserService _user;
-    private readonly AtisDbContext? _context;
     private readonly IDbContextFactory<AtisDbContext>? _factory;
 
     public DataService(IDbContextFactory<AtisDbContext> factory, IUserService user)
@@ -7013,13 +7012,6 @@ public partial class DataService : ObservableObject, IDataService
         );
     }
 
-
-    public ObservableCollection<Tbl90RefAuthor> GetRefAuthorAsyncAlt()
-    {
-        var collection = new ObservableCollection<Tbl90RefAuthor>(_context.Tbl90RefAuthors
-            .OrderBy(k => k.RefAuthorName));
-        return collection;
-    }
 
     #endregion RefAuthor
 
