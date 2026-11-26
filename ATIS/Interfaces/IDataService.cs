@@ -687,7 +687,7 @@ public interface IDataService
     Task<IEnumerable<Tbl93Comment>> GetAllCommentAsync();
     Task<IEnumerable<Tbl93Comment>> SearchCommentAsync(string? search);
     Task<bool> CommentExistsAsync(Tbl93Comment entity);
-    Task<Tbl93Comment> GetCommentByIdAsync(int id);
+    Task<Tbl93Comment?> GetCommentByIdAsync(int id);
     Task<Tbl93Comment> UpsertCommentAsync(Tbl93Comment model);
     Task DeleteCommentAsync(int id);
     Task<IEnumerable<Tbl93Comment>> GetCommentsForRegnumAsync(int id);
