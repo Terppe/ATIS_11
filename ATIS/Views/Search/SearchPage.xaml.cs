@@ -42,6 +42,7 @@ public sealed partial class SearchPage : Page
     {
         // alte Trefferliste löschen, damit z.B. Subclass -> Phylum sauber ist
         ViewModel.Results?.Clear();
+        ViewModel.ClearNoResults();
 
         // optional: Suchfeld leeren
         // ViewModel.SearchText = string.Empty;

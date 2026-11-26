@@ -51,8 +51,19 @@ public sealed class SearchPageViewModel : ObservableObject
 
     public IAsyncRelayCommand SearchCommand { get; }
 
+    private bool _hasNoResults;
+    public bool HasNoResults
+    {
+        get => _hasNoResults;
+        private set => SetProperty(ref _hasNoResults, value);
+    }
+
+    public void ClearNoResults() => HasNoResults = false;
+
     private async Task ExecuteSearchAsync()
     {
+        HasNoResults = false;
+        var searchedTable = SelectedTable;
         Results.Clear();
 
         switch (SelectedTable)
@@ -273,6 +284,7 @@ public sealed class SearchPageViewModel : ObservableObject
                 break;
             }
         }
+        HasNoResults = SelectedTable == searchedTable && Results.Count == 0;
         OnPropertyChanged(nameof(CanPrintClassList));
     }
 
