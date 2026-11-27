@@ -99,29 +99,6 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-
-        <!--<ItemsControl Grid.Row="1"
-        HorizontalAlignment="Stretch"
-        ItemsSource="{x:Bind ViewModel.BreadcrumbReversed}">
-        <ItemsControl.ItemsPanel>
-        <ItemsPanelTemplate>
-        <ItemsWrapGrid Orientation="Horizontal" />
-        </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-
-        <ItemsControl.ItemTemplate>
-        <DataTemplate x:DataType="search:BreadcrumbItem">
-        <StackPanel Orientation="Horizontal"
-        Spacing="8">
-        <HyperlinkButton Click="Breadcrumb_Click"
-        Content="{x:Bind Label}" />
-        <TextBlock Margin="0,6,0,0"
-        Text="&lt;" />
-        </StackPanel>
-        </DataTemplate>
-        </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
-
         <!--  SCROLLBEREICH  -->
         <ScrollViewer
             Grid.Row="2"

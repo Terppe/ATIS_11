@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
 using ATIS.Views.Report.Pdf.Tbl06Phylums;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 
 //    Tbl06PhylumDetailViewModel Skriptdatum:  15.06.2024  12:32    
@@ -32,11 +34,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     public Tbl03Regnum? RegnumSelected { get; private set; }
     public Tbl12Subphylum? SubphylumSelected { get; private set; }
-    // -----------------------------
-    //  Breadcrumb
-    // -----------------------------
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
+
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -68,12 +66,12 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
-    public Tbl06PhylumDetailViewModel(Tbl06Phylum selectedPhylum, IDataService? dataService)
+    public Tbl06PhylumDetailViewModel(Tbl06Phylum? selectedPhylum, IDataService dataService)
     {
         PhylumSelected = selectedPhylum;
-        _dataService = dataService;
-
-        ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
+        _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+    
+    ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
@@ -82,14 +80,15 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     private bool _isInitializing;
     public async Task InitializeAsync()
     {
-        if (_isInitialized || _isInitializing) return;
+        if (PhylumSelected is not { } selected || _isInitialized || _isInitializing)
+            return;
         _isInitializing = true;
         try
         {
-            await LoadTaxonomy();
-            await LoadDirectChildrenAsync();
-            await LoadReferencesAsync();
-            await LoadCommentsAsync();
+            await LoadTaxonomy(selected);
+            await LoadDirectChildrenAsync(selected);
+            await LoadReferencesAsync(selected);
+            await LoadCommentsAsync(selected);
 
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
@@ -128,7 +127,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     {
         Breadcrumb.Clear();
 
-        if (RegnumSelected != null)
+        if (RegnumSelected != null && IsVisibleTaxonName(RegnumSelected.RegnumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -137,37 +136,25 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
                 EntityId = RegnumSelected.RegnumId
             });
         }
-
-        Breadcrumb.Add(new BreadcrumbItem
-        {
-            Label = PhylumSelected.PhylumName,
-            EntityType = "Phylum",
-            EntityId = PhylumSelected.PhylumId
-        });
-
-        // <<< HIER: aktuellen Knoten entfernen
-        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
-        {
-            var x = Breadcrumb[i];
-            if (x.EntityType == "Phylum" && x.EntityId == PhylumSelected.PhylumId)
-                Breadcrumb.RemoveAt(i);
-        }
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
     {
+        var frame = App.MainPageInstance?.NavFrame
+                    ?? throw new InvalidOperationException("Navigation frame is not available.");
+
         switch (item.EntityType)
         {
             case "Regnum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
 
             case "Phylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
                 break;
 
             case "Subphylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
                 break;
         }
     }
@@ -182,7 +169,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
             frame.GoBack();
     }
 
-    private static bool IsVisibleTaxonName(string? name)
+    private static bool IsVisibleTaxonName([NotNullWhen(true)] string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
     }
@@ -195,7 +182,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD TAXONOMY
     // -----------------------------
-    private async Task LoadTaxonomy()
+    private async Task LoadTaxonomy(Tbl06Phylum selected)
     {
         RegnumItems.Clear();
         PhylumItems.Clear();
@@ -203,9 +190,8 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         Tbl03Regnum? regnum = null;
 
         // technisch laden
-        if (PhylumSelected.RegnumId != 0)
-            regnum = await _dataService.GetRegnumByIdAsync(PhylumSelected.RegnumId);
-
+        if (selected.RegnumId != 0)
+            regnum = await _dataService.GetRegnumByIdAsync(selected.RegnumId);
 
         // sichtbare Reihenfolge aufbauen
         var visibleIndex = 0;
@@ -223,7 +209,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
 
         PhylumItems.Add(new TaxonomyLine<Tbl06Phylum>
         {
-            Item = PhylumSelected,
+            Item = selected,
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
@@ -238,12 +224,12 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async Task LoadDirectChildrenAsync()
+    private async Task LoadDirectChildrenAsync(Tbl06Phylum selected)
     {
         SubphylumItems.Clear();
         HasDirectChildren = false;
 
-        var subphylum = await _dataService.GetSubphylumsByPhylumIdAsync(PhylumSelected.PhylumId);
+        var subphylum = await _dataService.GetSubphylumsByPhylumIdAsync(selected.PhylumId);
 
         var visibleItems = subphylum
             .Where(x => IsVisibleTaxonName(x.SubphylumName))
@@ -271,26 +257,26 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async Task LoadReferencesAsync()
+    private async Task LoadReferencesAsync(Tbl06Phylum selected)
     {
         // -------------------------
         // EXPERT REFERENCES
         // -------------------------
-        var experts = await _dataService.GetExpertReferencesByPhylumIdAsync(PhylumSelected.PhylumId);
+        var experts = await _dataService.GetExpertReferencesByPhylumIdAsync(selected.PhylumId);
         foreach (var item in experts)
             ReferenceExpertItems.Add(item);
 
         // -------------------------
         // SOURCE REFERENCES
         // -------------------------
-        var sources = await _dataService.GetSourceReferencesByPhylumIdAsync(PhylumSelected.PhylumId);
+        var sources = await _dataService.GetSourceReferencesByPhylumIdAsync(selected.PhylumId);
         foreach (var item in sources)
             ReferenceSourceItems.Add(item);
 
         // -------------------------
         // AUTHOR REFERENCES
         // -------------------------
-        var authors = await _dataService.GetAuthorReferencesByPhylumIdAsync(PhylumSelected.PhylumId);
+        var authors = await _dataService.GetAuthorReferencesByPhylumIdAsync(selected.PhylumId);
         foreach (var item in authors)
             ReferenceAuthorItems.Add(item);
     }
@@ -298,9 +284,9 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async Task LoadCommentsAsync()
+    private async Task LoadCommentsAsync(Tbl06Phylum selected)
     {
-        var comments = await _dataService.GetCommentsByPhylumIdAsync(PhylumSelected.PhylumId);
+        var comments = await _dataService.GetCommentsByPhylumIdAsync(selected.PhylumId);
         foreach (var item in comments)
             CommentItems.Add(item);
     }
@@ -327,7 +313,7 @@ public sealed class Tbl06PhylumDetailViewModel : ObservableObject
             model.Info = selected.InfoForDisplay;
             model.Memo = selected.MemoForDisplay;
 
-            return model == null ? null : new Tbl06PhylumsDocument(model);
+            return new Tbl06PhylumsDocument(model);
         }, suggestedFileName);
     }
 }

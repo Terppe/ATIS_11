@@ -7,7 +7,6 @@ using ATIS.Views.Report.Pdf.Tbl45Families;
 using ATIS.Views.Search.DetailPages;
 using ATIS.Views.Taxonomy;
 
-
 //    Tbl45FamilyDetailViewModel Skriptdatum:  18.08.2026  10:32    
 
 namespace ATIS.Views.Search.DetailViewModels;
@@ -671,7 +670,7 @@ public sealed class Tbl45FamilyDetailViewModel : ObservableObject
             model.Info = selected.InfoForDisplay;
             model.Memo = selected.MemoForDisplay;
 
-            return model == null ? null : new Tbl45FamiliesDocument(model);
+            return new Tbl45FamiliesDocument(model);
         }, suggestedFileName);
     }
 }

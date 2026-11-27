@@ -7,38 +7,18 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class TblFoodDetailViewModel : ObservableObject
 {
-    private readonly IDataService _dataService;
-
-    // -----------------------------
-    //  SELECTED Food
-    // -----------------------------
     public TblFood? FoodSelected { get; }
 
-    // -----------------------------
-    //  COMMANDS
-    // -----------------------------
     public IAsyncRelayCommand ExportPdfCommand { get; }
-
-    // ⭐ BackCommand
     public IRelayCommand BackCommand { get; }
 
-    // -----------------------------
-    //  CONSTRUCTOR
-    // -----------------------------
-    public TblFoodDetailViewModel(TblFood selectedFood, IDataService? dataService)
+    public TblFoodDetailViewModel(TblFood? selectedFood)
     {
         FoodSelected = selectedFood;
-        _dataService = dataService;
-
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
-
-        // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
 
-    // ---------------------------------------------------------
-    // BACK
-    // ---------------------------------------------------------
     private void ExecuteBack()
     {
         var frame = App.MainPageInstance?.NavFrame;
@@ -46,9 +26,6 @@ public sealed class TblFoodDetailViewModel : ObservableObject
             frame.GoBack();
     }
 
-    // -----------------------------              
-    //  PDF EXPORT
-    // -----------------------------
     private async Task ExportPdfAsync()
     {
         var selected = FoodSelected;
@@ -61,8 +38,7 @@ public sealed class TblFoodDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await TblFoodsDocumentDataSource.GetFoodDetailsAsync(selected.FoodId);
-            return model == null ? null : new TblFoodsDocument(model);
+            return new TblFoodsDocument(model);
         }, suggestedFileName);
     }
-
 }

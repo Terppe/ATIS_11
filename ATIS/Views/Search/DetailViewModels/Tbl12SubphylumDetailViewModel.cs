@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
@@ -13,20 +14,15 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
 {
-
     private readonly IDataService _dataService;
-
     // -----------------------------
     //  TITLE
     // -----------------------------
     public string Title => $"Subphylum: {SubphylumSelected?.SubphylumName}";
-
     // -----------------------------
     //  SELECTED Subphylum
     // -----------------------------
     public Tbl12Subphylum? SubphylumSelected { get; }
-
-
     // -----------------------------
     //  TAXONOMY OBJECTS
     // -----------------------------
@@ -36,9 +32,6 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -46,7 +39,6 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl06Phylum>> PhylumItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl12Subphylum>> SubphylumItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl18Superclass>> SuperclassItems { get; } = new();
-
     // -----------------------------
     //  REFERENCES
     // -----------------------------
@@ -54,30 +46,24 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
     public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
-
     // -----------------------------
     //  COMMENTS
     // -----------------------------
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = new();
-
     // -----------------------------
     //  COMMANDS
     // -----------------------------
     public IAsyncRelayCommand ExportPdfCommand { get; }
-
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
-    public Tbl12SubphylumDetailViewModel(Tbl12Subphylum selectedSubphylum, IDataService? dataService)
+    public Tbl12SubphylumDetailViewModel(Tbl12Subphylum? selectedSubphylum, IDataService dataService)
     {
         SubphylumSelected = selectedSubphylum;
-        _dataService = dataService;
-
+        _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
-
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
@@ -85,15 +71,14 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
     private bool _isInitializing;
     public async Task InitializeAsync()
     {
-        if (_isInitialized || _isInitializing) return;
+        if (SubphylumSelected is not { } selected || _isInitialized || _isInitializing) return;
         _isInitializing = true;
         try
         {
-            await LoadTaxonomy();
-            await LoadDirectChildrenAsync();
-            await LoadReferencesAsync();
-            await LoadCommentsAsync();
-
+            await LoadTaxonomy(selected);
+            await LoadDirectChildrenAsync(selected);
+            await LoadReferencesAsync(selected);
+            await LoadCommentsAsync(selected);
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
                 new ITranslatableTaxon?[] { SubphylumSelected, PhylumSelected }
@@ -102,7 +87,6 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 ReferenceSourceItems,
                 ReferenceAuthorItems,
                 CommentItems);
-
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -111,7 +95,6 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
             _isInitializing = false;
         }
     }
-
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
@@ -121,17 +104,14 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
-
     // -----------------------------
     //  BREADCRUMB
     // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
-
     private void BuildBreadcrumb()
     {
         Breadcrumb.Clear();
-
-        if (RegnumSelected != null)
+        if (RegnumSelected != null && IsVisibleTaxonName(RegnumSelected.RegnumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -140,8 +120,7 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 EntityId = RegnumSelected.RegnumId
             });
         }
-
-        if (PhylumSelected != null)
+        if (PhylumSelected != null && IsVisibleTaxonName(PhylumSelected.PhylumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -150,45 +129,27 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 EntityId = PhylumSelected.PhylumId
             });
         }
-
-        Breadcrumb.Add(new BreadcrumbItem
-        {
-            Label = SubphylumSelected.SubphylumName,
-            EntityType = "Subphylum",
-            EntityId = SubphylumSelected.SubphylumId
-        });
-
-        // <<< HIER: aktuellen Knoten entfernen
-        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
-        {
-            var x = Breadcrumb[i];
-            if (x.EntityType == "Subphylum" && x.EntityId == SubphylumSelected.SubphylumId)
-                Breadcrumb.RemoveAt(i);
-        }
     }
-
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
     {
+        var frame = App.MainPageInstance?.NavFrame
+            ?? throw new InvalidOperationException("Navigation frame is not available.");
         switch (item.EntityType)
         {
             case "Regnum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
-
             case "Phylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
                 break;
-
             case "Subphylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
                 break;
-
             case "Superclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
                 break;
         }
     }
-
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
@@ -198,39 +159,31 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         if (frame?.CanGoBack == true)
             frame.GoBack();
     }
-
-    private static bool IsVisibleTaxonName(string? name)
+    private static bool IsVisibleTaxonName([NotNullWhen(true)] string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
     }
-
     private static Thickness CreateHeaderMargin(int visibleIndex)
     {
         return new Thickness(8 + (visibleIndex * 8), 0, 0, 0);
     }
-
     // -----------------------------
     //  LOAD TAXONOMY
     // -----------------------------
-    private async Task LoadTaxonomy()
+    private async Task LoadTaxonomy(Tbl12Subphylum selected)
     {
         RegnumItems.Clear();
         PhylumItems.Clear();
         SubphylumItems.Clear();
-
         Tbl06Phylum? phylum = null;
         Tbl03Regnum? regnum = null;
-
         // technisch laden
-        if (SubphylumSelected.PhylumId != 0)
-            phylum = await _dataService.GetPhylumByIdAsync(SubphylumSelected.PhylumId);
-
-        if (phylum?.RegnumId != 0)
-            regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
-
+        if (selected?.PhylumId is int phylumId && phylumId != 0)
+            phylum = await _dataService.GetPhylumByIdAsync(phylumId);
+        if (phylum?.RegnumId is int regnumId && regnumId != 0)
+            regnum = await _dataService.GetRegnumByIdAsync(regnumId);
         // sichtbare Reihenfolge aufbauen
         var visibleIndex = 0;
-
         if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
             RegnumSelected = regnum;
@@ -241,7 +194,6 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         if (phylum != null && IsVisibleTaxonName(phylum.PhylumName))
         {
             PhylumSelected = phylum;
@@ -252,15 +204,13 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         SubphylumItems.Add(new TaxonomyLine<Tbl12Subphylum>
         {
-            Item = SubphylumSelected,
+            Item = selected,
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
     }
-
     // -----------------------------
     //  LOAD DIRECT CHILDREN (Superclass)
     // -----------------------------
@@ -270,23 +220,18 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async Task LoadDirectChildrenAsync()
+    private async Task LoadDirectChildrenAsync(Tbl12Subphylum selected)
     {
         SuperclassItems.Clear();
         HasDirectChildren = false;
-
-        var superclass = await _dataService.GetSuperclassesBySubphylumIdAsync(SubphylumSelected.SubphylumId);
-
+        var superclass = await _dataService.GetSuperclassesBySubphylumIdAsync(selected.SubphylumId);
         var visibleItems = superclass
             .Where(x => IsVisibleTaxonName(x.SuperclassName))
             .ToList();
-
         if (visibleItems.Count == 0)
             return;
-
         var parentLeft = SubphylumItems.Count > 0 ? SubphylumItems[0].HeaderMargin.Left : 8;
         var childMargin = new Thickness(parentLeft + 8, 0, 0, 0);
-
         foreach (var item in visibleItems)
         {
             SuperclassItems.Add(new TaxonomyLine<Tbl18Superclass>
@@ -296,48 +241,42 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
                 ShowAsHyperlink = false
             });
         }
-
         HasDirectChildren = true;
     }
-
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async Task LoadReferencesAsync()
+    private async Task LoadReferencesAsync(Tbl12Subphylum selected)
     {
         // -------------------------
         // EXPERT REFERENCES
         // -------------------------
-        var experts = await _dataService.GetExpertReferencesBySubphylumIdAsync(SubphylumSelected.SubphylumId);
+        var experts = await _dataService.GetExpertReferencesBySubphylumIdAsync(selected.SubphylumId);
         foreach (var item in experts)
             ReferenceExpertItems.Add(item);
-
         // -------------------------
         // SOURCE REFERENCES
         // -------------------------
-        var sources = await _dataService.GetSourceReferencesBySubphylumIdAsync(SubphylumSelected.SubphylumId);
+        var sources = await _dataService.GetSourceReferencesBySubphylumIdAsync(selected.SubphylumId);
         foreach (var item in sources)
             ReferenceSourceItems.Add(item);
-
         // -------------------------
         // AUTHOR REFERENCES
         // -------------------------
-        var authors = await _dataService.GetAuthorReferencesBySubphylumIdAsync(SubphylumSelected.SubphylumId);
+        var authors = await _dataService.GetAuthorReferencesBySubphylumIdAsync(selected.SubphylumId);
         foreach (var item in authors)
             ReferenceAuthorItems.Add(item);
     }
-
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async Task LoadCommentsAsync()
+    private async Task LoadCommentsAsync(Tbl12Subphylum selected)
     {
-        var comments = await _dataService.GetCommentsBySubphylumIdAsync(SubphylumSelected.SubphylumId);
+        var comments = await _dataService.GetCommentsBySubphylumIdAsync(selected.SubphylumId);
         foreach (var item in comments)
             CommentItems.Add(item);
     }
-
-    // -----------------------------              
+    // -----------------------------
     //  PDF EXPORT
     // -----------------------------
     private async Task ExportPdfAsync()
@@ -345,21 +284,16 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         var selected = SubphylumSelected;
         if (selected == null || selected.SubphylumId == 0)
             return;
-
         var name = PdfExportService.SanitizeFileNamePart(selected.SubphylumName);
         var suggestedFileName = $"Subphylum_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl12SubphylumsDocumentDataSource.GetSubphylumDetailsAsync(selected.SubphylumId);
-
             if (model is null)
                 return null;
-
             model.Info = selected.InfoForDisplay;
             model.Memo = selected.MemoForDisplay;
-
-            return model == null ? null : new Tbl12SubphylumsDocument(model);
+            return new Tbl12SubphylumsDocument(model);
         }, suggestedFileName);
     }
 }

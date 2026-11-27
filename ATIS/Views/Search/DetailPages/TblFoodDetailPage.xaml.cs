@@ -12,7 +12,7 @@ public sealed partial class TblFoodDetailPage : Page
     {
         _dataService = App.GetService<IDataService>();
         InitializeComponent();
-        ViewModel = new TblFoodDetailViewModel(default, _dataService);
+        ViewModel = new TblFoodDetailViewModel(default);
         DataContext = ViewModel;
     }
     public TblFoodDetailViewModel ViewModel { get; private set; }
@@ -32,8 +32,7 @@ public sealed partial class TblFoodDetailPage : Page
             _item = await _dataService.GetFoodByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Food {id} was not found.");
 
-            ViewModel = new TblFoodDetailViewModel(_item, _dataService);
-
+            ViewModel = new TblFoodDetailViewModel(_item);
             DataContext = _item;
             ExportPdfButton.IsEnabled = true;
         }

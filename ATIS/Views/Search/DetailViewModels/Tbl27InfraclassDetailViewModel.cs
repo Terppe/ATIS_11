@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
@@ -13,20 +14,15 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
 {
-
     private readonly IDataService _dataService;
-
     // -----------------------------
     //  TITLE
     // -----------------------------
     public string Title => $"Infraclass: {InfraclassSelected?.InfraclassName}";
-
     // -----------------------------
     //  SELECTED Infraclass
     // -----------------------------
     public Tbl27Infraclass? InfraclassSelected { get; }
-
-
     // -----------------------------
     //  TAXONOMY OBJECTS
     // -----------------------------
@@ -40,13 +36,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
     // -----------------------------
     //  Breadcrumb
     // -----------------------------
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubclassCommand { get; }
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraclassCommand { get; }
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -58,7 +47,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
     public ObservableCollection<TaxonomyLine<Tbl24Subclass>> SubclassItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl27Infraclass>> InfraclassItems { get; } = new();
     public ObservableCollection<TaxonomyLine<Tbl30Legio>> LegioItems { get; } = new();
-
     // -----------------------------
     //  REFERENCES
     // -----------------------------
@@ -66,30 +54,24 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
     public ObservableCollection<Tbl90Reference> ReferenceSourceItems { get; } = new();
     public ObservableCollection<Tbl90Reference> ReferenceAuthorItems { get; } = new();
     public ObservableCollection<BreadcrumbItem> Breadcrumb { get; set; } = new();
-
     // -----------------------------
     //  COMMENTS
     // -----------------------------
     public ObservableCollection<Tbl93Comment> CommentItems { get; } = new();
-
     // -----------------------------
     //  COMMANDS
     // -----------------------------
     public IAsyncRelayCommand ExportPdfCommand { get; }
-
     // ⭐ NEU: BackCommand
     public IRelayCommand BackCommand { get; }
-
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
-    public Tbl27InfraclassDetailViewModel(Tbl27Infraclass selectedInfraclass, IDataService? dataService)
+    public Tbl27InfraclassDetailViewModel(Tbl27Infraclass? selectedInfraclass, IDataService dataService)
     {
         InfraclassSelected = selectedInfraclass;
-        _dataService = dataService;
-
+        _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
-
         // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
@@ -97,15 +79,14 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
     private bool _isInitializing;
     public async Task InitializeAsync()
     {
-        if (_isInitialized || _isInitializing) return;
+        if (InfraclassSelected is not { } selected || _isInitialized || _isInitializing) return;
         _isInitializing = true;
         try
         {
-            await LoadTaxonomy();
-            await LoadDirectChildrenAsync();
-            await LoadReferencesAsync();
-            await LoadCommentsAsync();
-
+            await LoadTaxonomy(selected);
+            await LoadDirectChildrenAsync(selected);
+            await LoadReferencesAsync(selected);
+            await LoadCommentsAsync(selected);
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
                 new ITranslatableTaxon?[] { InfraclassSelected, SubclassSelected }
@@ -114,7 +95,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ReferenceSourceItems,
                 ReferenceAuthorItems,
                 CommentItems);
-
             BuildBreadcrumb();
             _isInitialized = true;
         }
@@ -123,7 +103,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
             _isInitializing = false;
         }
     }
-
     // -----------------------------
     //  ISLOADING PROPERTY
     // -----------------------------
@@ -133,17 +112,14 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
         get => _isLoading;
         set => SetProperty(ref _isLoading, value);
     }
-
     // -----------------------------
     //  BREADCRUMB
     // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
-
     private void BuildBreadcrumb()
     {
         Breadcrumb.Clear();
-
-        if (RegnumSelected != null)
+        if (RegnumSelected != null && IsVisibleTaxonName(RegnumSelected.RegnumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -152,8 +128,7 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 EntityId = RegnumSelected.RegnumId
             });
         }
-
-        if (PhylumSelected != null)
+        if (PhylumSelected != null && IsVisibleTaxonName(PhylumSelected.PhylumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -162,8 +137,7 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 EntityId = PhylumSelected.PhylumId
             });
         }
-
-        if (SubphylumSelected != null)
+        if (SubphylumSelected != null && IsVisibleTaxonName(SubphylumSelected.SubphylumName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -172,8 +146,7 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 EntityId = SubphylumSelected.SubphylumId
             });
         }
-
-        if (SuperclassSelected != null)
+        if (SuperclassSelected != null && IsVisibleTaxonName(SuperclassSelected.SuperclassName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -182,8 +155,7 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 EntityId = SuperclassSelected.SuperclassId
             });
         }
-
-        if (ClassSelected != null)
+        if (ClassSelected != null && IsVisibleTaxonName(ClassSelected.ClassName))
         {
             Breadcrumb.Add(new BreadcrumbItem
             {
@@ -192,10 +164,8 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 EntityId = ClassSelected.ClassId
             });
         }
-
-        if (SubclassSelected != null)
+        if (SubclassSelected != null && IsVisibleTaxonName(SubclassSelected.SubclassName))
         {
-
             Breadcrumb.Add(new BreadcrumbItem
             {
                 Label = SubclassSelected.SubclassName,
@@ -203,61 +173,39 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 EntityId = SubclassSelected.SubclassId
             });
         }
-
-        Breadcrumb.Add(new BreadcrumbItem
-        {
-            Label = InfraclassSelected.InfraclassName,
-            EntityType = "Infraclass",
-            EntityId = InfraclassSelected.InfraclassId
-        });
-
-        // <<< HIER: aktuellen Knoten entfernen
-        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
-        {
-            var x = Breadcrumb[i];
-            if (x.EntityType == "Infraclass" && x.EntityId == InfraclassSelected.InfraclassId)
-                Breadcrumb.RemoveAt(i);
-        }
     }
-
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
     {
+        var frame = App.MainPageInstance?.NavFrame
+            ?? throw new InvalidOperationException("Navigation frame is not available.");
         switch (item.EntityType)
         {
             case "Regnum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
-
             case "Phylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
                 break;
-
             case "Subphylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl12SubphylumDetailPage), item.EntityId);
                 break;
-
             case "Superclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl18SuperclassDetailPage), item.EntityId);
                 break;
-
             case "Class":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl21ClassDetailPage), item.EntityId);
                 break;
-
             case "Subclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl24SubclassDetailPage), item.EntityId);
                 break;
-
             case "Infraclass":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl27InfraclassDetailPage), item.EntityId);
                 break;
-
             case "Legio":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl30LegioDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl30LegioDetailPage), item.EntityId);
                 break;
         }
     }
-
     // ---------------------------------------------------------
     // BACK
     // ---------------------------------------------------------
@@ -267,21 +215,18 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
         if (frame?.CanGoBack == true)
             frame.GoBack();
     }
-
-    private static bool IsVisibleTaxonName(string? name)
+    private static bool IsVisibleTaxonName([NotNullWhen(true)] string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
     }
-
     private static Thickness CreateHeaderMargin(int visibleIndex)
     {
         return new Thickness(8 + (visibleIndex * 8), 0, 0, 0);
     }
-
     // -----------------------------
     //  LOAD TAXONOMY
     // -----------------------------
-    private async Task LoadTaxonomy()
+    private async Task LoadTaxonomy(Tbl27Infraclass selected)
     {
         RegnumItems.Clear();
         PhylumItems.Clear();
@@ -290,36 +235,27 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
         ClassItems.Clear();
         SubclassItems.Clear();
         InfraclassItems.Clear();
-
         Tbl24Subclass? subclass = null;
         Tbl21Class? classe = null;
         Tbl18Superclass? superclass = null;
         Tbl12Subphylum? subphylum = null;
         Tbl06Phylum? phylum = null;
         Tbl03Regnum? regnum = null;
-
         // technisch laden
-        if (InfraclassSelected.SubclassId != 0)
-            subclass = await _dataService.GetSubclassByIdAsync(InfraclassSelected.SubclassId);
-
-        if (subclass.ClassId != 0)
-            classe = await _dataService.GetClassByIdAsync(subclass.ClassId);
-
-        if (classe?.SuperclassId != 0)
-            superclass = await _dataService.GetSuperclassByIdAsync(classe.SuperclassId);
-
-        if (superclass?.SubphylumId != 0)
-            subphylum = await _dataService.GetSubphylumByIdAsync(superclass.SubphylumId);
-
-        if (subphylum?.PhylumId != 0)
-            phylum = await _dataService.GetPhylumByIdAsync(subphylum.PhylumId);
-
-        if (phylum?.RegnumId != 0)
-            regnum = await _dataService.GetRegnumByIdAsync(phylum.RegnumId);
-
+        if (selected?.SubclassId is int subclassId && subclassId != 0)
+            subclass = await _dataService.GetSubclassByIdAsync(subclassId);
+        if (subclass?.ClassId is int classId && classId != 0)
+            classe = await _dataService.GetClassByIdAsync(classId);
+        if (classe?.SuperclassId is int superclassId && superclassId != 0)
+            superclass = await _dataService.GetSuperclassByIdAsync(superclassId);
+        if (superclass?.SubphylumId is int subphylumId && subphylumId != 0)
+            subphylum = await _dataService.GetSubphylumByIdAsync(subphylumId);
+        if (subphylum?.PhylumId is int phylumId && phylumId != 0)
+            phylum = await _dataService.GetPhylumByIdAsync(phylumId);
+        if (phylum?.RegnumId is int regnumId && regnumId != 0)
+            regnum = await _dataService.GetRegnumByIdAsync(regnumId);
         // sichtbare Reihenfolge aufbauen
         int visibleIndex = 0;
-
         if (regnum != null && IsVisibleTaxonName(regnum.RegnumName))
         {
             RegnumSelected = regnum;
@@ -330,7 +266,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         if (phylum != null && IsVisibleTaxonName(phylum.PhylumName))
         {
             PhylumSelected = phylum;
@@ -341,7 +276,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         if (subphylum != null && IsVisibleTaxonName(subphylum.SubphylumName))
         {
             SubphylumSelected = subphylum;
@@ -352,7 +286,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         if (superclass != null && IsVisibleTaxonName(superclass.SuperclassName))
         {
             SuperclassSelected = superclass;
@@ -363,7 +296,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         if (classe != null && IsVisibleTaxonName(classe.ClassName))
         {
             ClassSelected = classe;
@@ -374,7 +306,6 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         if (subclass != null && IsVisibleTaxonName(subclass.SubclassName))
         {
             SubclassSelected = subclass;
@@ -385,15 +316,13 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = true
             });
         }
-
         InfraclassItems.Add(new TaxonomyLine<Tbl27Infraclass>
         {
-            Item = InfraclassSelected,
+            Item = selected,
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
     }
-
     // -----------------------------
     //  LOAD DIRECT CHILDREN (Legio)
     // -----------------------------
@@ -403,23 +332,18 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async Task LoadDirectChildrenAsync()
+    private async Task LoadDirectChildrenAsync(Tbl27Infraclass selected)
     {
         LegioItems.Clear();
         HasDirectChildren = false;
-
-        var legio = await _dataService.GetLegiosByInfraclassIdAsync(InfraclassSelected.InfraclassId);
-
+        var legio = await _dataService.GetLegiosByInfraclassIdAsync(selected.InfraclassId);
         var visibleItems = legio
             .Where(x => IsVisibleTaxonName(x.LegioName))
             .ToList();
-
         if (visibleItems.Count == 0)
             return;
-
         var parentLeft = InfraclassItems.Count > 0 ? InfraclassItems[0].HeaderMargin.Left : 8;
         var childMargin = new Thickness(parentLeft + 8, 0, 0, 0);
-
         foreach (var item in visibleItems)
         {
             LegioItems.Add(new TaxonomyLine<Tbl30Legio>
@@ -429,48 +353,42 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
                 ShowAsHyperlink = false
             });
         }
-
         HasDirectChildren = true;
     }
-
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async Task LoadReferencesAsync()
+    private async Task LoadReferencesAsync(Tbl27Infraclass selected)
     {
         // -------------------------
         // EXPERT REFERENCES
         // -------------------------
-        var experts = await _dataService.GetExpertReferencesByInfraclassIdAsync(InfraclassSelected.InfraclassId);
+        var experts = await _dataService.GetExpertReferencesByInfraclassIdAsync(selected.InfraclassId);
         foreach (var item in experts)
             ReferenceExpertItems.Add(item);
-
         // -------------------------
         // SOURCE REFERENCES
         // -------------------------
-        var sources = await _dataService.GetSourceReferencesByInfraclassIdAsync(InfraclassSelected.InfraclassId);
+        var sources = await _dataService.GetSourceReferencesByInfraclassIdAsync(selected.InfraclassId);
         foreach (var item in sources)
             ReferenceSourceItems.Add(item);
-
         // -------------------------
         // AUTHOR REFERENCES
         // -------------------------
-        var authors = await _dataService.GetAuthorReferencesByInfraclassIdAsync(InfraclassSelected.InfraclassId);
+        var authors = await _dataService.GetAuthorReferencesByInfraclassIdAsync(selected.InfraclassId);
         foreach (var item in authors)
             ReferenceAuthorItems.Add(item);
     }
-
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async Task LoadCommentsAsync()
+    private async Task LoadCommentsAsync(Tbl27Infraclass selected)
     {
-        var comments = await _dataService.GetCommentsByInfraclassIdAsync(InfraclassSelected.InfraclassId);
+        var comments = await _dataService.GetCommentsByInfraclassIdAsync(selected.InfraclassId);
         foreach (var item in comments)
             CommentItems.Add(item);
     }
-
-    // -----------------------------              
+    // -----------------------------
     //  PDF EXPORT
     // -----------------------------
     private async Task ExportPdfAsync()
@@ -478,21 +396,16 @@ public sealed class Tbl27InfraclassDetailViewModel : ObservableObject
         var selected = InfraclassSelected;
         if (selected == null || selected.InfraclassId == 0)
             return;
-
         var name = PdfExportService.SanitizeFileNamePart(selected.InfraclassName);
         var suggestedFileName = $"Infraclass_Detail_{name}_{DateTime.Now:yyyyMMdd_HHmmss}";
-
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await Tbl27InfraclassesDocumentDataSource.GetInfraclassDetailsAsync(selected.InfraclassId);
-
             if (model is null)
                 return null;
-
             model.Info = selected.InfoForDisplay;
             model.Memo = selected.MemoForDisplay;
-
-            return model == null ? null : new Tbl27InfraclassesDocument(model);
+            return new Tbl27InfraclassesDocument(model);
         }, suggestedFileName);
     }
 }

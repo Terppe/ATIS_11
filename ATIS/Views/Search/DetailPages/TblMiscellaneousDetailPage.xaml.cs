@@ -12,7 +12,7 @@ public sealed partial class TblMiscellaneousDetailPage : Page
     {
         _dataService = App.GetService<IDataService>();
         InitializeComponent();
-        ViewModel = new TblMiscellaneousDetailViewModel(default, _dataService);
+        ViewModel = new TblMiscellaneousDetailViewModel(default);
         DataContext = ViewModel;
         ViewModel.IsLoading = true;
     }
@@ -34,8 +34,7 @@ public sealed partial class TblMiscellaneousDetailPage : Page
                     ?? throw new KeyNotFoundException(
                         $"Miscellaneous {id} was not found.");
 
-            ViewModel = new TblMiscellaneousDetailViewModel(_item, _dataService);
-
+            ViewModel = new TblMiscellaneousDetailViewModel(_item);
             DataContext = _item;
             ExportPdfButton.IsEnabled = true;
         }

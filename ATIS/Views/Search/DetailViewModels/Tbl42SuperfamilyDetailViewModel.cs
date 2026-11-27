@@ -43,21 +43,7 @@ public sealed class Tbl42SuperfamilyDetailViewModel : ObservableObject
     public Tbl36Subordo? SubordoSelected { get; private set; }
     public Tbl39Infraordo? InfraordoSelected { get; private set; }
     public Tbl45Family? FamilySelected { get; private set; }
-    // -----------------------------
-    //  Breadcrumb
-    // -----------------------------
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToPhylumCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubphylumCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperclassCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToClassCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubclassCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraclassCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToLegioCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToOrdoCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSubordoCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToInfraordoCommand { get; }
-    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToSuperfamilyCommand { get; }
+
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -274,21 +260,6 @@ public sealed class Tbl42SuperfamilyDetailViewModel : ObservableObject
                 EntityId = InfraordoSelected.InfraordoId
             });
         }
-
-        //Breadcrumb.Add(new BreadcrumbItem
-        //{
-        //    Label = SuperfamilySelected.SuperfamilyName,
-        //    EntityType = "Superfamily",
-        //    EntityId = SuperfamilySelected.SuperfamilyId
-        //});
-
-        //// <<< HIER: aktuellen Knoten entfernen
-        //for (int i = Breadcrumb.Count - 1; i >= 0; i--)
-        //{
-        //    var x = Breadcrumb[i];
-        //    if (x.EntityType == "Superfamily" && x.EntityId == SuperfamilySelected.SuperfamilyId)
-        //        Breadcrumb.RemoveAt(i);
-        //}
     }
 
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
@@ -654,7 +625,7 @@ public sealed class Tbl42SuperfamilyDetailViewModel : ObservableObject
             model.Info = selected.InfoForDisplay;
             model.Memo = selected.MemoForDisplay;
 
-            return model == null ? null : new Tbl42SuperfamiliesDocument(model);
+            return new Tbl42SuperfamiliesDocument(model);
         }, suggestedFileName);
     }
 }

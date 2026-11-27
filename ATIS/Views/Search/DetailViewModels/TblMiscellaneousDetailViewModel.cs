@@ -7,54 +7,27 @@ namespace ATIS.Views.Search.DetailViewModels;
 
 public sealed class TblMiscellaneousDetailViewModel : ObservableObject
 {
-    private readonly IDataService _dataService;
-
-
-    // -----------------------------
-    //  TITLE
-    // -----------------------------
     public string Title => $"Miscellaneous: {MiscellaneousSelected?.MiscellaneousName}";
 
-    // -----------------------------
-    //  SELECTED Miscellaneous
-    // -----------------------------
     public TblMiscellaneous? MiscellaneousSelected { get; }
 
-    // -----------------------------
-    //  COMMANDS
-    // -----------------------------
     public IAsyncRelayCommand ExportPdfCommand { get; }
-
-    // ⭐ BackCommand
     public IRelayCommand BackCommand { get; }
 
-
-    // -----------------------------
-    //  CONSTRUCTOR
-    // -----------------------------
-    public TblMiscellaneousDetailViewModel(TblMiscellaneous selectedMiscellaneous, IDataService? dataService)
+    public TblMiscellaneousDetailViewModel(TblMiscellaneous? selectedMiscellaneous)
     {
         MiscellaneousSelected = selectedMiscellaneous;
-        _dataService = dataService;
-
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
-
-        // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
 
-    // ---------------------------------------------------------
-    // BACK
-    // ---------------------------------------------------------
     private void ExecuteBack()
     {
         var frame = App.MainPageInstance?.NavFrame;
         if (frame?.CanGoBack == true)
             frame.GoBack();
     }
-    // -----------------------------
-    //  ISLOADING PROPERTY
-    // -----------------------------
+
     private bool _isLoading;
     public bool IsLoading
     {
@@ -62,9 +35,6 @@ public sealed class TblMiscellaneousDetailViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
-    // -----------------------------              
-    //  PDF EXPORT
-    // -----------------------------
     private async Task ExportPdfAsync()
     {
         var selected = MiscellaneousSelected;
@@ -76,11 +46,10 @@ public sealed class TblMiscellaneousDetailViewModel : ObservableObject
 
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
-            var model = await TblMiscellaneoussesDocumentDataSource.GetMiscellaneousDetailsAsync(selected.MiscellaneousId);
-            return model == null ? null : new TblMiscellaneoussesDocument(model);
+            var model = await TblMiscellaneoussesDocumentDataSource.GetMiscellaneousDetailsAsync(
+                selected.MiscellaneousId);
+
+            return new TblMiscellaneoussesDocument(model);
         }, suggestedFileName);
     }
-
 }
-
-

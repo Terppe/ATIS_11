@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
@@ -26,10 +27,10 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     //  TAXONOMY OBJECTS
     // -----------------------------
     public Tbl06Phylum? PhylumSelected { get; private set; }
-    // -----------------------------
-    //  Breadcrumb
-    // -----------------------------
-    public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
+    //// -----------------------------
+    ////  Breadcrumb
+    //// -----------------------------
+    //public CommunityToolkit.Mvvm.Input.RelayCommand NavigateToRegnumCommand { get; }
     // -----------------------------
     //  COLLECTIONS FOR LISTVIEWS
     // -----------------------------
@@ -60,10 +61,10 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     //  CONSTRUCTOR
     // -----------------------------
-    public Tbl03RegnumDetailViewModel(Tbl03Regnum selectedRegnum, IDataService? dataService)
+    public Tbl03RegnumDetailViewModel(Tbl03Regnum? selectedRegnum, IDataService dataService)
     {
         RegnumSelected = selectedRegnum;
-        _dataService = dataService;
+        _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
 
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
 
@@ -74,14 +75,15 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     private bool _isInitializing;
     public async Task InitializeAsync()
     {
-        if (_isInitialized || _isInitializing) return;
+        if (RegnumSelected is not { } selected || _isInitialized || _isInitializing)
+            return;
         _isInitializing = true;
         try
         {
-            await LoadTaxonomy();
-            await LoadDirectChildrenAsync();
-            await LoadReferencesAsync();
-            await LoadCommentsAsync();
+            await LoadTaxonomy(selected);
+            await LoadDirectChildrenAsync(selected);
+            await LoadReferencesAsync(selected);
+            await LoadCommentsAsync(selected);
 
             await OfflineTranslationFields.TranslateAsync(
                 App.GetService<OfflineTranslationService>(),
@@ -92,7 +94,6 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
                 ReferenceAuthorItems,
                 CommentItems);
 
-            BuildBreadcrumb();
             _isInitialized = true;
         }
         finally
@@ -116,37 +117,19 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     public IEnumerable<BreadcrumbItem> BreadcrumbReversed => Breadcrumb.Reverse();
 
-    private void BuildBreadcrumb()
-    {
-        Breadcrumb.Clear();
-
-        Breadcrumb.Add(new BreadcrumbItem
-        {
-            Label = RegnumSelected.RegnumName,
-            EntityType = "Regnum",
-            EntityId = RegnumSelected.RegnumId
-        });
-
-
-        // <<< HIER: aktuellen Knoten entfernen
-        for (int i = Breadcrumb.Count - 1; i >= 0; i--)
-        {
-            var x = Breadcrumb[i];
-            if (x.EntityType == "Regnum" && x.EntityId == RegnumSelected.RegnumId)
-                Breadcrumb.RemoveAt(i);
-        }
-    }
-
     public async Task NavigateBreadcrumbAsync(BreadcrumbItem item)
     {
+        var frame = App.MainPageInstance?.NavFrame
+                    ?? throw new InvalidOperationException("Navigation frame is not available.");
+
         switch (item.EntityType)
         {
             case "Regnum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl03RegnumDetailPage), item.EntityId);
                 break;
 
             case "Phylum":
-                App.MainPageInstance.NavFrame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
+                frame.Navigate(typeof(Tbl06PhylumDetailPage), item.EntityId);
                 break;
 
         }
@@ -162,7 +145,7 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
             frame.GoBack();
     }
 
-    private static bool IsVisibleTaxonName(string? name)
+    private static bool IsVisibleTaxonName([NotNullWhen(true)] string? name)
     {
         return !string.IsNullOrWhiteSpace(name) && !name.Contains('#');
     }
@@ -175,7 +158,7 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD TAXONOMY
     // -----------------------------
-    private async Task LoadTaxonomy()
+    private async Task LoadTaxonomy(Tbl03Regnum selected)
     {
         RegnumItems.Clear();
         // sichtbare Reihenfolge aufbauen
@@ -184,7 +167,7 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
 
         RegnumItems.Add(new TaxonomyLine<Tbl03Regnum>
         {
-            Item = RegnumSelected,
+            Item = selected,
             HeaderMargin = CreateHeaderMargin(visibleIndex++),
             ShowAsHyperlink = false
         });
@@ -199,12 +182,12 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
         get => _hasDirectChildren;
         set => SetProperty(ref _hasDirectChildren, value);
     }
-    private async Task LoadDirectChildrenAsync()
+    private async Task LoadDirectChildrenAsync(Tbl03Regnum selected)
     {
         PhylumItems.Clear();
         HasDirectChildren = false;
 
-        var phylum = await _dataService.GetPhylumsByRegnumIdAsync(RegnumSelected.RegnumId);
+        var phylum = await _dataService.GetPhylumsByRegnumIdAsync(selected.RegnumId);
 
         var visibleItems = phylum
             .Where(x => IsVisibleTaxonName(x.PhylumName))
@@ -232,26 +215,26 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD REFERENCES
     // -----------------------------
-    private async Task LoadReferencesAsync()
+    private async Task LoadReferencesAsync(Tbl03Regnum selected)
     {
         // -------------------------
         // EXPERT REFERENCES
         // -------------------------
-        var experts = await _dataService.GetExpertReferencesByRegnumIdAsync(RegnumSelected.RegnumId);
+        var experts = await _dataService.GetExpertReferencesByRegnumIdAsync(selected.RegnumId);
         foreach (var item in experts)
             ReferenceExpertItems.Add(item);
 
         // -------------------------
         // SOURCE REFERENCES
         // -------------------------
-        var sources = await _dataService.GetSourceReferencesByRegnumIdAsync(RegnumSelected.RegnumId);
+        var sources = await _dataService.GetSourceReferencesByRegnumIdAsync(selected.RegnumId);
         foreach (var item in sources)
             ReferenceSourceItems.Add(item);
 
         // -------------------------
         // AUTHOR REFERENCES
         // -------------------------
-        var authors = await _dataService.GetAuthorReferencesByRegnumIdAsync(RegnumSelected.RegnumId);
+        var authors = await _dataService.GetAuthorReferencesByRegnumIdAsync(selected.RegnumId);
         foreach (var item in authors)
             ReferenceAuthorItems.Add(item);
     }
@@ -259,9 +242,9 @@ public sealed class Tbl03RegnumDetailViewModel : ObservableObject
     // -----------------------------
     //  LOAD COMMENTS
     // -----------------------------
-    private async Task LoadCommentsAsync()
+    private async Task LoadCommentsAsync(Tbl03Regnum selected)
     {
-        var comments = await _dataService.GetCommentsByRegnumIdAsync(RegnumSelected.RegnumId);
+        var comments = await _dataService.GetCommentsByRegnumIdAsync(selected.RegnumId);
         foreach (var item in comments)
             CommentItems.Add(item);
     }

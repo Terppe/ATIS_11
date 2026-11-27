@@ -6,38 +6,19 @@ using ATIS.Views.Report.Pdf.TblDisease;
 
 public sealed class TblDiseaseDetailViewModel : ObservableObject
 {
-    private readonly IDataService? _dataService;
-
-    // -----------------------------
-    //  SELECTED Disease
-    // -----------------------------
     public TblDisease? DiseaseSelected { get; }
 
-    // -----------------------------
-    //  COMMANDS
-    // -----------------------------
     public IAsyncRelayCommand ExportPdfCommand { get; }
-
-    // ⭐ BackCommand
     public IRelayCommand BackCommand { get; }
 
-    // -----------------------------
-    //  CONSTRUCTOR
-    // -----------------------------
-    public TblDiseaseDetailViewModel(TblDisease selectedDisease, IDataService? dataService)
+    public TblDiseaseDetailViewModel(TblDisease? selectedDisease)
     {
         DiseaseSelected = selectedDisease;
-        _dataService = dataService;
 
         ExportPdfCommand = new AsyncRelayCommand(ExportPdfAsync);
-
-        // ⭐ BackCommand initialisieren
         BackCommand = new CommunityToolkit.Mvvm.Input.RelayCommand(ExecuteBack);
     }
 
-    // ---------------------------------------------------------
-    // BACK
-    // ---------------------------------------------------------
     private void ExecuteBack()
     {
         var frame = App.MainPageInstance?.NavFrame;
@@ -45,9 +26,6 @@ public sealed class TblDiseaseDetailViewModel : ObservableObject
             frame.GoBack();
     }
 
-    // -----------------------------              
-    //  PDF EXPORT
-    // -----------------------------
     private async Task ExportPdfAsync()
     {
         var selected = DiseaseSelected;
@@ -60,10 +38,7 @@ public sealed class TblDiseaseDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await TblDiseasesDocumentDataSource.GetDiseaseDetailsAsync(selected.DiseaseId);
-            return model == null ? null : new TblDiseasesDocument(model);
+            return new TblDiseasesDocument(model);
         }, suggestedFileName);
     }
-
 }
-
-
