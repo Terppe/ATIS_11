@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net11.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <Compile Include="../../ATIS/Views/Report/PdfModels.cs" Link="PdfModels.cs" />
+    <Compile Include="../../ATIS/Views/Report/Pdf/Tbl63Infratribusses/Tbl63InfratribussesPdfModel.cs" Link="Tbl63InfratribussesPdfModel.cs" />
+    <Compile Include="../../ATIS/Views/Search/Pdf/Tbl63Infratribusses/Tbl63InfratribussesListDocumentDataSource.cs" Link="Tbl63InfratribussesListDocumentDataSource.cs" />
+  </ItemGroup>
+</Project>

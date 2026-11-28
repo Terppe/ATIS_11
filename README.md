@@ -1,5 +1,17 @@
 # ATIS - V7.8
 
+## Null-Verträge
+
+`GetCommentByIdAsync` und `SimpleLog.GetLogFileAsText` können bei fehlenden
+Daten `null` zurückgeben. `App.GetService<T>()` verlangt dagegen einen
+initialisierten Service-Provider und meldet andernfalls einen Fehler.
+Passwortoperationen benötigen eine nicht leere E-Mail im Benutzerprofil.
+Fehlende Detaildaten beim PDF-Export werden über den bestehenden Fehlerdialog
+gemeldet; Suchtreffer mit leerem Namen verursachen keinen Nullzugriff.
+Die PDF-Hierarchiemodelle erhalten fehlende Datenbankfelder als `null`; auch
+eine nicht gesetzte Gültigkeit bleibt erhalten. Die zugehörigen Prüfungen laufen
+mit `dotnet run --project Tests/PdfNullability/PdfNullabilityChecks.csproj`.
+
 ## Bereinigte App.config
 
 Die ungenutzten Schlüssel `HomeHeight`, `Language`, `ImapHost`, `ImapPort`,

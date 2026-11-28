@@ -7,35 +7,35 @@ public class PdfModels
 {
     public class Regnum
     {
-        public string RegnumName
+        public string? RegnumName
         {
             get; set;
         }
-        public string Subregnum
+        public string? Subregnum
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -43,15 +43,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -59,31 +59,31 @@ public class PdfModels
     }
     public class Phylum
     {
-        public string PhylumName
+        public string? PhylumName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -91,15 +91,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -111,31 +111,31 @@ public class PdfModels
     }
     public class Subphylum
     {
-        public string SubphylumName
+        public string? SubphylumName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -143,15 +143,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -159,31 +159,31 @@ public class PdfModels
     }
     public class Superclass
     {
-        public string SuperclassName
+        public string? SuperclassName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -191,15 +191,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -207,31 +207,31 @@ public class PdfModels
     }
     public class Class
     {
-        public string ClassName
+        public string? ClassName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -239,15 +239,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -255,31 +255,31 @@ public class PdfModels
     }
     public class Subclass
     {
-        public string SubclassName
+        public string? SubclassName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -287,15 +287,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -303,31 +303,31 @@ public class PdfModels
     }
     public class Infraclass
     {
-        public string InfraclassName
+        public string? InfraclassName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -335,15 +335,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -351,31 +351,31 @@ public class PdfModels
     }
     public class Legio
     {
-        public string LegioName
+        public string? LegioName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -383,15 +383,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -399,31 +399,31 @@ public class PdfModels
     }
     public class Ordo
     {
-        public string OrdoName
+        public string? OrdoName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -431,15 +431,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -447,31 +447,31 @@ public class PdfModels
     }
     public class Subordo
     {
-        public string SubordoName
+        public string? SubordoName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -479,15 +479,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -495,31 +495,31 @@ public class PdfModels
     }
     public class Infraordo
     {
-        public string InfraordoName
+        public string? InfraordoName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -527,15 +527,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -543,31 +543,31 @@ public class PdfModels
     }
     public class Superfamily
     {
-        public string SuperfamilyName
+        public string? SuperfamilyName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -575,15 +575,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -591,31 +591,31 @@ public class PdfModels
     }
     public class Family
     {
-        public string FamilyName
+        public string? FamilyName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -623,15 +623,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -639,31 +639,31 @@ public class PdfModels
     }
     public class Subfamily
     {
-        public string SubfamilyName
+        public string? SubfamilyName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -671,15 +671,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -687,31 +687,31 @@ public class PdfModels
     }
     public class Infrafamily
     {
-        public string InfrafamilyName
+        public string? InfrafamilyName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -719,15 +719,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -735,31 +735,31 @@ public class PdfModels
     }
     public class Supertribus
     {
-        public string SupertribusName
+        public string? SupertribusName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -767,15 +767,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -783,31 +783,31 @@ public class PdfModels
     }
     public class Tribus
     {
-        public string TribusName
+        public string? TribusName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
@@ -815,15 +815,15 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -831,44 +831,44 @@ public class PdfModels
     }
     public class Subtribus
     {
-        public string SubtribusName
+        public string? SubtribusName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
         public bool? Valid { get; set; }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -876,44 +876,44 @@ public class PdfModels
     }
     public class Infratribus
     {
-        public string InfratribusName
+        public string? InfratribusName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
         public bool? Valid { get; set; }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -921,44 +921,44 @@ public class PdfModels
     }
     public class Genus
     {
-        public string GenusName
+        public string? GenusName
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string EngName
+        public string? EngName
         {
             get; set;
         }
-        public string GerName
+        public string? GerName
         {
             get; set;
         }
-        public string FraName
+        public string? FraName
         {
             get; set;
         }
-        public string PorName
+        public string? PorName
         {
             get; set;
         }
         public bool? Valid { get; set; }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -1144,7 +1144,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string Writer
+        public string? Writer
         {
             get; set;
         }
@@ -1152,7 +1152,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string Updater
+        public string? Updater
         {
             get; set;
         }
@@ -1160,31 +1160,31 @@ public class PdfModels
         {
             get; set;
         }
-        public string MemoHusbandry
+        public string? MemoHusbandry
         {
             get; set;
         }
-        public string MemoBreeding
+        public string? MemoBreeding
         {
             get; set;
         }
-        public string MemoBuilt
+        public string? MemoBuilt
         {
             get; set;
         }
-        public string MemoColor
+        public string? MemoColor
         {
             get; set;
         }
-        public string MemoSozial
+        public string? MemoSozial
         {
             get; set;
         }
-        public string MemoDomorphism
+        public string? MemoDomorphism
         {
             get; set;
         }
-        public string MemoSpecial
+        public string? MemoSpecial
         {
             get; set;
         }
@@ -1198,19 +1198,19 @@ public class PdfModels
             get; set;
         }
 
-        public string MemoReproduction
+        public string? MemoReproduction
         {
             get; set;
         }
-        public string MemoCulture
+        public string? MemoCulture
         {
             get; set;
         }
-        public string MemoGlobal
+        public string? MemoGlobal
         {
             get; set;
         }
-        public string Creature
+        public string? Creature
         {
             get; set;
         }
@@ -1223,7 +1223,7 @@ public class PdfModels
             get; set;
         }
         [ForeignKey("SpeciesgroupId")]
-        public virtual Tbl68Speciesgroup Tbl68Speciesgroups
+        public virtual Tbl68Speciesgroup? Tbl68Speciesgroups
         {
             get; set;
         }
@@ -1248,7 +1248,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string NameName
+        public string? NameName
         {
             get; set;
         }
@@ -1264,19 +1264,19 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Language
+        public string? Language
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Writer
+        public string? Writer
         {
             get; set;
         }
@@ -1284,7 +1284,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string Updater
+        public string? Updater
         {
             get; set;
         }
@@ -1292,14 +1292,14 @@ public class PdfModels
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("SpeciesId")]
-        public virtual Tbl75Species Tbl75Speciesses
+        public virtual Tbl75Species? Tbl75Speciesses
         {
             get; set;
         }
@@ -1325,7 +1325,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
@@ -1333,11 +1333,11 @@ public class PdfModels
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Writer
+        public string? Writer
         {
             get; set;
         }
@@ -1345,7 +1345,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string Updater
+        public string? Updater
         {
             get; set;
         }
@@ -1353,19 +1353,19 @@ public class PdfModels
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
-        public byte[] ImageData
+        public byte[]? ImageData
         {
             get; set;
         }
-        public string ImageMimeType
+        public string? ImageMimeType
         {
             get; set;
         }
-        public byte[] Filestream
+        public byte[]? Filestream
         {
             get; set;
         }
@@ -1376,7 +1376,7 @@ public class PdfModels
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("SpeciesId")]
-        public virtual Tbl75Species Tbl75Speciesses
+        public virtual Tbl75Species? Tbl75Speciesses
         {
             get; set;
         }
@@ -1390,7 +1390,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string SynonymName
+        public string? SynonymName
         {
             get; set;
         }
@@ -1406,23 +1406,23 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Writer
+        public string? Writer
         {
             get; set;
         }
@@ -1430,7 +1430,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string Updater
+        public string? Updater
         {
             get; set;
         }
@@ -1438,14 +1438,14 @@ public class PdfModels
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
         //   public byte[] RowVersion { get; set; }
 
         [ForeignKey("SpeciesId")]
-        public virtual Tbl75Species Tbl75Speciesses
+        public virtual Tbl75Species? Tbl75Speciesses
         {
             get; set;
         }
@@ -1458,11 +1458,11 @@ public class PdfModels
         {
             get; set;
         }
-        public string Address
+        public string? Address
         {
             get; set;
         }
-        public string Country
+        public string? Country
         {
             get; set;
         }
@@ -1514,23 +1514,23 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string Author
+        public string? Author
         {
             get; set;
         }
-        public string AuthorYear
+        public string? AuthorYear
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Writer
+        public string? Writer
         {
             get; set;
         }
@@ -1538,7 +1538,7 @@ public class PdfModels
         {
             get; set;
         }
-        public string Updater
+        public string? Updater
         {
             get; set;
         }
@@ -1546,22 +1546,22 @@ public class PdfModels
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
-        public string Continent
+        public string? Continent
         {
             get; set;
         }
-        public string Http
+        public string? Http
         {
             get; set;
         }
         //     public byte[] RowVersion { get; set; }
 
         [ForeignKey("SpeciesId")]
-        public virtual Tbl75Species Tbl75Speciesses
+        public virtual Tbl75Species? Tbl75Speciesses
         {
             get; set;
         }
@@ -1570,7 +1570,7 @@ public class PdfModels
 
     public class Food
     {
-        public string FoodName
+        public string? FoodName
         {
             get; set;
         }
@@ -1578,35 +1578,35 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string ShortInfo
+        public string? ShortInfo
         {
             get; set;
         }
-        public string FoodVolume
+        public string? FoodVolume
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
-        public string Kind
+        public string? Kind
         {
             get; set;
         }
-        public string Help
+        public string? Help
         {
             get; set;
         }
-        public string Symptom
+        public string? Symptom
         {
             get; set;
         }
@@ -1615,7 +1615,7 @@ public class PdfModels
 
     public class Disease
     {
-        public string DiseaseName
+        public string? DiseaseName
         {
             get; set;
         }
@@ -1623,31 +1623,31 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string ShortInfo
+        public string? ShortInfo
         {
             get; set;
         }
-        public string Symptom
+        public string? Symptom
         {
             get; set;
         }
-        public string Reason
+        public string? Reason
         {
             get; set;
         }
-        public string Therapie
+        public string? Therapie
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
@@ -1656,7 +1656,7 @@ public class PdfModels
 
     public class Miscellaneous
     {
-        public string MiscellaneousName
+        public string? MiscellaneousName
         {
             get; set;
         }
@@ -1664,27 +1664,27 @@ public class PdfModels
         {
             get; set;
         }
-        public string ValidYear
+        public string? ValidYear
         {
             get; set;
         }
-        public string ShortInfo
+        public string? ShortInfo
         {
             get; set;
         }
-        public string Thema1
+        public string? Thema1
         {
             get; set;
         }
-        public string Thema2
+        public string? Thema2
         {
             get; set;
         }
-        public string Info
+        public string? Info
         {
             get; set;
         }
-        public string Memo
+        public string? Memo
         {
             get; set;
         }
