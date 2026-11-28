@@ -1,5 +1,14 @@
 # ATIS - V7.8
 
+## Null-Verträge
+
+`GetCommentByIdAsync` und `SimpleLog.GetLogFileAsText` können bei fehlenden
+Daten `null` zurückgeben. `App.GetService<T>()` verlangt dagegen einen
+initialisierten Service-Provider und meldet andernfalls einen Fehler.
+Passwortoperationen benötigen eine nicht leere E-Mail im Benutzerprofil.
+Fehlende Detaildaten beim PDF-Export werden über den bestehenden Fehlerdialog
+gemeldet; Suchtreffer mit leerem Namen verursachen keinen Nullzugriff.
+
 ## Bereinigte App.config
 
 Die ungenutzten Schlüssel `HomeHeight`, `Language`, `ImapHost`, `ImapPort`,

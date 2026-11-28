@@ -886,7 +886,7 @@ public sealed partial class MainPage : Page
                         var text = viewItem.Content?.ToString();
                         if (text != null && text.ToLowerInvariant().Contains(searchText))
                         {
-                            resultList.Add(viewItem.Content.ToString());
+                            resultList.Add(text);
                         }
                     }
                 }
