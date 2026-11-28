@@ -2138,7 +2138,7 @@ public class ReportViewModel : ObservableObject
 
     public class Continent
     {
-        public string Name
+        public string? Name
         {
             get; set;
         }
@@ -2208,7 +2208,7 @@ public class ReportViewModel : ObservableObject
 
     public class Language
     {
-        public string Name
+        public string? Name
         {
             get; set;
         }
@@ -2263,12 +2263,12 @@ public class ReportViewModel : ObservableObject
 
     public class MimeType
     {
-        public string Name
+        public string? Name
         {
             get; set;
         }
     }
-    public static RelayCommand OpenCommand
+    public static RelayCommand? OpenCommand
     {
         get; set;
     }
