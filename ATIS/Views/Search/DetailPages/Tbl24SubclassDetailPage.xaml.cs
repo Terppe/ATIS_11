@@ -14,7 +14,7 @@ public sealed partial class Tbl24SubclassDetailPage : Page
     public Tbl24SubclassDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl24SubclassDetailViewModel(default, _dataService);

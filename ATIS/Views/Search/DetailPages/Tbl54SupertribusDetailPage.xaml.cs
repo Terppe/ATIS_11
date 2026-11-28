@@ -14,7 +14,7 @@ public sealed partial class Tbl54SupertribusDetailPage : Page
     public Tbl54SupertribusDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl54SupertribusDetailViewModel(default, _dataService);

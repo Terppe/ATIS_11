@@ -14,10 +14,7 @@ public sealed partial class Tbl03RegnumDetailPage : Page
     public Tbl03RegnumDetailPage()
     {
         InitializeComponent();
-        if (App.Services != null)
-        {
-            _dataService = App.Services.GetRequiredService<IDataService>();
-        }
+        _dataService = App.GetService<IDataService>();
 
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 

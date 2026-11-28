@@ -56,7 +56,6 @@ namespace ATIS.Views.Main;
 
 public sealed partial class MainPage : Page
 {
-    private AppWindow _appWindow;
     public MainViewModel ViewModel { get; set; }
     private string _currentPageTag { get; set; }
     private IDialogService dialog;
@@ -93,10 +92,6 @@ public sealed partial class MainPage : Page
     {
         App.MainWindow?.ExtendsContentIntoTitleBar = true;
         App.MainWindow?.SetTitleBar(AppTitleBar);
-
-        var hWnd = WindowNative.GetWindowHandle(App.MainWindow);
-        var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-        _appWindow = AppWindow.GetFromWindowId(windowId);
 
         await ViewModel.InitAsync();
 
@@ -867,7 +862,7 @@ public sealed partial class MainPage : Page
         }
     }
 
-    public static List<string?> CheckItems(List<object> sourceList, List<string?> resultList, string searchText)
+    public static List<string> CheckItems(List<object> sourceList, List<string> resultList, string searchText)
     {
         foreach (var item in sourceList)
         {
@@ -888,8 +883,8 @@ public sealed partial class MainPage : Page
                     else
                     {
                         // this is the first level item
-                        var str = viewItem.Content.ToString()!.ToLowerInvariant();
-                        if (str.Contains(searchText))
+                        var text = viewItem.Content?.ToString();
+                        if (text != null && text.ToLowerInvariant().Contains(searchText))
                         {
                             resultList.Add(viewItem.Content.ToString());
                         }

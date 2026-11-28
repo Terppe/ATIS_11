@@ -38,6 +38,8 @@ public sealed class TblFoodDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await TblFoodsDocumentDataSource.GetFoodDetailsAsync(selected.FoodId);
+            if (model == null)
+                throw new InvalidOperationException("The food was not found for PDF export.");
             return new TblFoodsDocument(model);
         }, suggestedFileName);
     }

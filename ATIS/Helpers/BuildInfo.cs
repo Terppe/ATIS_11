@@ -10,11 +10,6 @@ public static class BuildInfo
         {
             var info = typeof(App).Assembly
                 .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "unknown";
-#if DEBUG
-            var type = "Debug";
-#else
-            var type = info.EndsWith("-local", StringComparison.OrdinalIgnoreCase) ? "Release lokal" : "CI";
-#endif
             return $"v{info}";
         }
     }

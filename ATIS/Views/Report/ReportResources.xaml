@@ -96,8 +96,8 @@
 
 
     <!--
-    Report.Listviews
-    Header
+        Report.Listviews
+        Header
     -->
 
     <DataTemplate x:Key="ReportItemTemplateHeaderRegnum">

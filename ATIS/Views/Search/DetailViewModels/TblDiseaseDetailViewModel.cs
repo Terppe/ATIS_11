@@ -38,6 +38,8 @@ public sealed class TblDiseaseDetailViewModel : ObservableObject
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
             var model = await TblDiseasesDocumentDataSource.GetDiseaseDetailsAsync(selected.DiseaseId);
+            if (model == null)
+                throw new InvalidOperationException("The disease was not found for PDF export.");
             return new TblDiseasesDocument(model);
         }, suggestedFileName);
     }

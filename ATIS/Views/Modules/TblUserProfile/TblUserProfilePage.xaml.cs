@@ -1,6 +1,4 @@
-﻿
-using System.ComponentModel;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Media;
 
@@ -39,7 +37,6 @@ public sealed partial class TblUserProfilePage : Page
         await Task.Delay(50);
         SearchBox.Focus(FocusState.Programmatic);
 
-        PrepareCurrentTabState();
         UpdateTabButtonStates();
         UpdateDetailContentVisibility();
     }
@@ -55,27 +52,6 @@ public sealed partial class TblUserProfilePage : Page
     // ---------------------------------------------------------                   
     // TABSTATE, STYLE, CLICK-EVENTS
     // ---------------------------------------------------------                   
-    private void PrepareCurrentTabState()
-    {
-        switch (Vm.SelectedDetailTabIndex)
-        {
-            //case 1:
-            //    Vm.UserProfileCommentViewModel.PrepareViewState();
-            //    break;
-
-            //case 2:
-            //    Vm.UserProfileReferenceViewModel.PrepareViewState();
-            //    break;
-
-            //case 4:
-            //    Vm.NULLViewModel.NULLCommentViewModel.PrepareViewState();
-            //    break;
-
-            //case 5:
-            //    Vm.NULLViewModel.NULLReferenceViewModel.PrepareViewState();
-            //    break;
-        }
-    }
     private void SetTabButtonStyle(Button button, Border underline, bool isSelected)
     {
         button.Background = new SolidColorBrush(Colors.Transparent);
@@ -90,7 +66,6 @@ public sealed partial class TblUserProfilePage : Page
         {
             Vm.SelectedDetailTabIndex = index;
 
-            PrepareCurrentTabState();
             UpdateTabButtonStates();
             UpdateDetailContentVisibility();
         }

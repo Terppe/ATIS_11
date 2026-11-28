@@ -388,34 +388,34 @@ public class Tbl87Geographic : ObservableObject, IDataService.IAuditable, IHiera
     // ---------------------------------------------------------
     // ERROR PROPERTIES
     // ---------------------------------------------------------
-    [NotMapped] public string AddressError => _errors.ContainsKey(nameof(Address)) ? string.Join("; ", _errors[nameof(Address)]) : null;
+    [NotMapped] public string? AddressError => _errors.ContainsKey(nameof(Address)) ? string.Join("; ", _errors[nameof(Address)]) : null;
     [NotMapped] public bool HasAddressError => _errors.ContainsKey(nameof(Address));
 
-    [NotMapped] public string CountryError => _errors.ContainsKey(nameof(Country)) ? string.Join("; ", _errors[nameof(Country)]) : null;
+    [NotMapped] public string? CountryError => _errors.ContainsKey(nameof(Country)) ? string.Join("; ", _errors[nameof(Country)]) : null;
     [NotMapped] public bool HasCountryError => _errors.ContainsKey(nameof(Country));
 
-    [NotMapped] public string ContinentError => _errors.ContainsKey(nameof(Continent)) ? string.Join("; ", _errors[nameof(Continent)]) : null;
+    [NotMapped] public string? ContinentError => _errors.ContainsKey(nameof(Continent)) ? string.Join("; ", _errors[nameof(Continent)]) : null;
     [NotMapped] public bool HasContinentError => _errors.ContainsKey(nameof(Continent));
 
-    [NotMapped] public string JurisdictionError => _errors.ContainsKey(nameof(Jurisdiction)) ? string.Join("; ", _errors[nameof(Jurisdiction)]) : null;
+    [NotMapped] public string? JurisdictionError => _errors.ContainsKey(nameof(Jurisdiction)) ? string.Join("; ", _errors[nameof(Jurisdiction)]) : null;
     [NotMapped] public bool HasJurisdictionError => _errors.ContainsKey(nameof(Jurisdiction));
 
-    [NotMapped] public string ValidYearError => _errors.ContainsKey(nameof(ValidYear)) ? string.Join("; ", _errors[nameof(ValidYear)]) : null;
+    [NotMapped] public string? ValidYearError => _errors.ContainsKey(nameof(ValidYear)) ? string.Join("; ", _errors[nameof(ValidYear)]) : null;
     [NotMapped] public bool HasValidYearError => _errors.ContainsKey(nameof(ValidYear));
 
-    [NotMapped] public string AuthorError => _errors.ContainsKey(nameof(Author)) ? string.Join("; ", _errors[nameof(Author)]) : null;
+    [NotMapped] public string? AuthorError => _errors.ContainsKey(nameof(Author)) ? string.Join("; ", _errors[nameof(Author)]) : null;
     [NotMapped] public bool HasAuthorError => _errors.ContainsKey(nameof(Author));
 
-    [NotMapped] public string AuthorYearError => _errors.ContainsKey(nameof(AuthorYear)) ? string.Join("; ", _errors[nameof(AuthorYear)]) : null;
+    [NotMapped] public string? AuthorYearError => _errors.ContainsKey(nameof(AuthorYear)) ? string.Join("; ", _errors[nameof(AuthorYear)]) : null;
     [NotMapped] public bool HasAuthorYearError => _errors.ContainsKey(nameof(AuthorYear));
 
-    [NotMapped] public string InfoError => _errors.ContainsKey(nameof(Info)) ? string.Join("; ", _errors[nameof(Info)]) : null;
+    [NotMapped] public string? InfoError => _errors.ContainsKey(nameof(Info)) ? string.Join("; ", _errors[nameof(Info)]) : null;
     [NotMapped] public bool HasInfoError => _errors.ContainsKey(nameof(Info));
 
-    [NotMapped] public string MemoError => _errors.ContainsKey(nameof(Memo)) ? string.Join("; ", _errors[nameof(Memo)]) : null;
+    [NotMapped] public string? MemoError => _errors.ContainsKey(nameof(Memo)) ? string.Join("; ", _errors[nameof(Memo)]) : null;
     [NotMapped] public bool HasMemoError => _errors.ContainsKey(nameof(Memo));
 
-    [NotMapped] public string HttpError => _errors.ContainsKey(nameof(Http)) ? string.Join("; ", _errors[nameof(Http)]) : null;
+    [NotMapped] public string? HttpError => _errors.ContainsKey(nameof(Http)) ? string.Join("; ", _errors[nameof(Http)]) : null;
     [NotMapped] public bool HasHttpError => _errors.ContainsKey(nameof(Http));
 
     // ---------------------------------------------------------

@@ -27,7 +27,7 @@ public class ReportViewModel : ObservableObject
         _dialogService = dialogService;
     }
 
-    public ReportViewModel()
+    public ReportViewModel() : this(App.GetService<IDataService>(), App.GetService<IDialogService>())
     {
     }
 
@@ -1112,7 +1112,7 @@ public class ReportViewModel : ObservableObject
 
         if (RegnumSelected == null && RegnumsCollection.Count != 0)
         {
-            RegnumSelected = RegnumItems.FirstOrDefault();
+            RegnumSelected = RegnumItems.First();
         }
     }
     private void RefreshPhylumItems()
@@ -1124,7 +1124,7 @@ public class ReportViewModel : ObservableObject
         }
         if (PhylumSelected == null && PhylumsCollection.Count != 0)
         {
-            PhylumSelected = PhylumItems.FirstOrDefault();
+            PhylumSelected = PhylumItems.First();
         }
     }
     private void RefreshSubphylumItems()
@@ -1569,7 +1569,7 @@ public class ReportViewModel : ObservableObject
 
     #region "Collections"
 
-    private ObservableCollection<Tbl03Regnum> _tbl03RegnumsAllList;
+    private ObservableCollection<Tbl03Regnum> _tbl03RegnumsAllList = [];
     public ObservableCollection<Tbl03Regnum> Tbl03RegnumsAllList
     {
         get => _tbl03RegnumsAllList;
@@ -1601,7 +1601,7 @@ public class ReportViewModel : ObservableObject
     } = null!;
 
     public ObservableCollection<Tbl03Regnum> RegnumsCollection { get; set; } = null!;
-    public ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; }
+    public ObservableCollection<Tbl06Phylum> PhylumsCollection { get; set; } = [];
     public ObservableCollection<Tbl12Subphylum> SubphylumsCollection { get; set; } = null!;
     public ObservableCollection<Tbl18Superclass> SuperclassesCollection { get; set; } = null!;
     public ObservableCollection<Tbl21Class> ClassesCollection { get; set; } = null!;
@@ -1801,7 +1801,7 @@ public class ReportViewModel : ObservableObject
     }
 
 
-    private ObservableCollection<Tbl60Subtribus> _tbl60SubtribussesAllList;
+    private ObservableCollection<Tbl60Subtribus> _tbl60SubtribussesAllList = [];
     public ObservableCollection<Tbl60Subtribus> Tbl60SubtribussesAllList
     {
         get => _tbl60SubtribussesAllList;
@@ -1810,7 +1810,7 @@ public class ReportViewModel : ObservableObject
             _tbl60SubtribussesAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl57Tribus> _tbl57TribussesAllList;
+    private ObservableCollection<Tbl57Tribus> _tbl57TribussesAllList = [];
     public ObservableCollection<Tbl57Tribus> Tbl57TribussesAllList
     {
         get => _tbl57TribussesAllList;
@@ -1820,7 +1820,7 @@ public class ReportViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl54Supertribus> _tbl54SupertribussesAllList;
+    private ObservableCollection<Tbl54Supertribus> _tbl54SupertribussesAllList = [];
     public ObservableCollection<Tbl54Supertribus> Tbl54SupertribussesAllList
     {
         get => _tbl54SupertribussesAllList;
@@ -1829,7 +1829,7 @@ public class ReportViewModel : ObservableObject
             _tbl54SupertribussesAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl51Infrafamily> _tbl51InfrafamiliesAllList;
+    private ObservableCollection<Tbl51Infrafamily> _tbl51InfrafamiliesAllList = [];
     public ObservableCollection<Tbl51Infrafamily> Tbl51InfrafamiliesAllList
     {
         get => _tbl51InfrafamiliesAllList;
@@ -1839,7 +1839,7 @@ public class ReportViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl45Family> _tbl45FamiliesAllList;
+    private ObservableCollection<Tbl45Family> _tbl45FamiliesAllList = [];
     public ObservableCollection<Tbl45Family> Tbl45FamiliesAllList
     {
         get => _tbl45FamiliesAllList;
@@ -1879,7 +1879,7 @@ public class ReportViewModel : ObservableObject
     }
 
 
-    private ObservableCollection<Tbl42Superfamily> _tbl42SuperfamiliesAllList;
+    private ObservableCollection<Tbl42Superfamily> _tbl42SuperfamiliesAllList = [];
     public ObservableCollection<Tbl42Superfamily> Tbl42SuperfamiliesAllList
     {
         get => _tbl42SuperfamiliesAllList;
@@ -1889,7 +1889,7 @@ public class ReportViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl39Infraordo> _tbl39InfraordosAllList;
+    private ObservableCollection<Tbl39Infraordo> _tbl39InfraordosAllList = [];
     public ObservableCollection<Tbl39Infraordo> Tbl39InfraordosAllList
     {
         get => _tbl39InfraordosAllList;
@@ -1899,7 +1899,7 @@ public class ReportViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl36Subordo> _tbl36SubordosAllList;
+    private ObservableCollection<Tbl36Subordo> _tbl36SubordosAllList = [];
     public ObservableCollection<Tbl36Subordo> Tbl36SubordosAllList
     {
         get => _tbl36SubordosAllList;
@@ -1908,7 +1908,7 @@ public class ReportViewModel : ObservableObject
             _tbl36SubordosAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl33Ordo> _tbl33OrdosAllList;
+    private ObservableCollection<Tbl33Ordo> _tbl33OrdosAllList = [];
     public ObservableCollection<Tbl33Ordo> Tbl33OrdosAllList
     {
         get => _tbl33OrdosAllList;
@@ -1927,7 +1927,7 @@ public class ReportViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Tbl27Infraclass> _tbl27InfraclassesAllList;
+    private ObservableCollection<Tbl27Infraclass> _tbl27InfraclassesAllList = [];
     public ObservableCollection<Tbl27Infraclass> Tbl27InfraclassesAllList
     {
         get => _tbl27InfraclassesAllList;
@@ -1936,7 +1936,7 @@ public class ReportViewModel : ObservableObject
             _tbl27InfraclassesAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl24Subclass> _tbl24SubclassesAllList;
+    private ObservableCollection<Tbl24Subclass> _tbl24SubclassesAllList = [];
     public ObservableCollection<Tbl24Subclass> Tbl24SubclassesAllList
     {
         get => _tbl24SubclassesAllList;
@@ -1945,7 +1945,7 @@ public class ReportViewModel : ObservableObject
             _tbl24SubclassesAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl21Class> _tbl21ClassesAllList;
+    private ObservableCollection<Tbl21Class> _tbl21ClassesAllList = [];
     public ObservableCollection<Tbl21Class> Tbl21ClassesAllList
     {
         get => _tbl21ClassesAllList;
@@ -1954,7 +1954,7 @@ public class ReportViewModel : ObservableObject
             _tbl21ClassesAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl18Superclass> _tbl18SuperclassesAllList;
+    private ObservableCollection<Tbl18Superclass> _tbl18SuperclassesAllList = [];
 
     public ObservableCollection<Tbl18Superclass> Tbl18SuperclassesAllList
     {
@@ -1965,17 +1965,8 @@ public class ReportViewModel : ObservableObject
             OnPropertyChanged();
         }
     }
-    //private ObservableCollection<Tbl15Subdivision> _tbl15SubdivisionsAllList = null!;
-    //public ObservableCollection<Tbl15Subdivision> Tbl15SubdivisionsAllList
-    //{
-    //    get => _tbl15SubdivisionsAllList;
-    //    set
-    //    {
-    //        _tbl15SubdivisionsAllList = value; OnPropertyChanged();
-    //    }
-    //}
 
-    private ObservableCollection<Tbl12Subphylum> _tbl12SubphylumsAllList;
+    private ObservableCollection<Tbl12Subphylum> _tbl12SubphylumsAllList = [];
     public ObservableCollection<Tbl12Subphylum> Tbl12SubphylumsAllList
     {
         get => _tbl12SubphylumsAllList;
@@ -1984,7 +1975,7 @@ public class ReportViewModel : ObservableObject
             _tbl12SubphylumsAllList = value; OnPropertyChanged();
         }
     }
-    private ObservableCollection<Tbl06Phylum> _tbl06PhylumsAllList;
+    private ObservableCollection<Tbl06Phylum> _tbl06PhylumsAllList = [];
     public ObservableCollection<Tbl06Phylum> Tbl06PhylumsAllList
     {
         get => _tbl06PhylumsAllList;
@@ -1993,15 +1984,6 @@ public class ReportViewModel : ObservableObject
             _tbl06PhylumsAllList = value; OnPropertyChanged();
         }
     }
-    //private ObservableCollection<Tbl09Division> _tbl09DivisionsAllList = null!;
-    //public ObservableCollection<Tbl09Division> Tbl09DivisionsAllList
-    //{
-    //    get => _tbl09DivisionsAllList;
-    //    set
-    //    {
-    //        _tbl09DivisionsAllList = value; OnPropertyChanged();
-    //    }
-    //}
 
     private ObservableCollection<Tbl90RefSource> _tbl90SourcesAllList = null!;
 

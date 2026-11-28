@@ -98,7 +98,7 @@ public class AuthenticationService : IAuthenticationService
 
         var message = new MimeMessage();
         message.From.Add(new MailboxAddress("ATIS Support", sender));
-        message.To.Add(MailboxAddress.Parse(user.Email));
+        message.To.Add(MailboxAddress.Parse(GetRequiredEmail(user)));
         message.Subject = "Reset Password";
         message.Body = new TextPart("plain")
         {
@@ -139,7 +139,7 @@ public class AuthenticationService : IAuthenticationService
             throw new InvalidOperationException("Code is invalid or expired.");
         }
 
-        user.Password = Crypt.CalculateHash(newPassword, user.Email);
+        user.Password = Crypt.CalculateHash(newPassword, GetRequiredEmail(user));
         user.PasswordResetToken = null;
         user.PasswordResetTokenExpiryUtc = null;
 
@@ -148,12 +148,14 @@ public class AuthenticationService : IAuthenticationService
     private static string HashToken(string token)
         => Convert.ToBase64String(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
 
-    //private static string GeneratePassword(int length)
-    //{
-    //    const string chars = "abcdefghijklmnopqrstuvwxyz@#$&ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    //    var random = new Random();
-    //    return new string(Enumerable.Range(0, length).Select(_ => chars[random.Next(chars.Length)]).ToArray());
-    //}
+    private static string GetRequiredEmail(TblUserProfile user)
+    {
+        var email = user.Email;
+        if (string.IsNullOrWhiteSpace(email))
+            throw new InvalidOperationException("The user profile has no email address.");
+
+        return email;
+    }
     public async Task ChangePasswordAsync(int userProfileId, string currentPassword, string newPassword, CancellationToken ct = default)
     {
         if (userProfileId <= 0)
@@ -174,10 +176,10 @@ public class AuthenticationService : IAuthenticationService
         if (user is null)
             throw new InvalidOperationException("User not found.");
 
-        if (user.Password != Crypt.CalculateHash(currentPassword, user.Email))
+        if (user.Password != Crypt.CalculateHash(currentPassword, GetRequiredEmail(user)))
             throw new InvalidOperationException("Current password is incorrect.");
 
-        user.Password = Crypt.CalculateHash(newPassword, user.Email);
+        user.Password = Crypt.CalculateHash(newPassword, GetRequiredEmail(user));
 
         await _dataService.UpsertUserProfileAsync(user);
     }
@@ -204,10 +206,10 @@ public class AuthenticationService : IAuthenticationService
         if (user is null)
             throw new InvalidOperationException("User not found.");
 
-        if (user.Password != Crypt.CalculateHash(currentPassword, user.Email))
+        if (user.Password != Crypt.CalculateHash(currentPassword, GetRequiredEmail(user)))
             throw new InvalidOperationException("Current password is incorrect.");
 
-        user.Password = Crypt.CalculateHash(newPassword, user.Email);
+        user.Password = Crypt.CalculateHash(newPassword, GetRequiredEmail(user));
 
         await _dataService.UpsertUserProfileAsync(user);
     }
@@ -227,7 +229,8 @@ public class AuthenticationService : IAuthenticationService
         if (user is null)
             throw new InvalidOperationException("User not found.");
 
-        var hash = Crypt.CalculateHash(currentPassword, user.Email);
+        var hash = Crypt.CalculateHash(currentPassword, GetRequiredEmail(user));
+
         if (user.Password != hash)
             throw new InvalidOperationException("Current password is incorrect.");
 

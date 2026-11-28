@@ -175,7 +175,7 @@ public partial class AdminAreaViewModel : BaseBossListViewModel<Models.TblUserPr
         }
         catch (Exception ex)
         {
-            // optional: Dialog zeigen
+            System.Diagnostics.Debug.WriteLine(ex);
             await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
         }
     }

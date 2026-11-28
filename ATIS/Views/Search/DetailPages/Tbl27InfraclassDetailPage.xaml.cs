@@ -20,7 +20,7 @@ public sealed partial class Tbl27InfraclassDetailPage : Page
     public Tbl27InfraclassDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl27InfraclassDetailViewModel(default, _dataService);

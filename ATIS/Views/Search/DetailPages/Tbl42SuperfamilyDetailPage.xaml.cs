@@ -14,7 +14,7 @@ public sealed partial class Tbl42SuperfamilyDetailPage : Page
     public Tbl42SuperfamilyDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl42SuperfamilyDetailViewModel(default, _dataService);

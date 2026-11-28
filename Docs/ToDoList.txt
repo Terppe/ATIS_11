@@ -1501,3 +1501,5 @@ DetailVm             await OfflineTranslationFields.TranslateAsync(
 		größere Änderung in DetailViewModels Family und Superfamily steht bevor. Alle DetailVms
 ----------------------------------------
 27.11.2026 14:30 Uhr Alle DetailVMs geändert.
+----------------------------------------
+28.11.2026 09:30 Uhr 

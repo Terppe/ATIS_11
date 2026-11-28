@@ -1,8 +1,5 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Models;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 
 namespace ATIS.Views.Report.DataTemplateHeaderTaxoNomen;
 
@@ -13,7 +10,7 @@ public sealed partial class TemplateTbl75SpeciesSynonymsControl : UserControl
     public TemplateTbl75SpeciesSynonymsControl()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         Loaded += OnLoaded;
     }
 

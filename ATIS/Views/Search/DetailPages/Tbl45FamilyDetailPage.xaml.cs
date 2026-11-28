@@ -14,7 +14,7 @@ public sealed partial class Tbl45FamilyDetailPage : Page
     public Tbl45FamilyDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl45FamilyDetailViewModel(default, _dataService);

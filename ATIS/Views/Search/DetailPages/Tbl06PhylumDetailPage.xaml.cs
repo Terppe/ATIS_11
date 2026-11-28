@@ -14,7 +14,7 @@ public sealed partial class Tbl06PhylumDetailPage : Page
     public Tbl06PhylumDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl06PhylumDetailViewModel(default, _dataService);

@@ -14,7 +14,7 @@ public sealed partial class Tbl36SubordoDetailPage : Page
     public Tbl36SubordoDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl36SubordoDetailViewModel(default, _dataService);

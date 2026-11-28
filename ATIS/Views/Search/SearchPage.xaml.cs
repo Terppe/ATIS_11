@@ -1,6 +1,7 @@
 ﻿using ATIS.Interfaces;
 using ATIS.Models;
 using ATIS.Services;
+using ATIS.Views.Main;
 using ATIS.Views.Search.DetailPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.UI;
@@ -37,8 +38,8 @@ public sealed partial class SearchPage : Page
     public SearchPageViewModel ViewModel { get; }
     public SearchPage()
     {
-        var factory = App.Services.GetRequiredService<IDbContextFactory<AtisDbContext>>();
-        var user = App.Services.GetRequiredService<IUserService>();
+        var factory = App.GetService<IDbContextFactory<AtisDbContext>>();
+        var user = App.GetService<IUserService>();
         _dataService = new DataService(factory, user);
         ViewModel = new SearchPageViewModel(_dataService);
         InitializeComponent();
@@ -198,113 +199,116 @@ public sealed partial class SearchPage : Page
     {
         if (e.AddedItems.Count == 0)
             return;
+        var mainPage = App.MainPageInstance
+                       ?? throw new InvalidOperationException("The main page is not available for navigation.");
+
         var item = e.AddedItems[0];
         switch (item)
         {
             case Tbl03Regnum regnum:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl03RegnumDetailPage), regnum.RegnumId);
                 break;
             case Tbl06Phylum phylum:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl06PhylumDetailPage), phylum.PhylumId);
                 break;
             case Tbl12Subphylum subphylum:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl12SubphylumDetailPage), subphylum.SubphylumId);
                 break;
             case Tbl18Superclass superclass:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl18SuperclassDetailPage), superclass.SuperclassId);
                 break;
             case Tbl21Class class1:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl21ClassDetailPage), class1.ClassId);
                 break;
             case Tbl24Subclass subclass:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl24SubclassDetailPage), subclass.SubclassId);
                 break;
             case Tbl27Infraclass infraclass:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl27InfraclassDetailPage), infraclass.InfraclassId);
                 break;
             case Tbl30Legio legio:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl30LegioDetailPage), legio.LegioId);
                 break;
             case Tbl33Ordo ordo:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl33OrdoDetailPage), ordo.OrdoId);
                 break;
             case Tbl36Subordo subordo:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl36SubordoDetailPage), subordo.SubordoId);
                 break;
             case Tbl39Infraordo infraordo:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl39InfraordoDetailPage), infraordo.InfraordoId);
                 break;
             case Tbl42Superfamily superfamily:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl42SuperfamilyDetailPage), superfamily.SuperfamilyId);
                 break;
             case Tbl45Family family:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl45FamilyDetailPage), family.FamilyId);
                 break;
             case Tbl48Subfamily subfamily:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl48SubfamilyDetailPage), subfamily.SubfamilyId);
                 break;
             case Tbl51Infrafamily infrafamily:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl51InfrafamilyDetailPage), infrafamily.InfrafamilyId);
                 break;
             case Tbl54Supertribus supertribus:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl54SupertribusDetailPage), supertribus.SupertribusId);
                 break;
             case Tbl57Tribus tribus:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl57TribusDetailPage), tribus.TribusId);
                 break;
             case Tbl60Subtribus subtribus:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl60SubtribusDetailPage), subtribus.SubtribusId);
                 break;
             case Tbl63Infratribus infratribus:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl63InfratribusDetailPage), infratribus.InfratribusId);
                 break;
             case Tbl66Genus genus:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(Tbl66GenusDetailPage), genus.GenusId);
                 break;
             case Tbl75Species species:
                 if (species.IsSubspecies)
                 {
-                    App.MainPageInstance.NavFrame.Navigate(
+                    mainPage.NavFrame.Navigate(
                         typeof(Tbl75SpeciesSubDetailPage), species.SpeciesId);
                 }
                 else
                 {
-                    App.MainPageInstance.NavFrame.Navigate(
+                    mainPage.NavFrame.Navigate(
                         typeof(Tbl75SpeciesDetailPage), species.SpeciesId);
                 }
                 break;
             case TblDisease disease:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(TblDiseaseDetailPage), disease.DiseaseId);
                 break;
 
             case TblFood food:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(TblFoodDetailPage), food.FoodId);
                 break;
 
             case TblMiscellaneous miscellaneous:
-                App.MainPageInstance.NavFrame.Navigate(
+                mainPage.NavFrame.Navigate(
                     typeof(TblMiscellaneousDetailPage), miscellaneous.MiscellaneousId);
                 break;
         }

@@ -740,7 +740,7 @@ public partial class App : Application
         {
             return Services.GetRequiredService<T>();
         }
-        return null;
+        throw new InvalidOperationException("The service provider has not been initialized.");
     }
 
     // ---------------------------------------------------------

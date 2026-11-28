@@ -118,13 +118,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.RegnumId == id || e.RegnumName.StartsWith(search))
+                .Where(e => e.RegnumId == id || (e.RegnumName != null && e.RegnumName.StartsWith(search)))
                 .OrderBy(e => e.RegnumName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.RegnumName.StartsWith(search))
+            .Where(e => e.RegnumName != null && e.RegnumName.StartsWith(search))
             .OrderBy(e => e.RegnumName)
             .ToListAsync();
     }
@@ -270,7 +270,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -288,8 +288,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -307,11 +307,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -365,13 +365,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.PhylumId == id || e.PhylumName.StartsWith(search))
+                .Where(e => e.PhylumId == id || (e.PhylumName != null && e.PhylumName.StartsWith(search)))
                 .OrderBy(e => e.PhylumName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.PhylumName.StartsWith(search))
+            .Where(e => e.PhylumName != null && e.PhylumName.StartsWith(search))
             .OrderBy(e => e.PhylumName)
             .ToListAsync();
     }
@@ -534,7 +534,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -552,8 +552,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -571,11 +571,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -629,13 +629,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SubphylumId == id || e.SubphylumName.StartsWith(search))
+                .Where(e => e.SubphylumId == id || (e.SubphylumName != null && e.SubphylumName.StartsWith(search)))
                 .OrderBy(e => e.SubphylumName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SubphylumName.StartsWith(search))
+            .Where(e => e.SubphylumName != null && e.SubphylumName.StartsWith(search))
             .OrderBy(e => e.SubphylumName)
             .ToListAsync();
     }
@@ -798,7 +798,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -816,8 +816,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -835,11 +835,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -893,13 +893,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SuperclassId == id || e.SuperclassName.StartsWith(search))
+                .Where(e => e.SuperclassId == id || (e.SuperclassName != null && e.SuperclassName.StartsWith(search)))
                 .OrderBy(e => e.SuperclassName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SuperclassName.StartsWith(search))
+            .Where(e => e.SuperclassName != null && e.SuperclassName.StartsWith(search))
             .OrderBy(e => e.SuperclassName)
             .ToListAsync();
     }
@@ -1062,7 +1062,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1080,8 +1080,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1099,11 +1099,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1157,13 +1157,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.ClassId == id || e.ClassName.StartsWith(search))
+                .Where(e => e.ClassId == id || (e.ClassName != null && e.ClassName.StartsWith(search)))
                 .OrderBy(e => e.ClassName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.ClassName.StartsWith(search))
+            .Where(e => e.ClassName != null && e.ClassName.StartsWith(search))
             .OrderBy(e => e.ClassName)
             .ToListAsync();
     }
@@ -1326,7 +1326,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1344,9 +1344,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
-            .AsNoTracking()
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear).AsNoTracking()
             .ToListAsync();
     }
 
@@ -1363,11 +1362,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1421,13 +1420,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SubclassId == id || e.SubclassName.StartsWith(search))
+                .Where(e => e.SubclassId == id || (e.SubclassName != null && e.SubclassName.StartsWith(search)))
                 .OrderBy(e => e.SubclassName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SubclassName.StartsWith(search))
+            .Where(e => e.SubclassName != null && e.SubclassName.StartsWith(search))
             .OrderBy(e => e.SubclassName)
             .ToListAsync();
     }
@@ -1590,7 +1589,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1608,8 +1607,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1627,11 +1626,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1685,13 +1684,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.InfraclassId == id || e.InfraclassName.StartsWith(search))
+                .Where(e => e.InfraclassId == id || (e.InfraclassName != null && e.InfraclassName.StartsWith(search)))
                 .OrderBy(e => e.InfraclassName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.InfraclassName.StartsWith(search))
+            .Where(e => e.InfraclassName != null && e.InfraclassName.StartsWith(search))
             .OrderBy(e => e.InfraclassName)
             .ToListAsync();
     }
@@ -1854,7 +1853,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1872,8 +1871,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1891,11 +1890,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -1949,13 +1948,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.LegioId == id || e.LegioName.StartsWith(search))
+                .Where(e => e.LegioId == id || (e.LegioName != null && e.LegioName.StartsWith(search)))
                 .OrderBy(e => e.LegioName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.LegioName.StartsWith(search))
+            .Where(e => e.LegioName != null && e.LegioName.StartsWith(search))
             .OrderBy(e => e.LegioName)
             .ToListAsync();
     }
@@ -2118,7 +2117,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2136,8 +2135,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2155,11 +2154,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2213,13 +2212,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.OrdoId == id || e.OrdoName.StartsWith(search))
+                .Where(e => e.OrdoId == id || (e.OrdoName != null && e.OrdoName.StartsWith(search)))
                 .OrderBy(e => e.OrdoName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.OrdoName.StartsWith(search))
+            .Where(e => e.OrdoName != null && e.OrdoName.StartsWith(search))
             .OrderBy(e => e.OrdoName)
             .ToListAsync();
     }
@@ -2383,6 +2382,7 @@ public partial class DataService : ObservableObject, IDataService
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
             .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2400,8 +2400,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2419,11 +2419,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2477,13 +2477,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SubordoId == id || e.SubordoName.StartsWith(search))
+                .Where(e => e.SubordoId == id || (e.SubordoName != null && e.SubordoName.StartsWith(search)))
                 .OrderBy(e => e.SubordoName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SubordoName.StartsWith(search))
+            .Where(e => e.SubordoName != null && e.SubordoName.StartsWith(search))
             .OrderBy(e => e.SubordoName)
             .ToListAsync();
     }
@@ -2645,7 +2645,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2663,8 +2663,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2682,11 +2682,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2740,13 +2740,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.InfraordoId == id || e.InfraordoName.StartsWith(search))
+                .Where(e => e.InfraordoId == id || (e.InfraordoName != null && e.InfraordoName.StartsWith(search)))
                 .OrderBy(e => e.InfraordoName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.InfraordoName.StartsWith(search))
+            .Where(e => e.InfraordoName != null && e.InfraordoName.StartsWith(search))
             .OrderBy(e => e.InfraordoName)
             .ToListAsync();
     }
@@ -2909,7 +2909,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -2927,9 +2927,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
-            .AsNoTracking()
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear).AsNoTracking()
             .ToListAsync();
     }
 
@@ -2946,11 +2945,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3004,13 +3003,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SuperfamilyId == id || e.SuperfamilyName.StartsWith(search))
+                .Where(e => e.SuperfamilyId == id || (e.SuperfamilyName != null && e.SuperfamilyName.StartsWith(search)))
                 .OrderBy(e => e.SuperfamilyName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SuperfamilyName.StartsWith(search))
+            .Where(e => e.SuperfamilyName != null && e.SuperfamilyName.StartsWith(search))
             .OrderBy(e => e.SuperfamilyName)
             .ToListAsync();
     }
@@ -3173,7 +3172,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3191,8 +3190,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3210,11 +3209,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3268,13 +3267,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.FamilyId == id || e.FamilyName.StartsWith(search))
+                .Where(e => e.FamilyId == id || (e.FamilyName != null && e.FamilyName.StartsWith(search)))
                 .OrderBy(e => e.FamilyName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.FamilyName.StartsWith(search))
+            .Where(e => e.FamilyName != null && e.FamilyName.StartsWith(search))
             .OrderBy(e => e.FamilyName)
             .ToListAsync();
     }
@@ -3437,7 +3436,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3455,8 +3454,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3474,11 +3473,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3532,13 +3531,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SubfamilyId == id || e.SubfamilyName.StartsWith(search))
+                .Where(e => e.SubfamilyId == id || (e.SubfamilyName != null && e.SubfamilyName.StartsWith(search)))
                 .OrderBy(e => e.SubfamilyName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SubfamilyName.StartsWith(search))
+            .Where(e => e.SubfamilyName != null && e.SubfamilyName.StartsWith(search))
             .OrderBy(e => e.SubfamilyName)
             .ToListAsync();
     }
@@ -3701,7 +3700,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3719,8 +3718,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3738,11 +3737,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3796,13 +3795,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.InfrafamilyId == id || e.InfrafamilyName.StartsWith(search))
+                .Where(e => e.InfrafamilyId == id || (e.InfrafamilyName != null && e.InfrafamilyName.StartsWith(search)))
                 .OrderBy(e => e.InfrafamilyName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.InfrafamilyName.StartsWith(search))
+            .Where(e => e.InfrafamilyName != null && e.InfrafamilyName.StartsWith(search))
             .OrderBy(e => e.InfrafamilyName)
             .ToListAsync();
     }
@@ -3965,7 +3964,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -3983,8 +3982,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4002,11 +4001,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4061,13 +4060,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SupertribusId == id || e.SupertribusName.StartsWith(search))
+                .Where(e => e.SupertribusId == id || (e.SupertribusName != null && e.SupertribusName.StartsWith(search)))
                 .OrderBy(e => e.SupertribusName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SupertribusName.StartsWith(search))
+            .Where(e => e.SupertribusName != null && e.SupertribusName.StartsWith(search))
             .OrderBy(e => e.SupertribusName)
             .ToListAsync();
     }
@@ -4230,7 +4229,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4248,8 +4247,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4267,11 +4266,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4325,13 +4324,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.TribusId == id || e.TribusName.StartsWith(search))
+                .Where(e => e.TribusId == id || (e.TribusName != null && e.TribusName.StartsWith(search)))
                 .OrderBy(e => e.TribusName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.TribusName.StartsWith(search))
+            .Where(e => e.TribusName != null && e.TribusName.StartsWith(search))
             .OrderBy(e => e.TribusName)
             .ToListAsync();
     }
@@ -4494,7 +4493,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4512,8 +4511,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4531,11 +4530,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4589,13 +4588,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SubtribusId == id || e.SubtribusName.StartsWith(search))
+                .Where(e => e.SubtribusId == id || (e.SubtribusName != null && e.SubtribusName.StartsWith(search)))
                 .OrderBy(e => e.SubtribusName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SubtribusName.StartsWith(search))
+            .Where(e => e.SubtribusName != null && e.SubtribusName.StartsWith(search))
             .OrderBy(e => e.SubtribusName)
             .ToListAsync();
     }
@@ -4758,7 +4757,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4776,8 +4775,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4795,11 +4794,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -4853,13 +4852,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.InfratribusId == id || e.InfratribusName.StartsWith(search))
+                .Where(e => e.InfratribusId == id || (e.InfratribusName != null && e.InfratribusName.StartsWith(search)))
                 .OrderBy(e => e.InfratribusName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.InfratribusName.StartsWith(search))
+            .Where(e => e.InfratribusName != null && e.InfratribusName.StartsWith(search))
             .OrderBy(e => e.InfratribusName)
             .ToListAsync();
     }
@@ -5024,7 +5023,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5042,8 +5041,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5061,11 +5060,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5120,13 +5119,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.GenusId == id || e.GenusName.StartsWith(search))
+                .Where(e => e.GenusId == id || (e.GenusName != null && e.GenusName.StartsWith(search)))
                 .OrderBy(e => e.GenusName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.GenusName.StartsWith(search))
+            .Where(e => e.GenusName != null && e.GenusName.StartsWith(search))
             .OrderBy(e => e.GenusName)
             .ToListAsync();
     }
@@ -5289,7 +5288,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5307,8 +5306,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5326,11 +5325,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5383,13 +5382,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SpeciesgroupId == id || e.SpeciesgroupName.StartsWith(search))
+                .Where(e => e.SpeciesgroupId == id || (e.SpeciesgroupName != null && e.SpeciesgroupName.StartsWith(search)))
                 .OrderBy(e => e.SpeciesgroupName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SpeciesgroupName.StartsWith(search))
+            .Where(e => e.SpeciesgroupName != null && e.SpeciesgroupName.StartsWith(search))
             .OrderBy(e => e.SpeciesgroupName)
             .ToListAsync();
     }
@@ -5528,13 +5527,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SpeciesId == id || e.SpeciesName.StartsWith(search))
+                .Where(e => e.SpeciesId == id || (e.SpeciesName != null && e.SpeciesName.StartsWith(search)))
                 .OrderBy(e => e.SpeciesName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SpeciesName.StartsWith(search))
+            .Where(e => e.SpeciesName != null && e.SpeciesName.StartsWith(search))
             .OrderBy(e => e.SpeciesName)
             .ToListAsync();
     }
@@ -5825,7 +5824,7 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefExpertId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue)
-            .OrderBy(x => x.Tbl90RefExperts.RefExpertName)
+            .OrderBy(x => x.Tbl90RefExperts == null ? null : x.Tbl90RefExperts.RefExpertName)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5843,8 +5842,8 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefSourceId.HasValue &&
                         !x.RefAuthorId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefSources.RefSourceName)
-            .ThenBy(x => x.Tbl90RefSources.SourceYear)
+            .OrderBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.RefSourceName)
+            .ThenBy(x => x.Tbl90RefSources == null ? null : x.Tbl90RefSources.SourceYear)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5862,11 +5861,11 @@ public partial class DataService : ObservableObject, IDataService
                         x.RefAuthorId.HasValue &&
                         !x.RefSourceId.HasValue &&
                         !x.RefExpertId.HasValue)
-            .OrderBy(x => x.Tbl90RefAuthors.RefAuthorName)
-            .ThenBy(x => x.Tbl90RefAuthors.ArticelTitle)
-            .ThenBy(x => x.Tbl90RefAuthors.BookName)
-            .ThenBy(x => x.Tbl90RefAuthors.Page1)
-            .ThenBy(x => x.Tbl90RefAuthors.Publisher)
+            .OrderBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.RefAuthorName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.ArticelTitle)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.BookName)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Page1)
+            .ThenBy(x => x.Tbl90RefAuthors == null ? null : x.Tbl90RefAuthors.Publisher)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -5921,13 +5920,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.NameId == id || e.NameName.StartsWith(search))
+                .Where(e => e.NameId == id || (e.NameName != null && e.NameName.StartsWith(search)))
                 .OrderBy(e => e.NameName)
                 .ToListAsync();
         }
 
         var result = await query
-            .Where(e => e.NameName.StartsWith(search))
+            .Where(e => e.NameName != null && e.NameName.StartsWith(search))
             .OrderBy(e => e.NameName)
             .ToListAsync();
 
@@ -6258,13 +6257,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.SynonymId == id || e.SynonymName.StartsWith(search))
+                .Where(e => e.SynonymId == id || (e.SynonymName != null && e.SynonymName.StartsWith(search)))
                 .OrderBy(e => e.SynonymName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.SynonymName.StartsWith(search))
+            .Where(e => e.SynonymName != null && e.SynonymName.StartsWith(search))
             .OrderBy(e => e.SynonymName)
             .ToListAsync();
     }
@@ -6923,13 +6922,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.RefAuthorId == id || e.RefAuthorName.StartsWith(search))
+                .Where(e => e.RefAuthorId == id || (e.RefAuthorName != null && e.RefAuthorName.StartsWith(search)))
                 .OrderBy(e => e.RefAuthorName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.RefAuthorName.StartsWith(search))
+            .Where(e => e.RefAuthorName != null && e.RefAuthorName.StartsWith(search))
             .OrderBy(e => e.RefAuthorName)
             .ToListAsync();
     }
@@ -7048,13 +7047,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.RefSourceId == id || e.RefSourceName.StartsWith(search))
+                .Where(e => e.RefSourceId == id || (e.RefSourceName != null && e.RefSourceName.StartsWith(search)))
                 .OrderBy(e => e.RefSourceName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.RefSourceName.StartsWith(search))
+            .Where(e => e.RefSourceName != null && e.RefSourceName.StartsWith(search))
             .OrderBy(e => e.RefSourceName)
             .ToListAsync();
     }
@@ -7163,13 +7162,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.RefExpertId == id || e.RefExpertName.StartsWith(search))
+                .Where(e => e.RefExpertId == id || (e.RefExpertName != null && e.RefExpertName.StartsWith(search)))
                 .OrderBy(e => e.RefExpertName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.RefExpertName.StartsWith(search))
+            .Where(e => e.RefExpertName != null && e.RefExpertName.StartsWith(search))
             .OrderBy(e => e.RefExpertName)
             .ToListAsync();
     }
@@ -7942,13 +7941,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.FoodId == id || (e.FoodName != null && e.FoodName.StartsWith(search)))
+                .Where(e => e.FoodId == id || (e.FoodName != null && (e.FoodName != null && e.FoodName.StartsWith(search))))
                 .OrderBy(e => e.FoodName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.FoodName != null && e.FoodName.StartsWith(search))
+            .Where(e => e.FoodName != null && (e.FoodName != null && e.FoodName.StartsWith(search)))
             .OrderBy(e => e.FoodName)
             .ToListAsync();
     }
@@ -8057,13 +8056,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.DiseaseId == id || (e.DiseaseName != null && e.DiseaseName.StartsWith(search)))
+                .Where(e => e.DiseaseId == id || (e.DiseaseName != null && (e.DiseaseName != null && e.DiseaseName.StartsWith(search))))
                 .OrderBy(e => e.DiseaseName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.DiseaseName != null && e.DiseaseName.StartsWith(search))
+            .Where(e => e.DiseaseName != null && (e.DiseaseName != null && e.DiseaseName.StartsWith(search)))
             .OrderBy(e => e.DiseaseName)
             .ToListAsync();
     }
@@ -8174,13 +8173,13 @@ public partial class DataService : ObservableObject, IDataService
         if (int.TryParse(search, out var id))
         {
             return await query
-                .Where(e => e.MiscellaneousId == id || (e.MiscellaneousName != null && e.MiscellaneousName.StartsWith(search)))
+                .Where(e => e.MiscellaneousId == id || (e.MiscellaneousName != null && (e.MiscellaneousName != null && e.MiscellaneousName.StartsWith(search))))
                 .OrderBy(e => e.MiscellaneousName)
                 .ToListAsync();
         }
 
         return await query
-            .Where(e => e.MiscellaneousName != null && e.MiscellaneousName.StartsWith(search))
+            .Where(e => e.MiscellaneousName != null && (e.MiscellaneousName != null && e.MiscellaneousName.StartsWith(search)))
             .OrderBy(e => e.MiscellaneousName)
             .ToListAsync();
     }

@@ -13,7 +13,7 @@ public sealed partial class Tbl75SpeciesSubDetailPage : Page
     public Tbl75SpeciesSubDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl75SpeciesSubDetailViewModel(default, _dataService);

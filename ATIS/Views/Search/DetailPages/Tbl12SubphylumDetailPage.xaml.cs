@@ -14,7 +14,7 @@ public sealed partial class Tbl12SubphylumDetailPage : Page
     public Tbl12SubphylumDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl12SubphylumDetailViewModel(default, _dataService);

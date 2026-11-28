@@ -912,7 +912,7 @@ public static class SimpleLog
     /// Does not throw an exception when the log file does not exist.
     /// </remarks>
     /// <returns>The log file as text document or null when it does not exist.</returns>
-    public static string GetLogFileAsText()
+    public static string? GetLogFileAsText()
     {
         return GetLogFileAsText(DateTime.Now);
     }
@@ -925,7 +925,7 @@ public static class SimpleLog
     /// </remarks>
     /// <param name="dateTime">The date and time to get the log file for. Use DateTime.Now to get the current log file.</param>
     /// <returns>The log file as text document or null when it does not exist.</returns>
-    public static string GetLogFileAsText(DateTime dateTime)
+    public static string? GetLogFileAsText(DateTime dateTime)
     {
         var fileName = GetFileName(dateTime);
         if (!File.Exists(fileName))

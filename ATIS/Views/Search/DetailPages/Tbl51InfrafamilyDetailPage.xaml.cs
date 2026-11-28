@@ -14,7 +14,7 @@ public sealed partial class Tbl51InfrafamilyDetailPage : Page
     public Tbl51InfrafamilyDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl51InfrafamilyDetailViewModel(default, _dataService);

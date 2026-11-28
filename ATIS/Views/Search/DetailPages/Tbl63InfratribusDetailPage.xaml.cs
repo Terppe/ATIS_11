@@ -14,7 +14,7 @@ public sealed partial class Tbl63InfratribusDetailPage : Page
     public Tbl63InfratribusDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl63InfratribusDetailViewModel(default, _dataService);

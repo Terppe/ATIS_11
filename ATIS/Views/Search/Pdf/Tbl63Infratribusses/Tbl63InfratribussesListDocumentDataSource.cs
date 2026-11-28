@@ -20,7 +20,7 @@ internal class Tbl63InfratribussesListDocumentDataSource : ObservableObject
             Author = InfratribusSingle.Author,
             AuthorYear = InfratribusSingle.AuthorYear,
             Info = InfratribusSingle.Info,
-            Valid = (bool)InfratribusSingle.Valid,
+            Valid = InfratribusSingle.Valid,
             ValidYear = InfratribusSingle.ValidYear,
             EngName = InfratribusSingle.EngName,
             GerName = InfratribusSingle.GerName,

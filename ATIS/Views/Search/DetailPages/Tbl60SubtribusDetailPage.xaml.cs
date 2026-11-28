@@ -14,7 +14,7 @@ public sealed partial class Tbl60SubtribusDetailPage : Page
     public Tbl60SubtribusDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl60SubtribusDetailViewModel(default, _dataService);

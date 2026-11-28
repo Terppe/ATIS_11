@@ -10,7 +10,7 @@ namespace ATIS.Views.Main;
 
 public sealed partial class HomePage : Page
 {
-    public string AppInfo { get; set; }
+    public string AppInfo { get; set; } = string.Empty;
     public HomeViewModel ViewModel { get; }
     public string? WinAppSdkVersion { get; set; } = ConfigurationManager.AppSettings.Get("WinAppSDK");
 
@@ -23,13 +23,6 @@ public sealed partial class HomePage : Page
 
         var asm = typeof(App).Assembly;
         var info = asm.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "unknown";
-
-        string buildType;
-#if DEBUG
-        buildType = "Debug";
-#else
-            buildType = info.EndsWith("-local", StringComparison.OrdinalIgnoreCase) ? "Release lokal" : "CI";
-#endif
 
         LbVersion.Text = $"{App.Current.Copyright} " +
                          " | SDK Version: " + WinAppSdkVersion +

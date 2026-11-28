@@ -325,6 +325,7 @@ public abstract class BaseBossListViewModel<TModel> : BaseListViewModel<TModel>
     protected void SortBy(string? column)
     {
         if (Items is null || Items.Count == 0) return;
+        ArgumentException.ThrowIfNullOrWhiteSpace(column);
 
         _sortAscending = _currentSortColumn == column ? !_sortAscending : true;
         _currentSortColumn = column;

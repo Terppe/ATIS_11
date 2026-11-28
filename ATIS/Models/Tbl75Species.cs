@@ -763,7 +763,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
     // Creature (Pflicht)
     // ---------------------------------------------------------
     [StringLength(100)]
-    private string _creature = string.Empty;
+    private string? _creature = string.Empty;
     public string? Creature
     {
         get => _creature;
@@ -946,7 +946,7 @@ public class Tbl75Species : ObservableObject, IDataService.IAuditable, IHierarch
         ClearErrors(nameof(CountId));
         var loc = Localizer.Get();
 
-        if (CountId == null || CountId <= 0)
+        if (CountId <= 0)
             AddError(nameof(CountId), loc.GetLocalizedString("Error_CountId_Required"));
 
         UpdateErrorProperty(nameof(CountId));

@@ -14,7 +14,7 @@ public sealed partial class Tbl57TribusDetailPage : Page
     public Tbl57TribusDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl57TribusDetailViewModel(default, _dataService);

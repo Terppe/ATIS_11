@@ -231,31 +231,31 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
     // ERROR PROPERTIES (wie Subtribus)
     // ---------------------------------------------------------
     [NotMapped]
-    public string NameNameError => _errors.ContainsKey(nameof(NameName)) ? string.Join("; ", _errors[nameof(NameName)]) : null;
+    public string? NameNameError => _errors.ContainsKey(nameof(NameName)) ? string.Join("; ", _errors[nameof(NameName)]) : null;
 
     [NotMapped]
     public bool HasNameNameError => _errors.ContainsKey(nameof(NameName));
 
     [NotMapped]
-    public string ValidYearError => _errors.ContainsKey(nameof(ValidYear)) ? string.Join("; ", _errors[nameof(ValidYear)]) : null;
+    public string? ValidYearError => _errors.ContainsKey(nameof(ValidYear)) ? string.Join("; ", _errors[nameof(ValidYear)]) : null;
 
     [NotMapped]
     public bool HasValidYearError => _errors.ContainsKey(nameof(ValidYear));
 
     [NotMapped]
-    public string LanguageError => _errors.ContainsKey(nameof(Language)) ? string.Join("; ", _errors[nameof(Language)]) : null;
+    public string? LanguageError => _errors.ContainsKey(nameof(Language)) ? string.Join("; ", _errors[nameof(Language)]) : null;
 
     [NotMapped]
     public bool HasLanguageError => _errors.ContainsKey(nameof(Language));
 
     [NotMapped]
-    public string InfoError => _errors.ContainsKey(nameof(Info)) ? string.Join("; ", _errors[nameof(Info)]) : null;
+    public string? InfoError => _errors.ContainsKey(nameof(Info)) ? string.Join("; ", _errors[nameof(Info)]) : null;
 
     [NotMapped]
     public bool HasInfoError => _errors.ContainsKey(nameof(Info));
 
     [NotMapped]
-    public string MemoError => _errors.ContainsKey(nameof(Memo)) ? string.Join("; ", _errors[nameof(Memo)]) : null;
+    public string? MemoError => _errors.ContainsKey(nameof(Memo)) ? string.Join("; ", _errors[nameof(Memo)]) : null;
 
     [NotMapped]
     public bool HasMemoError => _errors.ContainsKey(nameof(Memo));
@@ -268,51 +268,3 @@ public class Tbl78Name : ObservableObject, IDataService.IAuditable, IHierarchica
     public string GetDisplayName() => NameName;
 }
 
-//public class Tbl78Name : IHierarchicalEntity
-//{
-//    [Key]
-
-//    public int NameId { get; set; }
-//    [Required(ErrorMessageResourceName = "RequiredNameName", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    //  [MinLength(2, ErrorMessageResourceName = "MinLength_1", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    // [MaxLength(100, ErrorMessageResourceName = "MaxLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string NameName { get; set; }
-//    public int SpeciesId { get; set; }
-//    //[Required]
-//    //public int FiSpeciesId { get; set; }
-//    //[Required]
-//    //public int PlSpeciesId { get; set; }
-//    [Required]
-//    public int CountId { get; set; }
-//    public bool Valid { get; set; }
-//    [StringLength(4, ErrorMessageResourceName = "StringLengthYear_4", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string ValidYear { get; set; }
-//    [StringLength(3, ErrorMessageResourceName = "StringLength_3", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string Language { get; set; }
-//    [StringLength(100, ErrorMessageResourceName = "StringLength_100", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string Info { get; set; }
-//    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string Writer { get; set; }
-//    public DateTime WriterDate { get; set; }
-//    [StringLength(50, ErrorMessageResourceName = "StringLength_50", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string Updater { get; set; }
-//    public DateTime UpdaterDate { get; set; }
-//    [StringLength(1000, ErrorMessageResourceName = "StringLength_Max", ErrorMessageResourceType = typeof(Strings.StringsRes))]
-//    public string Memo { get; set; }
-//    //     public byte[] RowVersion { get; set; }
-
-//    [ForeignKey("SpeciesId")]
-//    public virtual Tbl75Species Tbl75Speciesses { get; set; }
-
-
-//    public int GetEntityId()
-//    {
-//        throw new NotImplementedException();
-//    }
-
-//    public string GetDisplayName()
-//    {
-//        throw new NotImplementedException();
-//    }
-//}

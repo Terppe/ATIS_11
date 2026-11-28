@@ -14,7 +14,7 @@ public sealed partial class Tbl18SuperclassDetailPage : Page
     public Tbl18SuperclassDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl18SuperclassDetailViewModel(default, _dataService);

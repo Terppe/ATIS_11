@@ -46,7 +46,8 @@ public partial class MainViewModel : ObservableObject
     private readonly LookupService _lookupService;
     private readonly HierarchyCoordinator _coordinator;
 
-    public string DbExist_SQLActiv { get; set; }
+    public string DbExist_SQLActiv { get; set; } = string.Empty;
+
     // -----------------------------
     // Taxonomie-ViewModels
     // -----------------------------

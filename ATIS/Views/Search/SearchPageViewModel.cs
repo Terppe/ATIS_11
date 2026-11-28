@@ -84,7 +84,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchRegnumAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.RegnumName.Contains('#')) continue;
+                        if (item.RegnumName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -94,7 +94,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchPhylumWithRegnumAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.PhylumName.Contains('#')) continue;
+                        if (item.PhylumName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -104,7 +104,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSubphylumWithPhylumAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SubphylumName.Contains('#')) continue;
+                        if (item.SubphylumName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -114,7 +114,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSuperclassWithSubphylumAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SuperclassName.Contains('#')) continue;
+                        if (item.SuperclassName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -124,7 +124,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchClassWithSuperclassAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.ClassName.Contains('#')) continue;
+                        if (item.ClassName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -134,7 +134,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSubclassWithClassAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SubclassName.Contains('#')) continue;
+                        if (item.SubclassName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -144,7 +144,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchInfraclassWithSubclassAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.InfraclassName.Contains('#')) continue;
+                        if (item.InfraclassName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -154,7 +154,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchLegioWithInfraclassAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.LegioName.Contains('#')) continue;
+                        if (item.LegioName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -164,7 +164,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchOrdoWithLegioAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.OrdoName.Contains('#')) continue;
+                        if (item.OrdoName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -174,7 +174,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSubordoWithOrdoAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SubordoName.Contains('#')) continue;
+                        if (item.SubordoName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -184,7 +184,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchInfraordoWithSubordoAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.InfraordoName.Contains('#')) continue;
+                        if (item.InfraordoName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -194,7 +194,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSuperfamilyWithInfraordoAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SuperfamilyName.Contains('#')) continue;
+                        if (item.SuperfamilyName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -204,7 +204,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchFamilyWithSuperfamilyAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.FamilyName.Contains('#')) continue;
+                        if (item.FamilyName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -214,7 +214,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSubfamilyWithFamilyAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SubfamilyName.Contains('#')) continue;
+                        if (item.SubfamilyName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -224,7 +224,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchInfrafamilyWithSubfamilyAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.InfrafamilyName.Contains('#')) continue;
+                        if (item.InfrafamilyName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -234,7 +234,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSupertribusWithInfrafamilyAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SupertribusName.Contains('#')) continue;
+                        if (item.SupertribusName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -244,7 +244,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchTribusWithSupertribusAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.TribusName.Contains('#')) continue;
+                        if (item.TribusName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -254,7 +254,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchSubtribusWithTribusAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SubtribusName.Contains('#')) continue;
+                        if (item.SubtribusName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -264,7 +264,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchInfratribusWithSubtribusAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.InfratribusName.Contains('#')) continue;
+                        if (item.InfratribusName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -274,7 +274,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.SearchGenusWithInfratribusAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.GenusName.Contains('#')) continue;
+                        if (item.GenusName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;
@@ -284,7 +284,7 @@ public sealed class SearchPageViewModel : ObservableObject
                     var items = await _dataService.GetSpeciesWithGenusAndSpeciesgroupByIdAsync(searchText);
                     foreach (var item in items)
                     {
-                        if (item.SpeciesName.Contains('#')) continue;
+                        if (item.SpeciesName?.Contains('#') == true) continue;
                         results.Add(item);
                     }
                     break;

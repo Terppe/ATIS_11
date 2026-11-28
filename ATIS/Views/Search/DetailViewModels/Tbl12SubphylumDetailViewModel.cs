@@ -178,7 +178,7 @@ public sealed class Tbl12SubphylumDetailViewModel : ObservableObject
         Tbl06Phylum? phylum = null;
         Tbl03Regnum? regnum = null;
         // technisch laden
-        if (selected?.PhylumId is int phylumId && phylumId != 0)
+        if (selected.PhylumId is int phylumId && phylumId != 0)
             phylum = await _dataService.GetPhylumByIdAsync(phylumId);
         if (phylum?.RegnumId is int regnumId && regnumId != 0)
             regnum = await _dataService.GetRegnumByIdAsync(regnumId);

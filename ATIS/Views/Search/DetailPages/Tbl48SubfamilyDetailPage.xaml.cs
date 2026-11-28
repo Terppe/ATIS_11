@@ -14,7 +14,7 @@ public sealed partial class Tbl48SubfamilyDetailPage : Page
     public Tbl48SubfamilyDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl48SubfamilyDetailViewModel(default, _dataService);

@@ -14,7 +14,7 @@ public sealed partial class Tbl39InfraordoDetailPage : Page
     public Tbl39InfraordoDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl39InfraordoDetailViewModel(default, _dataService);

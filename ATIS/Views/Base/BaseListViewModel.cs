@@ -10,7 +10,6 @@ public abstract class BaseListViewModel<T> : ObservableObject
 {
     protected readonly IDataService Data;
     protected readonly IDialogService Dialog;
-    public readonly LookupService LookupService;
     public event EventHandler? ScrollRequested;
 
     protected BaseListViewModel(

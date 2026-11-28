@@ -5,7 +5,7 @@ namespace ATIS.Services;
 
 public class DialogService() : IDialogService
 {
-    private readonly XamlRoot _xamlRoot;
+    private readonly XamlRoot? _xamlRoot;
 
     public DialogService(XamlRoot xamlRoot) : this()
     {

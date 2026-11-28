@@ -14,7 +14,7 @@ public sealed partial class Tbl33OrdoDetailPage : Page
     public Tbl33OrdoDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl33OrdoDetailViewModel(default, _dataService);

@@ -14,7 +14,7 @@ public sealed partial class Tbl66GenusDetailPage : Page
     public Tbl66GenusDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl66GenusDetailViewModel(default, _dataService);

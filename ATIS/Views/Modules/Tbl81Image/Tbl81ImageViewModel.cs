@@ -206,6 +206,7 @@ public class Tbl81ImageViewModel : BaseBossListViewModel<Models.Tbl81Image>
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"[LoadAsync -> ReloadAsync] {ex}");
                 await Dialog.ShowErrorAsync("Error_Load_Title", "Error_Load_Message");
             }
         }

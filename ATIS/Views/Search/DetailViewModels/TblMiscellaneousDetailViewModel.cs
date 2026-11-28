@@ -46,8 +46,9 @@ public sealed class TblMiscellaneousDetailViewModel : ObservableObject
 
         await App.GetService<IPdfExportService>().ExportAsync(async () =>
         {
-            var model = await TblMiscellaneoussesDocumentDataSource.GetMiscellaneousDetailsAsync(
-                selected.MiscellaneousId);
+            var model = await TblMiscellaneoussesDocumentDataSource.GetMiscellaneousDetailsAsync(selected.MiscellaneousId);
+            if (model == null)
+                throw new InvalidOperationException("The miscellaneous entry was not found for PDF export.");
 
             return new TblMiscellaneoussesDocument(model);
         }, suggestedFileName);

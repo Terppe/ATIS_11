@@ -14,7 +14,7 @@ public sealed partial class Tbl21ClassDetailPage : Page
     public Tbl21ClassDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl21ClassDetailViewModel(default, _dataService);

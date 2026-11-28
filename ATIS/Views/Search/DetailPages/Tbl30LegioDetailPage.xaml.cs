@@ -14,7 +14,7 @@ public sealed partial class Tbl30LegioDetailPage : Page
     public Tbl30LegioDetailPage()
     {
         InitializeComponent();
-        _dataService = App.Services.GetRequiredService<IDataService>();
+        _dataService = App.GetService<IDataService>();
         NavigateBreadcrumbAsync = OnNavigateBreadcrumbAsync;
 
         ViewModel = new Tbl30LegioDetailViewModel(default, _dataService);
